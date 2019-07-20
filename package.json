@@ -6,6 +6,7 @@
   },
   "workspaces": [
     "packages/plugins/*",
-    "packages/playground"
+    "packages/playground",
+    "packages/prosemirror-setup"
   ]
 }
