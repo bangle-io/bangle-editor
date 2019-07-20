@@ -14,8 +14,7 @@ import {
   buildKeymap,
   schema
 } from 'prosemirror-setup';
-import { menuBar } from '../prosemirror-setup/plugins/prosemirror-menu';
-import prosemirrorTypeahead from '../prosemirror-setup/plugins/prosemirror-typeahead';
+import { menuBar } from 'prosemirror-menu';
 
 export class ProseMirrorView {
   constructor(target, content) {
@@ -39,11 +38,9 @@ export class ProseMirrorView {
             content: buildMenuItems(schema).fullMenu,
             props: {
               class: 'kushan-rocks'
-              // floating: false,
             }
           }),
           history(),
-          prosemirrorTypeahead(),
           new Plugin({
             props: {
               attributes: { class: 'bangle-editor' }
