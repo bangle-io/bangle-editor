@@ -8,12 +8,11 @@ import { Plugin } from 'prosemirror-state';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { DOMParser } from 'prosemirror-model';
-import {
-  buildInputRules,
-  buildMenuItems,
-  buildKeymap,
-  schema
-} from 'prosemirror-setup';
+
+import { buildInputRules } from 'prosemirror-setup/src/input-rules';
+import { buildMenuItems } from 'prosemirror-setup/src/menu';
+import { buildKeymap } from 'prosemirror-setup/src/keymap';
+import { schema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
 
 export class ProseMirrorView {
