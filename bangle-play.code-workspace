@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "packages/playground"
+	},
+	{
+		"path": "packages/prosemirror-setup"
+	},
+	{
+		"path": "packages/plugins"
+	}
+],
+  "settings": {}
+}
