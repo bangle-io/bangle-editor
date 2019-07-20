@@ -1,0 +1,11 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.16.1"
+  },
+  "workspaces": [
+    "packages/plugins/*",
+    "packages/playground"
+  ]
+}
