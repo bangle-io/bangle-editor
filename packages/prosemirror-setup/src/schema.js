@@ -1,4 +1,5 @@
 import { Schema } from 'prosemirror-model';
+import * as dinos from 'dinos';
 
 const pDOM = ['p', 0],
   blockquoteDOM = ['blockquote', 0],
@@ -205,4 +206,4 @@ export const marks = {
 //
 // To reuse elements from this schema, extend or read from its
 // `spec.nodes` and `spec.marks` [properties](#model.Schema.spec).
-export const schema = new Schema({ nodes, marks });
+export const schema = dinos.insertSchema(new Schema({ nodes, marks }));
