@@ -17,7 +17,7 @@
     "url": "git://github.com/prosemirror/prosemirror.git"
   },
   "dependencies": {
-    "dinos": "^1.0.0",
+    "dinos": "*",
     "prosemirror-commands": "^1.0.0",
     "prosemirror-dropcursor": "^1.0.0",
     "prosemirror-gapcursor": "^1.0.0",
