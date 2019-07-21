@@ -10,5 +10,20 @@
 		"path": "packages/plugins"
 	}
 ],
-  "settings": {}
+"settings": {
+	"workbench.colorCustomizations": {
+		"activityBar.background": "#ee0ba8",
+		"activityBar.foreground": "#e7e7e7",
+		"activityBar.inactiveForeground": "#e7e7e799",
+		"activityBarBadge.background": "#97d50a",
+		"activityBarBadge.foreground": "#15202b",
+		"titleBar.activeBackground": "#bd0986",
+		"titleBar.inactiveBackground": "#bd098699",
+		"titleBar.activeForeground": "#e7e7e7",
+		"titleBar.inactiveForeground": "#e7e7e799",
+		"statusBar.background": "#bd0986",
+		"statusBarItem.hoverBackground": "#ee0ba8",
+		"statusBar.foreground": "#e7e7e7"
+	}
+}
 }
