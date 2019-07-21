@@ -17,6 +17,7 @@ import { NodeSelection } from 'prosemirror-state';
 import { toggleMark } from 'prosemirror-commands';
 import { wrapInList } from 'prosemirror-schema-list';
 import { TextField, openPrompt } from './prompt';
+import * as dinos from 'dinos';
 
 // Helpers to create specific types of items
 
@@ -193,7 +194,7 @@ function wrapListItem(nodeType, options) {
 // **`fullMenu`**`: [[MenuElement]]`
 //   : An array of arrays of menu elements for use as the full menu
 //     for, for example the [menu bar](https://github.com/prosemirror/prosemirror-menu#user-content-menubar).
-export function buildMenuItems(schema) {
+function _buildMenuItems(schema) {
   let r = {},
     type;
   if ((type = schema.marks.strong))
@@ -302,3 +303,9 @@ export function buildMenuItems(schema) {
 
   return r;
 }
+
+export const buildMenuItems = schema => {
+  const _menu = _buildMenuItems(schema);
+  dinos.insertMenuItem(schema, _menu);
+  return _menu;
+};
