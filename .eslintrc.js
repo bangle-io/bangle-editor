@@ -3,11 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: 'react-app',
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
-  },
+  extends: ['react-app', 'plugin:monorepo/recommended'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -15,7 +11,6 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: ['react'],
   rules: {
     'no-prototype-builtins': 'off'
   }

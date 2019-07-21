@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "babel-eslint": "9.x",
+    "babel-eslint": "10.0.1",
     "eslint": "5.x",
     "eslint-config-react-app": "^4.0.1",
     "eslint-plugin-flowtype": "2.x",

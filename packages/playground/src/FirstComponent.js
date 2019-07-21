@@ -14,6 +14,8 @@ import { buildMenuItems } from 'prosemirror-setup/src/menu';
 import { buildKeymap } from 'prosemirror-setup/src/keymap';
 import { schema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
+import 'prosemirror-setup/style/style.css';
+import * as dinos from 'dinos';
 
 export class ProseMirrorView {
   constructor(target, content) {
@@ -24,6 +26,9 @@ export class ProseMirrorView {
     `.trim();
 
     this.view = new EditorView(target, {
+      nodeViews: {
+        // ...(dinos.getNodeViews && dinos.getNodeViews())
+      },
       state: EditorState.create({
         // doc: defaultMarkdownParser.parse(content),
         doc: DOMParser.fromSchema(schema).parse(template.content.firstChild),

@@ -1,31 +1,13 @@
-/* Add space around the hr to make clicking it easier */
-
-.ProseMirror-example-setup-style hr {
-  padding: 2px 10px;
-  border: none;
-  margin: 1em 0;
-}
-
-.ProseMirror-example-setup-style hr:after {
-  content: "";
-  display: block;
-  height: 1px;
-  background-color: silver;
-  line-height: 2px;
-}
-
-.ProseMirror ul, .ProseMirror ol {
+.ProseMirror ul,
+.ProseMirror ol {
   padding-left: 30px;
 }
 
 .ProseMirror blockquote {
   padding-left: 1em;
   border-left: 3px solid #eee;
-  margin-left: 0; margin-right: 0;
-}
-
-.ProseMirror-example-setup-style img {
-  cursor: default;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .ProseMirror-prompt {
@@ -35,7 +17,7 @@
   position: fixed;
   border-radius: 3px;
   z-index: 11;
-  box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
+  box-shadow: -0.5px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .ProseMirror-prompt h5 {
@@ -45,26 +27,29 @@
   color: #444;
 }
 
-.ProseMirror-prompt input[type="text"],
+.ProseMirror-prompt input[type='text'],
 .ProseMirror-prompt textarea {
   background: #eee;
   border: none;
   outline: none;
 }
 
-.ProseMirror-prompt input[type="text"] {
+.ProseMirror-prompt input[type='text'] {
   padding: 0 4px;
 }
 
 .ProseMirror-prompt-close {
   position: absolute;
-  left: 2px; top: 1px;
+  left: 2px;
+  top: 1px;
   color: #666;
-  border: none; background: transparent; padding: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
 }
 
 .ProseMirror-prompt-close:after {
-  content: "✕";
+  content: '✕';
   font-size: 12px;
 }
 
