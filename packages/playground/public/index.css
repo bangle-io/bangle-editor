@@ -16,23 +16,27 @@ code {
 
 #root {
   display: flex;
-  flex: 1 auto;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  /* height: 100%; */
+  flex-grow: 1;
 }
 
 .ProsemirrorComp {
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  flex-direction: column;
+  /* display: flex; */
+  /* height: 100vh; */
+  /* flex-grow: 1; */
+  /* flex: 1 auto; */
+  /* flex-direction: row; */
 }
 
 /* /app.js */
 .App {
-  display: flex;
-  /* text-align: center; */
-  flex: 1 auto;
+  margin: 15px 30px;
+  /* display: flex; */
+  /* flex: 1 auto; */
+  /* background-color: #eeeeee05; */
+  border: 1px solid #eee;
+  /* flex-direction: column; */
 }
 
 .App-logo {
@@ -54,4 +58,15 @@ code {
 
 .ProseMirror-menubar-wrapper {
   display: flex;
+  flex-direction: column;
+   /* [1] */
+   /* [1] */
+   /* [1] */
+  flex-grow: 1;
+   /* [4] */
+}
+
+.bangle-editor {
+  word-break: break-word;
+  outline: none;
 }

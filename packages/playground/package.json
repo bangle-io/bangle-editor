@@ -17,7 +17,7 @@
     "prosemirror-view": "^1.9.12",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scripts": "/Users/kushanjoshi/code/open/create-react-app/packages/react-scripts"
   },
   "scripts": {
     "start": "react-scripts start",
