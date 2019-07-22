@@ -17,8 +17,6 @@ import { NodeSelection } from 'prosemirror-state';
 import { toggleMark } from 'prosemirror-commands';
 import { wrapInList } from 'prosemirror-schema-list';
 import { TextField, openPrompt } from './prompt';
-import * as dinos from 'dinos';
-import * as emoji from 'emoji';
 
 // Helpers to create specific types of items
 
@@ -305,9 +303,8 @@ function _buildMenuItems(schema) {
   return r;
 }
 
-export const buildMenuItems = schema => {
+// where insertMenu is a function which returns menu
+export const buildMenuItems = (schema, insertMenu) => {
   const _menu = _buildMenuItems(schema);
-  dinos.insertMenuItem(schema, _menu);
-  emoji.insertMenuItem(schema, _menu);
-  return _menu;
+  return insertMenu(_menu);
 };

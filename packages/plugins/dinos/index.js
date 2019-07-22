@@ -7,19 +7,22 @@ import './dino.css';
 export { insertSchema } from './dino-schema';
 export { getNodeView } from './dino-view';
 
-export function insertMenuItem(schema, menu) {
-  dinoNames.forEach(name =>
-    menu.insertMenu.content.push(
-      new MenuItem({
-        title: 'Insert ' + name,
-        label: name.charAt(0).toUpperCase() + name.slice(1),
-        enable(state) {
-          return insertDino(schema, name)(state);
-        },
-        run: insertDino(schema, name)
-      })
-    )
-  );
+export function insertMenuItem(schema) {
+  return menu => {
+    dinoNames.forEach(name =>
+      menu.insertMenu.content.push(
+        new MenuItem({
+          title: 'Insert ' + name,
+          label: name.charAt(0).toUpperCase() + name.slice(1),
+          enable(state) {
+            return insertDino(schema, name)(state);
+          },
+          run: insertDino(schema, name)
+        })
+      )
+    );
+    return menu;
+  };
 }
 
 function insertDino(schema, type) {
