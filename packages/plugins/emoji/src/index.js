@@ -7,19 +7,22 @@ import './emoji.css';
 export { insertSchema } from './emoji-schema';
 export { getNodeView } from './emoji-view';
 
-export function insertMenuItem(schema, menu) {
-  validEmojis.forEach(name =>
-    menu.insertMenu.content.push(
-      new MenuItem({
-        title: 'Insert ' + name,
-        label: name.charAt(0).toUpperCase() + name.slice(1),
-        enable(state) {
-          return insertEmoji(schema, name)(state);
-        },
-        run: insertEmoji(schema, name)
-      })
-    )
-  );
+export function insertMenuItem(schema) {
+  return menu => {
+    validEmojis.forEach(name =>
+      menu.insertMenu.content.push(
+        new MenuItem({
+          title: 'Insert ' + name,
+          label: name.charAt(0).toUpperCase() + name.slice(1),
+          enable(state) {
+            return insertEmoji(schema, name)(state);
+          },
+          run: insertEmoji(schema, name)
+        })
+      )
+    );
+    return menu;
+  };
 }
 
 function insertEmoji(schema, type) {

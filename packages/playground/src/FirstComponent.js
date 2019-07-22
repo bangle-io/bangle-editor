@@ -8,15 +8,32 @@ import { Plugin } from 'prosemirror-state';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { DOMParser } from 'prosemirror-model';
-
+import { compose } from 'lodash/fp';
 import { buildInputRules } from 'prosemirror-setup/src/input-rules';
 import { buildMenuItems } from 'prosemirror-setup/src/menu';
 import { buildKeymap } from 'prosemirror-setup/src/keymap';
-import { schema } from 'prosemirror-setup/src/schema';
+import { schema as baseSchema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
 import 'prosemirror-setup/style/style.css';
+import { schemaCompose } from 'bangle-utils';
 import * as dinos from 'dinos';
 import * as emoji from 'emoji';
+
+const schema = schemaCompose(dinos.insertSchema, emoji.insertSchema)(
+  baseSchema
+);
+const builtMenu = buildMenuItems(
+  schema,
+  compose(
+    dinos.insertMenuItem(schema),
+    emoji.insertMenuItem(schema)
+  )
+);
+
+const nodeViews = {
+  ...dinos.getNodeView(),
+  ...emoji.getNodeView()
+};
 
 export class ProseMirrorView {
   constructor(target, content) {
@@ -27,10 +44,7 @@ export class ProseMirrorView {
     `.trim();
 
     this.view = new EditorView(target, {
-      nodeViews: {
-        ...dinos.getNodeView(),
-        ...emoji.getNodeView()
-      },
+      nodeViews,
       state: EditorState.create({
         // doc: defaultMarkdownParser.parse(content),
         doc: DOMParser.fromSchema(schema).parse(template.content.firstChild),
@@ -41,7 +55,7 @@ export class ProseMirrorView {
           dropCursor(),
           gapCursor(),
           menuBar({
-            content: buildMenuItems(schema).fullMenu,
+            content: builtMenu.fullMenu,
             props: {
               class: 'kushan-rocks'
             }
@@ -58,11 +72,11 @@ export class ProseMirrorView {
         // intercept the transaction cycle
         window.tr = tr;
         const editorState = this.view.state.apply(tr);
-        // if (editorState) {
-        //   console.groupCollapsed('state');
-        //   console.log(JSON.stringify(editorState.doc, null, 2));
-        //   console.groupEnd('state');
-        // }
+        if (editorState) {
+          console.groupCollapsed('state');
+          console.log(JSON.stringify(editorState.doc, null, 2));
+          console.groupEnd('state');
+        }
         this.view.updateState(editorState);
       }
     });
