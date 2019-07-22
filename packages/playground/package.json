@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "dinos": "*",
+    "emoji": "*",
     "prosemirror-commands": "^1.0.8",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.0.4",
@@ -18,7 +19,8 @@
     "prosemirror-view": "^1.9.12",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "/Users/kushanjoshi/code/open/create-react-app/packages/react-scripts"
+    "react-scripts": "/Users/kushanjoshi/code/open/create-react-app/packages/react-scripts",
+    "bangle-utils": "*"
   },
   "scripts": {
     "start": "react-scripts start",

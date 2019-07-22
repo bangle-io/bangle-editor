@@ -1,10 +1,10 @@
 import React from 'react';
-import { ProsemirrorComp as ProseMirrorView } from './FirstComponent';
+import { ProsemirrorComp } from './FirstComponent';
 
 function App() {
   return (
     <div className="App">
-      <ProseMirrorView />
+      <ProsemirrorComp />
     </div>
   );
 }
