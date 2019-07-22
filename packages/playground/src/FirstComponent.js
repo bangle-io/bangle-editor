@@ -16,6 +16,7 @@ import { schema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
 import 'prosemirror-setup/style/style.css';
 import * as dinos from 'dinos';
+import * as emoji from 'emoji';
 
 export class ProseMirrorView {
   constructor(target, content) {
@@ -27,7 +28,8 @@ export class ProseMirrorView {
 
     this.view = new EditorView(target, {
       nodeViews: {
-        // ...(dinos.getNodeViews && dinos.getNodeViews())
+        ...dinos.getNodeView(),
+        ...emoji.getNodeView()
       },
       state: EditorState.create({
         // doc: defaultMarkdownParser.parse(content),
@@ -54,8 +56,13 @@ export class ProseMirrorView {
       }),
       dispatchTransaction: tr => {
         // intercept the transaction cycle
-        console.info(tr);
+        window.tr = tr;
         const editorState = this.view.state.apply(tr);
+        // if (editorState) {
+        //   console.groupCollapsed('state');
+        //   console.log(JSON.stringify(editorState.doc, null, 2));
+        //   console.groupEnd('state');
+        // }
         this.view.updateState(editorState);
       }
     });
