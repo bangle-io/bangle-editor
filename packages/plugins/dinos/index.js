@@ -1,21 +1,14 @@
-import { Schema } from 'prosemirror-model';
 import { MenuItem } from 'prosemirror-menu';
-import brontosaurus from './img/brontosaurus.png';
-import stegosaurus from './img/stegosaurus.png';
-import triceratops from './img/triceratops.png';
-import tyrannosaurus from './img/tyrannosaurus.png';
-import pterodactyl from './img/pterodactyl.png';
 
-export function insertSchema(schema) {
-  const dinoSchema = new Schema({
-    ...schema.spec,
-    nodes: schema.spec.nodes.addBefore('image', 'dino', dinoNodeSpec)
-  });
-  return dinoSchema;
-}
+import { DINO_NODE_NAME, dinoAttrTypes, dinoNames } from './constants';
+import { nodeHelpers } from 'bangle-utils';
+import './dino.css';
+
+export { insertSchema } from './dino-schema';
+export { getNodeView } from './dino-view';
 
 export function insertMenuItem(schema, menu) {
-  Object.keys(dinos).forEach(name =>
+  dinoNames.forEach(name =>
     menu.insertMenu.content.push(
       new MenuItem({
         title: 'Insert ' + name,
@@ -30,55 +23,26 @@ export function insertMenuItem(schema, menu) {
 }
 
 function insertDino(schema, type) {
-  let dinoType = schema.nodes.dino;
-
+  let dinoType = schema.nodes[DINO_NODE_NAME];
   return function(state, dispatch) {
     let { $from } = state.selection,
       index = $from.index();
     if (!$from.parent.canReplaceWith(index, index, dinoType)) return false;
-    if (dispatch)
-      dispatch(state.tr.replaceSelectionWith(dinoType.create({ type })));
+    if (dispatch) {
+      const attr = {
+        'data-type': type
+      };
+
+      if (type === 'tyrannosaurus') {
+        attr['data-blinks'] = 'yes';
+      }
+
+      dispatch(
+        state.tr.replaceSelectionWith(
+          dinoType.create(nodeHelpers.createAttrObj(dinoAttrTypes, attr))
+        )
+      );
+    }
     return true;
   };
 }
-
-// The supported types of dinosaurs.
-const dinos = {
-  brontosaurus,
-  stegosaurus,
-  triceratops,
-  tyrannosaurus,
-  pterodactyl
-};
-const dinoNodeSpec = {
-  // Dinosaurs have one attribute, their type, which must be one of
-  // the types defined above.
-  // Brontosaurs are still the default dino.
-  attrs: { type: { default: 'brontosaurus' } },
-  inline: true,
-  group: 'inline',
-  draggable: true,
-
-  // These nodes are rendered as images with a `dino-type` attribute.
-  // There are pictures for all dino types under /img/dino/.
-  toDOM: node => [
-    'img',
-    {
-      'dino-type': node.attrs.type,
-      src: dinos[node.attrs.type],
-      title: node.attrs.type,
-      class: 'dinosaur'
-    }
-  ],
-  // When parsing, such an image, if its type matches one of the known
-  // types, is converted to a dino node.
-  parseDOM: [
-    {
-      tag: 'img[dino-type]',
-      getAttrs: dom => {
-        let type = dom.getAttribute('dino-type');
-        return dinos.hasOwnProperty(type) ? { type } : false;
-      }
-    }
-  ]
-};
