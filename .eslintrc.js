@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: ['react-app', 'plugin:monorepo/recommended'],
+  extends: ['react-app'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
