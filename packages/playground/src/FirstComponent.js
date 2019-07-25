@@ -1,6 +1,7 @@
 import React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
 import { baseKeymap } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { history } from 'prosemirror-history';
@@ -15,28 +16,19 @@ import { buildKeymap } from 'prosemirror-setup/src/keymap';
 import { schema as baseSchema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
 import 'prosemirror-setup/style/style.css';
-import { schemaCompose } from 'bangle-utils';
+import applyDevTools from 'prosemirror-dev-tools';
 import * as dinos from 'dinos';
 import * as emoji from 'emoji';
 
-const schema = schemaCompose(dinos.insertSchema, emoji.insertSchema)(
-  baseSchema
-);
-const builtMenu = buildMenuItems(
-  schema,
-  compose(
-    dinos.insertMenuItem(schema),
-    emoji.insertMenuItem(schema)
-  )
-);
-
-const nodeViews = {
-  ...dinos.getNodeView(),
-  ...emoji.getNodeView()
-};
-
 export class ProseMirrorView {
-  constructor(target, content) {
+  constructor(target, { nodeViews, schema }) {
+    const builtMenu = buildMenuItems(
+      schema,
+      compose(
+        dinos.insertMenuItem(schema),
+        emoji.insertMenuItem(schema)
+      )
+    );
     var template = document.createElement('template');
     template.innerHTML = `<div id=content style="display: none">
       <h5>Too-minor header</h5>
@@ -80,6 +72,8 @@ export class ProseMirrorView {
         this.view.updateState(editorState);
       }
     });
+
+    applyDevTools(this.view);
   }
   focus() {
     this.view.focus();
@@ -91,15 +85,41 @@ export class ProseMirrorView {
 
 export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
+  nodeViews = {
+    ...emoji.getNodeView()
+  };
+  schema = baseSchema;
   componentDidMount() {
     const node = this.myRef.current;
     if (node) {
-      const view = new ProseMirrorView(node, `Hello world!`);
+      const view = new ProseMirrorView(node, {
+        nodeViews: this.nodeViews,
+        schema: this.schema
+      });
       view.focus();
     }
   }
 
+  addNodeView = nodeViewObject => {
+    this.nodeViews = Object.assign(this.nodeViews, nodeViewObject);
+  };
+
+  addSchema = nodeSchema => {
+    this.schema = new Schema({
+      ...this.schema.spec,
+      nodes: this.schema.spec.nodes.addToEnd(nodeSchema.type, nodeSchema.schema)
+    });
+  };
+
   render() {
-    return <div ref={this.myRef} className="ProsemirrorComp" />;
+    return (
+      <>
+        <div ref={this.myRef} className="ProsemirrorComp" />
+        <dinos.DinoComponent
+          addNodeView={this.addNodeView}
+          addSchema={this.addSchema}
+        />
+      </>
+    );
   }
 }
