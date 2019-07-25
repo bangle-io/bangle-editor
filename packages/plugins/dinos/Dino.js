@@ -30,7 +30,6 @@ class Dino extends ReactNodeView {
     this.state = {
       selected: false
     };
-    console.log('Created', this.nodeView);
   }
 
   nodeViewSelectNode() {
