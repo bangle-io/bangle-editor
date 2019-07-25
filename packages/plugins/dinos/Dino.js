@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-
+import { reactNodeViewHOC } from 'bangle-utils';
 import { ReactNodeView, nodeHelpers } from 'bangle-utils';
 
 import {
@@ -24,12 +24,13 @@ export const DINO_IMAGES = {
   pterodactyl: pterodactylImg
 };
 
-export class Dino extends ReactNodeView {
+class Dino extends ReactNodeView {
   constructor(props) {
     super(props);
     this.state = {
       selected: false
     };
+    console.log('Created', this.nodeView);
   }
 
   nodeViewSelectNode() {
@@ -92,3 +93,5 @@ Dino.Schema = {
     ]
   }
 };
+
+export default reactNodeViewHOC(Dino);

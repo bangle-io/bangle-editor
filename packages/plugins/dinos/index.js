@@ -4,7 +4,7 @@ import { DINO_NODE_NAME, dinoAttrTypes, dinoNames } from './constants';
 import { nodeHelpers } from 'bangle-utils';
 import './dino.css';
 
-export { DinoComponent } from './dino-view';
+export { default as DinoComponent } from './Dino';
 
 export function insertMenuItem(schema) {
   return menu => {
