@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-
+import debounce from 'debounce';
 // Note: this HOC is needed as it creates/manages n number of ReactNodeView
 // depending on PM.
 
@@ -18,10 +18,11 @@ export function reactNodeViewHOC(Comp) {
       super(props);
       this.counter = 0;
 
+      this.debouncedForceUpdate = debounce(this.forceUpdate.bind(this), 30);
+
       this.componentMap = new WeakMap();
-      this.state = {
-        pmDoms: []
-      };
+      this.counterMap = new WeakMap();
+      this.pmDoms = new Set();
 
       this.initializeNodeView = this.initializeNodeView.bind(this); // As an optimization I can throttle and queue the results
       this.onNodeViewDestroy = this.onNodeViewDestroy.bind(this); // As an optimization I can throttle and queue the results, right now the view is destroed for everything in the row
@@ -45,10 +46,10 @@ export function reactNodeViewHOC(Comp) {
       nodeViewInstance.destroy = () => {
         this.onNodeViewDestroy(dom);
       };
-      this.counter++;
+      this.counterMap.set(dom, this.counter++);
       this.componentMap.set(
         dom,
-        React.cloneElement(<Comp key={this.counter} />, {
+        React.cloneElement(<Comp />, {
           nodeViewProps: {
             node,
             view,
@@ -59,24 +60,20 @@ export function reactNodeViewHOC(Comp) {
         })
       );
 
-      this.setState(({ pmDoms }) => ({
-        pmDoms: [...pmDoms, [this.counter, dom]]
-      }));
+      this.pmDoms.add(dom);
+      this.debouncedForceUpdate();
 
       return nodeViewInstance;
     }
 
     onNodeViewDestroy(dom) {
-      console.log('destroy');
-      this.setState(({ pmDoms }) => ({
-        pmDoms: pmDoms.filter(r => r[1] !== dom)
-      }));
+      this.pmDoms.delete(dom);
     }
 
     render() {
       console.log('render');
-      return this.state.pmDoms.map(([uid, pmDom]) => (
-        <React.Fragment key={uid}>
+      return Array.from(this.pmDoms).map(pmDom => (
+        <React.Fragment key={this.counterMap.get(pmDom)}>
           {createPortal(this.componentMap.get(pmDom), pmDom)}
         </React.Fragment>
       ));
