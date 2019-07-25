@@ -2,7 +2,9 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
-// Note: The comp must be PureComponent as we are passing a big fat prop `nodeViewProps`
+// Note: this HOC is needed as it creates/manages n number of ReactNodeView
+// depending on PM.
+
 export function reactNodeViewHOC(Comp) {
   if (!Comp instanceof ReactNodeView) {
     throw new Error('Only react node view');
@@ -14,18 +16,20 @@ export function reactNodeViewHOC(Comp) {
   class ParentNodeView extends React.Component {
     constructor(props) {
       super(props);
+      this.counter = 0;
 
       this.componentMap = new WeakMap();
       this.state = {
         pmDoms: []
       };
 
-      this.initializeNodeView = this.initializeNodeView.bind(this);
-      this.onNodeViewDestroy = this.onNodeViewDestroy.bind(this);
+      this.initializeNodeView = this.initializeNodeView.bind(this); // As an optimization I can throttle and queue the results
+      this.onNodeViewDestroy = this.onNodeViewDestroy.bind(this); // As an optimization I can throttle and queue the results, right now the view is destroed for everything in the row
 
       props.addNodeView({
         [Comp.Schema.type]: this.initializeNodeView
       });
+
       props.addSchema(Comp.Schema);
     }
 
@@ -41,10 +45,10 @@ export function reactNodeViewHOC(Comp) {
       nodeViewInstance.destroy = () => {
         this.onNodeViewDestroy(dom);
       };
-
+      this.counter++;
       this.componentMap.set(
         dom,
-        React.cloneElement(<Comp />, {
+        React.cloneElement(<Comp key={this.counter} />, {
           nodeViewProps: {
             node,
             view,
@@ -55,25 +59,27 @@ export function reactNodeViewHOC(Comp) {
         })
       );
 
-      this.setState(({ pmDoms }) => ({ pmDoms: [...pmDoms, dom] }));
+      this.setState(({ pmDoms }) => ({
+        pmDoms: [...pmDoms, [this.counter, dom]]
+      }));
 
       return nodeViewInstance;
     }
 
     onNodeViewDestroy(dom) {
+      console.log('destroy');
       this.setState(({ pmDoms }) => ({
-        pmDoms: pmDoms.filter(r => r !== dom)
+        pmDoms: pmDoms.filter(r => r[1] !== dom)
       }));
     }
 
     render() {
-      return (
-        <>
-          {this.state.pmDoms.map((pmDom, i) =>
-            createPortal(this.componentMap.get(pmDom), pmDom)
-          )}
-        </>
-      );
+      console.log('render');
+      return this.state.pmDoms.map(([uid, pmDom]) => (
+        <React.Fragment key={uid}>
+          {createPortal(this.componentMap.get(pmDom), pmDom)}
+        </React.Fragment>
+      ));
     }
   }
 
@@ -110,7 +116,7 @@ export class ReactNodeView extends React.PureComponent {
       ['setSelection', 'nodeViewSetSelection'],
       ['stopEvent', 'nodeViewStopEvent'],
       ['ignoreMutation', 'nodeViewIgnoreMutation']
-    ].filter(m => !!this[m[1]]);
+    ].filter(m => !!this[m[1]]); // check if class has implemented these
 
     for (const [pmMethod, method] of pmMethodsMapping) {
       nodeViewInstance[pmMethod] = this[method].bind(this);

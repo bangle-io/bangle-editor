@@ -4,8 +4,7 @@ import { EMOJI_NODE_NAME, emojiAttrTypes, validEmojis } from './constants';
 import { nodeHelpers } from 'bangle-utils';
 import './emoji.css';
 
-export { insertSchema } from './emoji-schema';
-export { getNodeView } from './emoji-view';
+export { default as Emoji } from './Emoji';
 
 export function insertMenuItem(schema) {
   return menu => {

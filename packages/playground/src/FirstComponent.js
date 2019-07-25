@@ -64,11 +64,11 @@ export class ProseMirrorView {
         // intercept the transaction cycle
         window.tr = tr;
         const editorState = this.view.state.apply(tr);
-        if (editorState) {
-          console.groupCollapsed('state');
-          console.log(JSON.stringify(editorState.doc, null, 2));
-          console.groupEnd('state');
-        }
+        // if (editorState) {
+        //   console.groupCollapsed('state');
+        //   console.log(JSON.stringify(editorState.doc, null, 2));
+        //   console.groupEnd('state');
+        // }
         this.view.updateState(editorState);
       }
     });
@@ -85,9 +85,7 @@ export class ProseMirrorView {
 
 export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
-  nodeViews = {
-    ...emoji.getNodeView()
-  };
+  nodeViews = {};
   schema = baseSchema;
   componentDidMount() {
     const node = this.myRef.current;
@@ -116,6 +114,10 @@ export class ProsemirrorComp extends React.Component {
       <>
         <div ref={this.myRef} className="ProsemirrorComp" />
         <dinos.DinoComponent
+          addNodeView={this.addNodeView}
+          addSchema={this.addSchema}
+        />
+        <emoji.Emoji
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
         />
