@@ -1,4 +1,5 @@
 import * as nodeHelpers from './node-helpers';
 import * as logging from './logging';
-import { schemaCompose } from './schema';
-export { nodeHelpers, logging, schemaCompose };
+import { reactNodeViewHOC, ReactNodeView } from './react-node-view';
+
+export { nodeHelpers, logging, reactNodeViewHOC, ReactNodeView };
