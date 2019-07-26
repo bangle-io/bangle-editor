@@ -71,8 +71,8 @@ export function reactNodeViewHOC(Comp) {
     }
 
     render() {
-      console.log('render');
       return Array.from(this.pmDoms).map(pmDom => (
+        // I have verified adding a stable key does improve performance by reducing rerenders
         <React.Fragment key={this.counterMap.get(pmDom)}>
           {createPortal(this.componentMap.get(pmDom), pmDom)}
         </React.Fragment>

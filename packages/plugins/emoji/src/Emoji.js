@@ -2,7 +2,6 @@ import React from 'react';
 import {
   emojiLookup,
   emojiAttrTypes,
-  EMOJI_WRAPPER_ELEMENT,
   EMOJI_NODE_NAME,
   emojiAttrDefaults
 } from './constants';
@@ -32,11 +31,10 @@ class Emoji extends ReactNodeView {
   render() {
     const { selected } = this.state;
     const attrs = nodeHelpers.getAttrsFromNode(
-      // TODO high perfomance cost of getAttrsFromNode in render
+      // TODO high performance cost of getAttrsFromNode in render
       emojiAttrTypes,
       this.nodeView.node
     );
-
     const type = attrs['data-type'];
 
     return (
@@ -62,7 +60,7 @@ Emoji.Schema = {
     //      when you like copy or drag
     toDOM: node => {
       return [
-        EMOJI_WRAPPER_ELEMENT,
+        'span',
         nodeHelpers.attributesForToDom(emojiAttrTypes)(node)
       ];
     },
@@ -71,7 +69,7 @@ Emoji.Schema = {
     //      Also, it only takes attributes defined in spec.attrs
     parseDOM: [
       {
-        tag: EMOJI_WRAPPER_ELEMENT,
+        tag: 'span', // TODO: it might be a good idea to restrict the tag with one UID from attributes like span[data-my-uid] for perf.
         getAttrs: nodeHelpers.attributesForParseDom(emojiAttrTypes)
       }
     ]

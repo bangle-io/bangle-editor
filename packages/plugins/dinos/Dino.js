@@ -52,7 +52,6 @@ class Dino extends ReactNodeView {
     );
 
     const type = attrs['data-type'];
-
     return React.createElement('img', {
       src: DINO_IMAGES[type],
       alt: type,
