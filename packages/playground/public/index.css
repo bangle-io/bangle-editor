@@ -67,7 +67,7 @@ code {
 }
 
 .ProseMirror-selectednode {
-  outline: 1px solid #fcff889c;
+  outline: 2px solid #d63648bd;
 }
 
 .bangle-editor {

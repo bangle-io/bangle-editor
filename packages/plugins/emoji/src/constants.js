@@ -3,7 +3,6 @@ import emojiList from 'emojis-list';
 import emojisKeywords from 'emojis-keywords';
 
 export const EMOJI_NODE_NAME = 'emoji';
-export const EMOJI_WRAPPER_ELEMENT = 'span';
 
 export const emojiLookup = {
   happy: '😏',
