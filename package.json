@@ -2,6 +2,8 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
     "babel-eslint": "10.0.1",
     "eslint": "5.x",
     "eslint-config-react-app": "^4.0.1",
