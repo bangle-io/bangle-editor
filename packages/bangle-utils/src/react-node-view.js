@@ -20,9 +20,7 @@ export function reactNodeViewHOC(Comp) {
 
       this.debouncedForceUpdate = debounce(this.forceUpdate.bind(this), 30);
 
-      this.componentMap = new WeakMap();
-      this.counterMap = new WeakMap();
-      this.pmDoms = new Set();
+      this.domElementMap = new Map();
 
       this.initializeNodeView = this.initializeNodeView.bind(this); // As an optimization I can throttle and queue the results
       this.onNodeViewDestroy = this.onNodeViewDestroy.bind(this); // As an optimization I can throttle and queue the results, right now the view is destroed for everything in the row
@@ -30,53 +28,52 @@ export function reactNodeViewHOC(Comp) {
       props.addNodeView({
         [Comp.Schema.type]: this.initializeNodeView
       });
-
       props.addSchema(Comp.Schema);
     }
 
+    // Returns the node object needed by https://prosemirror.net/docs/ref/#view.EditorProps.nodeViews
     initializeNodeView(node, view, getPos, decorations) {
       const nodeViewInstance = {};
 
-      const dom = node.isInline
-        ? document.createElement('span')
-        : document.createElement('div');
+      const dom = document.createElement(node.isInline ? 'span' : 'div');
 
       nodeViewInstance.dom = dom;
 
       nodeViewInstance.destroy = () => {
         this.onNodeViewDestroy(dom);
       };
-      this.counterMap.set(dom, this.counter++);
-      this.componentMap.set(
-        dom,
-        React.cloneElement(<Comp />, {
-          nodeViewProps: {
-            node,
-            view,
-            getPos,
-            decorations,
-            nodeViewInstance
-          }
-        })
-      );
 
-      this.pmDoms.add(dom);
+      this.domElementMap.set(dom, {
+        key: this.counter++,
+        nodeViewProps: {
+          node,
+          view,
+          getPos,
+          decorations,
+          nodeViewInstance
+        }
+      });
+
       this.debouncedForceUpdate();
 
       return nodeViewInstance;
     }
 
     onNodeViewDestroy(dom) {
-      this.pmDoms.delete(dom);
+      this.domElementMap.delete(dom);
     }
 
     render() {
-      return Array.from(this.pmDoms).map(pmDom => (
-        // I have verified adding a stable key does improve performance by reducing rerenders
-        <React.Fragment key={this.counterMap.get(pmDom)}>
-          {createPortal(this.componentMap.get(pmDom), pmDom)}
-        </React.Fragment>
-      ));
+      const { addNodeView, addSchema, ...passThroughProps } = this.props;
+      // TODO: one optimization I can do is to preserve the react work if the props are exactly the same
+      //  the only difference is dom element changed
+      return Array.from(this.domElementMap).map(([pmDom, value]) =>
+        createPortal(
+          <Comp nodeViewProps={value.nodeViewProps} {...passThroughProps} />,
+          pmDom,
+          value.key // I have verified adding a stable key does improve performance by reducing re-renders
+        )
+      );
     }
   }
 
