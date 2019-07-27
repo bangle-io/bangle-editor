@@ -2,9 +2,15 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.15",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.5",
     "babel-eslint": "10.0.1",
+    "babel-jest": "^24.8.0",
+    "babel-preset-react-app": "^9.0.0",
     "eslint": "5.x",
     "eslint-config-react-app": "^4.0.1",
     "eslint-plugin-flowtype": "2.x",
@@ -12,12 +18,19 @@
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "1.5.0",
-    "lerna": "^3.16.1"
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "24.7.1",
+    "lerna": "^3.16.1",
+    "react-test-renderer": "^16.8.6",
+    "typescript": "^3.5.3"
   },
   "workspaces": [
     "packages/plugins/*",
     "packages/playground",
     "packages/bangle-utils",
     "packages/prosemirror-setup"
-  ]
+  ],
+  "scripts": {
+    "test": "jest"
+  }
 }
