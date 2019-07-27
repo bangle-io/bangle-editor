@@ -31,6 +31,11 @@ export function reactNodeViewHOC(Comp) {
       props.addSchema(Comp.Schema);
     }
 
+    // TODO: need to think more about unmount and clearing up
+    componentWillUnmount() {
+      this.debouncedForceUpdate.clear();
+    }
+
     // Returns the node object needed by https://prosemirror.net/docs/ref/#view.EditorProps.nodeViews
     initializeNodeView(node, view, getPos, decorations) {
       const nodeViewInstance = {};

@@ -31,6 +31,7 @@
 		"cSpell.words": [
 			"dinos",
 			"prosemirror"
-		]
+		],
+		"editor.formatOnSave": true
 	}
 }
