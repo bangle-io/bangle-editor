@@ -52,16 +52,18 @@ class Dino extends ReactNodeView {
     );
 
     const type = attrs['data-type'];
-    return React.createElement('img', {
-      src: DINO_IMAGES[type],
-      alt: type,
-      className: classnames({
-        mydino: true,
-        plugins_dino: true,
-        'ProseMirror-selectednode': selected,
-        blink: attrs['data-blinks'] === 'yes'
-      })
-    });
+    return (
+      <img
+        src={DINO_IMAGES[type]}
+        alt={type}
+        className={classnames({
+          mydino: true,
+          plugins_dino: true,
+          'ProseMirror-selectednode': selected,
+          blink: attrs['data-blinks'] === 'yes'
+        })}
+      />
+    );
   }
 }
 
