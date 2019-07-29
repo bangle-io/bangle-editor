@@ -7,6 +7,7 @@
     "dinos": "*",
     "emoji": "*",
     "eventemitter3": "^4.0.0",
+    "inline-command-palette": "*",
     "prosemirror-commands": "^1.0.8",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.0.4",

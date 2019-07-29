@@ -194,6 +194,26 @@ export const marks = {
     toDOM() {
       return codeDOM;
     }
+  },
+
+  typeAheadQuery: {
+    excludes: `searchQuery`,
+    inclusive: true,
+    group: 'searchQuery',
+    parseDOM: [{ tag: 'span[data-type-ahead-query]' }],
+    toDOM(node) {
+      return [
+        'span',
+        {
+          'data-type-ahead-query': 'true',
+          'data-trigger': node.attrs.trigger,
+          style: `color: #0052CC`
+        }
+      ];
+    },
+    attrs: {
+      trigger: { default: '' }
+    }
   }
 };
 
