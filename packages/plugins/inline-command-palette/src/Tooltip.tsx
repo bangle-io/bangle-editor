@@ -25,6 +25,7 @@ export default class Tooltip extends React.PureComponent<{
 
   constructor(props) {
     super(props);
+    window.document.body.appendChild(this.tooltip);
     // props.addPlugins([this._setupPlugin()]);
   }
 

@@ -72,6 +72,7 @@ export class ProseMirrorView {
         // intercept the transaction cycle
         window.tr = tr;
         const editorState = this.view.state.apply(tr);
+        window.view = this.view;
         // if (editorState) {
         //   console.groupCollapsed('state');
         //   console.log(JSON.stringify(editorState.doc, null, 2));
@@ -107,7 +108,8 @@ export class ProsemirrorComp extends React.Component {
           schema: this.schema
         });
       }
-      prev.push(plugin);
+
+      prev.push(...(Array.isArray(plugin) ? plugin : [plugin]));
       return prev;
     }, []);
 
@@ -133,11 +135,7 @@ export class ProsemirrorComp extends React.Component {
   };
 
   addPlugins = plugins => {
-    if (!Array.isArray(plugins)) {
-      throw new Error('Array only');
-    }
-
-    this.plugins.push(...plugins);
+    this.plugins.push(...(Array.isArray(plugins) ? plugins : [plugins]));
   };
 
   render() {
