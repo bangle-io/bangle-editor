@@ -14,6 +14,12 @@
 		}
 	],
 	"settings": {
+		"cSpell.words": [
+			"dinos",
+			"prosemirror"
+		],
+		"editor.formatOnSave": true,
+		"peacock.color": "#bd0986",
 		"workbench.colorCustomizations": {
 			"activityBar.background": "#ee0ba8",
 			"activityBar.foreground": "#e7e7e7",
@@ -27,11 +33,6 @@
 			"statusBar.background": "#bd0986",
 			"statusBarItem.hoverBackground": "#ee0ba8",
 			"statusBar.foreground": "#e7e7e7"
-		},
-		"cSpell.words": [
-			"dinos",
-			"prosemirror"
-		],
-		"editor.formatOnSave": true
+		}
 	}
 }
