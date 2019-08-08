@@ -1,23 +1,17 @@
 import { EditorState, PluginKey } from 'prosemirror-state';
-import { InputRule } from 'prosemirror-inputrules';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { Schema, Mark as PMMark } from 'prosemirror-model';
-import { inputRules } from 'prosemirror-inputrules';
 import { Plugin } from 'prosemirror-state';
 
-export const typeAheadPluginKey = new PluginKey('typeAheadPlugin');
-
-import {
-  InputRuleHandler,
-  TypeAheadPluginState,
-  TypeAheadHandler
-} from './types';
+import { InputRuleHandler, TypeAheadHandler } from './types';
+import { typeaheadStatePlugin } from './typeahead-state-plugin';
 
 export function inputRulePlugin(
   schema: Schema,
-  typeAheads: TypeAheadHandler[]
+  typeAheads: TypeAheadHandler[],
 ): Plugin | undefined {
   const triggersRegex = typeAheads
-    .map(t => t.customRegex || t.trigger)
+    .map((t) => t.customRegex || t.trigger)
     .join('|');
 
   if (!triggersRegex.length) {
@@ -25,13 +19,13 @@ export function inputRulePlugin(
   }
 
   const regex = new RegExp(
-    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${triggersRegex})$`
+    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${triggersRegex})$`,
   );
 
-  const typeAheadInputRule = createInputRule(regex, (state, match) => {
-    const typeAheadState = (typeAheadPluginKey.getState(
-      state
-    ) as TypeAheadPluginState) || { isAllowed: true }; // TODO look into this plugin
+  const typeAheadInputRule = createInputRule(regex, (editorState, match) => {
+    const typeAheadState = typeaheadStatePlugin.getState(editorState) || {
+      isAllowed: true,
+    };
 
     /**
      * Why using match 2 and 3?  Regex:
@@ -45,12 +39,12 @@ export function inputRulePlugin(
     }
 
     const mark = schema.mark('typeAheadQuery', { trigger });
-    const { tr, selection } = state;
+    const { tr, selection } = editorState;
     const marks = selection.$from.marks();
 
     return tr.replaceSelectionWith(
       schema.text(trigger, [mark, ...marks]),
-      false
+      false,
     );
   });
 
@@ -70,17 +64,17 @@ export type InputRuleWithHandler = InputRule & { handler: InputRuleHandler };
 export function createInputRule(
   match: RegExp,
   handler: InputRuleHandler,
-  isBlockNodeRule: boolean = false
+  isBlockNodeRule: boolean = false,
 ): InputRuleWithHandler {
   return defaultInputRuleHandler(
     new InputRule(match, handler) as InputRuleWithHandler,
-    isBlockNodeRule
+    isBlockNodeRule,
   );
 }
 
 export function defaultInputRuleHandler(
   inputRule: InputRuleWithHandler,
-  isBlockNodeRule: boolean = false
+  isBlockNodeRule: boolean = false,
 ): InputRuleWithHandler {
   const originalHandler = (inputRule as any).handler;
   inputRule.handler = (state: EditorState, match, start, end) => {
@@ -99,18 +93,18 @@ export function defaultInputRuleHandler(
 const hasUnsupportedMarkForBlockInputRule = (
   state: EditorState,
   start: number,
-  end: number
+  end: number,
 ) => {
   const {
     doc,
-    schema: { marks }
+    schema: { marks },
   } = state;
   let unsupportedMarksPresent = false;
   const isUnsupportedMark = (node: PMMark) =>
     node.type === marks.code ||
     node.type === marks.link ||
     node.type === marks.typeAheadQuery;
-  doc.nodesBetween(start, end, node => {
+  doc.nodesBetween(start, end, (node) => {
     unsupportedMarksPresent =
       unsupportedMarksPresent ||
       node.marks.filter(isUnsupportedMark).length > 0;
@@ -121,16 +115,16 @@ const hasUnsupportedMarkForBlockInputRule = (
 const hasUnsupportedMarkForInputRule = (
   state: EditorState,
   start: number,
-  end: number
+  end: number,
 ) => {
   const {
     doc,
-    schema: { marks }
+    schema: { marks },
   } = state;
   let unsupportedMarksPresent = false;
   const isCodemark = (node: PMMark) =>
     node.type === marks.code || node.type === marks.typeAheadQuery;
-  doc.nodesBetween(start, end, node => {
+  doc.nodesBetween(start, end, (node) => {
     unsupportedMarksPresent =
       unsupportedMarksPresent || node.marks.filter(isCodemark).length > 0;
   });

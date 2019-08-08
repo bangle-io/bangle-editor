@@ -16,7 +16,8 @@
 	"settings": {
 		"cSpell.words": [
 			"dinos",
-			"prosemirror"
+			"prosemirror",
+			"typeahead"
 		],
 		"editor.formatOnSave": true,
 		"peacock.color": "#bd0986",

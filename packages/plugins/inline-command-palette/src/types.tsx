@@ -1,30 +1,14 @@
 import React from 'react';
-import { EditorState, Transaction, PluginKey } from 'prosemirror-state';
+import { EditorState, Transaction, PluginKey, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { Schema } from 'prosemirror-model';
 
 export type CommandDispatch = (tr: Transaction) => void;
 export type Command = (
   state: EditorState,
   dispatch?: CommandDispatch,
-  view?: EditorView
+  view?: EditorView,
 ) => boolean;
-
-export type TypeAheadPluginState = {
-  isAllowed: boolean;
-  active: boolean;
-  prevActiveState: boolean;
-  query: string | null;
-  trigger: string | null;
-  typeAheadHandler: TypeAheadHandler | null;
-  items: Array<TypeAheadItem>;
-  itemsLoader: TypeAheadItemsLoader;
-  currentIndex: number;
-  queryMarkPos: number | null;
-  queryStarted: number;
-  upKeyCount: number;
-  downKeyCount: number;
-  spotlight?: JSX.Element | null;
-};
 
 type TypeAheadItemsLoader = null | {
   promise: Promise<Array<TypeAheadItem>>;
@@ -33,7 +17,7 @@ type TypeAheadItemsLoader = null | {
 
 type TypeAheadInsert = (
   node?: Node | Object | string,
-  opts?: { selectInlineNode?: boolean }
+  opts?: { selectInlineNode?: boolean },
 ) => Transaction;
 
 type TypeAheadItemRenderProps = {
@@ -48,7 +32,7 @@ type TypeAheadSelectItem = (
   insert: TypeAheadInsert,
   meta: {
     mode: SelectItemMode;
-  }
+  },
 ) => Transaction | false;
 
 export type SelectItemMode =
@@ -69,7 +53,7 @@ export type TypeAheadHandler = {
       queryChanged: boolean;
     },
     tr: Transaction,
-    dipatch: Dispatch
+    dipatch: Dispatch,
   ) => Array<TypeAheadItem> | Promise<Array<TypeAheadItem>>;
   selectItem?: TypeAheadSelectItem;
   dismiss?: (state: EditorState) => void;
@@ -84,7 +68,7 @@ export type TypeAheadItem = {
   keyshortcut?: string;
   icon?: () => React.ReactElement<any>;
   render?: (
-    props: TypeAheadItemRenderProps
+    props: TypeAheadItemRenderProps,
   ) => React.ReactElement<TypeAheadItemRenderProps> | null;
   [key: string]: any;
 };
@@ -93,5 +77,5 @@ export type InputRuleHandler = (
   state: EditorState,
   match: Array<string>,
   start: number,
-  end: number
+  end: number,
 ) => Transaction | null;

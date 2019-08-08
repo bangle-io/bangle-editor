@@ -1,18 +1,17 @@
-import { Plugin, EditorState, PluginKey } from 'prosemirror-state';
+import { Plugin, EditorState, PluginKey, PluginSpec } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 
 type Type<PState, S extends Schema = any> = {
   plugin: Plugin<PState, S>;
-  pluginKey: PluginKey<PState, S>;
-  onStateInit: (a: PState) => void;
-  onStateApply: (o: { prev: PState; cur: PState }) => void;
+  onStateChange: (o: {
+    prev: PState | undefined;
+    cur: PState | undefined;
+  }) => void;
 };
 
 export function watchStateChange<PState, S extends Schema = any>({
   plugin,
-  pluginKey,
-  onStateInit,
-  onStateApply
+  onStateChange,
 }: Type<PState, S>): [Plugin<PState, S>, Plugin] {
   // The ordering is important or else we would get incorrect data
   return [
@@ -20,25 +19,22 @@ export function watchStateChange<PState, S extends Schema = any>({
     new Plugin({
       state: {
         init(_, instance) {
-          onStateInit && onStateInit(pluginKey.getState(instance));
+          onStateChange({ prev: undefined, cur: plugin.getState(instance) });
           return;
         },
         apply(tr, value, oldState: EditorState, newState: EditorState) {
-          if (!onStateApply) {
-            return;
-          }
-          const prev = pluginKey.getState(oldState);
-          const cur = pluginKey.getState(newState);
+          const prev = plugin.getState(oldState);
+          const cur = plugin.getState(newState);
 
           if (prev !== cur) {
-            onStateApply({
-              prev: pluginKey.getState(oldState),
-              cur: pluginKey.getState(newState)
+            onStateChange({
+              prev: plugin.getState(oldState),
+              cur: plugin.getState(newState),
             });
           }
           return;
-        }
-      }
-    })
+        },
+      },
+    }),
   ];
 }
