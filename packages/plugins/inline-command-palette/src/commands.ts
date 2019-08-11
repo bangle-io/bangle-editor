@@ -9,7 +9,7 @@ export type Command = (
   view?: EditorView,
 ) => boolean;
 
-export const dismissCommand = (): Command => (state, dispatch) => {
+export const removeTypeAheadMark = (): Command => (state, dispatch) => {
   const queryMark = findTypeAheadQuery(state);
 
   if (queryMark === null) {
@@ -25,7 +25,11 @@ export const dismissCommand = (): Command => (state, dispatch) => {
 
   if (dispatch) {
     dispatch(
-      state.tr.removeMark(start, end, markType).removeStoredMark(markType),
+      state.tr
+        .removeMark(start, end, markType)
+        // stored marks are marks which will be carried forward to whatever the user types next, like if current mark
+        // is bold, new input continues being bold
+        .removeStoredMark(markType),
     );
   }
   return true;

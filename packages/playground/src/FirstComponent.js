@@ -22,7 +22,7 @@ import * as emoji from 'emoji';
 import InlineCommandPalette from 'inline-command-palette';
 
 export class ProseMirrorView {
-  constructor(target, { nodeViews, schema, plugins }) {
+  constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
     const builtMenu = buildMenuItems(
       schema,
       compose(
@@ -70,15 +70,10 @@ export class ProseMirrorView {
       }),
       dispatchTransaction: (tr) => {
         // intercept the transaction cycle
-        window.tr = tr;
-        const editorState = this.view.state.apply(tr);
-        window.view = this.view;
-        // if (editorState) {
-        //   console.groupCollapsed('state');
-        //   console.log(JSON.stringify(editorState.doc, null, 2));
-        //   console.groupEnd('state');
-        // }
-        this.view.updateState(editorState);
+        const prevEditorState = this.view.state;
+        const newEditorState = this.view.state.apply(tr);
+        this.view.updateState(newEditorState);
+        onStateUpdate(tr, this.view, prevEditorState, newEditorState);
       },
     });
     window.view = this.view;
@@ -97,6 +92,7 @@ export class ProsemirrorComp extends React.Component {
   nodeViews = {};
   schema = baseSchema;
   plugins = [];
+  editorStateUpdaterHandlers = [];
   componentDidMount() {
     const node = this.myRef.current;
 
@@ -118,6 +114,7 @@ export class ProsemirrorComp extends React.Component {
         nodeViews: this.nodeViews,
         schema: this.schema,
         plugins: plugins,
+        onStateUpdate: this.onStateUpdate,
       });
       view.focus();
     }
@@ -141,6 +138,14 @@ export class ProsemirrorComp extends React.Component {
     this.plugins.push(...(Array.isArray(plugins) ? plugins : [plugins]));
   };
 
+  onStateUpdate = (...args) => {
+    this.editorStateUpdaterHandlers.forEach((handler) => handler(...args));
+  };
+
+  registerEditorStateHandlers = (handler) => {
+    this.editorStateUpdaterHandlers.push(handler);
+  };
+
   render() {
     return (
       <>
@@ -153,8 +158,13 @@ export class ProsemirrorComp extends React.Component {
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
         />
-        <InlineCommandPalette addPlugins={this.addPlugins} />
+        <InlineCommandPalette
+          addPlugins={this.addPlugins}
+          onEditorStateUpdate={this.registerEditorStateHandlers}
+        />
       </>
     );
   }
 }
+
+// export const EditorStateContext = React.createContext(null);

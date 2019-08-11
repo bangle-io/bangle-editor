@@ -7,10 +7,7 @@ import debounce from 'debounce';
 type Position = { left: number; right: number; top: number; bottom: number };
 export default class Tooltip extends React.PureComponent<{
   addPlugins: (a: Array<any>) => void;
-  coords?: {
-    start: Position;
-    end: Position;
-  };
+  coords?: Position;
   text?: string;
 }> {
   tooltip = window.document.createElement('div');
@@ -20,13 +17,12 @@ export default class Tooltip extends React.PureComponent<{
     show: false,
     left: 0,
     bottom: 0,
-    textContent: ''
+    textContent: '',
   };
 
   constructor(props) {
     super(props);
     window.document.body.appendChild(this.tooltip);
-    // props.addPlugins([this._setupPlugin()]);
   }
 
   componentDidMount() {
@@ -41,7 +37,7 @@ export default class Tooltip extends React.PureComponent<{
   _hideTooltip = () => {
     this.updateTooltipPosition.clear();
     this.setState({
-      show: false
+      show: false,
     });
   };
 
@@ -78,23 +74,22 @@ export default class Tooltip extends React.PureComponent<{
       show: true,
       left: left - box.left,
       bottom: box.bottom - start.top,
-      textContent: to - from
+      textContent: to - from,
     });
   };
 
-  _computeBox({ start, end }) {
+  _computeBox(coords) {
     const box = this.tooltip.offsetParent!.getBoundingClientRect();
-    const left = Math.max((start.left + end.left) / 2, start.left + 3);
+    const left = Math.max((coords.left + coords.left) / 2, coords.left + 3);
     return {
       left: left - box.left,
-      bottom: box.bottom - start.top
+      bottom: box.bottom - coords.top,
     };
   }
   render() {
     if (!this.props.coords) {
       return ReactDOM.createPortal(null, this.tooltip);
     }
-
     const { left, bottom } = this._computeBox(this.props.coords);
 
     return ReactDOM.createPortal(
@@ -102,12 +97,12 @@ export default class Tooltip extends React.PureComponent<{
         className="tooltip"
         style={{
           left,
-          bottom
+          bottom,
         }}
       >
-        {this.props.text}
+        {this.props.text} {this.props.index}
       </div>,
-      this.tooltip
+      this.tooltip,
     );
   }
 }

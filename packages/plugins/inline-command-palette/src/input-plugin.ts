@@ -19,7 +19,7 @@ export default function inputPlugin(schema: Schema, trigger: string): Plugin {
 
     const mark = schema.mark('typeAheadQuery', { trigger });
     const { tr, selection } = editorState;
-    const marks = selection.$from.marks(); // selection would tell the cursomer position, in this case from== to as no selection
+    const marks = selection.$from.marks(); // selection would tell the cursor position, in this case from== to as no selection
     return tr.replaceSelectionWith(
       schema.text(trigger, [mark, ...marks]),
       false,
