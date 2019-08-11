@@ -1,9 +1,10 @@
 import React from 'react';
 import Tooltip from './Tooltip';
-import inputRulePlugin from './type-ahead';
+import typeaheadInputRulePlugin from './input-plugin';
 import { EditorView } from 'prosemirror-view';
 import { watchStateChange } from './helpers/watch-plugin-state-change';
-import { typeaheadStatePlugin } from './typeahead-state-plugin';
+import { StatePlugin2 } from './state-plugin';
+import keymapPlugin from './keymaps';
 
 export default class Main extends React.PureComponent<{
   addPlugins: (a: Array<any>) => void;
@@ -17,9 +18,10 @@ export default class Main extends React.PureComponent<{
   constructor(props) {
     super(props);
     this.props.addPlugins([
-      ({ schema }) => inputRulePlugin(schema, [{ trigger: '/' }]),
+      keymapPlugin(),
+      ({ schema }) => typeaheadInputRulePlugin(schema, '@'),
       watchStateChange({
-        plugin: typeaheadStatePlugin.plugin,
+        plugin: StatePlugin2(),
         onStateChange: ({ cur, prev }) => {
           const view = (window as any).view;
           if (!cur || !prev) {

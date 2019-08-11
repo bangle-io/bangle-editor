@@ -27,8 +27,8 @@ export class ProseMirrorView {
       schema,
       compose(
         dinos.insertMenuItem(schema),
-        emoji.insertMenuItem(schema)
-      )
+        emoji.insertMenuItem(schema),
+      ),
     );
     var template = document.createElement('template');
     template.innerHTML = `<div id=content style="display: none">
@@ -49,6 +49,7 @@ export class ProseMirrorView {
         doc: DOMParser.fromSchema(schema).parse(template.content.firstChild),
         plugins: [
           buildInputRules(schema),
+          ...plugins,
           keymap(buildKeymap(schema)),
           keymap(baseKeymap),
           dropCursor(),
@@ -56,19 +57,18 @@ export class ProseMirrorView {
           menuBar({
             content: builtMenu.fullMenu,
             props: {
-              class: 'kushan-rocks'
-            }
+              class: 'kushan-rocks',
+            },
           }),
           history(),
           new Plugin({
             props: {
-              attributes: { class: 'bangle-editor' }
-            }
+              attributes: { class: 'bangle-editor' },
+            },
           }),
-          ...plugins
-        ]
+        ],
       }),
-      dispatchTransaction: tr => {
+      dispatchTransaction: (tr) => {
         // intercept the transaction cycle
         window.tr = tr;
         const editorState = this.view.state.apply(tr);
@@ -79,7 +79,7 @@ export class ProseMirrorView {
         //   console.groupEnd('state');
         // }
         this.view.updateState(editorState);
-      }
+      },
     });
     window.view = this.view;
     applyDevTools(this.view);
@@ -105,7 +105,7 @@ export class ProsemirrorComp extends React.Component {
 
       if (typeof cur === 'function') {
         plugin = cur({
-          schema: this.schema
+          schema: this.schema,
         });
       }
 
@@ -117,24 +117,27 @@ export class ProsemirrorComp extends React.Component {
       const view = new ProseMirrorView(node, {
         nodeViews: this.nodeViews,
         schema: this.schema,
-        plugins: plugins
+        plugins: plugins,
       });
       view.focus();
     }
   }
 
-  addNodeView = nodeViewObject => {
+  addNodeView = (nodeViewObject) => {
     this.nodeViews = Object.assign(this.nodeViews, nodeViewObject);
   };
 
-  addSchema = nodeSchema => {
+  addSchema = (nodeSchema) => {
     this.schema = new Schema({
       ...this.schema.spec,
-      nodes: this.schema.spec.nodes.addToEnd(nodeSchema.type, nodeSchema.schema)
+      nodes: this.schema.spec.nodes.addToEnd(
+        nodeSchema.type,
+        nodeSchema.schema,
+      ),
     });
   };
 
-  addPlugins = plugins => {
+  addPlugins = (plugins) => {
     this.plugins.push(...(Array.isArray(plugins) ? plugins : [plugins]));
   };
 
