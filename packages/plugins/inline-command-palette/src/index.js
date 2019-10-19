@@ -1,19 +1,12 @@
-import React from 'react';
 import Tooltip from './Tooltip';
 import typeaheadInputRulePlugin from './input-plugin';
 import { WithPlugin as WithPlugins } from './helpers/watch-plugin-state-change';
-import {
-  StatePlugin2,
-  statePlugin2GetState,
-  StatePlugin2Key,
-} from './state-plugin';
+import { StatePlugin2, statePlugin2GetState } from './state-plugin';
 import keymapPlugin from './keymaps';
 
-type Props = {};
+const initialState = {};
 
-const initialState: Props = {};
-
-export default WithPlugins<Props>(
+export default WithPlugins(
   [
     keymapPlugin(),
     ({ schema }) => typeaheadInputRulePlugin(schema, '@'),
@@ -33,8 +26,8 @@ export default WithPlugins<Props>(
       view.coordsAtPos(statePluginData.queryMarkPos);
 
     return {
-      active: statePluginData.active,
       coords,
+      active: statePluginData.active,
       text: statePluginData.query,
       index: statePluginData.index,
     };

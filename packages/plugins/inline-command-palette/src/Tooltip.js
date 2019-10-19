@@ -1,27 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import debounce from 'debounce';
 
-type Position = { left: number; right: number; top: number; bottom: number };
-export default class Tooltip extends React.PureComponent<{
-  addPlugins: (a: Array<any>) => void;
-  coords?: Position;
-  text?: string;
-}> {
-  tooltip = window.document.createElement('div');
-  updateTooltipPosition = debounce(this.setState.bind(this), 20);
-
-  state = {
-    show: false,
-    left: 0,
-    bottom: 0,
-    textContent: '',
-  };
-
+export default class Tooltip extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this._pmPluginUpdate = this._pmPluginUpdate.bind(this);
+    this._hideTooltip = this._hideTooltip.bind(this);
+    this.tooltip = window.document.createElement('div');
+    this.state = {
+      show: false,
+      left: 0,
+      bottom: 0,
+      textContent: '',
+    };
+
+    this.updateTooltipPosition = debounce(this.setState.bind(this), 20);
     window.document.body.appendChild(this.tooltip);
   }
 
@@ -34,14 +29,14 @@ export default class Tooltip extends React.PureComponent<{
     this.tooltip.remove();
   }
 
-  _hideTooltip = () => {
+  _hideTooltip() {
     this.updateTooltipPosition.clear();
     this.setState({
       show: false,
     });
-  };
+  }
 
-  _pmPluginUpdate = (view: EditorView, lastState?: EditorState) => {
+  _pmPluginUpdate(view, lastState) {
     const tooltip = this.tooltip;
     let state = view.state;
     // Don't do anything if the document/selection didn't change
@@ -66,7 +61,7 @@ export default class Tooltip extends React.PureComponent<{
     let start = view.coordsAtPos(from),
       end = view.coordsAtPos(to);
     // The box in which the tooltip is positioned, to use as base
-    let box = tooltip.offsetParent!.getBoundingClientRect();
+    let box = tooltip.offsetParent.getBoundingClientRect();
     // Find a center-ish x position from the selection endpoints (when
     // crossing lines, end may be more to the left)
     let left = Math.max((start.left + end.left) / 2, start.left + 3);
@@ -76,10 +71,10 @@ export default class Tooltip extends React.PureComponent<{
       bottom: box.bottom - start.top,
       textContent: to - from,
     });
-  };
+  }
 
   _computeBox(coords) {
-    const box = this.tooltip.offsetParent!.getBoundingClientRect();
+    const box = this.tooltip.offsetParent.getBoundingClientRect();
     const left = Math.max((coords.left + coords.left) / 2, coords.left + 3);
     return {
       left: left - box.left,

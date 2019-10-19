@@ -2,7 +2,7 @@
   "name": "inline-command-palette",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

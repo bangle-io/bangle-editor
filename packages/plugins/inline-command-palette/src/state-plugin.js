@@ -1,28 +1,9 @@
-import {
-  Plugin,
-  PluginKey,
-  EditorState,
-  TextSelection,
-  Transaction,
-} from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { MarkType, Node, Mark } from 'prosemirror-model';
-import { toggleMark } from 'prosemirror-commands';
-import { Command } from './types';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import { isQueryActive, findTypeAheadQuery } from './helpers/query';
 import { removeTypeAheadMark } from './commands';
 import { DOWN, UP } from './actions';
 
-type StatePluginState = {
-  active: boolean;
-  query: string | null;
-  queryMarkPos: number | null;
-  index: number;
-};
-
-export const StatePlugin2Key = new PluginKey<StatePluginState>(
-  'typeahead-state-plugin',
-);
+export const StatePlugin2Key = new PluginKey('typeahead-state-plugin');
 
 const initialState = {
   active: false,
@@ -31,20 +12,18 @@ const initialState = {
   index: 0,
 };
 
-export function statePlugin2GetState(
-  editorState: EditorState,
-): StatePluginState {
+export function statePlugin2GetState(editorState) {
   return StatePlugin2Key.getState(editorState);
 }
 
 export function StatePlugin2() {
-  return new Plugin<StatePluginState>({
+  return new Plugin({
     key: StatePlugin2Key,
     state: {
       init: () => initialState,
       apply(tr, pluginState, _oldState, newEditorState) {
         const meta = tr.getMeta(StatePlugin2Key) || {};
-        const { action, params } = meta;
+        const { action } = meta;
 
         switch (action) {
           case DOWN: {
@@ -79,10 +58,7 @@ export function StatePlugin2() {
   });
 }
 
-function defaultActionHandler(
-  editorState: EditorState,
-  pluginState: StatePluginState,
-): StatePluginState {
+function defaultActionHandler(editorState, pluginState) {
   const { typeAheadQuery } = editorState.schema.marks;
   const { doc, selection } = editorState;
   const { from, to } = selection;
@@ -98,6 +74,7 @@ function defaultActionHandler(
   const textContent = nodeBefore.textContent || '';
   const trigger = typeAheadMark.attrs.trigger;
   const query = textContent
+    // eslint-disable-next-line no-control-regex
     .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
     .replace(trigger, '');
 

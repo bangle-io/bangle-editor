@@ -19,7 +19,8 @@ import 'prosemirror-setup/style/style.css';
 import applyDevTools from 'prosemirror-dev-tools';
 import * as dinos from 'dinos';
 import * as emoji from 'emoji';
-import InlineCommandPalette from 'inline-command-palette';
+// import InlineCommandPalette from 'inline-command-palette';
+import CommandPalette from 'command-palette';
 
 export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
@@ -158,7 +159,7 @@ export class ProsemirrorComp extends React.Component {
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
         />
-        <InlineCommandPalette
+        <CommandPalette
           addPlugins={this.addPlugins}
           onEditorStateUpdate={this.registerEditorStateHandlers}
         />
@@ -166,5 +167,3 @@ export class ProsemirrorComp extends React.Component {
     );
   }
 }
-
-// export const EditorStateContext = React.createContext(null);

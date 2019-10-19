@@ -1,11 +1,10 @@
 import { keymap } from 'prosemirror-keymap';
-import { Plugin, EditorState } from 'prosemirror-state';
 
 import { removeTypeAheadMark } from './commands';
 import { StatePlugin2Key } from './state-plugin';
 import { DOWN, UP } from './actions';
 
-export function keymapPlugin(): Plugin {
+export function keymapPlugin() {
   return keymap({
     Enter: (state, dispatch) => {
       const pluginState = StatePlugin2Key.getState(state);
