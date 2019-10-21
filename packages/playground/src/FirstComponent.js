@@ -1,3 +1,6 @@
+import 'bangle-utils/src/setup-helpers/style.css';
+import 'bangle-utils/src/menu-plugin/menu.css';
+
 import React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
@@ -10,17 +13,18 @@ import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { DOMParser } from 'prosemirror-model';
 import { compose } from 'lodash/fp';
-import { buildInputRules } from 'prosemirror-setup/src/input-rules';
-import { buildMenuItems } from 'prosemirror-setup/src/menu';
-import { buildKeymap } from 'prosemirror-setup/src/keymap';
-import { schema as baseSchema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
-import 'prosemirror-setup/style/style.css';
 import applyDevTools from 'prosemirror-dev-tools';
 import * as dinos from 'dinos';
 import * as emoji from 'emoji';
-// import InlineCommandPalette from 'inline-command-palette';
 import CommandPalette from 'command-palette';
+
+// import InlineCommandPalette from 'inline-command-palette';
+import { menuPlugin } from 'bangle-utils';
+import { buildInputRules } from 'bangle-utils/src/setup-helpers/inputrules';
+import { buildMenuItems } from 'bangle-utils/src/setup-helpers/menu';
+import { buildKeymap } from 'bangle-utils/src/setup-helpers/keymap';
+import { schema as baseSchema } from 'bangle-utils/src/setup-helpers/schema';
 
 export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
@@ -35,11 +39,9 @@ export class ProseMirrorView {
     template.innerHTML = `<div id=content style="display: none">
       <h5>Too-minor header</h5>
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-      Why do we use it?
-      It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-      
-</p>      
+        Why do we use it?
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+      </p>      
     </div>
     `.trim();
 
@@ -61,6 +63,7 @@ export class ProseMirrorView {
               class: 'kushan-rocks',
             },
           }),
+          menuPlugin.menuPlugin({ schema }),
           history(),
           new Plugin({
             props: {

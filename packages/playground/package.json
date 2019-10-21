@@ -18,7 +18,6 @@
     "prosemirror-menu": "^1.0.5",
     "prosemirror-model": "^1.7.1",
     "prosemirror-schema-list": "^1.0.3",
-    "prosemirror-setup": "*",
     "prosemirror-state": "^1.2.3",
     "prosemirror-view": "^1.9.12",
     "react": "^16.8.6",

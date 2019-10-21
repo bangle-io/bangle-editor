@@ -10,7 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/fusspot": "^0.5.0",
     "debounce": "^1.2.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "prop-types": "^15.7.2",
+    "ramda": "^0.26.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
   }
 }
