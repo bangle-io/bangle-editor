@@ -1,3 +1,6 @@
+import 'bangle-utils/src/setup-helpers/style.css';
+import 'bangle-utils/src/menu-plugin/menu.css';
+
 import React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
@@ -10,28 +13,35 @@ import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { DOMParser } from 'prosemirror-model';
 import { compose } from 'lodash/fp';
-import { buildInputRules } from 'prosemirror-setup/src/input-rules';
-import { buildMenuItems } from 'prosemirror-setup/src/menu';
-import { buildKeymap } from 'prosemirror-setup/src/keymap';
-import { schema as baseSchema } from 'prosemirror-setup/src/schema';
 import { menuBar } from 'prosemirror-menu';
-import 'prosemirror-setup/style/style.css';
 import applyDevTools from 'prosemirror-dev-tools';
 import * as dinos from 'dinos';
 import * as emoji from 'emoji';
+import CommandPalette from 'command-palette';
+
+// import InlineCommandPalette from 'inline-command-palette';
+import { menuPlugin } from 'bangle-utils';
+import { buildInputRules } from 'bangle-utils/src/setup-helpers/inputrules';
+import { buildMenuItems } from 'bangle-utils/src/setup-helpers/menu';
+import { buildKeymap } from 'bangle-utils/src/setup-helpers/keymap';
+import { schema as baseSchema } from 'bangle-utils/src/setup-helpers/schema';
 
 export class ProseMirrorView {
-  constructor(target, { nodeViews, schema }) {
+  constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
     const builtMenu = buildMenuItems(
       schema,
       compose(
         dinos.insertMenuItem(schema),
-        emoji.insertMenuItem(schema)
-      )
+        emoji.insertMenuItem(schema),
+      ),
     );
     var template = document.createElement('template');
     template.innerHTML = `<div id=content style="display: none">
       <h5>Too-minor header</h5>
+      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Why do we use it?
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+      </p>      
     </div>
     `.trim();
 
@@ -42,6 +52,7 @@ export class ProseMirrorView {
         doc: DOMParser.fromSchema(schema).parse(template.content.firstChild),
         plugins: [
           buildInputRules(schema),
+          ...plugins,
           keymap(buildKeymap(schema)),
           keymap(baseKeymap),
           dropCursor(),
@@ -49,30 +60,27 @@ export class ProseMirrorView {
           menuBar({
             content: builtMenu.fullMenu,
             props: {
-              class: 'kushan-rocks'
-            }
+              class: 'kushan-rocks',
+            },
           }),
+          menuPlugin.menuPlugin({ schema }),
           history(),
           new Plugin({
             props: {
-              attributes: { class: 'bangle-editor' }
-            }
-          })
-        ]
+              attributes: { class: 'bangle-editor' },
+            },
+          }),
+        ],
       }),
-      dispatchTransaction: tr => {
+      dispatchTransaction: (tr) => {
         // intercept the transaction cycle
-        window.tr = tr;
-        const editorState = this.view.state.apply(tr);
-        // if (editorState) {
-        //   console.groupCollapsed('state');
-        //   console.log(JSON.stringify(editorState.doc, null, 2));
-        //   console.groupEnd('state');
-        // }
-        this.view.updateState(editorState);
-      }
+        const prevEditorState = this.view.state;
+        const newEditorState = this.view.state.apply(tr);
+        this.view.updateState(newEditorState);
+        onStateUpdate(tr, this.view, prevEditorState, newEditorState);
+      },
     });
-
+    window.view = this.view;
     applyDevTools(this.view);
   }
   focus() {
@@ -87,26 +95,59 @@ export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
   nodeViews = {};
   schema = baseSchema;
+  plugins = [];
+  editorStateUpdaterHandlers = [];
   componentDidMount() {
     const node = this.myRef.current;
+
+    const plugins = this.plugins.reduce((prev, cur) => {
+      let plugin = cur;
+
+      if (typeof cur === 'function') {
+        plugin = cur({
+          schema: this.schema,
+        });
+      }
+
+      prev.push(...(Array.isArray(plugin) ? plugin : [plugin]));
+      return prev;
+    }, []);
+
     if (node) {
       const view = new ProseMirrorView(node, {
         nodeViews: this.nodeViews,
-        schema: this.schema
+        schema: this.schema,
+        plugins: plugins,
+        onStateUpdate: this.onStateUpdate,
       });
       view.focus();
     }
   }
 
-  addNodeView = nodeViewObject => {
+  addNodeView = (nodeViewObject) => {
     this.nodeViews = Object.assign(this.nodeViews, nodeViewObject);
   };
 
-  addSchema = nodeSchema => {
+  addSchema = (nodeSchema) => {
     this.schema = new Schema({
       ...this.schema.spec,
-      nodes: this.schema.spec.nodes.addToEnd(nodeSchema.type, nodeSchema.schema)
+      nodes: this.schema.spec.nodes.addToEnd(
+        nodeSchema.type,
+        nodeSchema.schema,
+      ),
     });
+  };
+
+  addPlugins = (plugins) => {
+    this.plugins.push(...(Array.isArray(plugins) ? plugins : [plugins]));
+  };
+
+  onStateUpdate = (...args) => {
+    this.editorStateUpdaterHandlers.forEach((handler) => handler(...args));
+  };
+
+  registerEditorStateHandlers = (handler) => {
+    this.editorStateUpdaterHandlers.push(handler);
   };
 
   render() {
@@ -120,6 +161,10 @@ export class ProsemirrorComp extends React.Component {
         <emoji.Emoji
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
+        />
+        <CommandPalette
+          addPlugins={this.addPlugins}
+          onEditorStateUpdate={this.registerEditorStateHandlers}
         />
       </>
     );

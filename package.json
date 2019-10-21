@@ -32,5 +32,11 @@
   ],
   "scripts": {
     "test": "jest"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "quoteProps": "consistent",
+    "arrowParens": "always"
   }
 }

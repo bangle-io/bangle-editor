@@ -10,7 +10,7 @@ export {
   undoItem,
   redoItem,
   wrapItem,
-  blockTypeItem
+  blockTypeItem,
 } from './menu';
 export { menuBar } from './menubar';
 
@@ -27,3 +27,5 @@ export { menuBar } from './menubar';
 //   element and a function that can be used to update the element to
 //   a new state. The `update` function will return false if the
 //   update hid the entire element.
+
+console.log('heloo');

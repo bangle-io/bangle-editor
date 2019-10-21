@@ -7,8 +7,8 @@ import './dino.css';
 export { default as DinoComponent } from './Dino';
 
 export function insertMenuItem(schema) {
-  return menu => {
-    dinoNames.forEach(name =>
+  return (menu) => {
+    dinoNames.forEach((name) =>
       menu.insertMenu.content.push(
         new MenuItem({
           title: 'Insert ' + name,
@@ -16,9 +16,9 @@ export function insertMenuItem(schema) {
           enable(state) {
             return insertDino(schema, name)(state);
           },
-          run: insertDino(schema, name)
-        })
-      )
+          run: insertDino(schema, name),
+        }),
+      ),
     );
     return menu;
   };
@@ -27,12 +27,13 @@ export function insertMenuItem(schema) {
 function insertDino(schema, type) {
   let dinoType = schema.nodes[DINO_NODE_NAME];
   return function(state, dispatch) {
-    let { $from } = state.selection,
-      index = $from.index();
+    let { $from } = state.selection;
+    let index = $from.index();
+
     if (!$from.parent.canReplaceWith(index, index, dinoType)) return false;
     if (dispatch) {
       const attr = {
-        'data-type': type
+        'data-type': type,
       };
 
       if (type === 'tyrannosaurus') {
@@ -41,8 +42,8 @@ function insertDino(schema, type) {
 
       dispatch(
         state.tr.replaceSelectionWith(
-          dinoType.create(nodeHelpers.createAttrObj(dinoAttrTypes, attr))
-        )
+          dinoType.create(nodeHelpers.createAttrObj(dinoAttrTypes, attr)),
+        ),
       );
     }
     return true;
