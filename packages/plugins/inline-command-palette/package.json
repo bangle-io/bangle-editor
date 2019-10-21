@@ -1,0 +1,21 @@
+{
+  "name": "inline-command-palette",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/prosemirror-model": "^1.7.2",
+    "@types/prosemirror-state": "^1.2.3",
+    "@types/prosemirror-view": "^1.9.0"
+  },
+  "dependencies": {
+    "@quartzy/prosemirror-suggestions": "^0.1.1",
+    "prosemirror-schema-basic": "^1.0.1"
+  }
+}

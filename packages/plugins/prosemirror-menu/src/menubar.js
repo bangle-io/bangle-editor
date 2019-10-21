@@ -4,7 +4,6 @@ import { Plugin } from 'prosemirror-state';
 import { renderGrouped } from './menu';
 
 const prefix = 'ProseMirror-menubar';
-
 function isIOS() {
   if (typeof navigator == 'undefined') return false;
   let agent = navigator.userAgent;
@@ -34,7 +33,7 @@ export function menuBar(options) {
   return new Plugin({
     view(editorView) {
       return new MenuBarView(editorView, options);
-    }
+    },
   });
 }
 
@@ -63,18 +62,18 @@ class MenuBarView {
     if (options.floating && !isIOS()) {
       this.updateFloat();
       let potentialScrollers = getAllWrapping(this.wrapper);
-      this.scrollFunc = e => {
+      this.scrollFunc = (e) => {
         let root = this.editorView.root;
         if (!(root.body || root).contains(this.wrapper)) {
-          potentialScrollers.forEach(el =>
-            el.removeEventListener('scroll', this.scrollFunc)
+          potentialScrollers.forEach((el) =>
+            el.removeEventListener('scroll', this.scrollFunc),
           );
         } else {
           this.updateFloat(e.target.getBoundingClientRect && e.target);
         }
       };
-      potentialScrollers.forEach(el =>
-        el.addEventListener('scroll', this.scrollFunc)
+      potentialScrollers.forEach((el) =>
+        el.addEventListener('scroll', this.scrollFunc),
       );
     }
   }
@@ -147,7 +146,7 @@ class MenuBarView {
         this.menu.style.position = 'fixed';
         this.spacer = crel('div', {
           class: prefix + '-spacer',
-          style: `height: ${menuRect.height}px`
+          style: `height: ${menuRect.height}px`,
         });
         parent.insertBefore(this.spacer, this.menu);
       }

@@ -11,7 +11,7 @@ const pDOM = ['p', 0],
 export const nodes = {
   // :: NodeSpec The top level document node.
   doc: {
-    content: 'block+'
+    content: 'block+',
   },
 
   // :: NodeSpec A plain paragraph textblock. Represented in the DOM
@@ -22,7 +22,7 @@ export const nodes = {
     parseDOM: [{ tag: 'p' }],
     toDOM() {
       return pDOM;
-    }
+    },
   },
 
   // :: NodeSpec A blockquote (`<blockquote>`) wrapping one or more blocks.
@@ -33,7 +33,7 @@ export const nodes = {
     parseDOM: [{ tag: 'blockquote' }],
     toDOM() {
       return blockquoteDOM;
-    }
+    },
   },
 
   // :: NodeSpec A horizontal rule (`<hr>`).
@@ -42,7 +42,7 @@ export const nodes = {
     parseDOM: [{ tag: 'hr' }],
     toDOM() {
       return hrDOM;
-    }
+    },
   },
 
   // :: NodeSpec A heading textblock, with a `level` attribute that
@@ -59,11 +59,11 @@ export const nodes = {
       { tag: 'h3', attrs: { level: 3 } },
       { tag: 'h4', attrs: { level: 4 } },
       { tag: 'h5', attrs: { level: 5 } },
-      { tag: 'h6', attrs: { level: 6 } }
+      { tag: 'h6', attrs: { level: 6 } },
     ],
     toDOM(node) {
       return ['h' + node.attrs.level, 0];
-    }
+    },
   },
 
   // :: NodeSpec A code listing. Disallows marks or non-text inline
@@ -78,12 +78,12 @@ export const nodes = {
     parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
     toDOM() {
       return preDOM;
-    }
+    },
   },
 
   // :: NodeSpec The text node.
   text: {
-    group: 'inline'
+    group: 'inline',
   },
 
   // :: NodeSpec An inline image (`<img>`) node. Supports `src`,
@@ -94,7 +94,7 @@ export const nodes = {
     attrs: {
       src: {},
       alt: { default: null },
-      title: { default: null }
+      title: { default: null },
     },
     group: 'inline',
     draggable: true,
@@ -105,15 +105,15 @@ export const nodes = {
           return {
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
-            alt: dom.getAttribute('alt')
+            alt: dom.getAttribute('alt'),
           };
-        }
-      }
+        },
+      },
     ],
     toDOM(node) {
       let { src, alt, title } = node.attrs;
       return ['img', { src, alt, title }];
-    }
+    },
   },
 
   // :: NodeSpec A hard line break, represented in the DOM as `<br>`.
@@ -124,8 +124,8 @@ export const nodes = {
     parseDOM: [{ tag: 'br' }],
     toDOM() {
       return brDOM;
-    }
-  }
+    },
+  },
 };
 
 const emDOM = ['em', 0],
@@ -140,7 +140,7 @@ export const marks = {
   link: {
     attrs: {
       href: {},
-      title: { default: null }
+      title: { default: null },
     },
     inclusive: false,
     parseDOM: [
@@ -149,15 +149,15 @@ export const marks = {
         getAttrs(dom) {
           return {
             href: dom.getAttribute('href'),
-            title: dom.getAttribute('title')
+            title: dom.getAttribute('title'),
           };
-        }
-      }
+        },
+      },
     ],
     toDOM(node) {
       let { href, title } = node.attrs;
       return ['a', { href, title }, 0];
-    }
+    },
   },
 
   // :: MarkSpec An emphasis mark. Rendered as an `<em>` element.
@@ -166,7 +166,7 @@ export const marks = {
     parseDOM: [{ tag: 'i' }, { tag: 'em' }, { style: 'font-style=italic' }],
     toDOM() {
       return emDOM;
-    }
+    },
   },
 
   // :: MarkSpec A strong mark. Rendered as `<strong>`, parse rules
@@ -177,15 +177,18 @@ export const marks = {
       // This works around a Google Docs misbehavior where
       // pasted content will be inexplicably wrapped in `<b>`
       // tags with a font-weight normal.
-      { tag: 'b', getAttrs: node => node.style.fontWeight != 'normal' && null },
+      {
+        tag: 'b',
+        getAttrs: (node) => node.style.fontWeight != 'normal' && null,
+      },
       {
         style: 'font-weight',
-        getAttrs: value => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null
-      }
+        getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
+      },
     ],
     toDOM() {
       return strongDOM;
-    }
+    },
   },
 
   // :: MarkSpec Code font mark. Represented as a `<code>` element.
@@ -193,8 +196,28 @@ export const marks = {
     parseDOM: [{ tag: 'code' }],
     toDOM() {
       return codeDOM;
-    }
-  }
+    },
+  },
+
+  typeAheadQuery: {
+    excludes: `searchQuery`,
+    inclusive: true,
+    group: 'searchQuery',
+    parseDOM: [{ tag: 'span[data-type-ahead-query]' }],
+    toDOM(node) {
+      return [
+        'span',
+        {
+          'data-type-ahead-query': 'true',
+          'data-trigger': node.attrs.trigger,
+          'style': `color: #0052CC`,
+        },
+      ];
+    },
+    attrs: {
+      trigger: { default: '' },
+    },
+  },
 };
 
 // :: Schema
