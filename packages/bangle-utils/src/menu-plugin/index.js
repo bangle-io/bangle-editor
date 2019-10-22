@@ -20,8 +20,8 @@ class MenuComponent extends React.Component {
     const { schema, editorView } = this.props;
     return (
       <div>
-        {dummyMenuItems.map((Item, k) => (
-          <Item
+        {dummyMenuItems.map((MenuItem, k) => (
+          <MenuItem
             key={k}
             schema={schema}
             editorState={editorView.state}
