@@ -4,7 +4,9 @@ import React from 'react';
 
 /**
  *  <Wrapper>
- *      <ChildComponent editorView={editorView} {...props} />
+ *      <div>
+ *          <ChildComponent editorView={editorView} {...props} />
+ *       </div>
  *      <PM-editor/>
  *  </Wrapper>
  * A simple wrapper around the PM plugin api which wraps the

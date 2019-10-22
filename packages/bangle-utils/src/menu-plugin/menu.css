@@ -162,15 +162,15 @@
   cursor: pointer;
 }
 
-/* menu-item bold */
-.menu-item-icon .icss-text-bold {
+/* menu-item strong */
+.menu-item-icon .icon-strong {
   width: 1em;
   height: 1em;
   background-color: transparent;
   margin: 0;
 }
 
-.menu-item-icon .icss-text-bold:before {
+.menu-item-icon .icon-strong:before {
   top: 50%;
   left: 50%;
   content: 'B';
@@ -180,15 +180,15 @@
   font-family: serif;
 }
 
-/** menu-item italic */
-.menu-item-icon .icss-text-italic {
+/** menu-item em */
+.menu-item-icon .icon-em {
   width: 1em;
   height: 1em;
   background-color: transparent;
   margin: 0;
 }
 
-.menu-item-icon .icss-text-italic:before {
+.menu-item-icon .icon-em:before {
   top: 50%;
   left: 50%;
   content: 'I';
@@ -197,4 +197,21 @@
   font-style: italic;
   transform: translate(-50%, -50%);
   font-family: serif;
+}
+/** menu-item em */
+.menu-item-icon .icon-code {
+  width: 1em;
+  height: 1em;
+  background-color: transparent;
+  margin: 0;
+}
+
+.menu-item-icon .icon-code:before {
+  top: 50%;
+  left: 50%;
+  content: '<>';
+  font-size: 1em;
+  font-weight: bold;
+  font-style: normal;
+  font-family: monospace;
 }
