@@ -1,6 +1,5 @@
 import React from 'react';
 import { reactPluginUIWrapper } from '../react-plugin-ui-wrapper';
-import dummyMenuItems from './dummy-menu-items';
 
 export function menuPlugin({ menuItems, schema }) {
   return reactPluginUIWrapper(
@@ -17,10 +16,10 @@ export function menuPlugin({ menuItems, schema }) {
 
 class MenuComponent extends React.Component {
   render() {
-    const { schema, editorView } = this.props;
+    const { schema, editorView, menuItems } = this.props;
     return (
       <>
-        {dummyMenuItems.map((MenuItem, k) => (
+        {menuItems.map((MenuItem, k) => (
           <MenuItem
             key={k}
             schema={schema}
