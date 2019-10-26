@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProsemirrorComp } from './FirstComponent';
+import './style.scss';
 
 function App() {
   return (
