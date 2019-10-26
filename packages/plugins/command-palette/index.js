@@ -1,5 +1,10 @@
 import React from 'react';
 
 export default function CommandPalette() {
-  return <div>Hello world </div>;
+  return (
+    <div>
+      <span>Hello world</span>
+      <a className="delete" />
+    </div>
+  );
 }
