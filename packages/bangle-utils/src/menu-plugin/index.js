@@ -19,7 +19,7 @@ class MenuComponent extends React.Component {
   render() {
     const { schema, editorView } = this.props;
     return (
-      <div>
+      <>
         {dummyMenuItems.map((MenuItem, k) => (
           <MenuItem
             key={k}
@@ -28,7 +28,7 @@ class MenuComponent extends React.Component {
             dispatch={editorView.dispatch}
           />
         ))}
-      </div>
+      </>
     );
   }
 }
