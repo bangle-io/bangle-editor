@@ -1,10 +1,10 @@
 import v from '@mapbox/fusspot';
-import { negate } from 'lodash';
+import { complement } from 'ramda';
 import isPlainObject from 'is-plain-obj';
 
 // A non error throwing validator
 // copied and from fusspot's v.assert
-export const validate = negate(function(validationObject, value) {
+export const validate = complement(function(validationObject, value) {
   if (!isPlainObject(validationObject)) {
     throw new Error('must be plan object');
   }

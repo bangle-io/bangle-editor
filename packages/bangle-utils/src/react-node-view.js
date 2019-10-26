@@ -2,9 +2,9 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import debounce from 'debounce';
+
 // Note: this HOC is needed as it creates/manages n number of ReactNodeView
 // depending on PM.
-
 export function reactNodeViewHOC(Comp) {
   if (!Comp instanceof ReactNodeView) {
     throw new Error('Only react node view');
@@ -26,7 +26,7 @@ export function reactNodeViewHOC(Comp) {
       this.onNodeViewDestroy = this.onNodeViewDestroy.bind(this); // As an optimization I can throttle and queue the results, right now the view is destroed for everything in the row
 
       props.addNodeView({
-        [Comp.Schema.type]: this.initializeNodeView
+        [Comp.Schema.type]: this.initializeNodeView,
       });
       props.addSchema(Comp.Schema);
     }
@@ -55,8 +55,8 @@ export function reactNodeViewHOC(Comp) {
           view,
           getPos,
           decorations,
-          nodeViewInstance
-        }
+          nodeViewInstance,
+        },
       });
 
       this.debouncedForceUpdate();
@@ -76,15 +76,15 @@ export function reactNodeViewHOC(Comp) {
         createPortal(
           <Comp nodeViewProps={value.nodeViewProps} {...passThroughProps} />,
           pmDom,
-          value.key // I have verified adding a stable key does improve performance by reducing re-renders
-        )
+          value.key, // I have verified adding a stable key does improve performance by reducing re-renders
+        ),
       );
     }
   }
 
   ParentNodeView.propTypes = {
     addNodeView: PropTypes.func.isRequired,
-    addSchema: PropTypes.func.isRequired
+    addSchema: PropTypes.func.isRequired,
   };
 
   ParentNodeView.displayName = `ParentNodeView[${Comp.Schema.type}]`;
@@ -96,14 +96,14 @@ export class ReactNodeView extends React.PureComponent {
   constructor(props) {
     super(props);
     const {
-      nodeViewProps: { node, view, getPos, decorations, nodeViewInstance }
+      nodeViewProps: { node, view, getPos, decorations, nodeViewInstance },
     } = this.props;
 
     this.nodeView = {
       node,
       view,
       getPos,
-      decorations
+      decorations,
     };
 
     // Note the destroy methods and the props dom, contentDom are handled by parent
@@ -114,8 +114,8 @@ export class ReactNodeView extends React.PureComponent {
       ['deselectNode', 'nodeViewDeselectNode'],
       ['setSelection', 'nodeViewSetSelection'],
       ['stopEvent', 'nodeViewStopEvent'],
-      ['ignoreMutation', 'nodeViewIgnoreMutation']
-    ].filter(m => !!this[m[1]]); // check if class has implemented these
+      ['ignoreMutation', 'nodeViewIgnoreMutation'],
+    ].filter((m) => !!this[m[1]]); // check if class has implemented these
 
     for (const [pmMethod, method] of pmMethodsMapping) {
       nodeViewInstance[pmMethod] = this[method].bind(this);
