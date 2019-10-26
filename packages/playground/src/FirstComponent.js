@@ -19,12 +19,14 @@ import * as dinos from 'dinos';
 import * as emoji from 'emoji';
 import CommandPalette from 'command-palette';
 
-// import InlineCommandPalette from 'inline-command-palette';
+// semi-internal
 import { menuPlugin } from 'bangle-utils';
 import { buildInputRules } from 'bangle-utils/src/setup-helpers/inputrules';
 import { buildMenuItems } from 'bangle-utils/src/setup-helpers/menu';
 import { buildKeymap } from 'bangle-utils/src/setup-helpers/keymap';
 import { schema as baseSchema } from 'bangle-utils/src/setup-helpers/schema';
+
+import menuItems from './components/menu/menu-items';
 
 export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
@@ -63,7 +65,7 @@ export class ProseMirrorView {
               class: 'kushan-rocks',
             },
           }),
-          menuPlugin.menuPlugin({ schema }),
+          menuPlugin.menuPlugin({ schema, menuItems: menuItems }),
           history(),
           new Plugin({
             props: {
