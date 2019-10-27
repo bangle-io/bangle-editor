@@ -77,7 +77,7 @@ export default [
   }),
 ];
 
-function LinkMenuItem({ editorState, schema, dispatch }) {
+function LinkMenuItem({ editorState, editorView, schema, dispatch }) {
   const markType = schema.marks['link'];
   const [showInput, setShowInput] = useState(false);
 
@@ -102,6 +102,7 @@ function LinkMenuItem({ editorState, schema, dispatch }) {
       <span
         onClick={(e) => {
           enabled && cmd(editorState, dispatch);
+          editorView.focus();
         }}
         className={`icon has-text-grey-dark`}
       >
@@ -110,5 +111,4 @@ function LinkMenuItem({ editorState, schema, dispatch }) {
     </button>
   );
 }
-
 LinkMenuItem.propTypes = MenuItemPropTypes;
