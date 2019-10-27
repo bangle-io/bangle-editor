@@ -27,6 +27,7 @@ import { buildKeymap } from 'bangle-utils/src/setup-helpers/keymap';
 import { schema as baseSchema } from 'bangle-utils/src/setup-helpers/schema';
 
 import menuItems from './components/menu/menu-items';
+import getMarkAttrs from 'bangle-utils/src/prosemirror-utils';
 
 export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
@@ -70,6 +71,22 @@ export class ProseMirrorView {
           new Plugin({
             props: {
               attributes: { class: 'bangle-editor' },
+            },
+          }),
+
+          // TODO, consolidate linking
+          // Handle link clicking, thnis plugin is needed
+          // to allow for handling of clicking of links or else PM eats them
+          new Plugin({
+            props: {
+              handleClick: (view, pos, event) => {
+                const { schema } = view.state;
+                const attrs = getMarkAttrs(view.state, schema.marks.link);
+                if (attrs.href && event.target instanceof HTMLAnchorElement) {
+                  event.stopPropagation();
+                  window.open(attrs.href);
+                }
+              },
             },
           }),
         ],
