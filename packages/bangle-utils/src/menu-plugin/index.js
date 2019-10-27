@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { reactPluginUIWrapper } from '../react-plugin-ui-wrapper';
 
 export function menuPlugin({ menuItems, schema }) {
@@ -25,9 +26,16 @@ class MenuComponent extends React.Component {
             schema={schema}
             editorState={editorView.state}
             dispatch={editorView.dispatch}
+            editorView={editorView}
           />
         ))}
       </>
     );
   }
 }
+
+MenuComponent.propTypes = {
+  schema: PropTypes.object.isRequired,
+  editorView: PropTypes.object.isRequired,
+  menuItems: PropTypes.arrayOf(PropTypes.elementType).isRequired,
+};

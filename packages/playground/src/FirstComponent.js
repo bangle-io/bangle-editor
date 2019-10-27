@@ -15,11 +15,13 @@ import { DOMParser } from 'prosemirror-model';
 import { compose } from 'lodash/fp';
 import { menuBar } from 'prosemirror-menu';
 import applyDevTools from 'prosemirror-dev-tools';
-import * as dinos from 'dinos';
-import * as emoji from 'emoji';
-import CommandPalette from 'command-palette';
+import { toggleMark } from 'prosemirror-commands';
+
+import InlineCommandPalette from 'inline-command-palette';
 
 // semi-internal
+import * as dinos from 'dinos';
+import * as emoji from 'emoji';
 import { menuPlugin } from 'bangle-utils';
 import { buildInputRules } from 'bangle-utils/src/setup-helpers/inputrules';
 import { buildMenuItems } from 'bangle-utils/src/setup-helpers/menu';
@@ -68,12 +70,29 @@ export class ProseMirrorView {
           }),
           menuPlugin.menuPlugin({ schema, menuItems: menuItems }),
           history(),
+          keymap({
+            'Ctrl-q': (state, dispatch) => {
+              let { doc, selection } = state;
+              if (selection.empty) return false;
+              let attrs = null;
+              if (
+                !doc.rangeHasMark(
+                  selection.from,
+                  selection.to,
+                  schema.marks.link,
+                )
+              ) {
+                attrs = { href: prompt('Link to where?', '') };
+                if (!attrs.href) return false;
+              }
+              return toggleMark(schema.marks.link, attrs)(state, dispatch);
+            },
+          }),
           new Plugin({
             props: {
               attributes: { class: 'bangle-editor' },
             },
           }),
-
           // TODO, consolidate linking
           // Handle link clicking, thnis plugin is needed
           // to allow for handling of clicking of links or else PM eats them
@@ -181,7 +200,7 @@ export class ProsemirrorComp extends React.Component {
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
         />
-        <CommandPalette
+        <InlineCommandPalette
           addPlugins={this.addPlugins}
           onEditorStateUpdate={this.registerEditorStateHandlers}
         />

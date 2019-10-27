@@ -7,6 +7,7 @@ export const MenuItemPropTypes = {
   editorState: PropTypes.object.isRequired,
   schema: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  editorView: PropTypes.object.isRequired,
 };
 
 export function menuButtonHOC({
@@ -26,6 +27,7 @@ export function menuButtonHOC({
     const active = isActive(payload);
     const enabled = isEnabled(payload);
     const buttonLook = enabled && active ? 'is-light' : 'is-white';
+
     return (
       <button
         className={`button ${buttonLook}`}
@@ -49,6 +51,7 @@ export function menuButtonHOC({
 export function dropdownHOC({ label, renderItems }) {
   function Dropdown(props) {
     const [active, setActive] = useState(false);
+
     return (
       <div
         className={`dropdown is-white ${active ? 'is-active' : ''}`}
