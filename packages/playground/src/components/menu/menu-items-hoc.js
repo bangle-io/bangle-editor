@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { MenuItemPropTypes } from 'bangle-utils/src/menu-plugin';
 import { MenuItemButton } from './MenuItemButton';
 
@@ -35,19 +35,49 @@ export function menuButtonHOC({
 }
 
 export function dropdownHOC({ label, renderItems }) {
-  function Dropdown(props) {
-    const [active, setActive] = useState(false);
+  function DropdownContent({ externalProps, setActive }) {
+    const dropdownRef = useRef(null);
+    const handleClick = useCallback(
+      (e) => {
+        console.debug('calling');
+        if (dropdownRef.current.contains(e.target)) {
+          return;
+        }
+        // outside click
+        setActive(false);
+      },
+      [setActive],
+    );
+    useEffect(() => {
+      document.addEventListener('mousedown', handleClick);
+      return () => {
+        document.removeEventListener('mousedown', handleClick);
+      };
+    }, [handleClick]);
 
     return (
       <div
-        className={`dropdown is-white ${active ? 'is-active' : ''}`}
-        onClick={() => setActive(!active)}
+        className="dropdown-content"
+        style={{
+          width: 280,
+        }}
+        ref={dropdownRef}
       >
+        {renderItems({ ...externalProps, onClick: () => setActive(false) })}
+      </div>
+    );
+  }
+
+  function Dropdown(props) {
+    const [active, setActive] = useState(true);
+    return (
+      <div className={`dropdown  is-white ${active ? 'is-active' : ''}`}>
         <div className="dropdown-trigger">
           <button
             className="button"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
+            onClick={() => !active && setActive(true)}
           >
             <span>{label}</span>
             <span className="icon is-small">
@@ -56,7 +86,9 @@ export function dropdownHOC({ label, renderItems }) {
           </button>
         </div>
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
-          <div className="dropdown-content">{renderItems(props)}</div>
+          {active && (
+            <DropdownContent externalProps={props} setActive={setActive} />
+          )}
         </div>
       </div>
     );

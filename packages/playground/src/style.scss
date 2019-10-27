@@ -21,13 +21,16 @@ $background: $white;
 $text: $black-ter;
 $light: $grey-lightest;
 
-// Update some of Bulma's component variables
-$control-border-width: 2px;
-$input-border-color: transparent;
-$input-shadow: none;
+// // Update some of Bulma's component variables
+// $control-border-width: 2px;
+// $input-border-color: transparent;
+// $input-shadow: none;
+
+// Component overides
+@import 'bulma/sass/utilities/_all.sass';
+$dropdown-item-hover-background-color: $primary-light;
 
 // Import only what you need from Bulma
-@import 'bulma/sass/utilities/_all.sass';
 @import 'bulma/sass/base/_all.sass';
 @import 'bulma/sass/elements/button.sass';
 @import 'bulma/sass/elements/container.sass';
