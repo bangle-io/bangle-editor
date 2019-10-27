@@ -8,6 +8,7 @@ import { isMarkActive } from 'bangle-utils/src/prosemirror-utils';
 
 import { menuButtonHOC, dropdownHOC } from './menu-items-hoc';
 import { MenuItemLinkButton } from './MenuItemLinkButton';
+import { MenuRow } from './MenuRow';
 
 // TODO I need to validate if schema type exists? should I?
 export default [
@@ -55,20 +56,9 @@ export default [
       });
       return (
         <>
-          <div href="#" className="dropdown-item">
-            <Bold {...props} /> Link
-          </div>
-          <a className="dropdown-item">Other dropdown item</a>
-          <a href="#" className="dropdown-item is-active">
-            Active dropdown item
-          </a>
-          <a href="#" className="dropdown-item">
-            Other dropdown item
-          </a>
+          <MenuRow {...props} />
           <hr className="dropdown-divider" />
-          <a href="#" className="dropdown-item">
-            With a divider
-          </a>
+          <MenuRow {...props} />
         </>
       );
     },
