@@ -100,6 +100,7 @@ export class ProseMirrorView {
             props: {
               handleClick: (view, pos, event) => {
                 const { schema } = view.state;
+                // TODO: clicking doesnt work if you click on the edges or a single character
                 const attrs = getMarkAttrs(view.state, schema.marks.link);
                 if (attrs.href && event.target instanceof HTMLAnchorElement) {
                   event.stopPropagation();

@@ -1,14 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-
-export const MenuItemPropTypes = {
-  editorState: PropTypes.object.isRequired,
-  schema: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  editorView: PropTypes.object.isRequired,
-};
+import { MenuItemPropTypes } from 'bangle-utils/src/menu-plugin';
+import { MenuItemButton } from './MenuItemButton';
 
 export function menuButtonHOC({
   iconType,
@@ -23,25 +17,17 @@ export function menuButtonHOC({
       editorState,
       schema,
     };
-    const cmd = getCommand(payload);
-    const active = isActive(payload);
     const enabled = isEnabled(payload);
-    const buttonLook = enabled && active ? 'is-light' : 'is-white';
-
     return (
-      <button
-        className={`button ${buttonLook}`}
-        disabled={enabled ? '' : 'disabled'}
-      >
-        <span
-          onClick={(e) => {
-            enabled && cmd(editorState, dispatch);
-          }}
-          className={`icon has-text-grey-dark`}
-        >
-          <i className={`fas fa-${iconType}`} title={label} />
-        </span>
-      </button>
+      <MenuItemButton
+        active={isActive(payload)}
+        enabled={enabled}
+        onClick={(e) => {
+          getCommand(payload)(editorState, dispatch);
+        }}
+        label={label}
+        iconType={iconType}
+      />
     );
   }
   IconMenuItem.propTypes = MenuItemPropTypes;

@@ -1,15 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import { toggleMark } from 'prosemirror-commands';
 import { undo, redo } from 'prosemirror-history';
 import { isMarkActive } from 'bangle-utils/src/prosemirror-utils';
-import {
-  menuButtonHOC,
-  dropdownHOC,
-  MenuItemPropTypes,
-} from './menu-items-hoc';
+
+import { menuButtonHOC, dropdownHOC } from './menu-items-hoc';
+import { MenuItemLinkButton } from './MenuItemLinkButton';
 
 // TODO I need to validate if schema type exists? should I?
 export default [
@@ -44,7 +42,7 @@ export default [
     label: 'Redo',
     getCommand: () => redo,
   }),
-  LinkMenuItem,
+  MenuItemLinkButton,
   dropdownHOC({
     label: 'Insert',
     renderItems: (props) => {
@@ -76,39 +74,3 @@ export default [
     },
   }),
 ];
-
-function LinkMenuItem({ editorState, editorView, schema, dispatch }) {
-  const markType = schema.marks['link'];
-  const [showInput, setShowInput] = useState(false);
-
-  let cmd;
-  if (isMarkActive(editorState, markType)) {
-    cmd = toggleMark(markType);
-  } else {
-    cmd = toggleMark(markType, { href: 'https://google.com', title: 'link' });
-  }
-  const active = isMarkActive(editorState, markType);
-  const enabled = !editorState.selection.empty;
-  const buttonLook = enabled && active ? 'is-light' : 'is-white';
-
-  if (showInput) {
-    return <input className="input" type="text" placeholder="Input url" />;
-  }
-  return (
-    <button
-      className={`button ${buttonLook}`}
-      disabled={enabled ? '' : 'disabled'}
-    >
-      <span
-        onClick={(e) => {
-          enabled && cmd(editorState, dispatch);
-          editorView.focus();
-        }}
-        className={`icon has-text-grey-dark`}
-      >
-        <i className={`fas fa-link`} title="Link" />
-      </span>
-    </button>
-  );
-}
-LinkMenuItem.propTypes = MenuItemPropTypes;

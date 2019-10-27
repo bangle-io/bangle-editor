@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { reactPluginUIWrapper } from '../react-plugin-ui-wrapper';
 
 export function menuPlugin({ menuItems, schema }) {
@@ -38,4 +39,11 @@ MenuComponent.propTypes = {
   schema: PropTypes.object.isRequired,
   editorView: PropTypes.object.isRequired,
   menuItems: PropTypes.arrayOf(PropTypes.elementType).isRequired,
+};
+
+export const MenuItemPropTypes = {
+  editorState: PropTypes.object.isRequired,
+  schema: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  editorView: PropTypes.object.isRequired,
 };
