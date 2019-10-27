@@ -22,8 +22,8 @@
     "prosemirror-schema-list": "^1.0.3",
     "prosemirror-state": "^1.2.3",
     "prosemirror-view": "^1.9.12",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
     "react-scripts": "/Users/kushanjoshi/code/open/create-react-app/packages/react-scripts"
   },
   "scripts": {

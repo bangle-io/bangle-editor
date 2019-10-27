@@ -154,9 +154,10 @@ export const marks = {
         },
       },
     ],
+
     toDOM(node) {
       let { href, title } = node.attrs;
-      return ['a', { href, title }, 0];
+      return ['a', { href, title, rel: 'noopener noreferrer nofollow' }, 0];
     },
   },
 
