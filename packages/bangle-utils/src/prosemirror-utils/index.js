@@ -1,3 +1,4 @@
+import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
 /**
  * whether the mark of type is active
  * @returns {Boolean}
@@ -22,4 +23,17 @@ export default function getMarkAttrs(editorState, type) {
   const mark = marks.find((markItem) => markItem.type.name === type.name);
 
   return mark ? mark.attrs : {};
+}
+
+export function nodeIsActive(editorState, type, attrs = {}) {
+  const predicate = (node) => node.type === type;
+  const node =
+    findSelectedNodeOfType(type)(editorState.selection) ||
+    findParentNode(predicate)(editorState.selection);
+
+  if (!Object.keys(attrs).length || !node) {
+    return !!node;
+  }
+
+  return node.node.hasMarkup(type, attrs);
 }

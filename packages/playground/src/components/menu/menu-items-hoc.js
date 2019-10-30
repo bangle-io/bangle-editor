@@ -12,7 +12,7 @@ export function menuButtonHOC({
   // default to dry running the command. Where `dry run` == run without dispatch
   isEnabled = (payload) => getCommand(payload)(payload.editorState),
 }) {
-  function IconMenuItem({ editorState, schema, dispatch }) {
+  function IconMenuItem({ editorState, schema, dispatch, editorView }) {
     const payload = {
       editorState,
       schema,
@@ -24,6 +24,7 @@ export function menuButtonHOC({
         enabled={enabled}
         onClick={(e) => {
           getCommand(payload)(editorState, dispatch);
+          editorView.focus();
         }}
         label={label}
         iconType={iconType}
@@ -56,22 +57,15 @@ export function dropdownHOC({ label, renderItems }) {
     }, [handleClick]);
 
     return (
-      <div
-        className="dropdown-content"
-        style={{
-          width: 280,
-        }}
-        ref={dropdownRef}
-      >
+      <div className="dropdown-content" ref={dropdownRef}>
         {renderItems({ ...externalProps, onClick: () => setActive(false) })}
       </div>
     );
   }
-
   function Dropdown(props) {
     const [active, setActive] = useState(true);
     return (
-      <div className={`dropdown  is-white ${active ? 'is-active' : ''}`}>
+      <div className={`dropdown is-white ${active ? 'is-active' : ''}`}>
         <div className="dropdown-trigger">
           <button
             className="button"
@@ -93,7 +87,6 @@ export function dropdownHOC({ label, renderItems }) {
       </div>
     );
   }
-
   Dropdown.propTypes = MenuItemPropTypes;
   return Dropdown;
 }

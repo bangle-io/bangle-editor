@@ -40,6 +40,7 @@ export class ProseMirrorView {
         emoji.insertMenuItem(schema),
       ),
     );
+
     var template = document.createElement('template');
     template.innerHTML = `<div id=content style="display: none">
       <h5>Too-minor header</h5>

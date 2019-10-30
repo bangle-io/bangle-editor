@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { toggleMark } from 'prosemirror-commands';
+import { toggleMark, setBlockType } from 'prosemirror-commands';
 import { undo, redo } from 'prosemirror-history';
-import { isMarkActive } from 'bangle-utils/src/prosemirror-utils';
+import { isMarkActive, nodeIsActive } from 'bangle-utils/src/prosemirror-utils';
 
 import { menuButtonHOC, dropdownHOC } from './menu-items-hoc';
 import { MenuItemLinkButton } from './MenuItemLinkButton';
@@ -44,21 +44,86 @@ export default [
     getCommand: () => redo,
   }),
   MenuItemLinkButton,
+  menuButtonHOC({
+    iconType: 'heading',
+    label: 'Heading',
+    getCommand: ({ schema }) =>
+      setBlockType(schema.nodes['heading'], {
+        level: 3,
+      }),
+    isActive: ({ schema, editorState }) =>
+      nodeIsActive(editorState, schema.nodes['heading'], {
+        level: 3,
+      }),
+  }),
+
   dropdownHOC({
     label: 'Insert',
-    renderItems: (props) => {
-      const Bold = menuButtonHOC({
-        iconType: 'bold',
-        label: 'Bold',
-        getCommand: ({ schema }) => toggleMark(schema.marks['strong']),
-        isActive: ({ schema, editorState }) =>
-          isMarkActive(editorState, schema.marks['strong']),
-      });
+    renderItems: ({ onClick, editorState, schema, dispatch }) => {
       return (
         <>
-          <MenuRow {...props} />
-          <hr className="dropdown-divider" />
-          <MenuRow {...props} />
+          <MenuRow
+            onClick={onClick}
+            rightText={'rightText'}
+            iconType={'link'}
+            iconLabel={'link'}
+            title="My favorite"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
+          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
+          <MenuRow
+            onClick={onClick}
+            rightText="Right Text"
+            iconType={'star'}
+            iconLabel={'link'}
+            title="My Ass"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
+          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
+          <MenuRow
+            onClick={onClick}
+            rightText="Right Text"
+            iconType={'star'}
+            iconLabel={'link'}
+            title="My Ass"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
+          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
+          <MenuRow
+            onClick={onClick}
+            rightText="Right Text"
+            iconType={'star'}
+            iconLabel={'link'}
+            title="My Ass"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
+          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
+          <MenuRow
+            onClick={onClick}
+            rightText="Right Text"
+            iconType={'star'}
+            iconLabel={'link'}
+            title="My Ass"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
+          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
+          <MenuRow
+            onClick={onClick}
+            rightText="Right Text"
+            iconType={'star'}
+            iconLabel={'link'}
+            title="My Ass"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
+          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
+          <MenuRow
+            onClick={onClick}
+            rightText="Right Text"
+            iconType={'star'}
+            iconLabel={'link'}
+            title="My Ass"
+            subtitle="Doing this makes the life easiest. I went to gym bithc"
+          />
         </>
       );
     },
