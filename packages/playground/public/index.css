@@ -21,14 +21,6 @@ code {
   flex-grow: 1;
 }
 
-.ProsemirrorComp {
-  /* display: flex; */
-  /* height: 100vh; */
-  /* flex-grow: 1; */
-  /* flex: 1 auto; */
-  /* flex-direction: row; */
-}
-
 /* /app.js */
 .App {
   margin: 15px 30px;

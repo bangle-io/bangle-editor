@@ -13,7 +13,7 @@ import {
 } from 'prosemirror-menu';
 import { NodeSelection } from 'prosemirror-state';
 import { toggleMark } from 'prosemirror-commands';
-import { wrapInList } from 'prosemirror-schema-list';
+import { wrapInList } from './schema-list';
 import { TextField, openPrompt } from './prompt';
 
 // Helpers to create specific types of items

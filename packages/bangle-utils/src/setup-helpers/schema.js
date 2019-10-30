@@ -1,4 +1,5 @@
 import { Schema } from 'prosemirror-model';
+import { addListNodes } from './schema-list';
 
 const pDOM = ['p', 0],
   blockquoteDOM = ['blockquote', 0],
@@ -62,7 +63,11 @@ export const nodes = {
       { tag: 'h6', attrs: { level: 6 } },
     ],
     toDOM(node) {
-      return ['h' + node.attrs.level, 0];
+      return [
+        'h' + node.attrs.level,
+        { class: 'is-size-' + node.attrs.level },
+        0,
+      ];
     },
   },
 
@@ -229,4 +234,14 @@ export const marks = {
 //
 // To reuse elements from this schema, extend or read from its
 // `spec.nodes` and `spec.marks` [properties](#model.Schema.spec).
-export const schema = new Schema({ nodes, marks });
+// let schema = new Schema({ nodes, marks });
+
+let _schema = new Schema({
+  marks,
+  nodes,
+});
+
+export const schema = new Schema({
+  ..._schema.spec,
+  nodes: addListNodes(_schema.spec.nodes, 'paragraph block*', 'block'),
+});
