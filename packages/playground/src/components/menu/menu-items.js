@@ -6,11 +6,14 @@ import { toggleMark, setBlockType } from 'prosemirror-commands';
 import { undo, redo } from 'prosemirror-history';
 import { isMarkActive, nodeIsActive } from 'bangle-utils/src/prosemirror-utils';
 
+import { default as DinoComp } from 'dinos';
+
 import { menuButtonHOC, dropdownHOC } from './menu-items-hoc';
 import { MenuItemLinkButton } from './MenuItemLinkButton';
 import { MenuRow } from './MenuRow';
 
-// TODO I need to validate if schema type exists? should I?
+const dinoComp = DinoComp();
+
 export default [
   menuButtonHOC({
     iconType: 'bold',
@@ -56,74 +59,37 @@ export default [
         level: 3,
       }),
   }),
-
   dropdownHOC({
     label: 'Insert',
-    renderItems: ({ onClick, editorState, schema, dispatch }) => {
+    renderItems: ({ onClick, editorState, editorView, schema, dispatch }) => {
+      const payload = {
+        editorState,
+        schema,
+      };
       return (
         <>
-          <MenuRow
-            onClick={onClick}
-            rightText={'rightText'}
-            iconType={'link'}
-            iconLabel={'link'}
-            title="My favorite"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
-          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
-          <MenuRow
-            onClick={onClick}
-            rightText="Right Text"
-            iconType={'star'}
-            iconLabel={'link'}
-            title="My Ass"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
-          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
-          <MenuRow
-            onClick={onClick}
-            rightText="Right Text"
-            iconType={'star'}
-            iconLabel={'link'}
-            title="My Ass"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
-          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
-          <MenuRow
-            onClick={onClick}
-            rightText="Right Text"
-            iconType={'star'}
-            iconLabel={'link'}
-            title="My Ass"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
-          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
-          <MenuRow
-            onClick={onClick}
-            rightText="Right Text"
-            iconType={'star'}
-            iconLabel={'link'}
-            title="My Ass"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
-          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
-          <MenuRow
-            onClick={onClick}
-            rightText="Right Text"
-            iconType={'star'}
-            iconLabel={'link'}
-            title="My Ass"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
-          <hr className="dropdown-divider" style={{ margin: '2px 0px' }} />
-          <MenuRow
-            onClick={onClick}
-            rightText="Right Text"
-            iconType={'star'}
-            iconLabel={'link'}
-            title="My Ass"
-            subtitle="Doing this makes the life easiest. I went to gym bithc"
-          />
+          {dinoComp.menu.rows.map(
+            ({ icon, title, subtitle, hint, getCommand, isEnabled }) =>
+              isEnabled(payload) && (
+                <React.Fragment key={title}>
+                  <MenuRow
+                    onClick={() => {
+                      getCommand(payload)(editorState, dispatch);
+                      onClick();
+                      editorView.focus();
+                    }}
+                    icon={icon}
+                    title={title}
+                    subtitle={subtitle}
+                    hint="hint"
+                  />
+                  <hr
+                    className="dropdown-divider"
+                    style={{ margin: '2px 0px' }}
+                  />
+                </React.Fragment>
+              ),
+          )}
         </>
       );
     },

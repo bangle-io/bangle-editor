@@ -21,11 +21,11 @@ export function menuButtonHOC({
     return (
       <MenuItemButton
         active={isActive(payload)}
-        enabled={enabled}
-        onClick={(e) => {
+        onClick={() => {
           getCommand(payload)(editorState, dispatch);
           editorView.focus();
         }}
+        enabled={enabled}
         label={label}
         iconType={iconType}
       />
@@ -62,6 +62,7 @@ export function dropdownHOC({ label, renderItems }) {
       </div>
     );
   }
+
   function Dropdown(props) {
     const [active, setActive] = useState(true);
     return (
@@ -87,6 +88,7 @@ export function dropdownHOC({ label, renderItems }) {
       </div>
     );
   }
+
   Dropdown.propTypes = MenuItemPropTypes;
   return Dropdown;
 }
