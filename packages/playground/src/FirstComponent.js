@@ -35,10 +35,7 @@ export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
     const builtMenu = buildMenuItems(
       schema,
-      compose(
-        dinos.insertMenuItem(schema),
-        emoji.insertMenuItem(schema),
-      ),
+      compose(dinos.insertMenuItem(schema), emoji.insertMenuItem(schema)),
     );
 
     var template = document.createElement('template');
@@ -54,7 +51,6 @@ export class ProseMirrorView {
     this.view = new EditorView(target, {
       nodeViews,
       state: EditorState.create({
-        // doc: defaultMarkdownParser.parse(content),
         doc: DOMParser.fromSchema(schema).parse(template.content.firstChild),
         plugins: [
           buildInputRules(schema),
@@ -69,7 +65,7 @@ export class ProseMirrorView {
               class: 'kushan-rocks',
             },
           }),
-          menuPlugin.menuPlugin({ schema, menuItems: menuItems }),
+          menuPlugin.menuPlugin({ schema, menuItems: menuItems.concat() }),
           history(),
           keymap({
             'Ctrl-q': (state, dispatch) => {
