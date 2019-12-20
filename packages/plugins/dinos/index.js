@@ -1,8 +1,11 @@
+import React from 'react';
 import { MenuItem } from 'prosemirror-menu';
+import classnames from 'classnames';
 
 import { DINO_NODE_NAME, dinoAttrTypes, dinoNames } from './constants';
 import { nodeHelpers } from 'bangle-utils';
 import './dino.css';
+import { DINO_IMAGES } from './Dino';
 
 export { default as DinoComponent } from './Dino';
 
@@ -49,3 +52,26 @@ function insertDino(schema, type) {
     return true;
   };
 }
+
+export default () => ({
+  menu: {
+    rows: [
+      ...dinoNames.map((dinoName) => ({
+        icon: (
+          <img
+            src={DINO_IMAGES[dinoName]}
+            alt={dinoName}
+            className={classnames({
+              mydino: true,
+              plugins_dino: true,
+            })}
+          />
+        ),
+        title: 'Insert ' + dinoName,
+        subtitle: 'Puts a cute ' + dinoName + ' emoji.',
+        getCommand: ({ schema }) => insertDino(schema, dinoName),
+        isEnabled: () => true,
+      })),
+    ],
+  },
+});
