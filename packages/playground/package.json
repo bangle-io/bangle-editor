@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "babel-eslint": "10.0.3",
     "prosemirror-dev-tools": "^2.1.1"
   }
 }
