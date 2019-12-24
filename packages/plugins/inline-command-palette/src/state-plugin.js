@@ -21,7 +21,7 @@ export function StatePlugin2() {
     key: StatePlugin2Key,
     state: {
       init: () => initialState,
-      apply(tr, pluginState, _oldState, newEditorState) {
+      apply(tr, pluginState, oldEditorState, newEditorState) {
         const meta = tr.getMeta(StatePlugin2Key) || {};
         const { action } = meta;
 

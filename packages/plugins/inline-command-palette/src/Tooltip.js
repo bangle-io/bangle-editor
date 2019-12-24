@@ -20,15 +20,6 @@ export default class Tooltip extends React.PureComponent {
     window.document.body.appendChild(this.tooltip);
   }
 
-  componentDidMount() {
-    document.body.appendChild(this.tooltip);
-  }
-
-  componentWillUnmount() {
-    this.updateTooltipPosition.clear();
-    this.tooltip.remove();
-  }
-
   _hideTooltip() {
     this.updateTooltipPosition.clear();
     this.setState({
@@ -81,6 +72,16 @@ export default class Tooltip extends React.PureComponent {
       bottom: box.bottom - coords.top,
     };
   }
+
+  componentDidMount() {
+    document.body.appendChild(this.tooltip);
+  }
+
+  componentWillUnmount() {
+    this.updateTooltipPosition.clear();
+    this.tooltip.remove();
+  }
+
   render() {
     if (!this.props.coords) {
       return ReactDOM.createPortal(null, this.tooltip);

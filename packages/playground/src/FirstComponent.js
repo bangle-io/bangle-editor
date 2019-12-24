@@ -17,7 +17,7 @@ import { menuBar } from 'prosemirror-menu';
 import applyDevTools from 'prosemirror-dev-tools';
 import { toggleMark } from 'prosemirror-commands';
 
-import InlineCommandPalette from 'inline-command-palette';
+import { CommandPalette, commandPalettePlugins } from 'inline-command-palette';
 
 // semi-internal
 import * as dinos from 'dinos';
@@ -131,7 +131,7 @@ export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
   nodeViews = {};
   schema = baseSchema;
-  plugins = [];
+  plugins = [...commandPalettePlugins];
   editorStateUpdaterHandlers = [];
   componentDidMount() {
     const node = this.myRef.current;
@@ -198,7 +198,7 @@ export class ProsemirrorComp extends React.Component {
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
         />
-        <InlineCommandPalette
+        <CommandPalette
           addPlugins={this.addPlugins}
           onEditorStateUpdate={this.registerEditorStateHandlers}
         />
