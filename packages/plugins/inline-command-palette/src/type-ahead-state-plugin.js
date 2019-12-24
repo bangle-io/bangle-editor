@@ -1,9 +1,10 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
+
 import { isQueryActive, findTypeAheadQuery } from './helpers/query';
 import { removeTypeAheadMark } from './commands';
-import { DOWN, UP } from './actions';
+import { DOWN, UP, ENTER } from './actions';
 
-export const StatePlugin2Key = new PluginKey('typeahead-state-plugin');
+export const typeAheadStatePluginKey = new PluginKey('typeahead-state-plugin');
 
 const initialState = {
   active: false,
@@ -12,20 +13,21 @@ const initialState = {
   index: 0,
 };
 
-export function statePlugin2GetState(editorState) {
-  return StatePlugin2Key.getState(editorState);
-}
-
-export function StatePlugin2() {
+export function typeAheadStatePlugin() {
   return new Plugin({
-    key: StatePlugin2Key,
+    key: typeAheadStatePluginKey,
     state: {
       init: () => initialState,
       apply(tr, pluginState, oldEditorState, newEditorState) {
-        const meta = tr.getMeta(StatePlugin2Key) || {};
+        const meta = tr.getMeta(typeAheadStatePluginKey) || {};
         const { action } = meta;
-
         switch (action) {
+          case ENTER: {
+            return {
+              ...pluginState,
+              active: false,
+            };
+          }
           case DOWN: {
             return {
               ...pluginState,
@@ -39,7 +41,9 @@ export function StatePlugin2() {
             };
           }
           default: {
-            return defaultActionHandler(newEditorState, pluginState);
+            const r = defaultActionHandler(newEditorState, pluginState);
+            console.log(r);
+            return r;
           }
         }
       },
@@ -47,6 +51,7 @@ export function StatePlugin2() {
     view() {
       return {
         update: (editorView, prevEditorState) => {
+          console.log('editorview update');
           const pluginState = this.key.getState(editorView.state);
           if (!pluginState.active) {
             removeTypeAheadMark()(editorView.state, editorView.dispatch);
@@ -59,6 +64,7 @@ export function StatePlugin2() {
 }
 
 function defaultActionHandler(editorState, pluginState) {
+  console.log('here default');
   const { typeAheadQuery } = editorState.schema.marks;
   const { doc, selection } = editorState;
   const { from, to } = selection;

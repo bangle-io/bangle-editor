@@ -1,6 +1,6 @@
 import { InputRule, inputRules } from 'prosemirror-inputrules';
 
-export default function inputPlugin(schema, trigger) {
+export function typeAheadInputRule(schema, trigger) {
   const regexStart = new RegExp(
     `(^|[.!?\\s${leafNodeReplacementCharacter}])(${trigger})$`,
   );
