@@ -83,11 +83,12 @@ export default class Tooltip extends React.PureComponent {
   }
 
   render() {
+    console.log('renedfer', this.props);
+
     if (!this.props.coords) {
       return ReactDOM.createPortal(null, this.tooltip);
     }
     const { left, bottom } = this._computeBox(this.props.coords);
-
     return ReactDOM.createPortal(
       <div
         className="tooltip"

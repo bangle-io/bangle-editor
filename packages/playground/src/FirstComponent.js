@@ -54,7 +54,16 @@ export class ProseMirrorView {
         doc: DOMParser.fromSchema(schema).parse(template.content.firstChild),
         plugins: [
           buildInputRules(schema),
-          ...plugins,
+          ...plugins.reduce((prev, cur) => {
+            let plugin =
+              typeof cur !== 'function'
+                ? cur
+                : cur({
+                    schema: schema,
+                  });
+
+            return prev.concat(plugin);
+          }, []),
           keymap(buildKeymap(schema)),
           keymap(baseKeymap),
           dropCursor(),
@@ -110,6 +119,7 @@ export class ProseMirrorView {
       }),
       dispatchTransaction: (tr) => {
         // intercept the transaction cycle
+        // console.log(tr);
         const prevEditorState = this.view.state;
         const newEditorState = this.view.state.apply(tr);
         this.view.updateState(newEditorState);
@@ -136,24 +146,11 @@ export class ProsemirrorComp extends React.Component {
   componentDidMount() {
     const node = this.myRef.current;
 
-    const plugins = this.plugins.reduce((prev, cur) => {
-      let plugin = cur;
-
-      if (typeof cur === 'function') {
-        plugin = cur({
-          schema: this.schema,
-        });
-      }
-
-      prev.push(...(Array.isArray(plugin) ? plugin : [plugin]));
-      return prev;
-    }, []);
-
     if (node) {
       const view = new ProseMirrorView(node, {
         nodeViews: this.nodeViews,
         schema: this.schema,
-        plugins: plugins,
+        plugins: this.plugins,
         onStateUpdate: this.onStateUpdate,
       });
       view.focus();

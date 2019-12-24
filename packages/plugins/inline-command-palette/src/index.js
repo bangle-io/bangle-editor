@@ -1,26 +1,30 @@
 import Tooltip from './Tooltip';
-import typeaheadInputRulePlugin from './input-plugin';
 import { withEditorStateUpdate } from './helpers/with-editor-state-update';
-import { StatePlugin2, statePlugin2GetState } from './state-plugin';
-import keymapPlugin from './keymaps';
+import { typeAheadInputRule } from './type-ahead-input-rule';
+import {
+  typeAheadStatePlugin,
+  typeAheadStatePluginKey,
+} from './type-ahead-state-plugin';
+import { typeaheadKeymap } from './type-ahead-keymap';
 
 export const commandPalettePlugins = [
-  keymapPlugin(),
-  ({ schema }) => typeaheadInputRulePlugin(schema, '@'),
-  StatePlugin2(),
+  typeaheadKeymap(),
+  ({ schema }) => typeAheadInputRule(schema, '/'),
+  typeAheadStatePlugin(),
 ];
 
 export const CommandPalette = withEditorStateUpdate({
   initialState: {},
   transformEditorState: (state, editor) => {
     const { view, editorState } = editor;
-    const statePluginData = statePlugin2GetState(editorState);
+    const statePluginData = typeAheadStatePluginKey.getState(editorState);
 
     if (!statePluginData) {
       return state;
     }
 
     const coords =
+      statePluginData.active &&
       statePluginData.queryMarkPos &&
       view.coordsAtPos(statePluginData.queryMarkPos);
 
