@@ -2,7 +2,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 
 import { isQueryActive, findTypeAheadQuery } from './helpers/query';
 import { removeTypeAheadMark } from './commands';
-import { DOWN, UP, ENTER } from './actions';
+import * as actions from './actions';
 
 export const typeAheadStatePluginKey = new PluginKey('typeahead-state-plugin');
 
@@ -22,28 +22,26 @@ export function typeAheadStatePlugin() {
         const meta = tr.getMeta(typeAheadStatePluginKey) || {};
         const { action } = meta;
         switch (action) {
-          case ENTER: {
+          case actions.SELECT_INDEX: {
             return {
               ...pluginState,
               active: false,
             };
           }
-          case DOWN: {
+          case actions.INCREMENT_INDEX: {
             return {
               ...pluginState,
               index: pluginState.index + 1,
             };
           }
-          case UP: {
+          case actions.DECREMENT_INDEX: {
             return {
               ...pluginState,
               index: pluginState.index - 1,
             };
           }
           default: {
-            const r = defaultActionHandler(newEditorState, pluginState);
-            console.log(r);
-            return r;
+            return defaultActionHandler(newEditorState, pluginState);
           }
         }
       },
@@ -51,7 +49,6 @@ export function typeAheadStatePlugin() {
     view() {
       return {
         update: (editorView, prevEditorState) => {
-          console.log('editorview update');
           const pluginState = this.key.getState(editorView.state);
           if (!pluginState.active) {
             removeTypeAheadMark()(editorView.state, editorView.dispatch);
@@ -63,8 +60,7 @@ export function typeAheadStatePlugin() {
   });
 }
 
-function defaultActionHandler(editorState, pluginState) {
-  console.log('here default');
+export function defaultActionHandler(editorState, pluginState) {
   const { typeAheadQuery } = editorState.schema.marks;
   const { doc, selection } = editorState;
   const { from, to } = selection;

@@ -26,3 +26,25 @@ export const removeTypeAheadMark = () => (state, dispatch) => {
   }
   return true;
 };
+
+export const dismissCommand = () => (state, dispatch) => {
+  const queryMark = findTypeAheadQuery(state);
+
+  if (queryMark === null) {
+    return false;
+  }
+
+  const { start, end } = queryMark;
+  const { schema } = state;
+  const markType = schema.marks.typeAheadQuery;
+  if (start === -1) {
+    return false;
+  }
+
+  if (dispatch) {
+    dispatch(
+      state.tr.removeMark(start, end, markType).removeStoredMark(markType),
+    );
+  }
+  return true;
+};

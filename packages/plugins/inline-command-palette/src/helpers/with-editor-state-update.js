@@ -8,27 +8,28 @@ export function withEditorStateUpdate({ initialState, transformEditorState }) {
         super(props);
         this.state = initialState;
 
-        props.onEditorStateUpdate((tr, view, prevEditorState, editorState) => {
-          if (!editorState) {
-            return;
-          }
+        props.onEditorStateUpdate(
+          ({ tr, view, prevEditorState, editorState }) => {
+            if (!editorState) {
+              return;
+            }
 
-          const newState = transformEditorState(this.state, {
-            tr,
-            view,
-            prevEditorState,
-            editorState,
-          });
+            const newState = transformEditorState(this.state, {
+              tr,
+              view,
+              prevEditorState,
+              editorState,
+            });
 
-          if (newState !== this.state) {
-            this.setState(newState);
-          }
-        });
+            if (newState !== this.state) {
+              this.setState(newState);
+            }
+          },
+        );
       }
 
       render() {
-        const { onEditorStateUpdate, ...otherProps } = this.props;
-        return <Comp {...otherProps} {...this.state} />;
+        return <Comp {...this.props} {...this.state} />;
       }
     }
 
