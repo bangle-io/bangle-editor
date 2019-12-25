@@ -60,7 +60,7 @@ function add(obj, props) {
   return copy;
 }
 
-// :: (OrderedMap<NodeSpec>, string, ?string) → OrderedMap<NodeSpec>
+// :: (OrderedMap<NodeSpec>, string, ?string)->OrderedMap<NodeSpec>
 // Convenience function for adding list-related node types to a map
 // specifying the nodes for a schema. Adds
 // [`orderedList`](#schema-list.orderedList) as `"ordered_list"`,
@@ -81,7 +81,7 @@ export function addListNodes(nodes, itemContent, listGroup) {
   });
 }
 
-// :: (NodeType, ?Object) → (state: EditorState, dispatch: ?(tr: Transaction)) → bool
+// :: (NodeType, ?Object)->(state: EditorState, dispatch: ?(tr: Transaction))->bool
 // Returns a command function that wraps the selection in a list with
 // the given type an attributes. If `dispatch` is null, only return a
 // value to indicate whether this is possible, but don't actually
@@ -161,7 +161,7 @@ function doWrapInList(tr, range, wrappers, joinBefore, listType) {
   return tr;
 }
 
-// :: (NodeType) → (state: EditorState, dispatch: ?(tr: Transaction)) → bool
+// :: (NodeType)->(state: EditorState, dispatch: ?(tr: Transaction))->bool
 // Build a command that splits a non-empty textblock at the top level
 // of a list item by also splitting that list item.
 export function splitListItem(itemType) {
@@ -218,7 +218,7 @@ export function splitListItem(itemType) {
   };
 }
 
-// :: (NodeType) → (state: EditorState, dispatch: ?(tr: Transaction)) → bool
+// :: (NodeType)->(state: EditorState, dispatch: ?(tr: Transaction))->bool
 // Create a command to lift the list item around the selection up into
 // a wrapping list.
 export function liftListItem(itemType) {
@@ -324,7 +324,7 @@ function liftOutOfList(state, dispatch, range) {
   return true;
 }
 
-// :: (NodeType) → (state: EditorState, dispatch: ?(tr: Transaction)) → bool
+// :: (NodeType)->(state: EditorState, dispatch: ?(tr: Transaction))->bool
 // Create a command to sink the list item around the selection down
 // into an inner list.
 export function sinkListItem(itemType) {

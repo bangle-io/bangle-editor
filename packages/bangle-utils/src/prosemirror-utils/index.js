@@ -11,6 +11,18 @@ export function isMarkActive(editorState, type) {
   return Boolean(editorState.doc.rangeHasMark(from, to, type));
 }
 
+// export function isMarkActive(mark, doc, from, to) {
+//   let active = false;
+// // TIP on how to iterate between all nodes
+//   doc.nodesBetween(from, to, (node) => {
+//     if (!active && mark.isInSet(node.marks)) {
+//       active = true;
+//     }
+//   });
+
+//   return active;
+// }
+
 // TODO document this, probably gets the attributes of the mark of the current selection
 export default function getMarkAttrs(editorState, type) {
   const { from, to } = editorState.selection;

@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Fragment, Node } from 'prosemirror-model';
+import { PluginKey } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
-
 import Tooltip from './ui/Tooltip';
 import { typeAheadInputRule } from './type-ahead-input-rule';
 import {
@@ -8,9 +10,12 @@ import {
   getTypeaheadQueryString,
   findTypeAheadQuery,
 } from './helpers/query';
+import { SELECT_CURRENT } from './action';
+import { selectItem } from './commands';
 
+const TRIGGER = '/';
 export const commandPalettePlugins = [
-  ({ schema }) => typeAheadInputRule(schema, '/'),
+  ({ schema }) => typeAheadInputRule(schema, TRIGGER),
 ];
 
 export class CommandPalette extends React.Component {
@@ -51,47 +56,60 @@ export class CommandPalette extends React.Component {
     this.setState({
       isActive,
       query: getTypeaheadQueryString(editorState),
-      coords: queryMark && view.coordsAtPos(queryMark.start),
+      coords: view.coordsAtPos(queryMark.start),
     });
   }
 
   _onEnter(editorState, dispatch) {
-    console.log('enter pressed');
+    return selectItem({
+      item: this.props.items[this.state.index],
+      trigger: TRIGGER,
+    })(editorState, dispatch);
   }
 
   _onArrowUp(editorState, dispatch) {
-    this.setState((state) => ({ index: state.index - 1 }));
+    this.setState((state) => ({
+      index:
+        (this.props.items.length + state.index - 1) % this.props.items.length,
+    }));
+    return true;
   }
 
   _onArrowDown(editorState, dispatch) {
-    this.setState((state) => ({ index: state.index + 1 }));
+    this.setState((state) => ({
+      index: (state.index + 1) % this.props.items.length,
+    }));
+    return true;
   }
 
   componentDidMount() {
-    const handlerCreator = (handler) => (editorState, dispatch) => {
+    const commandCreator = (command) => (editorState, dispatch) => {
       if (!isTypeAheadQueryActive(editorState)) {
         return false;
       }
-      if (dispatch) {
-        // TOFIX need to dispatch here
-        handler(editorState, dispatch);
-        // dispatch(
-        //   editorState.tr.setMeta(typeAheadStatePluginKey, { action: 'UP' }),
-        // );
-      }
-      return true;
+      return command(editorState, dispatch);
     };
 
     this.props.addPlugins([
       keymap({
-        Enter: handlerCreator(this._onEnter),
-        ArrowDown: handlerCreator(this._onArrowUp),
-        ArrowUp: handlerCreator(this._onArrowDown),
+        Enter: commandCreator(this._onEnter),
+        ArrowDown: commandCreator(this._onArrowUp),
+        ArrowUp: commandCreator(this._onArrowDown),
       }),
     ]);
   }
 
   render() {
-    return <Tooltip {...this.state} />;
+    return <Tooltip {...this.state} items={this.props.items} />;
   }
 }
+
+CommandPalette.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  addPlugins: PropTypes.func.isRequired,
+  onEditorStateUpdate: PropTypes.func.isRequired,
+};
