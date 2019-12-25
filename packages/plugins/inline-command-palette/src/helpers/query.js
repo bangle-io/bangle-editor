@@ -19,7 +19,7 @@ export function findTypeAheadQuery(state) {
   return findQueryMark(typeAheadQuery, doc, from - 1, to);
 }
 
-export function isQueryActive(mark, doc, from, to) {
+export function isMarkActive(mark, doc, from, to) {
   let active = false;
 
   doc.nodesBetween(from, to, (node) => {
@@ -29,4 +29,38 @@ export function isQueryActive(mark, doc, from, to) {
   });
 
   return active;
+}
+
+export function isTypeAheadQueryActive(editorState) {
+  const { typeAheadQuery } = editorState.schema.marks;
+  const { doc, selection } = editorState;
+  const { from, to } = selection;
+
+  // TIP way to get if selection is empty or not
+  // TOFIX 2 if the selection becomes too big (escape pressed) error throws in `typeAheadMark.attrs.trigger;`
+  //        so this prevents that
+  if (!selection.empty) {
+    return false;
+  }
+  return isMarkActive(typeAheadQuery, doc, from - 1, to);
+}
+
+export function getTypeaheadQueryString(editorState) {
+  const { nodeBefore } = editorState.selection.$from;
+
+  // nodeBefore in a new line (a new paragraph) is null
+  if (!nodeBefore) {
+    return '';
+  }
+
+  const { typeAheadQuery } = editorState.schema.marks;
+  const typeAheadMark = typeAheadQuery.isInSet(nodeBefore.marks || []);
+  const textContent = nodeBefore.textContent || '';
+  const trigger = typeAheadMark.attrs.trigger;
+  return (
+    textContent
+      // eslint-disable-next-line no-control-regex
+      .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
+      .replace(trigger, '')
+  );
 }

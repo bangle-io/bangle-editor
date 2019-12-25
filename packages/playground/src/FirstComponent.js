@@ -121,9 +121,14 @@ export class ProseMirrorView {
         // intercept the transaction cycle
         // console.log(tr);
         const prevEditorState = this.view.state;
-        const newEditorState = this.view.state.apply(tr);
-        this.view.updateState(newEditorState);
-        onStateUpdate(tr, this.view, prevEditorState, newEditorState);
+        const editorState = this.view.state.apply(tr);
+        this.view.updateState(editorState);
+        onStateUpdate({
+          tr,
+          view: this.view,
+          prevEditorState,
+          editorState,
+        });
       },
     });
     window.view = this.view;
@@ -172,7 +177,7 @@ export class ProsemirrorComp extends React.Component {
   };
 
   addPlugins = (plugins) => {
-    this.plugins.push(...(Array.isArray(plugins) ? plugins : [plugins]));
+    this.plugins = this.plugins.concat(plugins);
   };
 
   onStateUpdate = (...args) => {
