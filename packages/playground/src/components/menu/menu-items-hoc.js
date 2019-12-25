@@ -64,7 +64,7 @@ export function dropdownHOC({ label, renderItems }) {
   }
 
   function Dropdown(props) {
-    const [active, setActive] = useState(true);
+    const [active, setActive] = useState(false);
     return (
       <div className={`dropdown is-white ${active ? 'is-active' : ''}`}>
         <div className="dropdown-trigger">

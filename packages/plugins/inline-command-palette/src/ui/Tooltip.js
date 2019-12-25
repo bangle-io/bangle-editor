@@ -45,6 +45,15 @@ export default class Tooltip extends React.PureComponent {
         }}
       >
         {this.props.query} {this.props.index}
+        {this.props.items.map((item, i) => (
+          <div
+            style={{
+              backgroundColor: i === this.props.index ? 'yellow' : 'white',
+            }}
+          >
+            hi {item.label}
+          </div>
+        ))}
       </div>,
       this.tooltip,
     );

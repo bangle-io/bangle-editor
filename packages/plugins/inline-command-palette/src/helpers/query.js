@@ -1,3 +1,5 @@
+import { isMarkActive } from 'bangle-utils/src/prosemirror-utils';
+
 export function findQueryMark(mark, doc, from, to) {
   let queryMark = { start: -1, end: -1 };
   doc.nodesBetween(from, to, (node, pos) => {
@@ -16,33 +18,24 @@ export function findTypeAheadQuery(state) {
   const { doc, schema } = state;
   const { typeAheadQuery } = schema.marks;
   const { from, to } = state.selection;
-  return findQueryMark(typeAheadQuery, doc, from - 1, to);
-}
-
-export function isMarkActive(mark, doc, from, to) {
-  let active = false;
-
-  doc.nodesBetween(from, to, (node) => {
-    if (!active && mark.isInSet(node.marks)) {
-      active = true;
-    }
-  });
-
-  return active;
+  const queryMark = findQueryMark(typeAheadQuery, doc, from - 1, to);
+  if (queryMark.start === -1) {
+    return;
+  }
+  return queryMark;
 }
 
 export function isTypeAheadQueryActive(editorState) {
   const { typeAheadQuery } = editorState.schema.marks;
-  const { doc, selection } = editorState;
-  const { from, to } = selection;
 
   // TIP way to get if selection is empty or not
-  // TOFIX 2 if the selection becomes too big (escape pressed) error throws in `typeAheadMark.attrs.trigger;`
+  // TODO-2 if the selection becomes too big (escape pressed) error throws in `typeAheadMark.attrs.trigger;`
   //        so this prevents that
-  if (!selection.empty) {
+  if (!editorState.selection.empty) {
     return false;
   }
-  return isMarkActive(typeAheadQuery, doc, from - 1, to);
+
+  return isMarkActive(editorState, typeAheadQuery);
 }
 
 export function getTypeaheadQueryString(editorState) {

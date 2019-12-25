@@ -30,6 +30,7 @@ import { schema as baseSchema } from 'bangle-utils/src/setup-helpers/schema';
 
 import menuItems from './components/menu/menu-items';
 import getMarkAttrs from 'bangle-utils/src/prosemirror-utils';
+import { typeaheadItems } from './components/menu/typeahead-items';
 
 export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
@@ -203,6 +204,7 @@ export class ProsemirrorComp extends React.Component {
         <CommandPalette
           addPlugins={this.addPlugins}
           onEditorStateUpdate={this.registerEditorStateHandlers}
+          items={typeaheadItems}
         />
       </>
     );
