@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Fragment, Node } from 'prosemirror-model';
-import { PluginKey } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 import Tooltip from './ui/Tooltip';
 import { typeAheadInputRule } from './type-ahead-input-rule';
@@ -9,11 +7,12 @@ import {
   isTypeAheadQueryActive,
   getTypeaheadQueryString,
   findTypeAheadQuery,
+  doesQueryHaveTrigger,
 } from './helpers/query';
-import { SELECT_CURRENT } from './action';
-import { selectItem } from './commands';
+import { selectItem, removeTypeAheadMark } from './commands';
 
 const TRIGGER = '/';
+
 export const commandPalettePlugins = [
   ({ schema }) => typeAheadInputRule(schema, TRIGGER),
 ];
@@ -21,95 +20,119 @@ export const commandPalettePlugins = [
 export class CommandPalette extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       isActive: false,
-      query: '',
+      query: null,
       index: 0,
+      nodeDOM: null,
     };
-    this._onEnter = this._onEnter.bind(this);
-    this._onArrowUp = this._onArrowUp.bind(this);
-    this._onArrowDown = this._onArrowDown.bind(this);
+    this.state = this.initialState;
     this._handleEditorUpdate = this._handleEditorUpdate.bind(this);
+    this._handleItemClick = this._handleItemClick.bind(this);
+    this.props.onEditorStateUpdate(this._handleEditorUpdate);
+  }
 
-    this.props.onEditorStateUpdate(
-      ({ tr, view, prevEditorState, editorState }) => {
-        this._handleEditorUpdate({ view, editorState });
-      },
-    );
+  _handleItemClick(selectedIndex) {
+    if (this.view && this.editorState) {
+      commandCreator(
+        selectItem({
+          item: this.props.items[selectedIndex],
+          trigger: TRIGGER,
+        }),
+      )(this.editorState, this.view.dispatch);
+      this.view.focus();
+    }
   }
 
   _handleEditorUpdate({ view, editorState }) {
+    this.view = view;
+    this.editorState = editorState;
     if (!editorState) {
       return;
     }
+
     const isActive = isTypeAheadQueryActive(editorState);
 
     if (!isActive) {
       if (this.state.isActive) {
-        this.setState({ isActive: false, query: null, coords: null });
+        this.setState(this.initialState);
       }
       return;
     }
 
+    // Disable type ahead query when removing trigger.
+    if (isActive && !doesQueryHaveTrigger(editorState)) {
+      removeTypeAheadMark()(editorState, view.dispatch);
+      return this.setState(this.initialState);
+    }
+
     const queryMark = findTypeAheadQuery(editorState);
+    // not sure but I guess if you press enter and your
+    // query is in new paragraph, queryMark will be empty
+    if (!queryMark || queryMark.start === -1) {
+      return this.setState(this.initialState);
+    }
+    const query = getTypeaheadQueryString(editorState);
 
     this.setState({
       isActive,
-      query: getTypeaheadQueryString(editorState),
-      coords: view.coordsAtPos(queryMark.start),
+      query,
+      nodeDOM: view.nodeDOM(queryMark.start),
     });
   }
 
-  _onEnter(editorState, dispatch) {
-    return selectItem({
-      item: this.props.items[this.state.index],
-      trigger: TRIGGER,
-    })(editorState, dispatch);
-  }
-
-  _onArrowUp(editorState, dispatch) {
-    this.setState((state) => ({
-      index:
-        (this.props.items.length + state.index - 1) % this.props.items.length,
-    }));
-    return true;
-  }
-
-  _onArrowDown(editorState, dispatch) {
-    this.setState((state) => ({
-      index: (state.index + 1) % this.props.items.length,
-    }));
-    return true;
-  }
-
   componentDidMount() {
-    const commandCreator = (command) => (editorState, dispatch) => {
-      if (!isTypeAheadQueryActive(editorState)) {
-        return false;
-      }
-      return command(editorState, dispatch);
-    };
-
-    this.props.addPlugins([
-      keymap({
-        Enter: commandCreator(this._onEnter),
-        ArrowDown: commandCreator(this._onArrowUp),
-        ArrowUp: commandCreator(this._onArrowDown),
+    const keymapPlugin = keymap({
+      Enter: commandCreator((editorState, dispatch) => {
+        return selectItem({
+          item: this.props.items[this.state.index],
+          trigger: TRIGGER,
+        })(editorState, dispatch);
       }),
-    ]);
+      ArrowUp: commandCreator((editorState, dispatch) => {
+        this.setState((state, props) => ({
+          index: (props.items.length + state.index - 1) % props.items.length,
+        }));
+        return true;
+      }),
+      ArrowDown: commandCreator((editorState, dispatch) => {
+        this.setState((state) => ({
+          index: (state.index + 1) % this.props.items.length,
+        }));
+        return true;
+      }),
+      Escape: commandCreator(removeTypeAheadMark()),
+    });
+
+    this.props.addPlugins([keymapPlugin]);
   }
 
   render() {
-    return <Tooltip {...this.state} items={this.props.items} />;
+    return (
+      <Tooltip
+        {...this.state}
+        items={this.props.items}
+        handleItemClick={this._handleItemClick}
+      />
+    );
   }
 }
 
 CommandPalette.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
     }),
   ).isRequired,
   addPlugins: PropTypes.func.isRequired,
   onEditorStateUpdate: PropTypes.func.isRequired,
 };
+
+function commandCreator(command) {
+  return (editorState, dispatch) => {
+    if (!isTypeAheadQueryActive(editorState)) {
+      return false;
+    }
+    return command(editorState, dispatch);
+  };
+}

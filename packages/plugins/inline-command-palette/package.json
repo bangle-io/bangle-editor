@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@quartzy/prosemirror-suggestions": "^0.1.1",
+    "popper.js": "^1.16.0",
     "prosemirror-commands": "^1.1.2",
     "prosemirror-schema-basic": "^1.0.1"
   }

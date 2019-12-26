@@ -3,3 +3,7 @@
 .bangle-menu-row:hover {
   background-color: $dropdown-item-hover-background-color;
 }
+
+.bangle-menu-row.is-active {
+  background-color: $dropdown-item-active-background-color;
+}
