@@ -1,8 +1,9 @@
 import { findTypeAheadQuery, getTypeaheadQueryString } from './helpers/query';
 import { SELECT_ITEM } from './action';
 import { Fragment, Node } from 'prosemirror-model';
-import { PluginKey } from 'prosemirror-state';
+import { PluginKey, Selection, NodeSelection } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
+import { isChromeWithSelectionBug } from 'bangle-utils';
 
 export const typeAheadStatePluginKey = new PluginKey('typeahead-state-plugin');
 
@@ -33,15 +34,14 @@ export const removeTypeAheadMark = () => (state, dispatch) => {
   return true;
 };
 
-export const dismissCommand = () => (state, dispatch) => {
-  const queryMark = findTypeAheadQuery(state);
-  debugger;
+export const dismissCommand = () => (editorState, dispatch) => {
+  const queryMark = findTypeAheadQuery(editorState);
   if (queryMark === null) {
     return false;
   }
 
   const { start, end } = queryMark;
-  const { schema } = state;
+  const { schema } = editorState;
   const markType = schema.marks.typeAheadQuery;
   if (start === -1) {
     return false;
@@ -49,7 +49,9 @@ export const dismissCommand = () => (state, dispatch) => {
 
   if (dispatch) {
     dispatch(
-      state.tr.removeMark(start, end, markType).removeStoredMark(markType),
+      editorState.tr
+        .removeMark(start, end, markType)
+        .removeStoredMark(markType),
     );
   }
   return true;
@@ -75,17 +77,19 @@ export const selectItem = ({ item, trigger }) => (editorState, dispatch) => {
 
   const insert = (
     maybeNode, // Node | Object | string | Fragment,
-    opts,
+    opts = {},
   ) => {
     let tr = editorState.tr
       .setMeta(typeAheadStatePluginKey, { action: SELECT_ITEM })
+      .removeStoredMark(editorState.schema.marks.typeAheadQuery)
       .replaceWith(start, end, Fragment.empty);
 
     if (!maybeNode) {
       return tr;
     }
 
-    const isInputFragment = maybeNode;
+    const isInputFragment = maybeNode instanceof Fragment;
+
     let node;
     try {
       node =
@@ -117,27 +121,32 @@ export const selectItem = ({ item, trigger }) => (editorState, dispatch) => {
        *
        */
     } else if (node.isInline || isInputFragment) {
-      throw new Error('nup');
-      // const fragment = isInputFragment
-      //   ? node
-      //   : Fragment.fromArray([node, editorState.schema.text(' ')]);
-      // tr = tr.replaceWith(start, start, fragment);
-      // // This problem affects Chrome v58+. See: https://github.com/ProseMirror/prosemirror/issues/710
-      // if (isChromeWithSelectionBug) {
-      //   const selection = document.getSelection();
-      //   if (selection) {
-      //     selection.empty();
-      //   }
-      // }
-      // if (opts.selectInlineNode) {
-      //   // Select inserted node
-      //   tr = tr.setSelection(NodeSelection.create(tr.doc, start));
-      // } else {
-      //   // Placing cursor after node + space.
-      //   tr = tr.setSelection(
-      //     Selection.near(tr.doc.resolve(start + fragment.size)),
-      //   );
-      // }
+      // throw new Error('nup');
+      const fragment = isInputFragment
+        ? node
+        : Fragment.fromArray([node, editorState.schema.text(' ')]);
+
+      tr = tr.replaceWith(start, start, fragment);
+      // This problem affects Chrome v58+. See: https://github.com/ProseMirror/prosemirror/issues/710
+      if (isChromeWithSelectionBug) {
+        const selection = document.getSelection();
+        if (selection) {
+          selection.empty();
+        }
+      }
+
+      // TODO-2 do we need this select inline option
+      if (opts.selectInlineNode) {
+        // Select inserted node
+        tr = tr.setSelection(NodeSelection.create(tr.doc, start));
+      } else {
+        // Placing cursor after node + space.
+        tr = tr.setSelection(
+          Selection.near(tr.doc.resolve(start + fragment.size)),
+        );
+      }
+
+      return tr;
     }
 
     return tr;

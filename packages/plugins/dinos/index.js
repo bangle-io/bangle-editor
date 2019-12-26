@@ -1,6 +1,7 @@
 import React from 'react';
 import { MenuItem } from 'prosemirror-menu';
 import classnames from 'classnames';
+import { Fragment, Node } from 'prosemirror-model';
 
 import { DINO_NODE_NAME, dinoAttrTypes, dinoNames } from './constants';
 import { nodeHelpers } from 'bangle-utils';
@@ -52,6 +53,34 @@ function insertDino(schema, type) {
     return true;
   };
 }
+
+export const typeaheadItems = [
+  ...dinoNames.map((dinoName) => ({
+    icon: (
+      <img
+        src={DINO_IMAGES[dinoName]}
+        alt={dinoName}
+        className={classnames({
+          mydino: true,
+          plugins_dino: true,
+        })}
+      />
+    ),
+    title: 'Insert ' + dinoName,
+    getInsertNode: (editorState) => {
+      const attr = {
+        'data-type': dinoName,
+      };
+      if (dinoName === 'tyrannosaurus') {
+        attr['data-blinks'] = 'yes';
+      }
+
+      return editorState.schema.nodes[DINO_NODE_NAME].create(
+        nodeHelpers.createAttrObj(dinoAttrTypes, attr),
+      );
+    },
+  })),
+];
 
 export default () => ({
   menu: {

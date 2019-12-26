@@ -14,7 +14,7 @@ export function MenuRow({ onClick, hint, icon, title, subtitle }) {
     );
 
   return (
-    <div className="dropdown-item is-active bangle-menu-row" onClick={onClick}>
+    <div className="dropdown-item bangle-menu-row" onClick={onClick}>
       <div className="media">
         <div className="media-left">{icon}</div>
         <div className="media-content">

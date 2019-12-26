@@ -18,11 +18,7 @@ export function findTypeAheadQuery(state) {
   const { doc, schema } = state;
   const { typeAheadQuery } = schema.marks;
   const { from, to } = state.selection;
-  const queryMark = findQueryMark(typeAheadQuery, doc, from - 1, to);
-  if (queryMark.start === -1) {
-    return;
-  }
-  return queryMark;
+  return findQueryMark(typeAheadQuery, doc, from - 1, to);
 }
 
 export function isTypeAheadQueryActive(editorState) {
@@ -48,6 +44,12 @@ export function getTypeaheadQueryString(editorState) {
 
   const { typeAheadQuery } = editorState.schema.marks;
   const typeAheadMark = typeAheadQuery.isInSet(nodeBefore.marks || []);
+
+  // typeAheadMark is undefined if you delete the trigger while keeping rest of the query alive
+  if (!typeAheadMark) {
+    return '';
+  }
+
   const textContent = nodeBefore.textContent || '';
   const trigger = typeAheadMark.attrs.trigger;
   return (
@@ -56,4 +58,30 @@ export function getTypeaheadQueryString(editorState) {
       .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
       .replace(trigger, '')
   );
+}
+
+export function doesQueryHaveTrigger(editorState) {
+  const { typeAheadQuery } = editorState.schema.marks;
+  const { nodeBefore } = editorState.selection.$from;
+
+  // nodeBefore in a new line (a new paragraph) is null
+  if (!nodeBefore) {
+    return false;
+  }
+
+  const typeAheadMark = typeAheadQuery.isInSet(nodeBefore.marks || []);
+
+  // typeAheadMark is undefined if you delete the trigger while keeping rest of the query alive
+  if (!typeAheadMark) {
+    return false;
+  }
+
+  const trigger = typeAheadMark.attrs.trigger.replace(
+    // eslint-disable-next-line no-control-regex
+    /([^\x00-\xFF]|[\s\n])+/g,
+    '',
+  );
+  const textContent = nodeBefore.textContent || '';
+
+  return textContent.includes(trigger);
 }
