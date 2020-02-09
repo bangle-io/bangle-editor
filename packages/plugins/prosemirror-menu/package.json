@@ -19,8 +19,8 @@
   "dependencies": {
     "crel": "^3.0.0",
     "prosemirror-commands": "^1.0.0",
-    "prosemirror-history": "^1.0.0",
-    "prosemirror-state": "^1.0.0"
+    "prosemirror-history": "^1.0.4",
+    "prosemirror-state": "^1.2.4"
   },
   "devDependencies": {
     "rollup": "^0.49.0",
