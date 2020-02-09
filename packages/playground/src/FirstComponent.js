@@ -147,7 +147,8 @@ export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
   nodeViews = {};
   schema = baseSchema;
-  plugins = [...commandPalettePlugins];
+  plugins = [];
+  // plugins = [...commandPalettePlugins];
   editorStateUpdaterHandlers = [];
   componentDidMount() {
     const node = this.myRef.current;
