@@ -4,7 +4,6 @@ import {
   reactNodeViewHOC,
   ReactNodeView,
 } from './helper-react/react-node-view';
-import * as menuPlugin from './helper-react';
 import browser, { isChromeWithSelectionBug } from './utils/browser';
 export * from './extensions';
 export * from './nodes';
@@ -15,7 +14,6 @@ export {
   logging,
   reactNodeViewHOC,
   ReactNodeView,
-  menuPlugin,
   browser,
   isChromeWithSelectionBug,
 };
