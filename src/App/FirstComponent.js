@@ -39,6 +39,9 @@ export class ProsemirrorComp extends React.Component {
           new MenuExtension(),
           new History(),
         ],
+        editorProps: {
+          attributes: { class: 'bangle-editor' },
+        },
       });
       this.setState({
         editor,

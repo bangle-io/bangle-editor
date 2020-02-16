@@ -21,6 +21,25 @@ export function MenuBar({ editor }) {
         iconType="italic"
       />
       <MenuItemButton
+        active={editor.isActive.code()}
+        enabled={true}
+        onClick={() => editor.commands.code()}
+        label="Code"
+        iconType="code  "
+      />
+      <MenuItemButton
+        enabled={true}
+        onClick={() => editor.commands.undo()}
+        label="Undo"
+        iconType="undo"
+      />
+      <MenuItemButton
+        enabled={true}
+        onClick={() => editor.commands.redo()}
+        label="Redo"
+        iconType="redo"
+      />
+      <MenuItemButton
         active={editor.isActive.dino()}
         enabled={true}
         onClick={() => editor.commands.dino('brontosaurus')}
