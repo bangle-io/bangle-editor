@@ -1,12 +1,12 @@
-import { Extension } from './extension';
+import { Extension } from '../extensions/extension';
 
-export class Mark extends Extension {
+export class Node extends Extension {
   constructor(options = {}) {
     super(options);
   }
 
   get type() {
-    return 'mark';
+    return 'node';
   }
 
   get view() {

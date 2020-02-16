@@ -13,12 +13,10 @@ import { baseKeymap } from 'prosemirror-commands';
 import { inputRules, undoInputRule } from 'prosemirror-inputrules';
 import { markIsActive, nodeIsActive, getMarkAttrs } from 'tiptap-utils';
 
-import { ExtensionManager } from './extension-manager';
-import { Emitter } from './emitter';
-import { Text } from './text';
-import { Paragraph } from './paragraph';
-import { Doc } from './doc';
-import { reactNodeViewHOC } from '../helper-react/react-node-view';
+import { ExtensionManager } from './utils/extension-manager';
+import { Emitter } from './utils/emitter';
+import { Text, Paragraph, Doc } from './nodes';
+import { reactNodeViewHOC } from './helper-react/react-node-view';
 
 export class Editor extends Emitter {
   constructor(domElement, options = {}) {

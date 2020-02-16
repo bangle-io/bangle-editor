@@ -1,6 +1,7 @@
 import { keymap } from 'prosemirror-keymap';
-import { Extension } from './extension';
-import { Editor } from './editor';
+
+import { Extension } from '../extensions';
+import { Editor } from '../editor';
 
 export class ExtensionManager {
   constructor(extensions = [new Extension()], editor = new Editor()) {
