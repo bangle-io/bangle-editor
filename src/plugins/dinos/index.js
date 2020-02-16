@@ -8,7 +8,7 @@ import {
   DINO_WRAPPER_ELEMENT,
   dinoNames,
 } from './constants';
-import { Node } from 'Utils/bangle-utils/helper-classes/node';
+import { Node } from 'Utils/bangle-utils/nodes';
 
 import brontosaurusImg from './img/brontosaurus.png';
 import stegosaurusImg from './img/stegosaurus.png';

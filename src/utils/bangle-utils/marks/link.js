@@ -2,7 +2,7 @@ import { Plugin } from 'prosemirror-state';
 import { updateMark, removeMark, pasteRule } from 'tiptap-commands';
 import { getMarkAttrs } from 'tiptap-utils';
 
-import { Mark } from '../helper-classes/mark';
+import { Mark } from './mark';
 
 export class Link extends Mark {
   get name() {

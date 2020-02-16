@@ -1,6 +1,6 @@
 import { toggleMark, markInputRule, markPasteRule } from 'tiptap-commands';
 
-import { Mark } from '../helper-classes/mark';
+import { Mark } from './mark';
 
 export class Italic extends Mark {
   get name() {

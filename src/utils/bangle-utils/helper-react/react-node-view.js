@@ -1,8 +1,8 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import debounce from 'debounce';
-import { Editor } from '../helper-classes/editor';
-import { Node } from '../helper-classes/node';
+import { Editor } from '../editor';
+import { Node } from '../nodes';
 
 // Note: this HOC is needed as it creates/manages n number of ReactNodeView
 // depending on PM.

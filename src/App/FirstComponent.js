@@ -7,13 +7,17 @@ import applyDevTools from 'prosemirror-dev-tools';
 import Dinos from 'Plugins/dinos';
 import Emoji from 'Plugins/emoji';
 
-import { Editor } from 'Utils/bangle-utils/helper-classes/editor';
-import { Bold } from 'Utils/bangle-utils/helper-marks/bold';
-import { Code } from 'Utils/bangle-utils/helper-marks/code';
-import { Italic } from 'Utils/bangle-utils/helper-marks/italic';
-import { Link } from 'Utils/bangle-utils/helper-marks/link';
-import { Strike } from 'Utils/bangle-utils/helper-marks/strike';
-import { Underline } from 'Utils/bangle-utils/helper-marks/underline';
+import { Editor } from 'Utils/bangle-utils';
+import { History } from 'Utils/bangle-utils/extensions';
+import {
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+} from 'Utils/bangle-utils/marks';
+
 import { MenuExtension } from './components/menu/index';
 
 export class ProsemirrorComp extends React.Component {
@@ -33,6 +37,7 @@ export class ProsemirrorComp extends React.Component {
           new Dinos(),
           new Emoji(),
           new MenuExtension(),
+          new History(),
         ],
       });
       this.setState({

@@ -1,9 +1,7 @@
-import { MenuItem } from 'prosemirror-menu';
-
 import { EMOJI_NODE_NAME, emojiAttrTypes, validEmojis } from './constants';
 import { nodeHelpers } from 'Utils/bangle-utils';
 import './emoji.css';
-import { Node } from 'Utils/bangle-utils/helper-classes/node';
+import { Node } from 'Utils/bangle-utils/nodes';
 import { Emoji, Schema } from './Emoji';
 
 function insertEmoji(schema, name) {

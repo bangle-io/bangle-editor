@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Extension } from 'Utils/bangle-utils/helper-classes/extension';
+import { Extension } from 'Utils/bangle-utils/extensions/extension';
 import { reactPluginUIWrapper } from 'Utils/bangle-utils/helper-react/react-plugin-ui-wrapper';
 
 export function MenuBar({ editor }) {
