@@ -7,15 +7,15 @@ import { isChromeWithSelectionBug } from 'Utils/bangle-utils';
 
 export const typeAheadStatePluginKey = new PluginKey('typeahead-state-plugin');
 
-export const removeTypeAheadMark = () => (state, dispatch) => {
-  const queryMark = findTypeAheadQuery(state);
+export const removeTypeAheadMark = () => (editorState, dispatch) => {
+  const queryMark = findTypeAheadQuery(editorState);
 
   if (queryMark === null) {
     return false;
   }
 
   const { start, end } = queryMark;
-  const { schema } = state;
+  const { schema } = editorState;
   const markType = schema.marks.typeAheadQuery;
   if (start === -1) {
     return false;
@@ -23,7 +23,7 @@ export const removeTypeAheadMark = () => (state, dispatch) => {
 
   if (dispatch) {
     dispatch(
-      state.tr
+      editorState.tr
         .removeMark(start, end, markType)
         // stored marks are marks which will be carried forward to whatever
         // the user types next, like if current mark
