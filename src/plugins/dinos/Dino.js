@@ -7,7 +7,7 @@ import {
   DINO_NODE_NAME,
   dinoAttrTypes,
   dinoAttrDefaults,
-  DINO_WRAPPER_ELEMENT
+  DINO_WRAPPER_ELEMENT,
 } from './constants';
 
 import brontosaurusImg from './img/brontosaurus.png';
@@ -21,26 +21,26 @@ export const DINO_IMAGES = {
   stegosaurus: stegosaurusImg,
   triceratops: triceratopsImg,
   tyrannosaurus: tyrannosaurusImg,
-  pterodactyl: pterodactylImg
+  pterodactyl: pterodactylImg,
 };
 
 class Dino extends ReactNodeView {
   constructor(props) {
     super(props);
     this.state = {
-      selected: false
+      selected: false,
     };
   }
 
   nodeViewSelectNode() {
     this.setState({
-      selected: true
+      selected: true,
     });
   }
 
   nodeViewDeselectNode() {
     this.setState({
-      selected: false
+      selected: false,
     });
   }
 
@@ -48,7 +48,7 @@ class Dino extends ReactNodeView {
     const { selected } = this.state;
     const attrs = nodeHelpers.getAttrsFromNode(
       dinoAttrTypes,
-      this.nodeView.node
+      this.nodeView.node,
     );
 
     const type = attrs['data-type'];
@@ -57,10 +57,10 @@ class Dino extends ReactNodeView {
         src={DINO_IMAGES[type]}
         alt={type}
         className={classnames({
-          mydino: true,
-          plugins_dino: true,
+          'mydino': true,
+          'plugins_dino': true,
           'ProseMirror-selectednode': selected,
-          blink: attrs['data-blinks'] === 'yes'
+          'blink': attrs['data-blinks'] === 'yes',
         })}
       />
     );
@@ -76,10 +76,10 @@ Dino.Schema = {
     draggable: true,
     // NOTE: Seems like this is used as an output to outside world
     //      when you like copy or drag
-    toDOM: node => {
+    toDOM: (node) => {
       return [
         DINO_WRAPPER_ELEMENT,
-        nodeHelpers.attributesForToDom(dinoAttrTypes)(node)
+        nodeHelpers.attributesForToDom(dinoAttrTypes)(node),
       ];
     },
     // NOTE: this is the opposite part where you parse the output of toDOM
@@ -88,10 +88,10 @@ Dino.Schema = {
     parseDOM: [
       {
         tag: DINO_WRAPPER_ELEMENT,
-        getAttrs: nodeHelpers.attributesForParseDom(dinoAttrTypes)
-      }
-    ]
-  }
+        getAttrs: nodeHelpers.attributesForParseDom(dinoAttrTypes),
+      },
+    ],
+  },
 };
 
 export default reactNodeViewHOC(Dino);

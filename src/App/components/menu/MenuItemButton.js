@@ -21,5 +21,5 @@ MenuItemButton.propTypes = {
   enabled: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  iconType: PropTypes.string.isRequired
+  iconType: PropTypes.string.isRequired,
 };

@@ -10,13 +10,13 @@ export const emojiLookup = {
   ...Object.fromEntries(
     Array.from({ length: 500 }, (v, i) => [emojisKeywords[i], emojiList[i]])
       .map(([name, emoji]) => [name, emoji])
-      .slice(450)
-  )
+      .slice(450),
+  ),
 };
 
 export const validEmojis = Object.keys(emojiLookup);
 
 export const emojiAttrTypes = {
-  'data-type': v.oneOf(validEmojis)
+  'data-type': v.oneOf(validEmojis),
 };
 export const emojiAttrDefaults = {};

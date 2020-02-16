@@ -6,7 +6,7 @@ export function findQueryMark(mark, doc, from, to) {
     if (queryMark.start === -1 && mark.isInSet(node.marks)) {
       queryMark = {
         start: pos,
-        end: pos + Math.max(node.textContent.length, 1)
+        end: pos + Math.max(node.textContent.length, 1),
       };
     }
   });
@@ -79,7 +79,7 @@ export function doesQueryHaveTrigger(editorState) {
   const trigger = typeAheadMark.attrs.trigger.replace(
     // eslint-disable-next-line no-control-regex
     /([^\x00-\xFF]|[\s\n])+/g,
-    ''
+    '',
   );
   const textContent = nodeBefore.textContent || '';
 

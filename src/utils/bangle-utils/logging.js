@@ -5,7 +5,7 @@ export function logObject(obj) {
       if (typeof targetValue !== 'function') {
         console.log(`getting[${propKey}]`, {
           target,
-          targetValue
+          targetValue,
         });
         return targetValue;
       }
@@ -14,7 +14,7 @@ export function logObject(obj) {
         console.log(`calling[${propKey}]`, { args, result });
         return result;
       };
-    }
+    },
   };
   return new Proxy(obj, handler);
 }

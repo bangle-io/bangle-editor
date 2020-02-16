@@ -6,7 +6,7 @@ import { toggleMark, setBlockType } from 'prosemirror-commands';
 import { undo, redo } from 'prosemirror-history';
 import {
   isMarkActive,
-  nodeIsActive
+  nodeIsActive,
 } from 'Utils/bangle-utils/prosemirror-utils';
 
 import { default as DinoComp } from 'Plugins/dinos';
@@ -23,31 +23,31 @@ export default [
     label: 'Bold',
     getCommand: ({ schema }) => toggleMark(schema.marks['strong']),
     isActive: ({ schema, editorState }) =>
-      isMarkActive(editorState, schema.marks['strong'])
+      isMarkActive(editorState, schema.marks['strong']),
   }),
   menuButtonHOC({
     iconType: 'italic',
     label: 'Italic',
     getCommand: ({ schema }) => toggleMark(schema.marks['em']),
     isActive: ({ schema, editorState }) =>
-      isMarkActive(editorState, schema.marks['em'])
+      isMarkActive(editorState, schema.marks['em']),
   }),
   menuButtonHOC({
     iconType: 'code',
     label: 'Code',
     getCommand: ({ schema }) => toggleMark(schema.marks['code']),
     isActive: ({ schema, editorState }) =>
-      isMarkActive(editorState, schema.marks['code'])
+      isMarkActive(editorState, schema.marks['code']),
   }),
   menuButtonHOC({
     iconType: 'undo',
     label: 'Undo',
-    getCommand: () => undo
+    getCommand: () => undo,
   }),
   menuButtonHOC({
     iconType: 'redo',
     label: 'Redo',
-    getCommand: () => redo
+    getCommand: () => redo,
   }),
   MenuItemLinkButton,
   menuButtonHOC({
@@ -55,19 +55,19 @@ export default [
     label: 'Heading',
     getCommand: ({ schema }) =>
       setBlockType(schema.nodes['heading'], {
-        level: 3
+        level: 3,
       }),
     isActive: ({ schema, editorState }) =>
       nodeIsActive(editorState, schema.nodes['heading'], {
-        level: 3
-      })
+        level: 3,
+      }),
   }),
   dropdownHOC({
     label: 'Insert',
     renderItems: ({ onClick, editorState, editorView, schema, dispatch }) => {
       const payload = {
         editorState,
-        schema
+        schema,
       };
       return (
         <>
@@ -91,10 +91,10 @@ export default [
                     style={{ margin: '2px 0px' }}
                   />
                 </React.Fragment>
-              )
+              ),
           )}
         </>
       );
-    }
-  })
+    },
+  }),
 ];

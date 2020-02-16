@@ -7,8 +7,8 @@ import './emoji.css';
 export { default as Emoji } from './Emoji';
 
 export function insertMenuItem(schema) {
-  return menu => {
-    validEmojis.forEach(name =>
+  return (menu) => {
+    validEmojis.forEach((name) =>
       menu.insertMenu.content.push(
         new MenuItem({
           title: 'Insert ' + name,
@@ -16,9 +16,9 @@ export function insertMenuItem(schema) {
           enable(state) {
             return insertEmoji(schema, name)(state);
           },
-          run: insertEmoji(schema, name)
-        })
-      )
+          run: insertEmoji(schema, name),
+        }),
+      ),
     );
     return menu;
   };
@@ -32,13 +32,13 @@ function insertEmoji(schema, type) {
     if (!$from.parent.canReplaceWith(index, index, emojiType)) return false;
     if (dispatch) {
       const attr = {
-        'data-type': type
+        'data-type': type,
       };
 
       dispatch(
         state.tr.replaceSelectionWith(
-          emojiType.create(nodeHelpers.createAttrObj(emojiAttrTypes, attr))
-        )
+          emojiType.create(nodeHelpers.createAttrObj(emojiAttrTypes, attr)),
+        ),
       );
     }
     return true;
