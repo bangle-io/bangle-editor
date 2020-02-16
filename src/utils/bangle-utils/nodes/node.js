@@ -1,4 +1,4 @@
-import { Extension } from '../extensions/extension';
+import { Extension } from '../extensions';
 
 export class Node extends Extension {
   constructor(options = {}) {

@@ -1,9 +1,9 @@
 @charset "utf-8";
 
-// Import a Google Font
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+// // Import a Google Font
+// @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
-// Set your brand colors
+// // Set your brand colors
 $purple: #8a4d76;
 $pink: #fa7c91;
 $brown: #757763;
@@ -18,35 +18,48 @@ $link: $pink;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 $background: $white;
-$text: $black-ter;
+$text: $black;
 $light: $grey-lightest;
 
-// // Update some of Bulma's component variables
-// $control-border-width: 2px;
-// $input-border-color: transparent;
-// $input-shadow: none;
+// Update some of Bulma's component variables
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
 
-// Component overides
+// // Component overides
 @import 'bulma/sass/utilities/_all.sass';
 $dropdown-item-hover-background-color: $primary-light;
 $dropdown-menu-min-width: 24rem;
 
-// Import only what you need from Bulma
+// // Import only what you need from Bulma
 @import 'bulma/sass/base/_all.sass';
 @import 'bulma/sass/elements/button.sass';
-@import 'bulma/sass/elements/container.sass';
+// @import 'bulma/sass/elements/container.sass';
 @import 'bulma/sass/elements/title.sass';
 @import 'bulma/sass/elements/_all.sass';
-@import 'bulma/sass/form/_all.sass';
+// @import 'bulma/sass/form/_all.sass';
 @import 'bulma/sass/components/_all.sass';
-@import 'bulma/sass/layout/hero.sass';
-@import 'bulma/sass/layout/section.sass';
 
-ul.bangle-list {
-  list-style-type: unset;
-}
+.bangle-editor {
+  ul {
+    list-style-type: unset;
+  }
+  blockquote p {
+    color: $grey-dark;
+    font-style: italic;
+    margin: 5px 0;
+  }
 
-blockquote p {
-  color: $grey-dark;
-  font-style: italic;
+  pre {
+    padding: 0.7rem 1rem;
+    border-radius: 5px;
+    background: $grey-dark;
+    color: $white;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    margin: 5px 0;
+    code {
+      display: block;
+    }
+  }
 }

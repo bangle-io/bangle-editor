@@ -24,7 +24,7 @@ export function MenuBar({ editor }) {
         enabled={true}
         onClick={() => editor.commands.code()}
         label="Code"
-        iconType="code  "
+        iconType="code"
       />
       <MenuItemButton
         enabled={true}
@@ -71,7 +71,7 @@ export function MenuItemButton({ active, enabled, onClick, label, iconType }) {
       disabled={enabled ? '' : 'disabled'}
       onClick={onClick}
     >
-      <span className={`icon has-text-grey-dark`}>
+      <span className={`icon has-text-dark`}>
         <i className={`fas fa-${iconType}`} title={label} />
       </span>
     </button>
