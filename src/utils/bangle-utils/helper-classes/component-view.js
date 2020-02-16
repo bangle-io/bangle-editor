@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { getMarkRange } from 'tiptap-utils';
 
+// TODO lot to learn
 export default class ComponentView {
   constructor(
     component,

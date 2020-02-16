@@ -18,6 +18,7 @@ import { Emitter } from './emitter';
 import { Text } from './text';
 import { Paragraph } from './paragraph';
 import { Doc } from './doc';
+import { reactNodeViewHOC } from '../helper-react/react-node-view';
 
 export class Editor extends Emitter {
   constructor(domElement, options = {}) {
@@ -66,6 +67,8 @@ export class Editor extends Emitter {
   }
 
   init(domElement, options = {}) {
+    this.nodeViews = {};
+
     this.setOptions({
       ...this.defaultOptions,
       ...options,
@@ -82,7 +85,7 @@ export class Editor extends Emitter {
     this.inputRules = this.createInputRules();
     this.pasteRules = this.createPasteRules();
     this.view = this.createView();
-    this.commands = this.createCommands();
+    this.commands = this.createCommands(); // setting command after view is important
     this.setActiveNodesAndMarks();
 
     if (this.options.autoFocus !== null) {
@@ -283,45 +286,6 @@ export class Editor extends Emitter {
     });
   }
 
-  setParentComponent(component = null) {
-    if (!component) {
-      return;
-    }
-
-    this.view.setProps({
-      nodeViews: this.initNodeViews({
-        parent: component,
-        extensions: [...this.builtInExtensions, ...this.options.extensions],
-      }),
-    });
-  }
-
-  initNodeViews({ parent, extensions }) {
-    return extensions
-      .filter((extension) => ['node', 'mark'].includes(extension.type))
-      .filter((extension) => extension.view)
-      .reduce((nodeViews, extension) => {
-        const nodeView = (node, view, getPos, decorations) => {
-          const component = extension.view;
-          return {};
-          //   return new ComponentView(component, {
-          //     editor: this,
-          //     extension,
-          //     parent,
-          //     node,
-          //     view,
-          //     getPos,
-          //     decorations,
-          //   });
-        };
-
-        return {
-          ...nodeViews,
-          [extension.name]: nodeView,
-        };
-      }, {});
-  }
-
   dispatchTransaction(transaction) {
     const newState = this.state.apply(transaction);
     this.view.updateState(newState);
@@ -519,6 +483,27 @@ export class Editor extends Emitter {
 
     this.view.destroy();
   }
+
+  get reactComponents() {
+    return [...this.builtInExtensions, ...this.options.extensions]
+      .filter((extension) => ['node', 'mark'].includes(extension.type))
+      .filter((extension) => extension.view)
+      .map((extension) => [extension.name, reactNodeViewHOC(extension, this)]);
+  }
+
+  attachNodeView = (name, initializer) => {
+    if (this.nodeViews[name]) {
+      throw new Error('already a node view with same name: ' + name);
+    }
+    this.nodeViews[name] = initializer;
+    if (this.view) {
+      this.view.setProps({
+        nodeViews: this.nodeViews,
+      });
+    } else {
+      throw new Error('no view');
+    }
+  };
 }
 
 // Converts a str `on something` to `onSomething`
