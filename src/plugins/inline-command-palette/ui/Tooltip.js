@@ -85,7 +85,7 @@ export function MenuRow({ onClick, hint, icon, title, subtitle, isActive }) {
   // if icon is a string it assumes it is a fa-* string
   icon =
     typeof icon === 'string' || !icon ? (
-      <span className="icon has-text-grey-dark">
+      <span className="icon has-text-dark">
         <i className={`${icon}`} title={icon} />
       </span>
     ) : (

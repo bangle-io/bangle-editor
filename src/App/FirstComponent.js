@@ -18,6 +18,17 @@ import {
   Underline,
 } from 'Utils/bangle-utils/marks';
 
+import {
+  Blockquote,
+  BulletList,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  HorizontalRule,
+  ListItem,
+  OrderedList,
+} from 'Utils/bangle-utils/nodes';
+
 import { menuExtension } from './components/menu/index';
 
 export class ProsemirrorComp extends React.Component {
@@ -34,6 +45,14 @@ export class ProsemirrorComp extends React.Component {
           new Link(),
           new Strike(),
           new Underline(),
+          new Blockquote(),
+          new BulletList(),
+          new CodeBlock(),
+          new HardBreak(),
+          new Heading(),
+          new HorizontalRule(),
+          new ListItem(),
+          new OrderedList(),
           new Dinos(),
           new Emoji(),
           menuExtension,
@@ -42,6 +61,28 @@ export class ProsemirrorComp extends React.Component {
         editorProps: {
           attributes: { class: 'bangle-editor' },
         },
+        content: `
+        <h2>
+          Hi there,
+        </h2>
+        <p>
+          this is a very <em>basic</em> example of tiptap.
+        </p>
+        <pre><code>body { display: none; }</code></pre>
+        <ul>
+          <li>
+            A regular list
+          </li>
+          <li>
+            With regular items
+          </li>
+        </ul>
+        <blockquote>
+          It's amazing 👏
+          <br />
+          – mom
+        </blockquote>
+      `,
       });
       this.setState({
         editor,

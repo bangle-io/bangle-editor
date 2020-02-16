@@ -1,4 +1,5 @@
 import { setBlockType } from 'tiptap-commands';
+
 import { Node } from './node';
 
 export class Paragraph extends Node {
