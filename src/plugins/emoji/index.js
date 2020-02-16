@@ -3,28 +3,10 @@ import { MenuItem } from 'prosemirror-menu';
 import { EMOJI_NODE_NAME, emojiAttrTypes, validEmojis } from './constants';
 import { nodeHelpers } from 'Utils/bangle-utils';
 import './emoji.css';
+import { Node } from 'Utils/bangle-utils/helper-classes/node';
+import { Emoji, Schema } from './Emoji';
 
-export { default as Emoji } from './Emoji';
-
-export function insertMenuItem(schema) {
-  return (menu) => {
-    validEmojis.forEach((name) =>
-      menu.insertMenu.content.push(
-        new MenuItem({
-          title: 'Insert ' + name,
-          label: name.charAt(0).toUpperCase() + name.slice(1),
-          enable(state) {
-            return insertEmoji(schema, name)(state);
-          },
-          run: insertEmoji(schema, name),
-        }),
-      ),
-    );
-    return menu;
-  };
-}
-
-function insertEmoji(schema, type) {
+function insertEmoji(schema, name) {
   let emojiType = schema.nodes[EMOJI_NODE_NAME];
   return function(state, dispatch) {
     let { $from } = state.selection,
@@ -32,7 +14,7 @@ function insertEmoji(schema, type) {
     if (!$from.parent.canReplaceWith(index, index, emojiType)) return false;
     if (dispatch) {
       const attr = {
-        'data-type': type,
+        'data-type': name,
       };
 
       dispatch(
@@ -43,4 +25,33 @@ function insertEmoji(schema, type) {
     }
     return true;
   };
+}
+
+export default class EmojiExtension extends Node {
+  get name() {
+    return EMOJI_NODE_NAME;
+  }
+  get schema() {
+    return Schema;
+  }
+  get view() {
+    return Emoji;
+  }
+
+  commands({ type, schema }) {
+    return {
+      randomEmoji: () => {
+        return insertEmoji(
+          schema,
+          validEmojis[Math.floor(Math.random() * validEmojis.length)],
+        );
+      },
+    };
+  }
+
+  keys({ schema, type }) {
+    return {
+      'Shift-Ctrl-e': insertEmoji(schema, 'sad'),
+    };
+  }
 }

@@ -4,15 +4,12 @@ import emojisKeywords from 'emojis-keywords';
 
 export const EMOJI_NODE_NAME = 'emoji';
 
-export const emojiLookup = {
-  happy: '😏',
-  sad: '😔',
-  ...Object.fromEntries(
-    Array.from({ length: 500 }, (v, i) => [emojisKeywords[i], emojiList[i]])
-      .map(([name, emoji]) => [name, emoji])
-      .slice(450),
-  ),
-};
+export const emojiLookup = Object.fromEntries(
+  Array.from({ length: emojiList.length }, (v, i) => [
+    emojisKeywords[i],
+    emojiList[i],
+  ]).map(([name, emoji]) => [name, emoji]),
+);
 
 export const validEmojis = Object.keys(emojiLookup);
 
