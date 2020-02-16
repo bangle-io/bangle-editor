@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Extension } from 'Utils/bangle-utils/extensions/extension';
-import { reactPluginUIWrapper } from 'Utils/bangle-utils/helper-react/react-plugin-ui-wrapper';
+import { ComponentUIWrapper } from 'Utils/bangle-utils/extensions/component-ui-wrapper';
 
 export function MenuBar({ editor }) {
   return (
@@ -86,21 +85,9 @@ MenuItemButton.propTypes = {
   iconType: PropTypes.string.isRequired,
 };
 
-export class MenuExtension extends Extension {
-  get name() {
-    return 'MenuExtension';
-  }
-  get plugins() {
-    return [
-      reactPluginUIWrapper(
-        {
-          childClass: 'menu-component',
-          props: {
-            editor: this.editor,
-          },
-        },
-        MenuBar,
-      ),
-    ];
-  }
-}
+export const menuExtension = new ComponentUIWrapper(
+  {
+    childClass: 'menu-component',
+  },
+  MenuBar,
+);

@@ -18,7 +18,7 @@ import {
   Underline,
 } from 'Utils/bangle-utils/marks';
 
-import { MenuExtension } from './components/menu/index';
+import { menuExtension } from './components/menu/index';
 
 export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
@@ -36,7 +36,7 @@ export class ProsemirrorComp extends React.Component {
           new Underline(),
           new Dinos(),
           new Emoji(),
-          new MenuExtension(),
+          menuExtension,
           new History(),
         ],
         editorProps: {
