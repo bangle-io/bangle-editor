@@ -1,16 +1,17 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 import debounce from 'debounce';
+import { Editor } from '../helper-classes/editor';
+import { Node } from '../helper-classes/node';
 
 // Note: this HOC is needed as it creates/manages n number of ReactNodeView
 // depending on PM.
-export function reactNodeViewHOC(Comp) {
-  if (!Comp instanceof ReactNodeView) {
-    throw new Error('Only react node view');
+export function reactNodeViewHOC(node = new Node(), editor = new Editor()) {
+  if (!node instanceof Node) {
+    throw new Error('Only Extension');
   }
-  if (!Comp.hasOwnProperty('Schema')) {
-    throw new Error('Define schema');
+  if (!node.view) {
+    throw new Error('neeed view');
   }
 
   class ParentNodeView extends React.Component {
@@ -22,13 +23,7 @@ export function reactNodeViewHOC(Comp) {
 
       this.domElementMap = new Map();
 
-      this.initializeNodeView = this.initializeNodeView.bind(this); // As an optimization I can throttle and queue the results
-      this.onNodeViewDestroy = this.onNodeViewDestroy.bind(this); // As an optimization I can throttle and queue the results, right now the view is destroed for everything in the row
-
-      props.addNodeView({
-        [Comp.Schema.type]: this.initializeNodeView,
-      });
-      props.addSchema(Comp.Schema);
+      editor.attachNodeView(node.name, this.initializeNodeView);
     }
 
     // TODO: need to think more about unmount and clearing up
@@ -37,10 +32,11 @@ export function reactNodeViewHOC(Comp) {
     }
 
     // Returns the node object needed by https://prosemirror.net/docs/ref/#view.EditorProps.nodeViews
-    initializeNodeView(node, view, getPos, decorations) {
+    initializeNodeView = (pmNode, view, getPos, decorations) => {
+      // As an optimization I can throttle and queue the results
       const nodeViewInstance = {};
 
-      const dom = document.createElement(node.isInline ? 'span' : 'div');
+      const dom = document.createElement(pmNode.isInline ? 'span' : 'div');
 
       nodeViewInstance.dom = dom;
 
@@ -51,7 +47,7 @@ export function reactNodeViewHOC(Comp) {
       this.domElementMap.set(dom, {
         key: this.counter++,
         nodeViewProps: {
-          node,
+          node: pmNode,
           view,
           getPos,
           decorations,
@@ -62,19 +58,23 @@ export function reactNodeViewHOC(Comp) {
       this.debouncedForceUpdate();
 
       return nodeViewInstance;
-    }
+    };
 
-    onNodeViewDestroy(dom) {
-      this.domElementMap.delete(dom);
-    }
+    // As an optimization I can throttle and queue the results, right now the view is destroed for everything in the row
+    onNodeViewDestroy = (dom) => {
+      this.domElementMap.delete(dom); // TODO do I need to rerender react>?
+    };
 
     render() {
-      const { addNodeView, addSchema, ...passThroughProps } = this.props;
+      const { ...passThroughProps } = this.props;
       // TODO: one optimization I can do is to preserve the react work if the props are exactly the same
       //  the only difference is dom element changed
       return Array.from(this.domElementMap).map(([pmDom, value]) =>
         createPortal(
-          <Comp nodeViewProps={value.nodeViewProps} {...passThroughProps} />,
+          <node.view
+            nodeViewProps={value.nodeViewProps}
+            {...passThroughProps}
+          />,
           pmDom,
           value.key, // I have verified adding a stable key does improve performance by reducing re-renders
         ),
@@ -82,12 +82,9 @@ export function reactNodeViewHOC(Comp) {
     }
   }
 
-  ParentNodeView.propTypes = {
-    addNodeView: PropTypes.func.isRequired,
-    addSchema: PropTypes.func.isRequired,
-  };
+  ParentNodeView.propTypes = {};
 
-  ParentNodeView.displayName = `ParentNodeView[${Comp.Schema.type}]`;
+  ParentNodeView.displayName = `ParentNodeView[${node.name}]`;
 
   return ParentNodeView;
 }

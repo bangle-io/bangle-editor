@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { reactPluginUIWrapper } from '../react-plugin-ui-wrapper';
+import { reactPluginUIWrapper } from './react-plugin-ui-wrapper';
 
 export function menuPlugin({ menuItems, schema }) {
   return reactPluginUIWrapper(

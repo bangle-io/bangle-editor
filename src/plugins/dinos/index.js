@@ -1,34 +1,117 @@
 import React from 'react';
-import { MenuItem } from 'prosemirror-menu';
 import classnames from 'classnames';
-import { Fragment, Node } from 'prosemirror-model';
+import { ReactNodeView, nodeHelpers } from 'Utils/bangle-utils';
+import {
+  DINO_NODE_NAME,
+  dinoAttrTypes,
+  dinoAttrDefaults,
+  DINO_WRAPPER_ELEMENT,
+} from './constants';
+import { Node } from 'Utils/bangle-utils/helper-classes/node';
 
-import { DINO_NODE_NAME, dinoAttrTypes, dinoNames } from './constants';
-import { nodeHelpers } from 'Utils/bangle-utils';
+import brontosaurusImg from './img/brontosaurus.png';
+import stegosaurusImg from './img/stegosaurus.png';
+import triceratopsImg from './img/triceratops.png';
+import tyrannosaurusImg from './img/tyrannosaurus.png';
+import pterodactylImg from './img/pterodactyl.png';
 import './dino.css';
-import { DINO_IMAGES } from './Dino';
 
-export { default as DinoComponent } from './Dino';
+export const DINO_IMAGES = {
+  brontosaurus: brontosaurusImg,
+  stegosaurus: stegosaurusImg,
+  triceratops: triceratopsImg,
+  tyrannosaurus: tyrannosaurusImg,
+  pterodactyl: pterodactylImg,
+};
 
-export function insertMenuItem(schema) {
-  return (menu) => {
-    dinoNames.forEach((name) =>
-      menu.insertMenu.content.push(
-        new MenuItem({
-          title: 'Insert ' + name,
-          label: name.charAt(0).toUpperCase() + name.slice(1),
-          enable(state) {
-            return insertDino(schema, name)(state);
-          },
-          run: insertDino(schema, name),
-        }),
-      ),
+class DinoComp extends ReactNodeView {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false,
+    };
+  }
+
+  nodeViewSelectNode() {
+    this.setState({
+      selected: true,
+    });
+  }
+
+  nodeViewDeselectNode() {
+    this.setState({
+      selected: false,
+    });
+  }
+
+  render() {
+    const { selected } = this.state;
+    const attrs = nodeHelpers.getAttrsFromNode(
+      dinoAttrTypes,
+      this.nodeView.node,
     );
-    return menu;
-  };
+
+    const type = attrs['data-type'];
+    return (
+      <img
+        src={DINO_IMAGES[type]}
+        alt={type}
+        className={classnames({
+          'mydino': true,
+          'plugins_dino': true,
+          'ProseMirror-selectednode': selected,
+          'blink': attrs['data-blinks'] === 'yes',
+        })}
+      />
+    );
+  }
 }
 
-function insertDino(schema, type) {
+export default class Dino extends Node {
+  get name() {
+    return DINO_NODE_NAME;
+  }
+  get schema() {
+    return {
+      attrs: nodeHelpers.attributesForNodeSpec(dinoAttrTypes, dinoAttrDefaults),
+      inline: true,
+      group: 'inline',
+      draggable: true,
+      // NOTE: Seems like this is used as an output to outside world
+      //      when you like copy or drag
+      toDOM: (node) => {
+        return [
+          DINO_WRAPPER_ELEMENT,
+          nodeHelpers.attributesForToDom(dinoAttrTypes)(node),
+        ];
+      },
+      // NOTE: this is the opposite part where you parse the output of toDOM
+      //      When getAttrs returns false, the rule won't match
+      //      Also, it only takes attributes defined in spec.attrs
+      parseDOM: [
+        {
+          tag: DINO_WRAPPER_ELEMENT,
+          getAttrs: nodeHelpers.attributesForParseDom(dinoAttrTypes),
+        },
+      ],
+    };
+  }
+  get view() {
+    return DinoComp;
+  }
+
+  commands({ type, schema }) {
+    return (dinoName) => insertDino(schema, dinoName);
+  }
+
+  keys({ schema, type }) {
+    return {
+      'Shift-Ctrl-b': insertDino(schema, 'brontosaurus'),
+    };
+  }
+}
+
+function insertDino(schema, dinoName) {
   let dinoType = schema.nodes[DINO_NODE_NAME];
   return function(state, dispatch) {
     let { $from } = state.selection;
@@ -37,10 +120,10 @@ function insertDino(schema, type) {
     if (!$from.parent.canReplaceWith(index, index, dinoType)) return false;
     if (dispatch) {
       const attr = {
-        'data-type': type,
+        'data-type': dinoName,
       };
 
-      if (type === 'tyrannosaurus') {
+      if (dinoName === 'tyrannosaurus') {
         attr['data-blinks'] = 'yes';
       }
 
@@ -53,54 +136,3 @@ function insertDino(schema, type) {
     return true;
   };
 }
-
-export const typeaheadItems = [
-  ...dinoNames.map((dinoName) => ({
-    icon: (
-      <img
-        src={DINO_IMAGES[dinoName]}
-        alt={dinoName}
-        className={classnames({
-          mydino: true,
-          plugins_dino: true,
-        })}
-      />
-    ),
-    title: 'Insert ' + dinoName,
-    getInsertNode: (editorState) => {
-      const attr = {
-        'data-type': dinoName,
-      };
-      if (dinoName === 'tyrannosaurus') {
-        attr['data-blinks'] = 'yes';
-      }
-
-      return editorState.schema.nodes[DINO_NODE_NAME].create(
-        nodeHelpers.createAttrObj(dinoAttrTypes, attr),
-      );
-    },
-  })),
-];
-
-export default () => ({
-  menu: {
-    rows: [
-      ...dinoNames.map((dinoName) => ({
-        icon: (
-          <img
-            src={DINO_IMAGES[dinoName]}
-            alt={dinoName}
-            className={classnames({
-              mydino: true,
-              plugins_dino: true,
-            })}
-          />
-        ),
-        title: 'Insert ' + dinoName,
-        subtitle: 'Puts a cute ' + dinoName + ' emoji.',
-        getCommand: ({ schema }) => insertDino(schema, dinoName),
-        isEnabled: () => true,
-      })),
-    ],
-  },
-});
