@@ -34,6 +34,7 @@ import { schema as baseSchema } from 'Utils/bangle-utils/setup-helpers/schema';
 import menuItems from './components/menu/menu-items';
 import getMarkAttrs from 'Utils/bangle-utils/prosemirror-utils';
 import { typeaheadItems } from './components/menu/typeahead-items';
+import { Editor } from 'Utils/bangle-utils/helper-classes/editor';
 
 export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
@@ -154,16 +155,18 @@ export class ProsemirrorComp extends React.Component {
   editorStateUpdaterHandlers = [];
   componentDidMount() {
     const node = this.myRef.current;
-
     if (node) {
-      const view = new ProseMirrorView(node, {
-        nodeViews: this.nodeViews,
-        schema: this.schema,
-        plugins: this.plugins,
-        onStateUpdate: this.onStateUpdate,
-      });
-      view.focus();
+      let view = new Editor(node, {});
     }
+    // if (node) {
+    //   const view = new ProseMirrorView(node, {
+    //     nodeViews: this.nodeViews,
+    //     schema: this.schema,
+    //     plugins: this.plugins,
+    //     onStateUpdate: this.onStateUpdate,
+    //   });
+    //   view.focus();
+    // }
   }
 
   addNodeView = (nodeViewObject) => {
@@ -196,7 +199,7 @@ export class ProsemirrorComp extends React.Component {
     return (
       <>
         <div ref={this.myRef} className="ProsemirrorComp" />
-        <dinos.DinoComponent
+        {/* <dinos.DinoComponent
           addNodeView={this.addNodeView}
           addSchema={this.addSchema}
         />
@@ -208,7 +211,7 @@ export class ProsemirrorComp extends React.Component {
           addPlugins={this.addPlugins}
           onEditorStateUpdate={this.registerEditorStateHandlers}
           items={typeaheadItems}
-        />
+        /> */}
       </>
     );
   }
