@@ -6,6 +6,7 @@ import {
   dinoAttrTypes,
   dinoAttrDefaults,
   DINO_WRAPPER_ELEMENT,
+  dinoNames,
 } from './constants';
 import { Node } from 'Utils/bangle-utils/helper-classes/node';
 
@@ -101,7 +102,14 @@ export default class Dino extends Node {
   }
 
   commands({ type, schema }) {
-    return (dinoName) => insertDino(schema, dinoName);
+    return {
+      dino: (dinoName) => insertDino(schema, dinoName),
+      randomDino: () =>
+        insertDino(
+          schema,
+          dinoNames[Math.floor(Math.random() * dinoNames.length)],
+        ),
+    };
   }
 
   keys({ schema, type }) {

@@ -5,6 +5,7 @@ import React from 'react';
 import applyDevTools from 'prosemirror-dev-tools';
 
 import Dinos from 'Plugins/dinos';
+import Emoji from 'Plugins/emoji';
 
 import { Editor } from 'Utils/bangle-utils/helper-classes/editor';
 import { Bold } from 'Utils/bangle-utils/helper-marks/bold';
@@ -30,6 +31,7 @@ export class ProsemirrorComp extends React.Component {
           new Strike(),
           new Underline(),
           new Dinos(),
+          new Emoji(),
           new MenuExtension(),
         ],
       });

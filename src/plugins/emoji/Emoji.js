@@ -1,16 +1,7 @@
 import React from 'react';
-import {
-  emojiLookup,
-  emojiAttrTypes,
-  EMOJI_NODE_NAME,
-  emojiAttrDefaults,
-} from './constants';
+import { emojiLookup, emojiAttrTypes, emojiAttrDefaults } from './constants';
 import classnames from 'classnames';
-import {
-  ReactNodeView,
-  nodeHelpers,
-  reactNodeViewHOC,
-} from 'Utils/bangle-utils';
+import { ReactNodeView, nodeHelpers } from 'Utils/bangle-utils';
 
 class Emoji extends ReactNodeView {
   constructor(props) {
@@ -53,28 +44,25 @@ class Emoji extends ReactNodeView {
   }
 }
 
-Emoji.Schema = {
-  type: EMOJI_NODE_NAME,
-  schema: {
-    attrs: nodeHelpers.attributesForNodeSpec(emojiAttrTypes, emojiAttrDefaults),
-    inline: true,
-    group: 'inline',
-    draggable: true,
-    // NOTE: Seems like this is used as an output to outside world
-    //      when you like copy or drag
-    toDOM: (node) => {
-      return ['span', nodeHelpers.attributesForToDom(emojiAttrTypes)(node)];
-    },
-    // NOTE: this is the opposite part where you parse the output of toDOM
-    //      When getAttrs returns false, the rule won't match
-    //      Also, it only takes attributes defined in spec.attrs
-    parseDOM: [
-      {
-        tag: 'span', // TODO: it might be a good idea to restrict the tag with one UID from attributes like span[data-my-uid] for perf.
-        getAttrs: nodeHelpers.attributesForParseDom(emojiAttrTypes),
-      },
-    ],
+const Schema = {
+  attrs: nodeHelpers.attributesForNodeSpec(emojiAttrTypes, emojiAttrDefaults),
+  inline: true,
+  group: 'inline',
+  draggable: true,
+  // NOTE: Seems like this is used as an output to outside world
+  //      when you like copy or drag
+  toDOM: (node) => {
+    return ['span', nodeHelpers.attributesForToDom(emojiAttrTypes)(node)];
   },
+  // NOTE: this is the opposite part where you parse the output of toDOM
+  //      When getAttrs returns false, the rule won't match
+  //      Also, it only takes attributes defined in spec.attrs
+  parseDOM: [
+    {
+      tag: 'span', // TODO: it might be a good idea to restrict the tag with one UID from attributes like span[data-my-uid] for perf.
+      getAttrs: nodeHelpers.attributesForParseDom(emojiAttrTypes),
+    },
+  ],
 };
 
-export default reactNodeViewHOC(Emoji);
+export { Emoji, Schema };

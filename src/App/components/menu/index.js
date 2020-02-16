@@ -30,9 +30,16 @@ export function MenuBar({ editor }) {
       <MenuItemButton
         active={editor.isActive.dino()}
         enabled={true}
-        onClick={() => editor.commands.dino('tyrannosaurus')}
-        label="tyrannosaurus"
+        onClick={() => editor.commands.randomDino()}
+        label="random-dino"
         iconType="bomb"
+      />
+      <MenuItemButton
+        active={editor.isActive.emoji()}
+        enabled={true}
+        onClick={() => editor.commands.randomEmoji()}
+        label="flower"
+        iconType="smile"
       />
     </>
   );
