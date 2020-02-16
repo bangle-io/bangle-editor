@@ -43,7 +43,10 @@
     "extends": "react-app"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "trailingComma": "all",
+    "quoteProps": "consistent",
+    "arrowParens": "always"
   },
   "browserslist": {
     "production": [

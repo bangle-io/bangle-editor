@@ -13,9 +13,9 @@ export const typeaheadItems = [
       </span>
     ),
     title: 'Heading 2',
-    getInsertNode: editorState => {
+    getInsertNode: (editorState) => {
       return editorState.schema.nodes.heading.createChecked({ level: 2 });
-    }
+    },
   },
   {
     icon: (
@@ -24,9 +24,9 @@ export const typeaheadItems = [
       </span>
     ),
     title: 'Heading 3',
-    getInsertNode: editorState => {
+    getInsertNode: (editorState) => {
       return editorState.schema.nodes.heading.createChecked({ level: 3 });
-    }
+    },
   },
-  ...dinos.typeaheadItems
+  ...dinos.typeaheadItems,
 ];

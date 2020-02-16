@@ -11,12 +11,12 @@ export function menuButtonHOC({
   getCommand,
   isActive = () => false,
   // default to dry running the command. Where `dry run` == run without dispatch
-  isEnabled = payload => getCommand(payload)(payload.editorState)
+  isEnabled = (payload) => getCommand(payload)(payload.editorState),
 }) {
   function IconMenuItem({ editorState, schema, dispatch, editorView }) {
     const payload = {
       editorState,
-      schema
+      schema,
     };
     const enabled = isEnabled(payload);
     return (
@@ -40,7 +40,7 @@ export function dropdownHOC({ label, renderItems }) {
   function DropdownContent({ externalProps, setActive }) {
     const dropdownRef = useRef(null);
     const handleClick = useCallback(
-      e => {
+      (e) => {
         console.debug('calling');
         if (dropdownRef.current.contains(e.target)) {
           return;
@@ -48,7 +48,7 @@ export function dropdownHOC({ label, renderItems }) {
         // outside click
         setActive(false);
       },
-      [setActive]
+      [setActive],
     );
     useEffect(() => {
       document.addEventListener('mousedown', handleClick);

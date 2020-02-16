@@ -28,7 +28,7 @@ export const removeTypeAheadMark = () => (state, dispatch) => {
         // stored marks are marks which will be carried forward to whatever
         // the user types next, like if current mark
         // is bold, new input continues being bold
-        .removeStoredMark(markType)
+        .removeStoredMark(markType),
     );
   }
   return true;
@@ -49,7 +49,9 @@ export const dismissCommand = () => (editorState, dispatch) => {
 
   if (dispatch) {
     dispatch(
-      editorState.tr.removeMark(start, end, markType).removeStoredMark(markType)
+      editorState.tr
+        .removeMark(start, end, markType)
+        .removeStoredMark(markType),
     );
   }
   return true;
@@ -75,7 +77,7 @@ export const selectItem = ({ item, trigger }) => (editorState, dispatch) => {
 
   const insert = (
     maybeNode, // Node | Object | string | Fragment,
-    opts = {}
+    opts = {},
   ) => {
     let tr = editorState.tr
       .setMeta(typeAheadStatePluginKey, { action: SELECT_ITEM })
@@ -140,7 +142,7 @@ export const selectItem = ({ item, trigger }) => (editorState, dispatch) => {
       } else {
         // Placing cursor after node + space.
         tr = tr.setSelection(
-          Selection.near(tr.doc.resolve(start + fragment.size))
+          Selection.near(tr.doc.resolve(start + fragment.size)),
         );
       }
 
@@ -156,7 +158,7 @@ export const selectItem = ({ item, trigger }) => (editorState, dispatch) => {
   if (tr === false) {
     return insertFallbackCommand({ start, end, trigger })(
       editorState,
-      dispatch
+      dispatch,
     );
   }
 
@@ -169,7 +171,7 @@ export const selectItem = ({ item, trigger }) => (editorState, dispatch) => {
 function insertFallbackCommand({ start, end, trigger = '' }) {
   return (editorState, dispatch) => {
     const node = editorState.schema.text(
-      trigger + getTypeaheadQueryString(editorState)
+      trigger + getTypeaheadQueryString(editorState),
     );
 
     if (dispatch) {

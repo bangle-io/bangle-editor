@@ -19,7 +19,7 @@ import { toggleMark } from 'prosemirror-commands';
 
 import {
   CommandPalette,
-  commandPalettePlugins
+  commandPalettePlugins,
 } from 'Plugins/inline-command-palette';
 
 // semi-internal
@@ -39,7 +39,7 @@ export class ProseMirrorView {
   constructor(target, { nodeViews, schema, plugins, onStateUpdate }) {
     const builtMenu = buildMenuItems(
       schema,
-      compose(dinos.insertMenuItem(schema), emoji.insertMenuItem(schema))
+      compose(dinos.insertMenuItem(schema), emoji.insertMenuItem(schema)),
     );
 
     var template = document.createElement('template');
@@ -63,7 +63,7 @@ export class ProseMirrorView {
               typeof cur !== 'function'
                 ? cur
                 : cur({
-                    schema: schema
+                    schema: schema,
                   });
 
             return prev.concat(plugin);
@@ -75,8 +75,8 @@ export class ProseMirrorView {
           menuBar({
             content: builtMenu.fullMenu,
             props: {
-              class: 'kushan-rocks'
-            }
+              class: 'kushan-rocks',
+            },
           }),
           menuPlugin.menuPlugin({ schema, menuItems: menuItems.concat() }),
           history(),
@@ -89,19 +89,19 @@ export class ProseMirrorView {
                 !doc.rangeHasMark(
                   selection.from,
                   selection.to,
-                  schema.marks.link
+                  schema.marks.link,
                 )
               ) {
                 attrs = { href: prompt('Link to where?', '') };
                 if (!attrs.href) return false;
               }
               return toggleMark(schema.marks.link, attrs)(state, dispatch);
-            }
+            },
           }),
           new Plugin({
             props: {
-              attributes: { class: 'bangle-editor' }
-            }
+              attributes: { class: 'bangle-editor' },
+            },
           }),
           // TODO, consolidate linking
           // Handle link clicking, thnis plugin is needed
@@ -116,12 +116,12 @@ export class ProseMirrorView {
                   event.stopPropagation();
                   window.open(attrs.href);
                 }
-              }
-            }
-          })
-        ]
+              },
+            },
+          }),
+        ],
       }),
-      dispatchTransaction: tr => {
+      dispatchTransaction: (tr) => {
         // intercept the transaction cycle
         // console.log(tr);
         const prevEditorState = this.view.state;
@@ -131,9 +131,9 @@ export class ProseMirrorView {
           tr,
           view: this.view,
           prevEditorState,
-          editorState
+          editorState,
         });
-      }
+      },
     });
     window.view = this.view;
     applyDevTools(this.view);
@@ -160,32 +160,35 @@ export class ProsemirrorComp extends React.Component {
         nodeViews: this.nodeViews,
         schema: this.schema,
         plugins: this.plugins,
-        onStateUpdate: this.onStateUpdate
+        onStateUpdate: this.onStateUpdate,
       });
       view.focus();
     }
   }
 
-  addNodeView = nodeViewObject => {
+  addNodeView = (nodeViewObject) => {
     this.nodeViews = Object.assign(this.nodeViews, nodeViewObject);
   };
 
-  addSchema = nodeSchema => {
+  addSchema = (nodeSchema) => {
     this.schema = new Schema({
       ...this.schema.spec,
-      nodes: this.schema.spec.nodes.addToEnd(nodeSchema.type, nodeSchema.schema)
+      nodes: this.schema.spec.nodes.addToEnd(
+        nodeSchema.type,
+        nodeSchema.schema,
+      ),
     });
   };
 
-  addPlugins = plugins => {
+  addPlugins = (plugins) => {
     this.plugins = this.plugins.concat(plugins);
   };
 
   onStateUpdate = (...args) => {
-    this.editorStateUpdaterHandlers.forEach(handler => handler(...args));
+    this.editorStateUpdaterHandlers.forEach((handler) => handler(...args));
   };
 
-  registerEditorStateHandlers = handler => {
+  registerEditorStateHandlers = (handler) => {
     this.editorStateUpdaterHandlers.push(handler);
   };
 

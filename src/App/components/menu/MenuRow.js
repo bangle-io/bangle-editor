@@ -37,5 +37,5 @@ MenuRow.propTypes = {
   hint: PropTypes.string,
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string
+  subtitle: PropTypes.string,
 };

@@ -8,13 +8,13 @@ export const dinoNames = [
   'stegosaurus',
   'triceratops',
   'tyrannosaurus',
-  'pterodactyl'
+  'pterodactyl',
 ];
 
 export const dinoAttrTypes = {
   'data-type': v.required(v.oneOf(dinoNames)),
-  'data-blinks': v.string
+  'data-blinks': v.string,
 };
 export const dinoAttrDefaults = {
-  'data-type': 'brontosaurus'
+  'data-type': 'brontosaurus',
 };

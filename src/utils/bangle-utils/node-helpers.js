@@ -8,7 +8,7 @@ export function createAttrObj(attrTypes, value) {
 
 export function getAttrsFromNode(attrTypes, node) {
   return Object.fromEntries(
-    Object.keys(attrTypes).map(attr => [attr, node.attrs[attr]])
+    Object.keys(attrTypes).map((attr) => [attr, node.attrs[attr]]),
   );
 }
 
@@ -20,7 +20,7 @@ export function attributesForNodeSpec(attrTypes, attrDefaults) {
   const obj = {};
   for (const attr of Object.keys(attrTypes)) {
     obj[attr] = {
-      default: attrDefaults[attr]
+      default: attrDefaults[attr],
     };
   }
   return obj;
@@ -28,16 +28,16 @@ export function attributesForNodeSpec(attrTypes, attrDefaults) {
 
 // Gets a nice attribute object {<attr_name>: value} for toDom method
 export function attributesForToDom(attrTypes) {
-  return node => {
+  return (node) => {
     return getAttrsFromNode(attrTypes, node);
   };
 }
 
 export function attributesForParseDom(attrTypes) {
   const attrs = Object.keys(attrTypes);
-  return dom => {
+  return (dom) => {
     const parsed = Object.fromEntries(
-      attrs.map(attr => [attr, dom.getAttribute(attr)])
+      attrs.map((attr) => [attr, dom.getAttribute(attr)]),
     );
     // When  returns false, the rule won't match
     // Also, it only takes attributes defined in spec.attrs

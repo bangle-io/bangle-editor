@@ -10,7 +10,7 @@ export function MenuItemLinkButton({
   editorState,
   editorView,
   schema,
-  dispatch
+  dispatch,
 }) {
   const markType = schema.marks['link'];
   const [showInput, setShowInput] = useState(false);
@@ -23,7 +23,7 @@ export function MenuItemLinkButton({
   } else {
     cmd = toggleMark(markType, {
       href: input.startsWith('https://') ? input : 'https://' + input,
-      title: 'link'
+      title: 'link',
     });
   }
   const active = isMarkActive(editorState, markType);
@@ -44,9 +44,9 @@ export function MenuItemLinkButton({
         placeholder="Input url"
         value={input}
         style={{
-          width: 200
+          width: 200,
         }}
-        onKeyPress={e => {
+        onKeyPress={(e) => {
           if (e.key === 'Enter') {
             setShowInput(false);
             setInput('');
@@ -55,7 +55,7 @@ export function MenuItemLinkButton({
             editorView.focus();
           }
         }}
-        onChange={e => {
+        onChange={(e) => {
           setInput(e.target.value);
         }}
       />
