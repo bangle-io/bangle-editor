@@ -27,6 +27,8 @@ import {
   HorizontalRule,
   ListItem,
   OrderedList,
+  TodoItem,
+  TodoList,
 } from 'Utils/bangle-utils/nodes';
 
 import { menuExtension } from './components/menu/index';
@@ -52,9 +54,11 @@ export class ProsemirrorComp extends React.Component {
           new Heading(),
           new HorizontalRule(),
           new ListItem(),
+          new TodoItem(),
+          new TodoList(),
           new OrderedList(),
-          new Dinos(),
-          new Emoji(),
+          // new Dinos(),
+          // new Emoji(),
           menuExtension,
           new History(),
         ],
@@ -88,7 +92,7 @@ export class ProsemirrorComp extends React.Component {
         editor,
       });
       applyDevTools(editor.view);
-      editor.view.focus();
+      editor.focus();
     }
   }
 
