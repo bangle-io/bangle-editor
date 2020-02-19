@@ -62,7 +62,14 @@ export class TodoItem extends Node {
   }
 
   nodeView(node, view, getPos) {
-    return new CustomNodeView(node, view, getPos, this.extension, TodoItemComp);
+    return new CustomNodeView({
+      node,
+      view,
+      getPos,
+      extension: this,
+      reactComponent: TodoItemComp,
+      setContentDOM: true,
+    });
   }
 }
 

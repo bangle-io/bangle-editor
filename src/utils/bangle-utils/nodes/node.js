@@ -9,10 +9,6 @@ export class Node extends Extension {
     return 'node';
   }
 
-  get view() {
-    return null;
-  }
-
   get schema() {
     return null;
   }

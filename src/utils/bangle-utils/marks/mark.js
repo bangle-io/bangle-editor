@@ -9,10 +9,6 @@ export class Mark extends Extension {
     return 'mark';
   }
 
-  get view() {
-    return null;
-  }
-
   get schema() {
     return null;
   }

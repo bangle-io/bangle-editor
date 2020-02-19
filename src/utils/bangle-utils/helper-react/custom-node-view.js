@@ -2,12 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export class CustomNodeView {
-  constructor(node, view, getPos, extension, reactComponent) {
+  constructor({
+    node,
+    view,
+    getPos,
+    extension,
+    reactComponent,
+    setContentDOM = false,
+  }) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.extension = extension;
     this.reactComponent = reactComponent;
+    this.setContentDOM = setContentDOM;
     this.init();
   }
 
@@ -77,9 +85,14 @@ export class CustomNodeView {
 
   // copied from atlasmk2
   setDomAttrs(node, element) {
+    // Maybe I am doing it redundantly
+    Object.keys(node.attrs || {}).forEach((attr) => {
+      element.setAttribute('data-' + attr, node.attrs[attr]);
+    });
     Object.keys(node.attrs || {}).forEach((attr) => {
       element.setAttribute(attr, node.attrs[attr]);
     });
+    element.setAttribute('data-type', this.extension.name);
   }
 
   // from atlas expected that the person may implement
@@ -91,7 +104,7 @@ export class CustomNodeView {
 
   // from atlas expected that the person may implement it differentyl
   getContentDOM() {
-    return document.createElement('div');
+    return this.setContentDOM ? document.createElement('div') : null;
   }
 
   // gets called by the div grabbing this and using
