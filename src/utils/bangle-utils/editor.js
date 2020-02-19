@@ -16,7 +16,6 @@ import { markIsActive, nodeIsActive, getMarkAttrs } from 'tiptap-utils';
 import { ExtensionManager } from './utils/extension-manager';
 import { Emitter } from './utils/emitter';
 import { Text, Paragraph, Doc } from './nodes';
-import { reactNodeViewHOC } from './helper-react/react-node-view';
 
 export class Editor extends Emitter {
   constructor(domElement, options = {}) {
@@ -65,8 +64,6 @@ export class Editor extends Emitter {
   }
 
   init(domElement, options = {}) {
-    this.nodeViews = {};
-
     this.setOptions({
       ...this.defaultOptions,
       ...options,
@@ -82,6 +79,7 @@ export class Editor extends Emitter {
     this.keymaps = this.createKeymaps();
     this.inputRules = this.createInputRules();
     this.pasteRules = this.createPasteRules();
+    this.nodeViews = this.initNodeViews();
     this.view = this.createView();
     this.commands = this.createCommands(); // setting command after view is important
     this.setActiveNodesAndMarks();
@@ -281,6 +279,7 @@ export class Editor extends Emitter {
         this.emit('drop', ...args);
       },
       dispatchTransaction: this.dispatchTransaction.bind(this),
+      nodeViews: this.nodeViews,
     });
   }
 
@@ -482,11 +481,19 @@ export class Editor extends Emitter {
     this.view.destroy();
   }
 
-  get reactComponents() {
+  initNodeViews() {
     return [...this.builtInExtensions, ...this.options.extensions]
       .filter((extension) => ['node', 'mark'].includes(extension.type))
-      .filter((extension) => extension.view)
-      .map((extension) => [extension.name, reactNodeViewHOC(extension, this)]);
+      .filter((extension) => extension.nodeView)
+      .reduce((nodeViews, extension) => {
+        if (nodeViews[extension.name]) {
+          throw new Error('Already exists node view' + extension.name);
+        }
+        return {
+          ...nodeViews,
+          [extension.name]: (...args) => extension.nodeView(...args),
+        };
+      }, {});
   }
 
   attachNodeView = (name, initializer) => {

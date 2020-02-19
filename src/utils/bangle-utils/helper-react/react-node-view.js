@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  createPortal,
-  render,
-  unstable_renderSubtreeIntoContainer,
-} from 'react-dom';
+import { createPortal } from 'react-dom';
 import debounce from 'debounce';
 import { getMarkRange } from 'tiptap-utils';
 
@@ -43,7 +39,7 @@ export function reactNodeViewHOC(
     // Returns the node object needed by https://prosemirror.net/docs/ref/#view.EditorProps.nodeViews
     initializeNodeView = (pmNode, view, getPos, decorations) => {
       // As an optimization I can throttle and queue the results
-      const nodeViewInstance = tempFunc({
+      const nodeViewInstance = {
         node: pmNode,
         view,
         getPos,
@@ -53,7 +49,7 @@ export function reactNodeViewHOC(
         viewShouldUpdate: false,
         onDelete: this.onNodeViewDestroy,
         onRerender: this.debouncedForceUpdate,
-      });
+      };
 
       this.domElementMap.set(nodeViewInstance.domRef, {
         key: this.counter++,
@@ -226,175 +222,4 @@ function getMarkPos(nodeView) {
   const resolvedPos = view.state.doc.resolve(pos);
   const range = getMarkRange(resolvedPos, node.type);
   return range;
-}
-
-function tempFunc({
-  node,
-  view,
-  getPos,
-  decorations,
-  editor,
-  viewShouldUpdate,
-  extension,
-  onDelete,
-  onRerender,
-}) {
-  class NodeView {
-    constructor({
-      node,
-      view,
-      getPos,
-      decorations,
-      editor,
-      viewShouldUpdate,
-      onDelete,
-    }) {
-      this.node = node;
-      this.view = view;
-      this.getPos = getPos;
-      this.decorations = decorations;
-      this.editor = editor;
-      this._viewShouldUpdate = viewShouldUpdate; // atlas
-
-      this._isNode = !!this.node.marks;
-      this._isMark = !this._isNode;
-      this._getPos = this._isMark ? getMarkPos : getPos;
-
-      this.init();
-    }
-
-    init() {
-      debugger;
-      this.dom = this.createDomRef();
-
-      this.domRef = this.dom; // copied from atlas's reactnodeview
-      this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
-      const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM() || {
-        dom: undefined,
-        contentDOM: undefined,
-      };
-      if (this.domRef && contentDOMWrapper) {
-        this.domRef.appendChild(contentDOMWrapper);
-        this.contentDOM = contentDOM ? contentDOM : contentDOMWrapper;
-        this.contentDOMWrapper = contentDOMWrapper || contentDOM;
-      }
-
-      // something gets messed up during mutation processing inside of a
-      // nodeView if DOM structure has nested plain "div"s, it doesn't see the
-      // difference between them and it kills the nodeView
-      this.domRef.classList.add(`${this.node.type.name}View-content-wrap`);
-
-      return this;
-    }
-
-    // from atlas expected that the person may implement
-    getContentDOM() {
-      return undefined;
-    }
-
-    // from atlas expected that the person may implement
-    createDomRef() {
-      return this.node.isInline
-        ? document.createElement('span')
-        : document.createElement('div');
-    }
-
-    // from atlas expected that the person implement the rendering function
-    reactComp = () => {
-      return extension.view({}, this.handleRef);
-    };
-
-    // from atlas expected that the person may implement
-    viewShouldUpdate(nextNode) {
-      if (this._viewShouldUpdate) {
-        return this._viewShouldUpdate(nextNode);
-      }
-      return true;
-    }
-
-    handleRef = (node) => this._handleRef(node);
-
-    // gets called by the div grabbing this and using it like render(props, forWardRef) => <div ref={forwardRef} />
-    _handleRef(node) {
-      // debugger;
-      const contentDOM = this.contentDOMWrapper || this.contentDOM;
-
-      // move the contentDOM node inside the inner reference after rendering
-      if (node && contentDOM && !node.contains(contentDOM)) {
-        node.appendChild(contentDOM);
-      }
-      this.contentDOM = node;
-    }
-
-    get isNode() {
-      return !!this.node.marks;
-    }
-    get isMark() {
-      return !this.isNode;
-    }
-    get pos() {
-      if (this.isMark) {
-        return getMarkPos(this.nodeView);
-      }
-      return this.nodeView.getPos();
-    }
-
-    // pmmethod
-    update(
-      node,
-      decorations,
-      // in atlas mk2 they add a third paramater for child
-      // classes to extend the update method and call
-      // super.update( ) with the third param to determine whether to update or not
-      // isValidUpdate ,
-    ) {
-      // @see https://github.com/ProseMirror/prosemirror/issues/648
-      const isValidUpdate = this.node.type === node.type; // && validUpdate(this.node, node);
-
-      if (!isValidUpdate) {
-        return false;
-      }
-
-      if (this.domRef && !this.node.sameMarkup(node)) {
-        this.setDomAttrs(node, this.domRef);
-      }
-
-      // View should not process a re-render if this is false.
-      // We dont want to destroy the view, so we return true.
-      if (!this.viewShouldUpdate(node)) {
-        this.node = node;
-        return true;
-      }
-
-      this.node = node;
-      onRerender();
-
-      return true;
-    }
-
-    // copied from atlasmk2
-    setDomAttrs(node, element) {
-      Object.keys(node.attrs || {}).forEach((attr) => {
-        element.setAttribute(attr, node.attrs[attr]);
-      });
-    }
-
-    destroy() {
-      if (!this.domRef) {
-        return;
-      }
-      onDelete(this.domRef);
-      this.domRef = undefined;
-      this.contentDOM = undefined;
-    }
-  }
-
-  return new NodeView({
-    node,
-    view,
-    getPos,
-    decorations,
-    editor,
-    viewShouldUpdate,
-  });
 }
