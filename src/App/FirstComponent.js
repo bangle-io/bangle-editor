@@ -72,6 +72,14 @@ export class ProsemirrorComp extends React.Component {
         <p>
           this is a very <em>basic</em> example of tiptap.
         </p>
+        <ul data-type="todo_list">
+          <li data-type="todo_item" data-done="false">
+            <span class="todo-checkbox" contenteditable="false"></span>
+            <div class="todo-content">
+              <p>This is a checkbox</p>
+            </div>
+          </li>
+        </ul>
         <pre><code>body { display: none; }</code></pre>
         <ul>
           <li>
@@ -93,6 +101,7 @@ export class ProsemirrorComp extends React.Component {
       });
       applyDevTools(editor.view);
       editor.focus();
+      window.editor = editor;
     }
   }
 
