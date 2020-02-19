@@ -12,8 +12,3 @@ export const emojiLookup = Object.fromEntries(
 );
 
 export const validEmojis = Object.keys(emojiLookup);
-
-export const emojiAttrTypes = {
-  'data-type': v.oneOf(validEmojis),
-};
-export const emojiAttrDefaults = {};

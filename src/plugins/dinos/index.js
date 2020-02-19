@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ReactNodeView, nodeHelpers } from 'Utils/bangle-utils';
+import { nodeHelpers } from 'Utils/bangle-utils';
 import {
   DINO_NODE_NAME,
   dinoAttrTypes,
@@ -16,6 +16,7 @@ import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
 import './dino.css';
+import { CustomNodeView } from 'Utils/bangle-utils/helper-react/custom-node-view';
 
 export const DINO_IMAGES = {
   brontosaurus: brontosaurusImg,
@@ -25,47 +26,22 @@ export const DINO_IMAGES = {
   pterodactyl: pterodactylImg,
 };
 
-class DinoComp extends ReactNodeView {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: false,
-    };
-  }
+function DinoComp(props) {
+  const { node } = props;
+  const attrs = nodeHelpers.getAttrsFromNode(dinoAttrTypes, node);
 
-  nodeViewSelectNode() {
-    this.setState({
-      selected: true,
-    });
-  }
-
-  nodeViewDeselectNode() {
-    this.setState({
-      selected: false,
-    });
-  }
-
-  render() {
-    const { selected } = this.state;
-    const attrs = nodeHelpers.getAttrsFromNode(
-      dinoAttrTypes,
-      this.nodeView.node,
-    );
-
-    const type = attrs['data-type'];
-    return (
-      <img
-        src={DINO_IMAGES[type]}
-        alt={type}
-        className={classnames({
-          'mydino': true,
-          'plugins_dino': true,
-          'ProseMirror-selectednode': selected,
-          'blink': attrs['data-blinks'] === 'yes',
-        })}
-      />
-    );
-  }
+  const type = attrs['data-type'];
+  return (
+    <img
+      src={DINO_IMAGES[type]}
+      alt={type}
+      className={classnames({
+        mydino: true,
+        plugins_dino: true,
+        blink: attrs['data-blinks'] === 'yes',
+      })}
+    />
+  );
 }
 
 export default class Dino extends Node {
@@ -97,9 +73,6 @@ export default class Dino extends Node {
       ],
     };
   }
-  get view() {
-    return DinoComp;
-  }
 
   commands({ type, schema }) {
     return {
@@ -116,6 +89,17 @@ export default class Dino extends Node {
     return {
       'Shift-Ctrl-b': insertDino(schema, 'brontosaurus'),
     };
+  }
+
+  nodeView(node, view, getPos) {
+    return new CustomNodeView({
+      node,
+      view,
+      getPos,
+      extension: this,
+      reactComponent: DinoComp,
+      setContentDOM: false,
+    });
   }
 }
 

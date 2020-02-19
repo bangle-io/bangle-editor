@@ -38,7 +38,7 @@ export function MenuBar({ editor }) {
         label="Redo"
         iconType="redo"
       />
-      {/* <MenuItemButton
+      <MenuItemButton
         active={editor.isActive.dino()}
         enabled={true}
         onClick={() => editor.commands.dino('brontosaurus')}
@@ -58,7 +58,7 @@ export function MenuBar({ editor }) {
         onClick={() => editor.commands.randomEmoji()}
         label="flower"
         iconType="smile"
-      /> */}
+      />
       <MenuItemButton
         active={editor.isActive.ordered_list()}
         enabled={true}

@@ -57,8 +57,8 @@ export class ProsemirrorComp extends React.Component {
           new TodoItem(),
           new TodoList(),
           new OrderedList(),
-          // new Dinos(),
-          // new Emoji(),
+          new Dinos(),
+          new Emoji(),
           menuExtension,
           new History(),
         ],
@@ -70,13 +70,17 @@ export class ProsemirrorComp extends React.Component {
           Hi there,
         </h2>
         <p>
-          this is a very <em>basic</em> example of tiptap.
+          this is a very <em>basic</em> example of bangle. 
+          <span data-type="emoji" data-emojikind=":handball_tone4:‍♀️"></span>
+          <span data-type="emoji" data-emojikind=":bug:"></span>
         </p>
         <ul data-type="todo_list">
           <li data-type="todo_item" data-done="false">
             <span class="todo-checkbox" contenteditable="false"></span>
             <div class="todo-content">
-              <p>This is a checkbox</p>
+              <p>This is a checkbox
+              <span data-type="emoji" data-emojikind=":mrs_claus_tone2:"></span>
+              </p>
             </div>
           </li>
         </ul>
