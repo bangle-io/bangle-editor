@@ -109,11 +109,7 @@ export class ProsemirrorComp extends React.Component {
     return (
       <>
         <div ref={this.myRef} className="ProsemirrorComp" />
-        {this.state.editor
-          ? this.state.editor.reactComponents.map(([name, ReactElement]) => {
-              return <ReactElement key={name} />;
-            })
-          : null}
+        {this.state.editor ? null : null}
       </>
     );
   }
