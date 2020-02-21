@@ -70,7 +70,6 @@ let counter = 0;
 function TodoItemComp(props) {
   const { node, view, handleRef, updateAttrs } = props;
   let uid = node.type.name + counter++;
-  // console.log('updating TodoItemComp');
   return (
     <li data-type={node.type.name} data-done={node.attrs.done.toString()}>
       <span className="todo_checkbox" contentEditable="false">
