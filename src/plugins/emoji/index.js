@@ -65,10 +65,10 @@ export default class EmojiExtension extends Node {
     };
   }
 
-  render = React.memo(function MyEmojiComp({ node }) {
+  render({ node }) {
     const { emojikind } = node.attrs;
     return <Emoji emojikind={emojikind} />;
-  });
+  }
 
   commands({ type, schema }) {
     return {
