@@ -3,7 +3,6 @@ import React from 'react';
 import { EMOJI_NODE_NAME, validEmojis } from './constants';
 import './emoji.css';
 import { Node } from 'Utils/bangle-utils/nodes';
-import { CustomNodeView } from 'Utils/bangle-utils/helper-react/custom-node-view';
 import { emojiLookup } from './constants';
 
 function insertEmoji(schema, name) {
@@ -66,16 +65,10 @@ export default class EmojiExtension extends Node {
     };
   }
 
-  nodeView(node, view, getPos) {
-    return new CustomNodeView({
-      node,
-      view,
-      getPos,
-      extension: this,
-      reactComponent: Emoji,
-      setContentDOM: false,
-    });
-  }
+  render = React.memo(function MyEmojiComp({ node }) {
+    const { emojikind } = node.attrs;
+    return <Emoji emojikind={emojikind} />;
+  });
 
   commands({ type, schema }) {
     return {
@@ -95,8 +88,10 @@ export default class EmojiExtension extends Node {
   }
 }
 
-function Emoji(props) {
-  const { node, view, handleRef, updateAttrs } = props;
-  const { emojikind } = node.attrs;
-  return <span contentEditable={false}>{emojiLookup[emojikind]}</span>;
+export class Emoji extends React.Component {
+  render() {
+    // console.log('here');
+    const { emojikind } = this.props;
+    return <span contentEditable={false}>{emojiLookup[emojikind]}</span>;
+  }
 }

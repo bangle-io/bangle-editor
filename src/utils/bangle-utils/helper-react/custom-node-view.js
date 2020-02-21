@@ -1,40 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 export class CustomNodeView {
   constructor({
     node,
     view,
     getPos,
     extension,
-    reactComponent,
-    setContentDOM = false,
+    renderNodeView,
+    destroyNodeView,
   }) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.extension = extension;
-    this.reactComponent = reactComponent;
-    this.setContentDOM = setContentDOM;
+    // Note it is important that we not set contentDOM for leaf nodes
+    // as it causes silent bugs
+    this.setContentDOM = Boolean(extension.options.nodeViewSetContentDOM);
+    this._renderNodeView = renderNodeView;
+    this._destroyNodeView = destroyNodeView;
     this.init();
-  }
-
-  init() {
-    this.domRef = this.createDomRef();
-    this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
-    const contentDOMWrapper = this.getContentDOM();
-
-    if (this.domRef && contentDOMWrapper) {
-      this.domRef.appendChild(contentDOMWrapper);
-      this.contentDOM = contentDOMWrapper;
-      this.contentDOMWrapper = contentDOMWrapper;
-    }
-
-    // something gets messed up during mutation processing inside of a
-    // nodeView if DOM structure has nested plain "div"s, it doesn't see the
-    // difference between them and it kills the nodeView
-    this.domRef.classList.add(`${this.node.type.name}NodeView-Wrap`); // Do we need this?
-    this.renderComp();
   }
 
   // PM methods
@@ -78,7 +60,8 @@ export class CustomNodeView {
     if (!this.domRef) {
       return;
     }
-    ReactDOM.unmountComponentAtNode(this.domRef);
+
+    this._destroyNodeView(this.domRef);
     this.domRef = undefined;
     this.contentDOM = undefined;
   }
@@ -110,6 +93,10 @@ export class CustomNodeView {
   // gets called by the div grabbing this and using
   // it like render(props, forWardRef) => <div ref={forwardRef} />
   handleRef = (node) => {
+    if (!this.setContentDOM) {
+      throw new Error('Not allowed as no content dom allowed');
+    }
+
     const contentDOM = this.contentDOM;
     // move the contentDOM node inside the inner reference after rendering
     if (node && contentDOM && !node.contains(contentDOM)) {
@@ -133,15 +120,34 @@ export class CustomNodeView {
     this.view.dispatch(transaction);
   };
 
+  init() {
+    this.domRef = this.createDomRef();
+    this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
+    const contentDOM = this.getContentDOM();
+
+    if (this.domRef && contentDOM) {
+      this.domRef.appendChild(contentDOM);
+      this.contentDOM = contentDOM;
+    }
+
+    // something gets messed up during mutation processing inside of a
+    // nodeView if DOM structure has nested plain "div"s, it doesn't see the
+    // difference between them and it kills the nodeView
+    this.domRef.classList.add(`${this.node.type.name}NodeView-Wrap`); // Do we need this?
+    this.renderComp();
+  }
+
   renderComp() {
-    ReactDOM.render(
-      <this.reactComponent
-        node={this.node}
-        view={this.view}
-        handleRef={this.handleRef}
-        updateAttrs={this.updateAttrs}
-      />,
-      this.domRef,
-    );
+    this._renderNodeView({
+      // for React component
+      node: this.node,
+      view: this.view,
+      handleRef: this.handleRef,
+      updateAttrs: this.updateAttrs,
+
+      // for gluing and backend
+      dom: this.domRef,
+      extension: this.extension,
+    });
   }
 }

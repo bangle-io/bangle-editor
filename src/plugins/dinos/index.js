@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { nodeHelpers } from 'Utils/bangle-utils';
 import {
@@ -16,7 +17,6 @@ import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
 import './dino.css';
-import { CustomNodeView } from 'Utils/bangle-utils/helper-react/custom-node-view';
 
 export const DINO_IMAGES = {
   brontosaurus: brontosaurusImg,
@@ -26,21 +26,21 @@ export const DINO_IMAGES = {
   pterodactyl: pterodactylImg,
 };
 
-function DinoComp(props) {
-  const { node } = props;
+function DinoComp({ node }) {
   const attrs = nodeHelpers.getAttrsFromNode(dinoAttrTypes, node);
 
   const type = attrs['data-type'];
   return (
-    <img
-      src={DINO_IMAGES[type]}
-      alt={type}
-      className={classnames({
-        mydino: true,
-        plugins_dino: true,
-        blink: attrs['data-blinks'] === 'yes',
-      })}
-    />
+    <span contentEditable={false}>
+      <img
+        src={DINO_IMAGES[type]}
+        alt={type}
+        contentEditable={false}
+        className={classnames({
+          plugins_dino: true,
+        })}
+      />
+    </span>
   );
 }
 
@@ -91,15 +91,8 @@ export default class Dino extends Node {
     };
   }
 
-  nodeView(node, view, getPos) {
-    return new CustomNodeView({
-      node,
-      view,
-      getPos,
-      extension: this,
-      reactComponent: DinoComp,
-      setContentDOM: false,
-    });
+  render(props) {
+    return <DinoComp {...props} />;
   }
 }
 
