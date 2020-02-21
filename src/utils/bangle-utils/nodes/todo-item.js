@@ -5,9 +5,8 @@ import {
   liftListItem,
 } from 'tiptap-commands';
 
-import { CustomNodeView } from '../helper-react/custom-node-view';
-
 import { Node } from './node';
+
 export class TodoItem extends Node {
   get name() {
     return 'todo_item';
@@ -16,6 +15,7 @@ export class TodoItem extends Node {
   get defaultOptions() {
     return {
       nested: true,
+      nodeViewSetContentDOM: true,
     };
   }
 
@@ -61,22 +61,16 @@ export class TodoItem extends Node {
     };
   }
 
-  nodeView(node, view, getPos) {
-    return new CustomNodeView({
-      node,
-      view,
-      getPos,
-      extension: this,
-      reactComponent: TodoItemComp,
-      setContentDOM: true,
-    });
-  }
+  render = React.memo((props) => {
+    return <TodoItemComp {...props} />;
+  });
 }
 
 let counter = 0;
 function TodoItemComp(props) {
   const { node, view, handleRef, updateAttrs } = props;
   let uid = node.type.name + counter++;
+  // console.log('updating TodoItemComp');
   return (
     <li data-type={node.type.name} data-done={node.attrs.done.toString()}>
       <span className="todo_checkbox" contentEditable="false">

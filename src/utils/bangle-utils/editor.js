@@ -16,12 +16,15 @@ import { markIsActive, nodeIsActive, getMarkAttrs } from 'tiptap-utils';
 import { ExtensionManager } from './utils/extension-manager';
 import { Emitter } from './utils/emitter';
 import { Text, Paragraph, Doc } from './nodes';
+import { CustomNodeView } from './helper-react/custom-node-view';
 
 export class Editor extends Emitter {
   constructor(domElement, options = {}) {
     super();
 
     this.defaultOptions = {
+      renderNodeView: null,
+      destroyNodeView: null,
       editorProps: {},
       editable: true,
       autoFocus: null,
@@ -484,31 +487,29 @@ export class Editor extends Emitter {
   initNodeViews() {
     return [...this.builtInExtensions, ...this.options.extensions]
       .filter((extension) => ['node', 'mark'].includes(extension.type))
-      .filter((extension) => extension.nodeView)
+      .filter((extension) => extension.render)
       .reduce((nodeViews, extension) => {
         if (nodeViews[extension.name]) {
           throw new Error('Already exists node view' + extension.name);
         }
+        if (!this.options.renderNodeView || !this.options.renderNodeView) {
+          throw new Error('need render handlers');
+        }
         return {
           ...nodeViews,
-          [extension.name]: (...args) => extension.nodeView(...args),
+          [extension.name]: (node, view, getPos) => {
+            return new CustomNodeView({
+              node,
+              view,
+              getPos,
+              extension,
+              renderNodeView: this.options.renderNodeView,
+              destroyNodeView: this.options.destroyNodeView,
+            });
+          },
         };
       }, {});
   }
-
-  attachNodeView = (name, initializer) => {
-    if (this.nodeViews[name]) {
-      throw new Error('already a node view with same name: ' + name);
-    }
-    this.nodeViews[name] = initializer;
-    if (this.view) {
-      this.view.setProps({
-        nodeViews: this.nodeViews,
-      });
-    } else {
-      throw new Error('no view');
-    }
-  };
 }
 
 // Converts a str `on something` to `onSomething`

@@ -1,5 +1,6 @@
 img.plugins_dino {
-  height: 40px;
+  display: inline;
+  height: 24px;
   vertical-align: bottom;
   border: 1px solid #0ae;
   border-radius: 4px;

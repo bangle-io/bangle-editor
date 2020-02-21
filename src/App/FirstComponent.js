@@ -2,6 +2,8 @@ import './style.css';
 import './menu.css';
 
 import React from 'react';
+import { createPortal } from 'react-dom';
+
 import applyDevTools from 'prosemirror-dev-tools';
 
 import Dinos from 'Plugins/dinos';
@@ -32,10 +34,15 @@ import {
 } from 'Utils/bangle-utils/nodes';
 
 import { menuExtension } from './components/menu/index';
+import { WrapperFoo, GrouperComp } from './Wrapper';
+import { PortalProvider, PortalRenderer } from './portal';
 
 export class ProsemirrorComp extends React.Component {
   myRef = React.createRef();
   state = {};
+  domElementMap = new Map();
+  nodeTypeMap = new Map();
+  counter = 0;
   componentDidMount() {
     const node = this.myRef.current;
     if (node) {
@@ -65,6 +72,9 @@ export class ProsemirrorComp extends React.Component {
         editorProps: {
           attributes: { class: 'bangle-editor' },
         },
+
+        renderNodeView: this.renderNodeView,
+        destroyNodeView: this.destroyNodeView,
         content: `
         <h2>
           Hi there,
@@ -109,11 +119,57 @@ export class ProsemirrorComp extends React.Component {
     }
   }
 
+  renderNodeView = (args) => {
+    // comes from custom-node-view.js#renderComp
+    const { node, view, handleRef, updateAttrs, dom, extension } = args;
+
+    this.props.portalProviderAPI.render(
+      () => (
+        <extension.render
+          {...{
+            node,
+            view,
+            handleRef,
+            updateAttrs,
+          }}
+        />
+      ),
+      dom,
+      false,
+    );
+
+    // const [_, insiders] = this.nodeTypeMap.get(extension.name) || [
+    //   this.counter++,
+    //   new Map(),
+    // ];
+
+    // // if (!insiders) {
+    // //   insiders = new Map();
+    // // }
+    // this.nodeTypeMap.set(extension.name, [this.counter++, insiders]);
+    // // console.log(insiders);
+    // insiders.set(dom, [
+    //   extension.render,
+    // {
+    //   node,
+    //   view,
+    //   handleRef,
+    //   updateAttrs,
+    // },
+    // ]);
+
+    // this.forceUpdate();
+  };
+
+  destroyNodeView = (dom) => {
+    this.props.portalProviderAPI.remove(dom);
+  };
+
   render() {
     return (
       <>
         <div ref={this.myRef} className="ProsemirrorComp" />
-        {this.state.editor ? null : null}
+        <PortalRenderer portalProviderAPI={this.props.portalProviderAPI} />
       </>
     );
   }
