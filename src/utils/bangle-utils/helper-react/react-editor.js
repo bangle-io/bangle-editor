@@ -23,36 +23,26 @@ export class ReactEditor extends React.PureComponent {
   componentDidMount() {
     const node = this.myRef.current;
     if (node) {
-      const editor = new Editor(node, this.options);
-      this.setState({
-        editor,
-      });
+      this.editor = new Editor(node, this.options);
       if (this.options.devtools) {
-        applyDevTools(editor.view);
-        window.editor = editor;
+        applyDevTools(this.editor.view);
+        window.editor = this.editor;
       }
-      editor.focus();
+      this.editor.focus();
     }
   }
 
-  renderNodeView = (args) => {
-    // comes from custom-node-view.js#renderComp
-    const { node, view, handleRef, updateAttrs, dom, extension } = args;
+  componentWillUnmount() {
+    this.portalProviderAPI.destroy();
+    this.editor.destroy();
+  }
 
+  // comes from custom-node-view.js#renderComp
+  renderNodeView = ({ dom, extension, renderingPayload }) => {
     if (!extension.render.displayName) {
       extension.render.displayName = `ParentNodeView[${extension.name}]`;
     }
-    this.portalProviderAPI.render(
-      <extension.render
-        {...{
-          node,
-          view,
-          handleRef,
-          updateAttrs,
-        }}
-      />,
-      dom,
-    );
+    this.portalProviderAPI.render(extension.render, renderingPayload, dom);
   };
 
   destroyNodeView = (dom) => {

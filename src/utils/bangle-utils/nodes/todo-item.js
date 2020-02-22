@@ -61,9 +61,9 @@ export class TodoItem extends Node {
     };
   }
 
-  render = React.memo((props) => {
+  render = (props) => {
     return <TodoItemComp {...props} />;
-  });
+  };
 }
 
 let counter = 0;

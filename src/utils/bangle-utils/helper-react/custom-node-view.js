@@ -139,13 +139,14 @@ export class CustomNodeView {
 
   renderComp() {
     this._renderNodeView({
-      // for React component
-      node: this.node,
-      view: this.view,
-      handleRef: this.handleRef,
-      updateAttrs: this.updateAttrs,
+      renderingPayload: {
+        node: this.node,
+        view: this.view,
+        handleRef: this.handleRef,
+        updateAttrs: this.updateAttrs,
+      },
 
-      // for gluing and backend
+      // for gluing with backend
       dom: this.domRef,
       extension: this.extension,
     });

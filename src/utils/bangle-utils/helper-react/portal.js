@@ -1,75 +1,76 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { objUid } from '../utils/object-uid';
+import { EventDispatcher } from '../utils/event-dispatcher';
+import { SelectiveUpdate } from './selective-update';
 
-class EventDispatcher {
-  constructor() {
-    this.listeners = {};
-  }
-  on(event, cb) {
-    if (!this.listeners[event]) {
-      this.listeners[event] = new Set();
-    }
-    this.listeners[event].add(cb);
-  }
-  off(event, cb) {
-    if (!this.listeners[event]) {
-      return;
-    }
-    if (this.listeners[event].has(cb)) {
-      this.listeners[event].delete(cb);
-    }
-  }
-  emit(event, data) {
-    if (!this.listeners[event]) {
-      return;
-    }
-    this.listeners[event].forEach((cb) => cb(data));
-  }
-  destroy() {
-    this.listeners = {};
-  }
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log(...args);
 }
 
 export class PortalProviderAPI extends EventDispatcher {
-  constructor(...args) {
-    super(...args);
-    this.portals = new Map();
-    this.setContext = (context) => {
-      this.context = context;
-    };
-  }
-  render(children, container) {
-    this.portals.set(
-      container,
-      createPortal(children, container, objUid.get(container)),
-    );
-    this.emit('update');
+  portals = new Map();
+
+  getRenderKey(container) {
+    return 'update_' + objUid.get(container);
   }
 
-  // TODO: until https://product-fabric.atlassian.net/browse/ED-5013
-  // we (unfortunately) need to re-render to pass down any updated context.
-  // selectively do this for nodeviews that opt-in via `hasReactContext`
-  forceUpdate() {
-    console.log('forcing update');
-    this.emit('update');
+  render(Element, props, container) {
+    const uid = objUid.get(container);
+    // If the element already exists communicate with SelectiveUpdateComponent
+    // to selectively update it, bypassing the entire array re-render in PortalRenderer
+    if (this.portals.has(container)) {
+      log('PortalProviderAPI: updating existing', uid);
+      this.emit(this.getRenderKey(container), props);
+      return;
+    }
+
+    log('PortalProviderAPI: creating new', uid);
+
+    const portalElement = createPortal(
+      <SelectiveUpdate
+        renderKey={this.getRenderKey(container)}
+        forceUpdateKey="#force_update"
+        emitter={this}
+        initialProps={props}
+        render={(props) => <Element {...props} />}
+      />,
+      container,
+      uid,
+    );
+
+    this.portals.set(container, portalElement);
+    this.emit('#root_update');
   }
+
+  forceUpdate() {
+    log('forcing update');
+    this.emit('#force_update');
+  }
+
   remove(container) {
+    log('removing', this.getRenderKey(container));
     this.portals.delete(container);
-    this.emit('update');
+    this.emit('#root_update');
   }
 }
 
 export class PortalRenderer extends React.Component {
   constructor(props) {
     super(props);
-    this.handleUpdate = () =>
-      this.setState({ portals: props.portalProviderAPI.portals });
-    props.portalProviderAPI.setContext(this);
-    props.portalProviderAPI.on('update', this.handleUpdate);
-    this.state = { portals: props.portalProviderAPI.portals };
+
+    props.portalProviderAPI.on('#root_update', this.handleUpdate);
+    props.portalProviderAPI.on('#force_update', this.handleUpdate);
   }
+
+  handleUpdate = () => {
+    this.forceUpdate();
+  };
+
   render() {
-    return [...this.state.portals.values()];
+    log('PortalRenderer: rendering');
+    return [...this.props.portalProviderAPI.portals.values()];
   }
 }
