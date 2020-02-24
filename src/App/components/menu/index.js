@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ComponentUIWrapper } from 'Utils/bangle-utils/extensions/component-ui-wrapper';
 
 export function MenuBar({ editor }) {
   return (
-    <>
+    <div className="menu-bar-static">
       <MenuItemButton
         active={editor.isActive.bold()}
         enabled={true}
@@ -77,7 +76,7 @@ export function MenuBar({ editor }) {
         label="flower"
         iconType="check-square"
       />
-    </>
+    </div>
   );
 }
 
@@ -102,10 +101,3 @@ MenuItemButton.propTypes = {
   label: PropTypes.string.isRequired,
   iconType: PropTypes.string.isRequired,
 };
-
-export const menuExtension = new ComponentUIWrapper(
-  {
-    childClass: 'menu-component',
-  },
-  MenuBar,
-);

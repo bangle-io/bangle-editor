@@ -1,3 +1,4 @@
+import './Editor.scss';
 import './style.css';
 import './menu.css';
 
@@ -27,11 +28,12 @@ import {
   TodoItem,
   TodoList,
 } from 'Utils/bangle-utils/nodes';
-import { menuExtension } from './components/menu/index';
+import { MenuBar } from './components/menu/index';
 import { ReactEditor } from 'Utils/bangle-utils/helper-react/react-editor';
 
-export class ProsemirrorComp extends React.Component {
+export class Editor extends React.Component {
   editorOptions = {
+    headerComponent: (editor) => <MenuBar editor={editor} />,
     extensions: [
       new Bold(),
       new Code(),
@@ -51,7 +53,7 @@ export class ProsemirrorComp extends React.Component {
       new OrderedList(),
       new Dinos(),
       new Emoji(),
-      menuExtension,
+      // menuExtension,
       new History(),
     ],
     editorProps: {
@@ -90,10 +92,40 @@ export class ProsemirrorComp extends React.Component {
           <br />
           – mom
         </blockquote>
+
+        ${Array.from(
+          { length: 40 },
+          (_, k) => `
+      <p>
+        this is a very <em>basic</em> example of bangle. 
+        <span data-type="emoji" data-emojikind=":handball_tone4:‍♀️"></span>
+        <span data-type="emoji" data-emojikind=":bug:"></span>
+      </p>
+      `,
+        ).join('\n')}
       `,
   };
 
   render() {
-    return <ReactEditor options={this.editorOptions} />;
+    return (
+      <div
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          display: 'flex',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            maxWidth: 900,
+            flexGrow: 1,
+            flexDirection: 'column',
+          }}
+        >
+          <ReactEditor options={this.editorOptions} />
+        </div>
+      </div>
+    );
   }
 }

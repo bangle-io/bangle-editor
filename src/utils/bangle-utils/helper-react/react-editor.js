@@ -13,7 +13,8 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI = new PortalProviderAPI();
 
     this.defaultOptions = {
-      componentClassName: 'ProsemirrorComp',
+      headerComponent: null,
+      componentClassName: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
       destroyNodeView: this.destroyNodeView,
     };
@@ -28,6 +29,7 @@ export class ReactEditor extends React.PureComponent {
         applyDevTools(this.editor.view);
         window.editor = this.editor;
       }
+      this.forceUpdate();
       this.editor.focus();
     }
   }
@@ -52,6 +54,9 @@ export class ReactEditor extends React.PureComponent {
   render() {
     return (
       <>
+        {this.options.headerComponent && this.editor // TODO make this editor depeendence better
+          ? this.options.headerComponent(this.editor)
+          : null}
         <div ref={this.myRef} className={this.options.componentClassName} />
         <PortalRenderer portalProviderAPI={this.portalProviderAPI} />
       </>
