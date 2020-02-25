@@ -69,6 +69,11 @@ export class PortalRenderer extends React.Component {
     this.forceUpdate();
   };
 
+  componentWillUnmount() {
+    this.props.portalProviderAPI.off('#root_update', this.handleUpdate);
+    this.props.portalProviderAPI.off('#force_update', this.handleUpdate);
+  }
+
   render() {
     log('PortalRenderer: rendering');
     return [...this.props.portalProviderAPI.portals.values()];

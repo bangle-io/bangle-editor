@@ -33,6 +33,12 @@ import { ReactEditor } from 'Utils/bangle-utils/helper-react/react-editor';
 
 export class Editor extends React.Component {
   editorOptions = {
+    grabEditor: (editor) => {
+      this.props.onEditorReady(editor);
+    },
+    onUpdate: (...args) => {
+      this.props.onEditorUpdate(...args);
+    },
     headerComponent: (editor) => <MenuBar editor={editor} />,
     extensions: [
       new Bold(),
@@ -57,7 +63,7 @@ export class Editor extends React.Component {
       new History(),
     ],
     editorProps: {
-      attributes: { class: 'bangle-editor' },
+      attributes: { class: 'bangle-editor content' },
     },
     content: `
         <h2>
