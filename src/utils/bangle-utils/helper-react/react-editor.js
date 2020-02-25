@@ -13,6 +13,7 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI = new PortalProviderAPI();
 
     this.defaultOptions = {
+      grabEditor: () => {},
       headerComponent: null,
       componentClassName: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
@@ -29,6 +30,7 @@ export class ReactEditor extends React.PureComponent {
         applyDevTools(this.editor.view);
         window.editor = this.editor;
       }
+      this.options.grabEditor(this.editor);
       this.forceUpdate();
       this.editor.focus();
     }

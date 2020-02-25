@@ -57,6 +57,10 @@ header {
   grid-row: 1;
   background-color: burlywood;
   grid-column: 1 / 3;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding-right: 400px;
 }
 
 .editor-wrapper {
@@ -72,6 +76,16 @@ aside {
   grid-row: 1;
   height: 100vh;
   background-color: cyan;
+  display: flex;
+  flex-direction: column;
+
+  .history-entry {
+    background-color: hotpink;
+    margin: 4px 2px;
+    padding: 2px;
+    color: white;
+    font-weight: 500;
+  }
 }
 
 .ui-wrapper {
