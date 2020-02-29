@@ -34,12 +34,14 @@
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.1",
     "recompose": "^0.30.0",
+    "tailwindcss": "^1.2.0",
     "tiptap-commands": "^1.12.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -64,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "postcss": "^7.0.27",
     "prosemirror-dev-tools": "^2.1.1"
   }
 }

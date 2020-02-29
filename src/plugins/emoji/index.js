@@ -1,7 +1,8 @@
+import './emoji.css';
+
 import React from 'react';
 
 import { EMOJI_NODE_NAME, validEmojis } from './constants';
-import './emoji.css';
 import { Node } from 'Utils/bangle-utils/nodes';
 import { emojiLookup } from './constants';
 

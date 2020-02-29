@@ -14,6 +14,7 @@ export class Heading extends Node {
   get defaultOptions() {
     return {
       levels: [1, 2, 3, 4, 5, 6],
+      classNames: {},
     };
   }
 
@@ -28,11 +29,25 @@ export class Heading extends Node {
       group: 'block',
       defining: true,
       draggable: false,
-      parseDOM: this.options.levels.map((level) => ({
-        tag: `h${level}`,
-        attrs: { level },
-      })),
-      toDOM: (node) => [`h${node.attrs.level}`, 0],
+      parseDOM: this.options.levels.map((level) => {
+        return {
+          tag: `h${level}`,
+          attrs: { level },
+        };
+      }),
+      toDOM: (node) => {
+        return [
+          `h${node.attrs.level}`,
+          {
+            class:
+              this.options.classNames &&
+              this.options.classNames[`h${node.attrs.level}`]
+                ? this.options.classNames[`h${node.attrs.level}`]
+                : undefined,
+          },
+          0,
+        ];
+      },
     };
   }
 

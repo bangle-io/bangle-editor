@@ -84,7 +84,7 @@ export function MenuItemButton({ active, enabled, onClick, label, iconType }) {
   const buttonLook = active ? 'is-light' : 'is-white';
   return (
     <button
-      className={`button ${buttonLook}`}
+      className={`bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center ${buttonLook}`}
       disabled={enabled ? '' : 'disabled'}
       onClick={onClick}
     >

@@ -1,5 +1,6 @@
+import './dino.css';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { nodeHelpers } from 'Utils/bangle-utils';
 import {
@@ -16,7 +17,6 @@ import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
-import './dino.css';
 
 export const DINO_IMAGES = {
   brontosaurus: brontosaurusImg,
