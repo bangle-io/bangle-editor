@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { BaseButton } from '../Button';
 
 export function MenuBar({ editor }) {
   return (
-    <div className="menu-bar-static">
+    <div className="flex flex-row content-center justify-center">
       <MenuItemButton
         active={editor.isActive.bold()}
         enabled={true}
@@ -81,17 +82,15 @@ export function MenuBar({ editor }) {
 }
 
 export function MenuItemButton({ active, enabled, onClick, label, iconType }) {
-  const buttonLook = active ? 'is-light' : 'is-white';
   return (
-    <button
-      className={`bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center ${buttonLook}`}
-      disabled={enabled ? '' : 'disabled'}
+    <BaseButton
       onClick={onClick}
-    >
-      <span className={`icon has-text-dark`}>
-        <i className={`fas fa-${iconType}`} title={label} />
-      </span>
-    </button>
+      isActive={active}
+      faType={`fas fa-${iconType}`}
+      disabled={!enabled}
+      className="text-pink-700 hover:bg-gray-500 w-8 h-8"
+      activeClassName="bg-gray-400"
+    />
   );
 }
 MenuItemButton.propTypes = {

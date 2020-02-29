@@ -2,10 +2,12 @@ import React from 'react';
 import applyDevTools from 'prosemirror-dev-tools';
 
 import { Editor } from '../';
+import { EditorOnReadyContext } from './editor-context';
 
 import { PortalRenderer, PortalProviderAPI } from './portal';
 
 export class ReactEditor extends React.PureComponent {
+  static contextType = EditorOnReadyContext;
   constructor(props) {
     super(props);
 
@@ -13,7 +15,6 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI = new PortalProviderAPI();
 
     this.defaultOptions = {
-      grabEditor: () => {},
       headerComponent: null,
       componentClassName: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
@@ -30,7 +31,8 @@ export class ReactEditor extends React.PureComponent {
         applyDevTools(this.editor.view);
         window.editor = this.editor;
       }
-      this.options.grabEditor(this.editor);
+      this.context(this.editor);
+
       this.forceUpdate();
       this.editor.focus();
     }

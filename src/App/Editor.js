@@ -24,18 +24,10 @@ import {
   TodoItem,
   TodoList,
 } from 'Utils/bangle-utils/nodes';
-import { MenuBar } from './components/menu/index';
 import { ReactEditor } from 'Utils/bangle-utils/helper-react/react-editor';
 
-export class Editor extends React.Component {
+export class Editor extends React.PureComponent {
   editorOptions = {
-    grabEditor: (editor) => {
-      this.props.onEditorReady(editor);
-    },
-    onUpdate: (...args) => {
-      this.props.onEditorUpdate(...args);
-    },
-    headerComponent: (editor) => <MenuBar editor={editor} />,
     extensions: [
       new Bold(),
       new Code(),
@@ -96,7 +88,6 @@ export class Editor extends React.Component {
           <br />
           – mom
         </blockquote>
-
         ${Array.from(
           { length: 40 },
           (_, k) => `
