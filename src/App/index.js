@@ -1,56 +1,13 @@
 // polyfills
 import 'core-js/es/object/from-entries';
 
-import './style.scss';
+import './style/index.scss';
 
 import React from 'react';
 import localforage from 'localforage';
-import format from 'date-fns/format';
 import { Editor } from './Editor';
 import { Header } from './components/Header';
-
-class Aside extends React.Component {
-  state = {
-    result: new Map(),
-  };
-
-  async componentDidUpdate() {
-    let result = await getSavedData(this.state.result);
-
-    this.setState({
-      result,
-    });
-  }
-
-  render() {
-    return this.props.showSidebar ? (
-      <aside>
-        {[...this.state.result]
-          .sort(([_, a], [__, b]) => b.time - a.time)
-          .map(([title, { time, dump }]) => (
-            <span
-              key={title}
-              onClick={() => this.props.resetHistory(dump)}
-              className="history-entry"
-            >
-              {title} - {format(new Date(time), 'eee dd MMM HH:mm ')}
-            </span>
-          ))}
-      </aside>
-    ) : null;
-  }
-}
-
-async function getSavedData(result = new Map()) {
-  for (const title of (await localforage.keys()).filter(
-    (title) => !result.has(title),
-  )) {
-    let item = await localforage.getItem(title);
-    let { time, dump } = JSON.parse(item);
-    result.set(title, { time, dump });
-  }
-  return result;
-}
+import { Aside, getSavedData } from './components/Aside';
 
 async function getMostRecentEntry(result) {
   result = await result;
@@ -114,10 +71,10 @@ export default class App extends React.Component {
   };
   render() {
     return (
-      <div class="app">
-        <div class="main-wrapper">
+      <div className="flex">
+        <div className="flex-1 h-screen main-wrapper">
           <Header toggleSidebar={this.toggleSidebar} onSave={this.onSave} />
-          <div className="editor-wrapper">
+          <div className="editor-wrapper overflow-auto">
             <Editor
               onEditorReady={this.onEditorReady}
               onEditorUpdate={this.onEditorUpdate}

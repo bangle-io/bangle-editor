@@ -1,7 +1,3 @@
-import './Editor.scss';
-import './style.css';
-import './menu.css';
-
 import React from 'react';
 
 import Dinos from 'Plugins/dinos';
@@ -51,7 +47,9 @@ export class Editor extends React.Component {
       new BulletList(),
       new CodeBlock(),
       new HardBreak(),
-      new Heading(),
+      new Heading({
+        levels: [1, 2, 3],
+      }),
       new HorizontalRule(),
       new ListItem(),
       new TodoItem(),
@@ -114,21 +112,8 @@ export class Editor extends React.Component {
 
   render() {
     return (
-      <div
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          display: 'flex',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            maxWidth: 900,
-            flexGrow: 1,
-            flexDirection: 'column',
-          }}
-        >
+      <div className="flex justify-center flex-row">
+        <div className="flex-1 max-w-screen-lg ml-6 mr-6">
           <ReactEditor options={this.editorOptions} />
         </div>
       </div>

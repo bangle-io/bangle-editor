@@ -1,0 +1,39 @@
+@import 'tailwindcss/base';
+
+.bangle-editor p {
+  @apply text-base whitespace-pre-line break-words;
+}
+
+.bangle-editor h1 {
+  @apply text-4xl;
+}
+.bangle-editor h2 {
+  @apply text-3xl;
+}
+.bangle-editor h3 {
+  @apply text-xl font-medium;
+}
+
+.bangle-editor ul {
+  @apply list-disc list-outside  pl-6;
+}
+
+.bangle-editor ol {
+  @apply list-decimal list-outside pl-6;
+}
+
+.bangle-editor a {
+  @apply text-blue-500;
+}
+
+.bangle-editor a:hover {
+  @apply text-blue-800;
+}
+
+.bangle-editor blockquote {
+  @apply border-l-4 border-gray-600 pl-2 bg-gray-100 text-gray-700;
+}
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
