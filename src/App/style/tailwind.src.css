@@ -5,25 +5,25 @@
 }
 
 .bangle-editor h1 {
-  @apply text-4xl;
+  @apply text-4xl my-2 mt-5;
 }
 .bangle-editor h2 {
-  @apply text-3xl;
+  @apply text-3xl mb-1 mt-4;
 }
 .bangle-editor h3 {
-  @apply text-xl font-medium;
+  @apply text-xl font-medium mb-1 mt-4;
 }
 
 .bangle-editor ul {
-  @apply list-disc list-outside  pl-6;
+  @apply list-disc list-outside  pl-6 mt-2 mb-1;
 }
 
 .bangle-editor ol {
-  @apply list-decimal list-outside pl-6;
+  @apply list-decimal list-outside pl-6 mt-2 mb-1;
 }
 
 .bangle-editor a {
-  @apply text-blue-500;
+  @apply text-blue-500 px-1;
 }
 
 .bangle-editor a:hover {
@@ -31,7 +31,7 @@
 }
 
 .bangle-editor blockquote {
-  @apply border-l-4 border-gray-600 pl-2 bg-gray-100 text-gray-700;
+  @apply border-l-4 border-gray-600 pl-2 bg-gray-100 text-gray-700 my-5;
 }
 
 @import 'tailwindcss/components';

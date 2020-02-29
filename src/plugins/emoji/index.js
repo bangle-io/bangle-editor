@@ -91,7 +91,6 @@ export default class EmojiExtension extends Node {
 
 export class Emoji extends React.Component {
   render() {
-    // console.log('here');
     const { emojikind } = this.props;
     return <span contentEditable={false}>{emojiLookup[emojikind]}</span>;
   }
