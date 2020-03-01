@@ -88,7 +88,7 @@ export function MenuItemButton({ active, enabled, onClick, label, iconType }) {
       isActive={active}
       faType={`fas fa-${iconType}`}
       disabled={!enabled}
-      className="text-pink-700 hover:bg-gray-500 w-8 h-8"
+      className="text-gray-900 hover:bg-gray-300 w-8 h-8"
       activeClassName="bg-gray-400"
     />
   );

@@ -11,12 +11,23 @@ export class EditorContextProvider extends React.Component {
   };
 
   onEditorReady = (editor) => {
-    if (!this.state.editorValue.editor) {
-      this.setState({
-        editorValue: { editor },
-      });
-      editor.on('transaction', this.handleEditorUpdate);
+    if (!editor) {
+      return;
     }
+
+    if (
+      this.state.editorValue.editor &&
+      this.state.editorValue.editor !== editor
+    ) {
+      console.log('Setting a new editor');
+      this.state.editorValue.editor.off('update', this.handleEditorUpdate);
+    }
+
+    this.setState({
+      editorValue: { editor },
+    });
+
+    editor.on('transaction', this.handleEditorUpdate);
   };
 
   handleEditorUpdate = () => {
@@ -26,7 +37,8 @@ export class EditorContextProvider extends React.Component {
   };
 
   componentWillUnmount() {
-    this.state.editorValue.editor.off('update', this.handleEditorUpdate);
+    this.state.editorValue.editor &&
+      this.state.editorValue.editor.off('update', this.handleEditorUpdate);
   }
 
   render() {

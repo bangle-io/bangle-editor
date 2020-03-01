@@ -1,87 +1,69 @@
 import React from 'react';
 import format from 'date-fns/format';
-import localforage from 'localforage';
-import { Button, StackButton } from './Button';
+import { BaseButton, StackButton } from './Button';
 import { EditorContext } from 'Utils/bangle-utils/helper-react/editor-context';
+import { localManager } from '../store/local';
 
-export async function getSavedData(result = new Map()) {
-  for (const title of (await localforage.keys()).filter(
-    (title) => !result.has(title),
-  )) {
-    let item = await localforage.getItem(title);
-    let { time, dump } = JSON.parse(item);
-    result.set(title, { time, dump });
-  }
-  return result;
-}
-
-async function getMostRecentEntry(result) {
-  result = await result;
-
-  return [...result].map((r) => r[1]).sort((a, b) => b.time - a.time)[0];
-}
-
-export class Aside extends React.Component {
+export class Aside extends React.PureComponent {
   static contextType = EditorContext;
-  grabbedLastSaved = false;
+
   state = {
-    result: new Map(),
+    showSidebar: null,
   };
 
-  async componentDidMount() {
-    const result = await getSavedData();
-    await this.grabLastSaved();
-
-    this.setState({
-      result,
-    });
-  }
-
-  grabLastSaved = async () => {
-    if (this.grabbedLastSaved) {
-      return;
-    }
-    const lastSaved = await getMostRecentEntry(getSavedData());
-    if (lastSaved && this.editor) {
-      this.grabbedLastSaved = true;
-      this.resetHistory(lastSaved.dump);
-    }
-    if (!lastSaved && this.editor) {
-      this.grabbedLastSaved = true;
-    }
+  toggleSidebar = (state = !this.state.showSidebar) => {
+    this.setState({ showSidebar: state });
   };
 
-  resetHistory = (dump) => {
-    this.context.editor && this.context.editor.setContent(dump);
-  };
-
-  renderSiderbar = () => {
-    return [...this.state.result]
-      .sort(([_, a], [__, b]) => b.time - a.time)
-      .map(([title, { time, dump }]) => (
+  renderSidebar = () => {
+    return localManager.entries
+      .sort((a, b) => b.created - a.created)
+      .map((entry) => (
         <div
-          key={title}
-          onClick={() => this.resetHistory(dump)}
-          className="flex flex-col cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
+          key={entry.uid}
+          onClick={() => {
+            if (this.props.entry.uid === entry.uid) {
+              return;
+            }
+            this.props.handleLoadEntry(entry);
+          }}
+          className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
+            this.props.entry.uid === entry.uid ? `bg-gray-300` : ''
+          } hover:bg-gray-400 rounded-lg`}
         >
-          <span className="text-white font-bold text-gray-800">{title}</span>
-          <span className="text-sm font-light">
-            {format(new Date(time), 'eee dd MMM HH:mm')}
-          </span>
+          <div className="flex-1 flex flex-col">
+            <span className="text-white font-bold text-gray-800">
+              {entry.title}
+            </span>
+            <span className="text-sm font-light">
+              {format(new Date(entry.modified), 'eee dd MMM HH:mm')}
+            </span>
+          </div>
+          <BaseButton
+            className="text-gray-600 hover:text-gray-900"
+            faType="fas fa-times-circle "
+            onClick={async (e) => {
+              e.stopPropagation();
+              await this.props.handleRemoveEntry(entry);
+              this.forceUpdate();
+            }}
+          />
         </div>
       ));
   };
 
-  sideBarMenu = () => [
-    <div className="flex align-center justify-center">
-      <StackButton
-        onClick={() => this.props.toggleSidebar()}
-        isActive={this.props.showSidebar}
-        faType="fas fa-folder"
-        stack={true}
-      />
-    </div>,
-  ];
+  sideBarMenu = () => (
+    <>
+      <div className="flex align-center justify-center">
+        <StackButton
+          onClick={() => this.toggleSidebar()}
+          isActive={this.state.showSidebar}
+          faType="fas fa-folder"
+          stack={true}
+        />
+      </div>
+    </>
+  );
 
   render() {
     return (
@@ -89,10 +71,19 @@ export class Aside extends React.Component {
         <div className="aside-menu bg-gray-900 py-6 flex flex-col h-screen z-30 shadow-outline">
           {this.sideBarMenu()}
         </div>
-        {this.props.showSidebar ? (
-          <div className="aside-content bg-gray-200  flex flex-col z-20 h-screen shadow-2xl px-3 pt-5 ">
-            <div className="text-2xl pb-3">Files</div>
-            {this.renderSiderbar()}
+        {this.state.showSidebar ? (
+          <div className="aside-content bg-gray-200  flex flex-col z-20 h-screen shadow-2xl px-3 pt-5 overflow-auto ">
+            <div className="text-2xl pb-1 ml-3">Files</div>
+            {this.renderSidebar()}
+            <div
+              className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
+              onClick={async () => {
+                await this.props.handleNewEntry();
+                this.toggleSidebar();
+              }}
+            >
+              New
+            </div>
           </div>
         ) : null}
       </>

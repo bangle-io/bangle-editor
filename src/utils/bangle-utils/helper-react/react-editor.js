@@ -15,14 +15,23 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI = new PortalProviderAPI();
 
     this.defaultOptions = {
-      headerComponent: null,
       componentClassName: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
       destroyNodeView: this.destroyNodeView,
+      content: this.props.content,
     };
 
     this.options = Object.assign({}, this.defaultOptions, this.props.options);
   }
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.content !== prevProps.content) {
+      console.log('React-editor: Content not same, reseting content');
+      this.editor && this.editor.setContent(this.props.content);
+    }
+  }
+
   componentDidMount() {
     const node = this.myRef.current;
     if (node) {
@@ -43,7 +52,7 @@ export class ReactEditor extends React.PureComponent {
     this.editor.destroy();
   }
 
-  // comes from custom-node-view.js#renderComp
+  // called from custom-node-view.js#renderComp
   renderNodeView = ({ dom, extension, renderingPayload }) => {
     if (!extension.render.displayName) {
       extension.render.displayName = `ParentNodeView[${extension.name}]`;
@@ -58,9 +67,6 @@ export class ReactEditor extends React.PureComponent {
   render() {
     return (
       <>
-        {this.options.headerComponent && this.editor // TODO make this editor depeendence better
-          ? this.options.headerComponent(this.editor)
-          : null}
         <div ref={this.myRef} className={this.options.componentClassName} />
         <PortalRenderer portalProviderAPI={this.portalProviderAPI} />
       </>

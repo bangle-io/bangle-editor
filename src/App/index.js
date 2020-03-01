@@ -8,28 +8,53 @@ import { Editor } from './Editor';
 import { Header } from './components/Header';
 import { Aside } from './components/Aside';
 import { EditorContextProvider } from 'Utils/bangle-utils/helper-react/editor-context';
+import { localManager } from './store/local';
+import { defaultContent } from './components/constants';
+
+const lastSavedContent = localManager.lastModifiedEntry();
+
 export default class App extends React.PureComponent {
   state = {
-    showSidebar: false,
-    editor: {},
-    editorUpdate: null,
+    entry: undefined,
   };
 
-  toggleSidebar = (state = !this.state.showSidebar) => {
-    this.setState({ showSidebar: state });
+  async componentDidMount() {
+    let entry = await lastSavedContent;
+    if (!entry) {
+      console.log('no lastSavedContent');
+      entry = await localManager.saveEntry({ content: defaultContent });
+    }
+    this.setState({ entry });
+  }
+
+  handleLoadEntry = (entry) => {
+    this.setState({ entry });
+  };
+
+  handleNewEntry = async () => {
+    const entry = await localManager.saveEntry({ content: defaultContent });
+    this.setState({ entry });
+  };
+
+  handleRemoveEntry = async (entry) => {
+    await localManager.removeEntry(entry);
+    this.setState({ entry: await localManager.lastModifiedEntry() });
   };
 
   render() {
     return (
       <EditorContextProvider>
         <div className="flex h-screen main-wrapper">
-          <Header toggleSidebar={this.toggleSidebar} />
+          <Header entry={this.state.entry} />
           <div className="editor-wrapper overflow-auto">
-            <Editor />
+            {this.state.entry && <Editor entry={this.state.entry} />}
           </div>
           <Aside
+            entry={this.state.entry}
+            handleLoadEntry={this.handleLoadEntry}
+            handleRemoveEntry={this.handleRemoveEntry}
+            handleNewEntry={this.handleNewEntry}
             toggleSidebar={this.toggleSidebar}
-            showSidebar={this.state.showSidebar}
           />
         </div>
       </EditorContextProvider>
