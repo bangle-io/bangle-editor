@@ -31,7 +31,19 @@
 }
 
 .bangle-editor blockquote {
-  @apply border-l-4 border-gray-600 pl-2 bg-gray-100 text-gray-700 my-5;
+  @apply border-l-4 border-gray-600 pl-2 bg-gray-200 text-gray-700 my-5 py-2;
+}
+
+.bangle-editor pre {
+  @apply border-gray-600 pl-2 bg-gray-200 my-5 py-4;
+}
+
+.bangle-editor pre > code {
+  @apply font-mono text-gray-700 font-light text-sm;
+}
+
+.bangle-editor p > code {
+  @apply font-mono text-gray-700 font-light bg-gray-200 px-2 py-1 rounded;
 }
 
 @import 'tailwindcss/components';
