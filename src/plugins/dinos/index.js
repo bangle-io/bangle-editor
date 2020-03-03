@@ -3,7 +3,7 @@ import './dino.css';
 import React from 'react';
 import classnames from 'classnames';
 import { DINO_NODE_NAME, dinoNames } from './constants';
-import { Node } from 'Utils/bangle-utils/nodes';
+import { Node } from 'utils/bangle-utils/nodes';
 
 import brontosaurusImg from './img/brontosaurus.png';
 import stegosaurusImg from './img/stegosaurus.png';

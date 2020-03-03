@@ -3,7 +3,7 @@ import './emoji.css';
 import React from 'react';
 
 import { EMOJI_NODE_NAME, validEmojis } from './constants';
-import { Node } from 'Utils/bangle-utils/nodes';
+import { Node } from 'utils/bangle-utils/nodes';
 import { emojiLookup } from './constants';
 
 function insertEmoji(schema, name) {

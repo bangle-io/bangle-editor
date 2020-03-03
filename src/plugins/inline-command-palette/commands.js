@@ -3,7 +3,7 @@ import { SELECT_ITEM } from './action';
 import { Fragment, Node } from 'prosemirror-model';
 import { PluginKey, Selection, NodeSelection } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
-import { isChromeWithSelectionBug } from 'Utils/bangle-utils';
+import { isChromeWithSelectionBug } from 'utils/bangle-utils';
 
 export const typeAheadStatePluginKey = new PluginKey('typeahead-state-plugin');
 
