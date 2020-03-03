@@ -2,14 +2,7 @@ import './dino.css';
 
 import React from 'react';
 import classnames from 'classnames';
-import { nodeHelpers } from 'Utils/bangle-utils';
-import {
-  DINO_NODE_NAME,
-  dinoAttrTypes,
-  dinoAttrDefaults,
-  DINO_WRAPPER_ELEMENT,
-  dinoNames,
-} from './constants';
+import { DINO_NODE_NAME, dinoNames } from './constants';
 import { Node } from 'Utils/bangle-utils/nodes';
 
 import brontosaurusImg from './img/brontosaurus.png';
@@ -27,9 +20,7 @@ export const DINO_IMAGES = {
 };
 
 function DinoComp({ node }) {
-  const attrs = nodeHelpers.getAttrsFromNode(dinoAttrTypes, node);
-
-  const type = attrs['data-type'];
+  const type = node.attrs['data-dinokind'];
   return (
     <span contentEditable={false}>
       <img
@@ -50,7 +41,14 @@ export default class Dino extends Node {
   }
   get schema() {
     return {
-      attrs: nodeHelpers.attributesForNodeSpec(dinoAttrTypes, dinoAttrDefaults),
+      attrs: {
+        'data-dinokind': {
+          default: 'brontosaurus',
+        },
+        'style': {
+          default: 'display: inline-block;',
+        },
+      },
       inline: true,
       group: 'inline',
       draggable: true,
@@ -58,8 +56,11 @@ export default class Dino extends Node {
       //      when you like copy or drag
       toDOM: (node) => {
         return [
-          DINO_WRAPPER_ELEMENT,
-          nodeHelpers.attributesForToDom(dinoAttrTypes)(node),
+          'span',
+          {
+            'data-type': this.name,
+            'data-dinokind': node.attrs['data-dinokind'].toString(),
+          },
         ];
       },
       // NOTE: this is the opposite part where you parse the output of toDOM
@@ -67,8 +68,12 @@ export default class Dino extends Node {
       //      Also, it only takes attributes defined in spec.attrs
       parseDOM: [
         {
-          tag: DINO_WRAPPER_ELEMENT,
-          getAttrs: nodeHelpers.attributesForParseDom(dinoAttrTypes),
+          tag: `span[data-type="${this.name}"]`,
+          getAttrs: (dom) => {
+            return {
+              'data-dinokind': dom.getAttribute('data-dinokind'),
+            };
+          },
         },
       ],
     };
@@ -92,6 +97,8 @@ export default class Dino extends Node {
   }
 
   render(props) {
+    props.updateAttrs({ style: 'display: inline-block;' });
+
     return <DinoComp {...props} />;
   }
 }
@@ -105,19 +112,18 @@ function insertDino(schema, dinoName) {
     if (!$from.parent.canReplaceWith(index, index, dinoType)) return false;
     if (dispatch) {
       const attr = {
-        'data-type': dinoName,
+        'data-dinokind': dinoName,
       };
 
-      if (dinoName === 'tyrannosaurus') {
-        attr['data-blinks'] = 'yes';
-      }
-
-      dispatch(
-        state.tr.replaceSelectionWith(
-          dinoType.create(nodeHelpers.createAttrObj(dinoAttrTypes, attr)),
-        ),
-      );
+      dispatch(state.tr.replaceSelectionWith(dinoType.create(attr)));
     }
     return true;
   };
 }
+
+/* <span
+  data-type="brontosaurus"
+  style="display: inline-block"
+  contenteditable="false"
+  draggable="true"
+></span>; */

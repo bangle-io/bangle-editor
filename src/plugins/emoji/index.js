@@ -14,7 +14,7 @@ function insertEmoji(schema, name) {
     if (!$from.parent.canReplaceWith(index, index, emojiType)) return false;
     if (dispatch) {
       const attr = {
-        emojikind: name,
+        'data-emojikind': name,
       };
 
       dispatch(state.tr.replaceSelectionWith(emojiType.create(attr)));
@@ -30,8 +30,11 @@ export default class EmojiExtension extends Node {
   get schema() {
     return {
       attrs: {
-        emojikind: {
+        'data-emojikind': {
           default: ':couple::tone4:',
+        },
+        'data-type': {
+          default: this.name,
         },
       },
       inline: true,
@@ -41,7 +44,7 @@ export default class EmojiExtension extends Node {
       // NOTE: Seems like this is used as an output to outside world
       //      when you like copy or drag
       toDOM: (node) => {
-        const { emojikind } = node.attrs;
+        const { 'data-emojikind': emojikind } = node.attrs;
         return [
           'span',
           {
@@ -58,7 +61,8 @@ export default class EmojiExtension extends Node {
           tag: `span[data-type="${this.name}"]`,
           getAttrs: (dom) => {
             return {
-              emojikind: dom.getAttribute('data-emojikind'),
+              'data-type': this.name,
+              'data-emojikind': dom.getAttribute('data-emojikind'),
             };
           },
         },
@@ -67,7 +71,7 @@ export default class EmojiExtension extends Node {
   }
 
   render({ node }) {
-    const { emojikind } = node.attrs;
+    const { 'data-emojikind': emojikind } = node.attrs;
     return <Emoji emojikind={emojikind} />;
   }
 
