@@ -7,7 +7,7 @@ import React from 'react';
 import { Editor } from './Editor';
 import { Header } from './components/Header';
 import { Aside } from './components/Aside';
-import { EditorContextProvider } from 'Utils/bangle-utils/helper-react/editor-context';
+import { EditorContextProvider } from 'utils/bangle-utils/helper-react/editor-context';
 import { localManager } from './store/local';
 import { defaultContent } from './components/constants';
 

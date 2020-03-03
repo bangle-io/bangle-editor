@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuBar } from './menu';
-import { TransactionContext } from 'Utils/bangle-utils/helper-react/editor-context';
+import { TransactionContext } from 'utils/bangle-utils/helper-react/editor-context';
 import { localManager } from 'App/store/local';
 import { throttle } from 'throttle-debounce';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Dinos from 'Plugins/dinos';
-import Emoji from 'Plugins/emoji';
+import Dinos from 'plugins/dinos';
+import Emoji from 'plugins/emoji';
 
-import { History } from 'Utils/bangle-utils/extensions';
+import { History } from 'utils/bangle-utils/extensions';
 import {
   Bold,
   Code,
@@ -11,7 +11,7 @@ import {
   Link,
   Strike,
   Underline,
-} from 'Utils/bangle-utils/marks';
+} from 'utils/bangle-utils/marks';
 import {
   Blockquote,
   BulletList,
@@ -23,8 +23,8 @@ import {
   OrderedList,
   TodoItem,
   TodoList,
-} from 'Utils/bangle-utils/nodes';
-import { ReactEditor } from 'Utils/bangle-utils/helper-react/react-editor';
+} from 'utils/bangle-utils/nodes';
+import { ReactEditor } from 'utils/bangle-utils/helper-react/react-editor';
 
 export class Editor extends React.PureComponent {
   options = {
