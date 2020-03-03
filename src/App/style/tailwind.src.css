@@ -15,10 +15,18 @@
 }
 
 .bangle-editor ul {
-  @apply list-disc list-outside  pl-6 mt-2 mb-1;
+  @apply list-disc list-outside  pl-6;
 }
 
 .bangle-editor ol {
+  @apply list-decimal list-outside pl-6;
+}
+
+.bangle-editor > ul {
+  @apply list-disc list-outside  pl-6 mt-2 mb-1;
+}
+
+.bangle-editor > ol {
   @apply list-decimal list-outside pl-6 mt-2 mb-1;
 }
 

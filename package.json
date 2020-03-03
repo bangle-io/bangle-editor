@@ -10,8 +10,7 @@
     "bulma": "^0.8.0",
     "classnames": "^2.2.6",
     "core-js": "^3.6.4",
-    "date-fns": "^2.9.0",
-    "debounce": "^1.2.0",
+    "date-fns": "^2.10.0",
     "emojis-keywords": "^2.0.0",
     "emojis-list": "^3.0.0",
     "localforage": "^1.7.3",
@@ -35,11 +34,14 @@
     "react-scripts": "3.3.1",
     "recompose": "^0.30.0",
     "tailwindcss": "^1.2.0",
+    "throttle-debounce": "^2.1.0",
     "tiptap-commands": "^1.12.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "npm run build && surge build bangle-test.surge.sh",
+    "snapshot": "npm run build && node ./scripts/snapshot",
     "test": "react-scripts test",
     "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
@@ -67,6 +69,7 @@
   },
   "devDependencies": {
     "postcss": "^7.0.27",
-    "prosemirror-dev-tools": "^2.1.1"
+    "prosemirror-dev-tools": "^2.1.1",
+    "surge": "^0.21.3"
   }
 }
