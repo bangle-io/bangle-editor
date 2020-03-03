@@ -24,9 +24,16 @@ function insertEmoji(schema, name) {
 }
 
 export default class EmojiExtension extends Node {
+  get defaultOptions() {
+    return {
+      selectionStyle: { outline: '2px solid blue' },
+    };
+  }
+
   get name() {
     return EMOJI_NODE_NAME;
   }
+
   get schema() {
     return {
       attrs: {
@@ -70,10 +77,18 @@ export default class EmojiExtension extends Node {
     };
   }
 
-  render({ node }) {
+  render = ({ node, selected }) => {
     const { 'data-emojikind': emojikind } = node.attrs;
-    return <Emoji emojikind={emojikind} />;
-  }
+
+    return (
+      <span
+        contentEditable={false}
+        style={selected ? this.options.selectionStyle : {}}
+      >
+        {emojiLookup[emojikind]}
+      </span>
+    );
+  };
 
   commands({ type, schema }) {
     return {
@@ -90,12 +105,5 @@ export default class EmojiExtension extends Node {
     return {
       'Shift-Ctrl-e': insertEmoji(schema, 'sad'),
     };
-  }
-}
-
-export class Emoji extends React.Component {
-  render() {
-    const { emojikind } = this.props;
-    return <span contentEditable={false}>{emojiLookup[emojikind]}</span>;
   }
 }

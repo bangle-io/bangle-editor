@@ -19,23 +19,13 @@ export const DINO_IMAGES = {
   pterodactyl: pterodactylImg,
 };
 
-function DinoComp({ node }) {
-  const type = node.attrs['data-dinokind'];
-  return (
-    <span contentEditable={false}>
-      <img
-        src={DINO_IMAGES[type]}
-        alt={type}
-        contentEditable={false}
-        className={classnames({
-          plugins_dino: true,
-        })}
-      />
-    </span>
-  );
-}
-
 export default class Dino extends Node {
+  get defaultOptions() {
+    return {
+      selectionStyle: { outline: '2px solid blue' },
+    };
+  }
+
   get name() {
     return DINO_NODE_NAME;
   }
@@ -47,6 +37,9 @@ export default class Dino extends Node {
         },
         'style': {
           default: 'display: inline-block;',
+        },
+        'data-type': {
+          default: this.name,
         },
       },
       inline: true,
@@ -71,6 +64,7 @@ export default class Dino extends Node {
           tag: `span[data-type="${this.name}"]`,
           getAttrs: (dom) => {
             return {
+              'data-type': this.name,
               'data-dinokind': dom.getAttribute('data-dinokind'),
             };
           },
@@ -96,11 +90,25 @@ export default class Dino extends Node {
     };
   }
 
-  render(props) {
-    props.updateAttrs({ style: 'display: inline-block;' });
-
-    return <DinoComp {...props} />;
-  }
+  render = (props) => {
+    const { node, selected } = props;
+    const type = node.attrs['data-dinokind'];
+    return (
+      <span
+        contentEditable={false}
+        style={selected ? this.options.selectionStyle : {}}
+      >
+        <img
+          src={DINO_IMAGES[type]}
+          alt={type}
+          contentEditable={false}
+          className={classnames({
+            plugins_dino: true,
+          })}
+        />
+      </span>
+    );
+  };
 }
 
 function insertDino(schema, dinoName) {
@@ -120,10 +128,3 @@ function insertDino(schema, dinoName) {
     return true;
   };
 }
-
-/* <span
-  data-type="brontosaurus"
-  style="display: inline-block"
-  contenteditable="false"
-  draggable="true"
-></span>; */
