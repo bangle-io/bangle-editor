@@ -68,14 +68,10 @@ export class CustomNodeView {
 
   // copied from atlasmk2
   setDomAttrs(node, element) {
-    // Maybe I am doing it redundantly
-    Object.keys(node.attrs || {}).forEach((attr) => {
-      element.setAttribute('data-' + attr, node.attrs[attr]);
-    });
     Object.keys(node.attrs || {}).forEach((attr) => {
       element.setAttribute(attr, node.attrs[attr]);
     });
-    element.setAttribute('data-type', this.extension.name);
+    element.setAttribute('data-type', this.extension.name); // this is important
   }
 
   // from atlas expected that the person may implement
@@ -107,17 +103,17 @@ export class CustomNodeView {
 
   // from tiptap
   updateAttrs = (attrs) => {
-    if (!this.view.editable) {
-      return;
-    }
-    const { tr } = this.view.state;
-
-    // NOTE: in tiptap they also handle marks
-    const transaction = tr.setNodeMarkup(this.getPos(), undefined, {
-      ...this.node.attrs,
-      ...attrs,
-    });
-    this.view.dispatch(transaction);
+    // if (!this.view.editable) {
+    //   return;
+    // }
+    // const { tr } = this.view.state;
+    // console.log(attrs);
+    // // NOTE: in tiptap they also handle marks
+    // const transaction = tr.setNodeMarkup(this.getPos(), undefined, {
+    //   ...this.node.attrs,
+    //   ...attrs,
+    // });
+    // this.view.dispatch(transaction);
   };
 
   init() {
