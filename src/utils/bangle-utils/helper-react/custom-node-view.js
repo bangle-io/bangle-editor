@@ -66,6 +66,16 @@ export class CustomNodeView {
     this.contentDOM = undefined;
   }
 
+  selectNode() {
+    this.dom.classList.add('ProseMirror-selectednode');
+    this.renderComp({ selected: true });
+  }
+
+  deselectNode() {
+    this.dom.classList.remove('ProseMirror-selectednode');
+    this.renderComp({ selected: false });
+  }
+
   // copied from atlasmk2
   setDomAttrs(node, element) {
     Object.keys(node.attrs || {}).forEach((attr) => {
@@ -133,13 +143,14 @@ export class CustomNodeView {
     this.renderComp();
   }
 
-  renderComp() {
+  renderComp({ selected = false } = {}) {
     this._renderNodeView({
       renderingPayload: {
         node: this.node,
         view: this.view,
         handleRef: this.handleRef,
         updateAttrs: this.updateAttrs,
+        selected: selected,
       },
 
       // for gluing with backend
