@@ -608,11 +608,23 @@ video {
   list-style-type: disc;
   list-style-position: outside;
   padding-left: 1.5rem;
+}
+
+.bangle-editor ol {
+  list-style-type: decimal;
+  list-style-position: outside;
+  padding-left: 1.5rem;
+}
+
+.bangle-editor > ul {
+  list-style-type: disc;
+  list-style-position: outside;
+  padding-left: 1.5rem;
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
 }
 
-.bangle-editor ol {
+.bangle-editor > ol {
   list-style-type: decimal;
   list-style-position: outside;
   padding-left: 1.5rem;

@@ -1,14 +1,14 @@
 import React from 'react';
-import localforage from 'localforage';
 import { MenuBar } from './menu';
 import { TransactionContext } from 'Utils/bangle-utils/helper-react/editor-context';
 import { localManager } from 'App/store/local';
+import { throttle } from 'throttle-debounce';
 
 export class Header extends React.PureComponent {
   static contextType = TransactionContext;
   lastSaved = null;
 
-  onSave = async () => {
+  onSave = throttle(5000, async () => {
     console.log('starting save');
     if (!this.context.editor) {
       throw new Error('No editor');
@@ -29,7 +29,7 @@ export class Header extends React.PureComponent {
     });
 
     this.lastSaved = this.context.editor.state.doc;
-  };
+  });
 
   componentDidUpdate() {
     this.context.editor && this.onSave();

@@ -13,7 +13,9 @@ export class ReactEditor extends React.PureComponent {
 
     this.myRef = React.createRef();
     this.portalProviderAPI = new PortalProviderAPI();
+  }
 
+  get options() {
     this.defaultOptions = {
       componentClassName: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
@@ -21,18 +23,21 @@ export class ReactEditor extends React.PureComponent {
       content: this.props.content,
     };
 
-    this.options = Object.assign({}, this.defaultOptions, this.props.options);
+    return Object.assign({}, this.defaultOptions, this.props.options);
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.content !== prevProps.content) {
       console.log('React-editor: Content not same, reseting content');
-      this.editor && this.editor.setContent(this.props.content);
+      this.portalProviderAPI.destroy();
+      this.editor.destroy();
+
+      this.setupEditor();
     }
   }
 
-  componentDidMount() {
+  setupEditor() {
     const node = this.myRef.current;
     if (node) {
       this.editor = new Editor(node, this.options);
@@ -45,6 +50,10 @@ export class ReactEditor extends React.PureComponent {
       this.forceUpdate();
       this.editor.focus();
     }
+  }
+
+  componentDidMount() {
+    this.setupEditor();
   }
 
   componentWillUnmount() {
