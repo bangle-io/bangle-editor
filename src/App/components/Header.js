@@ -1,7 +1,7 @@
 import React from 'react';
 import { MenuBar } from './menu';
 import { TransactionContext } from 'utils/bangle-utils/helper-react/editor-context';
-import { localManager } from 'App/store/local';
+import { localManager } from 'app/store/local';
 import { throttle } from 'throttle-debounce';
 
 export class Header extends React.PureComponent {
