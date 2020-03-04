@@ -2,11 +2,11 @@
     "compilerOptions": {
         "baseUrl": "src",
         "paths": {
-            "App/*": [
-                "./App/*"
+            "app/*": [
+                "./app/*"
             ],
-            "Utils/*": [
-                "./Utils/*"
+            "utils/*": [
+                "./utils/*"
             ],
             "plugins/*": [
                 "./plugins/*"
