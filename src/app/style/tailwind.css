@@ -632,6 +632,12 @@ video {
   margin-bottom: 0.25rem;
 }
 
+.bangle-editor ul[data-type='todo_list'] {
+  list-style-type: disc;
+  list-style-position: outside;
+  padding-left: 0.25rem;
+}
+
 .bangle-editor a {
   color: #4299e1;
   padding-left: 0.25rem;
