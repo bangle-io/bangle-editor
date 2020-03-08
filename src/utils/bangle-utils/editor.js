@@ -17,6 +17,7 @@ import { ExtensionManager } from './utils/extension-manager';
 import { Emitter } from './utils/emitter';
 import { Text, Paragraph, Doc } from './nodes';
 import { CustomNodeView } from './helper-react/custom-node-view';
+import { findChangedNodesFromTransaction } from './utils/pm-utils';
 
 export class Editor extends Emitter {
   constructor(domElement, options = {}) {
@@ -287,6 +288,10 @@ export class Editor extends Emitter {
   }
 
   dispatchTransaction(transaction) {
+    const nodes = findChangedNodesFromTransaction(transaction);
+    // if (nodes.length > 0) {
+    //   debugger;
+    // }
     const newState = this.state.apply(transaction);
     this.view.updateState(newState);
     this.selection = {
