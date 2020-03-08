@@ -9,7 +9,10 @@ async function getSavedData(result = new Map()) {
   const existingKeys = await localforage.keys();
   for (const uid of existingKeys.filter((uid) => !result.has(uid))) {
     let item = await localforage.getItem(uid);
-    let payload = JSON.parse(item);
+    let payload = item;
+    if (typeof item === 'string') {
+      payload = JSON.parse(item);
+    }
 
     if (!payload.uid) {
       continue;
@@ -60,7 +63,7 @@ export class LocalManager {
 
   async _persist(entry) {
     this._entries.set(entry.uid, entry);
-    await localforage.setItem(entry.uid, JSON.stringify(entry));
+    await localforage.setItem(entry.uid, entry);
   }
 
   _makeEntry({
