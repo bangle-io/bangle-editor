@@ -6,11 +6,13 @@ export class CustomNodeView {
     extension,
     renderNodeView,
     destroyNodeView,
+    wrapperElement,
   }) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.extension = extension;
+    this.wrapperElement = wrapperElement;
     // Note it is important that we not set contentDOM for leaf nodes
     // as it causes silent bugs
     this.setContentDOM = Boolean(extension.options.nodeViewSetContentDOM);
@@ -78,6 +80,7 @@ export class CustomNodeView {
 
   // copied from atlasmk2
   setDomAttrs(node, element) {
+    console.log(node.attrs);
     Object.keys(node.attrs || {}).forEach((attr) => {
       element.setAttribute(attr, node.attrs[attr]);
     });
@@ -86,6 +89,10 @@ export class CustomNodeView {
 
   // from atlas expected that the person may implement
   createDomRef() {
+    if (this.wrapperElement) {
+      return document.createElement(this.wrapperElement);
+    }
+
     return this.node.isInline
       ? document.createElement('span')
       : document.createElement('div');
@@ -112,18 +119,21 @@ export class CustomNodeView {
   };
 
   // from tiptap
+  // can be used by node views to update state
   updateAttrs = (attrs) => {
-    // if (!this.view.editable) {
-    //   return;
-    // }
-    // const { tr } = this.view.state;
-    // console.log(attrs);
-    // // NOTE: in tiptap they also handle marks
-    // const transaction = tr.setNodeMarkup(this.getPos(), undefined, {
-    //   ...this.node.attrs,
-    //   ...attrs,
-    // });
-    // this.view.dispatch(transaction);
+    if (!this.view.editable) {
+      return;
+    }
+
+    const { tr } = this.view.state;
+    const nodePos = this.getPos();
+
+    tr.setNodeMarkup(nodePos, undefined, {
+      ...this.node.attrs,
+      ...attrs,
+    });
+
+    this.view.dispatch(tr);
   };
 
   init() {

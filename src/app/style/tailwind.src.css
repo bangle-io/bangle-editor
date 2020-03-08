@@ -30,6 +30,10 @@
   @apply list-decimal list-outside pl-6 mt-2 mb-1;
 }
 
+.bangle-editor ul[data-type='todo_list'] {
+  @apply list-disc list-outside pl-1;
+}
+
 .bangle-editor a {
   @apply text-blue-500 px-1;
 }

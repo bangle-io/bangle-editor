@@ -22,22 +22,24 @@ export class TodoItem extends Node {
   get schema() {
     return {
       attrs: {
-        done: {
+        'data-done': {
           default: false,
+        },
+        'class': {
+          default: 'flex',
         },
       },
       draggable: true,
       content: this.options.nested ? '(paragraph|todo_list)+' : 'paragraph+',
       toDOM: (node) => {
-        const { done } = node.attrs;
-
+        const { 'data-done': done } = node.attrs;
         return [
           'li',
           {
             'data-type': this.name,
             'data-done': done.toString(),
           },
-          ['span', { class: 'todo-checkbox', contenteditable: 'false' }],
+          ['span', { class: 'todo-checkbox mr-2', contenteditable: 'false' }],
           ['div', { class: 'todo-content' }, 0],
         ];
       },
@@ -46,7 +48,7 @@ export class TodoItem extends Node {
           priority: 51,
           tag: `[data-type="${this.name}"]`,
           getAttrs: (dom) => ({
-            done: dom.getAttribute('data-done') === 'true',
+            'data-done': dom.getAttribute('data-done') === 'true',
           }),
         },
       ],
@@ -61,6 +63,10 @@ export class TodoItem extends Node {
     };
   }
 
+  nodeViewOptions = {
+    wrapperElement: 'li',
+  };
+
   render = (props) => {
     return <TodoItemComp {...props} />;
   };
@@ -70,19 +76,21 @@ let counter = 0;
 function TodoItemComp(props) {
   const { node, view, handleRef, updateAttrs } = props;
   let uid = node.type.name + counter++;
+
+  const { 'data-done': done } = node.attrs;
   return (
-    <li data-type={node.type.name} data-done={node.attrs.done.toString()}>
-      <span className="todo_checkbox" contentEditable="false">
+    <>
+      <span className="todo-checkbox mr-2" contentEditable="false">
         <input
           type="checkbox"
           id={uid}
           name={uid}
           onChange={() => {
             updateAttrs({
-              done: !node.attrs.done,
+              'data-done': !done,
             });
           }}
-          checked={!!node.attrs.done}
+          checked={!!done}
           disabled={!view.editable}
         />
         <label htmlFor={uid} />
@@ -92,6 +100,6 @@ function TodoItemComp(props) {
         ref={handleRef}
         contentEditable={view.editable.toString()}
       />
-    </li>
+    </>
   );
 }
