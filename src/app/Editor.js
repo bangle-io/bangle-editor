@@ -60,7 +60,7 @@ export class Editor extends React.PureComponent {
   render() {
     return (
       <div className="flex justify-center flex-row">
-        <div className="flex-1 max-w-screen-lg ml-6 mr-6">
+        <div className="flex-1 max-w-screen-md ml-6 mr-6">
           <ReactEditor
             options={this.options}
             content={this.props.entry.content}
