@@ -37,7 +37,7 @@ export class Header extends React.PureComponent {
 
   render() {
     return (
-      <header className="bg-gray-100 pr-64 flex flex-row-reverse items-center  shadow-lg">
+      <header className="bg-gray-100 flex flex-row-reverse items-center shadow-lg">
         {this.context.editor && <MenuBar editor={this.context.editor} />}
       </header>
     );
