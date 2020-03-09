@@ -98,6 +98,7 @@ function TodoItemComp(props) {
       <div
         className="todo-content"
         ref={handleRef}
+        data-done={done.toString()}
         contentEditable={view.editable.toString()}
       />
     </>
