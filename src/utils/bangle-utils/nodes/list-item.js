@@ -3,9 +3,10 @@ import {
   safeInsert,
   hasParentNodeOfType,
   findPositionOfNodeBefore,
+  setTextSelection,
 } from 'prosemirror-utils';
 import { Node } from './node';
-import {} from 'prosemirror-state';
+import { NodeSelection, Selection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import * as baseListCommand from 'prosemirror-schema-list';
 import * as baseCommand from 'prosemirror-commands';
@@ -49,9 +50,44 @@ export class ListItem extends Node {
       'Shift-Tab': outdentList(),
       'Alt-Shift-ArrowDown': moveList(type, true),
       'Alt-Shift-ArrowUp': moveList(type, false),
+      // 'Cmd-x': cutEmpty(type),
     };
   }
 }
+
+function cutEmpty(type) {
+  return (state, dispatch) => {
+    if (!state.selection.empty || !isInsideListItem(state)) {
+      return false;
+    }
+
+    const match = findParentNodeOfType(type)(state.selection);
+
+    const copy = type.createChecked(
+      match.node.attrs,
+      match.node.content,
+      match.node.marks,
+    );
+
+    // console.log(copy, match.pos, match.pos + match.node.nodeSize);
+
+    dispatch(
+      state.tr
+        .delete(match.pos, match.pos + match.node.nodeSize)
+        .scrollIntoView()
+        .setMeta('uiEvent', 'cut'),
+    );
+    return true;
+  };
+}
+
+let _setTextSelection = (position, dir = 1) => (tr) => {
+  const nextSelection = Selection.findFrom(tr.doc.resolve(position), dir, true);
+  if (nextSelection) {
+    return tr.setSelection(nextSelection);
+  }
+  return tr;
+};
 
 function moveList(type, down = true) {
   return (state, dispatch) => {
@@ -66,7 +102,16 @@ function moveList(type, down = true) {
     );
 
     const newPos = down ? match.pos + match.node.nodeSize : match.pos;
-    const tr = safeInsert(copy, newPos)(state.tr);
+    let tr = safeInsert(copy, newPos)(state.tr);
+    const start = tr.selection.$from.pos - 1;
+
+    console.log(match.pos);
+    // let newTr = setTextSelection(Math.max(match.pos - 1, 0), 1)(tr);
+    let newTr = _setTextSelection(3)(tr);
+    if (newTr === tr) {
+      console.log('samse', tr.selection.toJSON());
+    }
+    debugger;
 
     // const start = tr.doc.resolve(tr.mapping.map(match.pos));
     // const end = tr.doc.resolve(tr.mapping.map(newPos));
