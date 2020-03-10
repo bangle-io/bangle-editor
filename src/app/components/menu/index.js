@@ -4,7 +4,7 @@ import { BaseButton } from '../Button';
 
 export function MenuBar({ editor }) {
   return (
-    <div className="flex flex-row content-center justify-center">
+    <div className="flex p-2 flex-row content-center justify-center bg-gray-200 rounded">
       <MenuItemButton
         active={editor.isActive.bold()}
         enabled={true}
