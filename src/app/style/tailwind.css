@@ -582,6 +582,9 @@ video {
   font-size: 1rem;
   white-space: pre-line;
   overflow-wrap: break-word;
+  line-height: 1.625;
+  font-size: 1.125rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .bangle-editor h1 {
@@ -589,12 +592,14 @@ video {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   margin-top: 1.25rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .bangle-editor h2 {
   font-size: 1.875rem;
   margin-bottom: 0.25rem;
   margin-top: 1rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .bangle-editor h3 {
@@ -602,6 +607,7 @@ video {
   font-weight: 500;
   margin-bottom: 0.25rem;
   margin-top: 1rem;
+  font-family: 'Lato', sans-serif;
 }
 
 .bangle-editor ul {
@@ -649,15 +655,18 @@ video {
 }
 
 .bangle-editor blockquote {
-  border-left-width: 4px;
-  border-color: #718096;
   padding-left: 0.5rem;
-  background-color: #edf2f7;
-  color: #4a5568;
+  background-color: #f7fafc;
+  color: #2d3748;
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.bangle-editor blockquote > p {
+  font-family: 'Arvo', serif;
+  font-size: 1rem;
 }
 
 .bangle-editor pre {
