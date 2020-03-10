@@ -1,17 +1,21 @@
 @import 'tailwindcss/base';
 
 .bangle-editor p {
-  @apply text-base whitespace-pre-line break-words;
+  @apply text-base whitespace-pre-line break-words leading-relaxed text-lg;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .bangle-editor h1 {
   @apply text-4xl my-2 mt-5;
+  font-family: 'Lato', sans-serif;
 }
 .bangle-editor h2 {
   @apply text-3xl mb-1 mt-4;
+  font-family: 'Lato', sans-serif;
 }
 .bangle-editor h3 {
   @apply text-xl font-medium mb-1 mt-4;
+  font-family: 'Lato', sans-serif;
 }
 
 .bangle-editor ul {
@@ -43,7 +47,12 @@
 }
 
 .bangle-editor blockquote {
-  @apply border-l-4 border-gray-600 pl-2 bg-gray-200 text-gray-700 my-5 py-2;
+  @apply pl-2 bg-gray-100 text-gray-800 my-5 py-2;
+}
+
+.bangle-editor blockquote > p {
+  font-family: 'Arvo', serif;
+  @apply text-base;
 }
 
 .bangle-editor pre {

@@ -44,7 +44,7 @@ export default class App extends React.PureComponent {
   render() {
     return (
       <EditorContextProvider>
-        <div className="flex h-screen main-wrapper">
+        <div className="grid h-screen main-wrapper">
           <Header entry={this.state.entry} />
           <div className="editor-wrapper overflow-auto">
             {this.state.entry && <Editor entry={this.state.entry} />}
