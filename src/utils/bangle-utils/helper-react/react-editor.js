@@ -30,11 +30,17 @@ export class ReactEditor extends React.PureComponent {
     // Typical usage (don't forget to compare props):
     if (this.props.content !== prevProps.content) {
       console.log('React-editor: Content not same, reseting content');
-      this.portalProviderAPI.destroy();
-      this.editor.destroy();
+      this.destroy();
 
       this.setupEditor();
     }
+  }
+
+  destroy() {
+    this.portalProviderAPI && this.portalProviderAPI.destroy();
+    this.editor && this.editor.destroy();
+    this.editor = undefined;
+    this.portalProviderAPI = undefined;
   }
 
   setupEditor() {
@@ -57,8 +63,7 @@ export class ReactEditor extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.portalProviderAPI.destroy();
-    this.editor.destroy();
+    this.destroy();
   }
 
   // called from custom-node-view.js#renderComp

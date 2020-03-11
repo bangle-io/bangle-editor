@@ -22,6 +22,9 @@ export class TodoItem extends Node {
   get schema() {
     return {
       attrs: {
+        'data-type': {
+          default: this.name,
+        },
         'data-done': {
           default: false,
         },

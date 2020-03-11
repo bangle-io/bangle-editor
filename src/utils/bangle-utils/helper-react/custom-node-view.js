@@ -80,11 +80,13 @@ export class CustomNodeView {
 
   // copied from atlasmk2
   setDomAttrs(node, element) {
-    console.log(node.attrs);
-    Object.keys(node.attrs || {}).forEach((attr) => {
+    Object.keys(
+      node.attrs || {
+        'data-type': this.extension.name,
+      },
+    ).forEach((attr) => {
       element.setAttribute(attr, node.attrs[attr]);
     });
-    element.setAttribute('data-type', this.extension.name); // this is important
   }
 
   // from atlas expected that the person may implement
@@ -131,12 +133,17 @@ export class CustomNodeView {
     tr.setNodeMarkup(nodePos, undefined, {
       ...this.node.attrs,
       ...attrs,
+      'data-type': this.extension.name, // this is important
     });
 
     this.view.dispatch(tr);
   };
 
   init() {
+    if (typeof this.node.attrs['data-type'] !== 'string') {
+      throw new Error(`NodeView:${this.extension.name} must have a data-type`);
+    }
+
     this.domRef = this.createDomRef();
     this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
     const contentDOM = this.getContentDOM();
