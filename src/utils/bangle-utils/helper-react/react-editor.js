@@ -40,7 +40,6 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI && this.portalProviderAPI.destroy();
     this.editor && this.editor.destroy();
     this.editor = undefined;
-    this.portalProviderAPI = undefined;
   }
 
   setupEditor() {
