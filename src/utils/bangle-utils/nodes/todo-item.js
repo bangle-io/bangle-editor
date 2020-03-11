@@ -85,6 +85,7 @@ function TodoItemComp(props) {
     <>
       <span className="todo-checkbox mr-2" contentEditable="false">
         <input
+          className="inline-block"
           type="checkbox"
           id={uid}
           name={uid}
