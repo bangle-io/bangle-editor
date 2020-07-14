@@ -14,7 +14,10 @@ export class EventDispatcher {
     }
     if (this.listeners[event].has(cb)) {
       this.listeners[event].delete(cb);
+      return;
     }
+
+    delete this.listeners[event];
   }
   emit(event, data) {
     if (!this.listeners[event]) {

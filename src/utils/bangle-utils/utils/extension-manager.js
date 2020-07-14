@@ -13,23 +13,20 @@ export class ExtensionManager {
   }
 
   get nodes() {
-    return this.extensions
-      .filter((extension) => extension.type === 'node')
-      .reduce(
-        (nodes, { name, schema }) => ({
-          ...nodes,
-          [name]: schema,
-        }),
-        {},
-      );
+    return Object.fromEntries(
+      this.extensions
+        .filter((extension) => extension.type === 'node')
+        .map(({ name, schema }) => [name, schema]),
+    );
   }
 
   get options() {
     const { view } = this; // TODO is this bug?, I dont see any view
-    return this.extensions.reduce(
-      (nodes, extension) => ({
-        ...nodes,
-        [extension.name]: new Proxy(extension.options, {
+
+    return Object.fromEntries(
+      this.extensions.map((extension) => [
+        extension.name,
+        new Proxy(extension.options, {
           set(obj, prop, value) {
             const changed = obj[prop] !== value;
 
@@ -42,27 +39,22 @@ export class ExtensionManager {
             return true;
           },
         }),
-      }),
-      {},
+      ]),
     );
   }
 
   get marks() {
-    return this.extensions
-      .filter((extension) => extension.type === 'mark')
-      .reduce(
-        (marks, { name, schema }) => ({
-          ...marks,
-          [name]: schema,
-        }),
-        {},
-      );
+    return Object.fromEntries(
+      this.extensions
+        .filter((extension) => extension.type === 'mark')
+        .map(({ name, schema }) => [name, schema]),
+    );
   }
 
   get plugins() {
     return this.extensions
       .filter((extension) => extension.plugins)
-      .reduce((allPlugins, { plugins }) => [...allPlugins, ...plugins], []);
+      .flatMap(({ plugins }) => plugins);
   }
 
   keymaps({ schema }) {
@@ -87,14 +79,13 @@ export class ExtensionManager {
   }
 
   inputRules({ schema, excludedExtensions }) {
-    if (!(excludedExtensions instanceof Array) && excludedExtensions) return [];
+    if (!Array.isArray(excludedExtensions) && excludedExtensions) return [];
 
-    const allowedExtensions =
-      excludedExtensions instanceof Array
-        ? this.extensions.filter(
-            (extension) => !excludedExtensions.includes(extension.name),
-          )
-        : this.extensions;
+    const allowedExtensions = Array.isArray(excludedExtensions)
+      ? this.extensions.filter(
+          (extension) => !excludedExtensions.includes(extension.name),
+        )
+      : this.extensions;
 
     const extensionInputRules = allowedExtensions
       .filter((extension) => ['extension'].includes(extension.type))
@@ -111,21 +102,19 @@ export class ExtensionManager {
         }),
       );
 
-    return [...extensionInputRules, ...nodeMarkInputRules].reduce(
-      (allInputRules, inputRules) => [...allInputRules, ...inputRules],
-      [],
+    return [...extensionInputRules, ...nodeMarkInputRules].flatMap(
+      (inputRules) => inputRules,
     );
   }
 
   pasteRules({ schema, excludedExtensions }) {
-    if (!(excludedExtensions instanceof Array) && excludedExtensions) return [];
+    if (!Array.isArray(excludedExtensions) && excludedExtensions) return [];
 
-    const allowedExtensions =
-      excludedExtensions instanceof Array
-        ? this.extensions.filter(
-            (extension) => !excludedExtensions.includes(extension.name),
-          )
-        : this.extensions;
+    const allowedExtensions = Array.isArray(excludedExtensions)
+      ? this.extensions.filter(
+          (extension) => !excludedExtensions.includes(extension.name),
+        )
+      : this.extensions;
 
     const extensionPasteRules = allowedExtensions
       .filter((extension) => ['extension'].includes(extension.type))
@@ -142,56 +131,56 @@ export class ExtensionManager {
         }),
       );
 
-    return [...extensionPasteRules, ...nodeMarkPasteRules].reduce(
-      (allPasteRules, pasteRules) => [...allPasteRules, ...pasteRules],
-      [],
+    return [...extensionPasteRules, ...nodeMarkPasteRules].flatMap(
+      (pasteRules) => pasteRules,
     );
   }
 
   commands({ schema, view }) {
-    return this.extensions
-      .filter((extension) => extension.commands)
-      .reduce((allCommands, extension) => {
-        const { name, type } = extension;
-        const commands = {};
-        const value = extension.commands({
-          schema,
-          ...(['node', 'mark'].includes(type)
-            ? {
-                type: schema[`${type}s`][name],
-              }
-            : {}),
-        });
-
-        const apply = (cb, attrs) => {
-          if (!view.editable) {
-            return false;
-          }
-          view.focus();
-          return cb(attrs)(view.state, view.dispatch, view);
-        };
-
-        const handle = (_name, _value) => {
-          if (Array.isArray(_value)) {
-            commands[_name] = (attrs) =>
-              _value.forEach((callback) => apply(callback, attrs));
-          } else if (typeof _value === 'function') {
-            commands[_name] = (attrs) => apply(_value, attrs);
-          }
-        };
-
-        if (typeof value === 'object') {
-          Object.entries(value).forEach(([commandName, commandValue]) => {
-            handle(commandName, commandValue);
+    return Object.fromEntries(
+      this.extensions
+        .filter((extension) => extension.commands)
+        .flatMap((extension) => {
+          const { name, type } = extension;
+          const commands = [];
+          const value = extension.commands({
+            schema,
+            ...(['node', 'mark'].includes(type)
+              ? {
+                  type: schema[`${type}s`][name],
+                }
+              : {}),
           });
-        } else {
-          handle(name, value);
-        }
 
-        return {
-          ...allCommands,
-          ...commands,
-        };
-      }, {});
+          const apply = (cb, attrs) => {
+            if (!view.editable) {
+              return false;
+            }
+            view.focus();
+            return cb(attrs)(view.state, view.dispatch, view);
+          };
+
+          const handle = (_name, _value) => {
+            if (Array.isArray(_value)) {
+              commands.push([
+                _name,
+                (attrs) => _value.forEach((callback) => apply(callback, attrs)),
+              ]);
+            } else if (typeof _value === 'function') {
+              commands.push([_name, (attrs) => apply(_value, attrs)]);
+            }
+          };
+
+          if (typeof value === 'object') {
+            Object.entries(value).forEach(([commandName, commandValue]) => {
+              handle(commandName, commandValue);
+            });
+          } else {
+            handle(name, value);
+          }
+
+          return commands;
+        }, {}),
+    );
   }
 }

@@ -37,6 +37,9 @@ export default class EmojiExtension extends Node {
   get schema() {
     return {
       attrs: {
+        'style': {
+          default: 'display: inline-block;',
+        },
         'data-emojikind': {
           default: ':couple::tone4:',
         },

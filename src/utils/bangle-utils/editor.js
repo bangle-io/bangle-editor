@@ -19,11 +19,21 @@ import { Text, Paragraph, Doc } from './nodes';
 import { CustomNodeView } from './helper-react/custom-node-view';
 import { findChangedNodesFromTransaction } from './utils/pm-utils';
 
+const EVENTS = [
+  'init',
+  'transaction',
+  'update',
+  'focus',
+  'blur',
+  'paste',
+  'drop',
+];
+
 export class Editor extends Emitter {
   constructor(domElement, options = {}) {
     super();
 
-    this.defaultOptions = {
+    const defaultOptions = {
       renderNodeView: null,
       destroyNodeView: null,
       editorProps: {},
@@ -54,24 +64,11 @@ export class Editor extends Emitter {
       onDrop: () => {},
     };
 
-    this.events = [
-      'init',
-      'transaction',
-      'update',
-      'focus',
-      'blur',
-      'paste',
-      'drop',
-    ];
-
-    this.init(domElement, options);
+    this.init(domElement, { ...defaultOptions, ...options });
   }
 
   init(domElement, options = {}) {
-    this.setOptions({
-      ...this.defaultOptions,
-      ...options,
-    });
+    this.setOptions(options);
     this.focused = false;
     this.selection = { from: 0, to: 0 };
     this.element = domElement; //document.createElement('div');
@@ -92,7 +89,7 @@ export class Editor extends Emitter {
       this.focus(this.options.autoFocus);
     }
 
-    this.events.forEach((name) => {
+    EVENTS.forEach((name) => {
       this.on(name, this.options[toCamelCase(`on ${name}`)] || (() => {}));
     });
 
@@ -415,28 +412,25 @@ export class Editor extends Emitter {
   }
 
   setActiveNodesAndMarks() {
-    this.activeMarks = Object.entries(this.schema.marks).reduce(
-      (marks, [name, mark]) => ({
-        ...marks,
-        [name]: (attrs = {}) => markIsActive(this.state, mark, attrs),
-      }),
-      {},
+    this.activeMarks = Object.fromEntries(
+      Object.entries(this.schema.marks).map(([name, mark]) => [
+        name,
+        (attrs = {}) => markIsActive(this.state, mark, attrs),
+      ]),
     );
 
-    this.activeMarkAttrs = Object.entries(this.schema.marks).reduce(
-      (marks, [name, mark]) => ({
-        ...marks,
-        [name]: getMarkAttrs(this.state, mark),
-      }),
-      {},
+    this.activeMarkAttrs = Object.fromEntries(
+      Object.entries(this.schema.marks).map(([name, mark]) => [
+        name,
+        getMarkAttrs(this.state, mark),
+      ]),
     );
 
-    this.activeNodes = Object.entries(this.schema.nodes).reduce(
-      (nodes, [name, node]) => ({
-        ...nodes,
-        [name]: (attrs = {}) => nodeIsActive(this.state, node, attrs),
-      }),
-      {},
+    this.activeNodes = Object.fromEntries(
+      Object.entries(this.schema.nodes).map(([name, node]) => [
+        name,
+        (attrs = {}) => nodeIsActive(this.state, node, attrs),
+      ]),
     );
   }
 
@@ -445,15 +439,11 @@ export class Editor extends Emitter {
   }
 
   get isActive() {
-    return Object.entries({
-      ...this.activeMarks,
-      ...this.activeNodes,
-    }).reduce(
-      (types, [name, value]) => ({
-        ...types,
-        [name]: (attrs = {}) => value(attrs),
-      }),
-      {},
+    return Object.fromEntries(
+      Object.entries({
+        ...this.activeMarks,
+        ...this.activeNodes,
+      }).map(([name, value]) => [name, (attrs = {}) => value(attrs)]),
     );
   }
 
