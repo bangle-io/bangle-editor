@@ -49,7 +49,7 @@ export class CustomNodeView {
     }
 
     if (this.domRef && !this.node.sameMarkup(node)) {
-      this.setDomAttrs(node, this.domRef); // TODO is this actually doing anything ? copied from atlask
+      this.setDomAttrs(node, this.domRef); // TODO is this actually doing anything ? copied from atlasian
     }
 
     this.node = node;
@@ -113,6 +113,7 @@ export class CustomNodeView {
     }
 
     const contentDOM = this.contentDOM;
+    console.log(contentDOM);
     // move the contentDOM node inside the inner reference after rendering
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);

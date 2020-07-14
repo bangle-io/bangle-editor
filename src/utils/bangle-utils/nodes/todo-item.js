@@ -100,7 +100,7 @@ function TodoItemComp(props) {
         <label htmlFor={uid} />
       </span>
       <div
-        className="todo-content"
+        className="todo-content inline-block"
         ref={handleRef}
         data-done={done.toString()}
         contentEditable={view.editable.toString()}
