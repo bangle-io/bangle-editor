@@ -28,6 +28,7 @@ import { ReactEditor } from 'utils/bangle-utils/helper-react/react-editor';
 
 export class Editor extends React.PureComponent {
   options = {
+    id: 'bangle-play-react-editor',
     devtools: true,
     extensions: [
       new Bold(),

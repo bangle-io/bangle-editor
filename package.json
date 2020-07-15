@@ -31,23 +31,20 @@
     "ramda": "^0.27.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "^3.4.1",
     "recompose": "^0.30.0",
     "tailwindcss": "^1.2.0",
     "throttle-debounce": "^2.1.0",
     "tiptap-commands": "^1.12.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": " react-scripts start",
     "build": "react-scripts build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
     "test": "react-scripts test",
     "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "prettier": {
     "singleQuote": true,
@@ -62,14 +59,19 @@
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 chrome version"
     ]
   },
   "devDependencies": {
+    "jest": "^24.9.0",
+    "jest-puppeteer": "^4.4.0",
     "postcss": "^7.0.27",
+    "prettier": "^2.0.5",
     "prosemirror-dev-tools": "^2.1.1",
+    "puppeteer": "^5.1.0",
     "surge": "^0.21.3"
+  },
+  "jest": {
+    "preset": "jest-puppeteer"
   }
 }

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic typing should  delete text correctly 1`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "My name is ",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 12,
+    "head": 12,
+    "type": "text",
+  },
+}
+`;
+
+exports[`Basic typing should type  new line correctly 1`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "Hello!",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+      Object {
+        "type": "paragraph",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 9,
+    "head": 9,
+    "type": "text",
+  },
+}
+`;
+
+exports[`Basic typing should type sentence correctly 1`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "World",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 6,
+    "head": 6,
+    "type": "text",
+  },
+}
+`;
