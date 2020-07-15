@@ -17,7 +17,7 @@ export class ReactEditor extends React.PureComponent {
 
   get options() {
     this.defaultOptions = {
-      componentClassName: 'ReactEditor-wrapper',
+      id: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
       destroyNodeView: this.destroyNodeView,
       content: this.props.content,
@@ -80,7 +80,7 @@ export class ReactEditor extends React.PureComponent {
   render() {
     return (
       <>
-        <div ref={this.myRef} className={this.options.componentClassName} />
+        <div ref={this.myRef} id={this.options.id} />
         <PortalRenderer portalProviderAPI={this.portalProviderAPI} />
       </>
     );
