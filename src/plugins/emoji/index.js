@@ -1,14 +1,14 @@
-import './emoji.css';
+// import './emoji.css';
 
 import React from 'react';
 
 import { EMOJI_NODE_NAME, validEmojis } from './constants';
-import { Node } from 'utils/bangle-utils/nodes';
+import { Node } from 'utils/bangle-utils/nodes/index';
 import { emojiLookup } from './constants';
 
 function insertEmoji(schema, name) {
   let emojiType = schema.nodes[EMOJI_NODE_NAME];
-  return function(state, dispatch) {
+  return function (state, dispatch) {
     let { $from } = state.selection,
       index = $from.index();
     if (!$from.parent.canReplaceWith(index, index, emojiType)) return false;
@@ -24,6 +24,10 @@ function insertEmoji(schema, name) {
 }
 
 export default class EmojiExtension extends Node {
+  constructor(...args) {
+    super(...args);
+    this.chache = Math.random();
+  }
   get defaultOptions() {
     return {
       selectionStyle: { outline: '2px solid blue' },
@@ -83,13 +87,14 @@ export default class EmojiExtension extends Node {
   render = ({ node, selected }) => {
     const { 'data-emojikind': emojikind } = node.attrs;
 
+    console.log('rendering', this.chache);
+
     return (
-      <span
-        contentEditable={false}
-        style={selected ? this.options.selectionStyle : {}}
-      >
-        {emojiLookup[emojikind]}
-      </span>
+      <EmojiComponent
+        selected={selected}
+        emojikind={emojikind}
+        selectionStyle={this.options.selectionStyle}
+      />
     );
   };
 
@@ -109,4 +114,27 @@ export default class EmojiExtension extends Node {
       'Shift-Ctrl-e': insertEmoji(schema, 'sad'),
     };
   }
+}
+
+class EmojiComponent extends React.Component {
+  papa = uuid();
+  render() {
+    const { emojikind, selectionStyle, selected } = this.props;
+    if (emojikind === ':flag_lv:') {
+      console.log(this.papa, emojikind);
+    }
+
+    return (
+      <span contentEditable={false} style={selected ? selectionStyle : {}}>
+        {emojiLookup[emojikind]}
+      </span>
+    );
+  }
+}
+
+function uuid() {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
 }

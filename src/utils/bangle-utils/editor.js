@@ -15,7 +15,7 @@ import { markIsActive, nodeIsActive, getMarkAttrs } from 'tiptap-utils';
 
 import { ExtensionManager } from './utils/extension-manager';
 import { Emitter } from './utils/emitter';
-import { Text, Paragraph, Doc } from './nodes';
+import { Text, Paragraph, Doc } from './nodes/index';
 import { CustomNodeView } from './helper-react/custom-node-view';
 import { findChangedNodesFromTransaction } from './utils/pm-utils';
 

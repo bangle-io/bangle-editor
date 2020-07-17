@@ -3,7 +3,7 @@ import './dino.css';
 import React from 'react';
 import classnames from 'classnames';
 import { DINO_NODE_NAME, dinoNames } from './constants';
-import { Node } from 'utils/bangle-utils/nodes';
+import { Node } from 'utils/bangle-utils/nodes/index';
 
 import brontosaurusImg from './img/brontosaurus.png';
 import stegosaurusImg from './img/stegosaurus.png';
@@ -113,7 +113,7 @@ export default class Dino extends Node {
 
 function insertDino(schema, dinoName) {
   let dinoType = schema.nodes[DINO_NODE_NAME];
-  return function(state, dispatch) {
+  return function (state, dispatch) {
     let { $from } = state.selection;
     let index = $from.index();
 

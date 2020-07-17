@@ -1,10 +1,4 @@
-import v from '@mapbox/fusspot';
 import { validate } from './validate';
-
-export function createAttrObj(attrTypes, value) {
-  v.assert(v.strictShape(attrTypes))(value);
-  return value;
-}
 
 export function getAttrsFromNode(attrTypes, node) {
   return Object.fromEntries(
