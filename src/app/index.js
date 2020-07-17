@@ -1,7 +1,8 @@
 // polyfills
 import 'core-js/es/object/from-entries';
 
-import './style/index.scss';
+import './style/tailwind.css';
+import './style/style.css';
 
 import React from 'react';
 import { Editor } from './Editor';
