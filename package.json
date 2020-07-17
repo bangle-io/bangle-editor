@@ -2,11 +2,12 @@
   "name": "playground",
   "version": "0.1.0",
   "private": true,
+  "alias": {
+    "app": "./src/app",
+    "plugins": "./src/plugins",
+    "utils": "./src/utils"
+  },
   "dependencies": {
-    "@mapbox/fusspot": "^0.7.0",
-    "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^9.4.1",
-    "@testing-library/user-event": "^10.0.0",
     "bulma": "^0.8.0",
     "classnames": "^2.2.6",
     "core-js": "^3.6.4",
@@ -14,7 +15,6 @@
     "emojis-keywords": "^2.0.0",
     "emojis-list": "^3.0.0",
     "localforage": "^1.7.3",
-    "node-sass": "^4.13.1",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.0.8",
@@ -65,6 +65,7 @@
   "devDependencies": {
     "jest": "^24.9.0",
     "jest-puppeteer": "^4.4.0",
+    "parcel": "^1.12.4",
     "postcss": "^7.0.27",
     "prettier": "^2.0.5",
     "prosemirror-dev-tools": "^2.1.1",

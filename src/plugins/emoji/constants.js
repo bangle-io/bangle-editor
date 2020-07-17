@@ -1,4 +1,3 @@
-import v from '@mapbox/fusspot';
 import emojiList from 'emojis-list';
 import emojisKeywords from 'emojis-keywords';
 

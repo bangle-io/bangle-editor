@@ -1,7 +1,7 @@
 import React from 'react';
 import { MenuBar } from './menu';
-import { TransactionContext } from 'utils/bangle-utils/helper-react/editor-context';
-import { localManager } from 'app/store/local';
+import { TransactionContext } from '../../utils/bangle-utils/helper-react/editor-context';
+import { localManager } from '../../app/store/local';
 import { throttle } from 'throttle-debounce';
 
 export class Header extends React.PureComponent {
@@ -9,7 +9,6 @@ export class Header extends React.PureComponent {
   lastSaved = null;
 
   onSave = throttle(5000, async () => {
-    console.log('starting save');
     if (!this.context.editor) {
       throw new Error('No editor');
     }
