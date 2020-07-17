@@ -1,7 +1,7 @@
 // jest-puppeteer.config.js
 module.exports = {
   server: {
-    command: 'PORT=4444 BROWSER=none react-scripts start',
+    command: 'npm run test',
     port: 4444,
   },
   launch: {
