@@ -38,7 +38,7 @@
     "tiptap-commands": "^1.12.5"
   },
   "scripts": {
-    "start": " react-scripts start",
+    "start": "parcel public/index.html --port 3000",
     "build": "react-scripts build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
