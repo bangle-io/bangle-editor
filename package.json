@@ -31,7 +31,6 @@
     "ramda": "^0.27.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "^3.4.1",
     "recompose": "^0.30.0",
     "tailwindcss": "^1.2.0",
     "throttle-debounce": "^2.1.0",
@@ -42,7 +41,7 @@
     "build": "react-scripts build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
-    "test": "react-scripts test",
+    "test": "parcel public/index.html --port 4444",
     "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
   },
@@ -63,7 +62,8 @@
     ]
   },
   "devDependencies": {
-    "jest": "^24.9.0",
+    "jest": "^26.1.0",
+    "jest-circus": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "parcel": "^1.12.4",
     "postcss": "^7.0.27",
@@ -73,6 +73,7 @@
     "surge": "^0.21.3"
   },
   "jest": {
-    "preset": "jest-puppeteer"
+    "preset": "jest-puppeteer",
+    "testRunner": "jest-circus/runner"
   }
 }
