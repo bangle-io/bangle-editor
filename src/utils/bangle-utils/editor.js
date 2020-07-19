@@ -19,6 +19,12 @@ import { Text, Paragraph, Doc } from './nodes/index';
 import { CustomNodeView } from './helper-react/custom-node-view';
 import { findChangedNodesFromTransaction } from './utils/pm-utils';
 
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log(...args);
+}
+
 const EVENTS = [
   'init',
   'transaction',
@@ -485,7 +491,7 @@ export class Editor extends Emitter {
     if (!this.view) {
       return;
     }
-
+    log('Destroying editor');
     this.view.destroy();
   }
 
