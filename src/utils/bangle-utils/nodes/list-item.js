@@ -463,7 +463,6 @@ export const backspaceKeyCommand = baseCommand.chainCommands(
 
 export const enterKeyCommand = (state, dispatch) => {
   const { selection } = state;
-  console.log('HEREREERE');
   if (selection.empty) {
     const { $from } = selection;
     const { list_item: listItem, code_block: codeBlock } = state.schema.nodes;

@@ -42,7 +42,7 @@
     "build": "react-scripts build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
-    "test": "parcel public/index.html --port 4444",
+    "test": "NODE_ENV=development parcel public/index.html --port 4444 --log-level 3",
     "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
   },

@@ -4,7 +4,7 @@ import { objUid } from '../utils/object-uid';
 import { EventDispatcher } from '../utils/event-dispatcher';
 import { SelectiveUpdate } from './selective-update';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log(...args);
