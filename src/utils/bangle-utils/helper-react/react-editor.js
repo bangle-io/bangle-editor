@@ -6,6 +6,12 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalRenderer, PortalProviderAPI } from './portal';
 
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log(...args);
+}
+
 export class ReactEditor extends React.PureComponent {
   static contextType = EditorOnReadyContext;
   constructor(props) {
@@ -37,6 +43,7 @@ export class ReactEditor extends React.PureComponent {
   }
 
   destroy() {
+    log('Unmounting react-editor');
     this.portalProviderAPI && this.portalProviderAPI.destroy();
     this.editor && this.editor.destroy();
     this.editor = undefined;

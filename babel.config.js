@@ -1,4 +1,6 @@
 // babel.config.js
+
+const debug = false;
 module.exports = (api) => {
   if (api.env('test')) {
     return {
@@ -7,7 +9,7 @@ module.exports = (api) => {
         [
           '@babel/preset-env',
           {
-            debug: true,
+            debug: debug,
             targets: {
               node: 'current',
             },
@@ -17,6 +19,6 @@ module.exports = (api) => {
     };
   }
   return {
-    presets: ['@babel/preset-react', ['@babel/preset-env', { debug: true }]],
+    presets: ['@babel/preset-react', ['@babel/preset-env', { debug: debug }]],
   };
 };
