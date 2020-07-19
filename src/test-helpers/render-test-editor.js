@@ -8,68 +8,76 @@ import {
 import { ReactEditor } from 'utils/bangle-utils/helper-react/react-editor';
 import { TextSelection } from 'prosemirror-state';
 
-export async function renderTestEditor(options = {}, testId = 'test-editor') {
-  const _options = {
-    id: 'test-editor',
-    editorProps: {
-      attributes: { class: 'bangle-editor content' },
-    },
-    extensions: [...(options.extensions || [])],
-    ...options,
-  };
+export function renderTestEditor(options = {}, testId = 'test-editor') {
+  return async (testDoc) => {
+    const _options = {
+      id: 'test-editor',
+      editorProps: {
+        attributes: { class: 'bangle-editor content' },
+      },
+      extensions: [...(options.extensions || [])],
+      ...options,
+    };
 
-  let _editor;
+    let _editor;
 
-  const result = render(
-    <EditorContextProvider>
-      <ReactEditor options={_options} />
-      <EditorContext.Consumer>
-        {(context) => {
-          if (context.editor && !_editor) {
-            _editor = context.editor;
-          }
-          return !context.editor ? null : <span data-testid={testId} />;
-        }}
-      </EditorContext.Consumer>
-    </EditorContextProvider>,
-  );
-
-  await result.findByTestId('test-editor');
-
-  updateDoc(options.testDoc);
-
-  function updateDoc(doc) {
-    if (!doc) {
-      return;
-    }
-    const editorView = _editor.view;
-    const defaultDoc = doc(editorView.state.schema);
-    const tr = editorView.state.tr.replaceWith(
-      0,
-      editorView.state.doc.nodeSize - 2,
-      defaultDoc.content,
+    const result = render(
+      <EditorContextProvider>
+        <ReactEditor options={_options} />
+        <EditorContext.Consumer>
+          {(context) => {
+            if (context.editor && !_editor) {
+              _editor = context.editor;
+            }
+            return !context.editor ? null : <span data-testid={testId} />;
+          }}
+        </EditorContext.Consumer>
+      </EditorContextProvider>,
     );
-    tr.setMeta('addToHistory', false);
-    editorView.dispatch(tr);
 
-    const positionExists = (position) => typeof position === 'number';
-    const refs = defaultDoc.refs;
+    await result.findByTestId('test-editor');
 
-    // refs
-    if (positionExists(refs['<>'])) {
-      const tr = setTextSelection(editorView, refs['<>'])(editorView.state.tr);
+    const refs = updateDoc(testDoc);
+
+    function updateDoc(doc) {
+      if (!doc) {
+        return;
+      }
+      const editorView = _editor.view;
+      const defaultDoc = doc(editorView.state.schema);
+      const tr = editorView.state.tr.replaceWith(
+        0,
+        editorView.state.doc.nodeSize - 2,
+        defaultDoc.content,
+      );
+      tr.setMeta('addToHistory', false);
       editorView.dispatch(tr);
-    }
-    // TODO other kind of refs
-  }
 
-  return {
-    ...result,
-    editor: _editor,
-    editorState: _editor.state,
-    schema: _editor.schema,
-    editorView: _editor.view,
-    updateDoc,
+      const positionExists = (position) => typeof position === 'number';
+      const refs = defaultDoc.refs;
+
+      // refs
+      if (positionExists(refs['<>'])) {
+        const tr = setTextSelection(
+          editorView,
+          refs['<>'],
+        )(editorView.state.tr);
+        editorView.dispatch(tr);
+      }
+
+      return refs;
+      // TODO other kind of refs
+    }
+
+    return {
+      ...result,
+      editor: _editor,
+      editorState: _editor.state,
+      schema: _editor.schema,
+      editorView: _editor.view,
+      sel: refs ? refs['<>'] : 0,
+      updateDoc,
+    };
   };
 }
 

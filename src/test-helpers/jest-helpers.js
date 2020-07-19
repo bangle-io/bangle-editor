@@ -1,4 +1,5 @@
 import { Node } from 'prosemirror-model';
+import prettier from 'prettier';
 
 export const jestExpect = {
   toEqualDocAndSelection,
@@ -12,6 +13,7 @@ export const jestExpect = {
 };
 
 expect.extend(jestExpect);
+stubMissingDOMAPIs();
 
 function toEqualDocAndSelection(actual, expected) {
   const { doc: actualDoc, selection: actualSelection } = actual;
@@ -107,6 +109,13 @@ function toEqualDocument(equals, utils, expand) {
         message: () => 'Expected both values to be using the same schema.',
       };
     }
+    const frmt = (doc) =>
+      prettier.format(doc.toString(), {
+        semi: false,
+        parser: 'babel',
+        printWidth: 40,
+        singleQuote: true,
+      });
 
     const pass = equals(actual.toJSON(), expected.toJSON());
     const message = pass
@@ -117,7 +126,7 @@ function toEqualDocument(equals, utils, expand) {
           )}\n` +
           `Actual JSON:\n  ${utils.printReceived(actual)}`
       : () => {
-          const diffString = utils.diff(expected, actual, {
+          const diffString = utils.diff(frmt(expected), frmt(actual), {
             expand: expand,
           });
           return (
@@ -138,4 +147,87 @@ function toEqualDocument(equals, utils, expand) {
       name: 'toEqualDocument',
     };
   };
+}
+
+function stubMissingDOMAPIs() {
+  const warnOnce = (() => {
+    return () => {
+      if (window.hasWarnedAboutJsdomFixtures) {
+        return;
+      }
+      // eslint-disable-next-line no-console
+      console.warn(
+        'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',
+      );
+      window.hasWarnedAboutJsdomFixtures = true;
+    };
+  })();
+
+  const clientRectFixture = {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  };
+
+  const selectionFixture = {
+    removeAllRanges: () => {},
+    addRange: () => {},
+  };
+
+  const rangeFixture = {
+    setEnd: () => {},
+    setStart: () => {},
+    collapse: () => {},
+    getClientRects: () => [],
+    getBoundingClientRect: () => clientRectFixture,
+  };
+
+  Object.defineProperty(rangeFixture, 'commonAncestorContainer', {
+    enumerable: true,
+    get: () => {
+      return document.body;
+    },
+  });
+
+  if (typeof window !== 'undefined') {
+    window.getSelection = () => {
+      warnOnce();
+      return selectionFixture;
+    };
+  }
+
+  if (typeof document !== 'undefined') {
+    document.getSelection = () => {
+      warnOnce();
+      return selectionFixture;
+    };
+
+    // Do nothing when attempting to create DOM ranges
+    document.createRange = () => {
+      warnOnce();
+      return rangeFixture;
+    };
+
+    if (!('getClientRects' in document.createElement('div'))) {
+      Element.prototype.getClientRects = () => [];
+      Element.prototype.getBoundingClientRect = () => clientRectFixture;
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    // Replace the native InputEvent which ships with JSDOM 12+
+    window.InputEvent = class InputEvent {
+      constructor(typeArg, inputEventInit) {
+        const uiEvent = new UIEvent(typeArg, inputEventInit);
+        uiEvent.inputType = (inputEventInit && inputEventInit.inputType) || '';
+        uiEvent.isComposing =
+          (inputEventInit && inputEventInit.isComposing) || false;
+        uiEvent.data = (inputEventInit && inputEventInit.data) || null;
+        return uiEvent;
+      }
+    };
+
+    window.scrollBy = () => {};
+  }
 }

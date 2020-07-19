@@ -90,7 +90,6 @@ export function sendKeyToPm(editorView, keys) {
 
 export function insertText(view, text, from, _to) {
   let pos = typeof from === 'number' ? from : view.state.selection.from;
-
   text.split('').forEach((character, index) => {
     if (
       !view.someProp('handleTextInput', (f) =>
