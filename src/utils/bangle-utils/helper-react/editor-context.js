@@ -43,7 +43,9 @@ export class EditorContextProvider extends React.Component {
 
   render() {
     return (
-      <EditorOnReadyContext.Provider value={this.onEditorReady}>
+      <EditorOnReadyContext.Provider
+        value={{ onEditorReady: this.onEditorReady }}
+      >
         <EditorContext.Provider value={this.state.editorValue}>
           <TransactionContext.Provider
             value={{ editor: this.state.editorValue.editor }}

@@ -50,7 +50,8 @@ export class ReactEditor extends React.PureComponent {
         applyDevTools(this.editor.view);
         window.editor = this.editor;
       }
-      this.context(this.editor);
+
+      this.context.onEditorReady(this.editor);
 
       this.forceUpdate();
       this.editor.focus();

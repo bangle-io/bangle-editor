@@ -5,7 +5,8 @@
   "alias": {
     "app": "./src/app",
     "plugins": "./src/plugins",
-    "utils": "./src/utils"
+    "utils": "./src/utils",
+    "test-helpers": "./src/test-helpers"
   },
   "dependencies": {
     "bulma": "^0.8.0",
@@ -62,18 +63,28 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@testing-library/react": "^10.4.7",
+    "babel-jest": "^26.1.0",
     "jest": "^26.1.0",
     "jest-circus": "^26.1.0",
+    "jest-diff": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "parcel": "^1.12.4",
     "postcss": "^7.0.27",
     "prettier": "^2.0.5",
     "prosemirror-dev-tools": "^2.1.1",
+    "prosemirror-test-builder": "^1.0.3",
     "puppeteer": "^5.1.0",
+    "react-test-renderer": "^16.13.1",
     "surge": "^0.21.3"
   },
   "jest": {
     "preset": "jest-puppeteer",
-    "testRunner": "jest-circus/runner"
+    "testRunner": "jest-circus/runner",
+    "modulePaths": [
+      "<rootDir>/src"
+    ]
   }
 }
