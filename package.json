@@ -52,16 +52,9 @@
     "quoteProps": "consistent",
     "arrowParens": "always"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version"
-    ]
-  },
+  "browserslist": [
+    "last 1 chrome version"
+  ],
   "devDependencies": {
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
