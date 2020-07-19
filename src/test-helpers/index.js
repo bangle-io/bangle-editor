@@ -1,5 +1,6 @@
 'use strict';
 
+import prettier from 'prettier';
 import {
   EditorContextProvider,
   EditorContext,
@@ -10,14 +11,15 @@ import React from 'react';
 import { render, waitForElement } from '@testing-library/react';
 import pmTestBuilder from 'prosemirror-test-builder';
 import browser from 'utils/bangle-utils/utils/browser';
-import prettier from 'prettier';
-import { setTimeout } from 'core-js';
+import { Text, Paragraph, Doc } from 'utils/bangle-utils/nodes/index';
 import {
   EditorState,
   Selection,
   TextSelection,
   NodeSelection,
 } from 'prosemirror-state';
+import { ExtensionManager } from 'utils/bangle-utils/utils/extension-manager';
+import { Schema } from 'prosemirror-model';
 
 export async function renderReactEditor(options = {}, testId = 'test-editor') {
   const _options = {
@@ -26,6 +28,8 @@ export async function renderReactEditor(options = {}, testId = 'test-editor') {
       attributes: { class: 'bangle-editor content' },
     },
     extensions: [...(options.extensions || [])],
+    doc: options.testDoc,
+    selection: options.testDoc && selectionFor(options.testDoc),
     ...options,
   };
 
@@ -59,7 +63,14 @@ export async function renderReactEditor(options = {}, testId = 'test-editor') {
   return {
     ...result,
     editor: _editor,
-    builders: builders(_editor.schema),
+    builders: pmTestBuilder.builders(_editor.schema, {
+      doc: { nodeType: 'doc' },
+      p: { nodeType: 'paragraph' },
+      text: { nodeType: 'text' },
+      li: { nodeType: 'list_item' },
+      ul: { nodeType: 'bullet_list' },
+      ol: { nodeType: 'ordered_list' },
+    }),
     update,
   };
 }
@@ -237,13 +248,30 @@ export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));
 }
 
-export function builders(schema) {
-  return pmTestBuilder.builders(schema, {
-    doc: { nodeType: 'doc' },
-    p: { nodeType: 'paragraph' },
-    text: { nodeType: 'text' },
-    li: { nodeType: 'list_item' },
-    ul: { nodeType: 'bullet_list' },
-    ol: { nodeType: 'ordered_list' },
+export function builders(extensions = []) {
+  const schema = getSchema(extensions);
+  return {
+    schema,
+    ...pmTestBuilder.builders(schema, {
+      doc: { nodeType: 'doc' },
+      p: { nodeType: 'paragraph' },
+      text: { nodeType: 'text' },
+      li: { nodeType: 'list_item' },
+      ul: { nodeType: 'bullet_list' },
+      ol: { nodeType: 'ordered_list' },
+    }),
+  };
+}
+
+export function getSchema(extensions = []) {
+  const baseExtns = [new Doc(), new Text(), new Paragraph()];
+  const manager = new ExtensionManager([...baseExtns, ...extensions], {});
+
+  const schema = new Schema({
+    topNode: 'doc',
+    marks: manager.marks,
+    nodes: manager.nodes,
   });
+
+  return schema;
 }
