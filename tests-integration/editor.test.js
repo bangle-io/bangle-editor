@@ -4,10 +4,6 @@ const { mountEditor, getEditorState } = require('./helpers');
 
 jest.setTimeout(15 * 1000);
 
-test('Dummy test', () => {
-  expect(1).toBe(1);
-});
-
 describe('Title load test', () => {
   beforeAll(async () => {
     await page.goto(URL);

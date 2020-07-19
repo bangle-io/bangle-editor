@@ -122,7 +122,7 @@ function moveList(type, down = true) {
 }
 
 export function indentList() {
-  return function(state, dispatch) {
+  return function (state, dispatch) {
     const { list_item: listItem } = state.schema.nodes;
     if (isInsideListItem(state)) {
       // Record initial list indentation
@@ -186,7 +186,7 @@ const isInsideListItem = (state) => {
 };
 
 export function outdentList() {
-  return function(state, dispatch) {
+  return function (state, dispatch) {
     const { list_item: listItem } = state.schema.nodes;
     const { $from, $to } = state.selection;
     if (isInsideListItem(state)) {
@@ -463,6 +463,7 @@ export const backspaceKeyCommand = baseCommand.chainCommands(
 
 export const enterKeyCommand = (state, dispatch) => {
   const { selection } = state;
+  console.log('HEREREERE');
   if (selection.empty) {
     const { $from } = selection;
     const { list_item: listItem, code_block: codeBlock } = state.schema.nodes;
@@ -486,8 +487,8 @@ export const enterKeyCommand = (state, dispatch) => {
  * @param itemType Node
  * Splits the list items, specific implementation take from PM
  */
-function splitListItem(itemType) {
-  return function(state, dispatch) {
+export function splitListItem(itemType) {
+  return function (state, dispatch) {
     const ref = state.selection;
     const $from = ref.$from;
     const $to = ref.$to;
@@ -550,7 +551,12 @@ function splitListItem(itemType) {
     const tr = state.tr.delete($from.pos, $to.pos);
     const types = nextType && [undefined, { type: nextType }];
     if (dispatch) {
-      dispatch(tr.split($from.pos, 2, types).scrollIntoView());
+      // There is a weird DOM get object.getClientRects undefnied error
+      if (process.env.NODE_ENV === 'test') {
+        dispatch(tr.split($from.pos, 2, types));
+      } else {
+        dispatch(tr.split($from.pos, 2, types).scrollIntoView());
+      }
     }
     return true;
   };
