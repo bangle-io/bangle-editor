@@ -42,6 +42,8 @@ export class Editor extends Emitter {
       extensions: [],
       content: '',
       topNode: 'doc',
+      doc: null,
+      selection: null,
       emptyDocument: {
         type: 'doc',
         content: [
@@ -70,7 +72,9 @@ export class Editor extends Emitter {
   init(domElement, options = {}) {
     this.setOptions(options);
     this.focused = false;
-    this.selection = { from: 0, to: 0 };
+    this.selection = this.options.selection
+      ? { from: this.options.selection.from, to: this.options.selection.to }
+      : { from: 0, to: 0 };
     this.element = domElement; //document.createElement('div');
     this.extensions = this.createExtensions();
     this.nodes = this.createNodes();
@@ -180,9 +184,9 @@ export class Editor extends Emitter {
   }
 
   createState() {
-    return EditorState.create({
+    const settings = {
       schema: this.schema,
-      doc: this.createDocument(this.options.content),
+      doc: this.options.doc || this.createDocument(this.options.content),
       plugins: [
         ...this.plugins,
         inputRules({
@@ -237,7 +241,13 @@ export class Editor extends Emitter {
           props: this.options.editorProps,
         }),
       ],
-    });
+    };
+
+    if (this.options.selection) {
+      settings.selection = this.options.selection;
+    }
+
+    return EditorState.create(settings);
   }
 
   createDocument(content, parseOptions = this.options.parseOptions) {
