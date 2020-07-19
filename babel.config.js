@@ -7,6 +7,7 @@ module.exports = (api) => {
         [
           '@babel/preset-env',
           {
+            debug: true,
             targets: {
               node: 'current',
             },
@@ -16,6 +17,6 @@ module.exports = (api) => {
     };
   }
   return {
-    presets: ['@babel/preset-react', '@babel/preset-env'],
+    presets: ['@babel/preset-react', ['@babel/preset-env', { debug: true }]],
   };
 };

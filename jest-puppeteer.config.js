@@ -1,7 +1,7 @@
 // jest-puppeteer.config.js
 module.exports = {
   server: {
-    command: 'npm run test',
+    command: 'parcel public/index.html --port 4444',
     port: 4444,
   },
   launch: {
