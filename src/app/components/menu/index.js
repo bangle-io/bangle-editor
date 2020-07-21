@@ -60,10 +60,10 @@ export function MenuBar({ editor }) {
         iconType="smile"
       />
       <MenuItemButton
-        active={editor.isActive.ordered_list()}
+        active={editor.isActive.bullet_list()}
         enabled={true}
         onClick={() => {
-          editor.commands.ordered_list();
+          editor.commands.bullet_list();
         }}
         label="flower"
         iconType="check-square"

@@ -153,6 +153,8 @@ export class ExtensionManager {
           });
 
           const apply = (cb, attrs) => {
+            debugger;
+
             if (!view.editable) {
               return false;
             }

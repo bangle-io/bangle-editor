@@ -1,24 +1,25 @@
 /**
  * @jest-environment jsdom
  */
-'use strict';
 
 import 'test-helpers/jest-helpers';
 
-import { doc, ul, li, p, ol, br } from 'test-helpers/test-builders';
+import { doc, ul, li, p, ol, br, codeBlock } from 'test-helpers/test-builders';
 import { renderTestEditor } from 'test-helpers/render-test-editor';
 import { applyCommand } from 'test-helpers/commands-helpers';
-import { wrappingInputRule, toggleList } from 'tiptap-commands';
 
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
-import {
-  splitListItem,
-  enterKeyCommand,
-  ListItem,
-} from '../list-item/list-item';
+import { ListItem } from '../list-item/list-item';
 import { sendKeyToPm, insertText } from 'test-helpers/keyboard';
 import { HardBreak } from '../hard-break';
+import {
+  enterKeyCommand,
+  splitListItem,
+  toggleList,
+  backspaceKeyCommand,
+} from '../list-item/commands';
+import { CodeBlock } from '../code-block';
 
 const extensions = [
   new BulletList(),
@@ -43,7 +44,54 @@ describe('Command: split list ', () => {
   });
 });
 
-describe('Command: enter list', () => {
+describe('Command: toggleList', () => {
+  let updateDoc, editorView;
+
+  beforeEach(async () => {
+    ({ editorView, updateDoc } = await testEditor());
+  });
+
+  test('toggles correctly', async () => {
+    updateDoc(doc(p('foobar{<>}')));
+    // because togglelist requires a view to work
+    // we are not using the applyCommand helper
+    toggleList('bullet_list')(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(doc(ul(li(p('foobar')))));
+  });
+});
+
+describe('Command: backspaceKeyCommand', () => {
+  const extensions = [
+    new BulletList(),
+    new ListItem(),
+    new OrderedList(),
+    new HardBreak(),
+    new CodeBlock(),
+  ];
+  const testEditor = renderTestEditor({ extensions });
+  let updateDoc,
+    editorView,
+    cmd = applyCommand(backspaceKeyCommand);
+
+  beforeEach(async () => {
+    ({ editorView, updateDoc } = await testEditor());
+  });
+
+  test('toggles correctly', async () => {
+    updateDoc(doc(ol(li(p('{<>}text')))));
+
+    expect(await cmd(editorView.state)).toEqualDocAndSelection(
+      doc(p('{<>}text')),
+    );
+  });
+});
+
+describe('Command: enterKeyCommand', () => {
   let updateDoc,
     editorView,
     cmd = applyCommand(enterKeyCommand);
@@ -316,42 +364,67 @@ describe('ReactEditor: Keymap', () => {
       );
     });
   });
+});
 
-  describe('Markdown shortcuts', () => {
-    test('-<Space> should create list', async () => {
-      const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
+describe('Markdown shortcuts Input rules', () => {
+  test('-<Space> should create list', async () => {
+    const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
 
-      insertText(editorView, '- kj');
-      expect(editorView.state).toEqualDocAndSelection(
-        doc(p('first'), ul(li(p('kj{<>}')))),
-      );
-    });
-    test('*<Space> should create list', async () => {
-      const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
+    insertText(editorView, '- kj');
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(p('first'), ul(li(p('kj{<>}')))),
+    );
+  });
+  test('*<Space> should create list', async () => {
+    const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
 
-      insertText(editorView, '* kj');
-      expect(editorView.state).toEqualDocAndSelection(
-        doc(p('first'), ul(li(p('kj{<>}')))),
-      );
-    });
-    test.skip('1.<space> should create ordered list', async () => {
-      const { editorView, sel } = await testEditor(doc(p('first{<>}')));
-      sendKeyToPm(editorView, 'Enter');
-      // insertText(editorView, 'Hi');
-      insertText(editorView, '1. k');
+    insertText(editorView, '* kj');
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(p('first'), ul(li(p('kj{<>}')))),
+    );
+  });
 
-      expect(editorView.state).toEqualDocAndSelection(
-        doc(p('first'), ol(li(p('k{<>}')))),
-      );
-    });
+  it.skip('should convert to a bullet list item after shift+enter ', async () => {
+    const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
+    insertText(editorView, '* ', sel);
 
-    it.skip('should convert to a bullet list item after shift+enter ', async () => {
-      const { editorView, sel } = await testEditor(
-        doc(p('test', br(), '{<>}')),
-      );
-      insertText(editorView, '* ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(p('test'), ul(li(p()))));
+  });
 
-      expect(editorView.state.doc).toEqualDocument(doc(p('test'), ul(li(p()))));
-    });
+  it('should be not be possible to convert a code to a list item', async () => {
+    const extensions = [
+      new BulletList(),
+      new ListItem(),
+      new OrderedList(),
+      new HardBreak(),
+      new CodeBlock(),
+    ];
+    const testEditor = renderTestEditor({ extensions });
+
+    const { editorView, sel } = await testEditor(doc(codeBlock()('{<>}')));
+    insertText(editorView, '* ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(codeBlock()('* ')));
+  });
+
+  test.skip('1.<space> should create ordered list', async () => {
+    const { editorView } = await testEditor(doc(p('first{<>}')));
+    sendKeyToPm(editorView, 'Enter');
+    insertText(editorView, '1. k');
+
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(p('first'), ol(li(p('k{<>}')))),
+    );
+  });
+  it('should not convert "2. " to a ordered list item', async () => {
+    const { editorView, sel } = await testEditor(doc(p('{<>}')));
+
+    insertText(editorView, '2. ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(p('2. ')));
+  });
+
+  it('should not convert "2. " after shift+enter to a ordered list item', async () => {
+    const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
+    insertText(editorView, '2. ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(p('test', br(), '2. ')));
   });
 });
