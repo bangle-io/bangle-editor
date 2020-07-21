@@ -8,7 +8,7 @@ export { CodeBlock } from './code-block';
 export { HardBreak } from './hard-break';
 export { Heading } from './heading';
 export { HorizontalRule } from './horizontal-rule';
-export { ListItem } from './list-item';
+export { ListItem } from './list-item/list-item';
 export { OrderedList } from './ordered-list';
 export { TodoItem } from './todo-item';
 export { TodoList } from './todo-list';

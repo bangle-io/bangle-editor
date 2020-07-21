@@ -12,7 +12,11 @@ import { wrappingInputRule, toggleList } from 'tiptap-commands';
 
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
-import { splitListItem, enterKeyCommand, ListItem } from '../list-item';
+import {
+  splitListItem,
+  enterKeyCommand,
+  ListItem,
+} from '../list-item/list-item';
 import { sendKeyToPm, insertText } from 'test-helpers/keyboard';
 import { HardBreak } from '../hard-break';
 
@@ -331,12 +335,14 @@ describe('ReactEditor: Keymap', () => {
       );
     });
     test.skip('1.<space> should create ordered list', async () => {
-      const { editorView, sel } = await testEditor(doc(p('first'), p('{<>}')));
+      const { editorView, sel } = await testEditor(doc(p('first{<>}')));
+      sendKeyToPm(editorView, 'Enter');
+      // insertText(editorView, 'Hi');
+      insertText(editorView, '1. k');
 
-      insertText(editorView, '1. k', sel);
-      expect(
-        await applyCommand(toggleList)(editorView.state),
-      ).toEqualDocAndSelection(doc(p('first'), ol(li(p('k{<>}')))));
+      expect(editorView.state).toEqualDocAndSelection(
+        doc(p('first'), ol(li(p('k{<>}')))),
+      );
     });
 
     it.skip('should convert to a bullet list item after shift+enter ', async () => {

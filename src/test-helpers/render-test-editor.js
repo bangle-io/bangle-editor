@@ -66,7 +66,8 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
       }
 
       return refs;
-      // TODO other kind of refs
+      // TODO other kind of refs like GapCursors
+      // https://bitbucket.org/atlassian/atlaskit-mk-2/src/0b7788f74feae7227f4274bfc21daf9de2c4e6f7/packages/editor/editor-test-helpers/src/create-editor.tsx#packages/editor/editor-test-helpers/src/create-editor.tsx-157
     }
 
     return {

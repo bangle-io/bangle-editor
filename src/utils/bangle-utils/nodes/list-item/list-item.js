@@ -5,7 +5,7 @@ import {
   findPositionOfNodeBefore,
   setTextSelection,
 } from 'prosemirror-utils';
-import { Node } from './node';
+import { Node } from '../node';
 import { NodeSelection, Selection } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import * as baseListCommand from 'prosemirror-schema-list';
@@ -17,7 +17,7 @@ import {
   filter,
   findCutBefore,
   isFirstChildOfParent,
-} from '../utils/pm-utils';
+} from '../../utils/pm-utils';
 
 const maxIndentation = 6;
 
