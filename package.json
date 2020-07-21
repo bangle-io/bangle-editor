@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "parcel public/index.html --port 3000",
-    "build": "react-scripts build",
+    "build": "parcel build public/index.html --out-dir build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
     "test": "NODE_ENV=development parcel public/index.html --port 4444 --log-level 3",
@@ -53,7 +53,8 @@
     "arrowParens": "always"
   },
   "browserslist": [
-    "last 1 chrome version"
+    "last 3 chrome version",
+    "last 3 firefox version"
   ],
   "devDependencies": {
     "@babel/preset-env": "^7.10.4",
@@ -65,6 +66,7 @@
     "jest-diff": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
     "postcss": "^7.0.27",
     "prettier": "^2.0.5",
     "prosemirror-dev-tools": "^2.1.1",
