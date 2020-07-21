@@ -183,7 +183,6 @@ function canToJoinToPreviousListItem(state) {
 export function toggleList(listType) {
   return (state, dispatch, view) => {
     const { selection } = state;
-    debugger;
     const fromNode = selection.$from.node(selection.$from.depth - 2);
     const endNode = selection.$to.node(selection.$to.depth - 2);
     if (
@@ -219,7 +218,6 @@ export function toggleListCommand(listType) {
         ),
       );
     }
-    debugger;
     if (!view) {
       return false;
     }

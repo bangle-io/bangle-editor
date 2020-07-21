@@ -42,7 +42,9 @@
     "build": "parcel build public/index.html --out-dir build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
-    "test": "NODE_ENV=development parcel public/index.html --port 4444 --log-level 3",
+    "unit-tests": "jest",
+    "integration-tests": "jest --config=jest-integration.config.js",
+    "test": "npm run unit-tests && npm run integration-tests",
     "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
   },
@@ -84,12 +86,5 @@
     "puppeteer": "^5.1.0",
     "react-test-renderer": "^16.13.1",
     "surge": "^0.21.3"
-  },
-  "jest": {
-    "preset": "jest-puppeteer",
-    "testRunner": "jest-circus/runner",
-    "modulePaths": [
-      "<rootDir>/src"
-    ]
   }
 }
