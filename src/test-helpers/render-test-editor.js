@@ -6,7 +6,11 @@ import {
   EditorContext,
 } from 'utils/bangle-utils/helper-react/editor-context';
 import { ReactEditor } from 'utils/bangle-utils/helper-react/react-editor';
-import { TextSelection } from 'prosemirror-state';
+import { TextSelection, NodeSelection } from 'prosemirror-state';
+import {
+  GapCursorSelection,
+  GapCursorSide,
+} from 'utils/bangle-utils/gap-cursor';
 
 export function renderTestEditor(options = {}, testId = 'test-editor') {
   return async (testDoc) => {
@@ -44,6 +48,7 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
         return;
       }
       const editorView = _editor.view;
+      const dispatch = editorView.dispatch;
       const defaultDoc = doc(editorView.state.schema);
       const tr = editorView.state.tr.replaceWith(
         0,
@@ -51,23 +56,76 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
         defaultDoc.content,
       );
       tr.setMeta('addToHistory', false);
-      editorView.dispatch(tr);
+      dispatch(tr);
 
       const positionExists = (position) => typeof position === 'number';
       const refs = defaultDoc.refs;
 
-      // refs
-      if (positionExists(refs['<>'])) {
-        const tr = setTextSelection(
-          editorView,
-          refs['<>'],
-        )(editorView.state.tr);
-        editorView.dispatch(tr);
+      if (refs) {
+        const { doc, tr } = editorView.state;
+        // Collapsed selection.
+        if (positionExists(refs['<>'])) {
+          setTextSelection(editorView, refs['<>']);
+          // Expanded selection
+        } else if (positionExists(refs['<']) || positionExists(refs['>'])) {
+          if (!positionExists(refs['<'])) {
+            throw new Error('A `<` ref must complement a `>` ref.');
+          }
+          if (!positionExists(refs['>'])) {
+            throw new Error('A `>` ref must complement a `<` ref.');
+          }
+          setTextSelection(editorView, refs['<'], refs['>']);
+        }
+        // CellSelection
+        else if (
+          positionExists(refs['<cell']) &&
+          positionExists(refs['cell>'])
+        ) {
+          // const anchorCell = findCellClosestToPos(doc.resolve(refs['<cell']));
+          // const headCell = findCellClosestToPos(doc.resolve(refs['cell>']));
+          // if (anchorCell && headCell) {
+          //   dispatch(
+          //     tr.setSelection(
+          //       new CellSelection(
+          //         doc.resolve(anchorCell.pos),
+          //         doc.resolve(headCell.pos),
+          //       ) ,
+          //     ),
+          //   );
+          // }
+        }
+        // NodeSelection
+        else if (positionExists(refs['<node>'])) {
+          dispatch(tr.setSelection(NodeSelection.create(doc, refs['<node>'])));
+        }
+        // GapCursor right
+        // This may look the wrong way around here, but looks correct in the tests. Eg:
+        // doc(hr(), '{<|gap>}') = Horizontal rule with a gap cursor on its right
+        // The | denotes the gap cursor's side, based on the node on the side of the |.
+        else if (positionExists(refs['<|gap>'])) {
+          dispatch(
+            tr.setSelection(
+              new GapCursorSelection(
+                doc.resolve(refs['<|gap>']),
+                GapCursorSide.RIGHT,
+              ),
+            ),
+          );
+        }
+        // GapCursor left
+        else if (positionExists(refs['<gap|>'])) {
+          dispatch(
+            tr.setSelection(
+              new GapCursorSelection(
+                doc.resolve(refs['<gap|>']),
+                GapCursorSide.LEFT,
+              ),
+            ),
+          );
+        }
       }
 
       return refs;
-      // TODO other kind of refs like GapCursors
-      // https://bitbucket.org/atlassian/atlaskit-mk-2/src/0b7788f74feae7227f4274bfc21daf9de2c4e6f7/packages/editor/editor-test-helpers/src/create-editor.tsx#packages/editor/editor-test-helpers/src/create-editor.tsx-157
     }
 
     return {
@@ -85,5 +143,8 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
 
 function setTextSelection(view, anchor, head) {
   const { state } = view;
-  return (tr) => tr.setSelection(TextSelection.create(state.doc, anchor, head));
+  const tr = state.tr.setSelection(
+    TextSelection.create(state.doc, anchor, head),
+  );
+  view.dispatch(tr);
 }

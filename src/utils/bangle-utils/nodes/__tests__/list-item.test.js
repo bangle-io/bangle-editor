@@ -4,7 +4,17 @@
 
 import 'test-helpers/jest-helpers';
 
-import { doc, ul, li, p, ol, br, codeBlock } from 'test-helpers/test-builders';
+import {
+  doc,
+  ul,
+  li,
+  p,
+  ol,
+  br,
+  h1,
+  codeBlock,
+  underline,
+} from 'test-helpers/test-builders';
 import { renderTestEditor } from 'test-helpers/render-test-editor';
 import { applyCommand } from 'test-helpers/commands-helpers';
 
@@ -20,12 +30,17 @@ import {
   backspaceKeyCommand,
 } from '../list-item/commands';
 import { CodeBlock } from '../code-block';
+import { GapCursorSelection } from 'utils/bangle-utils/gap-cursor';
+import { Heading } from '../heading';
+import { Underline } from 'utils/bangle-utils/marks';
 
 const extensions = [
   new BulletList(),
   new ListItem(),
   new OrderedList(),
   new HardBreak(),
+  new Heading(),
+  new Underline(),
 ];
 const testEditor = renderTestEditor({ extensions });
 
@@ -141,7 +156,70 @@ describe('Command: enterKeyCommand', () => {
   });
 });
 
-describe('ReactEditor: Keymap', () => {
+describe('Markdown shortcuts Input rules', () => {
+  test('-<Space> should create list', async () => {
+    const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
+
+    insertText(editorView, '- kj');
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(p('first'), ul(li(p('kj{<>}')))),
+    );
+  });
+  test('*<Space> should create list', async () => {
+    const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
+
+    insertText(editorView, '* kj');
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(p('first'), ul(li(p('kj{<>}')))),
+    );
+  });
+
+  it.skip('should convert to a bullet list item after shift+enter ', async () => {
+    const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
+    insertText(editorView, '* ', sel);
+
+    expect(editorView.state.doc).toEqualDocument(doc(p('test'), ul(li(p()))));
+  });
+
+  it('should be not be possible to convert a code to a list item', async () => {
+    const extensions = [
+      new BulletList(),
+      new ListItem(),
+      new OrderedList(),
+      new HardBreak(),
+      new CodeBlock(),
+    ];
+    const testEditor = renderTestEditor({ extensions });
+
+    const { editorView, sel } = await testEditor(doc(codeBlock()('{<>}')));
+    insertText(editorView, '* ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(codeBlock()('* ')));
+  });
+
+  test.skip('1.<space> should create ordered list', async () => {
+    const { editorView } = await testEditor(doc(p('first{<>}')));
+    sendKeyToPm(editorView, 'Enter');
+    insertText(editorView, '1. k');
+
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(p('first'), ol(li(p('k{<>}')))),
+    );
+  });
+  it('should not convert "2. " to a ordered list item', async () => {
+    const { editorView, sel } = await testEditor(doc(p('{<>}')));
+
+    insertText(editorView, '2. ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(p('2. ')));
+  });
+
+  it('should not convert "2. " after shift+enter to a ordered list item', async () => {
+    const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
+    insertText(editorView, '2. ', sel);
+    expect(editorView.state.doc).toEqualDocument(doc(p('test', br(), '2. ')));
+  });
+});
+
+describe('Keymap', () => {
   test('Typing works', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
 
@@ -152,7 +230,7 @@ describe('ReactEditor: Keymap', () => {
     );
   });
 
-  test('Pressing Enter works', async () => {
+  test('Pressing Enter', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
 
     sendKeyToPm(editor.view, 'Enter');
@@ -364,67 +442,903 @@ describe('ReactEditor: Keymap', () => {
       );
     });
   });
+
+  describe('Pressing Shift-Ctrl-8', () => {
+    const check = async (beforeDoc, afterDoc) => {
+      const { editorView } = await testEditor(beforeDoc);
+      sendKeyToPm(editorView, 'Shift-Ctrl-8');
+      expect(editorView.state).toEqualDocAndSelection(afterDoc);
+    };
+
+    it('should outdent the list', async () => {
+      await check(doc(p('One{<>}')), doc(ul(li(p('One')))));
+    });
+  });
+
+  describe('Pressing Shift-Ctrl-9', () => {
+    const check = async (beforeDoc, afterDoc) => {
+      const { editorView } = await testEditor(beforeDoc);
+      sendKeyToPm(editorView, 'Shift-Ctrl-9');
+      expect(editorView.state).toEqualDocAndSelection(afterDoc);
+    };
+
+    it('should outdent the list', async () => {
+      await check(doc(p('One{<>}')), doc(ol(li(p('One')))));
+    });
+  });
 });
 
-describe('Markdown shortcuts Input rules', () => {
-  test('-<Space> should create list', async () => {
-    const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
-
-    insertText(editorView, '- kj');
-    expect(editorView.state).toEqualDocAndSelection(
-      doc(p('first'), ul(li(p('kj{<>}')))),
+describe('misc', () => {
+  const toggleOrderedList = (editorView) =>
+    toggleList('ordered_list')(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
     );
-  });
-  test('*<Space> should create list', async () => {
-    const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
-
-    insertText(editorView, '* kj');
-    expect(editorView.state).toEqualDocAndSelection(
-      doc(p('first'), ul(li(p('kj{<>}')))),
+  const toggleBulletList = (editorView) =>
+    toggleList('bullet_list')(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
     );
+  it('should allow toggling between normal text and ordered list', async () => {
+    const { editorView } = await testEditor(doc(p('t{a}ex{b}t')));
+
+    toggleOrderedList(editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(ol(li(p('text')))));
+    toggleOrderedList(editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(p('text')));
   });
 
-  it.skip('should convert to a bullet list item after shift+enter ', async () => {
-    const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
-    insertText(editorView, '* ', sel);
+  it('should allow toggling between normal text and bullet list', async () => {
+    const { editorView } = await testEditor(doc(p('t{<}ex{>}t')));
 
-    expect(editorView.state.doc).toEqualDocument(doc(p('test'), ul(li(p()))));
+    toggleBulletList(editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(ul(li(p('text')))));
+    toggleBulletList(editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(p('text')));
   });
 
-  it('should be not be possible to convert a code to a list item', async () => {
-    const extensions = [
-      new BulletList(),
-      new ListItem(),
-      new OrderedList(),
-      new HardBreak(),
-      new CodeBlock(),
-    ];
-    const testEditor = renderTestEditor({ extensions });
+  it('should allow toggling between ordered and bullet list', async () => {
+    const { editorView } = await testEditor(doc(ol(li(p('t{<}ex{>}t')))));
 
-    const { editorView, sel } = await testEditor(doc(codeBlock()('{<>}')));
-    insertText(editorView, '* ', sel);
-    expect(editorView.state.doc).toEqualDocument(doc(codeBlock()('* ')));
+    toggleBulletList(editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(ul(li(p('text')))));
+    toggleBulletList(editorView);
+    expect(editorView.state.doc).toEqualDocument(doc(p('text')));
   });
 
-  test.skip('1.<space> should create ordered list', async () => {
-    const { editorView } = await testEditor(doc(p('first{<>}')));
-    sendKeyToPm(editorView, 'Enter');
-    insertText(editorView, '1. k');
+  // it('should make sure that it is enabled when selecting ordered list', async () => {
+  //   const { pluginState } = await testEditor(doc(ol(li(p('te{<>}xt')))));
 
-    expect(editorView.state).toEqualDocAndSelection(
-      doc(p('first'), ol(li(p('k{<>}')))),
+  //   expect(pluginState).toHaveProperty('orderedListActive', true);
+  //   expect(pluginState).toHaveProperty('orderedListDisabled', false);
+  //   expect(pluginState).toHaveProperty('bulletListActive', false);
+  //   expect(pluginState).toHaveProperty('bulletListDisabled', false);
+  // });
+
+  // it('should be disabled when selecting h1', async () => {
+  //   const { pluginState } = await testEditor(doc(h1('te{<>}xt')));
+
+  //   expect(pluginState).toHaveProperty('orderedListActive', false);
+  //   expect(pluginState).toHaveProperty('orderedListDisabled', true);
+  //   expect(pluginState).toHaveProperty('bulletListActive', false);
+  //   expect(pluginState).toHaveProperty('bulletListDisabled', true);
+  // });
+
+  describe('toggling a list', () => {
+    it("shouldn't affect text selection", async () => {
+      const { editorView } = await testEditor(doc(p('hello{<>}')));
+
+      toggleBulletList(editorView);
+      // If the text is not selected, pressing enter will
+      // create a new paragraph. If it is selected the
+      // 'hello' text will be removed
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('hello')), li(p('')))),
+      );
+    });
+  });
+
+  describe('untoggling a list', () => {
+    const expectedOutput = doc(
+      ol(li(p('One'))),
+      p('Two'),
+      p('Three'),
+      ol(li(p('Four'))),
     );
-  });
-  it('should not convert "2. " to a ordered list item', async () => {
-    const { editorView, sel } = await testEditor(doc(p('{<>}')));
 
-    insertText(editorView, '2. ', sel);
-    expect(editorView.state.doc).toEqualDocument(doc(p('2. ')));
+    it('should allow untoggling part of a list based on selection', async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('{<}Two')), li(p('Three{>}')), li(p('Four'))),
+        ),
+      );
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should untoggle empty paragraphs in a list', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('{<}One')), li(p('Two')), li(p()), li(p('Three{>}')))),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('One'), p('Two'), p(), p('Three')),
+      );
+    });
+
+    it('should untoggle all list items with different ancestors in selection', async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('{<}Two')), li(p('Three'))),
+          ol(li(p('One{>}')), li(p('Two'))),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('One'))), p('Two'), p('Three'), p('One'), ol(li(p('Two')))),
+      );
+    });
   });
 
-  it('should not convert "2. " after shift+enter to a ordered list item', async () => {
-    const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
-    insertText(editorView, '2. ', sel);
-    expect(editorView.state.doc).toEqualDocument(doc(p('test', br(), '2. ')));
+  describe('converting a list', () => {
+    it('should allow converting part of a list based on selection', async () => {
+      const expectedOutput = doc(
+        ol(li(p('One'))),
+        ul(li(p('Two')), li(p('Three'))),
+        ol(li(p('Four'))),
+      );
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('{<}Two')), li(p('Three{>}')), li(p('Four'))),
+        ),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    // it('should convert selection inside panel to list', async () => {
+    //   const expectedOutput = doc(panel()(ul(li(p('text')))));
+    //   const { editorView } = await testEditor(doc(panel()(p('te{<>}xt'))));
+
+    //   toggleBulletList(editorView);
+    //   expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    // });
+
+    it('should allow converting part of a list based on selection that starts at the end of previous line', async () => {
+      const expectedOutput = doc(
+        ol(li(p('One'))),
+        ul(li(p('Two')), li(p('Three'))),
+        ol(li(p('Four'))),
+      );
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))),
+        ),
+      ); // When selection starts on previous (empty) node
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert selection to a list when the selection starts with a paragraph and ends inside a list', async () => {
+      const expectedOutput = doc(
+        ol(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
+      );
+      const { editorView } = await testEditor(
+        doc(p('{<}One'), ol(li(p('Two{>}')), li(p('Three')), li(p('Four')))),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert selection to a list when the selection contains a list but starts and end with paragraphs', async () => {
+      const expectedOutput = doc(
+        ol(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
+      );
+      const { editorView } = await testEditor(
+        doc(p('{<}One'), ol(li(p('Two')), li(p('Three'))), p('Four{>}')),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert selection to a list when the selection starts inside a list and ends with a paragraph', async () => {
+      const expectedOutput = doc(
+        ol(li(p('One')), li(p('Two')), li(p('Three')), li(p('Four'))),
+      );
+      const { editorView } = await testEditor(
+        doc(ol(li(p('One')), li(p('{<}Two')), li(p('Three'))), p('Four{>}')),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert selection to a list and keep empty paragraphs', async () => {
+      const expectedOutput = doc(
+        ul(li(p('One')), li(p('Two')), li(p()), li(p('Three'))),
+      );
+      const { editorView } = await testEditor(
+        doc(ol(li(p('{<}One')), li(p('Two')), li(p()), li(p('Three{>}')))),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert selection to list when there is an empty paragraph between non empty two', async () => {
+      const expectedOutput = doc(ul(li(p('One')), li(p()), li(p('Three'))));
+      const { editorView } = await testEditor(
+        doc(p('{<}One'), p(), p('Three{>}')),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert selection to a list when it is a paragraph with supported marks', async () => {
+      const expectedOutput = doc(
+        ul(li(p('One')), li(p(underline('Two'))), li(p('Three'))),
+      );
+      const { editorView } = await testEditor(
+        doc(p('{<}One'), p(underline('Two')), p('Three{>}')),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    // it('should retain breakout marks on ancestor when toggling list within a layout', async () => {
+    //   const expectedOutput = doc(
+    //     breakout({ mode: 'wide' })(
+    //       layoutSection(
+    //         layoutColumn({ width: 33.33 })(p('')),
+    //         layoutColumn({ width: 33.33 })(ul(li(p('One')))),
+    //         layoutColumn({ width: 33.33 })(p('')),
+    //       ),
+    //     ),
+    //   );
+
+    //   const { editorView } = await testEditor(
+    //     doc(
+    //       breakout({ mode: 'wide' })(
+    //         layoutSection(
+    //           layoutColumn({ width: 33.33 })(p('')),
+    //           layoutColumn({ width: 33.33 })(p('{<}One{>}')),
+    //           layoutColumn({ width: 33.33 })(p('')),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+
+    //   toggleBulletList(editorView);
+    //   expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    // });
+  });
+
+  describe('joining lists', () => {
+    const expectedOutputForPreviousList = doc(
+      ol(
+        li(p('One')),
+        li(p('Two')),
+        li(p('Three')),
+        li(p('Four')),
+        li(p('Five')),
+      ),
+      p('Six'),
+    );
+    const expectedOutputForNextList = doc(
+      p('One'),
+      ol(
+        li(p('Two')),
+        li(p('Three')),
+        li(p('Four')),
+        li(p('Five')),
+        li(p('Six')),
+      ),
+    );
+    const expectedOutputForPreviousAndNextList = doc(
+      ol(
+        li(p('One')),
+        li(p('Two')),
+        li(p('Three')),
+        li(p('Four')),
+        li(p('Five')),
+        li(p('Six')),
+      ),
+    );
+
+    it("should join with previous list if it's of the same type", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two')), li(p('Three'))),
+          p('{<}Four'),
+          p('Five{>}'),
+          p('Six'),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        expectedOutputForPreviousList,
+      );
+    });
+
+    it("should join with previous list if it's of the same type and selection starts at the end of previous line", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two')), li(p('Three{<}'))),
+          p('Four'),
+          p('Five{>}'),
+          p('Six'),
+        ),
+      ); // When selection starts on previous (empty) node
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        expectedOutputForPreviousList,
+      );
+    });
+
+    it("should not join with previous list if it's not of the same type", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two')), li(p('Three'))),
+          p('{<}Four'),
+          p('Five{>}'),
+          p('Six'),
+        ),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ol(li(p('One')), li(p('Two')), li(p('Three'))),
+          ul(li(p('Four')), li(p('Five'))),
+          p('Six'),
+        ),
+      );
+    });
+
+    it("should not join with previous list if it's not of the same type and selection starts at the end of previous line", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two')), li(p('Three{<}'))),
+          p('Four'),
+          p('Five{>}'),
+          p('Six'),
+        ),
+      ); // When selection starts on previous (empty) node
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ol(li(p('One')), li(p('Two')), li(p('Three'))),
+          ul(li(p('Four')), li(p('Five'))),
+          p('Six'),
+        ),
+      );
+    });
+
+    it("should join with next list if it's of the same type", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          p('One'),
+          p('{<}Two'),
+          p('Three{>}'),
+          ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutputForNextList);
+    });
+
+    it("should join with next list if it's of the same type and selection starts at the end of previous line", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          p('One{<}'),
+          p('Two'),
+          p('Three{>}'),
+          ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutputForNextList);
+    });
+
+    it("should not join with next list if it isn't of the same type", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          p('One'),
+          p('{<}Two'),
+          p('Three{>}'),
+          ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('One'),
+          ul(li(p('Two')), li(p('Three'))),
+          ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+        ),
+      );
+    });
+
+    it("should not join with next list if it isn't of the same type and selection starts at the end of previous line", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          p('One{<}'),
+          p('Two'),
+          p('Three{>}'),
+          ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('One'),
+          ul(li(p('Two')), li(p('Three'))),
+          ol(li(p('Four')), li(p('Five')), li(p('Six'))),
+        ),
+      );
+    });
+
+    it("should join with previous and next list if they're of the same type", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two'))),
+          p('{<}Three'),
+          p('Four{>}'),
+          ol(li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        expectedOutputForPreviousAndNextList,
+      );
+    });
+
+    it("should join with previous and next list if they're of the same type and selection starts at the end of previous line", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two{<}'))),
+          p('Three'),
+          p('Four{>}'),
+          ol(li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        expectedOutputForPreviousAndNextList,
+      );
+    });
+
+    it("should not join with previous and next list if they're not of the same type", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two'))),
+          p('{<}Three'),
+          p('Four{>}'),
+          ol(li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ol(li(p('One')), li(p('Two'))),
+          ul(li(p('Three')), li(p('Four'))),
+          ol(li(p('Five')), li(p('Six'))),
+        ),
+      );
+    });
+
+    it("should not join with previous and next list if they're not of the same type and selectoin starts at the end of previous line", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('One')), li(p('Two{<}'))),
+          p('Three'),
+          p('Four{>}'),
+          ol(li(p('Five')), li(p('Six'))),
+        ),
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ol(li(p('One')), li(p('Two'))),
+          ul(li(p('Three')), li(p('Four'))),
+          ol(li(p('Five')), li(p('Six'))),
+        ),
+      );
+    });
+  });
+
+  describe('Nested Lists', () => {
+    describe('When gap cursor is inside listItem before codeBlock', () => {
+      it.skip('should increase the depth of list item when Tab key press', async () => {
+        const { editorView } = await testEditor(
+          doc(ol(li(p('text')), li(codeBlock()('{<>}text')), li(p('text')))),
+        );
+        // enable gap cursor
+        sendKeyToPm(editorView, 'ArrowLeft');
+        expect(editorView.state.selection instanceof GapCursorSelection).toBe(
+          true,
+        );
+        expect(editorView.state.selection.$from.depth).toEqual(2);
+
+        sendKeyToPm(editorView, 'Tab');
+
+        expect(editorView.state.selection.$from.depth).toEqual(4);
+      });
+
+      it.skip('should decrease the depth of list item when Shift-Tab key press', async () => {
+        const { editorView } = await testEditor(
+          doc(
+            ol(li(p('text'), ol(li(codeBlock()('{<>}text')))), li(p('text'))),
+          ),
+        );
+        // enable gap cursor
+        sendKeyToPm(editorView, 'ArrowLeft');
+        expect(editorView.state.selection instanceof GapCursorSelection).toBe(
+          true,
+        );
+        expect(editorView.state.selection.$from.depth).toEqual(4);
+
+        sendKeyToPm(editorView, 'Shift-Tab');
+
+        expect(editorView.state.selection.$from.depth).toEqual(2);
+      });
+    });
+
+    it('should increase the depth of list item when Tab key press', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
+      );
+      expect(editorView.state.selection.$from.depth).toEqual(3);
+
+      sendKeyToPm(editorView, 'Tab');
+
+      expect(editorView.state.selection.$from.depth).toEqual(5);
+    });
+
+    it("shouldn't increase the depth of list item when Tab key press when at 5 levels indentation", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(
+            li(
+              p('first'),
+              ol(
+                li(
+                  p('second'),
+                  ol(
+                    li(
+                      p('third'),
+                      ol(
+                        li(
+                          p('fourth'),
+                          ol(li(p('fifth'), p('maybe seventh{<>}'))),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(editorView.state.selection.$from.depth).toEqual(11);
+
+      sendKeyToPm(editorView, 'Tab');
+
+      expect(editorView.state.selection.$from.depth).toEqual(11);
+    });
+
+    it("shouldn't increase the depth of list item when Tab key press when a child list at 6 levels indentation", async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(
+            li(
+              p('first'),
+              ol(
+                li(
+                  p('second'),
+                  ol(
+                    li(
+                      p('third'),
+                      ol(
+                        li(
+                          p('fourth'),
+                          ol(
+                            li(p('fifth')),
+                            li(p('{<}fifth{>}'), ol(li(p('sixth')))),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(editorView.state.selection.$from.depth).toEqual(11);
+
+      sendKeyToPm(editorView, 'Tab');
+
+      expect(editorView.state.selection.$from.depth).toEqual(11);
+    });
+
+    it('should nest the list item when Tab key press', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
+      );
+
+      sendKeyToPm(editorView, 'Tab');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))),
+      );
+    });
+
+    it('should decrease the depth of list item when Shift-Tab key press', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))),
+      );
+      expect(editorView.state.selection.$from.depth).toEqual(5);
+
+      sendKeyToPm(editorView, 'Shift-Tab');
+
+      expect(editorView.state.selection.$from.depth).toEqual(3);
+    });
+
+    it('should lift the list item when Shift-Tab key press', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))),
+      );
+
+      sendKeyToPm(editorView, 'Shift-Tab');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))),
+      );
+    });
+
+    it('should lift nested and same level list items correctly', async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('some{<>}text'), ol(li(p('B')))), li(p('C'))),
+
+          p('after'),
+        ),
+      );
+
+      sendKeyToPm(editorView, 'Shift-Tab');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('some{<>}text'),
+          ol(li(p('B')), li(p('C'))),
+
+          p('after'),
+        ),
+      );
+    });
+
+    it('should lift the list item when Enter key press is done on empty list-item', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
+      );
+
+      sendKeyToPm(editorView, 'Enter');
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))),
+      );
+    });
+  });
+
+  describe('Enter key-press', () => {
+    describe('when Enter key is pressed on empty nested list item', () => {
+      it('should create new list item in parent list', async () => {
+        const { editorView } = await testEditor(
+          doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
+        );
+
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))),
+        );
+      });
+    });
+
+    describe('when Enter key is pressed on non-empty nested list item', () => {
+      it('should created new nested list item', async () => {
+        const { editorView } = await testEditor(
+          doc(ol(li(p('text'), ol(li(p('test{<>}')))), li(p('text')))),
+        );
+
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            ol(li(p('text'), ol(li(p('test')), li(p('{<>}')))), li(p('text'))),
+          ),
+        );
+      });
+    });
+
+    describe('when Enter key is pressed on non-empty top level list item', () => {
+      it('should created new list item at top level', async () => {
+        const { editorView } = await testEditor(
+          doc(ol(li(p('text')), li(p('test{<>}')), li(p('text')))),
+        );
+
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text')))),
+        );
+      });
+    });
+
+    // describe('when Enter key is pressed on non-empty top level list item inside panel', () => {
+    //   it('should created new list item at top level', async () => {
+    //     const { editorView } = await testEditor(
+    //       doc(panel()(ol(li(p('text')), li(p('test{<>}')), li(p('text'))))),
+    //     );
+
+    //     sendKeyToPm(editorView, 'Enter');
+
+    //     expect(editorView.state.doc).toEqualDocument(
+    //       doc(
+    //         panel()(
+    //           ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text'))),
+    //         ),
+    //       ),
+    //     );
+    //   });
+    // });
+
+    describe('when Enter key is pressed on empty top level list item', () => {
+      it('should create new paragraph outside the list', async () => {
+        const { editorView } = await testEditor(
+          doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))),
+        );
+
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))),
+        );
+      });
+    });
+
+    // describe('when Enter key is pressed on empty top level list item inside panel', () => {
+    //   it('should create new paragraph outside the list', async () => {
+    //     const { editorView } = await testEditor(
+    //       doc(panel()(ol(li(p('text')), li(p('{<>}')), li(p('text'))))),
+    //     );
+
+    //     sendKeyToPm(editorView, 'Enter');
+
+    //     expect(editorView.state.doc).toEqualDocument(
+    //       doc(panel()(ol(li(p('text'))), p('{<>}'), ol(li(p('text'))))),
+    //     );
+    //   });
+    // });
+  });
+
+  describe('Toggle - nested list scenarios - to lift items out of list', () => {
+    it('should be possible to toggle a simple nested list', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text'), ol(li(p('text{<>}')))), li(p('text')))),
+      );
+
+      toggleOrderedList(editorView);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('text'))), p('text{<>}'), ol(li(p('text')))),
+      );
+    });
+
+    it('should be possible to toggle an empty nested list item', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))),
+      );
+
+      toggleOrderedList(editorView);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))),
+      );
+    });
+
+    it('should be possible to toggle a selection across different depths in the list', async () => {
+      const { editorView } = await testEditor(
+        doc(ol(li(p('te{<}xt'), ol(li(p('text{>}')))), li(p('text')))),
+      );
+
+      toggleOrderedList(editorView);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('te{<}xt'), p('text{>}'), ol(li(p('text')))),
+      );
+    });
+
+    it('should be possible to toggle a selection across lists with different parent lists', async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(li(p('te{<}xt'), ol(li(p('text'))))),
+          ol(li(p('te{>}xt'), ol(li(p('text'))))),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('te{<}xt'), p('text'), p('te{>}xt'), ol(li(p('text')))),
+      );
+    });
+
+    it('should be create a new list for children of lifted list item', async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(
+            li(p('text'), ol(li(p('te{<>}xt'), ol(li(p('text')))))),
+            li(p('text')),
+          ),
+        ),
+      );
+
+      toggleOrderedList(editorView);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('text'))), p('te{<>}xt'), ol(li(p('text')), li(p('text')))),
+      );
+    });
+
+    it('should only change type to bullet list when toggling orderedList to bulletList', async () => {
+      const { editorView } = await testEditor(
+        doc(
+          ol(
+            li(p('text'), ol(li(p('text'), ol(li(p('te{<>}xt')))))),
+            li(p('text')),
+          ),
+        ),
+      );
+
+      toggleBulletList(editorView);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ol(
+            li(p('text'), ol(li(p('text'), ul(li(p('te{<>}xt')))))),
+            li(p('text')),
+          ),
+        ),
+      );
+    });
   });
 });

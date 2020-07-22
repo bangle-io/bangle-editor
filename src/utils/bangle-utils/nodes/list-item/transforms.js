@@ -8,7 +8,7 @@ import {
   mapSlice,
 } from 'utils/bangle-utils/utils/pm-utils';
 
-function liftListItem(state, selection, tr) {
+export function liftListItem(state, selection, tr) {
   let { $from, $to } = selection;
   const nodeType = state.schema.nodes.list_item;
   let range = $from.blockRange(
@@ -87,6 +87,7 @@ export function liftSelectionList(state, tr) {
     const start = tr.doc.resolve(tr.mapping.map(paragraph.pos));
     if (start.depth > 0) {
       let end;
+
       if (paragraph.node.textContent && paragraph.node.textContent.length > 0) {
         end = tr.doc.resolve(
           tr.mapping.map(paragraph.pos + paragraph.node.textContent.length),

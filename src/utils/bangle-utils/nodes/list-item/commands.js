@@ -24,7 +24,7 @@ import {
 import { liftListItem, liftSelectionList } from './transforms';
 
 import { GapCursorSelection } from 'utils/bangle-utils/gap-cursor';
-const maxIndentation = 6;
+const maxIndentation = 4;
 
 const _setTextSelection = (position, dir = 1) => (tr) => {
   const nextSelection = Selection.findFrom(tr.doc.resolve(position), dir, true);
@@ -194,6 +194,7 @@ export function toggleList(listType) {
       return toggleListCommand(listType)(state, dispatch, view);
     } else {
       const depth = rootListDepth(selection.$to, state.schema.nodes);
+
       let tr = liftFollowingList(
         state,
         selection.$to.pos,
