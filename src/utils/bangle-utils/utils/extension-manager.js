@@ -160,24 +160,22 @@ export class ExtensionManager {
             return cb(attrs)(view.state, view.dispatch, view);
           };
 
-          const handle = (_name, _value) => {
-            if (Array.isArray(_value)) {
-              commands.push([
-                _name,
-                (attrs) => _value.forEach((callback) => apply(callback, attrs)),
-              ]);
-            } else if (typeof _value === 'function') {
-              commands.push([_name, (attrs) => apply(_value, attrs)]);
-            }
-          };
+          const objValue = typeof value === 'object' ? value : { name: value };
 
-          if (typeof value === 'object') {
-            Object.entries(value).forEach(([commandName, commandValue]) => {
-              handle(commandName, commandValue);
-            });
-          } else {
-            handle(name, value);
-          }
+          Object.entries(objValue).forEach(([commandName, commandValue]) => {
+            if (Array.isArray(commandValue)) {
+              commands.push([
+                commandName,
+                (attrs) =>
+                  commandValue.forEach((callback) => apply(callback, attrs)),
+              ]);
+            } else if (typeof commandValue === 'function') {
+              commands.push([
+                commandName,
+                (attrs) => apply(commandValue, attrs),
+              ]);
+            }
+          });
 
           return commands;
         }, {}),

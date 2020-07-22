@@ -113,7 +113,6 @@ export class CustomNodeView {
     }
 
     const contentDOM = this.contentDOM;
-    console.log(contentDOM);
     // move the contentDOM node inside the inner reference after rendering
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);
