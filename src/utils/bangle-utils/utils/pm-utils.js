@@ -195,16 +195,6 @@ export function findCutBefore($pos) {
   return null;
 }
 
-export const isFirstChildOfParent = (state) => {
-  const { $from } = state.selection;
-  return $from.depth > 1
-    ? // (state.selection instanceof GapCursorSelection &&
-      //     $from.parentOffset === 0)
-      //     ||
-      $from.index($from.depth - 1) === 0
-    : true;
-};
-
 export function isRangeOfType(doc, $from, $to, nodeType) {
   return (
     getAncestorNodesBetween(doc, $from, $to).filter(
@@ -256,7 +246,7 @@ export function getAncestorNodesBetween(doc, $from, $to) {
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
 export function findAncestorPosition(doc, pos) {
-  const nestableBlocks = ['blockquote', 'bulletList', 'orderedList'];
+  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
 
   if (pos.depth === 1) {
     return pos;
@@ -324,7 +314,11 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 // This will return (depth - 1) for root list parent of a list.
 export const getListLiftTarget = (schema, resPos) => {
   let target = resPos.depth;
-  const { bulletList, orderedList, listItem } = schema.nodes;
+  const {
+    bullet_list: bulletList,
+    ordered_list: orderedList,
+    list_item: listItem,
+  } = schema.nodes;
   for (let i = resPos.depth; i > 0; i--) {
     const node = resPos.node(i);
     if (node.type === bulletList || node.type === orderedList) {
@@ -355,3 +349,20 @@ export function mapChildren(node, callback) {
 
   return array;
 }
+
+/**
+ *
+ * -----------
+ * State Helpers
+ * ------------
+ *
+ */
+
+export const isFirstChildOfParent = (state) => {
+  const { $from } = state.selection;
+  return $from.depth > 1
+    ? (state.selection instanceof GapCursorSelection &&
+        $from.parentOffset === 0) ||
+        $from.index($from.depth - 1) === 0
+    : true;
+};

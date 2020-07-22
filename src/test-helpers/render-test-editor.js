@@ -77,6 +77,7 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
       schema: _editor.schema,
       editorView: _editor.view,
       sel: refs ? refs['<>'] : 0,
+      refs,
       updateDoc,
     };
   };
