@@ -363,13 +363,18 @@ export class Editor extends Emitter {
   }
 
   focus(position = null) {
-    if ((this.view.focused && position === null) || position === false) {
+    if (
+      process.env.NODE_ENV === 'test' ||
+      (this.view.focused && position === null) ||
+      position === false
+    ) {
       return;
     }
 
     const { from, to } = this.resolveSelection(position);
 
     this.setSelection(from, to);
+
     setTimeout(() => this.view.focus(), 10);
   }
 

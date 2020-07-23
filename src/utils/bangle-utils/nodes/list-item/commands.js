@@ -652,11 +652,11 @@ function joinToPreviousListItem(state, dispatch) {
 function deletePreviousEmptyListItem(state, dispatch) {
   const { $from } = state.selection;
   const { list_item: listItem } = state.schema.nodes;
-
   const $cut = findCutBefore($from);
   if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
     return false;
   }
+
   const previousListItemEmpty =
     $cut.nodeBefore.childCount === 1 &&
     $cut.nodeBefore.firstChild.nodeSize <= 2;
@@ -674,27 +674,50 @@ function deletePreviousEmptyListItem(state, dispatch) {
   return false;
 }
 
-// wip
-function cutEmpty(type) {
+export function cutEmptyCommand() {
   return (state, dispatch) => {
     if (!state.selection.empty || !isInsideListItem(state)) {
       return false;
     }
+    const { list_item: listItem } = state.schema.nodes;
 
-    const match = findParentNodeOfType(type)(state.selection);
+    const parent = findParentNodeOfType(listItem)(state.selection);
 
-    const copy = type.createChecked(
-      match.node.attrs,
-      match.node.content,
-      match.node.marks,
-    );
+    if (!parent) {
+      return false;
+    }
 
-    dispatch(
-      state.tr
-        .delete(match.pos, match.pos + match.node.nodeSize)
-        .scrollIntoView()
-        .setMeta('uiEvent', 'cut'),
-    );
+    let tr = state.tr;
+    tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
+
+    dispatch(tr);
+
+    document.execCommand('cut');
+
+    return true;
+  };
+}
+
+export function copyEmptyCommand() {
+  return (state, dispatch) => {
+    if (!state.selection.empty || !isInsideListItem(state)) {
+      return false;
+    }
+    const { list_item: listItem } = state.schema.nodes;
+
+    const parent = findParentNodeOfType(listItem)(state.selection);
+
+    if (!parent) {
+      return false;
+    }
+
+    let tr = state.tr;
+    tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
+
+    dispatch(tr);
+
+    document.execCommand('copy');
+
     return true;
   };
 }

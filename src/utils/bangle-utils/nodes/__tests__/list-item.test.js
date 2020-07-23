@@ -28,6 +28,7 @@ import {
   splitListItem,
   toggleList,
   backspaceKeyCommand,
+  cutEmptyCommand,
 } from '../list-item/commands';
 import { CodeBlock } from '../code-block';
 import { GapCursorSelection } from 'utils/bangle-utils/gap-cursor';
@@ -153,6 +154,49 @@ describe('Command: enterKeyCommand', () => {
     expect(await cmd(editorView.state)).toEqualDocAndSelection(
       doc(ul(li(p('first')), li(p('{<>}')))),
     );
+  });
+});
+
+describe('Command: cutEmptyCommand', () => {
+  test('creates a new list when pressed enter at end', async () => {
+    document.execCommand = jest.fn(() => {});
+    // updateDoc();
+
+    const { editorView } = await testEditor(
+      doc(ul(li(p('magic')), li(p('fooba{<>}r')))),
+    );
+    sendKeyToPm(editorView, 'Cmd-x');
+    expect(editorView.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 10,
+        "type": "node",
+      }
+    `);
+    expect(editorView.state.doc).toEqualDocument(
+      doc(ul(li(p('magic')), li(p('foobar')))),
+    );
+    expect(document.execCommand).toBeCalledTimes(1);
+  });
+});
+
+describe('Command: copyEmptyCommand', () => {
+  test('creates a new list when pressed enter at end', async () => {
+    document.execCommand = jest.fn(() => {});
+
+    const { editorView } = await testEditor(
+      doc(ul(li(p('magic')), li(p('k{<>}j'), ul(li(p('foobar')))))),
+    );
+    sendKeyToPm(editorView, 'Cmd-c');
+    expect(editorView.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 10,
+        "type": "node",
+      }
+    `);
+    expect(editorView.state.doc).toEqualDocument(
+      doc(ul(li(p('magic')), li(p('kj'), ul(li(p('foobar')))))),
+    );
+    expect(document.execCommand).toBeCalledTimes(1);
   });
 });
 
@@ -468,7 +512,7 @@ describe('Keymap', () => {
   });
 });
 
-describe('misc', () => {
+describe('Toggling', () => {
   const toggleOrderedList = (editorView) =>
     toggleList('ordered_list')(
       editorView.state,
@@ -507,24 +551,6 @@ describe('misc', () => {
     toggleBulletList(editorView);
     expect(editorView.state.doc).toEqualDocument(doc(p('text')));
   });
-
-  // it('should make sure that it is enabled when selecting ordered list', async () => {
-  //   const { pluginState } = await testEditor(doc(ol(li(p('te{<>}xt')))));
-
-  //   expect(pluginState).toHaveProperty('orderedListActive', true);
-  //   expect(pluginState).toHaveProperty('orderedListDisabled', false);
-  //   expect(pluginState).toHaveProperty('bulletListActive', false);
-  //   expect(pluginState).toHaveProperty('bulletListDisabled', false);
-  // });
-
-  // it('should be disabled when selecting h1', async () => {
-  //   const { pluginState } = await testEditor(doc(h1('te{<>}xt')));
-
-  //   expect(pluginState).toHaveProperty('orderedListActive', false);
-  //   expect(pluginState).toHaveProperty('orderedListDisabled', true);
-  //   expect(pluginState).toHaveProperty('bulletListActive', false);
-  //   expect(pluginState).toHaveProperty('bulletListDisabled', true);
-  // });
 
   describe('toggling a list', () => {
     it("shouldn't affect text selection", async () => {

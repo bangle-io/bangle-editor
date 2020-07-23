@@ -5,6 +5,8 @@ import {
   enterKeyCommand,
   outdentList,
   moveList,
+  cutEmptyCommand,
+  copyEmptyCommand,
 } from './commands';
 
 export class ListItem extends Node {
@@ -36,7 +38,8 @@ export class ListItem extends Node {
       'Shift-Tab': outdentList(),
       'Alt-Shift-ArrowDown': moveList(type, true),
       'Alt-Shift-ArrowUp': moveList(type, false),
-      // 'Cmd-x': cutEmpty(type),
+      'Cmd-x': cutEmptyCommand(),
+      'Cmd-c': copyEmptyCommand(),
     };
   }
 }
