@@ -8,9 +8,8 @@ import {
   hasParentNodeOfType,
   findPositionOfNodeBefore,
 } from 'prosemirror-utils';
-import { compose } from 'utils/bangle-utils/utils/js-utils';
 import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
-
+import { compose } from '../../../../../src/utils/bangle-utils/utils/js-utils';
 import {
   hasVisibleContent,
   isNodeEmpty,
@@ -21,9 +20,9 @@ import {
   isEmptySelectionAtStart,
   sanitiseSelectionMarksForWrapping,
 } from '../../utils/pm-utils';
-import { liftListItem, liftSelectionList } from './transforms';
+import { GapCursorSelection } from '../../gap-cursor';
+import { liftSelectionList, liftFollowingList } from './transforms';
 
-import { GapCursorSelection } from 'utils/bangle-utils/gap-cursor';
 const maxIndentation = 4;
 
 const _setTextSelection = (position, dir = 1) => (tr) => {
@@ -136,28 +135,6 @@ const rootListDepth = (pos, nodes) => {
   return depth;
 };
 
-// Function will lift list item following selection to level-1.
-export function liftFollowingList(state, from, to, rootListDepth, tr) {
-  const { list_item: listItem } = state.schema.nodes;
-  let lifted = false;
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (!lifted && node.type === listItem && pos > from) {
-      lifted = true;
-      let listDepth = rootListDepth + 3;
-      while (listDepth > rootListDepth + 2) {
-        const start = tr.doc.resolve(tr.mapping.map(pos));
-        listDepth = start.depth;
-        const end = tr.doc.resolve(
-          tr.mapping.map(pos + node.textContent.length),
-        );
-        const sel = new TextSelection(start, end);
-        tr = liftListItem(state, sel, tr);
-      }
-    }
-  });
-  return tr;
-}
-
 function canToJoinToPreviousListItem(state) {
   const { $from } = state.selection;
   const {
@@ -210,7 +187,7 @@ export function toggleList(listType) {
   };
 }
 
-export function toggleListCommand(listType) {
+function toggleListCommand(listType) {
   return function (state, dispatch, view) {
     if (dispatch) {
       dispatch(
@@ -258,14 +235,14 @@ export function toggleListCommand(listType) {
   };
 }
 
-export function wrapInList(nodeType) {
+function wrapInList(nodeType) {
   return baseCommand.autoJoin(
     pmListCommands.wrapInList(nodeType),
     (before, after) => before.type === after.type && before.type === nodeType,
   );
 }
 
-export function liftListItems() {
+function liftListItems() {
   return function (state, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
@@ -306,7 +283,7 @@ export function liftListItems() {
  * a line. This isn't obvious by looking at the editor and it's likely not what the
  * user intended - so we need to adjust the selection a bit in scenarios like that.
  */
-export function adjustSelectionInList(doc, selection) {
+function adjustSelectionInList(doc, selection) {
   let { $from, $to } = selection;
 
   const isSameLine = $from.pos === $to.pos;
@@ -490,7 +467,7 @@ export function enterKeyCommand(state, dispatch) {
  * Implementation taken from PM and mk-2
  * Splits the list items, specific implementation take from PM
  */
-export function splitListItem(itemType) {
+function splitListItem(itemType) {
   return function (state, dispatch) {
     const ref = state.selection;
     const $from = ref.$from;

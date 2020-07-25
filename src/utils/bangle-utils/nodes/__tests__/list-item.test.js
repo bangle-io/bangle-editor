@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import 'test-helpers/jest-helpers';
+import '../../../../../src/test-helpers/jest-helpers';
 
 import {
   doc,
@@ -14,26 +14,30 @@ import {
   h1,
   codeBlock,
   underline,
-} from 'test-helpers/test-builders';
-import { renderTestEditor } from 'test-helpers/render-test-editor';
-import { applyCommand } from 'test-helpers/commands-helpers';
+} from '../../../../../src/test-helpers/test-builders';
+import { renderTestEditor } from '../../../../../src/test-helpers/render-test-editor';
+import { applyCommand } from '../../../../../src/test-helpers/commands-helpers';
 
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';
-import { sendKeyToPm, insertText } from 'test-helpers/keyboard';
+import {
+  sendKeyToPm,
+  typeText,
+} from '../../../../../src/test-helpers/keyboard';
+import { GapCursorSelection } from '../../../../../src/utils/bangle-utils/gap-cursor';
+import { Underline } from '../../../../../src/utils/bangle-utils/marks';
+
+import { CodeBlock } from '../code-block';
+import { Heading } from '../heading';
 import { HardBreak } from '../hard-break';
+
 import {
   enterKeyCommand,
   splitListItem,
   toggleList,
   backspaceKeyCommand,
-  cutEmptyCommand,
 } from '../list-item/commands';
-import { CodeBlock } from '../code-block';
-import { GapCursorSelection } from 'utils/bangle-utils/gap-cursor';
-import { Heading } from '../heading';
-import { Underline } from 'utils/bangle-utils/marks';
 
 const extensions = [
   new BulletList(),
@@ -44,21 +48,6 @@ const extensions = [
   new Underline(),
 ];
 const testEditor = renderTestEditor({ extensions });
-
-describe('Command: split list ', () => {
-  test('splits list', async () => {
-    const { editorState, schema } = await testEditor(
-      doc(ul(li(p('foo{<>}bar')))),
-    );
-
-    const split = splitListItem(schema.nodes.list_item);
-    const cmd = applyCommand(split);
-
-    expect(await cmd(editorState)).toEqualDocAndSelection(
-      doc(ul(li(p('foo')), li(p('bar')))),
-    );
-  });
-});
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;
@@ -204,7 +193,7 @@ describe('Markdown shortcuts Input rules', () => {
   test('-<Space> should create list', async () => {
     const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
 
-    insertText(editorView, '- kj');
+    typeText(editorView, '- kj');
     expect(editorView.state).toEqualDocAndSelection(
       doc(p('first'), ul(li(p('kj{<>}')))),
     );
@@ -212,15 +201,34 @@ describe('Markdown shortcuts Input rules', () => {
   test('*<Space> should create list', async () => {
     const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
 
-    insertText(editorView, '* kj');
+    typeText(editorView, '* kj');
     expect(editorView.state).toEqualDocAndSelection(
       doc(p('first'), ul(li(p('kj{<>}')))),
+    );
+  });
+  test.skip('*<Space> merge list if a list is already at bottom', async () => {
+    const { editorView } = await testEditor(
+      doc(p('{<>}'), ul(li(p('second')))),
+    );
+
+    typeText(editorView, '* k');
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(ul(li(p('k')), li(p('second')))),
+    );
+  });
+
+  test('*<Space> merge list if near a list', async () => {
+    const { editorView } = await testEditor(doc(ul(li(p('first'))), p('{<>}')));
+
+    typeText(editorView, '* kj');
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(ul(li(p('first')), li(p('kj')))),
     );
   });
 
   it.skip('should convert to a bullet list item after shift+enter ', async () => {
     const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
-    insertText(editorView, '* ', sel);
+    typeText(editorView, '* ', sel);
 
     expect(editorView.state.doc).toEqualDocument(doc(p('test'), ul(li(p()))));
   });
@@ -236,14 +244,14 @@ describe('Markdown shortcuts Input rules', () => {
     const testEditor = renderTestEditor({ extensions });
 
     const { editorView, sel } = await testEditor(doc(codeBlock()('{<>}')));
-    insertText(editorView, '* ', sel);
+    typeText(editorView, '* ', sel);
     expect(editorView.state.doc).toEqualDocument(doc(codeBlock()('* ')));
   });
 
   test.skip('1.<space> should create ordered list', async () => {
     const { editorView } = await testEditor(doc(p('first{<>}')));
     sendKeyToPm(editorView, 'Enter');
-    insertText(editorView, '1. k');
+    typeText(editorView, '1. k');
 
     expect(editorView.state).toEqualDocAndSelection(
       doc(p('first'), ol(li(p('k{<>}')))),
@@ -252,13 +260,13 @@ describe('Markdown shortcuts Input rules', () => {
   it('should not convert "2. " to a ordered list item', async () => {
     const { editorView, sel } = await testEditor(doc(p('{<>}')));
 
-    insertText(editorView, '2. ', sel);
+    typeText(editorView, '2. ', sel);
     expect(editorView.state.doc).toEqualDocument(doc(p('2. ')));
   });
 
   it('should not convert "2. " after shift+enter to a ordered list item', async () => {
     const { editorView, sel } = await testEditor(doc(p('test', br(), '{<>}')));
-    insertText(editorView, '2. ', sel);
+    typeText(editorView, '2. ', sel);
     expect(editorView.state.doc).toEqualDocument(doc(p('test', br(), '2. ')));
   });
 });
@@ -267,7 +275,7 @@ describe('Keymap', () => {
   test('Typing works', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
 
-    insertText(editor.view, 'hello');
+    typeText(editor.view, 'hello');
 
     expect(editor.state).toEqualDocAndSelection(
       doc(ul(li(p('foohello{<>}bar')))),

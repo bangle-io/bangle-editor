@@ -6,9 +6,9 @@ import {
   getListLiftTarget,
   mapChildren,
   mapSlice,
-} from 'utils/bangle-utils/utils/pm-utils';
+} from '../../../../../src/utils/bangle-utils/utils/pm-utils';
 
-export function liftListItem(state, selection, tr) {
+function liftListItem(state, selection, tr) {
   let { $from, $to } = selection;
   const nodeType = state.schema.nodes.list_item;
   let range = $from.blockRange(

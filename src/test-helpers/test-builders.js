@@ -198,8 +198,8 @@ export function markFactory(type, attrs = {}, allowDupes = false) {
   };
 }
 export const fragment = (...content) => flatten(content);
-export const slice = (...content) =>
-  new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+// export const slice = (...content) =>
+//   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
 /**
  * Builds a 'clean' version of the nodes, without Refs or RefTrackers

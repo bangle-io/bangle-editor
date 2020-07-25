@@ -1,16 +1,15 @@
-'use strict';
 import React from 'react';
 import { render } from '@testing-library/react';
+import { TextSelection, NodeSelection } from 'prosemirror-state';
 import {
   EditorContextProvider,
   EditorContext,
-} from 'utils/bangle-utils/helper-react/editor-context';
-import { ReactEditor } from 'utils/bangle-utils/helper-react/react-editor';
-import { TextSelection, NodeSelection } from 'prosemirror-state';
+} from '../../src/utils/bangle-utils/helper-react/editor-context';
+import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
 import {
   GapCursorSelection,
   GapCursorSide,
-} from 'utils/bangle-utils/gap-cursor';
+} from '../../src/utils/bangle-utils/gap-cursor';
 
 export function renderTestEditor(options = {}, testId = 'test-editor') {
   return async (testDoc) => {

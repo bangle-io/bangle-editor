@@ -1,5 +1,14 @@
-import { doc, ul, li, p, ol, br, codeBlock } from 'test-helpers/test-builders';
-import { renderTestEditor } from 'test-helpers/render-test-editor';
+import {
+  doc,
+  ul,
+  li,
+  p,
+  ol,
+  br,
+  codeBlock,
+} from '../../../../../src/test-helpers/test-builders';
+import { renderTestEditor } from '../../../../../src/test-helpers/render-test-editor';
+
 import { BulletList, ListItem, OrderedList, HardBreak } from '../../nodes';
 import { isFirstChildOfParent, findCutBefore } from '../pm-utils';
 const extensions = [

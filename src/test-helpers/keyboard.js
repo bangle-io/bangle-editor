@@ -1,6 +1,4 @@
-'use strict';
-
-import browser from 'utils/bangle-utils/utils/browser';
+import browser from '../../src/utils/bangle-utils/utils/browser';
 
 export function sendKeyToPm(editorView, keys) {
   const keyCodes = {
@@ -88,19 +86,39 @@ export function sendKeyToPm(editorView, keys) {
   editorView.dispatchEvent(event);
 }
 
-export function insertText(view, text, from, _to) {
-  let pos = typeof from === 'number' ? from : view.state.selection.from;
+export async function typeText(view, text) {
   text.split('').forEach((character, index) => {
     if (
       !view.someProp('handleTextInput', (f) =>
-        f(view, pos + index, pos + index, character),
+        f(
+          view,
+          view.state.selection.from,
+          view.state.selection.from,
+          character,
+        ),
       )
     ) {
+      // console.log(index, character);
       view.dispatch(
-        view.state.tr.insertText(character, pos + index, pos + index),
+        view.state.tr.insertText(character, view.state.selection.from),
       );
     }
   });
+
+  // const { tr } = view.state;
+  // for (const character of [...text]) {
+  //   let _index = index;
+  //   if (
+  //     !view.someProp('handleTextInput', (f) =>
+  //       f(view, pos + _index, pos + _index, character),
+  //     )
+  //   ) {
+  //     tr.insertText(character, pos + _index);
+  //   }
+  //   index++;
+  // }
+  // view.dispatch(tr);
+  // await sleep();
 }
 
 export function sleep(t = 20) {

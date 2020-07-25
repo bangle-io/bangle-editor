@@ -5,7 +5,7 @@ import './style/tailwind.css';
 import './style/style.css';
 
 import React from 'react';
-import { EditorContextProvider } from 'utils/bangle-utils/helper-react/editor-context';
+import { EditorContextProvider } from '../../src/utils/bangle-utils/helper-react/editor-context';
 
 import { Editor } from './Editor';
 import { Header } from './components/Header';

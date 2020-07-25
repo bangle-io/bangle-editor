@@ -366,3 +366,49 @@ export const isFirstChildOfParent = (state) => {
         $from.index($from.depth - 1) === 0
     : true;
 };
+
+export function mapSlice(
+  slice,
+  callback /*: (node, parent, index) => Node | Node[] | Fragment | null,*/,
+) {
+  const fragment = mapFragment(slice.content, callback);
+  return new Slice(fragment, slice.openStart, slice.openEnd);
+}
+
+export function mapFragment(
+  content,
+  callback,
+  parent,
+
+  /*: (
+    node: Node,
+    parent: Node | null,
+    index: number,
+  ) => Node | Node[] | Fragment | null,*/
+) {
+  const children = [];
+  for (let i = 0, size = content.childCount; i < size; i++) {
+    const node = content.child(i);
+    const transformed = node.isLeaf
+      ? callback(node, parent, i)
+      : callback(
+          node.copy(mapFragment(node.content, callback, node)),
+          parent,
+          i,
+        );
+    if (transformed) {
+      if (transformed instanceof Fragment) {
+        children.push(...getFragmentBackingArray(transformed));
+      } else if (Array.isArray(transformed)) {
+        children.push(...transformed);
+      } else {
+        children.push(transformed);
+      }
+    }
+  }
+  return Fragment.fromArray(children);
+}
+
+export function getFragmentBackingArray(fragment) {
+  return fragment.content;
+}
