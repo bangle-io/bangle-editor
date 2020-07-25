@@ -7,6 +7,9 @@ import {
   safeInsert,
   hasParentNodeOfType,
   findPositionOfNodeBefore,
+  removeNodeBefore,
+  findParentNode,
+  replaceSelectedNode,
 } from 'prosemirror-utils';
 import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
 import { compose } from '../../../../../src/utils/bangle-utils/utils/js-utils';
@@ -19,6 +22,7 @@ import {
   isRangeOfType,
   isEmptySelectionAtStart,
   sanitiseSelectionMarksForWrapping,
+  mapChildren,
 } from '../../utils/pm-utils';
 import { GapCursorSelection } from '../../gap-cursor';
 import { liftSelectionList, liftFollowingList } from './transforms';
@@ -700,33 +704,56 @@ export function copyEmptyCommand() {
 }
 
 // WIP
-export function moveList(type, down = true) {
+export function moveList(type, down = false) {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(type)(state.selection);
-    if (!match) {
-      return dispatch(state.tr);
+    const {
+      bullet_list: bulletList,
+      ordered_list: orderedList,
+    } = state.schema.nodes;
+
+    // const resolvedPos = state.doc.resolve(state.tr.selection.$from.pos);
+    if (!isInsideListItem(state)) {
+      return false;
     }
-    const copy = type.createChecked(
-      match.node.attrs,
-      match.node.content,
-      match.node.marks,
+
+    const grandParent = findParentNode((node) =>
+      [bulletList, orderedList].includes(node.type),
+    )(state.selection);
+    const listItem = findParentNodeOfType(type)(state.selection);
+
+    if (
+      !grandParent.node ||
+      grandParent.node.childCount === 1 ||
+      !listItem.node
+    ) {
+      return false;
+    }
+
+    const arr = mapChildren(grandParent.node, (node) => node);
+
+    let index = arr.indexOf(listItem.node);
+    let swapWith = down ? index + 1 : index - 1;
+    if (swapWith >= arr.length || swapWith < 0) {
+      return false;
+    }
+    const swapWithNodeSize = arr[swapWith].nodeSize;
+
+    [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
+
+    const rearrangedFragment = Fragment.from(arr);
+    let tr = state.tr;
+    tr = tr.setSelection(NodeSelection.create(tr.doc, grandParent.pos));
+    const $from = state.selection.$from;
+    const newGrandParent = grandParent.node.copy(rearrangedFragment);
+    tr = replaceSelectedNode(newGrandParent)(tr);
+    tr = tr.setSelection(
+      Selection.near(
+        tr.doc.resolve(
+          down ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
+        ),
+      ),
     );
-
-    const newPos = down ? match.pos + match.node.nodeSize : match.pos;
-    let tr = safeInsert(copy, newPos)(state.tr);
-    const start = tr.selection.$from.pos - 1;
-
-    console.log(match.pos);
-    // let newTr = setTextSelection(Math.max(match.pos - 1, 0), 1)(tr);
-    let newTr = _setTextSelection(3)(tr);
-    if (newTr === tr) {
-      console.log('samse', tr.selection.toJSON());
-    }
-
-    // const start = tr.doc.resolve(tr.mapping.map(match.pos));
-    // const end = tr.doc.resolve(tr.mapping.map(newPos));
-    // const sel = new TextSelection(tr.doc.resolve(1), tr.doc.resolve(1));
-    // tr.setSelection(sel);
-    return dispatch(tr);
+    dispatch(tr);
+    return true;
   };
 }

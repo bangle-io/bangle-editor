@@ -271,7 +271,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 });
 
-describe('Keymap', () => {
+describe.only('Keymap', () => {
   test('Typing works', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
 
@@ -516,6 +516,132 @@ describe('Keymap', () => {
 
     it('should outdent the list', async () => {
       await check(doc(p('One{<>}')), doc(ol(li(p('One')))));
+    });
+  });
+
+  describe('Press Alt-Up / Down to move list', () => {
+    const check = async (beforeDoc, afterDoc) => {
+      const { editorView } = await testEditor(beforeDoc);
+      sendKeyToPm(editorView, 'Alt-Up');
+      expect(editorView.state).toEqualDocAndSelection(afterDoc);
+      sendKeyToPm(editorView, 'Alt-Down');
+      expect(editorView.state).toEqualDocAndSelection(beforeDoc);
+    };
+
+    it('doesnt work with one item', async () => {
+      await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
+    });
+
+    it('if item above exists and selection is at end', async () => {
+      await check(
+        doc(ul(li(p('first')), li(p('second{<>}')))),
+        doc(ul(li(p('second{<>}')), li(p('first')))),
+      );
+    });
+
+    it('if item above exists and selection is in between', async () => {
+      await check(
+        doc(ul(li(p('first')), li(p('sec{<>}ond')))),
+        doc(ul(li(p('sec{<>}ond')), li(p('first')))),
+      );
+    });
+
+    it('if item above exists and selection is at start', async () => {
+      await check(
+        doc(ul(li(p('first')), li(p('{<>}second')))),
+        doc(ul(li(p('{<>}second')), li(p('first')))),
+      );
+    });
+
+    it('if  first item is very big', async () => {
+      await check(
+        doc(ul(li(p('first is really big')), li(p('{<>}second')))),
+        doc(ul(li(p('{<>}second')), li(p('first is really big')))),
+      );
+    });
+    it('if second item is very big', async () => {
+      await check(
+        doc(ul(li(p('f')), li(p('{<>}second is really big')))),
+        doc(ul(li(p('{<>}second is really big')), li(p('f')))),
+      );
+    });
+    it('if second item is empty', async () => {
+      await check(
+        doc(ul(li(p('first')), li(p('{<>}')))),
+        doc(ul(li(p('{<>}')), li(p('first')))),
+      );
+    });
+    it('if first item is empty', async () => {
+      await check(
+        doc(ul(li(p('')), li(p('sec{<>}ond')))),
+        doc(ul(li(p('sec{<>}ond')), li(p('')))),
+      );
+    });
+  });
+
+  describe('Press Alt-Down to move list', () => {
+    const check = async (beforeDoc, afterDoc) => {
+      const { editorView } = await testEditor(beforeDoc);
+      sendKeyToPm(editorView, 'Alt-Down');
+      expect(editorView.state).toEqualDocAndSelection(afterDoc);
+    };
+
+    it('doesnt work with one item', async () => {
+      await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
+    });
+
+    it('doesnt work if running on last item', async () => {
+      await check(
+        doc(ul(li(p('first')), li(p('second{<>}')))),
+        doc(ul(li(p('first')), li(p('second{<>}')))),
+      );
+    });
+
+    it('if item above exists and selection is in between', async () => {
+      await check(
+        doc(ul(li(p('sec{<>}ond')), li(p('first')))),
+        doc(ul(li(p('first')), li(p('sec{<>}ond')))),
+      );
+    });
+
+    it('if item below exists and selection is at end', async () => {
+      await check(
+        doc(ul(li(p('second{<>}')), li(p('first')))),
+        doc(ul(li(p('first')), li(p('second{<>}')))),
+      );
+    });
+
+    it('if item below exists and selection is in between', async () => {
+      await check(
+        doc(ul(li(p('sec{<>}ond')), li(p('first')))),
+        doc(ul(li(p('first')), li(p('sec{<>}ond')))),
+      );
+    });
+
+    it('if item below exists and selection is at start', async () => {
+      await check(
+        doc(ul(li(p('{<>}second')), li(p('first')))),
+        doc(ul(li(p('first')), li(p('{<>}second')))),
+      );
+    });
+
+    it('if  last item is very big', async () => {
+      await check(
+        doc(ul(li(p('{<>}second')), li(p('first is really big')))),
+        doc(ul(li(p('first is really big')), li(p('{<>}second')))),
+      );
+    });
+    it('if first item is very big', async () => {
+      await check(
+        doc(ul(li(p('{<>}second is really big')), li(p('f')))),
+        doc(ul(li(p('f')), li(p('{<>}second is really big')))),
+      );
+    });
+    it('if first item is empty', async () => {
+      await check(
+        doc(ul(li(p('{<>}')), li(p('first')))),
+        doc(ul(li(p('first')), li(p('{<>}')))),
+      );
     });
   });
 });
