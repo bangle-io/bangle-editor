@@ -1,4 +1,7 @@
 import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
+import { GapCursorSelection } from '../gap-cursor';
+import { Node, Fragment, Slice } from 'prosemirror-model';
+
 /**
  * whether the mark of type is active
  * @returns {Boolean}
@@ -156,7 +159,7 @@ export function isEmptyParagraph(node) {
  * from atlaskit
  */
 export function filter(predicates, cmd) {
-  return function(state, dispatch, view) {
+  return function (state, dispatch, view) {
     if (!Array.isArray(predicates)) {
       predicates = [predicates];
     }
@@ -192,12 +195,220 @@ export function findCutBefore($pos) {
   return null;
 }
 
+export function isRangeOfType(doc, $from, $to, nodeType) {
+  return (
+    getAncestorNodesBetween(doc, $from, $to).filter(
+      (node) => node.type !== nodeType,
+    ).length === 0
+  );
+}
+
+/**
+ * Returns all top-level ancestor-nodes between $from and $to
+ */
+export function getAncestorNodesBetween(doc, $from, $to) {
+  const nodes = [];
+  const maxDepth = findAncestorPosition(doc, $from).depth;
+  let current = doc.resolve($from.start(maxDepth));
+
+  while (current.pos <= $to.start($to.depth)) {
+    const depth = Math.min(current.depth, maxDepth);
+    const node = current.node(depth);
+
+    if (node) {
+      nodes.push(node);
+    }
+
+    if (depth === 0) {
+      break;
+    }
+
+    let next = doc.resolve(current.after(depth));
+    if (next.start(depth) >= doc.nodeSize - 2) {
+      break;
+    }
+
+    if (next.depth !== current.depth) {
+      next = doc.resolve(next.pos + 2);
+    }
+
+    if (next.depth) {
+      current = doc.resolve(next.start(next.depth));
+    } else {
+      current = doc.resolve(next.end(next.depth));
+    }
+  }
+
+  return nodes;
+}
+
+/**
+ * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
+ */
+export function findAncestorPosition(doc, pos) {
+  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
+
+  if (pos.depth === 1) {
+    return pos;
+  }
+
+  let node = pos.node(pos.depth);
+  let newPos = pos;
+  while (pos.depth >= 1) {
+    pos = doc.resolve(pos.before(pos.depth));
+    node = pos.node(pos.depth);
+
+    if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
+      newPos = pos;
+    }
+  }
+
+  return newPos;
+}
+
+export const isEmptySelectionAtStart = (state) => {
+  const { empty, $from } = state.selection;
+  return (
+    empty &&
+    ($from.parentOffset === 0 || state.selection instanceof GapCursorSelection)
+  );
+};
+
+/**
+ * Removes marks from nodes in the current selection that are not supported
+ */
+export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
+  let tr;
+  const { from, to } = state.tr.selection;
+
+  state.doc.nodesBetween(
+    from,
+    to,
+    (node, pos, parent) => {
+      // If iterate over a node thats out of our defined range
+      // We skip here but continue to iterate over its children.
+      if (node.isText || pos < from || pos > to) {
+        return true;
+      }
+      node.marks.forEach((mark) => {
+        if (
+          !parent.type.allowsMarkType(mark.type) ||
+          (newParentType && !newParentType.allowsMarkType(mark.type))
+        ) {
+          const filteredMarks = node.marks.filter((m) => m.type !== mark.type);
+          const position = pos > 0 ? pos - 1 : 0;
+          tr = (tr || state.tr).setNodeMarkup(
+            position,
+            undefined,
+            node.attrs,
+            filteredMarks,
+          );
+        }
+      });
+    },
+    from,
+  );
+  return tr;
+};
+
+// This will return (depth - 1) for root list parent of a list.
+export const getListLiftTarget = (schema, resPos) => {
+  let target = resPos.depth;
+  const {
+    bullet_list: bulletList,
+    ordered_list: orderedList,
+    list_item: listItem,
+  } = schema.nodes;
+  for (let i = resPos.depth; i > 0; i--) {
+    const node = resPos.node(i);
+    if (node.type === bulletList || node.type === orderedList) {
+      target = i;
+    }
+    if (
+      node.type !== bulletList &&
+      node.type !== orderedList &&
+      node.type !== listItem
+    ) {
+      break;
+    }
+  }
+  return target - 1;
+};
+
+export function mapChildren(node, callback) {
+  const array = [];
+  for (let i = 0; i < node.childCount; i++) {
+    array.push(
+      callback(
+        node.child(i),
+        i,
+        node instanceof Fragment ? node : node.content,
+      ),
+    );
+  }
+
+  return array;
+}
+
+/**
+ *
+ * -----------
+ * State Helpers
+ * ------------
+ *
+ */
+
 export const isFirstChildOfParent = (state) => {
   const { $from } = state.selection;
   return $from.depth > 1
-    ? // (state.selection instanceof GapCursorSelection &&
-      //     $from.parentOffset === 0)
-      //     ||
-      $from.index($from.depth - 1) === 0
+    ? (state.selection instanceof GapCursorSelection &&
+        $from.parentOffset === 0) ||
+        $from.index($from.depth - 1) === 0
     : true;
 };
+
+export function mapSlice(
+  slice,
+  callback /*: (node, parent, index) => Node | Node[] | Fragment | null,*/,
+) {
+  const fragment = mapFragment(slice.content, callback);
+  return new Slice(fragment, slice.openStart, slice.openEnd);
+}
+
+export function mapFragment(
+  content,
+  callback,
+  parent,
+
+  /*: (
+    node: Node,
+    parent: Node | null,
+    index: number,
+  ) => Node | Node[] | Fragment | null,*/
+) {
+  const children = [];
+  for (let i = 0, size = content.childCount; i < size; i++) {
+    const node = content.child(i);
+    const transformed = node.isLeaf
+      ? callback(node, parent, i)
+      : callback(
+          node.copy(mapFragment(node.content, callback, node)),
+          parent,
+          i,
+        );
+    if (transformed) {
+      if (transformed instanceof Fragment) {
+        children.push(...getFragmentBackingArray(transformed));
+      } else if (Array.isArray(transformed)) {
+        children.push(...transformed);
+      } else {
+        children.push(transformed);
+      }
+    }
+  }
+  return Fragment.fromArray(children);
+}
+
+export function getFragmentBackingArray(fragment) {
+  return fragment.content;
+}

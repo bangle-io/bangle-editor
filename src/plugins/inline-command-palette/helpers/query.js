@@ -1,4 +1,4 @@
-import { isMarkActive } from 'utils/bangle-utils/utils/pm-utils';
+import { isMarkActive } from '../../../../src/utils/bangle-utils/utils/pm-utils';
 
 export function findQueryMark(mark, doc, from, to) {
   let queryMark = { start: -1, end: -1 };

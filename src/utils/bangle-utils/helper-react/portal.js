@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { objUid } from '../utils/object-uid';
-import { EventDispatcher } from '../utils/event-dispatcher';
 import { SelectiveUpdate } from './selective-update';
+import { Emitter } from '../utils/emitter';
 
 const LOG = false;
 
@@ -10,7 +10,7 @@ function log(...args) {
   if (LOG) console.log(...args);
 }
 
-export class PortalProviderAPI extends EventDispatcher {
+export class PortalProviderAPI extends Emitter {
   portals = new Map();
 
   getRenderKey(container) {
@@ -19,7 +19,7 @@ export class PortalProviderAPI extends EventDispatcher {
 
   render(Element, props, container) {
     const uid = objUid.get(container);
-    // If the element already exists communicate with SelectiveUpdateComponent
+    // If the element already exists communicate
     // to selectively update it, bypassing the entire array re-render in PortalRenderer
     if (this.portals.has(container)) {
       log('PortalProviderAPI: updating existing', uid);
@@ -54,6 +54,12 @@ export class PortalProviderAPI extends EventDispatcher {
     log('removing', this.getRenderKey(container));
     this.portals.delete(container);
     this.emit('#root_update');
+  }
+
+  destroy() {
+    log('destroying portal');
+    super.destroy();
+    this.portals = null;
   }
 }
 

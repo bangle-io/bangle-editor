@@ -1,6 +1,11 @@
 // .eslintrc.js
 module.exports = {
-  extends: ['react-app'],
+  extends: [
+    'react-app',
+
+    /*'plugin:import/errors', 'plugin:import/warnings'*/
+  ],
+
   env: {
     jest: true,
   },
@@ -9,5 +14,13 @@ module.exports = {
     browser: true,
     context: true,
     jestPuppeteer: true,
+    Node: 'off',
+    Selection: 'off',
+    Plugin: 'off',
   },
+  ignorePatterns: ['/archive', '.cache', '/build', '/dist'],
+  rules: {
+    // 'import/no-unused-modules': [1, { unusedExports: true }],
+  },
+  settings: {},
 };

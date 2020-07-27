@@ -4,6 +4,12 @@ export const EditorContext = React.createContext(null);
 export const TransactionContext = React.createContext(null);
 export const EditorOnReadyContext = React.createContext(null);
 
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log(...args);
+}
+
 export class EditorContextProvider extends React.Component {
   state = {
     editorValue: {},
@@ -19,7 +25,7 @@ export class EditorContextProvider extends React.Component {
       this.state.editorValue.editor &&
       this.state.editorValue.editor !== editor
     ) {
-      console.log('Setting a new editor');
+      log('Setting a new editor');
       this.state.editorValue.editor.off('update', this.handleEditorUpdate);
     }
 

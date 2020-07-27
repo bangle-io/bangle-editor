@@ -1,8 +1,9 @@
 import React from 'react';
 import format from 'date-fns/format';
-import { BaseButton, StackButton } from './Button';
-import { EditorContext } from 'utils/bangle-utils/helper-react/editor-context';
+import { EditorContext } from '../../../src/utils/bangle-utils/helper-react/editor-context';
+
 import { localManager } from '../store/local';
+import { BaseButton, StackButton } from './Button';
 
 export class Aside extends React.PureComponent {
   static contextType = EditorContext;

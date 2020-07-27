@@ -33,7 +33,7 @@ export class Emitter {
       const callbacks = this._callbacks ? this._callbacks[event] : null;
       if (callbacks) {
         if (fn) {
-          this._callbacks[event] = callbacks.filter((cb) => cb !== fn); // remove specific handler
+          this._callbacks[event] = callbacks.filter((cb) => cb !== fn);
         } else {
           this._callbacks[event] = []; // remove all handlers
         }
@@ -41,5 +41,9 @@ export class Emitter {
     }
 
     return this;
+  }
+
+  destroy() {
+    this._callbacks = {};
   }
 }

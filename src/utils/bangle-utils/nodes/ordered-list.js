@@ -1,6 +1,7 @@
-import { wrappingInputRule, toggleList } from 'tiptap-commands';
+import { wrappingInputRule } from 'tiptap-commands';
 
 import { Node } from './node';
+import { toggleList } from './list-item/commands';
 
 export class OrderedList extends Node {
   get name() {
@@ -32,12 +33,12 @@ export class OrderedList extends Node {
   }
 
   commands({ type, schema }) {
-    return () => toggleList(type, schema.nodes.list_item);
+    return () => toggleList(this.name);
   }
 
   keys({ type, schema }) {
     return {
-      'Shift-Ctrl-9': toggleList(type, schema.nodes.list_item),
+      'Shift-Ctrl-9': toggleList(this.name),
     };
   }
 
