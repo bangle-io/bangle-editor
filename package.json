@@ -11,6 +11,7 @@
   "dependencies": {
     "bulma": "^0.8.0",
     "classnames": "^2.2.6",
+    "clipboard-polyfill": "^3.0.0",
     "core-js": "^3.6.4",
     "date-fns": "^2.10.0",
     "emojis-keywords": "^2.0.0",
@@ -42,7 +43,9 @@
     "build": "parcel build public/index.html --out-dir build",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
-    "test": "NODE_ENV=development parcel public/index.html --port 4444 --log-level 3",
+    "unit-tests": "jest",
+    "integration-tests": "jest --config=jest-integration.config.js",
+    "test": "npm run unit-tests && npm run integration-tests",
     "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
     "eject": "react-scripts eject"
   },
@@ -60,7 +63,17 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@testing-library/react": "^10.4.7",
+    "@typescript-eslint/eslint-plugin": "2.x",
+    "@typescript-eslint/parser": "2.x",
+    "babel-eslint": "10.x",
     "babel-jest": "^26.1.0",
+    "eslint": "6.x",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "4.x",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "6.x",
+    "eslint-plugin-react": "7.x",
+    "eslint-plugin-react-hooks": "2.x",
     "jest": "^26.1.0",
     "jest-circus": "^26.1.0",
     "jest-diff": "^26.1.0",
@@ -74,12 +87,5 @@
     "puppeteer": "^5.1.0",
     "react-test-renderer": "^16.13.1",
     "surge": "^0.21.3"
-  },
-  "jest": {
-    "preset": "jest-puppeteer",
-    "testRunner": "jest-circus/runner",
-    "modulePaths": [
-      "<rootDir>/src"
-    ]
   }
 }

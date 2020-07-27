@@ -1,5 +1,6 @@
 import { Node } from 'prosemirror-model';
 import prettier from 'prettier';
+import { NodeSelection } from 'prosemirror-state';
 
 export const jestExpect = {
   toEqualDocAndSelection,
@@ -44,7 +45,7 @@ function toEqualDocAndSelection(actual, expected) {
       '<': (position, selection) => position === selection.$from.pos,
       '>': (position, selection) => position === selection.$to.pos,
       '<>': (position, selection) =>
-        position === selection.$from.pos && position == selection.$to.pos,
+        position === selection.$from.pos && position === selection.$to.pos,
       '<node>': (position, selection) =>
         selection instanceof NodeSelection && position === selection.$from.pos,
       // The | denotes the gap cursor's side, based on the node on the side of the |.

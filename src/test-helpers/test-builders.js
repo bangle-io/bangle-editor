@@ -198,8 +198,8 @@ export function markFactory(type, attrs = {}, allowDupes = false) {
   };
 }
 export const fragment = (...content) => flatten(content);
-export const slice = (...content) =>
-  new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+// export const slice = (...content) =>
+//   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
 /**
  * Builds a 'clean' version of the nodes, without Refs or RefTrackers
@@ -239,7 +239,8 @@ export const li = nodeFactory({ name: 'list_item' }, {});
 export const ul = nodeFactory({ name: 'bullet_list' }, {});
 export const ol = nodeFactory({ name: 'ordered_list' }, {});
 export const br = nodeFactory({ name: 'hard_break' }, {});
-
+export const codeBlock = (attrs = {}) =>
+  nodeFactory({ name: 'code_block' }, attrs);
 //
 // Marks
 //

@@ -2,9 +2,8 @@
 
 import React from 'react';
 
-import { EMOJI_NODE_NAME, validEmojis } from './constants';
-import { Node } from 'utils/bangle-utils/nodes/index';
-import { emojiLookup } from './constants';
+import { Node } from '../../../src/utils/bangle-utils/nodes/index';
+import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 
 function insertEmoji(schema, name) {
   let emojiType = schema.nodes[EMOJI_NODE_NAME];

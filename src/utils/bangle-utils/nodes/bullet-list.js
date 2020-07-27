@@ -1,6 +1,7 @@
-import { wrappingInputRule, toggleList } from 'tiptap-commands';
+import { wrappingInputRule } from 'tiptap-commands';
 
 import { Node } from './node';
+import { toggleList } from './list-item/commands';
 
 export class BulletList extends Node {
   get name() {
@@ -16,13 +17,13 @@ export class BulletList extends Node {
     };
   }
 
-  commands({ type, schema }) {
-    return () => toggleList(type, schema.nodes.list_item);
+  commands({ type }) {
+    return () => toggleList(this.name);
   }
 
   keys({ type, schema }) {
     return {
-      'Shift-Ctrl-8': toggleList(type, schema.nodes.list_item),
+      'Shift-Ctrl-8': toggleList(this.name),
     };
   }
 
