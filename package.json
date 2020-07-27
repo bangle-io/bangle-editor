@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "parcel public/index.html --port 3000",
-    "build": "parcel build public/index.html --out-dir build",
+    "build": "parcel build public/index.html --out-dir build --no-minify",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
     "unit-tests": "jest",
