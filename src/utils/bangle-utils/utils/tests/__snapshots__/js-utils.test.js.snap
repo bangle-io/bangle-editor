@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matchAllPlus works when direct match 2`] = `
+Array [
+  Object {
+    "end": 8,
+    "match": true,
+    "matchedStr": "foozball",
+    "start": 0,
+  },
+]
+`;
+
+exports[`matchAllPlus works when match 2`] = `
+Array [
+  Object {
+    "end": 10,
+    "match": false,
+    "matchedStr": "baseball  ",
+    "start": 0,
+  },
+  Object {
+    "end": 18,
+    "match": true,
+    "matchedStr": "foozball",
+    "start": 10,
+  },
+]
+`;
+
+exports[`matchAllPlus works when no match 2`] = `
+Array [
+  Object {
+    "end": 18,
+    "match": false,
+    "matchedStr": "baseball  boozball",
+    "start": 0,
+  },
+]
+`;

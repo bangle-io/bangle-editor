@@ -1,6 +1,6 @@
 import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
 import { GapCursorSelection } from '../gap-cursor';
-import { Node, Fragment, Slice } from 'prosemirror-model';
+import { Fragment, Slice } from 'prosemirror-model';
 
 /**
  * whether the mark of type is active

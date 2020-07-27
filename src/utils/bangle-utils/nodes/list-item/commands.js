@@ -709,9 +709,9 @@ export function moveList(type, down = false) {
     const {
       bullet_list: bulletList,
       ordered_list: orderedList,
+      list_item: listItem,
     } = state.schema.nodes;
 
-    // const resolvedPos = state.doc.resolve(state.tr.selection.$from.pos);
     if (!isInsideListItem(state)) {
       return false;
     }
@@ -719,32 +719,32 @@ export function moveList(type, down = false) {
     const grandParent = findParentNode((node) =>
       [bulletList, orderedList].includes(node.type),
     )(state.selection);
-    const listItem = findParentNodeOfType(type)(state.selection);
+    const parent = findParentNodeOfType(listItem)(state.selection);
 
     if (
       !grandParent.node ||
       grandParent.node.childCount === 1 ||
-      !listItem.node
+      !parent.node
     ) {
       return false;
     }
 
     const arr = mapChildren(grandParent.node, (node) => node);
 
-    let index = arr.indexOf(listItem.node);
+    let index = arr.indexOf(parent.node);
     let swapWith = down ? index + 1 : index - 1;
     if (swapWith >= arr.length || swapWith < 0) {
       return false;
     }
-    const swapWithNodeSize = arr[swapWith].nodeSize;
 
+    const swapWithNodeSize = arr[swapWith].nodeSize;
     [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
 
-    const rearrangedFragment = Fragment.from(arr);
+    const $from = state.selection.$from;
+    const newGrandParent = grandParent.node.copy(Fragment.fromArray(arr));
+
     let tr = state.tr;
     tr = tr.setSelection(NodeSelection.create(tr.doc, grandParent.pos));
-    const $from = state.selection.$from;
-    const newGrandParent = grandParent.node.copy(rearrangedFragment);
     tr = replaceSelectedNode(newGrandParent)(tr);
     tr = tr.setSelection(
       Selection.near(
