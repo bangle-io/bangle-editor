@@ -5,3 +5,58 @@ export function compose(func, ...funcs) {
     return allFuncs.reduceRight((prev, func) => func(prev), raw);
   };
 }
+
+/**
+ * Runs matchAll and gives range of strings that matched and didnt match
+ *
+ * @param {*} regexp
+ * @param {*} str
+ */
+export function matchAllPlus(regexp, str) {
+  const matches = [...str.matchAll(regexp)];
+  if (matches.length === 0) {
+    return [
+      {
+        start: 0,
+        end: str.length,
+        match: false,
+        matchedStr: str,
+      },
+    ];
+  }
+
+  let result = [];
+  let prevElementEnd = 0;
+  for (let i = 0; i < matches.length; i++) {
+    let cur = matches[i];
+    let curStart = cur.index;
+    let curEnd = curStart + cur[0].length;
+
+    if (prevElementEnd !== curStart) {
+      result.push({
+        start: prevElementEnd,
+        end: curStart,
+        match: false,
+      });
+    }
+    result.push({
+      start: curStart,
+      end: curEnd,
+      match: true,
+    });
+    prevElementEnd = curEnd;
+  }
+
+  const lastItemEnd = result[result.length - 1]?.end;
+
+  if (lastItemEnd && lastItemEnd !== str.length) {
+    result.push({
+      start: lastItemEnd + 1,
+      end: str.length,
+      match: false,
+    });
+  }
+
+  result = result.map((r) => ({ ...r, matchedStr: str.slice(r.start, r.end) }));
+  return result;
+}

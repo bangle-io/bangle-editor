@@ -271,7 +271,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 });
 
-describe.only('Keymap', () => {
+describe('Keymap', () => {
   test('Typing works', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
 

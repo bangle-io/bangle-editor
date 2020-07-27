@@ -18,7 +18,6 @@ module.exports = {
     Selection: 'off',
     Plugin: 'off',
   },
-  ignorePatterns: ['/archive', '.cache', '/build', '/dist'],
   rules: {
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
