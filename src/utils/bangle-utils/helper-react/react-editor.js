@@ -1,76 +1,47 @@
 import React from 'react';
 import applyDevTools from 'prosemirror-dev-tools';
+import PropTypes from 'prop-types';
 
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
 import { PortalRenderer, PortalProviderAPI } from './portal';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log(...args);
 }
 
 export class ReactEditor extends React.PureComponent {
-  static contextType = EditorOnReadyContext;
-  constructor(props) {
-    super(props);
-
-    this.myRef = React.createRef();
-    this.portalProviderAPI = new PortalProviderAPI();
-  }
+  state = {
+    editorKey: 0,
+  };
+  portalProviderAPI = new PortalProviderAPI();
 
   get options() {
-    this.defaultOptions = {
+    const defaultOptions = {
       id: 'ReactEditor-wrapper',
       renderNodeView: this.renderNodeView,
       destroyNodeView: this.destroyNodeView,
       content: this.props.content,
     };
-
-    return Object.assign({}, this.defaultOptions, this.props.options);
+    return Object.assign({}, defaultOptions, this.props.options);
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.content !== prevProps.content) {
-      console.log('React-editor: Content not same, reseting content');
-      this.destroy();
-
-      this.setupEditor();
+      console.log('Content not same, creating a new Editor');
+      this.setState((state) => ({
+        editorKey: state.editorKey + 1,
+      }));
     }
-  }
-
-  destroy() {
-    log('Unmounting react-editor');
-    this.portalProviderAPI && this.portalProviderAPI.destroy();
-    this.editor && this.editor.destroy();
-    this.editor = undefined;
-  }
-
-  setupEditor() {
-    const node = this.myRef.current;
-    if (node) {
-      this.editor = new Editor(node, this.options);
-      if (this.options.devtools) {
-        applyDevTools(this.editor.view);
-        window.editor = this.editor;
-      }
-
-      this.context.onEditorReady(this.editor);
-
-      this.forceUpdate();
-      this.editor.focus();
-    }
-  }
-
-  componentDidMount() {
-    this.setupEditor();
   }
 
   componentWillUnmount() {
-    this.destroy();
+    this.portalProviderAPI.destroy();
+    this.portalProviderAPI = null;
   }
 
   // called from custom-node-view.js#renderComp
@@ -82,15 +53,71 @@ export class ReactEditor extends React.PureComponent {
   };
 
   destroyNodeView = (dom) => {
+    log('removing nodeView dom');
     this.portalProviderAPI.remove(dom);
   };
 
   render() {
     return (
+      <EditorWrapper
+        // This allows us to let react handle creating destroying Editor
+        key={this.state.editorKey}
+        portalProviderAPI={this.portalProviderAPI}
+        editorOptions={this.options}
+      />
+    );
+  }
+}
+
+class EditorWrapper extends React.Component {
+  static contextType = EditorOnReadyContext;
+  editorRenderTarget = React.createRef();
+
+  componentDidMount() {
+    this.setupEditor();
+  }
+
+  setupEditor() {
+    const { editorOptions } = this.props;
+    const node = this.editorRenderTarget.current;
+    if (node) {
+      this.editor = new Editor(node, editorOptions);
+      if (editorOptions.devtools) {
+        applyDevTools(this.editor.view);
+        window.editor = this.editor;
+      }
+
+      // TODO look into this?
+      this.context.onEditorReady(this.editor);
+      this.editor.focus();
+    }
+  }
+
+  destroyEditor() {
+    log('Unmounting react-editor');
+    // When editor is destroyed it takes care  of calling destroyNodeView
+    this.editor && this.editor.destroy();
+    this.editor = undefined;
+  }
+
+  componentWillUnmount() {
+    log('PortalRendererWrapper unmounting');
+    this.destroyEditor();
+  }
+
+  render() {
+    return (
       <>
-        <div ref={this.myRef} id={this.options.id} />
-        <PortalRenderer portalProviderAPI={this.portalProviderAPI} />
+        <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
+        {this.editorRenderTarget?.current ? (
+          <PortalRenderer portalProviderAPI={this.props.portalProviderAPI} />
+        ) : null}
       </>
     );
   }
 }
+
+EditorWrapper.propTypes = {
+  portalProviderAPI: PropTypes.object.isRequired,
+  editorOptions: PropTypes.object.isRequired,
+};

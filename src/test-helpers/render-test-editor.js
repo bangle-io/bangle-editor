@@ -29,10 +29,10 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
         <ReactEditor options={_options} />
         <EditorContext.Consumer>
           {(context) => {
-            if (context.editor && !_editor) {
-              _editor = context.editor;
+            if (context.getEditor() && !_editor) {
+              _editor = context.getEditor();
             }
-            return !context.editor ? null : <span data-testid={testId} />;
+            return !context.getEditor() ? null : <span data-testid={testId} />;
           }}
         </EditorContext.Consumer>
       </EditorContextProvider>,

@@ -18,7 +18,7 @@ export class BulletList extends Node {
   }
 
   commands({ type }) {
-    return () => toggleList(this.name);
+    return { bullet_list: () => toggleList(this.name) };
   }
 
   keys({ type, schema }) {

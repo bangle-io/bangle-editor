@@ -60,3 +60,10 @@ export function matchAllPlus(regexp, str) {
   result = result.map((r) => ({ ...r, matchedStr: str.slice(r.start, r.end) }));
   return result;
 }
+
+export function uuid() {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+}

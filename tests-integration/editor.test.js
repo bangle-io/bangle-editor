@@ -18,6 +18,7 @@ describe('Basic typing', () => {
   let page;
   beforeEach(async () => {
     page = await browser.newPage();
+    // page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     await page.goto(URL);
     await mountEditor(page);
     await page.keyboard.down('Meta');

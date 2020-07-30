@@ -3,7 +3,7 @@ import 'core-js/es/object/from-entries';
 
 import './style/tailwind.css';
 import './style/style.css';
-
+import 'prosemirror-view/style/prosemirror.css';
 import React from 'react';
 import { EditorContextProvider } from '../../src/utils/bangle-utils/helper-react/editor-context';
 

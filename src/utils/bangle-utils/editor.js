@@ -22,7 +22,7 @@ import { findChangedNodesFromTransaction } from './utils/pm-utils';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log(...args);
+  if (LOG) console.log('editor.js', ...args);
 }
 
 const EVENTS = [
@@ -92,6 +92,7 @@ export class Editor extends Emitter {
     this.pasteRules = this.createPasteRules();
     this.nodeViews = this.initNodeViews();
     this.view = this.createView();
+
     this.commands = this.createCommands(); // setting command after view is important
     this.setActiveNodesAndMarks();
 
@@ -110,6 +111,7 @@ export class Editor extends Emitter {
 
     // give extension manager access to our view
     this.extensions.view = this.view;
+    log('editor setup');
   }
 
   setOptions(options) {
@@ -497,7 +499,13 @@ export class Editor extends Emitter {
       return;
     }
     log('Destroying editor');
+
+    // for some reason this is done to prevent memory leak
+    if (this.view.domObserver) {
+      this.view.domObserver.disconnectSelection();
+    }
     this.view.destroy();
+    super.destroy();
   }
 
   initNodeViews() {
