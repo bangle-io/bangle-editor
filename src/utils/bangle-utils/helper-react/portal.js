@@ -4,14 +4,38 @@ import { objUid } from '../utils/object-uid';
 import { SelectiveUpdate } from './selective-update';
 import { Emitter } from '../utils/emitter';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('portal.js:', ...args);
 }
 
 export class PortalProviderAPI extends Emitter {
-  portals = new Map();
+  #portalsMap = new Map();
+  #portals = [...this.#portalsMap.values()];
+  #calcPortals = false;
+
+  portalAdd(container, portalElement) {
+    log('adding', this.getRenderKey(container));
+
+    this.#calcPortals = true;
+    this.#portalsMap.set(container, portalElement);
+  }
+
+  portalRemove(container) {
+    log('removing', this.getRenderKey(container));
+
+    this.#calcPortals = true;
+    this.#portalsMap.delete(container);
+  }
+
+  getPortals() {
+    if (this.#calcPortals) {
+      this.#calcPortals = false;
+      this.#portals = [...this.#portalsMap.values()];
+    }
+    return this.#portals;
+  }
 
   getRenderKey(container) {
     return 'update_' + objUid.get(container);
@@ -21,7 +45,7 @@ export class PortalProviderAPI extends Emitter {
     const uid = objUid.get(container);
     // If the element already exists communicate
     // to selectively update it, bypassing the entire array re-render in PortalRenderer
-    if (this.portals.has(container)) {
+    if (this.#portalsMap.has(container)) {
       log('PortalProviderAPI: updating existing', uid);
       this.emit(this.getRenderKey(container), props);
       return;
@@ -42,7 +66,7 @@ export class PortalProviderAPI extends Emitter {
     );
     // Note: the context manager takes care of updating
     //  the components i.e. PortalRenderer.render
-    this.portals.set(container, portalElement);
+    this.portalAdd(container, portalElement);
   }
 
   forceUpdate() {
@@ -52,30 +76,13 @@ export class PortalProviderAPI extends Emitter {
 
   remove(container) {
     log('removing', this.getRenderKey(container));
-    this.portals.delete(container);
+    this.portalRemove(container);
   }
 
   destroy() {
     log('destroying portal');
-    this.portal = null;
+    this.#portalsMap = null;
+    this.#portals = [];
     super.destroy();
-  }
-}
-
-export class PortalRenderer extends React.Component {
-  constructor(props) {
-    super(props);
-    props.portalProviderAPI.on('#force_update', this.handleUpdate);
-  }
-
-  handleUpdate = () => {
-    this.forceUpdate();
-  };
-  componentWillUnmount() {
-    this.props.portalProviderAPI.off('#force_update', this.handleUpdate);
-  }
-  render() {
-    log('PortalRenderer: rendering');
-    return [...this.props.portalProviderAPI.portals.values()];
   }
 }

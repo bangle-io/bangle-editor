@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
-import { PortalRenderer, PortalProviderAPI } from './portal';
+import { PortalProviderAPI } from './portal';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log(...args);
@@ -59,7 +59,7 @@ export class ReactEditor extends React.PureComponent {
 
   render() {
     return (
-      <EditorWrapper
+      <PortalRenderer
         // This allows us to let react handle creating destroying Editor
         key={this.state.editorKey}
         portalProviderAPI={this.portalProviderAPI}
@@ -69,15 +69,11 @@ export class ReactEditor extends React.PureComponent {
   }
 }
 
-class EditorWrapper extends React.Component {
+class PortalRenderer extends React.Component {
   static contextType = EditorOnReadyContext;
   editorRenderTarget = React.createRef();
 
   componentDidMount() {
-    this.setupEditor();
-  }
-
-  setupEditor() {
     const { editorOptions } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
@@ -86,38 +82,43 @@ class EditorWrapper extends React.Component {
         applyDevTools(this.editor.view);
         window.editor = this.editor;
       }
-
       // TODO look into this?
       this.context.onEditorReady(this.editor);
       this.editor.focus();
     }
+
+    this.props.portalProviderAPI.on(
+      '#force_update',
+      () => this.handleForceUpdate,
+    );
   }
 
-  destroyEditor() {
-    log('Unmounting react-editor');
+  handleForceUpdate = () => {
+    this.forceUpdate();
+  };
+
+  componentWillUnmount() {
+    log('PortalRendererWrapper unmounting');
+    this.props.portalProviderAPI.off('#force_update', this.handleForceUpdate);
     // When editor is destroyed it takes care  of calling destroyNodeView
     this.editor && this.editor.destroy();
     this.editor = undefined;
   }
 
-  componentWillUnmount() {
-    log('PortalRendererWrapper unmounting');
-    this.destroyEditor();
-  }
-
   render() {
+    log('rendering portals');
     return (
       <>
         <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
-        {this.editorRenderTarget?.current ? (
-          <PortalRenderer portalProviderAPI={this.props.portalProviderAPI} />
-        ) : null}
+        {this.editorRenderTarget?.current
+          ? this.props.portalProviderAPI.getPortals()
+          : null}
       </>
     );
   }
 }
 
-EditorWrapper.propTypes = {
+PortalRenderer.propTypes = {
   portalProviderAPI: PropTypes.object.isRequired,
   editorOptions: PropTypes.object.isRequired,
 };
