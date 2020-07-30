@@ -1,7 +1,15 @@
 import React from 'react';
+import { uuid } from '../utils/js-utils';
+
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log('SelectiveUpdate', ...args);
+}
 
 export class SelectiveUpdate extends React.Component {
   state = this.props.initialProps;
+  uid = uuid();
   componentDidMount() {
     this.props.emitter.on(this.props.renderKey, this.handleUpdate);
     this.props.emitter.on(this.props.forceUpdateKey, this.handleForceUpdate);
@@ -16,6 +24,7 @@ export class SelectiveUpdate extends React.Component {
   };
   // Only update component via a setState which is due to emitter
   shouldComponentUpdate(nextProps, nextState) {
+    log('shouldComponentUpdate', this.state !== nextState);
     return this.state !== nextState;
   }
 
@@ -25,6 +34,7 @@ export class SelectiveUpdate extends React.Component {
   }
 
   render() {
+    log('rendering', this.uid);
     return this.props.render(this.state);
   }
 }

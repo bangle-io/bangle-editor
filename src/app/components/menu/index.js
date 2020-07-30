@@ -2,77 +2,77 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BaseButton } from '../Button';
 
-export function MenuBar({ editor }) {
+export function MenuBar({ getEditor }) {
   return (
     <div className="flex p-2 flex-row content-center justify-center bg-gray-200 rounded">
       <MenuItemButton
-        active={editor.isActive.bold()}
+        active={getEditor().isActive.bold()}
         enabled={true}
-        onClick={() => editor.commands.bold()}
+        onClick={() => getEditor().commands.bold()}
         label="Bold"
         iconType="bold"
       />
       <MenuItemButton
-        active={editor.isActive.italic()}
+        active={getEditor().isActive.italic()}
         enabled={true}
-        onClick={() => editor.commands.italic()}
+        onClick={() => getEditor().commands.italic()}
         label="Italic"
         iconType="italic"
       />
       <MenuItemButton
-        active={editor.isActive.code()}
+        active={getEditor().isActive.code()}
         enabled={true}
-        onClick={() => editor.commands.code()}
+        onClick={() => getEditor().commands.code()}
         label="Code"
         iconType="code"
       />
       <MenuItemButton
         enabled={true}
-        onClick={() => editor.commands.undo()}
+        onClick={() => getEditor().commands.undo()}
         label="Undo"
         iconType="undo"
       />
       <MenuItemButton
         enabled={true}
-        onClick={() => editor.commands.redo()}
+        onClick={() => getEditor().commands.redo()}
         label="Redo"
         iconType="redo"
       />
       <MenuItemButton
-        active={editor.isActive.dino()}
+        active={getEditor().isActive.dino()}
         enabled={true}
-        onClick={() => editor.commands.dino('brontosaurus')}
+        onClick={() => getEditor().commands.dino('brontosaurus')}
         label="Dino"
         iconType="ambulance"
       />
       <MenuItemButton
-        active={editor.isActive.dino()}
+        active={getEditor().isActive.dino()}
         enabled={true}
-        onClick={() => editor.commands.randomDino()}
+        onClick={() => getEditor().commands.randomDino()}
         label="random-dino"
         iconType="bomb"
       />
       <MenuItemButton
-        active={editor.isActive.emoji()}
+        active={getEditor().isActive.emoji()}
         enabled={true}
-        onClick={() => editor.commands.randomEmoji()}
+        onClick={() => getEditor().commands.randomEmoji()}
         label="flower"
         iconType="smile"
       />
       <MenuItemButton
-        active={editor.isActive.bullet_list()}
+        active={getEditor().isActive.bullet_list()}
         enabled={true}
         onClick={() => {
-          editor.commands.bullet_list();
+          getEditor().commands.bullet_list();
         }}
         label="flower"
         iconType="check-square"
       />
       <MenuItemButton
-        active={editor.isActive.todo_list()}
+        active={getEditor().isActive.todo_list()}
         enabled={true}
         onClick={() => {
-          editor.commands.todo_list();
+          getEditor().commands.todo_list();
         }}
         label="flower"
         iconType="check-square"

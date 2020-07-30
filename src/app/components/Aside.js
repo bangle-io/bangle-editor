@@ -1,13 +1,10 @@
 import React from 'react';
 import format from 'date-fns/format';
-import { EditorContext } from '../../../src/utils/bangle-utils/helper-react/editor-context';
 
 import { localManager } from '../store/local';
 import { BaseButton, StackButton } from './Button';
 
 export class Aside extends React.PureComponent {
-  static contextType = EditorContext;
-
   state = {
     showSidebar: null,
   };

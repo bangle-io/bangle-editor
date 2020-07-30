@@ -25,10 +25,12 @@ import {
 } from '../../src/utils/bangle-utils/nodes/index';
 import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
 
+const DEBUG = true;
+
 export class Editor extends React.PureComponent {
   options = {
     id: 'bangle-play-react-editor',
-    devtools: true,
+    devtools: process.env.JEST_INTEGRATION || DEBUG,
     extensions: [
       new Bold(),
       new Code(),

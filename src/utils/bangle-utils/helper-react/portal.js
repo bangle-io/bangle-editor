@@ -4,10 +4,10 @@ import { objUid } from '../utils/object-uid';
 import { SelectiveUpdate } from './selective-update';
 import { Emitter } from '../utils/emitter';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
-  if (LOG) console.log(...args);
+  if (LOG) console.log('portal.js:', ...args);
 }
 
 export class PortalProviderAPI extends Emitter {
@@ -40,9 +40,9 @@ export class PortalProviderAPI extends Emitter {
       container,
       uid,
     );
-
+    // Note: the context manager takes care of updating
+    //  the components i.e. PortalRenderer.render
     this.portals.set(container, portalElement);
-    this.emit('#root_update');
   }
 
   forceUpdate() {
@@ -53,33 +53,27 @@ export class PortalProviderAPI extends Emitter {
   remove(container) {
     log('removing', this.getRenderKey(container));
     this.portals.delete(container);
-    this.emit('#root_update');
   }
 
   destroy() {
     log('destroying portal');
+    this.portal = null;
     super.destroy();
-    this.portals = null;
   }
 }
 
 export class PortalRenderer extends React.Component {
   constructor(props) {
     super(props);
-
-    props.portalProviderAPI.on('#root_update', this.handleUpdate);
     props.portalProviderAPI.on('#force_update', this.handleUpdate);
   }
 
   handleUpdate = () => {
     this.forceUpdate();
   };
-
   componentWillUnmount() {
-    this.props.portalProviderAPI.off('#root_update', this.handleUpdate);
     this.props.portalProviderAPI.off('#force_update', this.handleUpdate);
   }
-
   render() {
     log('PortalRenderer: rendering');
     return [...this.props.portalProviderAPI.portals.values()];

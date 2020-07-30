@@ -5,6 +5,12 @@ import React from 'react';
 import { Node } from '../../../src/utils/bangle-utils/nodes/index';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log('emoji/index.js:', ...args);
+}
+
 function insertEmoji(schema, name) {
   let emojiType = schema.nodes[EMOJI_NODE_NAME];
   return function (state, dispatch) {
@@ -86,7 +92,7 @@ export default class EmojiExtension extends Node {
   render = ({ node, selected }) => {
     const { 'data-emojikind': emojikind } = node.attrs;
 
-    console.log('rendering', this.chache);
+    log('rendering', emojikind);
 
     return (
       <EmojiComponent
@@ -116,12 +122,11 @@ export default class EmojiExtension extends Node {
 }
 
 class EmojiComponent extends React.Component {
-  papa = uuid();
+  componentWillUnmount() {
+    log('unmounting EmojiComponent');
+  }
   render() {
     const { emojikind, selectionStyle, selected } = this.props;
-    if (emojikind === ':flag_lv:') {
-      console.log(this.papa, emojikind);
-    }
 
     return (
       <span contentEditable={false} style={selected ? selectionStyle : {}}>
@@ -129,11 +134,4 @@ class EmojiComponent extends React.Component {
       </span>
     );
   }
-}
-
-function uuid() {
-  return (
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15)
-  );
 }
