@@ -1,7 +1,9 @@
 @import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 .bangle-editor p {
-  @apply text-base whitespace-pre-line break-words leading-relaxed text-lg;
+  @apply text-base whitespace-pre-wrap break-words leading-relaxed text-lg;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -66,7 +68,3 @@
 .bangle-editor p > code {
   @apply font-mono text-gray-700 font-light bg-gray-200 px-2 py-1 rounded;
 }
-
-@import 'tailwindcss/components';
-
-@import 'tailwindcss/utilities';
