@@ -2,7 +2,7 @@ const URL = `http://localhost:4444`;
 const PM_ID = '.ProseMirror';
 const { mountEditor, getEditorState, ctrlKey } = require('./helpers');
 
-jest.setTimeout(15 * 1000);
+jest.setTimeout(25 * 1000);
 
 describe('Title load test', () => {
   beforeAll(async () => {
@@ -17,7 +17,6 @@ describe('Title load test', () => {
 describe('Basic typing', () => {
   let page;
   beforeEach(async () => {
-    console.log('GITHUB_CI', process.env.GITHUB_CI);
     page = await browser.newPage();
     // page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     await page.goto(URL);
