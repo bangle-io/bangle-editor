@@ -35,23 +35,24 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "recompose": "^0.30.0",
-    "tailwindcss": "^1.2.0",
+    "tailwindcss": "^1.6.0",
     "throttle-debounce": "^2.1.0",
     "tiptap-commands": "^1.14.3"
   },
   "scripts": {
+    "prestart": "npm run css",
     "start": "parcel public/index.html --port 3000",
-    "lint": "prettier --check \"src/**/*.js\" && eslint .",
-    "prebuild": "npm run lint",
-    "pretest": "npm run lint",
+    "prebuild": "npm run css && npm run lint",
     "build": "parcel build public/index.html --out-dir build --no-minify",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
+    "pretest": "npm run lint",
+    "test": "npm run unit-tests && npm run integration-tests",
     "unit-tests": "jest",
     "integration-tests": "jest --config=jest-integration.config.js",
-    "test": "npm run unit-tests && npm run integration-tests",
-    "css": "postcss src/css/tailwind.src.css -o src/tailwind.css -w",
-    "eject": "react-scripts eject"
+    "lint": "prettier --check \"src/**/*.js\" && eslint .",
+    "css": "postcss --config postcss.config.js src/app/style/tailwind.src.css -o src/app/style/tailwind.css",
+    "css:watch": "npm run css -- -w"
   },
   "prettier": {
     "singleQuote": true,
@@ -63,6 +64,9 @@
     "*.js": [
       "eslint",
       "prettier --write"
+    ],
+    "*.css": [
+      "npm run css"
     ]
   },
   "husky": {
@@ -80,6 +84,7 @@
     "@testing-library/react": "^10.4.7",
     "@typescript-eslint/eslint-plugin": "2.x",
     "@typescript-eslint/parser": "2.x",
+    "autoprefixer": "^9.8.6",
     "babel-eslint": "10.x",
     "babel-jest": "^26.1.0",
     "eslint": "6.x",
@@ -95,9 +100,11 @@
     "jest-diff": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.2.11",
-    "parcel": "^1.12.4",
     "parcel-bundler": "^1.12.4",
-    "postcss": "^7.0.27",
+    "postcss-cli": "^7.1.1",
+    "postcss-custom-properties": "^9.1.1",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.2.3",
     "prettier": "^2.0.5",
     "prosemirror-dev-tools": "^3.0.2",
     "prosemirror-test-builder": "^1.0.3",
