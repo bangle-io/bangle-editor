@@ -1,6 +1,6 @@
 const URL = `http://localhost:4444`;
 const PM_ID = '.ProseMirror';
-const { mountEditor, getEditorState } = require('./helpers');
+const { mountEditor, getEditorState, ctrlKey } = require('./helpers');
 
 jest.setTimeout(15 * 1000);
 
@@ -17,13 +17,14 @@ describe('Title load test', () => {
 describe('Basic typing', () => {
   let page;
   beforeEach(async () => {
+    console.log('GITHUB_CI', process.env.GITHUB_CI);
     page = await browser.newPage();
     // page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     await page.goto(URL);
     await mountEditor(page);
-    await page.keyboard.down('Meta');
+    await page.keyboard.down(ctrlKey);
     await page.keyboard.press('a', { delay: 70 });
-    await page.keyboard.up('Meta');
+    await page.keyboard.up(ctrlKey);
     await page.keyboard.press('Backspace', { delay: 70 });
   });
   afterEach(async () => {

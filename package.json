@@ -41,6 +41,9 @@
   },
   "scripts": {
     "start": "parcel public/index.html --port 3000",
+    "lint": "prettier --check \"src/**/*.js\" && eslint .",
+    "prebuild": "npm run lint",
+    "pretest": "npm run lint",
     "build": "parcel build public/index.html --out-dir build --no-minify",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
@@ -55,6 +58,17 @@
     "trailingComma": "all",
     "quoteProps": "consistent",
     "arrowParens": "always"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "browserslist": [
     "last 3 chrome version",
@@ -75,10 +89,12 @@
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "2.x",
+    "husky": "^4.2.5",
     "jest": "^26.1.0",
     "jest-circus": "^26.1.0",
     "jest-diff": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
+    "lint-staged": "^10.2.11",
     "parcel": "^1.12.4",
     "parcel-bundler": "^1.12.4",
     "postcss": "^7.0.27",

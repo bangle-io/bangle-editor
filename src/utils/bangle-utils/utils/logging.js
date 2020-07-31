@@ -9,7 +9,7 @@ export function logObject(obj) {
         });
         return targetValue;
       }
-      return function(...args) {
+      return function (...args) {
         const result = Reflect.apply(targetValue, target, args);
         console.log(`calling[${propKey}]`, { args, result });
         return result;

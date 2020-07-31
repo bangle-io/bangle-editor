@@ -1,7 +1,11 @@
+const ctrlKey = process.env.CI ? 'Control' : 'Meta';
+
 module.exports = {
   mountEditor,
   getEditorState,
+  ctrlKey,
 };
+
 async function mountEditor(page, props) {
   await page.waitForSelector('#bangle-play-react-editor');
   //   await page.$eval(
