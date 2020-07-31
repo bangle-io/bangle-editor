@@ -64,9 +64,6 @@
     "*.js": [
       "eslint",
       "prettier --write"
-    ],
-    "*.css": [
-      "npm run css"
     ]
   },
   "husky": {

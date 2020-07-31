@@ -67,7 +67,7 @@ describe('Basic typing', () => {
     expect(editorState.doc.content.length).toBe(1);
     expect(editorState.doc.content[0].content).toEqual([
       {
-        text: 'My name is ',
+        text: 'My name is ',
         type: 'text',
       },
     ]);
