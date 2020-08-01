@@ -704,7 +704,8 @@ export function copyEmptyCommand() {
 }
 
 // WIP
-export function moveList(type, down = false) {
+export function moveList(type, dir = 'UP') {
+  const isDown = dir === 'DOWN';
   return (state, dispatch) => {
     const {
       bullet_list: bulletList,
@@ -721,18 +722,15 @@ export function moveList(type, down = false) {
     )(state.selection);
     const parent = findParentNodeOfType(listItem)(state.selection);
 
-    if (
-      !grandParent.node ||
-      grandParent.node.childCount === 1 ||
-      !parent.node
-    ) {
+    if (!grandParent.node || !parent.node) {
       return false;
     }
 
     const arr = mapChildren(grandParent.node, (node) => node);
 
     let index = arr.indexOf(parent.node);
-    let swapWith = down ? index + 1 : index - 1;
+
+    let swapWith = isDown ? index + 1 : index - 1;
     if (swapWith >= arr.length || swapWith < 0) {
       return false;
     }
@@ -749,7 +747,7 @@ export function moveList(type, down = false) {
     tr = tr.setSelection(
       Selection.near(
         tr.doc.resolve(
-          down ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
+          isDown ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
         ),
       ),
     );
