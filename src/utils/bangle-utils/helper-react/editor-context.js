@@ -59,9 +59,7 @@ export class EditorContextProvider extends React.Component {
         <EditorOnReadyContext.Provider
           value={{ onEditorReady: this.onEditorReady }}
         >
-          {/* <TransactionContext.Provider value={{ getEditor: this.getEditor }}> */}
           {this.props.children}
-          {/* </TransactionContext.Provider> */}
         </EditorOnReadyContext.Provider>
       </EditorContext.Provider>
     );

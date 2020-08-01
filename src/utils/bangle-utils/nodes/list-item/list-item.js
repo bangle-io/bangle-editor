@@ -36,8 +36,8 @@ export class ListItem extends Node {
       'Tab': indentList(),
       'Enter': enterKeyCommand,
       'Shift-Tab': outdentList(),
-      'Alt-ArrowUp': moveList(type, false),
-      'Alt-ArrowDown': moveList(type, true),
+      'Alt-ArrowUp': moveList(type, 'UP'),
+      'Alt-ArrowDown': moveList(type, 'DOWN'),
       'Cmd-x': cutEmptyCommand(),
       'Cmd-c': copyEmptyCommand(),
     };
