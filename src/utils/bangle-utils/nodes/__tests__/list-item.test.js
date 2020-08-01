@@ -146,49 +146,6 @@ describe('Command: enterKeyCommand', () => {
   });
 });
 
-describe('Command: cutEmptyCommand', () => {
-  test('creates a new list when pressed enter at end', async () => {
-    document.execCommand = jest.fn(() => {});
-    // updateDoc();
-
-    const { editorView } = await testEditor(
-      doc(ul(li(p('magic')), li(p('fooba{<>}r')))),
-    );
-    sendKeyToPm(editorView, 'Cmd-x');
-    expect(editorView.state.selection).toMatchInlineSnapshot(`
-      Object {
-        "anchor": 10,
-        "type": "node",
-      }
-    `);
-    expect(editorView.state.doc).toEqualDocument(
-      doc(ul(li(p('magic')), li(p('foobar')))),
-    );
-    expect(document.execCommand).toBeCalledTimes(1);
-  });
-});
-
-describe('Command: copyEmptyCommand', () => {
-  test('creates a new list when pressed enter at end', async () => {
-    document.execCommand = jest.fn(() => {});
-
-    const { editorView } = await testEditor(
-      doc(ul(li(p('magic')), li(p('k{<>}j'), ul(li(p('foobar')))))),
-    );
-    sendKeyToPm(editorView, 'Cmd-c');
-    expect(editorView.state.selection).toMatchInlineSnapshot(`
-      Object {
-        "anchor": 10,
-        "type": "node",
-      }
-    `);
-    expect(editorView.state.doc).toEqualDocument(
-      doc(ul(li(p('magic')), li(p('kj'), ul(li(p('foobar')))))),
-    );
-    expect(document.execCommand).toBeCalledTimes(1);
-  });
-});
-
 describe('Markdown shortcuts Input rules', () => {
   test('-<Space> should create list', async () => {
     const { editorView } = await testEditor(doc(p('first'), p('{<>}')));
@@ -271,382 +228,423 @@ describe('Markdown shortcuts Input rules', () => {
   });
 });
 
-describe('Keymap', () => {
-  test('Typing works', async () => {
+test('Typing works', async () => {
+  const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
+
+  typeText(editor.view, 'hello');
+
+  expect(editor.state).toEqualDocAndSelection(
+    doc(ul(li(p('foohello{<>}bar')))),
+  );
+});
+
+test('Pressing Enter', async () => {
+  const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
+
+  sendKeyToPm(editor.view, 'Enter');
+
+  expect(editor.state).toEqualDocAndSelection(
+    doc(ul(li(p('foo')), li(p('{<>}bar')))),
+  );
+});
+
+describe('Pressing Tab', () => {
+  test('first list has no effect', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
 
-    typeText(editor.view, 'hello');
+    sendKeyToPm(editor.view, 'Tab');
+
+    expect(editor.state).toEqualDocAndSelection(doc(ul(li(p('foo{<>}bar')))));
+  });
+  test('second list nests', async () => {
+    const { editor } = await testEditor(
+      doc(ul(li(p('first')), li(p('{<>}second')))),
+    );
+
+    sendKeyToPm(editor.view, 'Tab');
 
     expect(editor.state).toEqualDocAndSelection(
-      doc(ul(li(p('foohello{<>}bar')))),
+      doc(ul(li(p('first'), ul(li(p('{<>}second')))))),
     );
-  });
-
-  test('Pressing Enter', async () => {
-    const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
-
-    sendKeyToPm(editor.view, 'Enter');
-
-    expect(editor.state).toEqualDocAndSelection(
-      doc(ul(li(p('foo')), li(p('{<>}bar')))),
-    );
-  });
-
-  describe('Pressing Tab', () => {
-    test('first list has no effect', async () => {
-      const { editor } = await testEditor(doc(ul(li(p('foo{<>}bar')))));
-
-      sendKeyToPm(editor.view, 'Tab');
-
-      expect(editor.state).toEqualDocAndSelection(doc(ul(li(p('foo{<>}bar')))));
-    });
-    test('second list nests', async () => {
-      const { editor } = await testEditor(
-        doc(ul(li(p('first')), li(p('{<>}second')))),
-      );
-
-      sendKeyToPm(editor.view, 'Tab');
-
-      expect(editor.state).toEqualDocAndSelection(
-        doc(ul(li(p('first'), ul(li(p('{<>}second')))))),
-      );
-    });
-  });
-
-  describe('Pressing Backspace', () => {
-    const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
-      sendKeyToPm(editorView, 'Backspace');
-      expect(editorView.state).toEqualDocAndSelection(afterDoc);
-    };
-
-    it('should outdent a first level list item to paragraph', async () => {
-      await check(
-        doc(ol(li(p('text')), li(p('{<>}')))),
-        doc(ol(li(p('text'))), p('{<>}')),
-      );
-    });
-
-    it('should outdent a first level list item to paragraph, with content', async () => {
-      await check(
-        doc(ol(li(p('text')), li(p('{<>}second text')))),
-        doc(ol(li(p('text'))), p('{<>}second text')),
-      );
-    });
-
-    it('should outdent a second level list item to first level', async () => {
-      await check(
-        doc(ol(li(p('text'), ol(li(p('{<>}')))))),
-        doc(ol(li(p('text')), li(p('{<>}')))),
-      );
-    });
-
-    it('should outdent a second level list item to first level, with content', async () => {
-      await check(
-        doc(ol(li(p('text'), ol(li(p('{<>}subtext')))))),
-        doc(ol(li(p('text')), li(p('{<>}subtext')))),
-      );
-    });
-
-    it('should move paragraph content back to previous (nested) list item', async () => {
-      await check(
-        doc(ol(li(p('text'), ol(li(p('text'))))), p('{<>}after')),
-        doc(ol(li(p('text'), ol(li(p('text{<>}after')))))),
-      );
-    });
-
-    it('keeps nodes same level as backspaced list item together in same list', async () => {
-      await check(
-        doc(
-          ol(li(p('{<>}A'), ol(li(p('B')))), li(p('C'))),
-
-          p('after'),
-        ),
-        doc(
-          p('{<>}A'),
-          ol(li(p('B')), li(p('C'))),
-
-          p('after'),
-        ),
-      );
-    });
-
-    it('merges two single-level lists when the middle paragraph is backspaced', async () => {
-      await check(
-        doc(
-          ol(li(p('A')), li(p('B'))),
-
-          p('{<>}middle'),
-
-          ol(li(p('C')), li(p('D'))),
-        ),
-        doc(ol(li(p('A')), li(p('B{<>}middle')), li(p('C')), li(p('D')))),
-      );
-    });
-
-    it('merges two double-level lists when the middle paragraph is backspaced', async () => {
-      await check(
-        doc(
-          ol(li(p('A'), ol(li(p('B')))), li(p('C'))),
-
-          p('{<>}middle'),
-
-          ol(li(p('D'), ol(li(p('E')))), li(p('F'))),
-        ),
-        doc(
-          ol(
-            li(p('A'), ol(li(p('B')))),
-            li(p('C{<>}middle')),
-            li(p('D'), ol(li(p('E')))),
-            li(p('F')),
-          ),
-        ),
-      );
-    });
-
-    it('moves directly to previous list item if it was empty', async () => {
-      await check(
-        doc(
-          ol(li(p('nice')), li(p('')), li(p('{<>}text'))),
-
-          p('after'),
-        ),
-        doc(
-          ol(li(p('nice')), li(p('{<>}text'))),
-
-          p('after'),
-        ),
-      );
-    });
-
-    it('moves directly to previous list item if it was empty, but with two paragraphs', async () => {
-      await check(
-        doc(
-          ol(li(p('nice')), li(p('')), li(p('{<>}text'), p('double'))),
-
-          p('after'),
-        ),
-        doc(
-          ol(li(p('nice')), li(p('{<>}text'), p('double'))),
-
-          p('after'),
-        ),
-      );
-    });
-
-    it('backspaces paragraphs within a list item rather than the item itself', async () => {
-      await check(
-        doc(
-          ol(li(p('')), li(p('nice'), p('{<>}two'))),
-
-          p('after'),
-        ),
-        doc(
-          ol(li(p('')), li(p('nice{<>}two'))),
-
-          p('after'),
-        ),
-      );
-    });
-
-    it('backspaces line breaks correctly within list items, with content after', async () => {
-      await check(
-        doc(
-          ol(li(p('')), li(p('nice'), p('two', br(), '{<>}three'))),
-
-          p('after'),
-        ),
-        doc(
-          ol(li(p('')), li(p('nice'), p('two{<>}three'))),
-
-          p('after'),
-        ),
-      );
-    });
-
-    it('backspaces line breaks correctly within list items, with content before', async () => {
-      await check(
-        doc(
-          ol(li(p('')), li(p('nice'), p('two', br(), br(), '{<>}'))),
-
-          p('after'),
-        ),
-        doc(
-          ol(li(p('')), li(p('nice'), p('two', br(), '{<>}'))),
-
-          p('after'),
-        ),
-      );
-    });
-  });
-
-  describe('Pressing Shift-Tab', () => {
-    const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
-      sendKeyToPm(editorView, 'Shift-Tab');
-      expect(editorView.state).toEqualDocAndSelection(afterDoc);
-    };
-
-    it('should outdent the list', async () => {
-      await check(
-        doc(ol(li(p('One'), ul(li(p('Two{<>}')))))),
-        doc(ol(li(p('One')), li(p('Two{<>}')))),
-      );
-    });
-  });
-
-  describe('Pressing Shift-Ctrl-8', () => {
-    const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
-      sendKeyToPm(editorView, 'Shift-Ctrl-8');
-      expect(editorView.state).toEqualDocAndSelection(afterDoc);
-    };
-
-    it('should outdent the list', async () => {
-      await check(doc(p('One{<>}')), doc(ul(li(p('One')))));
-    });
-  });
-
-  describe('Pressing Shift-Ctrl-9', () => {
-    const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
-      sendKeyToPm(editorView, 'Shift-Ctrl-9');
-      expect(editorView.state).toEqualDocAndSelection(afterDoc);
-    };
-
-    it('should outdent the list', async () => {
-      await check(doc(p('One{<>}')), doc(ol(li(p('One')))));
-    });
-  });
-
-  describe('Press Alt-Up / Down to move list', () => {
-    const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
-      sendKeyToPm(editorView, 'Alt-Up');
-      expect(editorView.state).toEqualDocAndSelection(afterDoc);
-      sendKeyToPm(editorView, 'Alt-Down');
-      expect(editorView.state).toEqualDocAndSelection(beforeDoc);
-    };
-
-    it('doesnt work with one item', async () => {
-      await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
-    });
-
-    it('if item above exists and selection is at end', async () => {
-      await check(
-        doc(ul(li(p('first')), li(p('second{<>}')))),
-        doc(ul(li(p('second{<>}')), li(p('first')))),
-      );
-    });
-
-    it('if item above exists and selection is in between', async () => {
-      await check(
-        doc(ul(li(p('first')), li(p('sec{<>}ond')))),
-        doc(ul(li(p('sec{<>}ond')), li(p('first')))),
-      );
-    });
-
-    it('if item above exists and selection is at start', async () => {
-      await check(
-        doc(ul(li(p('first')), li(p('{<>}second')))),
-        doc(ul(li(p('{<>}second')), li(p('first')))),
-      );
-    });
-
-    it('if  first item is very big', async () => {
-      await check(
-        doc(ul(li(p('first is really big')), li(p('{<>}second')))),
-        doc(ul(li(p('{<>}second')), li(p('first is really big')))),
-      );
-    });
-    it('if second item is very big', async () => {
-      await check(
-        doc(ul(li(p('f')), li(p('{<>}second is really big')))),
-        doc(ul(li(p('{<>}second is really big')), li(p('f')))),
-      );
-    });
-    it('if second item is empty', async () => {
-      await check(
-        doc(ul(li(p('first')), li(p('{<>}')))),
-        doc(ul(li(p('{<>}')), li(p('first')))),
-      );
-    });
-    it('if first item is empty', async () => {
-      await check(
-        doc(ul(li(p('')), li(p('sec{<>}ond')))),
-        doc(ul(li(p('sec{<>}ond')), li(p('')))),
-      );
-    });
-  });
-
-  describe('Press Alt-Down to move list', () => {
-    const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
-      sendKeyToPm(editorView, 'Alt-Down');
-      expect(editorView.state).toEqualDocAndSelection(afterDoc);
-    };
-
-    it('doesnt work with one item', async () => {
-      await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
-    });
-
-    it('doesnt work if running on last item', async () => {
-      await check(
-        doc(ul(li(p('first')), li(p('second{<>}')))),
-        doc(ul(li(p('first')), li(p('second{<>}')))),
-      );
-    });
-
-    it('if item above exists and selection is in between', async () => {
-      await check(
-        doc(ul(li(p('sec{<>}ond')), li(p('first')))),
-        doc(ul(li(p('first')), li(p('sec{<>}ond')))),
-      );
-    });
-
-    it('if item below exists and selection is at end', async () => {
-      await check(
-        doc(ul(li(p('second{<>}')), li(p('first')))),
-        doc(ul(li(p('first')), li(p('second{<>}')))),
-      );
-    });
-
-    it('if item below exists and selection is in between', async () => {
-      await check(
-        doc(ul(li(p('sec{<>}ond')), li(p('first')))),
-        doc(ul(li(p('first')), li(p('sec{<>}ond')))),
-      );
-    });
-
-    it('if item below exists and selection is at start', async () => {
-      await check(
-        doc(ul(li(p('{<>}second')), li(p('first')))),
-        doc(ul(li(p('first')), li(p('{<>}second')))),
-      );
-    });
-
-    it('if  last item is very big', async () => {
-      await check(
-        doc(ul(li(p('{<>}second')), li(p('first is really big')))),
-        doc(ul(li(p('first is really big')), li(p('{<>}second')))),
-      );
-    });
-    it('if first item is very big', async () => {
-      await check(
-        doc(ul(li(p('{<>}second is really big')), li(p('f')))),
-        doc(ul(li(p('f')), li(p('{<>}second is really big')))),
-      );
-    });
-    it('if first item is empty', async () => {
-      await check(
-        doc(ul(li(p('{<>}')), li(p('first')))),
-        doc(ul(li(p('first')), li(p('{<>}')))),
-      );
-    });
   });
 });
 
-describe('Toggling', () => {
+describe('Pressing Backspace', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Backspace');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('should outdent a first level list item to paragraph', async () => {
+    await check(
+      doc(ol(li(p('text')), li(p('{<>}')))),
+      doc(ol(li(p('text'))), p('{<>}')),
+    );
+  });
+
+  it('should outdent a first level list item to paragraph, with content', async () => {
+    await check(
+      doc(ol(li(p('text')), li(p('{<>}second text')))),
+      doc(ol(li(p('text'))), p('{<>}second text')),
+    );
+  });
+
+  it('should outdent a second level list item to first level', async () => {
+    await check(
+      doc(ol(li(p('text'), ol(li(p('{<>}')))))),
+      doc(ol(li(p('text')), li(p('{<>}')))),
+    );
+  });
+
+  it('should outdent a second level list item to first level, with content', async () => {
+    await check(
+      doc(ol(li(p('text'), ol(li(p('{<>}subtext')))))),
+      doc(ol(li(p('text')), li(p('{<>}subtext')))),
+    );
+  });
+
+  it('should move paragraph content back to previous (nested) list item', async () => {
+    await check(
+      doc(ol(li(p('text'), ol(li(p('text'))))), p('{<>}after')),
+      doc(ol(li(p('text'), ol(li(p('text{<>}after')))))),
+    );
+  });
+
+  it('keeps nodes same level as backspaced list item together in same list', async () => {
+    await check(
+      doc(
+        ol(li(p('{<>}A'), ol(li(p('B')))), li(p('C'))),
+
+        p('after'),
+      ),
+      doc(
+        p('{<>}A'),
+        ol(li(p('B')), li(p('C'))),
+
+        p('after'),
+      ),
+    );
+  });
+
+  it('merges two single-level lists when the middle paragraph is backspaced', async () => {
+    await check(
+      doc(
+        ol(li(p('A')), li(p('B'))),
+
+        p('{<>}middle'),
+
+        ol(li(p('C')), li(p('D'))),
+      ),
+      doc(ol(li(p('A')), li(p('B{<>}middle')), li(p('C')), li(p('D')))),
+    );
+  });
+
+  it('merges two double-level lists when the middle paragraph is backspaced', async () => {
+    await check(
+      doc(
+        ol(li(p('A'), ol(li(p('B')))), li(p('C'))),
+
+        p('{<>}middle'),
+
+        ol(li(p('D'), ol(li(p('E')))), li(p('F'))),
+      ),
+      doc(
+        ol(
+          li(p('A'), ol(li(p('B')))),
+          li(p('C{<>}middle')),
+          li(p('D'), ol(li(p('E')))),
+          li(p('F')),
+        ),
+      ),
+    );
+  });
+
+  it('moves directly to previous list item if it was empty', async () => {
+    await check(
+      doc(
+        ol(li(p('nice')), li(p('')), li(p('{<>}text'))),
+
+        p('after'),
+      ),
+      doc(
+        ol(li(p('nice')), li(p('{<>}text'))),
+
+        p('after'),
+      ),
+    );
+  });
+
+  it('moves directly to previous list item if it was empty, but with two paragraphs', async () => {
+    await check(
+      doc(
+        ol(li(p('nice')), li(p('')), li(p('{<>}text'), p('double'))),
+
+        p('after'),
+      ),
+      doc(
+        ol(li(p('nice')), li(p('{<>}text'), p('double'))),
+
+        p('after'),
+      ),
+    );
+  });
+
+  it('backspaces paragraphs within a list item rather than the item itself', async () => {
+    await check(
+      doc(
+        ol(li(p('')), li(p('nice'), p('{<>}two'))),
+
+        p('after'),
+      ),
+      doc(
+        ol(li(p('')), li(p('nice{<>}two'))),
+
+        p('after'),
+      ),
+    );
+  });
+
+  it('backspaces line breaks correctly within list items, with content after', async () => {
+    await check(
+      doc(
+        ol(li(p('')), li(p('nice'), p('two', br(), '{<>}three'))),
+
+        p('after'),
+      ),
+      doc(
+        ol(li(p('')), li(p('nice'), p('two{<>}three'))),
+
+        p('after'),
+      ),
+    );
+  });
+
+  it('backspaces line breaks correctly within list items, with content before', async () => {
+    await check(
+      doc(
+        ol(li(p('')), li(p('nice'), p('two', br(), br(), '{<>}'))),
+
+        p('after'),
+      ),
+      doc(
+        ol(li(p('')), li(p('nice'), p('two', br(), '{<>}'))),
+
+        p('after'),
+      ),
+    );
+  });
+});
+
+describe('Pressing Shift-Tab', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Shift-Tab');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('should outdent the list', async () => {
+    await check(
+      doc(ol(li(p('One'), ul(li(p('Two{<>}')))))),
+      doc(ol(li(p('One')), li(p('Two{<>}')))),
+    );
+  });
+});
+
+describe('Pressing Shift-Ctrl-8', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Shift-Ctrl-8');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('should outdent the list', async () => {
+    await check(doc(p('One{<>}')), doc(ul(li(p('One')))));
+  });
+});
+
+describe('Pressing Shift-Ctrl-9', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Shift-Ctrl-9');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('should outdent the list', async () => {
+    await check(doc(p('One{<>}')), doc(ol(li(p('One')))));
+  });
+});
+
+describe('Press Alt-Up / Down to move list', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Alt-Up');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+    sendKeyToPm(editorView, 'Alt-Down');
+    expect(editorView.state).toEqualDocAndSelection(beforeDoc);
+  };
+
+  it('doesnt work with one item', async () => {
+    await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
+  });
+
+  it('if item above exists and selection is at end', async () => {
+    await check(
+      doc(ul(li(p('first')), li(p('second{<>}')))),
+      doc(ul(li(p('second{<>}')), li(p('first')))),
+    );
+  });
+
+  it('if item above exists and selection is in between', async () => {
+    await check(
+      doc(ul(li(p('first')), li(p('sec{<>}ond')))),
+      doc(ul(li(p('sec{<>}ond')), li(p('first')))),
+    );
+  });
+
+  it('if item above exists and selection is at start', async () => {
+    await check(
+      doc(ul(li(p('first')), li(p('{<>}second')))),
+      doc(ul(li(p('{<>}second')), li(p('first')))),
+    );
+  });
+
+  it('if  first item is very big', async () => {
+    await check(
+      doc(ul(li(p('first is really big')), li(p('{<>}second')))),
+      doc(ul(li(p('{<>}second')), li(p('first is really big')))),
+    );
+  });
+  it('if second item is very big', async () => {
+    await check(
+      doc(ul(li(p('f')), li(p('{<>}second is really big')))),
+      doc(ul(li(p('{<>}second is really big')), li(p('f')))),
+    );
+  });
+  it('if second item is empty', async () => {
+    await check(
+      doc(ul(li(p('first')), li(p('{<>}')))),
+      doc(ul(li(p('{<>}')), li(p('first')))),
+    );
+  });
+  it('if first item is empty', async () => {
+    await check(
+      doc(ul(li(p('')), li(p('sec{<>}ond')))),
+      doc(ul(li(p('sec{<>}ond')), li(p('')))),
+    );
+  });
+});
+
+describe('Press Alt-Down to move list', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Alt-Down');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('doesnt work with one item', async () => {
+    await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
+  });
+
+  it('doesnt work if running on last item', async () => {
+    await check(
+      doc(ul(li(p('first')), li(p('second{<>}')))),
+      doc(ul(li(p('first')), li(p('second{<>}')))),
+    );
+  });
+
+  it('if item above exists and selection is in between', async () => {
+    await check(
+      doc(ul(li(p('sec{<>}ond')), li(p('first')))),
+      doc(ul(li(p('first')), li(p('sec{<>}ond')))),
+    );
+  });
+
+  it('if item below exists and selection is at end', async () => {
+    await check(
+      doc(ul(li(p('second{<>}')), li(p('first')))),
+      doc(ul(li(p('first')), li(p('second{<>}')))),
+    );
+  });
+
+  it('if item below exists and selection is in between', async () => {
+    await check(
+      doc(ul(li(p('sec{<>}ond')), li(p('first')))),
+      doc(ul(li(p('first')), li(p('sec{<>}ond')))),
+    );
+  });
+
+  it('if item below exists and selection is at start', async () => {
+    await check(
+      doc(ul(li(p('{<>}second')), li(p('first')))),
+      doc(ul(li(p('first')), li(p('{<>}second')))),
+    );
+  });
+
+  it('if  last item is very big', async () => {
+    await check(
+      doc(ul(li(p('{<>}second')), li(p('first is really big')))),
+      doc(ul(li(p('first is really big')), li(p('{<>}second')))),
+    );
+  });
+  it('if first item is very big', async () => {
+    await check(
+      doc(ul(li(p('{<>}second is really big')), li(p('f')))),
+      doc(ul(li(p('f')), li(p('{<>}second is really big')))),
+    );
+  });
+  it('if first item is empty', async () => {
+    await check(
+      doc(ul(li(p('{<>}')), li(p('first')))),
+      doc(ul(li(p('first')), li(p('{<>}')))),
+    );
+  });
+});
+
+describe('Command-c on empty selections', () => {
+  it('should work', async () => {
+    document.execCommand = jest.fn(() => {});
+
+    const { editorView } = await testEditor(
+      doc(ul(li(p('magic')), li(p('k{<>}j'), ul(li(p('foobar')))))),
+    );
+    sendKeyToPm(editorView, 'Cmd-c');
+    expect(editorView.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 10,
+        "type": "node",
+      }
+    `);
+    expect(editorView.state.doc).toEqualDocument(
+      doc(ul(li(p('magic')), li(p('kj'), ul(li(p('foobar')))))),
+    );
+    expect(document.execCommand).toBeCalledTimes(1);
+    expect(document.execCommand).toBeCalledWith('copy');
+  });
+});
+
+describe('Command-x on empty selections', () => {
+  test('should cut a document', async () => {
+    document.execCommand = jest.fn(() => {});
+
+    const { editorView } = await testEditor(
+      doc(ul(li(p('magic')), li(p('fooba{<>}r')))),
+    );
+    sendKeyToPm(editorView, 'Cmd-x');
+    expect(editorView.state.selection).toMatchInlineSnapshot(`
+        Object {
+          "anchor": 10,
+          "type": "node",
+        }
+      `);
+    expect(editorView.state.doc).toEqualDocument(
+      doc(ul(li(p('magic')), li(p('foobar')))),
+    );
+    expect(document.execCommand).toBeCalledTimes(1);
+  });
+});
+
+describe('Toggling the list', () => {
   const toggleOrderedList = (editorView) =>
     toggleList('ordered_list')(
       editorView.state,
