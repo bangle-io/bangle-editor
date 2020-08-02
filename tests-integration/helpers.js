@@ -1,11 +1,21 @@
+const prettier = require('prettier');
+
 const ctrlKey = process.env.CI ? 'Control' : 'Meta';
 
 module.exports = {
   mountEditor,
   getEditorState,
   ctrlKey,
+  getDoc,
 };
-
+function frmt(doc) {
+  return prettier.format(doc.toString(), {
+    semi: false,
+    parser: 'babel',
+    printWidth: 36,
+    singleQuote: true,
+  });
+}
 async function mountEditor(page, props) {
   await page.waitForSelector('#bangle-play-react-editor');
   //   await page.$eval(
@@ -23,4 +33,12 @@ async function getEditorState(page) {
   return page.evaluate(() => {
     return window.editor.state.toJSON();
   });
+}
+
+async function getDoc(page) {
+  return page
+    .evaluate(() => {
+      return window.editor.state.doc.toString();
+    })
+    .then(frmt);
 }
