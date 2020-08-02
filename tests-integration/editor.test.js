@@ -1,5 +1,6 @@
 const URL = `http://localhost:4444`;
 const PM_ID = '.ProseMirror';
+
 const { mountEditor, getEditorState, ctrlKey } = require('./helpers');
 
 jest.setTimeout(25 * 1000);
