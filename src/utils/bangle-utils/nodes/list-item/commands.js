@@ -10,6 +10,7 @@ import {
   removeNodeBefore,
   findParentNode,
   replaceSelectedNode,
+  canInsert,
 } from 'prosemirror-utils';
 import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
 import { compose } from '../../../../../src/utils/bangle-utils/utils/js-utils';
@@ -23,6 +24,8 @@ import {
   isEmptySelectionAtStart,
   sanitiseSelectionMarksForWrapping,
   mapChildren,
+  validPos,
+  validListParent,
 } from '../../utils/pm-utils';
 import { GapCursorSelection } from '../../gap-cursor';
 import { liftSelectionList, liftFollowingList } from './transforms';
@@ -661,10 +664,9 @@ export function cutEmptyCommand() {
       return false;
     }
     const { list_item: listItem } = state.schema.nodes;
-
     const parent = findParentNodeOfType(listItem)(state.selection);
 
-    if (!parent) {
+    if (!parent || !parent.node) {
       return false;
     }
 
@@ -703,46 +705,40 @@ export function copyEmptyCommand() {
   };
 }
 
-// WIP
 export function moveList(type, dir = 'UP') {
   const isDown = dir === 'DOWN';
   return (state, dispatch) => {
-    const {
-      bullet_list: bulletList,
-      ordered_list: orderedList,
-      list_item: listItem,
-    } = state.schema.nodes;
+    const { list_item: listItem } = state.schema.nodes;
 
-    if (!isInsideListItem(state)) {
+    if (!isInsideListItem(state) || !state.selection.empty) {
       return false;
     }
-
-    const grandParent = findParentNode((node) =>
-      [bulletList, orderedList].includes(node.type),
+    const parent = findParentNode((node) =>
+      validListParent(node.type, state.schema.nodes),
     )(state.selection);
-    const parent = findParentNodeOfType(listItem)(state.selection);
+    const current = findParentNodeOfType(listItem)(state.selection);
 
-    if (!grandParent.node || !parent.node) {
+    if (!parent.node || !current.node) {
       return false;
     }
 
-    const arr = mapChildren(grandParent.node, (node) => node);
+    const arr = mapChildren(parent.node, (node) => node);
 
-    let index = arr.indexOf(parent.node);
+    let index = arr.indexOf(current.node);
 
     let swapWith = isDown ? index + 1 : index - 1;
     if (swapWith >= arr.length || swapWith < 0) {
-      return false;
+      return moveEdgeListItem(dir)(state, dispatch);
     }
 
     const swapWithNodeSize = arr[swapWith].nodeSize;
     [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
 
     const $from = state.selection.$from;
-    const newGrandParent = grandParent.node.copy(Fragment.fromArray(arr));
+    const newGrandParent = parent.node.copy(Fragment.fromArray(arr));
 
     let tr = state.tr;
-    tr = tr.setSelection(NodeSelection.create(tr.doc, grandParent.pos));
+    tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
     tr = replaceSelectedNode(newGrandParent)(tr);
     tr = tr.setSelection(
       Selection.near(
@@ -751,6 +747,65 @@ export function moveList(type, dir = 'UP') {
         ),
       ),
     );
+    dispatch(tr);
+    return true;
+  };
+}
+
+function moveEdgeListItem(dir = 'UP') {
+  const isDown = dir === 'DOWN';
+  return (state, dispatch) => {
+    if (!isInsideListItem(state) || !state.selection.empty) {
+      return false;
+    }
+    const { list_item: listItem } = state.schema.nodes;
+    const grandParent = findParentNode((node) =>
+      validListParent(node.type, state.schema.nodes),
+    )(state.selection);
+    const parent = findParentNodeOfType(listItem)(state.selection);
+
+    if (!grandParent.node || !parent.node) {
+      return false;
+    }
+
+    // outdent if the not nested list item i.e. top level
+    if (state.selection.$from.depth === 3) {
+      return outdentList()(state, dispatch);
+    }
+
+    // If there is only one element, we need to delete the entire
+    // bullet_list/ordered_list so as not to leave any empty list behind.
+    let nodeToRemove = grandParent.node.childCount === 1 ? grandParent : parent;
+    let tr = state.tr.delete(
+      nodeToRemove.pos,
+      nodeToRemove.pos + nodeToRemove.node.nodeSize,
+    );
+
+    // - first // doing a (-1) will move us to end of 'first' hence allowing us to add an item
+    // - second  // start(-3) will give 11 which is the start of this list_item,
+    //   - third{<>}
+    let insertPos = state.selection.$from.start(-3) - 1;
+
+    // when going down move the position by the size of remaining content (after deletion)
+    if (isDown) {
+      let endPos = state.selection.$from.end(-3);
+      insertPos = endPos - nodeToRemove.node.nodeSize;
+
+      const uncleNodePos = endPos + 1;
+      let uncle =
+        validPos(uncleNodePos, state.doc) && state.doc.nodeAt(uncleNodePos);
+
+      if (uncle && uncle.type === listItem) {
+        // Example
+        // - first
+        // - second
+        //   - third{<>}
+        // - uncle
+        // {x} <== you want to go down here
+        insertPos += uncle.nodeSize;
+      }
+    }
+    tr = safeInsert(parent.node, insertPos)(tr);
     dispatch(tr);
     return true;
   };
