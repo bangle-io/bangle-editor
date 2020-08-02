@@ -1021,14 +1021,8 @@ describe('Command-c on empty selections', () => {
       doc(ul(li(p('magic')), li(p('k{<>}j'), ul(li(p('foobar')))))),
     );
     sendKeyToPm(editorView, 'Cmd-c');
-    expect(editorView.state.selection).toMatchInlineSnapshot(`
-      Object {
-        "anchor": 10,
-        "type": "node",
-      }
-    `);
-    expect(editorView.state.doc).toEqualDocument(
-      doc(ul(li(p('magic')), li(p('kj'), ul(li(p('foobar')))))),
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(ul(li(p('magic')), li(p('k{<>}j'), ul(li(p('foobar')))))),
     );
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('copy');
