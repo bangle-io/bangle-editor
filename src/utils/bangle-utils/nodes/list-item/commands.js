@@ -682,7 +682,7 @@ export function cutEmptyCommand() {
 }
 
 export function copyEmptyCommand() {
-  return (state, dispatch) => {
+  return (state, dispatch, view) => {
     if (!state.selection.empty || !isInsideListItem(state)) {
       return false;
     }
@@ -693,14 +693,18 @@ export function copyEmptyCommand() {
     if (!parent) {
       return false;
     }
-
+    const selection = state.selection;
     let tr = state.tr;
     tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
 
     dispatch(tr);
-
     document.execCommand('copy');
 
+    // restore the selection
+    const tr2 = view.state.tr;
+    dispatch(
+      tr2.setSelection(Selection.near(tr2.doc.resolve(selection.$from.pos))),
+    );
     return true;
   };
 }
