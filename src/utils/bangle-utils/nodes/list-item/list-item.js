@@ -18,7 +18,7 @@ export class ListItem extends Node {
     return {
       content: '(paragraph) (paragraph | bullet_list | ordered_list)*',
       defining: true,
-      draggable: false,
+      draggable: true,
       parseDOM: [{ tag: 'li' }],
       toDOM: () => ['li', 0],
     };
