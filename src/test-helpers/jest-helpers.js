@@ -132,10 +132,8 @@ function toEqualDocument(equals, utils, expand) {
           });
           return (
             `${utils.matcherHint('.toEqualDocument')}\n\n` +
-            `Expected JSON value of document to equal:\n${utils.printExpected(
-              expected,
-            )}\n` +
-            `Actual JSON:\n  ${utils.printReceived(actual)}` +
+            `Expected Tree value of document to equal:\n${frmt(expected)}\n` +
+            `Actual Tree:\n  ${frmt(actual)}` +
             `${diffString ? `\n\nDifference:\n\n${diffString}` : ''}`
           );
         };
