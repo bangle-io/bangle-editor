@@ -484,10 +484,6 @@ describe('Press Alt-Up / Down to move list', () => {
     expect(editorView.state).toEqualDocAndSelection(beforeDoc);
   };
 
-  it('doesnt work with one item', async () => {
-    await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
-  });
-
   it('if item above exists and selection is at end', async () => {
     await check(
       doc(ul(li(p('first')), li(p('second{<>}')))),
@@ -527,10 +523,426 @@ describe('Press Alt-Up / Down to move list', () => {
       doc(ul(li(p('{<>}')), li(p('first')))),
     );
   });
+
   it('if first item is empty', async () => {
     await check(
       doc(ul(li(p('')), li(p('sec{<>}ond')))),
       doc(ul(li(p('sec{<>}ond')), li(p('')))),
+    );
+  });
+});
+
+describe('Move up for first item in their level', () => {
+  const checkUp = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Alt-Up');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('apex item is outdented', async () => {
+    // prettier-ignore
+    await checkUp(
+      doc(
+        ul(
+          li(p('first{<>}')),
+          li(p('second'))
+        )
+      ),
+      doc(
+        p('first'),
+        ul(
+          li(p('second'))
+        )
+      ),
+    );
+  });
+
+  it('simple', async () => {
+    // prettier-ignore
+    await checkUp(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1{<>}')),
+            li(p('nested:2'))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('nested:1')),
+          li(p('second'), ul(
+            li(p('nested:2'))
+          ))
+        )
+      ),
+    );
+  });
+
+  it('any nested children also move along', async () => {
+    // prettier-ignore
+    await checkUp(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1{<>}'), ul(
+              li(p('nested-child:1'))
+            )),
+            li(p('nested:2'))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('nested:1'), ul(
+            li(p('nested-child:1'))
+          )),
+          li(p('second'), ul(
+            li(p('nested:2'))
+          ))
+        )
+      ),
+    );
+  });
+
+  it('deeply nested list works', async () => {
+    // prettier-ignore
+    await checkUp(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1'), ul(
+              li(p('nested-child:1{<>}'))
+            )),
+            li(p('nested:2'))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested-child:1')),
+            li(p('nested:1')),
+            li(p('nested:2'))
+          ))
+        )
+      ),
+    );
+  });
+
+  it('encounters uncle', async () => {
+    // prettier-ignore
+    await checkUp(
+      doc(
+        ul(
+          li(p('uncle')),
+          li(p('second'), ul(
+            li(p('nested:1{<>}')),
+            li(p('nested:2'))
+          )),
+        )
+      ),
+      doc(
+        ul(
+          li(p('uncle')),
+          li(p('nested:1')),
+          li(p('second'), ul(
+            li(p('nested:2'))
+          )),
+        )
+      ),
+    );
+  });
+
+  it('encounters uncle with children', async () => {
+    // prettier-ignore
+    await checkUp(
+      doc(
+        ul(
+          li(p('uncle'), ul(
+            li(p('uncles child:1')),
+            li(p('uncles child:2')),
+          )),
+          li(p('first'), ul(
+            li(p('nested:1{<>}')),
+            li(p('nested:2')),
+          )),
+        )
+      ),
+      doc(
+        ul(
+          li(p('uncle'), ul(
+            li(p('uncles child:1')),
+            li(p('uncles child:2')),
+          )),
+          li(p('nested:1')),
+          li(p('first'), ul(
+            li(p('nested:2')),
+          )),
+        )
+      ),
+    );
+  });
+});
+
+describe('Move down for last item in their level', () => {
+  const checkDown = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Alt-Down');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it('rock bottom item is outdented', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second{<>}'))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first'))
+        ),
+        p('second'),
+      ),
+    );
+  });
+
+  it('simple', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2{<>}'))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1'))
+          )),
+          li(p('nested:2')),
+        )
+      ),
+    );
+  });
+
+  it('any nested children also move along', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2{<>}'), ul(
+              li(p('nested-child:1'))
+            )),
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1'))
+          )),
+          li(p('nested:2'), ul(
+            li(p('nested-child:1'))
+          )),
+        )
+      ),
+    );
+  });
+
+  it('deeply nested list works', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2'), ul(
+              li(p('nested-child:1{<>}')),
+            )),
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2')),
+            li(p('nested-child:1')),
+          ))
+        )
+      ),
+    );
+  });
+
+  it('encounters uncle', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2{<>}'))
+          )),
+          li(p('uncle')),
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1'))
+          )),
+          li(p('uncle')),
+          li(p('nested:2')),
+        )
+      ),
+    );
+  });
+
+  it('encounters uncle with children', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2{<>}')),
+          )),
+          li(p('uncle'), ul(
+            li(p('uncles child:1')),
+            li(p('uncles child:2')),
+          )),
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+          )),
+          li(p('uncle'), ul(
+            li(p('uncles child:1')),
+            li(p('uncles child:2')),
+          )),
+          li(p('nested:2')),
+        )
+      ),
+    );
+  });
+  it('encounters uncles with children', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2{<>}')),
+          )),
+          li(p('uncle'), ul(
+            li(p('uncles child:1')),
+            li(p('uncles child:2')),
+          )),
+          li(p('uncle2'), ul(
+            li(p('uncles2 child:1')),
+            li(p('uncles2 child:2')),
+          )),
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+          )),
+          li(p('uncle'), ul(
+            li(p('uncles child:1')),
+            li(p('uncles child:2')),
+          )),
+          li(p('nested:2')),
+          li(p('uncle2'), ul(
+            li(p('uncles2 child:1')),
+            li(p('uncles2 child:2')),
+          )),
+        )
+      ),
+    );
+  });
+
+  it('outdents to list', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+          )),
+          li(p('thir{<>}d')),
+        ),
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+          )),
+        ),
+        p('third'),
+      ),
+    );
+  });
+
+  it('outdents to list if other elements below', async () => {
+    // prettier-ignore
+    await checkDown(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+          )),
+          li(p('third{<>}')),
+        ),
+        ol(
+          li(p('1'))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+          )),
+        ),
+        p('third'),
+        ol(
+          li(p('1'))
+        )
+      ),
     );
   });
 });
@@ -542,14 +954,14 @@ describe('Press Alt-Down to move list', () => {
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
 
-  it('doesnt work with one item', async () => {
-    await check(doc(ul(li(p('first{<>}')))), doc(ul(li(p('first{<>}')))));
+  it('outdents single item', async () => {
+    await check(doc(ul(li(p('first{<>}')))), doc(p('first{<>}')));
   });
 
-  it('doesnt work if running on last item', async () => {
+  it('works if running on last item', async () => {
     await check(
       doc(ul(li(p('first')), li(p('second{<>}')))),
-      doc(ul(li(p('first')), li(p('second{<>}')))),
+      doc(ul(li(p('first'))), p('second{<>}')),
     );
   });
 
@@ -1477,7 +1889,7 @@ describe('Toggling the list', () => {
       );
     });
 
-    it('should only change type to bullet list when toggling orderedList to bulletList', async () => {
+    it('should change type to bullet list when toggling orderedList to bulletList', async () => {
       const { editorView } = await testEditor(
         doc(
           ol(

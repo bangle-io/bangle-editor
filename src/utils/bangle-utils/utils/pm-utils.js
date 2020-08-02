@@ -14,6 +14,13 @@ export function isMarkActive(editorState, type) {
   return Boolean(editorState.doc.rangeHasMark(from, to, type));
 }
 
+export const validPos = (pos, doc) =>
+  Number.isInteger(pos) && pos >= 0 && pos < doc.content.size;
+
+export const validListParent = (type, schemaNodes) => {
+  const { bullet_list: bulletList, ordered_list: orderedList } = schemaNodes;
+  return [bulletList, orderedList].includes(type);
+};
 // export function isMarkActive(mark, doc, from, to) {
 //   let active = false;
 // // TIP on how to iterate between all nodes
