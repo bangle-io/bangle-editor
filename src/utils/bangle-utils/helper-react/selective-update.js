@@ -1,7 +1,7 @@
 import React from 'react';
 import { uuid } from '../utils/js-utils';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('SelectiveUpdate', ...args);
@@ -34,7 +34,7 @@ export class SelectiveUpdate extends React.Component {
   }
 
   render() {
-    log('rendering', this.uid);
+    log('rendering:', this.props.elementName, this.uid);
     return this.props.render(this.state);
   }
 }

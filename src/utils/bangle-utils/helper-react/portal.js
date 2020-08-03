@@ -54,9 +54,9 @@ export class PortalProviderAPI extends Emitter {
     }
 
     log('PortalProviderAPI: creating new', uid);
-
     const portalElement = createPortal(
       <SelectiveUpdate
+        elementName={Element.displayName}
         renderKey={this.getRenderKey(container)}
         forceUpdateKey="#force_update"
         emitter={this}

@@ -72,7 +72,9 @@ export class ReactEditor extends React.PureComponent {
 class PortalRenderer extends React.Component {
   static contextType = EditorOnReadyContext;
   editorRenderTarget = React.createRef();
-
+  state = {
+    counter: 0,
+  };
   componentDidMount() {
     const { editorOptions } = this.props;
     const node = this.editorRenderTarget.current;
@@ -92,7 +94,7 @@ class PortalRenderer extends React.Component {
   }
 
   handleForceUpdate = () => {
-    this.forceUpdate();
+    this.setState((state) => ({ counter: state.counter + 1 }));
   };
 
   componentWillUnmount() {
