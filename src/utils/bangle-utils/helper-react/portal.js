@@ -20,6 +20,7 @@ export class PortalProviderAPI extends Emitter {
 
     this.#calcPortals = true;
     this.#portalsMap.set(container, portalElement);
+    this.emit('#root_update');
   }
 
   portalRemove(container) {
@@ -27,6 +28,7 @@ export class PortalProviderAPI extends Emitter {
 
     this.#calcPortals = true;
     this.#portalsMap.delete(container);
+    this.emit('#root_update');
   }
 
   getPortals() {

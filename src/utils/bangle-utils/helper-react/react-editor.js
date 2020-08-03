@@ -87,10 +87,8 @@ class PortalRenderer extends React.Component {
       this.editor.focus();
     }
 
-    this.props.portalProviderAPI.on(
-      '#force_update',
-      () => this.handleForceUpdate,
-    );
+    this.props.portalProviderAPI.on('#root_update', this.handleForceUpdate);
+    this.props.portalProviderAPI.on('#force_update', this.handleForceUpdate);
   }
 
   handleForceUpdate = () => {
@@ -100,6 +98,7 @@ class PortalRenderer extends React.Component {
   componentWillUnmount() {
     log('PortalRendererWrapper unmounting');
     this.props.portalProviderAPI.off('#force_update', this.handleForceUpdate);
+    this.props.portalProviderAPI.off('#root_update', this.handleForceUpdate);
     // When editor is destroyed it takes care  of calling destroyNodeView
     this.editor && this.editor.destroy();
     this.editor = undefined;
