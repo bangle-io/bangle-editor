@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   sinkListItem,
   splitToDefaultListItem,
   liftListItem,
 } from 'tiptap-commands';
+import { uuid } from '../utils/js-utils';
 
 import { Node } from './node';
+
+const LOG = true;
+
+function log(...args) {
+  if (LOG) console.log('todo-item.js', ...args);
+}
 
 export class TodoItem extends Node {
   get name() {
@@ -15,7 +22,17 @@ export class TodoItem extends Node {
   get defaultOptions() {
     return {
       nested: true,
-      nodeViewSetContentDOM: true,
+      getContentDOM: () => {
+        const d = document.createElement('div');
+        d.setAttribute('data-uuid', 'todo-content-dom-' + uuid(4));
+        return { dom: d };
+      },
+      createDomRef: () => {
+        const d = document.createElement('li');
+        d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
+
+        return d;
+      },
     };
   }
 
@@ -66,10 +83,6 @@ export class TodoItem extends Node {
     };
   }
 
-  nodeViewOptions = {
-    wrapperElement: 'li',
-  };
-
   render = (props) => {
     return <TodoItemComp {...props} />;
   };
@@ -78,7 +91,12 @@ export class TodoItem extends Node {
 let counter = 0;
 function TodoItemComp(props) {
   const { node, view, handleRef, updateAttrs } = props;
+
   let uid = node.type.name + counter++;
+
+  useEffect(() => {
+    log('mounting', uid);
+  }, []);
 
   const { 'data-done': done } = node.attrs;
   return (

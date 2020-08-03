@@ -4,7 +4,7 @@ import { objUid } from '../utils/object-uid';
 import { SelectiveUpdate } from './selective-update';
 import { Emitter } from '../utils/emitter';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('portal.js:', ...args);
@@ -20,6 +20,7 @@ export class PortalProviderAPI extends Emitter {
 
     this.#calcPortals = true;
     this.#portalsMap.set(container, portalElement);
+    this.emit('#root_update');
   }
 
   portalRemove(container) {
@@ -27,6 +28,7 @@ export class PortalProviderAPI extends Emitter {
 
     this.#calcPortals = true;
     this.#portalsMap.delete(container);
+    this.emit('#root_update');
   }
 
   getPortals() {
@@ -52,9 +54,9 @@ export class PortalProviderAPI extends Emitter {
     }
 
     log('PortalProviderAPI: creating new', uid);
-
     const portalElement = createPortal(
       <SelectiveUpdate
+        elementName={Element.displayName}
         renderKey={this.getRenderKey(container)}
         forceUpdateKey="#force_update"
         emitter={this}
