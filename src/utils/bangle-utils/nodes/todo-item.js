@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   sinkListItem,
   splitToDefaultListItem,
@@ -6,6 +6,12 @@ import {
 } from 'tiptap-commands';
 
 import { Node } from './node';
+
+const LOG = true;
+
+function log(...args) {
+  if (LOG) console.log('todo-item.js', ...args);
+}
 
 export class TodoItem extends Node {
   get name() {
@@ -78,7 +84,12 @@ export class TodoItem extends Node {
 let counter = 0;
 function TodoItemComp(props) {
   const { node, view, handleRef, updateAttrs } = props;
+
   let uid = node.type.name + counter++;
+
+  useEffect(() => {
+    log('mounting', uid);
+  }, []);
 
   const { 'data-done': done } = node.attrs;
   return (

@@ -4,10 +4,10 @@ export const EditorContext = React.createContext(null);
 export const TransactionContext = React.createContext(null);
 export const EditorOnReadyContext = React.createContext(null);
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
-  if (LOG) console.log(...args);
+  if (LOG) console.log('editor-context.js', ...args);
 }
 
 export class EditorContextProvider extends React.Component {
@@ -37,6 +37,7 @@ export class EditorContextProvider extends React.Component {
 
   // TODO do we need this?
   handleEditorUpdate = () => {
+    log('frce updating state');
     // This is needed to automatically update NodeViews in portal.js
     // TODO: I wonder if this can cause infinite loop
     this.setState((state) => ({

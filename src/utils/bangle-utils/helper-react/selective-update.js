@@ -4,7 +4,7 @@ import { uuid } from '../utils/js-utils';
 const LOG = true;
 
 function log(...args) {
-  if (LOG) console.log('SelectiveUpdate', ...args);
+  if (LOG) console.log('selective-update.js', ...args);
 }
 
 export class SelectiveUpdate extends React.Component {

@@ -4,7 +4,7 @@ import { objUid } from '../utils/object-uid';
 import { SelectiveUpdate } from './selective-update';
 import { Emitter } from '../utils/emitter';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('portal.js:', ...args);

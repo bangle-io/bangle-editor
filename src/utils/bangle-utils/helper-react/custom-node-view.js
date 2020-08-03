@@ -1,3 +1,9 @@
+import { uuid } from '../utils/js-utils';
+const LOG = true;
+
+function log(...args) {
+  if (LOG) console.log('customer-node-view.js', ...args);
+}
 export class CustomNodeView {
   constructor({
     node,
@@ -53,6 +59,7 @@ export class CustomNodeView {
     }
 
     this.node = node;
+    log('update');
     this.renderComp();
 
     return true;
@@ -62,7 +69,7 @@ export class CustomNodeView {
     if (!this.domRef) {
       return;
     }
-
+    log('destroy');
     this._destroyNodeView(this.domRef);
     this.domRef = undefined;
     this.contentDOM = undefined;
@@ -70,11 +77,13 @@ export class CustomNodeView {
 
   selectNode() {
     this.dom.classList.add('ProseMirror-selectednode');
+    log('selectNode');
     this.renderComp({ selected: true });
   }
 
   deselectNode() {
     this.dom.classList.remove('ProseMirror-selectednode');
+    log('deselectNode');
     this.renderComp({ selected: false });
   }
 
@@ -102,7 +111,12 @@ export class CustomNodeView {
 
   // from atlas expected that the person may implement it differentyl
   getContentDOM() {
-    return this.setContentDOM ? document.createElement('div') : null;
+    if (!this.setContentDOM) {
+      return null;
+    }
+    const d = document.createElement('div');
+    d.setAttribute('id', 'content-dom-' + uuid());
+    return d;
   }
 
   // gets called by the div grabbing this and using
@@ -118,6 +132,7 @@ export class CustomNodeView {
       node.appendChild(contentDOM);
     }
     this.contentDOM = node;
+    log('handleRef', node, contentDOM);
   };
 
   // from tiptap
@@ -157,10 +172,12 @@ export class CustomNodeView {
     // nodeView if DOM structure has nested plain "div"s, it doesn't see the
     // difference between them and it kills the nodeView
     this.domRef.classList.add(`${this.node.type.name}NodeView-Wrap`); // Do we need this?
+    log('init');
     this.renderComp();
   }
 
   renderComp({ selected = false } = {}) {
+    log('rendering', this.contentDOM, this.dom);
     this._renderNodeView({
       renderingPayload: {
         node: this.node,

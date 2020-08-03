@@ -7,10 +7,10 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
-  if (LOG) console.log(...args);
+  if (LOG) console.log('react-editor.js', ...args);
 }
 
 export class ReactEditor extends React.PureComponent {
@@ -94,6 +94,7 @@ class PortalRenderer extends React.Component {
   }
 
   handleForceUpdate = () => {
+    log('force update');
     this.setState((state) => ({ counter: state.counter + 1 }));
   };
 
