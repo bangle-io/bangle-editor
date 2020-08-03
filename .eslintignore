@@ -2,3 +2,4 @@ archive
 .cache
 dist
 node_modules
+build
