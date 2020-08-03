@@ -4,6 +4,7 @@ import {
   splitToDefaultListItem,
   liftListItem,
 } from 'tiptap-commands';
+import { uuid } from '../utils/js-utils';
 
 import { Node } from './node';
 
@@ -21,7 +22,17 @@ export class TodoItem extends Node {
   get defaultOptions() {
     return {
       nested: true,
-      nodeViewSetContentDOM: true,
+      getContentDOM: () => {
+        const d = document.createElement('div');
+        d.setAttribute('data-uuid', 'todo-content-dom-' + uuid(4));
+        return { dom: d };
+      },
+      createDomRef: () => {
+        const d = document.createElement('li');
+        d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
+
+        return d;
+      },
     };
   }
 
@@ -71,10 +82,6 @@ export class TodoItem extends Node {
       'Shift-Tab': liftListItem(type),
     };
   }
-
-  nodeViewOptions = {
-    wrapperElement: 'li',
-  };
 
   render = (props) => {
     return <TodoItemComp {...props} />;

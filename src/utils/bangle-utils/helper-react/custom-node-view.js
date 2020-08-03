@@ -1,5 +1,4 @@
-import { uuid } from '../utils/js-utils';
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('customer-node-view.js', ...args);
@@ -21,7 +20,9 @@ export class CustomNodeView {
     this.wrapperElement = wrapperElement;
     // Note it is important that we not set contentDOM for leaf nodes
     // as it causes silent bugs
-    this.setContentDOM = Boolean(extension.options.nodeViewSetContentDOM);
+    this._getContentDOM = extension.options.getContentDOM;
+    this._createDomRef = extension.options.createDomRef;
+    this._viewShouldUpdate = extension.options.viewShouldUpdate;
     this._renderNodeView = renderNodeView;
     this._destroyNodeView = destroyNodeView;
     this.init();
@@ -34,6 +35,7 @@ export class CustomNodeView {
 
   // prevent a full re-render of the vue component on update
   // we'll handle prop updates in `update()`
+  // TODO look into this -- allow nodeViews to change this
   ignoreMutation(mutation) {
     // allow leaf nodes to be selected
     if (mutation.type === 'selection') {
@@ -58,9 +60,24 @@ export class CustomNodeView {
       this.setDomAttrs(node, this.domRef); // TODO is this actually doing anything ? copied from atlasian
     }
 
+    // View should not process a re-render if this is false.
+    // We dont want to destroy the view, so we return true.
+    if (!this.viewShouldUpdate(node)) {
+      this.node = node;
+      return true;
+    }
+
     this.node = node;
     log('update');
     this.renderComp();
+
+    return true;
+  }
+
+  viewShouldUpdate(nextNode) {
+    if (this._viewShouldUpdate) {
+      return this._viewShouldUpdate(nextNode);
+    }
 
     return true;
   }
@@ -100,8 +117,8 @@ export class CustomNodeView {
 
   // from atlas expected that the person may implement
   createDomRef() {
-    if (this.wrapperElement) {
-      return document.createElement(this.wrapperElement);
+    if (this._createDomRef) {
+      return this._createDomRef();
     }
 
     return this.node.isInline
@@ -111,27 +128,34 @@ export class CustomNodeView {
 
   // from atlas expected that the person may implement it differentyl
   getContentDOM() {
-    if (!this.setContentDOM) {
-      return null;
+    if (this._getContentDOM) {
+      return this._getContentDOM();
     }
-    const d = document.createElement('div');
-    d.setAttribute('id', 'content-dom-' + uuid());
-    return d;
+
+    return {
+      dom: undefined,
+      contentDOM: undefined,
+    };
   }
 
   // gets called by the div grabbing this and using
   // it like render(props, forWardRef) => <div ref={forwardRef} />
   handleRef = (node) => {
-    if (!this.setContentDOM) {
+    // React sends null node if unmounting
+    if (!node) {
+      log('empty node ');
+      return;
+    }
+    if (!this._getContentDOM) {
       throw new Error('Not allowed as no content dom allowed');
     }
 
-    const contentDOM = this.contentDOM;
+    const contentDOM = this.contentDOMWrapper || this.contentDOM;
+
     // move the contentDOM node inside the inner reference after rendering
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);
     }
-    this.contentDOM = node;
     log('handleRef', node, contentDOM);
   };
 
@@ -161,22 +185,27 @@ export class CustomNodeView {
 
     this.domRef = this.createDomRef();
     this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
-    const contentDOM = this.getContentDOM();
+    const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM();
 
-    if (this.domRef && contentDOM) {
-      this.domRef.appendChild(contentDOM);
-      this.contentDOM = contentDOM;
+    if (this.domRef && contentDOMWrapper) {
+      this.domRef.appendChild(contentDOMWrapper);
+      this.contentDOM = contentDOM ? contentDOM : contentDOMWrapper;
+      this.contentDOMWrapper = contentDOMWrapper || contentDOM;
     }
 
     // something gets messed up during mutation processing inside of a
     // nodeView if DOM structure has nested plain "div"s, it doesn't see the
     // difference between them and it kills the nodeView
-    this.domRef.classList.add(`${this.node.type.name}NodeView-Wrap`); // Do we need this?
+    this.domRef.classList.add(`${this.node.type.name}-NodeView-Wrap`); // Do we need this?
     log('init');
     this.renderComp();
   }
 
   renderComp({ selected = false } = {}) {
+    if (!this.domRef) {
+      return;
+    }
+
     log('rendering', this.contentDOM, this.dom);
     this._renderNodeView({
       renderingPayload: {

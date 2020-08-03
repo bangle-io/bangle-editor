@@ -529,7 +529,6 @@ export class Editor extends Emitter {
               extension,
               renderNodeView: this.options.renderNodeView,
               destroyNodeView: this.options.destroyNodeView,
-              ...extension.nodeViewOptions,
             });
           },
         };
