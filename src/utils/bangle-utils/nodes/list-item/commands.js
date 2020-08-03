@@ -673,7 +673,9 @@ export function cutEmptyCommand() {
     let tr = state.tr;
     tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
 
-    dispatch(tr);
+    if (dispatch) {
+      dispatch(tr);
+    }
 
     document.execCommand('cut');
 
@@ -697,14 +699,17 @@ export function copyEmptyCommand() {
     let tr = state.tr;
     tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
 
-    dispatch(tr);
+    if (dispatch) {
+      dispatch(tr);
+    }
     document.execCommand('copy');
 
     // restore the selection
     const tr2 = view.state.tr;
-    dispatch(
-      tr2.setSelection(Selection.near(tr2.doc.resolve(selection.$from.pos))),
-    );
+    if (dispatch)
+      dispatch(
+        tr2.setSelection(Selection.near(tr2.doc.resolve(selection.$from.pos))),
+      );
     return true;
   };
 }
@@ -751,7 +756,7 @@ export function moveList(type, dir = 'UP') {
         ),
       ),
     );
-    dispatch(tr);
+    if (dispatch) dispatch(tr);
     return true;
   };
 }
@@ -810,7 +815,7 @@ function moveEdgeListItem(dir = 'UP') {
       }
     }
     tr = safeInsert(parent.node, insertPos)(tr);
-    dispatch(tr);
+    if (dispatch) dispatch(tr);
     return true;
   };
 }
