@@ -509,30 +509,34 @@ export class Editor extends Emitter {
   }
 
   initNodeViews() {
-    return [...this.builtInExtensions, ...this.options.extensions]
+    if (!this.options.renderNodeView) {
+      throw new Error('need render handlers');
+    }
+    const nodeViews = [...this.builtInExtensions, ...this.options.extensions]
       .filter((extension) => ['node', 'mark'].includes(extension.type))
       .filter((extension) => extension.render)
-      .reduce((nodeViews, extension) => {
-        if (nodeViews[extension.name]) {
-          throw new Error('Already exists node view' + extension.name);
-        }
-        if (!this.options.renderNodeView || !this.options.renderNodeView) {
-          throw new Error('need render handlers');
-        }
-        return {
-          ...nodeViews,
-          [extension.name]: (node, view, getPos) => {
+      .map((extension) => {
+        return [
+          extension.name,
+          (node, view, getPos, decorations) => {
             return new CustomNodeView({
               node,
               view,
               getPos,
+              decorations,
               extension,
               renderNodeView: this.options.renderNodeView,
               destroyNodeView: this.options.destroyNodeView,
             });
           },
-        };
-      }, {});
+        ];
+      });
+    const nodeViewsObj = Object.fromEntries(nodeViews);
+    if (Object.keys(nodeViewsObj).length !== nodeViews.length) {
+      throw new Error('Multiple nodeviews with the same extension name');
+    }
+
+    return nodeViewsObj;
   }
 }
 

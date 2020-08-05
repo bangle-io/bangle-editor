@@ -8,16 +8,16 @@ export class CustomNodeView {
     node,
     view,
     getPos,
+    decorations,
     extension,
     renderNodeView,
     destroyNodeView,
-    wrapperElement,
   }) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
     this.extension = extension;
-    this.wrapperElement = wrapperElement;
+    this.decorations = decorations;
     // Note it is important that we not set contentDOM for leaf nodes
     // as it causes silent bugs
     this._getContentDOM = extension.options.getContentDOM;
@@ -26,6 +26,29 @@ export class CustomNodeView {
     this._renderNodeView = renderNodeView;
     this._destroyNodeView = destroyNodeView;
     this.init();
+  }
+
+  init() {
+    if (typeof this.node.attrs['data-type'] !== 'string') {
+      throw new Error(`NodeView:${this.extension.name} must have a data-type`);
+    }
+
+    this.domRef = this.createDomRef();
+    this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
+    const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM();
+
+    if (this.domRef && contentDOMWrapper) {
+      this.domRef.appendChild(contentDOMWrapper);
+      this.contentDOM = contentDOM ? contentDOM : contentDOMWrapper;
+      this.contentDOMWrapper = contentDOMWrapper || contentDOM;
+    }
+
+    // something gets messed up during mutation processing inside of a
+    // nodeView if DOM structure has nested plain "div"s, it doesn't see the
+    // difference between them and it kills the nodeView
+    this.domRef.classList.add(`${this.node.type.name}-NodeView-Wrap`); // Do we need this?
+    log('init');
+    this.renderComp();
   }
 
   // PM methods
@@ -60,14 +83,13 @@ export class CustomNodeView {
       this.setDomAttrs(node, this.domRef); // TODO is this actually doing anything ? copied from atlasian
     }
 
+    this.node = node;
     // View should not process a re-render if this is false.
     // We dont want to destroy the view, so we return true.
     if (!this.viewShouldUpdate(node)) {
-      this.node = node;
       return true;
     }
 
-    this.node = node;
     log('update');
     this.renderComp();
 
@@ -126,7 +148,7 @@ export class CustomNodeView {
       : document.createElement('div');
   }
 
-  // from atlas expected that the person may implement it differentyl
+  // from atlas expected that the person may implement it different
   getContentDOM() {
     if (this._getContentDOM) {
       return this._getContentDOM();
@@ -177,29 +199,6 @@ export class CustomNodeView {
 
     this.view.dispatch(tr);
   };
-
-  init() {
-    if (typeof this.node.attrs['data-type'] !== 'string') {
-      throw new Error(`NodeView:${this.extension.name} must have a data-type`);
-    }
-
-    this.domRef = this.createDomRef();
-    this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
-    const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM();
-
-    if (this.domRef && contentDOMWrapper) {
-      this.domRef.appendChild(contentDOMWrapper);
-      this.contentDOM = contentDOM ? contentDOM : contentDOMWrapper;
-      this.contentDOMWrapper = contentDOMWrapper || contentDOM;
-    }
-
-    // something gets messed up during mutation processing inside of a
-    // nodeView if DOM structure has nested plain "div"s, it doesn't see the
-    // difference between them and it kills the nodeView
-    this.domRef.classList.add(`${this.node.type.name}-NodeView-Wrap`); // Do we need this?
-    log('init');
-    this.renderComp();
-  }
 
   renderComp({ selected = false } = {}) {
     if (!this.domRef) {
