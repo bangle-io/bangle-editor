@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { objUid } from '../utils/object-uid';
-import { SelectiveUpdate } from './selective-update';
 import { Emitter } from '../utils/emitter';
 import { CachedMap } from '../utils/js-utils';
 const LOG = true;
@@ -28,15 +27,31 @@ export class PortalProviderAPI extends Emitter {
     }
 
     log('PortalProviderAPI: creating new', renderKey);
+
+    const SelectiveComp = React.memo(
+      (props) => {
+        const [state, setState] = useState(props);
+        const emitter = this;
+        const renderKey = objUid.get(container);
+
+        React.useEffect(() => {
+          log('setting up', renderKey);
+          emitter.on(renderKey, setState);
+          return () => {
+            log('emitter.off', renderKey);
+            emitter.off(renderKey, setState);
+          };
+        }, [emitter, renderKey]);
+        log('rendering func', renderKey);
+
+        return <Element {...state} />;
+      },
+      // We never want to update the function via props
+      () => true,
+    );
+
     const portalElement = createPortal(
-      <SelectiveUpdate
-        elementName={Element.displayName}
-        renderKey={renderKey}
-        forceUpdateKey="#force_update"
-        emitter={this}
-        initialProps={props}
-        render={(props) => <Element {...props} />}
-      />,
+      <SelectiveComp {...props} />,
       container,
       renderKey,
     );
