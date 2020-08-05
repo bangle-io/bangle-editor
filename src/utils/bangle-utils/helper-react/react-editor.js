@@ -19,16 +19,6 @@ export class ReactEditor extends React.PureComponent {
   };
   portalProviderAPI = new PortalProviderAPI();
 
-  get options() {
-    const defaultOptions = {
-      id: 'ReactEditor-wrapper',
-      renderNodeView: this.renderNodeView,
-      destroyNodeView: this.destroyNodeView,
-      content: this.props.content,
-    };
-    return Object.assign({}, defaultOptions, this.props.options);
-  }
-
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.content !== prevProps.content) {
@@ -44,26 +34,16 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI = null;
   }
 
-  // called from custom-node-view.js#renderComp
-  renderNodeView = ({ dom, extension, renderingPayload }) => {
-    if (!extension.render.displayName) {
-      extension.render.displayName = `ParentNodeView[${extension.name}]`;
-    }
-    this.portalProviderAPI.render(extension.render, renderingPayload, dom);
-  };
-
-  destroyNodeView = (dom) => {
-    log('removing nodeView dom');
-    this.portalProviderAPI.remove(dom);
-  };
-
   render() {
     return (
       <PortalRenderer
         // This allows us to let react handle creating destroying Editor
         key={this.state.editorKey}
         portalProviderAPI={this.portalProviderAPI}
-        editorOptions={this.options}
+        editorOptions={{
+          ...this.props.options,
+          content: this.props.content,
+        }}
       />
     );
   }
@@ -79,7 +59,11 @@ class PortalRenderer extends React.Component {
     const { editorOptions } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
-      this.editor = new Editor(node, editorOptions);
+      this.editor = new Editor(node, {
+        ...editorOptions,
+        renderNodeView: this.renderNodeView,
+        destroyNodeView: this.destroyNodeView,
+      });
       if (editorOptions.devtools) {
         applyDevTools(this.editor.view);
         window.editor = this.editor;
@@ -92,6 +76,23 @@ class PortalRenderer extends React.Component {
     this.props.portalProviderAPI.on('#root_update', this.handleForceUpdate);
     this.props.portalProviderAPI.on('#force_update', this.handleForceUpdate);
   }
+
+  // called from custom-node-view.js#renderComp
+  renderNodeView = ({ dom, extension, renderingPayload }) => {
+    if (!extension.render.displayName) {
+      extension.render.displayName = `ParentNodeView[${extension.name}]`;
+    }
+    this.props.portalProviderAPI.render(
+      extension.render,
+      renderingPayload,
+      dom,
+    );
+  };
+
+  destroyNodeView = (dom) => {
+    log('removing nodeView dom');
+    this.props.portalProviderAPI.remove(dom);
+  };
 
   handleForceUpdate = () => {
     log('force update');

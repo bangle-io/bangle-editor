@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { objUid } from '../utils/object-uid';
 import { SelectiveUpdate } from './selective-update';
 import { Emitter } from '../utils/emitter';
-
+import { CachedMap } from '../utils/js-utils';
 const LOG = true;
 
 function log(...args) {
@@ -11,64 +11,39 @@ function log(...args) {
 }
 
 export class PortalProviderAPI extends Emitter {
-  #portalsMap = new Map();
-  #portals = [...this.#portalsMap.values()];
-  #calcPortals = false;
-
-  portalAdd(container, portalElement) {
-    log('adding', this.getRenderKey(container));
-
-    this.#calcPortals = true;
-    this.#portalsMap.set(container, portalElement);
-    this.emit('#root_update');
-  }
-
-  portalRemove(container) {
-    log('removing', this.getRenderKey(container));
-
-    this.#calcPortals = true;
-    this.#portalsMap.delete(container);
-    this.emit('#root_update');
-  }
+  #portalsMap = new CachedMap();
 
   getPortals() {
-    if (this.#calcPortals) {
-      this.#calcPortals = false;
-      this.#portals = [...this.#portalsMap.values()];
-    }
-    return this.#portals;
-  }
-
-  getRenderKey(container) {
-    return 'update_' + objUid.get(container);
+    return this.#portalsMap.arrayValues();
   }
 
   render(Element, props, container) {
-    const uid = objUid.get(container);
+    const renderKey = objUid.get(container);
     // If the element already exists communicate
     // to selectively update it, bypassing the entire array re-render in PortalRenderer
     if (this.#portalsMap.has(container)) {
-      log('PortalProviderAPI: updating existing', uid);
-      this.emit(this.getRenderKey(container), props);
+      log('PortalProviderAPI: updating existing', renderKey);
+      this.emit(renderKey, props);
       return;
     }
 
-    log('PortalProviderAPI: creating new', uid);
+    log('PortalProviderAPI: creating new', renderKey);
     const portalElement = createPortal(
       <SelectiveUpdate
         elementName={Element.displayName}
-        renderKey={this.getRenderKey(container)}
+        renderKey={renderKey}
         forceUpdateKey="#force_update"
         emitter={this}
         initialProps={props}
         render={(props) => <Element {...props} />}
       />,
       container,
-      uid,
+      renderKey,
     );
-    // Note: the context manager takes care of updating
-    //  the components i.e. PortalRenderer.render
-    this.portalAdd(container, portalElement);
+
+    log('adding', objUid.get(container));
+    this.#portalsMap.set(container, portalElement);
+    this.emit('#root_update');
   }
 
   forceUpdate() {
@@ -77,14 +52,14 @@ export class PortalProviderAPI extends Emitter {
   }
 
   remove(container) {
-    log('removing', this.getRenderKey(container));
-    this.portalRemove(container);
+    log('removing', objUid.get(container));
+    this.#portalsMap.delete(container);
+    this.emit('#root_update');
   }
 
   destroy() {
     log('destroying portal');
     this.#portalsMap = null;
-    this.#portals = [];
     super.destroy();
   }
 }
