@@ -1,4 +1,4 @@
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('customer-node-view.js', ...args);
@@ -166,6 +166,11 @@ export class CustomNodeView {
     // React sends null node if unmounting
     if (!node) {
       log('empty node ');
+      if (this.refNode) {
+        const contentDOM = this.contentDOMWrapper || this.contentDOM;
+        this.refNode.removeChild(contentDOM);
+        this.refNode = null;
+      }
       return;
     }
     if (!this._getContentDOM) {
@@ -177,6 +182,7 @@ export class CustomNodeView {
     // move the contentDOM node inside the inner reference after rendering
     if (node && contentDOM && !node.contains(contentDOM)) {
       node.appendChild(contentDOM);
+      this.refNode = node;
     }
     log('handleRef', node, contentDOM);
   };

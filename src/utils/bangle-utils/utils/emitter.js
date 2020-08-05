@@ -34,6 +34,10 @@ export class Emitter {
       if (callbacks) {
         if (fn) {
           this._callbacks[event] = callbacks.filter((cb) => cb !== fn);
+          if (this._callbacks[event].length === callbacks.length) {
+            console.log('problen', fn);
+            throw new Error('Off called with unknown fn');
+          }
         } else {
           this._callbacks[event] = []; // remove all handlers
         }

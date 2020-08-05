@@ -1,7 +1,7 @@
 import React from 'react';
 import applyDevTools from 'prosemirror-dev-tools';
 import PropTypes from 'prop-types';
-
+import ReactDOM from 'react-dom';
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
@@ -105,7 +105,17 @@ class PortalRenderer extends React.Component {
     this.props.portalProviderAPI.off('#root_update', this.handleForceUpdate);
     // When editor is destroyed it takes care  of calling destroyNodeView
     this.editor && this.editor.destroy();
+    if (this.props.editorOptions.devtools) {
+      const DEVTOOLS_CLASS_NAME = '__prosemirror-dev-tools__';
+      let place = document.querySelector(`.${DEVTOOLS_CLASS_NAME}`);
+      if (place) {
+        console.log('unmounting');
+        ReactDOM.unmountComponentAtNode(place);
+        place.innerHTML = '';
+      }
+    }
     this.editor = undefined;
+    window.editor = null;
   }
 
   render() {
