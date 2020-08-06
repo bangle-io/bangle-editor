@@ -17,17 +17,27 @@ export class PortalProviderAPI extends Emitter {
     return this.#portalsMap.arrayValues();
   }
 
-  render(Element, props, container) {
+  // Returns true if a new element was added
+  // false if an element already existed
+  render(
+    { dom: container, extension, renderingPayload }, // Element, props, container
+  ) {
+    const Element = extension.render;
+    const props = renderingPayload;
     const renderKey = objUid.get(container);
     // If the element already exists communicate
     // to selectively update it, bypassing the entire array re-render in PortalRenderer
     if (this.#portalsMap.has(container)) {
       log('PortalProviderAPI: updating existing', renderKey);
       this.emit(renderKey, props);
-      return;
+      return false;
     }
 
     log('PortalProviderAPI: creating new', renderKey);
+
+    if (!extension.render.displayName) {
+      extension.render.displayName = `ParentNodeView[${extension.name}]`;
+    }
 
     const portalElement = createPortal({
       Element,
@@ -40,7 +50,7 @@ export class PortalProviderAPI extends Emitter {
 
     log('adding', renderKey);
     this.#portalsMap.set(container, portalElement);
-    this.emit('#root_update');
+    return true;
   }
 
   forceUpdate() {
@@ -52,7 +62,7 @@ export class PortalProviderAPI extends Emitter {
     const renderKey = objUid.get(container);
     log('removing', renderKey);
     this.#portalsMap.delete(container);
-    this.emit('#root_update');
+    return true;
   }
 
   destroy() {

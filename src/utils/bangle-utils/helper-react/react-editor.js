@@ -21,9 +21,8 @@ export class ReactEditor extends React.PureComponent {
   portalProviderAPI = new PortalProviderAPI();
 
   componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
     if (this.props.content !== prevProps.content) {
-      console.log('Content not same, creating a new Editor');
+      log('Content not same, creating a new Editor');
       this.setState((state) => ({
         editorKey: state.editorKey + 1,
       }));
@@ -37,50 +36,63 @@ export class ReactEditor extends React.PureComponent {
 
   // called from custom-node-view.js#renderComp
   renderNodeView = ({ dom, extension, renderingPayload }) => {
-    if (!extension.render.displayName) {
-      extension.render.displayName = `ParentNodeView[${extension.name}]`;
+    if (this.portalProviderAPI.render({ dom, extension, renderingPayload })) {
+      this.rerender();
     }
-    this.portalProviderAPI.render(extension.render, renderingPayload, dom);
   };
 
   destroyNodeView = (dom) => {
     log('removing nodeView dom');
-    this.portalProviderAPI.remove(dom);
+    if (this.portalProviderAPI.remove(dom)) {
+      this.rerender();
+    }
+  };
+
+  rerender = () => {
+    this.setState((state) => ({ counter: state.counter + 1 }));
   };
 
   render() {
     return (
       <>
         {this.portalProviderAPI.getPortals()}
-        <PortalRenderer
+        <EditorComp
           // This allows us to let react handle creating destroying Editor
           key={this.state.editorKey}
-          portalProviderAPI={this.portalProviderAPI}
-          editorOptions={{
-            ...this.props.options,
-            content: this.props.content,
-          }}
+          editorOptions={this.props.options}
+          content={this.props.content}
           renderNodeView={this.renderNodeView}
           destroyNodeView={this.destroyNodeView}
-          rerender={() => {
-            this.setState((state) => ({ counter: state.counter + 1 }));
-          }}
         />
       </>
     );
   }
 }
 
-class PortalRenderer extends React.Component {
+class EditorComp extends React.Component {
   static contextType = EditorOnReadyContext;
+  static propTypes = {
+    editorOptions: PropTypes.object.isRequired,
+    content: PropTypes.object.isRequired,
+    renderNodeView: PropTypes.func.isRequired,
+    destroyNodeView: PropTypes.func.isRequired,
+  };
   editorRenderTarget = React.createRef();
-
+  shouldComponentUpdate() {
+    return false;
+  }
   componentDidMount() {
-    const { editorOptions, renderNodeView, destroyNodeView } = this.props;
+    const {
+      editorOptions,
+      content,
+      renderNodeView,
+      destroyNodeView,
+    } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
       this.editor = new Editor(node, {
         ...editorOptions,
+        content,
         renderNodeView,
         destroyNodeView,
       });
@@ -91,22 +103,11 @@ class PortalRenderer extends React.Component {
       // TODO look into this?
       this.context.onEditorReady(this.editor);
       this.editor.focus();
-      this.props.rerender();
     }
-
-    this.props.portalProviderAPI.on('#root_update', this.handleForceUpdate);
-    this.props.portalProviderAPI.on('#force_update', this.handleForceUpdate);
   }
 
-  handleForceUpdate = () => {
-    log('force update');
-    this.props.rerender();
-  };
-
   componentWillUnmount() {
-    log('PortalRendererWrapper unmounting');
-    this.props.portalProviderAPI.off('#force_update', this.handleForceUpdate);
-    this.props.portalProviderAPI.off('#root_update', this.handleForceUpdate);
+    log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
     this.editor && this.editor.destroy();
     if (this.props.editorOptions.devtools) {
@@ -123,14 +124,9 @@ class PortalRenderer extends React.Component {
   }
 
   render() {
-    log('rendering portals');
+    log('rendering EditorComp');
     return (
       <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
     );
   }
 }
-
-PortalRenderer.propTypes = {
-  portalProviderAPI: PropTypes.object.isRequired,
-  editorOptions: PropTypes.object.isRequired,
-};
