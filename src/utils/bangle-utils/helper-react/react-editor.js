@@ -16,6 +16,7 @@ function log(...args) {
 export class ReactEditor extends React.PureComponent {
   state = {
     editorKey: 0,
+    counter: 0,
   };
   portalProviderAPI = new PortalProviderAPI();
 
@@ -34,17 +35,38 @@ export class ReactEditor extends React.PureComponent {
     this.portalProviderAPI = null;
   }
 
+  // called from custom-node-view.js#renderComp
+  renderNodeView = ({ dom, extension, renderingPayload }) => {
+    if (!extension.render.displayName) {
+      extension.render.displayName = `ParentNodeView[${extension.name}]`;
+    }
+    this.portalProviderAPI.render(extension.render, renderingPayload, dom);
+  };
+
+  destroyNodeView = (dom) => {
+    log('removing nodeView dom');
+    this.portalProviderAPI.remove(dom);
+  };
+
   render() {
     return (
-      <PortalRenderer
-        // This allows us to let react handle creating destroying Editor
-        key={this.state.editorKey}
-        portalProviderAPI={this.portalProviderAPI}
-        editorOptions={{
-          ...this.props.options,
-          content: this.props.content,
-        }}
-      />
+      <>
+        {this.portalProviderAPI.getPortals()}
+        <PortalRenderer
+          // This allows us to let react handle creating destroying Editor
+          key={this.state.editorKey}
+          portalProviderAPI={this.portalProviderAPI}
+          editorOptions={{
+            ...this.props.options,
+            content: this.props.content,
+          }}
+          renderNodeView={this.renderNodeView}
+          destroyNodeView={this.destroyNodeView}
+          rerender={() => {
+            this.setState((state) => ({ counter: state.counter + 1 }));
+          }}
+        />
+      </>
     );
   }
 }
@@ -52,17 +74,15 @@ export class ReactEditor extends React.PureComponent {
 class PortalRenderer extends React.Component {
   static contextType = EditorOnReadyContext;
   editorRenderTarget = React.createRef();
-  state = {
-    counter: 0,
-  };
+
   componentDidMount() {
-    const { editorOptions } = this.props;
+    const { editorOptions, renderNodeView, destroyNodeView } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
       this.editor = new Editor(node, {
         ...editorOptions,
-        renderNodeView: this.renderNodeView,
-        destroyNodeView: this.destroyNodeView,
+        renderNodeView,
+        destroyNodeView,
       });
       if (editorOptions.devtools) {
         applyDevTools(this.editor.view);
@@ -71,32 +91,16 @@ class PortalRenderer extends React.Component {
       // TODO look into this?
       this.context.onEditorReady(this.editor);
       this.editor.focus();
+      this.props.rerender();
     }
 
     this.props.portalProviderAPI.on('#root_update', this.handleForceUpdate);
     this.props.portalProviderAPI.on('#force_update', this.handleForceUpdate);
   }
 
-  // called from custom-node-view.js#renderComp
-  renderNodeView = ({ dom, extension, renderingPayload }) => {
-    if (!extension.render.displayName) {
-      extension.render.displayName = `ParentNodeView[${extension.name}]`;
-    }
-    this.props.portalProviderAPI.render(
-      extension.render,
-      renderingPayload,
-      dom,
-    );
-  };
-
-  destroyNodeView = (dom) => {
-    log('removing nodeView dom');
-    this.props.portalProviderAPI.remove(dom);
-  };
-
   handleForceUpdate = () => {
     log('force update');
-    this.setState((state) => ({ counter: state.counter + 1 }));
+    this.props.rerender();
   };
 
   componentWillUnmount() {
@@ -121,12 +125,7 @@ class PortalRenderer extends React.Component {
   render() {
     log('rendering portals');
     return (
-      <>
-        <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
-        {this.editorRenderTarget?.current
-          ? this.props.portalProviderAPI.getPortals()
-          : null}
-      </>
+      <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
     );
   }
 }
