@@ -4,7 +4,7 @@ import { objUid } from '../utils/object-uid';
 import { Emitter } from '../utils/emitter';
 import { CachedMap } from '../utils/js-utils';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('portal.js:', ...args);
@@ -71,7 +71,7 @@ function createPortal({
   container,
 }) {
   class SelectiveUpdate extends React.Component {
-    static displayName = `SelectiveUpdate[${Element.displayName}]`;
+    static displayName = `SelectiveUpdate_${renderKey}[${Element.displayName}]`;
 
     static getDerivedStateFromError(error) {
       return { hasError: true, childProps: null };
