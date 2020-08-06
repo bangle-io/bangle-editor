@@ -19,17 +19,13 @@ export class PortalProviderAPI extends Emitter {
 
   // Returns true if a new element was added
   // false if an element already existed
-  render(
-    { dom: container, extension, renderingPayload }, // Element, props, container
-  ) {
-    const Element = extension.render;
-    const props = renderingPayload;
-    const renderKey = objUid.get(container);
+  render({ dom, extension, renderingPayload }) {
+    const renderKey = objUid.get(dom);
     // If the element already exists communicate
     // to selectively update it, bypassing the entire array re-render in PortalRenderer
-    if (this.#portalsMap.has(container)) {
+    if (this.#portalsMap.has(dom)) {
       log('PortalProviderAPI: updating existing', renderKey);
-      this.emit(renderKey, props);
+      this.emit(renderKey, renderingPayload);
       return false;
     }
 
@@ -40,16 +36,16 @@ export class PortalProviderAPI extends Emitter {
     }
 
     const portalElement = createPortal({
-      Element,
+      Element: extension.render,
       emitter: this,
       renderKey,
-      childProps: props,
+      childProps: renderingPayload,
       forceUpdateKey: '#force_update',
-      container,
+      dom: dom,
     });
 
     log('adding', renderKey);
-    this.#portalsMap.set(container, portalElement);
+    this.#portalsMap.set(dom, portalElement);
     return true;
   }
 
@@ -58,10 +54,10 @@ export class PortalProviderAPI extends Emitter {
     this.emit('#force_update');
   }
 
-  remove(container) {
-    const renderKey = objUid.get(container);
+  remove(dom) {
+    const renderKey = objUid.get(dom);
     log('removing', renderKey);
-    this.#portalsMap.delete(container);
+    this.#portalsMap.delete(dom);
     return true;
   }
 
@@ -78,7 +74,7 @@ function createPortal({
   renderKey,
   childProps,
   forceUpdateKey,
-  container,
+  dom,
 }) {
   class SelectiveUpdate extends React.Component {
     static displayName = `SelectiveUpdate_${renderKey}[${Element.displayName}]`;
@@ -135,5 +131,5 @@ function createPortal({
     }
   }
 
-  return reactDOM.createPortal(<SelectiveUpdate />, container, renderKey);
+  return reactDOM.createPortal(<SelectiveUpdate />, dom, renderKey);
 }
