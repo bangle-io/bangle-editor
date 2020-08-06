@@ -31,16 +31,18 @@ export class ReactEditor extends React.PureComponent {
 
   render() {
     return (
-      <PortalWrapper
-        child={
+      <PortalWrapper>
+        {(renderNodeView, destroyNodeView) => (
           <PMEditorWrapper
             // This allows us to let react handle creating destroying Editor
             key={this.state.editorKey}
             editorOptions={this.props.options}
             content={this.props.content}
+            renderNodeView={renderNodeView}
+            destroyNodeView={destroyNodeView}
           />
-        }
-      />
+        )}
+      </PortalWrapper>
     );
   }
 }
@@ -90,10 +92,7 @@ class PortalWrapper extends React.PureComponent {
     return (
       <>
         {this.portalProviderAPI.getPortals()}
-        {React.cloneElement(this.props.child, {
-          renderNodeView: this.renderNodeView,
-          destroyNodeView: this.destroyNodeView,
-        })}
+        {this.props.children(this.renderNodeView, this.destroyNodeView)}
       </>
     );
   }
