@@ -2,6 +2,7 @@ import React from 'react';
 import applyDevTools from 'prosemirror-dev-tools';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
@@ -16,9 +17,7 @@ function log(...args) {
 export class ReactEditor extends React.PureComponent {
   state = {
     editorKey: 0,
-    counter: 0,
   };
-  portalProviderAPI = new PortalProviderAPI();
 
   componentDidUpdate(prevProps) {
     if (this.props.content !== prevProps.content) {
@@ -28,6 +27,28 @@ export class ReactEditor extends React.PureComponent {
       }));
     }
   }
+
+  render() {
+    return (
+      <PortalWrapper
+        child={
+          <PMEditorWrapper
+            // This allows us to let react handle creating destroying Editor
+            key={this.state.editorKey}
+            editorOptions={this.props.options}
+            content={this.props.content}
+          />
+        }
+      />
+    );
+  }
+}
+
+class PortalWrapper extends React.PureComponent {
+  portalProviderAPI = new PortalProviderAPI();
+  state = {
+    counter: 0,
+  };
 
   componentWillUnmount() {
     this.portalProviderAPI.destroy();
@@ -53,23 +74,20 @@ export class ReactEditor extends React.PureComponent {
   };
 
   render() {
+    log('rendering portal comp');
     return (
       <>
         {this.portalProviderAPI.getPortals()}
-        <EditorComp
-          // This allows us to let react handle creating destroying Editor
-          key={this.state.editorKey}
-          editorOptions={this.props.options}
-          content={this.props.content}
-          renderNodeView={this.renderNodeView}
-          destroyNodeView={this.destroyNodeView}
-        />
+        {React.cloneElement(this.props.child, {
+          renderNodeView: this.renderNodeView,
+          destroyNodeView: this.destroyNodeView,
+        })}
       </>
     );
   }
 }
 
-class EditorComp extends React.Component {
+class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
     editorOptions: PropTypes.object.isRequired,
