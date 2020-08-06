@@ -94,14 +94,10 @@ function TodoItemComp(props) {
 
   let uid = node.type.name + counter++;
 
-  useEffect(() => {
-    log('mounting', uid);
-  }, []);
-
   const { 'data-done': done } = node.attrs;
   return (
     <>
-      <span className="todo-checkbox mr-2" contentEditable="false">
+      <span className="todo-checkbox mr-2">
         <input
           className="inline-block"
           type="checkbox"
@@ -121,7 +117,6 @@ function TodoItemComp(props) {
         className="todo-content inline-block"
         ref={handleRef}
         data-done={done.toString()}
-        contentEditable={view.editable.toString()}
       />
     </>
   );
