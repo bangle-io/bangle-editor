@@ -2,6 +2,7 @@ import React from 'react';
 import applyDevTools from 'prosemirror-dev-tools';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import debounce from 'lodash.debounce';
 
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
@@ -69,9 +70,20 @@ class PortalWrapper extends React.PureComponent {
     }
   };
 
-  rerender = () => {
-    this.setState((state) => ({ counter: state.counter + 1 }));
-  };
+  // TODO investigate if this can cause problems
+  //    - explore if debounce only when portalProviderAPI.size > LARGE_SIZE
+  //    - investigate the waitTime
+  rerender = debounce(
+    () => {
+      this.setState((state) => ({ counter: state.counter + 1 }));
+    },
+    8,
+    {
+      trailing: true,
+      leading: true,
+      maxWait: 20,
+    },
+  );
 
   render() {
     log('rendering portal comp');
