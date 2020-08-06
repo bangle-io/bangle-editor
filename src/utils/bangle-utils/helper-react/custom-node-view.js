@@ -1,4 +1,4 @@
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('customer-node-view.js', ...args);
