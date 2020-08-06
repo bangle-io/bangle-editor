@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
+import React from 'react';
+import reactDOM from 'react-dom';
 import { objUid } from '../utils/object-uid';
 import { Emitter } from '../utils/emitter';
 import { CachedMap } from '../utils/js-utils';
-const LOG = true;
+
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('portal.js:', ...args);
@@ -28,35 +29,16 @@ export class PortalProviderAPI extends Emitter {
 
     log('PortalProviderAPI: creating new', renderKey);
 
-    const SelectiveComp = React.memo(
-      (props) => {
-        const [state, setState] = useState(props);
-        const emitter = this;
-        const renderKey = objUid.get(container);
-
-        React.useEffect(() => {
-          log('setting up', renderKey);
-          emitter.on(renderKey, setState);
-          return () => {
-            log('emitter.off', renderKey);
-            emitter.off(renderKey, setState);
-          };
-        }, [emitter, renderKey]);
-        log('rendering func', renderKey);
-
-        return <Element {...state} />;
-      },
-      // We never want to update the function via props
-      () => true,
-    );
-
-    const portalElement = createPortal(
-      <SelectiveComp {...props} />,
-      container,
+    const portalElement = createPortal({
+      Element,
+      emitter: this,
       renderKey,
-    );
+      childProps: props,
+      forceUpdateKey: '#force_update',
+      container,
+    });
 
-    log('adding', objUid.get(container));
+    log('adding', renderKey);
     this.#portalsMap.set(container, portalElement);
     this.emit('#root_update');
   }
@@ -67,7 +49,8 @@ export class PortalProviderAPI extends Emitter {
   }
 
   remove(container) {
-    log('removing', objUid.get(container));
+    const renderKey = objUid.get(container);
+    log('removing', renderKey);
     this.#portalsMap.delete(container);
     this.emit('#root_update');
   }
@@ -77,4 +60,70 @@ export class PortalProviderAPI extends Emitter {
     this.#portalsMap = null;
     super.destroy();
   }
+}
+
+function createPortal({
+  Element,
+  emitter,
+  renderKey,
+  childProps,
+  forceUpdateKey,
+  container,
+}) {
+  class SelectiveUpdate extends React.Component {
+    static displayName = `SelectiveUpdate[${Element.displayName}]`;
+
+    static getDerivedStateFromError(error) {
+      return { hasError: true, childProps: null };
+    }
+
+    state = {
+      hasError: false,
+      childProps: childProps,
+    };
+
+    shouldComponentUpdate(nextProps, nextState) {
+      // We never want to update the function via props
+      // instead it will be updated via the emitter
+      if (this.state.hasError !== nextState.hasError) {
+        return true;
+      }
+      return this.state.childProps !== nextState.childProps;
+    }
+
+    componentDidCatch(error, errorInfo) {
+      console.log(errorInfo);
+      console.error(error);
+    }
+
+    componentDidMount() {
+      emitter.on(renderKey, this.handleUpdate);
+      emitter.on(forceUpdateKey, this.forceUpdate);
+    }
+
+    componentWillUnmount() {
+      emitter.off(renderKey, this.handleUpdate);
+      emitter.off(forceUpdateKey, this.forceUpdate);
+    }
+
+    handleUpdate = (childProps) => {
+      this.setState({
+        childProps,
+      });
+    };
+
+    render() {
+      if (this.state.hasError) {
+        return (
+          <div style={{ backgroundColor: 'red', color: 'white' }}>
+            Error in {Element.displayName}
+          </div>
+        );
+      }
+      log('rendering:', renderKey);
+      return <Element {...this.state.childProps} />;
+    }
+  }
+
+  return reactDOM.createPortal(<SelectiveUpdate />, container, renderKey);
 }
