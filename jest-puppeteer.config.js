@@ -2,7 +2,7 @@
 module.exports = {
   server: {
     command:
-      'JEST_INTEGRATION=true ./node_modules/.bin/parcel  public/index.html --port 4444 --no-cache',
+      'webpack-dev-server --mode development --open --port 3000 --port 4444 ',
     port: 4444,
   },
   launch: {

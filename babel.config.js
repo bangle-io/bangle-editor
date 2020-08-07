@@ -1,6 +1,6 @@
 // babel.config.js
 
-const debug = true;
+const debug = false; //true;
 module.exports = (api) => {
   if (api.env('test')) {
     return {
@@ -20,5 +20,9 @@ module.exports = (api) => {
   }
   return {
     presets: ['@babel/preset-react', ['@babel/preset-env', { debug: debug }]],
+    plugins: [
+      ['@babel/plugin-proposal-class-properties', { loose: true }],
+      '@babel/plugin-proposal-optional-chaining',
+    ],
   };
 };

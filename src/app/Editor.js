@@ -25,7 +25,7 @@ import {
 } from '../../src/utils/bangle-utils/nodes/index';
 import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
 
-const DEBUG = false;
+const DEBUG = true;
 
 export class Editor extends React.PureComponent {
   options = {

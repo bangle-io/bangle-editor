@@ -1,7 +1,6 @@
 import './dino.css';
 
 import React from 'react';
-import classnames from 'classnames';
 import { DINO_NODE_NAME, dinoNames } from './constants';
 import { Node } from '../../../src/utils/bangle-utils/nodes/index';
 
@@ -102,9 +101,7 @@ export default class Dino extends Node {
           src={DINO_IMAGES[type]}
           alt={type}
           contentEditable={false}
-          className={classnames({
-            plugins_dino: true,
-          })}
+          className="plugins_dino"
         />
       </span>
     );

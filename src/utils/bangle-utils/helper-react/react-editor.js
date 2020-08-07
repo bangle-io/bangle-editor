@@ -1,5 +1,4 @@
 import React from 'react';
-import applyDevTools from 'prosemirror-dev-tools';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import debounce from 'lodash.debounce';
@@ -8,8 +7,9 @@ import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
+import { getIdleCallback } from '../utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('react-editor.js', ...args);
@@ -110,7 +110,7 @@ class PMEditorWrapper extends React.Component {
   shouldComponentUpdate() {
     return false;
   }
-  componentDidMount() {
+  async componentDidMount() {
     const {
       editorOptions,
       content,
@@ -126,8 +126,15 @@ class PMEditorWrapper extends React.Component {
         destroyNodeView,
       });
       if (editorOptions.devtools) {
-        applyDevTools(this.editor.view);
         window.editor = this.editor;
+
+        getIdleCallback(() => {
+          import(
+            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+          ).then(({ default: applyDevTools }) => {
+            applyDevTools(this.editor.view);
+          });
+        });
       }
       // TODO look into this?
       this.context.onEditorReady(this.editor);
