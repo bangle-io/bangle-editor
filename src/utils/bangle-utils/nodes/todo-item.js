@@ -97,7 +97,7 @@ function TodoItemComp(props) {
   const { 'data-done': done } = node.attrs;
   return (
     <>
-      <span className="todo-checkbox mr-2">
+      <span className="todo-checkbox mr-2" contentEditable={false}>
         <input
           className="inline-block"
           type="checkbox"
