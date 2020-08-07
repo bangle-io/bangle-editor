@@ -1,8 +1,7 @@
 // jest-puppeteer.config.js
 module.exports = {
   server: {
-    command:
-      'webpack-dev-server --mode development --open --port 3000 --port 4444 ',
+    command: 'NODE_ENV=integration webpack-dev-server --open --port 4444 ',
     port: 4444,
   },
   launch: {
