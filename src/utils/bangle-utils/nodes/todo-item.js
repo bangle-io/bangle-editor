@@ -30,7 +30,7 @@ export class TodoItem extends Node {
       createDomRef: () => {
         const d = document.createElement('li');
         d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
-
+        d.classList.add('items-center');
         return d;
       },
     };
@@ -46,7 +46,8 @@ export class TodoItem extends Node {
           default: false,
         },
         'class': {
-          default: 'flex',
+          default: 'flex', // TODO using this to set class is a bad idea as this
+          // is saved in the HDD and any future ui change will over overriden by the saved class in attribute
         },
       },
       draggable: true,
@@ -97,12 +98,16 @@ function TodoItemComp(props) {
   const { 'data-done': done } = node.attrs;
   return (
     <>
-      <span className="todo-checkbox mr-2" contentEditable={false}>
+      <span className="todo-checkbox mr-2 self-start" contentEditable={false}>
         <input
           className="inline-block"
           type="checkbox"
           id={uid}
           name={uid}
+          style={{
+            marginTop: '0.450rem',
+            outline: 'none',
+          }}
           onChange={() => {
             updateAttrs({
               'data-done': !done,
