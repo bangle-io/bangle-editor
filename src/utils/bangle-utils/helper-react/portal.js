@@ -4,7 +4,7 @@ import { objUid } from '../utils/object-uid';
 import { Emitter } from '../utils/emitter';
 import { CachedMap } from '../utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('portal.js:', ...args);

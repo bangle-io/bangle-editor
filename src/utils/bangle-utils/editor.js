@@ -305,7 +305,6 @@ export class Editor extends Emitter {
   dispatchTransaction(transaction) {
     const nodes = findChangedNodesFromTransaction(transaction);
     // if (nodes.length > 0) {
-    //   debugger;
     // }
     const newState = this.state.apply(transaction);
     this.view.updateState(newState);

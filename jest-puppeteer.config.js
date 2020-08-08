@@ -1,8 +1,7 @@
 // jest-puppeteer.config.js
 module.exports = {
   server: {
-    command:
-      'JEST_INTEGRATION=true ./node_modules/.bin/parcel  public/index.html --port 4444 --no-cache',
+    command: 'NODE_ENV=integration webpack-dev-server --open --port 4444 ',
     port: 4444,
   },
   launch: {

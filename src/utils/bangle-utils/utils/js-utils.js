@@ -96,3 +96,18 @@ export function matchAllPlus(regexp, str) {
 export function uuid(len = 10) {
   return Math.random().toString(36).substring(2, 15).slice(0, len);
 }
+
+export function getIdleCallback(cb) {
+  if (window.requestIdleCallback) {
+    return window.requestIdleCallback(cb);
+  }
+  var t = Date.now();
+  return setTimeout(function () {
+    cb({
+      didTimeout: !1,
+      timeRemaining: function () {
+        return Math.max(0, 50 - (Date.now() - t));
+      },
+    });
+  }, 1);
+}
