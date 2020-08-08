@@ -1,6 +1,5 @@
 import './style/tailwind.src.css';
 import './style/style.css';
-import 'prosemirror-view/style/prosemirror.css';
 import React from 'react';
 import { EditorContextProvider } from '../../src/utils/bangle-utils/helper-react/editor-context';
 
