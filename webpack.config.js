@@ -19,12 +19,12 @@ module.exports = (env, argv) => {
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     stats: { maxModules: 50, modulesSort: 'size' },
     devServer: {
-      contentBase: './dist',
+      contentBase: './build',
     },
     output: {
       filename: 'main.js',
       chunkFilename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'build'),
     },
     plugins: [
       new HtmlWebpackPlugin({
