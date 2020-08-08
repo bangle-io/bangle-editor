@@ -57,7 +57,7 @@ describe('Todo test', () => {
         () => document.querySelector('.todo-checkbox input').outerHTML,
       ),
     ).toMatch(
-      /<input class="inline-block" type="checkbox" id="todo_item[\d]+" name="todo_item[\d]+">/,
+      /<input class="inline-block" type="checkbox" id="todo_item[\d]+" name="todo_item[\d]+/,
     );
   });
 

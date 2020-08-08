@@ -68,7 +68,7 @@ module.exports = (env, argv) => {
             },
             {
               loader: 'css-loader',
-              options: { importLoaders: 1 },
+              options: { importLoaders: 1, sourceMap: true },
             },
             {
               loader: 'postcss-loader',
