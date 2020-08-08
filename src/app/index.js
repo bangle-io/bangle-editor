@@ -1,7 +1,4 @@
-// polyfills
-import 'core-js/es/object/from-entries';
-
-import './style/tailwind.css';
+import './style/tailwind.src.css';
 import './style/style.css';
 import 'prosemirror-view/style/prosemirror.css';
 import React from 'react';
