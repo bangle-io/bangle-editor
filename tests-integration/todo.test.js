@@ -1,9 +1,13 @@
 const URL = `http://localhost:4444`;
 const PM_ID = '.ProseMirror';
 
-const { mountEditor, getDoc, getEditorState, ctrlKey } = require('./helpers');
-const { sleep } = require('test-helpers/keyboard');
-
+const {
+  mountEditor,
+  getDoc,
+  getEditorState,
+  ctrlKey,
+  sleep,
+} = require('./helpers');
 jest.setTimeout(25 * 1000);
 
 describe('Todo test', () => {
