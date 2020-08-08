@@ -9,7 +9,7 @@ import { EditorOnReadyContext } from './editor-context';
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback } from '../utils/js-utils';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('react-editor.js', ...args);
@@ -61,13 +61,14 @@ class PortalWrapper extends React.PureComponent {
   // called from custom-node-view.js#renderComp
   renderNodeView = ({ dom, extension, renderingPayload }) => {
     if (this.portalProviderAPI.render({ dom, extension, renderingPayload })) {
+      log('asking to rerender due to renderNodeView');
       this.rerender();
     }
   };
 
   destroyNodeView = (dom) => {
-    log('removing nodeView dom');
     if (this.portalProviderAPI.remove(dom)) {
+      log('removing nodeView dom');
       this.rerender();
     }
   };
@@ -77,6 +78,7 @@ class PortalWrapper extends React.PureComponent {
   //    - investigate the waitTime
   rerender = debounce(
     () => {
+      log('rerendering by state change');
       this.setState((state) => ({ counter: state.counter + 1 }));
     },
     8,
@@ -160,7 +162,7 @@ class PMEditorWrapper extends React.Component {
   }
 
   render() {
-    log('rendering EditorComp');
+    log('rendering PMEditorWrapper');
     return (
       <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
     );
