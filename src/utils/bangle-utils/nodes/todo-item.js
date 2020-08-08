@@ -30,7 +30,6 @@ export class TodoItem extends Node {
       createDomRef: () => {
         const d = document.createElement('li');
         d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
-        d.classList.add('items-center');
         return d;
       },
     };
