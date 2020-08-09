@@ -231,7 +231,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],
       [
         "prosemirror-dev-tools",
-        "https://github.com/kepta/prosemirror-dev-tools.git#commit=714e8cc1f079675cf01805cbfe97af1949363ac1"
+        "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=9221296f22a55890c1b2131076d4efeb3261a9d7"
       ],
       [
         "prosemirror-dropcursor",
@@ -391,7 +391,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.0.5"],
             ["prop-types", "npm:15.7.2"],
             ["prosemirror-commands", "npm:1.1.4"],
-            ["prosemirror-dev-tools", "https://github.com/kepta/prosemirror-dev-tools.git#commit=714e8cc1f079675cf01805cbfe97af1949363ac1"],
+            ["prosemirror-dev-tools", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=9221296f22a55890c1b2131076d4efeb3261a9d7"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-history", "npm:1.1.3"],
@@ -12478,7 +12478,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.0.5"],
             ["prop-types", "npm:15.7.2"],
             ["prosemirror-commands", "npm:1.1.4"],
-            ["prosemirror-dev-tools", "https://github.com/kepta/prosemirror-dev-tools.git#commit=714e8cc1f079675cf01805cbfe97af1949363ac1"],
+            ["prosemirror-dev-tools", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=9221296f22a55890c1b2131076d4efeb3261a9d7"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-history", "npm:1.1.3"],
@@ -13378,10 +13378,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-dev-tools", [
-        ["https://github.com/kepta/prosemirror-dev-tools.git#commit=714e8cc1f079675cf01805cbfe97af1949363ac1", {
-          "packageLocation": "./.yarn/cache/prosemirror-dev-tools-https-b28ed289c7-af40a660ec.zip/node_modules/prosemirror-dev-tools/",
+        ["virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=9221296f22a55890c1b2131076d4efeb3261a9d7", {
+          "packageLocation": "./.yarn/$$virtual/prosemirror-dev-tools-virtual-fad3a82454/0/cache/prosemirror-dev-tools-https-f85226359c-f706af27af.zip/node_modules/prosemirror-dev-tools/",
           "packageDependencies": [
-            ["prosemirror-dev-tools", "https://github.com/kepta/prosemirror-dev-tools.git#commit=714e8cc1f079675cf01805cbfe97af1949363ac1"]
+            ["prosemirror-dev-tools", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=9221296f22a55890c1b2131076d4efeb3261a9d7"],
+            ["react", "npm:16.13.1"],
+            ["react-dom", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:16.13.1"]
+          ],
+          "packagePeers": [
+            "react",
+            "react-dom"
           ],
           "linkType": "HARD",
         }]

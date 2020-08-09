@@ -109,6 +109,7 @@ class PMEditorWrapper extends React.Component {
     destroyNodeView: PropTypes.func.isRequired,
   };
   editorRenderTarget = React.createRef();
+  devtools;
   shouldComponentUpdate() {
     return false;
   }
@@ -134,7 +135,7 @@ class PMEditorWrapper extends React.Component {
           import(
             /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
           ).then((args) => {
-            args.applyDevTools(this.editor.view);
+            this.devtools = args.applyDevTools(this.editor.view);
           });
         });
       }
@@ -148,14 +149,8 @@ class PMEditorWrapper extends React.Component {
     log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
     this.editor && this.editor.destroy();
-    if (this.props.editorOptions.devtools) {
-      const DEVTOOLS_CLASS_NAME = '__prosemirror-dev-tools__';
-      let place = document.querySelector(`.${DEVTOOLS_CLASS_NAME}`);
-      if (place) {
-        console.log('unmounting');
-        ReactDOM.unmountComponentAtNode(place);
-        place.innerHTML = '';
-      }
+    if (this.props.editorOptions.devtools && this.devtools) {
+      this.devtools();
     }
     this.editor = undefined;
     window.editor = null;
