@@ -4,3 +4,11 @@ build
 .cache
 dist
 .DS_Store
+
+# yarnv2
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions

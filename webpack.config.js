@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
 
 module.exports = (env, argv) => {
   const isProduction = env && env.production;
@@ -18,6 +19,12 @@ module.exports = (env, argv) => {
     entry: './src/index.js',
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     stats: { maxModules: 50, modulesSort: 'size' },
+    resolve: {
+      plugins: [PnpWebpackPlugin],
+    },
+    resolveLoader: {
+      plugins: [PnpWebpackPlugin.moduleLoader(module)],
+    },
     devServer: {
       contentBase: './build',
     },
@@ -50,7 +57,7 @@ module.exports = (env, argv) => {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
+            loader: require.resolve('babel-loader'),
             options: { presets: ['@babel/preset-react'] },
           },
         },
