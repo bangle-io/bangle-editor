@@ -11,7 +11,6 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
-    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools",
     "classnames": "^2.2.6",
     "core-js": "^3.6.4",
     "date-fns": "^2.10.0",
@@ -22,6 +21,7 @@
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.1.4",
+    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.1.5",
     "prosemirror-history": "^1.0.4",
@@ -29,24 +29,26 @@
     "prosemirror-keymap": "^1.1.4",
     "prosemirror-menu": "^1.1.4",
     "prosemirror-model": "^1.11.0",
+    "prosemirror-schema-list": "^1.1.3",
     "prosemirror-state": "^1.3.3",
+    "prosemirror-tables": "0.9.1",
     "prosemirror-transform": "^1.2.7",
-    "prosemirror-utils": "^0.9.6",
+    "prosemirror-utils": "latest",
     "prosemirror-view": "^1.15.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "tailwindcss": "^1.6.0",
     "throttle-debounce": "^2.1.0",
-    "tiptap-commands": "^1.14.3"
+    "tiptap-commands": "^1.14.3",
+    "tiptap-utils": "^1.10.4"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --open --port 3000",
-    "prebuild": "npm run lint",
-    "build": "NODE_ENV=production webpack --env.production",
+    "build": "npm run lint && NODE_ENV=production webpack --env.production",
     "deploy": "npm run build && surge build bangle-test.surge.sh",
     "snapshot": "npm run build && node ./scripts/snapshot",
     "pretest": "npm run lint",
-    "test": "npm run unit-tests && npm run integration-tests",
+    "test": "npm run lint && npm run unit-tests && npm run integration-tests",
     "unit-tests": "jest",
     "integration-tests": "jest --config=jest-integration.config.js",
     "lint": "prettier --check \"src/**/*.js\" && eslint ."
@@ -72,6 +74,7 @@
     "last 3 chrome version"
   ],
   "devDependencies": {
+    "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@testing-library/react": "^10.4.7",
@@ -99,6 +102,7 @@
     "lint-staged": "^10.2.11",
     "mini-css-extract-plugin": "^0.9.0",
     "parcel-bundler": "^1.12.4",
+    "pnp-webpack-plugin": "^1.6.4",
     "postcss-cli": "^7.1.1",
     "postcss-custom-properties": "^9.1.1",
     "postcss-import": "^12.0.1",
@@ -118,6 +122,8 @@
     "prosemirror-model": "1.11.0",
     "prosemirror-state": "1.3.3",
     "prosemirror-view": "1.15.2",
-    "prosemirror-transform": "1.2.7"
+    "prosemirror-transform": "1.2.7",
+    "prosemirror-utils/prosemirror-tables": "0.9.6",
+    "tiptap-utils": "1.10.4"
   }
 }

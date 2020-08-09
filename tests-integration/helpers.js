@@ -42,3 +42,7 @@ async function getDoc(page) {
     })
     .then(frmt);
 }
+
+export function sleep(t = 20) {
+  return new Promise((res) => setTimeout(res, t));
+}

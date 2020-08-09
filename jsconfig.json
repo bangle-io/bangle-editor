@@ -22,6 +22,7 @@
         "dist",
         "archive",
         "public",
-        ".cache"
+        ".cache",
+        ".yarn"
     ]
 }
