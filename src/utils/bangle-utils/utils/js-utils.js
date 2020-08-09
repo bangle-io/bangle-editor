@@ -137,6 +137,7 @@ export function smartDebounce(cb, violationMax = 5, coolTime, ...debounceOpts) {
     if (current - lastCalled < coolTime) {
       if (violations > violationMax) {
         lastCalled = current;
+        log('debouncing call');
         return debouncedCb(arg);
       }
       log('increasing violations', violations);
