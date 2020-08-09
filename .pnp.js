@@ -143,7 +143,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ['prosemirror-commands', 'npm:1.1.4'],
         [
           'prosemirror-dev-tools',
-          'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:3.0.2',
+          'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=6705ccb121837d6fca4a4edb32b68c02146c49e0',
         ],
         ['prosemirror-dropcursor', 'npm:1.3.2'],
         ['prosemirror-gapcursor', 'npm:1.1.5'],
@@ -311,7 +311,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['prosemirror-commands', 'npm:1.1.4'],
                   [
                     'prosemirror-dev-tools',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:3.0.2',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=6705ccb121837d6fca4a4edb32b68c02146c49e0',
                   ],
                   ['prosemirror-dropcursor', 'npm:1.3.2'],
                   ['prosemirror-gapcursor', 'npm:1.1.5'],
@@ -4420,18 +4420,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 linkType: 'HARD',
               },
             ],
-            [
-              'npm:7.11.2',
-              {
-                packageLocation:
-                  './.yarn/cache/@babel-runtime-npm-7.11.2-f2cfabd212-2f127ad60a.zip/node_modules/@babel/runtime/',
-                packageDependencies: [
-                  ['@babel/runtime', 'npm:7.11.2'],
-                  ['regenerator-runtime', 'npm:0.13.5'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
           ],
         ],
         [
@@ -4582,267 +4570,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['exec-sh', 'npm:0.3.4'],
                   ['minimist', 'npm:1.2.0'],
                 ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/cache',
-          [
-            [
-              'npm:10.0.29',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-cache-npm-10.0.29-076efd3781-a2bdf4dd21.zip/node_modules/@emotion/cache/',
-                packageDependencies: [
-                  ['@emotion/cache', 'npm:10.0.29'],
-                  ['@emotion/sheet', 'npm:0.9.4'],
-                  ['@emotion/stylis', 'npm:0.8.5'],
-                  ['@emotion/utils', 'npm:0.11.3'],
-                  ['@emotion/weak-memoize', 'npm:0.2.5'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/core',
-          [
-            [
-              'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/@emotion-core-virtual-28e81b8896/0/cache/@emotion-core-npm-10.0.28-490246e9e8-111f2f47cf.zip/node_modules/@emotion/core/',
-                packageDependencies: [
-                  [
-                    '@emotion/core',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
-                  ],
-                  ['@babel/runtime', 'npm:7.11.2'],
-                  ['@emotion/cache', 'npm:10.0.29'],
-                  ['@emotion/css', 'npm:10.0.27'],
-                  ['@emotion/serialize', 'npm:0.11.16'],
-                  ['@emotion/sheet', 'npm:0.9.4'],
-                  ['@emotion/utils', 'npm:0.11.3'],
-                  ['react', 'npm:16.13.0'],
-                ],
-                packagePeers: ['react'],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/css',
-          [
-            [
-              'npm:10.0.27',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-css-npm-10.0.27-3fd4a0c157-6c8246c63b.zip/node_modules/@emotion/css/',
-                packageDependencies: [
-                  ['@emotion/css', 'npm:10.0.27'],
-                  ['@emotion/serialize', 'npm:0.11.16'],
-                  ['@emotion/utils', 'npm:0.11.3'],
-                  ['babel-plugin-emotion', 'npm:10.0.33'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/hash',
-          [
-            [
-              'npm:0.8.0',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-hash-npm-0.8.0-0104f4bbf3-8fd781e184.zip/node_modules/@emotion/hash/',
-                packageDependencies: [['@emotion/hash', 'npm:0.8.0']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/is-prop-valid',
-          [
-            [
-              'npm:0.8.8',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-is-prop-valid-npm-0.8.8-261a0f2426-4a6993c4e6.zip/node_modules/@emotion/is-prop-valid/',
-                packageDependencies: [
-                  ['@emotion/is-prop-valid', 'npm:0.8.8'],
-                  ['@emotion/memoize', 'npm:0.7.4'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/memoize',
-          [
-            [
-              'npm:0.7.4',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-memoize-npm-0.7.4-5648cf11b8-874123a94c.zip/node_modules/@emotion/memoize/',
-                packageDependencies: [['@emotion/memoize', 'npm:0.7.4']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/serialize',
-          [
-            [
-              'npm:0.11.16',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-serialize-npm-0.11.16-ffd808625b-b7d9a94a03.zip/node_modules/@emotion/serialize/',
-                packageDependencies: [
-                  ['@emotion/serialize', 'npm:0.11.16'],
-                  ['@emotion/hash', 'npm:0.8.0'],
-                  ['@emotion/memoize', 'npm:0.7.4'],
-                  ['@emotion/unitless', 'npm:0.7.5'],
-                  ['@emotion/utils', 'npm:0.11.3'],
-                  ['csstype', 'npm:2.6.13'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/sheet',
-          [
-            [
-              'npm:0.9.4',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-sheet-npm-0.9.4-de430f41b2-48baa183e5.zip/node_modules/@emotion/sheet/',
-                packageDependencies: [['@emotion/sheet', 'npm:0.9.4']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/styled',
-          [
-            [
-              'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.27',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/@emotion-styled-virtual-0f4c4760e1/0/cache/@emotion-styled-npm-10.0.27-70aed381a2-5ae549cbe5.zip/node_modules/@emotion/styled/',
-                packageDependencies: [
-                  [
-                    '@emotion/styled',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.27',
-                  ],
-                  [
-                    '@emotion/core',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
-                  ],
-                  [
-                    '@emotion/styled-base',
-                    'virtual:0f4c4760e183d2dc199d2a13ea4ecdea84938064a09dc6180b49b64affdc030b6ba40735669ada2d9f42fb7995265107cb2131f96add219c94b9c9dfbc1cd4d2#npm:10.0.31',
-                  ],
-                  ['babel-plugin-emotion', 'npm:10.0.33'],
-                  ['react', 'npm:16.13.0'],
-                ],
-                packagePeers: ['@emotion/core', 'react'],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/styled-base',
-          [
-            [
-              'virtual:0f4c4760e183d2dc199d2a13ea4ecdea84938064a09dc6180b49b64affdc030b6ba40735669ada2d9f42fb7995265107cb2131f96add219c94b9c9dfbc1cd4d2#npm:10.0.31',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/@emotion-styled-base-virtual-23226166d9/0/cache/@emotion-styled-base-npm-10.0.31-a1ba815736-998d2bb893.zip/node_modules/@emotion/styled-base/',
-                packageDependencies: [
-                  [
-                    '@emotion/styled-base',
-                    'virtual:0f4c4760e183d2dc199d2a13ea4ecdea84938064a09dc6180b49b64affdc030b6ba40735669ada2d9f42fb7995265107cb2131f96add219c94b9c9dfbc1cd4d2#npm:10.0.31',
-                  ],
-                  ['@babel/runtime', 'npm:7.11.2'],
-                  [
-                    '@emotion/core',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
-                  ],
-                  ['@emotion/is-prop-valid', 'npm:0.8.8'],
-                  ['@emotion/serialize', 'npm:0.11.16'],
-                  ['@emotion/utils', 'npm:0.11.3'],
-                  ['react', 'npm:16.13.0'],
-                ],
-                packagePeers: ['@emotion/core', 'react'],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/stylis',
-          [
-            [
-              'npm:0.8.5',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-stylis-npm-0.8.5-3e9db8959f-bb43a77f78.zip/node_modules/@emotion/stylis/',
-                packageDependencies: [['@emotion/stylis', 'npm:0.8.5']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/unitless',
-          [
-            [
-              'npm:0.7.5',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-unitless-npm-0.7.5-14e1171640-0be366ef09.zip/node_modules/@emotion/unitless/',
-                packageDependencies: [['@emotion/unitless', 'npm:0.7.5']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/utils',
-          [
-            [
-              'npm:0.11.3',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-utils-npm-0.11.3-5aea83fd8c-b5c3a22204.zip/node_modules/@emotion/utils/',
-                packageDependencies: [['@emotion/utils', 'npm:0.11.3']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          '@emotion/weak-memoize',
-          [
-            [
-              'npm:0.2.5',
-              {
-                packageLocation:
-                  './.yarn/cache/@emotion-weak-memoize-npm-0.2.5-9f2e49e7c8-9fe31f0c9d.zip/node_modules/@emotion/weak-memoize/',
-                packageDependencies: [['@emotion/weak-memoize', 'npm:0.2.5']],
                 linkType: 'HARD',
               },
             ],
@@ -7686,32 +7413,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'babel-plugin-emotion',
-          [
-            [
-              'npm:10.0.33',
-              {
-                packageLocation:
-                  './.yarn/cache/babel-plugin-emotion-npm-10.0.33-378fe1583f-ecbf7cbcae.zip/node_modules/babel-plugin-emotion/',
-                packageDependencies: [
-                  ['babel-plugin-emotion', 'npm:10.0.33'],
-                  ['@babel/helper-module-imports', 'npm:7.10.4'],
-                  ['@emotion/hash', 'npm:0.8.0'],
-                  ['@emotion/memoize', 'npm:0.7.4'],
-                  ['@emotion/serialize', 'npm:0.11.16'],
-                  ['babel-plugin-macros', 'npm:2.8.0'],
-                  ['babel-plugin-syntax-jsx', 'npm:6.18.0'],
-                  ['convert-source-map', 'npm:1.7.0'],
-                  ['escape-string-regexp', 'npm:1.0.5'],
-                  ['find-root', 'npm:1.1.0'],
-                  ['source-map', 'npm:0.5.7'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'babel-plugin-istanbul',
           [
             [
@@ -7746,44 +7447,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['@babel/types', 'npm:7.10.5'],
                   ['@types/babel__core', 'npm:7.1.9'],
                   ['@types/babel__traverse', 'npm:7.0.8'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'babel-plugin-macros',
-          [
-            [
-              'npm:2.8.0',
-              {
-                packageLocation:
-                  './.yarn/cache/babel-plugin-macros-npm-2.8.0-451367d7e7-fc4e1224df.zip/node_modules/babel-plugin-macros/',
-                packageDependencies: [
-                  ['babel-plugin-macros', 'npm:2.8.0'],
-                  ['@babel/runtime', 'npm:7.11.2'],
-                  ['cosmiconfig', 'npm:6.0.0'],
-                  [
-                    'resolve',
-                    'patch:resolve@npm%3A1.17.0#builtin<compat/resolve>::version=1.17.0&hash=3388aa',
-                  ],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'babel-plugin-syntax-jsx',
-          [
-            [
-              'npm:6.18.0',
-              {
-                packageLocation:
-                  './.yarn/cache/babel-plugin-syntax-jsx-npm-6.18.0-fcf0a98a71-a5c8174ad6.zip/node_modules/babel-plugin-syntax-jsx/',
-                packageDependencies: [
-                  ['babel-plugin-syntax-jsx', 'npm:6.18.0'],
                 ],
                 linkType: 'HARD',
               },
@@ -8051,20 +7714,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['mixin-deep', 'npm:1.3.2'],
                   ['pascalcase', 'npm:0.1.1'],
                 ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'base16',
-          [
-            [
-              'npm:1.0.0',
-              {
-                packageLocation:
-                  './.yarn/cache/base16-npm-1.0.0-8525ba5e40-adc3f12a6b.zip/node_modules/base16/',
-                packageDependencies: [['base16', 'npm:1.0.0']],
                 linkType: 'HARD',
               },
             ],
@@ -10167,26 +9816,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'create-emotion',
-          [
-            [
-              'npm:10.0.27',
-              {
-                packageLocation:
-                  './.yarn/cache/create-emotion-npm-10.0.27-54c90999e2-59581a54fe.zip/node_modules/create-emotion/',
-                packageDependencies: [
-                  ['create-emotion', 'npm:10.0.27'],
-                  ['@emotion/cache', 'npm:10.0.29'],
-                  ['@emotion/serialize', 'npm:0.11.16'],
-                  ['@emotion/sheet', 'npm:0.9.4'],
-                  ['@emotion/utils', 'npm:0.11.3'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'create-hash',
           [
             [
@@ -10224,28 +9853,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['safe-buffer', 'npm:5.2.1'],
                   ['sha.js', 'npm:2.4.11'],
                 ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'create-react-context',
-          [
-            [
-              'virtual:8e725562af20eec8681086d85196bbcc3b580266657045ba6033ad46b8abb7a35cea071a125d2481c6f5269eaf48c4b02be7b82af5f15ef9c6cba11c7a52cf8d#npm:0.1.6',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/create-react-context-virtual-b8a5417903/0/cache/create-react-context-npm-0.1.6-180daa32d1-c65083410a.zip/node_modules/create-react-context/',
-                packageDependencies: [
-                  [
-                    'create-react-context',
-                    'virtual:8e725562af20eec8681086d85196bbcc3b580266657045ba6033ad46b8abb7a35cea071a125d2481c6f5269eaf48c4b02be7b82af5f15ef9c6cba11c7a52cf8d#npm:0.1.6',
-                  ],
-                  ['prop-types', null],
-                  ['react', 'npm:16.13.0'],
-                ],
-                packagePeers: ['prop-types', 'react'],
                 linkType: 'HARD',
               },
             ],
@@ -10761,20 +10368,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['cssstyle', 'npm:2.3.0'],
                   ['cssom', 'npm:0.3.8'],
                 ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'csstype',
-          [
-            [
-              'npm:2.6.13',
-              {
-                packageLocation:
-                  './.yarn/cache/csstype-npm-2.6.13-2f54b26722-0a84ef4b06.zip/node_modules/csstype/',
-                packageDependencies: [['csstype', 'npm:2.6.13']],
                 linkType: 'HARD',
               },
             ],
@@ -11419,20 +11012,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'diff-match-patch',
-          [
-            [
-              'npm:1.0.5',
-              {
-                packageLocation:
-                  './.yarn/cache/diff-match-patch-npm-1.0.5-f715ad1381-4694f40dbf.zip/node_modules/diff-match-patch/',
-                packageDependencies: [['diff-match-patch', 'npm:1.0.5']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'diff-sequences',
           [
             [
@@ -11960,24 +11539,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 packageLocation:
                   './.yarn/cache/emojis-list-npm-3.0.0-7faa48e6fd-a79126b55b.zip/node_modules/emojis-list/',
                 packageDependencies: [['emojis-list', 'npm:3.0.0']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'emotion',
-          [
-            [
-              'npm:10.0.27',
-              {
-                packageLocation:
-                  './.yarn/cache/emotion-npm-10.0.27-60fd402cdc-cc542b2df9.zip/node_modules/emotion/',
-                packageDependencies: [
-                  ['emotion', 'npm:10.0.27'],
-                  ['babel-plugin-emotion', 'npm:10.0.33'],
-                  ['create-emotion', 'npm:10.0.27'],
-                ],
                 linkType: 'HARD',
               },
             ],
@@ -13670,20 +13231,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'find-root',
-          [
-            [
-              'npm:1.1.0',
-              {
-                packageLocation:
-                  './.yarn/cache/find-root-npm-1.1.0-a16a94005f-34f9eeb725.zip/node_modules/find-root/',
-                packageDependencies: [['find-root', 'npm:1.1.0']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'find-up',
           [
             [
@@ -14974,23 +14521,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 packageLocation:
                   './.yarn/cache/hsla-regex-npm-1.0.0-f9d795def9-2460f935b5.zip/node_modules/hsla-regex/',
                 packageDependencies: [['hsla-regex', 'npm:1.0.0']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'html',
-          [
-            [
-              'npm:1.0.0',
-              {
-                packageLocation:
-                  './.yarn/cache/html-npm-1.0.0-2c1d08bc5c-bd8e24c668.zip/node_modules/html/',
-                packageDependencies: [
-                  ['html', 'npm:1.0.0'],
-                  ['concat-stream', 'npm:1.6.2'],
-                ],
                 linkType: 'HARD',
               },
             ],
@@ -18009,24 +17539,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'jsondiffpatch',
-          [
-            [
-              'npm:0.4.1',
-              {
-                packageLocation:
-                  './.yarn/cache/jsondiffpatch-npm-0.4.1-dc8e09c6f1-1dbcabd803.zip/node_modules/jsondiffpatch/',
-                packageDependencies: [
-                  ['jsondiffpatch', 'npm:0.4.1'],
-                  ['chalk', 'npm:2.4.2'],
-                  ['diff-match-patch', 'npm:1.0.5'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'jsonfile',
           [
             [
@@ -18525,20 +18037,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'lodash._getnative',
-          [
-            [
-              'npm:3.9.1',
-              {
-                packageLocation:
-                  './.yarn/cache/lodash._getnative-npm-3.9.1-6d612ef543-0be75345c6.zip/node_modules/lodash._getnative/',
-                packageDependencies: [['lodash._getnative', 'npm:3.9.1']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'lodash.clone',
           [
             [
@@ -18553,54 +18051,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'lodash.curry',
-          [
-            [
-              'npm:4.1.1',
-              {
-                packageLocation:
-                  './.yarn/cache/lodash.curry-npm-4.1.1-b573bff179-081f9214b5.zip/node_modules/lodash.curry/',
-                packageDependencies: [['lodash.curry', 'npm:4.1.1']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'lodash.debounce',
           [
-            [
-              'npm:3.1.1',
-              {
-                packageLocation:
-                  './.yarn/cache/lodash.debounce-npm-3.1.1-355aec632e-1f166abeef.zip/node_modules/lodash.debounce/',
-                packageDependencies: [
-                  ['lodash.debounce', 'npm:3.1.1'],
-                  ['lodash._getnative', 'npm:3.9.1'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
             [
               'npm:4.0.8',
               {
                 packageLocation:
                   './.yarn/cache/lodash.debounce-npm-4.0.8-f1d6e09799-b6042bd8c0.zip/node_modules/lodash.debounce/',
                 packageDependencies: [['lodash.debounce', 'npm:4.0.8']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'lodash.flow',
-          [
-            [
-              'npm:3.5.0',
-              {
-                packageLocation:
-                  './.yarn/cache/lodash.flow-npm-3.5.0-55cc614c59-52204602c6.zip/node_modules/lodash.flow/',
-                packageDependencies: [['lodash.flow', 'npm:3.5.0']],
                 linkType: 'HARD',
               },
             ],
@@ -19603,20 +19061,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['nan', 'npm:2.14.0'],
                   ['node-gyp', 'npm:7.0.0'],
                 ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'nanoid',
-          [
-            [
-              'npm:2.1.11',
-              {
-                packageLocation:
-                  './.yarn/cache/nanoid-npm-2.1.11-60ba7b48b5-41453e344e.zip/node_modules/nanoid/',
-                packageDependencies: [['nanoid', 'npm:2.1.11']],
                 linkType: 'HARD',
               },
             ],
@@ -21655,7 +21099,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['prosemirror-commands', 'npm:1.1.4'],
                   [
                     'prosemirror-dev-tools',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:3.0.2',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=6705ccb121837d6fca4a4edb32b68c02146c49e0',
                   ],
                   ['prosemirror-dropcursor', 'npm:1.3.2'],
                   ['prosemirror-gapcursor', 'npm:1.1.5'],
@@ -23093,47 +22537,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           'prosemirror-dev-tools',
           [
             [
-              'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:3.0.2',
+              'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=6705ccb121837d6fca4a4edb32b68c02146c49e0',
               {
                 packageLocation:
-                  './.yarn/$$virtual/prosemirror-dev-tools-virtual-5574c5df78/0/cache/prosemirror-dev-tools-npm-3.0.2-b04d745e01-f54c0e457d.zip/node_modules/prosemirror-dev-tools/',
+                  './.yarn/$$virtual/prosemirror-dev-tools-virtual-8b76cce870/0/cache/prosemirror-dev-tools-https-df131c324b-5ac1fa7e7c.zip/node_modules/prosemirror-dev-tools/',
                 packageDependencies: [
                   [
                     'prosemirror-dev-tools',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:3.0.2',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=6705ccb121837d6fca4a4edb32b68c02146c49e0',
                   ],
-                  ['@babel/runtime', 'npm:7.11.2'],
-                  [
-                    '@emotion/core',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
-                  ],
-                  [
-                    '@emotion/styled',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.27',
-                  ],
-                  ['emotion', 'npm:10.0.27'],
-                  ['html', 'npm:1.0.0'],
-                  ['jsondiffpatch', 'npm:0.4.1'],
-                  ['nanoid', 'npm:2.1.11'],
-                  ['prop-types', 'npm:15.7.2'],
-                  ['prosemirror-model', 'npm:1.11.0'],
-                  ['prosemirror-state', 'npm:1.3.3'],
                   ['react', 'npm:16.13.0'],
-                  [
-                    'react-dock',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:0.2.4',
-                  ],
                   [
                     'react-dom',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:16.13.0',
-                  ],
-                  [
-                    'react-json-tree',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:0.11.2',
-                  ],
-                  [
-                    'unstated',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:2.1.1',
                   ],
                 ],
                 packagePeers: ['react', 'react-dom'],
@@ -23606,20 +23022,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'pure-color',
-          [
-            [
-              'npm:1.3.0',
-              {
-                packageLocation:
-                  './.yarn/cache/pure-color-npm-1.3.0-da5eee73b2-73ceb18cf9.zip/node_modules/pure-color/',
-                packageDependencies: [['pure-color', 'npm:1.3.0']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'purgecss',
           [
             [
@@ -23844,50 +23246,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
         ],
         [
-          'react-base16-styling',
-          [
-            [
-              'npm:0.5.3',
-              {
-                packageLocation:
-                  './.yarn/cache/react-base16-styling-npm-0.5.3-0e2cb0b312-4eca49f0e2.zip/node_modules/react-base16-styling/',
-                packageDependencies: [
-                  ['react-base16-styling', 'npm:0.5.3'],
-                  ['base16', 'npm:1.0.0'],
-                  ['lodash.curry', 'npm:4.1.1'],
-                  ['lodash.flow', 'npm:3.5.0'],
-                  ['pure-color', 'npm:1.3.0'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'react-dock',
-          [
-            [
-              'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:0.2.4',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/react-dock-virtual-d0b1fc01dc/0/cache/react-dock-npm-0.2.4-2a1470d74c-430ed589f1.zip/node_modules/react-dock/',
-                packageDependencies: [
-                  [
-                    'react-dock',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:0.2.4',
-                  ],
-                  ['babel-runtime', null],
-                  ['lodash.debounce', 'npm:3.1.1'],
-                  ['prop-types', 'npm:15.7.2'],
-                  ['react', 'npm:16.13.0'],
-                ],
-                packagePeers: ['babel-runtime', 'react'],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
           'react-dom',
           [
             [
@@ -23921,34 +23279,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 packageLocation:
                   './.yarn/cache/react-is-npm-16.13.1-a9b9382b4f-11bcf1267a.zip/node_modules/react-is/',
                 packageDependencies: [['react-is', 'npm:16.13.1']],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'react-json-tree',
-          [
-            [
-              'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:0.11.2',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/react-json-tree-virtual-003caa33ef/0/cache/react-json-tree-npm-0.11.2-1c6f6df912-8530a9d30c.zip/node_modules/react-json-tree/',
-                packageDependencies: [
-                  [
-                    'react-json-tree',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:0.11.2',
-                  ],
-                  ['babel-runtime', 'npm:6.26.0'],
-                  ['prop-types', 'npm:15.7.2'],
-                  ['react', 'npm:16.13.0'],
-                  ['react-base16-styling', 'npm:0.5.3'],
-                  [
-                    'react-dom',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:16.13.0',
-                  ],
-                ],
-                packagePeers: ['react', 'react-dom'],
                 linkType: 'HARD',
               },
             ],
@@ -28057,31 +27387,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['has-value', 'npm:0.3.1'],
                   ['isobject', 'npm:3.0.1'],
                 ],
-                linkType: 'HARD',
-              },
-            ],
-          ],
-        ],
-        [
-          'unstated',
-          [
-            [
-              'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:2.1.1',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/unstated-virtual-8e725562af/0/cache/unstated-npm-2.1.1-b47f59058e-1aeae069d6.zip/node_modules/unstated/',
-                packageDependencies: [
-                  [
-                    'unstated',
-                    'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:2.1.1',
-                  ],
-                  [
-                    'create-react-context',
-                    'virtual:8e725562af20eec8681086d85196bbcc3b580266657045ba6033ad46b8abb7a35cea071a125d2481c6f5269eaf48c4b02be7b82af5f15ef9c6cba11c7a52cf8d#npm:0.1.6',
-                  ],
-                  ['react', 'npm:16.13.0'],
-                ],
-                packagePeers: ['react'],
                 linkType: 'HARD',
               },
             ],

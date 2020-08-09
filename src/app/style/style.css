@@ -56,3 +56,16 @@ ul[data-type='todo_list'] div[data-done='true'] > div > p:first-of-type {
   color: grey;
   text-decoration: line-through;
 }
+
+.ProseMirror {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: break-spaces;
+  -webkit-font-variant-ligatures: none;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0; /* the above doesn't seem to work in Edge */
+}
+
+.ProseMirror pre {
+  white-space: pre-wrap;
+}
