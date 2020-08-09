@@ -7,7 +7,9 @@ module.exports = {
   getEditorState,
   ctrlKey,
   getDoc,
+  sleep,
 };
+
 function frmt(doc) {
   return prettier.format(doc.toString(), {
     semi: false,
@@ -41,4 +43,8 @@ async function getDoc(page) {
       return window.editor.state.doc.toString();
     })
     .then(frmt);
+}
+
+function sleep(t = 20) {
+  return new Promise((res) => setTimeout(res, t));
 }

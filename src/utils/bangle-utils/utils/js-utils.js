@@ -1,3 +1,11 @@
+import debounce from 'lodash.debounce';
+
+const LOG = false;
+
+function log(...args) {
+  if (LOG) console.log('js-utils.js', ...args);
+}
+
 export class CachedMap extends Map {
   #dirtyArrayValues = true;
   #cachedArrayValues;
@@ -110,4 +118,35 @@ export function getIdleCallback(cb) {
       },
     });
   }, 1);
+}
+
+/**
+ * A debounce function which tries to avoid debouncing a function unless it violates
+ * the maximum times it can be called during a coolTime period
+ * @param {*} cb
+ * @param {*} violationMax - The number of calls allowed within a cool time to be not debounced
+ * @param {*} coolTime - The time period which it checks for violations, if exceeded it will start debouncing the function
+ * @param  {...any} debounceOpts - lodash debounce options
+ */
+export function smartDebounce(cb, violationMax = 5, coolTime, ...debounceOpts) {
+  const debouncedCb = debounce(cb, ...debounceOpts);
+  let lastCalled = Date.now();
+  let violations = 0;
+  return (arg) => {
+    const current = Date.now();
+    if (current - lastCalled < coolTime) {
+      if (violations > violationMax) {
+        lastCalled = current;
+        return debouncedCb(arg);
+      }
+      log('increasing violations', violations);
+      violations++;
+    } else {
+      log('resetting violations', violations);
+      violations = 0;
+    }
+    log('directly calling');
+    lastCalled = current;
+    return cb(arg);
+  };
 }
