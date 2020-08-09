@@ -11,6 +11,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
+    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools",
     "classnames": "^2.2.6",
     "core-js": "^3.6.4",
     "date-fns": "^2.10.0",
@@ -104,7 +105,6 @@
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.3",
     "prettier": "^2.0.5",
-    "prosemirror-dev-tools": "^3.0.2",
     "puppeteer": "^5.1.0",
     "style-loader": "^1.2.1",
     "surge": "^0.21.3",
