@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import debounce from 'lodash.debounce';
 
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
-import { getIdleCallback } from '../utils/js-utils';
+import { getIdleCallback, smartDebounce } from '../utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('react-editor.js', ...args);
@@ -76,12 +75,13 @@ class PortalWrapper extends React.PureComponent {
   // TODO investigate if this can cause problems
   //    - explore if debounce only when portalProviderAPI.size > LARGE_SIZE
   //    - investigate the waitTime
-  rerender = debounce(
+  rerender = smartDebounce(
     () => {
       log('rerendering by state change');
       this.setState((state) => ({ counter: state.counter + 1 }));
     },
-    8,
+    5,
+    10,
     {
       trailing: true,
       leading: true,
@@ -109,6 +109,7 @@ class PMEditorWrapper extends React.Component {
     destroyNodeView: PropTypes.func.isRequired,
   };
   editorRenderTarget = React.createRef();
+  devtools;
   shouldComponentUpdate() {
     return false;
   }
@@ -134,7 +135,7 @@ class PMEditorWrapper extends React.Component {
           import(
             /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
           ).then((args) => {
-            args.applyDevTools(this.editor.view);
+            this.devtools = args.applyDevTools(this.editor.view);
           });
         });
       }
@@ -148,14 +149,8 @@ class PMEditorWrapper extends React.Component {
     log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
     this.editor && this.editor.destroy();
-    if (this.props.editorOptions.devtools) {
-      const DEVTOOLS_CLASS_NAME = '__prosemirror-dev-tools__';
-      let place = document.querySelector(`.${DEVTOOLS_CLASS_NAME}`);
-      if (place) {
-        console.log('unmounting');
-        ReactDOM.unmountComponentAtNode(place);
-        place.innerHTML = '';
-      }
+    if (this.props.editorOptions.devtools && this.devtools) {
+      this.devtools();
     }
     this.editor = undefined;
     window.editor = null;
