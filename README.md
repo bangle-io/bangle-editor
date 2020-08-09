@@ -1,1 +1,1 @@
-![Node.js CI](https://github.com/kepta/bangle-play/workflows/Node.js%20CI/badge.svg)
+![Node.js CI](https://github.com/kepta/bangle-play/workflows/Node.js%20CI/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/6d032d9e-c63a-44e6-ae6d-d36a4905a147/deploy-status)](https://app.netlify.com/sites/bangle/deploys)
