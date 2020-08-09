@@ -850,18 +850,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 linkType: 'HARD',
               },
             ],
-            [
-              'npm:7.8.3',
-              {
-                packageLocation:
-                  './.yarn/cache/@babel-helper-module-imports-npm-7.8.3-71550e773a-48a64ca882.zip/node_modules/@babel/helper-module-imports/',
-                packageDependencies: [
-                  ['@babel/helper-module-imports', 'npm:7.8.3'],
-                  ['@babel/types', 'npm:7.10.5'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
           ],
         ],
         [
@@ -4432,6 +4420,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 linkType: 'HARD',
               },
             ],
+            [
+              'npm:7.11.2',
+              {
+                packageLocation:
+                  './.yarn/cache/@babel-runtime-npm-7.11.2-f2cfabd212-2f127ad60a.zip/node_modules/@babel/runtime/',
+                packageDependencies: [
+                  ['@babel/runtime', 'npm:7.11.2'],
+                  ['regenerator-runtime', 'npm:0.13.5'],
+                ],
+                linkType: 'HARD',
+              },
+            ],
           ],
         ],
         [
@@ -4620,7 +4620,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     '@emotion/core',
                     'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
                   ],
-                  ['@babel/runtime', 'npm:7.10.5'],
+                  ['@babel/runtime', 'npm:7.11.2'],
                   ['@emotion/cache', 'npm:10.0.29'],
                   ['@emotion/css', 'npm:10.0.27'],
                   ['@emotion/serialize', 'npm:0.11.16'],
@@ -4776,7 +4776,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     '@emotion/styled-base',
                     'virtual:0f4c4760e183d2dc199d2a13ea4ecdea84938064a09dc6180b49b64affdc030b6ba40735669ada2d9f42fb7995265107cb2131f96add219c94b9c9dfbc1cd4d2#npm:10.0.31',
                   ],
-                  ['@babel/runtime', 'npm:7.10.5'],
+                  ['@babel/runtime', 'npm:7.11.2'],
                   [
                     '@emotion/core',
                     'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',
@@ -7695,7 +7695,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   './.yarn/cache/babel-plugin-emotion-npm-10.0.33-378fe1583f-ecbf7cbcae.zip/node_modules/babel-plugin-emotion/',
                 packageDependencies: [
                   ['babel-plugin-emotion', 'npm:10.0.33'],
-                  ['@babel/helper-module-imports', 'npm:7.8.3'],
+                  ['@babel/helper-module-imports', 'npm:7.10.4'],
                   ['@emotion/hash', 'npm:0.8.0'],
                   ['@emotion/memoize', 'npm:0.7.4'],
                   ['@emotion/serialize', 'npm:0.11.16'],
@@ -7762,7 +7762,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   './.yarn/cache/babel-plugin-macros-npm-2.8.0-451367d7e7-fc4e1224df.zip/node_modules/babel-plugin-macros/',
                 packageDependencies: [
                   ['babel-plugin-macros', 'npm:2.8.0'],
-                  ['@babel/runtime', 'npm:7.10.5'],
+                  ['@babel/runtime', 'npm:7.11.2'],
                   ['cosmiconfig', 'npm:6.0.0'],
                   [
                     'resolve',
@@ -11422,11 +11422,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           'diff-match-patch',
           [
             [
-              'npm:1.0.4',
+              'npm:1.0.5',
               {
                 packageLocation:
-                  './.yarn/cache/diff-match-patch-npm-1.0.4-e80d3f96ce-2dd3400f7e.zip/node_modules/diff-match-patch/',
-                packageDependencies: [['diff-match-patch', 'npm:1.0.4']],
+                  './.yarn/cache/diff-match-patch-npm-1.0.5-f715ad1381-4694f40dbf.zip/node_modules/diff-match-patch/',
+                packageDependencies: [['diff-match-patch', 'npm:1.0.5']],
                 linkType: 'HARD',
               },
             ],
@@ -18019,7 +18019,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 packageDependencies: [
                   ['jsondiffpatch', 'npm:0.4.1'],
                   ['chalk', 'npm:2.4.2'],
-                  ['diff-match-patch', 'npm:1.0.4'],
+                  ['diff-match-patch', 'npm:1.0.5'],
                 ],
                 linkType: 'HARD',
               },
@@ -23102,7 +23102,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     'prosemirror-dev-tools',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:3.0.2',
                   ],
-                  ['@babel/runtime', 'npm:7.10.5'],
+                  ['@babel/runtime', 'npm:7.11.2'],
                   [
                     '@emotion/core',
                     'virtual:5574c5df78375c5b5fb09d2bb9f1337cd0657fe0e62c57169e01100088c0a1ca882a9f9d87267b37ccb34b712b230d380aca5c138f926bf2d3328ce13128f4b2#npm:10.0.28',

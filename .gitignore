@@ -12,3 +12,4 @@ dist
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+yarn-error.log
