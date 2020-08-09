@@ -8,7 +8,7 @@ import { uuid } from '../utils/js-utils';
 
 import { Node } from './node';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('todo-item.js', ...args);

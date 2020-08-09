@@ -11,7 +11,6 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
-    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools",
     "classnames": "^2.2.6",
     "core-js": "^3.6.4",
     "date-fns": "^2.10.0",
@@ -22,6 +21,7 @@
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.1.4",
+    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools#v3.3.1",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.1.5",
     "prosemirror-history": "^1.0.4",
@@ -29,27 +29,29 @@
     "prosemirror-keymap": "^1.1.4",
     "prosemirror-menu": "^1.1.4",
     "prosemirror-model": "^1.11.0",
+    "prosemirror-schema-list": "^1.1.3",
     "prosemirror-state": "^1.3.3",
+    "prosemirror-tables": "^1.1.0",
     "prosemirror-transform": "^1.2.7",
-    "prosemirror-utils": "^0.9.6",
+    "prosemirror-utils": "latest",
     "prosemirror-view": "^1.15.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "tailwindcss": "^1.6.0",
     "throttle-debounce": "^2.1.0",
-    "tiptap-commands": "^1.14.3"
+    "tiptap-commands": "^1.14.3",
+    "tiptap-utils": "^1.10.4"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --port 3000",
-    "prebuild": "npm run lint",
-    "build": "NODE_ENV=production webpack --env.production",
-    "deploy": "npm run build && surge build bangle-test.surge.sh",
-    "snapshot": "npm run build && node ./scripts/snapshot",
-    "pretest": "npm run lint",
-    "test": "npm run unit-tests && npm run integration-tests",
-    "unit-tests": "jest",
-    "integration-tests": "jest --config=jest-integration.config.js",
-    "lint": "prettier --check \"src/**/*.js\" && eslint ."
+    "start": "yarn webpack-dev-server --mode development --open --port 3000",
+    "build": "yarn lint && NODE_ENV=production yarn webpack --env.production",
+    "deploy": "yarn build && yarn surge build bangle-test.surge.sh",
+    "snapshot": "yarn build && yarn node ./scripts/snapshot",
+    "pretest": "yarn lint",
+    "test": "yarn lint && yarn unit-tests && yarn integration-tests",
+    "unit-tests": "yarn jest",
+    "integration-tests": "yarn jest --config=jest-integration.config.js",
+    "lint": "yarn prettier --check \"src/**/*.js\" && yarn eslint ."
   },
   "prettier": {
     "singleQuote": true,
@@ -59,8 +61,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint",
-      "prettier --write"
+      "yarn eslint",
+      "yarn prettier --write"
     ]
   },
   "husky": {
@@ -72,6 +74,7 @@
     "last 3 chrome version"
   ],
   "devDependencies": {
+    "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@testing-library/react": "^10.4.7",
@@ -89,23 +92,27 @@
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "2.x",
+    "expect-puppeteer": "^4.4.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
     "jest-circus": "^26.1.0",
     "jest-diff": "^26.1.0",
+    "jest-environment-node": "^26.2.0",
+    "jest-environment-puppeteer": "^4.4.0",
     "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.2.11",
     "mini-css-extract-plugin": "^0.9.0",
     "parcel-bundler": "^1.12.4",
+    "pnp-webpack-plugin": "^1.6.4",
     "postcss-cli": "^7.1.1",
     "postcss-custom-properties": "^9.1.1",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.3",
     "prettier": "^2.0.5",
-    "puppeteer": "^5.1.0",
+    "puppeteer": "^5.2.1",
     "style-loader": "^1.2.1",
     "surge": "^0.21.3",
     "webpack": "^4.44.1",
@@ -118,6 +125,8 @@
     "prosemirror-model": "1.11.0",
     "prosemirror-state": "1.3.3",
     "prosemirror-view": "1.15.2",
-    "prosemirror-transform": "1.2.7"
+    "prosemirror-transform": "1.2.7",
+    "tiptap-utils": "1.10.4",
+    "prosemirror-utils/prosemirror-tables": "0.9.6"
   }
 }
