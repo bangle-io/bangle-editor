@@ -107,6 +107,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           'eslint-plugin-react-hooks',
           'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:2.5.1',
         ],
+        ['expect-puppeteer', 'npm:4.4.0'],
         [
           'file-loader',
           'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:6.0.0',
@@ -119,6 +120,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ['jest', 'npm:26.2.2'],
         ['jest-circus', 'npm:26.2.2'],
         ['jest-diff', 'npm:26.2.0'],
+        ['jest-environment-node', 'npm:26.2.0'],
+        [
+          'jest-environment-puppeteer',
+          'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
+        ],
         [
           'jest-puppeteer',
           'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
@@ -275,6 +281,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     'eslint-plugin-react-hooks',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:2.5.1',
                   ],
+                  ['expect-puppeteer', 'npm:4.4.0'],
                   [
                     'file-loader',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:6.0.0',
@@ -287,6 +294,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['jest', 'npm:26.2.2'],
                   ['jest-circus', 'npm:26.2.2'],
                   ['jest-diff', 'npm:26.2.0'],
+                  ['jest-environment-node', 'npm:26.2.0'],
+                  [
+                    'jest-environment-puppeteer',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
+                  ],
                   [
                     'jest-puppeteer',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
@@ -15008,14 +15020,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           'jest-environment-puppeteer',
           [
             [
-              'virtual:617191309f28891aae9cbaa8c1f8694ee0f53571a1c0e27db93ddd43e82815dbd682a9ae9a10869ebf9804f2666a07099d8723336f1ad1d48281e455e90fafde#npm:4.4.0',
+              'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
               {
                 packageLocation:
-                  './.yarn/$$virtual/jest-environment-puppeteer-virtual-48d04b81fc/0/cache/jest-environment-puppeteer-npm-4.4.0-6229401d6e-146c1edaab.zip/node_modules/jest-environment-puppeteer/',
+                  './.yarn/$$virtual/jest-environment-puppeteer-virtual-ecbdceca24/0/cache/jest-environment-puppeteer-npm-4.4.0-6229401d6e-146c1edaab.zip/node_modules/jest-environment-puppeteer/',
                 packageDependencies: [
                   [
                     'jest-environment-puppeteer',
-                    'virtual:617191309f28891aae9cbaa8c1f8694ee0f53571a1c0e27db93ddd43e82815dbd682a9ae9a10869ebf9804f2666a07099d8723336f1ad1d48281e455e90fafde#npm:4.4.0',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
                   ],
                   ['chalk', 'npm:3.0.0'],
                   ['cwd', 'npm:0.10.0'],
@@ -15228,7 +15240,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['expect-puppeteer', 'npm:4.4.0'],
                   [
                     'jest-environment-puppeteer',
-                    'virtual:617191309f28891aae9cbaa8c1f8694ee0f53571a1c0e27db93ddd43e82815dbd682a9ae9a10869ebf9804f2666a07099d8723336f1ad1d48281e455e90fafde#npm:4.4.0',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
                   ],
                   ['puppeteer', 'npm:5.2.1'],
                 ],
@@ -19266,6 +19278,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     'eslint-plugin-react-hooks',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:2.5.1',
                   ],
+                  ['expect-puppeteer', 'npm:4.4.0'],
                   [
                     'file-loader',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:6.0.0',
@@ -19278,6 +19291,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['jest', 'npm:26.2.2'],
                   ['jest-circus', 'npm:26.2.2'],
                   ['jest-diff', 'npm:26.2.0'],
+                  ['jest-environment-node', 'npm:26.2.0'],
+                  [
+                    'jest-environment-puppeteer',
+                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
+                  ],
                   [
                     'jest-puppeteer',
                     'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0',
