@@ -25,7 +25,7 @@ jobs:
           node-version: 12.x
       - run: npm install -g yarn@latest
       - run: yarn install --immutable --immutable-cache
-        if: ${{ matrix.test-kid != 'build'}}
+        if: matrix.test-kid != 'build'
       - run: yarn install --immutable --immutable-cache --check-cache
-        if: ${{ matrix.test-kid == 'build'}}
+        if: matrix.test-kid == 'build'
       - run: yarn ${{ matrix.test-kind }}
