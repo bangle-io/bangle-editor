@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        test-kind: [unit-tests, integration-tests, build]
+        test-kind: [unit-tests, integration-tests, build, check-cache]
 
     steps:
       - uses: actions/checkout@v2
@@ -25,7 +25,8 @@ jobs:
           node-version: 12.x
       - run: npm install -g yarn@latest
       - run: yarn install --immutable --immutable-cache
-        if: matrix.test-kind != 'build'
+        if: matrix.test-kind != 'check-cache'
       - run: yarn install --immutable --immutable-cache --check-cache
-        if: matrix.test-kind == 'build'
+        if: matrix.test-kind == 'check-cache'
       - run: yarn ${{ matrix.test-kind }}
+        if: matrix.test-kind != 'check-cache'
