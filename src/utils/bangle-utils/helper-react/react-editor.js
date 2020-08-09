@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import debounce from 'lodash.debounce';
 
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
-import { getIdleCallback } from '../utils/js-utils';
+import { getIdleCallback, smartDebounce } from '../utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('react-editor.js', ...args);
@@ -76,12 +75,13 @@ class PortalWrapper extends React.PureComponent {
   // TODO investigate if this can cause problems
   //    - explore if debounce only when portalProviderAPI.size > LARGE_SIZE
   //    - investigate the waitTime
-  rerender = debounce(
+  rerender = smartDebounce(
     () => {
       log('rerendering by state change');
       this.setState((state) => ({ counter: state.counter + 1 }));
     },
-    8,
+    5,
+    10,
     {
       trailing: true,
       leading: true,
