@@ -133,8 +133,8 @@ class PMEditorWrapper extends React.Component {
         getIdleCallback(() => {
           import(
             /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-          ).then(({ default: applyDevTools }) => {
-            applyDevTools(this.editor.view);
+          ).then((args) => {
+            args.applyDevTools(this.editor.view);
           });
         });
       }
