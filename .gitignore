@@ -10,4 +10,5 @@ dist
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
-!.yarn/versions 
+!.yarn/versions
+yarn-error.log
