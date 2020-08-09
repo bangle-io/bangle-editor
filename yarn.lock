@@ -10793,7 +10793,7 @@ fsevents@^1.2.7:
     prosemirror-model: ^1.11.0
     prosemirror-schema-list: ^1.1.3
     prosemirror-state: ^1.3.3
-    prosemirror-tables: 0.9.1
+    prosemirror-tables: ^1.1.0
     prosemirror-transform: ^1.2.7
     prosemirror-utils: latest
     prosemirror-view: ^1.15.2
@@ -11716,20 +11716,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-tables@npm:0.9.1":
-  version: 0.9.1
-  resolution: "prosemirror-tables@npm:0.9.1"
-  dependencies:
-    prosemirror-keymap: ^1.0.0
-    prosemirror-model: ^1.0.0
-    prosemirror-state: ^1.0.0
-    prosemirror-transform: ^1.0.0
-    prosemirror-view: ^1.0.0
-  checksum: daa6a959399f6374c03cbf309c69eafc1cd4960d702ef73213eb4f14a7898e4618ebb10ba0041ef54ce8f8f9cedc255688defb23de19151a85f21503fcabf0b6
-  languageName: node
-  linkType: hard
-
-"prosemirror-tables@npm:^1.1.0":
+"prosemirror-tables@npm:^1.1.0, prosemirror-tables@npm:^1.1.1":
   version: 1.1.1
   resolution: "prosemirror-tables@npm:1.1.1"
   dependencies:

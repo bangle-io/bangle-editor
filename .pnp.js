@@ -154,11 +154,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ['prosemirror-model', 'npm:1.11.0'],
         ['prosemirror-schema-list', 'npm:1.1.3'],
         ['prosemirror-state', 'npm:1.3.3'],
-        ['prosemirror-tables', 'npm:0.9.1'],
+        ['prosemirror-tables', 'npm:1.1.1'],
         ['prosemirror-transform', 'npm:1.2.7'],
         [
           'prosemirror-utils',
-          'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:0.9.6',
+          'virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6',
         ],
         ['prosemirror-view', 'npm:1.15.2'],
         ['puppeteer', 'npm:5.2.1'],
@@ -322,11 +322,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['prosemirror-model', 'npm:1.11.0'],
                   ['prosemirror-schema-list', 'npm:1.1.3'],
                   ['prosemirror-state', 'npm:1.3.3'],
-                  ['prosemirror-tables', 'npm:0.9.1'],
+                  ['prosemirror-tables', 'npm:1.1.1'],
                   ['prosemirror-transform', 'npm:1.2.7'],
                   [
                     'prosemirror-utils',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:0.9.6',
+                    'virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6',
                   ],
                   ['prosemirror-view', 'npm:1.15.2'],
                   ['puppeteer', 'npm:5.2.1'],
@@ -19304,11 +19304,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ['prosemirror-model', 'npm:1.11.0'],
                   ['prosemirror-schema-list', 'npm:1.1.3'],
                   ['prosemirror-state', 'npm:1.3.3'],
-                  ['prosemirror-tables', 'npm:0.9.1'],
+                  ['prosemirror-tables', 'npm:1.1.1'],
                   ['prosemirror-transform', 'npm:1.2.7'],
                   [
                     'prosemirror-utils',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:0.9.6',
+                    'virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6',
                   ],
                   ['prosemirror-view', 'npm:1.15.2'],
                   ['puppeteer', 'npm:5.2.1'],
@@ -20895,22 +20895,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           'prosemirror-tables',
           [
             [
-              'npm:0.9.1',
-              {
-                packageLocation:
-                  './.yarn/cache/prosemirror-tables-npm-0.9.1-ac74e969f7-daa6a95939.zip/node_modules/prosemirror-tables/',
-                packageDependencies: [
-                  ['prosemirror-tables', 'npm:0.9.1'],
-                  ['prosemirror-keymap', 'npm:1.1.4'],
-                  ['prosemirror-model', 'npm:1.11.0'],
-                  ['prosemirror-state', 'npm:1.3.3'],
-                  ['prosemirror-transform', 'npm:1.2.7'],
-                  ['prosemirror-view', 'npm:1.15.2'],
-                ],
-                linkType: 'HARD',
-              },
-            ],
-            [
               'npm:1.1.1',
               {
                 packageLocation:
@@ -20948,28 +20932,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [
           'prosemirror-utils',
           [
-            [
-              'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:0.9.6',
-              {
-                packageLocation:
-                  './.yarn/$$virtual/prosemirror-utils-virtual-05047ba8df/0/cache/prosemirror-utils-npm-0.9.6-5911c8beb1-b0a1274aa3.zip/node_modules/prosemirror-utils/',
-                packageDependencies: [
-                  [
-                    'prosemirror-utils',
-                    'virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:0.9.6',
-                  ],
-                  ['prosemirror-model', 'npm:1.11.0'],
-                  ['prosemirror-state', 'npm:1.3.3'],
-                  ['prosemirror-tables', 'npm:0.9.1'],
-                ],
-                packagePeers: [
-                  'prosemirror-model',
-                  'prosemirror-state',
-                  'prosemirror-tables',
-                ],
-                linkType: 'HARD',
-              },
-            ],
             [
               'virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6',
               {
