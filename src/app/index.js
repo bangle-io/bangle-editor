@@ -1,8 +1,8 @@
 import './style/tailwind.src.css';
 import './style/style.css';
-import './style/prosemirror.css';
 import React from 'react';
 import { EditorContextProvider } from '../../src/utils/bangle-utils/helper-react/editor-context';
+import browser from '../../src/utils/bangle-utils/utils/browser';
 
 import { Editor } from './Editor';
 import { Header } from './components/Header';
@@ -41,10 +41,11 @@ export default class App extends React.PureComponent {
   };
 
   render() {
+    const isMobile = browser.ios || browser.android;
     return (
       <EditorContextProvider>
         <div className="h-screen main-wrapper">
-          <Header entry={this.state.entry} />
+          {!isMobile && <Header entry={this.state.entry} />}
           <div className="editor-wrapper overflow-auto">
             {this.state.entry && <Editor entry={this.state.entry} />}
           </div>
@@ -54,7 +55,9 @@ export default class App extends React.PureComponent {
             handleRemoveEntry={this.handleRemoveEntry}
             handleNewEntry={this.handleNewEntry}
             toggleSidebar={this.toggleSidebar}
-          />
+          >
+            {isMobile && <Header entry={this.state.entry} />}
+          </Aside>
         </div>
       </EditorContextProvider>
     );
