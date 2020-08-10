@@ -1,11 +1,7 @@
 @media screen and (max-width: 640px) {
   .main-wrapper {
     display: grid;
-    grid-template-rows: 70px auto 70px;
-  }
-  header {
-    grid-row: 3;
-    grid-column: 1;
+    grid-template-rows: 90px auto;
   }
   .editor-wrapper {
     grid-row: 2/4;
