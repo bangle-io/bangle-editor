@@ -66,8 +66,9 @@ export class Aside extends React.PureComponent {
   render() {
     return (
       <>
-        <div className="aside-menu bg-gray-900 py-6 flex flex-col z-30 shadow-outline">
+        <div className="aside-menu flex flex-row bg-gray-900 py-3 flex flex-col z-30 shadow-outline">
           {this.sideBarMenu()}
+          {this.props.children}
         </div>
         {this.state.showSidebar ? (
           <div className="aside-content bg-gray-200  flex flex-col z-20 shadow-2xl px-3 pt-5 overflow-auto ">
