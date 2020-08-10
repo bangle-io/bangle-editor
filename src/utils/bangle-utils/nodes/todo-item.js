@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   sinkListItem,
   splitToDefaultListItem,
   liftListItem,
 } from 'tiptap-commands';
+import browser from '../utils/browser';
 import { uuid } from '../utils/js-utils';
-
+import cx from 'classnames';
 import { Node } from './node';
 
 const LOG = false;
@@ -90,6 +91,10 @@ export class TodoItem extends Node {
 
 let counter = 0;
 function TodoItemComp(props) {
+  const mobile = browser.ios || browser.android;
+  if (mobile) {
+    return <MobileTodo {...props} />;
+  }
   const { node, view, handleRef, updateAttrs } = props;
 
   let uid = node.type.name + counter++;
@@ -123,5 +128,39 @@ function TodoItemComp(props) {
         data-done={done.toString()}
       />
     </>
+  );
+}
+
+function MobileTodo(props) {
+  const { node, view, handleRef, updateAttrs } = props;
+  const { 'data-done': done } = node.attrs;
+
+  return (
+    <div contentEditable={true}>
+      <button
+        contentEditable={false}
+        style={{
+          margin: '10px 8px 10px 8px',
+          padding: '20px 36px 20px 36px',
+        }}
+        className={cx({
+          'bg-green-200': done,
+          'bg-yellow-200': !done,
+        })}
+        onClick={() => {
+          updateAttrs({
+            'data-done': !done,
+          });
+        }}
+      >
+        {done ? '✅' : '🟨'}
+      </button>
+      <div
+        className="todo-content inline-block"
+        ref={handleRef}
+        data-done={done.toString()}
+        contentEditable={true}
+      />
+    </div>
   );
 }

@@ -43,7 +43,7 @@
     "tiptap-utils": "^1.10.4"
   },
   "scripts": {
-    "start": "yarn webpack-dev-server --mode development --open --port 3000",
+    "start": "yarn webpack-dev-server --mode development --open --port 3000 --host 0.0.0.0",
     "build": "yarn lint && NODE_ENV=production yarn webpack --env.production",
     "deploy": "yarn build && yarn surge build bangle-test.surge.sh",
     "snapshot": "yarn build && yarn node ./scripts/snapshot",
