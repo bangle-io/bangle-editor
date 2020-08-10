@@ -1,5 +1,4 @@
 import debounce from 'lodash.debounce';
-
 const LOG = false;
 
 function log(...args) {
