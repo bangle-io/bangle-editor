@@ -80,12 +80,12 @@ class PortalWrapper extends React.PureComponent {
       log('rerendering by state change');
       this.setState((state) => ({ counter: state.counter + 1 }));
     },
-    5,
-    10,
+    100,
+    20,
     {
       trailing: true,
       leading: true,
-      maxWait: 20,
+      maxWait: 50,
     },
   );
 
