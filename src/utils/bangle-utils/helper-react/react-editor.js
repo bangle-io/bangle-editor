@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import { Editor } from '../';
 import { EditorOnReadyContext } from './editor-context';
@@ -66,7 +65,7 @@ class PortalWrapper extends React.PureComponent {
   };
 
   destroyNodeView = (dom) => {
-    if (this.portalProviderAPI.remove(dom)) {
+    if (this.portalProviderAPI?.remove(dom)) {
       log('removing nodeView dom');
       this.rerender();
     }
@@ -104,7 +103,7 @@ class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
     editorOptions: PropTypes.object.isRequired,
-    content: PropTypes.object.isRequired,
+    content: PropTypes.string.isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
   };
