@@ -17,13 +17,13 @@ export class BulletList extends Node {
     };
   }
 
-  commands({ type }) {
-    return { bullet_list: () => toggleList(this.name, 'list_item') };
+  commands({ type, schema }) {
+    return { bullet_list: () => toggleList(type, schema.nodes.list_item) };
   }
 
   keys({ type, schema }) {
     return {
-      'Shift-Ctrl-8': toggleList(this.name, 'list_item'),
+      'Shift-Ctrl-8': toggleList(type, schema.nodes.list_item),
     };
   }
 

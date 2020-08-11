@@ -175,18 +175,15 @@ function canToJoinToPreviousListItem(state) {
 
 /**
  *
- * @param {String} listType  bullet_list, ordered_list, todo_list
- * @param {String} itemType  'todo_item', 'list_item'
+ * @param {Object} listType  bullet_list, ordered_list, todo_list
+ * @param {Object} itemType  'todo_item', 'list_item'
  */
-export function toggleList(listTypeStr, itemType) {
+export function toggleList(listType, itemType) {
   return (state, dispatch, view) => {
-    let listType;
-    if (typeof listTypeStr === 'string') {
-      listType = state.schema.nodes[listTypeStr];
-    }
     const { selection } = state;
     const fromNode = selection.$from.node(selection.$from.depth - 2);
     const endNode = selection.$to.node(selection.$to.depth - 2);
+
     if (
       !fromNode ||
       fromNode.type.name !== listType.name ||
@@ -197,11 +194,9 @@ export function toggleList(listTypeStr, itemType) {
     } else {
       const depth = rootListDepth(selection.$to, state.schema.nodes);
 
-      const listItem = itemType
-        ? state.schema.nodes[itemType]
-        : state.schema.nodes.list_item;
+      const listItem = itemType ? itemType : state.schema.nodes.list_item;
       let tr = liftFollowingList(
-        state.schema.nodes[itemType],
+        listItem,
         state,
         selection.$to.pos,
         selection.$to.end(depth),

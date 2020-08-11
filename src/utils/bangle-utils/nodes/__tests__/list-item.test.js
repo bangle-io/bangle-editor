@@ -60,7 +60,7 @@ describe('Command: toggleList', () => {
     updateDoc(doc(p('foobar{<>}')));
     // because togglelist requires a view to work
     // we are not using the applyCommand helper
-    toggleList('bullet_list')(
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -1060,13 +1060,13 @@ describe('Command-x on empty selections', () => {
 
 describe('Toggling the list', () => {
   const toggleOrderedList = (editorView) =>
-    toggleList('ordered_list')(
+    toggleList(editorView.state.schema.nodes['ordered_list'])(
       editorView.state,
       editorView.dispatch,
       editorView,
     );
   const toggleBulletList = (editorView) =>
-    toggleList('bullet_list')(
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,
       editorView.dispatch,
       editorView,
