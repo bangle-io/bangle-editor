@@ -7,10 +7,8 @@ import {
   safeInsert,
   hasParentNodeOfType,
   findPositionOfNodeBefore,
-  removeNodeBefore,
   findParentNode,
   replaceSelectedNode,
-  canInsert,
 } from 'prosemirror-utils';
 import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
 import { compose } from '../../../../../src/utils/bangle-utils/utils/js-utils';
@@ -59,14 +57,18 @@ const isInsideList = (state, listType) => {
   const grandGrandParent = $from.node(-3);
 
   return (
-    (parent && parent.type === state.schema.nodes[listType]) ||
-    (grandGrandParent && grandGrandParent.type === state.schema.nodes[listType])
+    (parent && parent.type === listType) ||
+    (grandGrandParent && grandGrandParent.type === listType)
   );
 };
 
-const canOutdent = (state) => {
+const canOutdent = (type) => (state) => {
   const { parent } = state.selection.$from;
-  const { list_item: listItem, paragraph } = state.schema.nodes;
+  let listItem = type;
+  if (!listItem) {
+    ({ list_item: listItem } = state.schema.nodes);
+  }
+  const { paragraph } = state.schema.nodes;
 
   if (state.selection instanceof GapCursorSelection) {
     return parent.type === listItem;
@@ -106,9 +108,14 @@ function canSink(initialIndentationLevel, state) {
   return true;
 }
 
-const isInsideListItem = (state) => {
+const isInsideListItem = (type) => (state) => {
   const { $from } = state.selection;
-  const { list_item: listItem, paragraph } = state.schema.nodes;
+
+  let listItem = type;
+  if (!listItem) {
+    ({ list_item: listItem } = state.schema.nodes);
+  }
+  const { paragraph } = state.schema.nodes;
   if (state.selection instanceof GapCursorSelection) {
     return $from.parent.type === listItem;
   }
@@ -147,6 +154,7 @@ function canToJoinToPreviousListItem(state) {
   const {
     bullet_list: bulletList,
     ordered_list: orderedList,
+    todo_list: todoList,
   } = state.schema.nodes;
   const $before = state.doc.resolve($from.pos - 1);
   let nodeBefore = $before ? $before.nodeBefore : null;
@@ -154,7 +162,8 @@ function canToJoinToPreviousListItem(state) {
     nodeBefore = $from.nodeBefore;
   }
   return (
-    !!nodeBefore && [bulletList, orderedList].indexOf(nodeBefore.type) > -1
+    !!nodeBefore &&
+    [bulletList, orderedList, todoList].indexOf(nodeBefore.type) > -1
   );
 }
 
@@ -164,30 +173,42 @@ function canToJoinToPreviousListItem(state) {
  * ------------------
  */
 
-export function toggleList(listType) {
+/**
+ *
+ * @param {String} listType  bullet_list, ordered_list, todo_list
+ * @param {String} itemType  'todo_item', 'list_item'
+ */
+export function toggleList(listTypeStr, itemType) {
   return (state, dispatch, view) => {
+    let listType;
+    if (typeof listTypeStr === 'string') {
+      listType = state.schema.nodes[listTypeStr];
+    }
     const { selection } = state;
     const fromNode = selection.$from.node(selection.$from.depth - 2);
     const endNode = selection.$to.node(selection.$to.depth - 2);
     if (
       !fromNode ||
-      fromNode.type.name !== listType ||
+      fromNode.type.name !== listType.name ||
       !endNode ||
-      endNode.type.name !== listType
+      endNode.type.name !== listType.name
     ) {
       return toggleListCommand(listType)(state, dispatch, view);
     } else {
       const depth = rootListDepth(selection.$to, state.schema.nodes);
 
+      const listItem = itemType
+        ? state.schema.nodes[itemType]
+        : state.schema.nodes.list_item;
       let tr = liftFollowingList(
+        state.schema.nodes[itemType],
         state,
         selection.$to.pos,
         selection.$to.end(depth),
         depth || 0,
         state.tr,
       );
-      tr = liftSelectionList(state, tr);
-
+      tr = liftSelectionList(listItem, state, tr);
       dispatch(tr);
       return true;
     }
@@ -210,12 +231,7 @@ function toggleListCommand(listType) {
     state = view.state;
 
     const { $from, $to } = state.selection;
-    const isRangeOfSingleType = isRangeOfType(
-      state.doc,
-      $from,
-      $to,
-      state.schema.nodes[listType],
-    );
+    const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, listType);
 
     if (isInsideList(state, listType) && isRangeOfSingleType) {
       // Untoggles list
@@ -228,16 +244,13 @@ function toggleListCommand(listType) {
       }
 
       // Remove any invalid marks that are not supported
-      const tr = sanitiseSelectionMarksForWrapping(
-        state,
-        state.schema.nodes[listType],
-      );
+      const tr = sanitiseSelectionMarksForWrapping(state, listType);
       if (tr && dispatch) {
         dispatch(tr);
         state = view.state;
       }
       // Wraps selection in list
-      return wrapInList(state.schema.nodes[listType])(state, dispatch);
+      return wrapInList(listType)(state, dispatch);
     }
   };
 }
@@ -320,10 +333,14 @@ function adjustSelectionInList(doc, selection) {
   return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
 }
 
-export function indentList() {
+export function indentList(type) {
   return function indentListCommand(state, dispatch) {
-    const { list_item: listItem } = state.schema.nodes;
-    if (isInsideListItem(state)) {
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
+
+    if (isInsideListItem(listItem)(state)) {
       // Record initial list indentation
       const initialIndentationLevel = numberNestedLists(
         state.selection.$from,
@@ -338,11 +355,14 @@ export function indentList() {
   };
 }
 
-export function outdentList() {
+export function outdentList(type) {
   return function (state, dispatch) {
-    const { list_item: listItem } = state.schema.nodes;
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
     const { $from, $to } = state.selection;
-    if (isInsideListItem(state)) {
+    if (isInsideListItem(listItem)(state)) {
       // if we're backspacing at the start of a list item, unindent it
       // take the the range of nodes we might be lifting
 
@@ -428,46 +448,57 @@ function mergeLists(listItem, range) {
 }
 
 // Chaining runs each command until one of them returns true
-export const backspaceKeyCommand = baseCommand.chainCommands(
-  // if we're at the start of a list item, we need to either backspace
-  // directly to an empty list item above, or outdent this node
-  filter(
-    [
-      isEmptySelectionAtStart,
+export const backspaceKeyCommand = (type) =>
+  baseCommand.chainCommands(
+    // if we're at the start of a list item, we need to either backspace
+    // directly to an empty list item above, or outdent this node
+    filter(
+      [
+        isEmptySelectionAtStart,
 
-      // list items might have multiple paragraphs; only do this at the first one
-      isFirstChildOfParent,
-      canOutdent,
-    ],
-    baseCommand.chainCommands(deletePreviousEmptyListItem, outdentList()),
-  ),
+        // list items might have multiple paragraphs; only do this at the first one
+        isFirstChildOfParent,
+        canOutdent(type),
+      ],
+      baseCommand.chainCommands(
+        deletePreviousEmptyListItem(type),
+        outdentList(type),
+      ),
+    ),
 
-  // if we're just inside a paragraph node (or gapcursor is shown) and backspace, then try to join
-  // the text to the previous list item, if one exists
-  filter(
-    [isEmptySelectionAtStart, canToJoinToPreviousListItem],
-    joinToPreviousListItem,
-  ),
-);
+    // if we're just inside a paragraph node (or gapcursor is shown) and backspace, then try to join
+    // the text to the previous list item, if one exists
+    filter(
+      [isEmptySelectionAtStart, canToJoinToPreviousListItem],
+      joinToPreviousListItem(type),
+    ),
+  );
 
-export function enterKeyCommand(state, dispatch) {
-  const { selection } = state;
-  if (selection.empty) {
-    const { $from } = selection;
-    const { list_item: listItem, code_block: codeBlock } = state.schema.nodes;
-    const node = $from.node($from.depth);
-    const wrapper = $from.node($from.depth - 1);
-    if (wrapper && wrapper.type === listItem) {
-      /** Check if the wrapper has any visible content */
-      const wrapperHasContent = hasVisibleContent(wrapper);
-      if (isNodeEmpty(node) && !wrapperHasContent) {
-        return outdentList('keyboard')(state, dispatch);
-      } else if (!hasParentNodeOfType(codeBlock)(selection)) {
-        return splitListItem(listItem)(state, dispatch);
+export function enterKeyCommand(type) {
+  return (state, dispatch) => {
+    const { selection } = state;
+    if (selection.empty) {
+      const { $from } = selection;
+      let listItem = type;
+      if (!listItem) {
+        ({ list_item: listItem } = state.schema.nodes);
+      }
+      const { code_block: codeBlock } = state.schema.nodes;
+
+      const node = $from.node($from.depth);
+      const wrapper = $from.node($from.depth - 1);
+      if (wrapper && wrapper.type === listItem) {
+        /** Check if the wrapper has any visible content */
+        const wrapperHasContent = hasVisibleContent(wrapper);
+        if (isNodeEmpty(node) && !wrapperHasContent) {
+          return outdentList(listItem)(state, dispatch);
+        } else if (!hasParentNodeOfType(codeBlock)(selection)) {
+          return splitListItem(listItem)(state, dispatch);
+        }
       }
     }
-  }
-  return false;
+    return false;
+  };
 }
 
 /***
@@ -544,126 +575,140 @@ function splitListItem(itemType) {
   };
 }
 
-function joinToPreviousListItem(state, dispatch) {
-  const { $from } = state.selection;
-  const {
-    paragraph,
-    list_item: listItem,
-    code_block: codeBlock,
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-  } = state.schema.nodes;
-  const isGapCursorShown = state.selection instanceof GapCursorSelection;
-  const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
-  let $cut = findCutBefore($cutPos);
-  if (!$cut) {
-    return false;
-  }
+function joinToPreviousListItem(type) {
+  return (state, dispatch) => {
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
 
-  // see if the containing node is a list
-  if (
-    $cut.nodeBefore &&
-    [bulletList, orderedList].indexOf($cut.nodeBefore.type) > -1
-  ) {
-    // and the node after this is a paragraph or a codeBlock
+    const { $from } = state.selection;
+    const {
+      paragraph,
+      code_block: codeBlock,
+      bullet_list: bulletList,
+      ordered_list: orderedList,
+      todo_list: todoList,
+    } = state.schema.nodes;
+    const isGapCursorShown = state.selection instanceof GapCursorSelection;
+    const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
+    let $cut = findCutBefore($cutPos);
+    if (!$cut) {
+      return false;
+    }
+
+    // see if the containing node is a list
     if (
-      $cut.nodeAfter &&
-      ($cut.nodeAfter.type === paragraph || $cut.nodeAfter.type === codeBlock)
+      $cut.nodeBefore &&
+      [bulletList, orderedList, todoList].indexOf($cut.nodeBefore.type) > -1
     ) {
-      // find the nearest paragraph that precedes this node
-      let $lastNode = $cut.doc.resolve($cut.pos - 1);
-
-      while ($lastNode.parent.type !== paragraph) {
-        $lastNode = state.doc.resolve($lastNode.pos - 1);
-      }
-
-      let { tr } = state;
-      if (isGapCursorShown) {
-        const nodeBeforePos = findPositionOfNodeBefore(tr.selection);
-        if (typeof nodeBeforePos !== 'number') {
-          return false;
-        }
-        // append the codeblock to the list node
-        const list = $cut.nodeBefore.copy(
-          $cut.nodeBefore.content.append(
-            Fragment.from(listItem.createChecked({}, $cut.nodeAfter)),
-          ),
-        );
-        tr.replaceWith(
-          nodeBeforePos,
-          $from.pos + $cut.nodeAfter.nodeSize,
-          list,
-        );
-      } else {
-        // take the text content of the paragraph and insert after the paragraph up until before the the cut
-        tr = state.tr.step(
-          new ReplaceAroundStep(
-            $lastNode.pos,
-            $cut.pos + $cut.nodeAfter.nodeSize,
-            $cut.pos + 1,
-            $cut.pos + $cut.nodeAfter.nodeSize - 1,
-            state.tr.doc.slice($lastNode.pos, $cut.pos),
-            0,
-            true,
-          ),
-        );
-      }
-
-      // find out if there's now another list following and join them
-      // as in, [list, p, list] => [list with p, list], and we want [joined list]
-      let $postCut = tr.doc.resolve(
-        tr.mapping.map($cut.pos + $cut.nodeAfter.nodeSize),
-      );
+      // and the node after this is a paragraph or a codeBlock
       if (
-        $postCut.nodeBefore &&
-        $postCut.nodeAfter &&
-        $postCut.nodeBefore.type === $postCut.nodeAfter.type &&
-        [bulletList, orderedList].indexOf($postCut.nodeBefore.type) > -1
+        $cut.nodeAfter &&
+        ($cut.nodeAfter.type === paragraph || $cut.nodeAfter.type === codeBlock)
       ) {
-        tr = tr.join($postCut.pos);
-      }
+        // find the nearest paragraph that precedes this node
+        let $lastNode = $cut.doc.resolve($cut.pos - 1);
 
+        while ($lastNode.parent.type !== paragraph) {
+          $lastNode = state.doc.resolve($lastNode.pos - 1);
+        }
+
+        let { tr } = state;
+        if (isGapCursorShown) {
+          const nodeBeforePos = findPositionOfNodeBefore(tr.selection);
+          if (typeof nodeBeforePos !== 'number') {
+            return false;
+          }
+          // append the codeblock to the list node
+          const list = $cut.nodeBefore.copy(
+            $cut.nodeBefore.content.append(
+              Fragment.from(listItem.createChecked({}, $cut.nodeAfter)),
+            ),
+          );
+          tr.replaceWith(
+            nodeBeforePos,
+            $from.pos + $cut.nodeAfter.nodeSize,
+            list,
+          );
+        } else {
+          // take the text content of the paragraph and insert after the paragraph up until before the the cut
+          tr = state.tr.step(
+            new ReplaceAroundStep(
+              $lastNode.pos,
+              $cut.pos + $cut.nodeAfter.nodeSize,
+              $cut.pos + 1,
+              $cut.pos + $cut.nodeAfter.nodeSize - 1,
+              state.tr.doc.slice($lastNode.pos, $cut.pos),
+              0,
+              true,
+            ),
+          );
+        }
+
+        // find out if there's now another list following and join them
+        // as in, [list, p, list] => [list with p, list], and we want [joined list]
+        let $postCut = tr.doc.resolve(
+          tr.mapping.map($cut.pos + $cut.nodeAfter.nodeSize),
+        );
+        if (
+          $postCut.nodeBefore &&
+          $postCut.nodeAfter &&
+          $postCut.nodeBefore.type === $postCut.nodeAfter.type &&
+          [bulletList, orderedList].indexOf($postCut.nodeBefore.type) > -1
+        ) {
+          tr = tr.join($postCut.pos);
+        }
+
+        if (dispatch) {
+          dispatch(tr.scrollIntoView());
+        }
+        return true;
+      }
+    }
+
+    return false;
+  };
+}
+
+function deletePreviousEmptyListItem(type) {
+  return (state, dispatch) => {
+    const { $from } = state.selection;
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
+    const $cut = findCutBefore($from);
+    if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
+      return false;
+    }
+
+    const previousListItemEmpty =
+      $cut.nodeBefore.childCount === 1 &&
+      $cut.nodeBefore.firstChild.nodeSize <= 2;
+    if (previousListItemEmpty) {
+      const { tr } = state;
       if (dispatch) {
-        dispatch(tr.scrollIntoView());
+        dispatch(
+          tr
+            .delete($cut.pos - $cut.nodeBefore.nodeSize, $from.pos)
+            .scrollIntoView(),
+        );
       }
       return true;
     }
-  }
-
-  return false;
-}
-
-function deletePreviousEmptyListItem(state, dispatch) {
-  const { $from } = state.selection;
-  const { list_item: listItem } = state.schema.nodes;
-  const $cut = findCutBefore($from);
-  if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
     return false;
-  }
-
-  const previousListItemEmpty =
-    $cut.nodeBefore.childCount === 1 &&
-    $cut.nodeBefore.firstChild.nodeSize <= 2;
-  if (previousListItemEmpty) {
-    const { tr } = state;
-    if (dispatch) {
-      dispatch(
-        tr
-          .delete($cut.pos - $cut.nodeBefore.nodeSize, $from.pos)
-          .scrollIntoView(),
-      );
-    }
-    return true;
-  }
-  return false;
+  };
 }
 
 export function cutEmptyCommand() {
   return (state, dispatch) => {
-    if (!state.selection.empty || !isInsideListItem(state)) {
+    const { list_item: listItem } = state.schema.nodes;
+
+    if (!state.selection.empty || !isInsideListItem(listItem)(state)) {
       return false;
     }
-    const { list_item: listItem } = state.schema.nodes;
+
     const parent = findParentNodeOfType(listItem)(state.selection);
 
     if (!parent || !parent.node) {
@@ -683,13 +728,16 @@ export function cutEmptyCommand() {
   };
 }
 
-export function copyEmptyCommand() {
+export function copyEmptyCommand(type) {
   return (state, dispatch, view) => {
-    if (!state.selection.empty || !isInsideListItem(state)) {
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
+
+    if (!state.selection.empty || !isInsideListItem(listItem)(state)) {
       return false;
     }
-    const { list_item: listItem } = state.schema.nodes;
-
     const parent = findParentNodeOfType(listItem)(state.selection);
 
     if (!parent) {
@@ -717,11 +765,15 @@ export function copyEmptyCommand() {
 export function moveList(type, dir = 'UP') {
   const isDown = dir === 'DOWN';
   return (state, dispatch) => {
-    const { list_item: listItem } = state.schema.nodes;
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
 
-    if (!isInsideListItem(state) || !state.selection.empty) {
+    if (!isInsideListItem(listItem)(state) || !state.selection.empty) {
       return false;
     }
+
     const parent = findParentNode((node) =>
       validListParent(node.type, state.schema.nodes),
     )(state.selection);
@@ -737,7 +789,7 @@ export function moveList(type, dir = 'UP') {
 
     let swapWith = isDown ? index + 1 : index - 1;
     if (swapWith >= arr.length || swapWith < 0) {
-      return moveEdgeListItem(dir)(state, dispatch);
+      return moveEdgeListItem(listItem, dir)(state, dispatch);
     }
 
     const swapWithNodeSize = arr[swapWith].nodeSize;
@@ -761,13 +813,18 @@ export function moveList(type, dir = 'UP') {
   };
 }
 
-function moveEdgeListItem(dir = 'UP') {
+function moveEdgeListItem(type, dir = 'UP') {
   const isDown = dir === 'DOWN';
   return (state, dispatch) => {
-    if (!isInsideListItem(state) || !state.selection.empty) {
+    let listItem = type;
+
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
+
+    if (!isInsideListItem(listItem)(state) || !state.selection.empty) {
       return false;
     }
-    const { list_item: listItem } = state.schema.nodes;
     const grandParent = findParentNode((node) =>
       validListParent(node.type, state.schema.nodes),
     )(state.selection);
@@ -779,7 +836,7 @@ function moveEdgeListItem(dir = 'UP') {
 
     // outdent if the not nested list item i.e. top level
     if (state.selection.$from.depth === 3) {
-      return outdentList()(state, dispatch);
+      return outdentList(listItem)(state, dispatch);
     }
 
     // If there is only one element, we need to delete the entire

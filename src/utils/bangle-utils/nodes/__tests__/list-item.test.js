@@ -81,7 +81,7 @@ describe('Command: backspaceKeyCommand', () => {
   const testEditor = renderTestEditor({ extensions });
   let updateDoc,
     editorView,
-    cmd = applyCommand(backspaceKeyCommand);
+    cmd = applyCommand(backspaceKeyCommand());
 
   beforeEach(async () => {
     ({ editorView, updateDoc } = await testEditor());
@@ -94,12 +94,20 @@ describe('Command: backspaceKeyCommand', () => {
       doc(p('{<>}text')),
     );
   });
+
+  test('toggles correctly with multi paragraphs', async () => {
+    updateDoc(doc(ol(li(p('{<>}text'), p('other')))));
+
+    expect(await cmd(editorView.state)).toEqualDocAndSelection(
+      doc(p('{<>}text'), p('other')),
+    );
+  });
 });
 
 describe('Command: enterKeyCommand', () => {
   let updateDoc,
     editorView,
-    cmd = applyCommand(enterKeyCommand);
+    cmd = applyCommand(enterKeyCommand());
 
   beforeEach(async () => {
     ({ editorView, updateDoc } = await testEditor());

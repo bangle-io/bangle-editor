@@ -32,9 +32,9 @@ export class ListItem extends Node {
 
   keys({ type }) {
     return {
-      'Backspace': backspaceKeyCommand,
+      'Backspace': backspaceKeyCommand(),
       'Tab': indentList(),
-      'Enter': enterKeyCommand,
+      'Enter': enterKeyCommand(type),
       'Shift-Tab': outdentList(),
       'Alt-ArrowUp': moveList(type, 'UP'),
       'Alt-ArrowDown': moveList(type, 'DOWN'),

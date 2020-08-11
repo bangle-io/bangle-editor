@@ -18,12 +18,12 @@ export class BulletList extends Node {
   }
 
   commands({ type }) {
-    return { bullet_list: () => toggleList(this.name) };
+    return { bullet_list: () => toggleList(this.name, 'list_item') };
   }
 
   keys({ type, schema }) {
     return {
-      'Shift-Ctrl-8': toggleList(this.name),
+      'Shift-Ctrl-8': toggleList(this.name, 'list_item'),
     };
   }
 
