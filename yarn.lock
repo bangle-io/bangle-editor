@@ -7416,7 +7416,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"jest-environment-node@npm:*, jest-environment-node@npm:^26.2.0":
+"jest-environment-node@npm:^26.2.0":
   version: 26.2.0
   resolution: "jest-environment-node@npm:26.2.0"
   dependencies:
@@ -10327,7 +10327,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-view@npm:1.15.2":
+"prosemirror-view@npm:^1.15.2":
   version: 1.15.2
   resolution: "prosemirror-view@npm:1.15.2"
   dependencies:
