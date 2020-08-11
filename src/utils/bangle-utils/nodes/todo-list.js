@@ -22,8 +22,8 @@ export class TodoList extends Node {
   }
 
   commands({ type, schema }) {
-    return () => {
-      return toggleList(type, schema.nodes.todo_item);
+    return {
+      todo_list: () => toggleList(type, schema.nodes.todo_item),
     };
   }
 

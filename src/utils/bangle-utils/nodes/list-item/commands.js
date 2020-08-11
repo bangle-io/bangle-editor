@@ -40,11 +40,19 @@ const _setTextSelection = (position, dir = 1) => (tr) => {
 
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
-  const { bullet_list: bulletList, ordered_list: orderedList } = nodes;
+  const {
+    bullet_list: bulletList,
+    ordered_list: orderedList,
+    todo_list: todoList,
+  } = nodes;
   let count = 0;
   for (let i = resolvedPos.depth - 1; i > 0; i--) {
     const node = resolvedPos.node(i);
-    if (node.type === bulletList || node.type === orderedList) {
+    if (
+      node.type === bulletList ||
+      node.type === orderedList ||
+      node.type === todoList
+    ) {
       count += 1;
     }
   }
@@ -126,16 +134,22 @@ const isInsideListItem = (type) => (state) => {
 };
 
 // Get the depth of the nearest ancestor list
-const rootListDepth = (pos, nodes) => {
+const rootListDepth = (type, pos, nodes) => {
+  let listItem = type;
+
   const {
     bullet_list: bulletList,
     ordered_list: orderedList,
-    list_item: listItem,
+    todo_list: todoList,
   } = nodes;
   let depth;
   for (let i = pos.depth - 1; i > 0; i--) {
     const node = pos.node(i);
-    if (node.type === bulletList || node.type === orderedList) {
+    if (
+      node.type === bulletList ||
+      node.type === orderedList ||
+      node.type === todoList
+    ) {
       depth = i;
     }
     if (
@@ -192,9 +206,10 @@ export function toggleList(listType, itemType) {
     ) {
       return toggleListCommand(listType)(state, dispatch, view);
     } else {
-      const depth = rootListDepth(selection.$to, state.schema.nodes);
-
       const listItem = itemType ? itemType : state.schema.nodes.list_item;
+
+      const depth = rootListDepth(listItem, selection.$to, state.schema.nodes);
+
       let tr = liftFollowingList(
         listItem,
         state,
@@ -650,7 +665,9 @@ function joinToPreviousListItem(type) {
           $postCut.nodeBefore &&
           $postCut.nodeAfter &&
           $postCut.nodeBefore.type === $postCut.nodeAfter.type &&
-          [bulletList, orderedList].indexOf($postCut.nodeBefore.type) > -1
+          [bulletList, orderedList, todoList].indexOf(
+            $postCut.nodeBefore.type,
+          ) > -1
         ) {
           tr = tr.join($postCut.pos);
         }

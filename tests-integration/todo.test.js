@@ -40,7 +40,6 @@ describe('Todo test', () => {
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
       Object {
-        "class": "flex",
         "data-done": false,
         "data-type": "todo_item",
       }
@@ -74,7 +73,6 @@ describe('Todo test', () => {
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
       Object {
-        "class": "flex",
         "data-done": true,
         "data-type": "todo_item",
       }
@@ -100,7 +98,6 @@ describe('Todo test', () => {
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
       Object {
-        "class": "flex",
         "data-done": false,
         "data-type": "todo_item",
       }
