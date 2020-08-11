@@ -1,5 +1,6 @@
 import './style/tailwind.src.css';
 import './style/style.css';
+import 'prosemirror-gapcursor/style/gapcursor.css';
 import React from 'react';
 import { EditorContextProvider } from '../../src/utils/bangle-utils/helper-react/editor-context';
 import browser from '../../src/utils/bangle-utils/utils/browser';
