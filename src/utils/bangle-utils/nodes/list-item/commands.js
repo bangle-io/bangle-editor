@@ -116,7 +116,7 @@ function canSink(initialIndentationLevel, state) {
   return true;
 }
 
-const isInsideListItem = (type) => (state) => {
+export const isInsideListItem = (type) => (state) => {
   const { $from } = state.selection;
 
   let listItem = type;
@@ -206,6 +206,8 @@ export function toggleList(listType, itemType) {
     ) {
       return toggleListCommand(listType)(state, dispatch, view);
     } else {
+      // If current ListType is the same as `listType` in arg,
+      // toggle the list to `p`.
       const listItem = itemType ? itemType : state.schema.nodes.list_item;
 
       const depth = rootListDepth(listItem, selection.$to, state.schema.nodes);
@@ -244,7 +246,6 @@ function toggleListCommand(listType) {
     const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, listType);
 
     if (isInsideList(state, listType) && isRangeOfSingleType) {
-      // Untoggles list
       return liftListItems()(state, dispatch);
     } else {
       // Converts list type e.g. bullet_list -> ordered_list if needed
@@ -284,7 +285,13 @@ function liftListItems() {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);
 
-        if (!range || sel.$from.parent.type !== state.schema.nodes.list_item) {
+        if (
+          !range ||
+          ![
+            state.schema.nodes.list_item,
+            state.schema.nodes.todo_item,
+          ].includes(sel.$from.parent.type)
+        ) {
           return false;
         }
 
@@ -457,13 +464,67 @@ function mergeLists(listItem, range) {
   };
 }
 
+const isGrandParentTodoList = (state) => {
+  const { $from } = state.selection;
+  const grandParent = $from.node($from.depth - 4);
+  const parent = $from.node($from.depth - 2);
+  const {
+    bullet_list: bulletList,
+    ordered_list: orderedList,
+    todo_list: todoList,
+  } = state.schema.nodes;
+  return grandParent.type === todoList;
+};
+
+const isParentBulletOrOrderedList = (state) => {
+  const { $from } = state.selection;
+  const parent = $from.node($from.depth - 2);
+  const {
+    bullet_list: bulletList,
+    ordered_list: orderedList,
+  } = state.schema.nodes;
+  return [bulletList, orderedList].includes(parent.type);
+};
+
 // Chaining runs each command until one of them returns true
-export const backspaceKeyCommand = (type) =>
-  baseCommand.chainCommands(
+export const backspaceKeyCommand = (type) => (...args) => {
+  return baseCommand.chainCommands(
+    // check the possibility if a user is backspacing
+    // inside a list which is directly nested under a todo list.
+    // Input:
+    // - [ ] A todo list
+    //      1.{<>} First
+    // Output:
+    // - [ ] A todo list
+    // - [ ] {<>} First
+    filter(
+      [
+        isInsideListItem(type),
+        isEmptySelectionAtStart,
+        isFirstChildOfParent,
+        (state) =>
+          isGrandParentTodoList(state) && isParentBulletOrOrderedList(state),
+        (state) => canOutdent(state.schema.nodes.todo_item)(state),
+      ],
+      // First convert it into a todo list and outdent it
+      (state, dispatch, view) => {
+        const result = toggleList(
+          state.schema.nodes.todo_list,
+          state.schema.nodes.todo_item,
+        )(state, dispatch, view);
+        if (!result) {
+          return false;
+        }
+        state = view.state;
+        return outdentList(state.schema.nodes.todo_item)(state, dispatch, view);
+      },
+    ),
+
     // if we're at the start of a list item, we need to either backspace
     // directly to an empty list item above, or outdent this node
     filter(
       [
+        isInsideListItem(type),
         isEmptySelectionAtStart,
 
         // list items might have multiple paragraphs; only do this at the first one
@@ -482,7 +543,8 @@ export const backspaceKeyCommand = (type) =>
       [isEmptySelectionAtStart, canToJoinToPreviousListItem],
       joinToPreviousListItem(type),
     ),
-  );
+  )(...args);
+};
 
 export function enterKeyCommand(type) {
   return (state, dispatch) => {
@@ -713,9 +775,12 @@ function deletePreviousEmptyListItem(type) {
   };
 }
 
-export function cutEmptyCommand() {
+export function cutEmptyCommand(type) {
   return (state, dispatch) => {
-    const { list_item: listItem } = state.schema.nodes;
+    let listItem = type;
+    if (!listItem) {
+      ({ list_item: listItem } = state.schema.nodes);
+    }
 
     if (!state.selection.empty || !isInsideListItem(listItem)(state)) {
       return false;

@@ -10,7 +10,11 @@ import {
   backspaceKeyCommand,
   indentList,
   outdentList,
+  moveList,
+  cutEmptyCommand,
+  copyEmptyCommand,
 } from './list-item/commands';
+
 const LOG = false;
 
 function log(...args) {
@@ -50,7 +54,9 @@ export class TodoItem extends Node {
         },
       },
       draggable: true,
-      content: this.options.nested ? '(paragraph|todo_list)+' : 'paragraph+',
+      content: this.options.nested
+        ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
+        : '(paragraph) (paragraph | bullet_list | ordered_list)*',
       toDOM: (node) => {
         const { 'data-done': done } = node.attrs;
         return [
@@ -81,6 +87,10 @@ export class TodoItem extends Node {
       'Backspace': backspaceKeyCommand(type),
       'Tab': this.options.nested ? indentList(type) : () => {},
       'Shift-Tab': outdentList(type),
+      'Alt-ArrowUp': moveList(type, 'UP'),
+      'Alt-ArrowDown': moveList(type, 'DOWN'),
+      'Cmd-x': cutEmptyCommand(type),
+      'Cmd-c': copyEmptyCommand(type),
     };
   }
 
