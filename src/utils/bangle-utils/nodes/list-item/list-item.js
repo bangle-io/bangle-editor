@@ -32,14 +32,14 @@ export class ListItem extends Node {
 
   keys({ type }) {
     return {
-      'Backspace': backspaceKeyCommand(),
-      'Tab': indentList(),
+      'Backspace': backspaceKeyCommand(type),
+      'Tab': indentList(type),
       'Enter': enterKeyCommand(type),
-      'Shift-Tab': outdentList(),
+      'Shift-Tab': outdentList(type),
       'Alt-ArrowUp': moveList(type, 'UP'),
       'Alt-ArrowDown': moveList(type, 'DOWN'),
-      'Cmd-x': cutEmptyCommand(),
-      'Cmd-c': copyEmptyCommand(),
+      'Cmd-x': cutEmptyCommand(type),
+      'Cmd-c': copyEmptyCommand(type),
     };
   }
 }
