@@ -335,6 +335,96 @@ describe('Pressing Alt-Up / Down to move list', () => {
   });
 });
 
+describe('Alt-up/down of nesting ol/ul list', () => {
+  it('works for nested ul', async () => {
+    // prettier-ignore
+    const { editorView } = await testEditor(
+      doc(todoList(
+        todoItem(
+          p('top'), 
+          ul(
+            li(p('{<>}nested 1')),
+            li(p('nested 2')),
+          )
+        )
+      )),
+    );
+    sendKeyToPm(editorView, 'Alt-Up');
+    // prettier-ignore
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(todoList(
+        todoItem(
+          p('{<>}nested 1'),
+        ), 
+        todoItem(
+          p('top'),
+          ul(
+            li(p('nested 2')),
+          )
+        )
+      )),
+    );
+  });
+
+  it.skip('works for nested ul with selection in middle', async () => {
+    // prettier-ignore
+    const { editorView } = await testEditor(
+      doc(todoList(
+        todoItem(
+          p('top'), 
+          ul(
+            li(p('nested{<>} 1')),
+            li(p('nested 2')),
+          )
+        )
+      )),
+    );
+    sendKeyToPm(editorView, 'Alt-Up');
+    // prettier-ignore
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(todoList(
+        todoItem(
+          p('nested{<>} 1'),
+        ), 
+        todoItem(
+          p('top'),
+          ul(
+            li(p('nested 2')),
+          )
+        )
+      )),
+    );
+  });
+
+  it('works for nested ul going down', async () => {
+    // prettier-ignore
+    const { editorView } = await testEditor(
+      doc(todoList(
+        todoItem(
+          p('top'), 
+          ul(
+            li(p('nested 1')),
+            li(p('nested{<>} 2')),
+          )
+        )
+      )),
+    );
+    sendKeyToPm(editorView, 'Alt-Down');
+    // prettier-ignore
+    expect(editorView.state).toEqualDocAndSelection(
+      doc(todoList(
+        todoItem(
+          p('top'), 
+          ul(
+            li(p('nested 1')),
+          )
+        ),
+        todoItem(p('{<>}nested 2')),
+      )),
+    );
+  });
+});
+
 describe('Nesting heterogenous lists', () => {
   it('converts to ol', async () => {
     const { editor } = await testEditor(

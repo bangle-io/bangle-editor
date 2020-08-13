@@ -467,12 +467,7 @@ function mergeLists(listItem, range) {
 const isGrandParentTodoList = (state) => {
   const { $from } = state.selection;
   const grandParent = $from.node($from.depth - 4);
-  const parent = $from.node($from.depth - 2);
-  const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
-  } = state.schema.nodes;
+  const { todo_list: todoList } = state.schema.nodes;
   return grandParent.type === todoList;
 };
 
@@ -948,8 +943,25 @@ function moveEdgeListItem(type, dir = 'UP') {
         insertPos += uncle.nodeSize;
       }
     }
-    tr = safeInsert(parent.node, insertPos)(tr);
-    if (dispatch) dispatch(tr);
+
+    let nodeToInsert = parent.node;
+
+    // if the grand parent is a todo list
+    // we can not simply insert a list_item as todo_list can
+    // only accept todo_items
+    if (isGrandParentTodoList(state)) {
+      nodeToInsert = state.schema.nodes.todo_item.createChecked(
+        {},
+        nodeToInsert.content,
+        nodeToInsert.marks,
+      );
+    }
+    const newTr = safeInsert(nodeToInsert, insertPos)(tr);
+    // no change hence dont mutate anything
+    if (newTr === tr) {
+      return false;
+    }
+    if (dispatch) dispatch(newTr);
     return true;
   };
 }
