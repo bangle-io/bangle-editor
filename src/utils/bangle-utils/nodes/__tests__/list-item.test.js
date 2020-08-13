@@ -444,6 +444,53 @@ describe('Pressing Backspace', () => {
   });
 });
 
+// TODO fix these edge cases
+describe('Pressing Forward delete', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Delete');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it.skip('Should handle empty paragraph', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}'))
+        ), 
+        p('')
+      ),
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}'))
+        ), 
+      ),
+    );
+  });
+
+  it.skip('Should handle non-empty paragraph', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}'))
+        ), 
+        p('hello')
+      ),
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}hello'))
+        ), 
+      ),
+    );
+  });
+});
+
 describe('Pressing Shift-Tab', () => {
   const check = async (beforeDoc, afterDoc) => {
     const { editorView } = await testEditor(beforeDoc);

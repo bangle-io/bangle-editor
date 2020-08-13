@@ -506,7 +506,7 @@ export const backspaceKeyCommand = (type) => (...args) => {
           isGrandParentTodoList(state) && isParentBulletOrOrderedList(state),
         (state) => canOutdent(state.schema.nodes.todo_item)(state),
       ],
-      // First convert it into a todo list and outdent it
+      // convert it into a todo list and then outdent it
       (state, dispatch, view) => {
         const result = toggleList(
           state.schema.nodes.todo_list,
