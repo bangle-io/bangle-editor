@@ -922,14 +922,12 @@ function moveEdgeListItem(type, dir = 'UP') {
     // - first // doing a (-1) will move us to end of 'first' hence allowing us to add an item
     // - second  // start(-3) will give 11 which is the start of this list_item,
     //   - third{<>}
-    let insertPos = state.selection.$from.start(-3) - 1;
+    let insertPos = state.selection.$from.before(-3);
 
     // when going down move the position by the size of remaining content (after deletion)
     if (isDown) {
-      let endPos = state.selection.$from.end(-3);
-      insertPos = endPos - nodeToRemove.node.nodeSize;
-
-      const uncleNodePos = endPos + 1;
+      let uncleNodePos = state.selection.$from.after(-3);
+      insertPos = uncleNodePos - nodeToRemove.node.nodeSize;
       let uncle =
         validPos(uncleNodePos, state.doc) && state.doc.nodeAt(uncleNodePos);
 
