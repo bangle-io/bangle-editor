@@ -47,6 +47,8 @@ export default class EmojiExtension extends Node {
     return {
       attrs: {
         'style': {
+          // TODO using this to attrs style is a bad idea as this
+          //   // is saved in the HDD and any future ui change will over overriden by the saved style in attribute
           default: 'display: inline-block;',
         },
         'data-emojikind': {

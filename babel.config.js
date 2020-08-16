@@ -1,6 +1,7 @@
 // babel.config.js
 
-const debug = true;
+const DEBUG = false;
+
 module.exports = (api) => {
   if (api.env('test')) {
     return {
@@ -9,7 +10,7 @@ module.exports = (api) => {
         [
           '@babel/preset-env',
           {
-            debug: debug,
+            debug: DEBUG,
             targets: {
               node: 'current',
             },
@@ -19,7 +20,7 @@ module.exports = (api) => {
     };
   }
   return {
-    presets: ['@babel/preset-react', ['@babel/preset-env', { debug: debug }]],
+    presets: ['@babel/preset-react', ['@babel/preset-env', { debug: DEBUG }]],
     plugins: [
       ['@babel/plugin-proposal-class-properties', { loose: true }],
       '@babel/plugin-proposal-optional-chaining',

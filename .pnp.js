@@ -163,7 +163,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],
       [
         "jest-environment-puppeteer",
-        "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"
+        "npm:4.4.0"
       ],
       [
         "jest-puppeteer",
@@ -370,7 +370,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-circus", "npm:26.2.2"],
             ["jest-diff", "npm:26.2.0"],
             ["jest-environment-node", "npm:26.2.0"],
-            ["jest-environment-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
+            ["jest-environment-puppeteer", "npm:4.4.0"],
             ["jest-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
             ["lint-staged", "npm:10.2.11"],
             ["localforage", "npm:1.9.0"],
@@ -8816,19 +8816,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["jest-environment-puppeteer", [
-        ["virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0", {
-          "packageLocation": "./.yarn/$$virtual/jest-environment-puppeteer-virtual-ecbdceca24/0/cache/jest-environment-puppeteer-npm-4.4.0-6229401d6e-146c1edaab.zip/node_modules/jest-environment-puppeteer/",
+        ["npm:4.4.0", {
+          "packageLocation": "./.yarn/cache/jest-environment-puppeteer-npm-4.4.0-6229401d6e-146c1edaab.zip/node_modules/jest-environment-puppeteer/",
           "packageDependencies": [
-            ["jest-environment-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
+            ["jest-environment-puppeteer", "npm:4.4.0"],
             ["chalk", "npm:3.0.0"],
             ["cwd", "npm:0.10.0"],
             ["jest-dev-server", "npm:4.4.0"],
-            ["jest-environment-node", "npm:26.2.0"],
-            ["merge-deep", "npm:3.0.2"],
-            ["puppeteer", "npm:5.2.1"]
-          ],
-          "packagePeers": [
-            "puppeteer"
+            ["merge-deep", "npm:3.0.2"]
           ],
           "linkType": "HARD",
         }]
@@ -8963,7 +8958,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["jest-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
             ["expect-puppeteer", "npm:4.4.0"],
-            ["jest-environment-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
+            ["jest-environment-puppeteer", "npm:4.4.0"],
             ["puppeteer", "npm:5.2.1"]
           ],
           "packagePeers": [
@@ -11346,7 +11341,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-circus", "npm:26.2.2"],
             ["jest-diff", "npm:26.2.0"],
             ["jest-environment-node", "npm:26.2.0"],
-            ["jest-environment-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
+            ["jest-environment-puppeteer", "npm:4.4.0"],
             ["jest-puppeteer", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#npm:4.4.0"],
             ["lint-staged", "npm:10.2.11"],
             ["localforage", "npm:1.9.0"],

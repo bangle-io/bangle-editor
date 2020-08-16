@@ -504,6 +504,7 @@ export class Editor extends Emitter {
       this.view.domObserver.disconnectSelection();
     }
     this.view.destroy();
+    this.view = undefined;
     super.destroy();
   }
 

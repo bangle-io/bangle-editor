@@ -8,20 +8,24 @@ import {
   mapSlice,
 } from '../../../../../src/utils/bangle-utils/utils/pm-utils';
 
-function liftListItem(state, selection, tr) {
+function liftListItem(type, state, selection, tr) {
   let { $from, $to } = selection;
-  const nodeType = state.schema.nodes.list_item;
+  let listItem = type;
+  if (!listItem) {
+    ({ list_item: listItem } = state.schema.nodes);
+  }
+
   let range = $from.blockRange(
     $to,
     (node) =>
       !!node.childCount &&
       !!node.firstChild &&
-      node.firstChild.type === nodeType,
+      node.firstChild.type === listItem,
   );
   if (
     !range ||
     range.depth < 2 ||
-    $from.node(range.depth - 1).type !== nodeType
+    $from.node(range.depth - 1).type !== listItem
   ) {
     return tr;
   }
@@ -35,7 +39,7 @@ function liftListItem(state, selection, tr) {
         end,
         endOfList,
         new Slice(
-          Fragment.from(nodeType.create(undefined, range.parent.copy())),
+          Fragment.from(listItem.create(undefined, range.parent.copy())),
           1,
           0,
         ),
@@ -52,8 +56,11 @@ function liftListItem(state, selection, tr) {
   return tr.lift(range, liftTarget(range)).scrollIntoView();
 }
 // Function will lift list item following selection to level-1.
-export function liftFollowingList(state, from, to, rootListDepth, tr) {
-  const { list_item: listItem } = state.schema.nodes;
+export function liftFollowingList(type, state, from, to, rootListDepth, tr) {
+  let listItem = type;
+  if (!listItem) {
+    ({ list_item: listItem } = state.schema.nodes);
+  }
   let lifted = false;
   tr.doc.nodesBetween(from, to, (node, pos) => {
     if (!lifted && node.type === listItem && pos > from) {
@@ -66,14 +73,14 @@ export function liftFollowingList(state, from, to, rootListDepth, tr) {
           tr.mapping.map(pos + node.textContent.length),
         );
         const sel = new TextSelection(start, end);
-        tr = liftListItem(state, sel, tr);
+        tr = liftListItem(listItem, state, sel, tr);
       }
     }
   });
   return tr;
 }
 // The function will list paragraphs in selection out to level 1 below root list.
-export function liftSelectionList(state, tr) {
+export function liftSelectionList(type, state, tr) {
   const { from, to } = state.selection;
   const { paragraph } = state.schema.nodes;
   const listCol = [];
@@ -97,7 +104,7 @@ export function liftSelectionList(state, tr) {
       }
       const range = start.blockRange(end);
       if (range) {
-        tr.lift(range, getListLiftTarget(state.schema, start));
+        tr.lift(range, getListLiftTarget(type, state.schema, start));
       }
     }
   }
@@ -128,14 +135,15 @@ const getListType = (node, schema) => {
     return match ? [listType.node, match[0].length] : lastMatch;
   }, null);
 };
-const extractListFromParagaph = (node, schema) => {
+const extractListFromParagaph = (type, node, schema) => {
   const {
     hard_break: hardBreak,
     bullet_list: bulletList,
     ordered_list: orderedList,
+    todo_list: todoList,
   } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
-  const listTypes = [bulletList, orderedList];
+  const listTypes = [bulletList, orderedList, todoList];
   // wrap each line into a listItem and a containing list
   const listified = content
     .map((child) => {
@@ -146,7 +154,12 @@ const extractListFromParagaph = (node, schema) => {
       const [nodeType, length] = listMatch;
       // convert to list item
       const newText = child.text.substr(length);
-      const listItemNode = schema.nodes.list_item.createAndFill(
+      let listItem = type;
+      if (!listItem) {
+        ({ list_item: listItem } = schema.nodes);
+      }
+
+      const listItemNode = listItem.createAndFill(
         undefined,
         schema.nodes.paragraph.createChecked(
           undefined,
@@ -255,10 +268,10 @@ export const splitParagraphs = (slice, schema) => {
   });
 };
 // above will wrap everything in paragraphs for us
-export const upgradeTextToLists = (slice, schema) => {
+export const upgradeTextToLists = (type, slice, schema) => {
   return mapSlice(slice, (node, parent) => {
     if (node.type === schema.nodes.paragraph) {
-      return extractListFromParagaph(node, schema);
+      return extractListFromParagaph(type, node, schema);
     }
     return node;
   });

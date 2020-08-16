@@ -1,13 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-  sinkListItem,
-  splitToDefaultListItem,
-  liftListItem,
-} from 'tiptap-commands';
+import {} from 'tiptap-commands';
 import browser from '../utils/browser';
 import { uuid } from '../utils/js-utils';
 import cx from 'classnames';
 import { Node } from './node';
+import { objUid } from '../utils/object-uid';
+import {
+  enterKeyCommand,
+  backspaceKeyCommand,
+  indentList,
+  outdentList,
+  moveList,
+  cutEmptyCommand,
+  copyEmptyCommand,
+  updateNodeAttrs,
+} from './list-item/commands';
 
 const LOG = false;
 
@@ -23,16 +30,17 @@ export class TodoItem extends Node {
   get defaultOptions() {
     return {
       nested: true,
-      getContentDOM: () => {
+      createContentDOM: () => {
         const d = document.createElement('div');
         d.setAttribute('data-uuid', 'todo-content-dom-' + uuid(4));
         return { dom: d };
       },
-      createDomRef: () => {
+      createDom: () => {
         const d = document.createElement('li');
         d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
         return d;
       },
+      domRefClasses: () => `flex flex-row`,
     };
   }
 
@@ -45,13 +53,11 @@ export class TodoItem extends Node {
         'data-done': {
           default: false,
         },
-        'class': {
-          default: 'flex', // TODO using this to set class is a bad idea as this
-          // is saved in the HDD and any future ui change will over overriden by the saved class in attribute
-        },
       },
       draggable: true,
-      content: this.options.nested ? '(paragraph|todo_list)+' : 'paragraph+',
+      content: this.options.nested
+        ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
+        : '(paragraph) (paragraph | bullet_list | ordered_list)*',
       toDOM: (node) => {
         const { 'data-done': done } = node.attrs;
         return [
@@ -78,31 +84,43 @@ export class TodoItem extends Node {
 
   keys({ type }) {
     return {
-      'Enter': splitToDefaultListItem(type),
-      'Tab': this.options.nested ? sinkListItem(type) : () => {},
-      'Shift-Tab': liftListItem(type),
+      'Enter': enterKeyCommand(type),
+      'Backspace': backspaceKeyCommand(type),
+      'Tab': this.options.nested ? indentList(type) : () => {},
+      'Shift-Tab': outdentList(type),
+      'Alt-ArrowUp': moveList(type, 'UP'),
+      'Alt-ArrowDown': moveList(type, 'DOWN'),
+      'Cmd-x': cutEmptyCommand(type),
+      'Cmd-c': copyEmptyCommand(type),
+      'Ctrl-Enter': updateNodeAttrs(type, (attrs) => ({
+        ...attrs,
+        'data-done': !attrs['data-done'],
+      })),
     };
   }
 
   render = (props) => {
+    const mobile = browser.ios || browser.android;
+
+    if (mobile) {
+      return <MobileTodo {...props} />;
+    }
     return <TodoItemComp {...props} />;
   };
 }
 
-let counter = 0;
 function TodoItemComp(props) {
-  const mobile = browser.ios || browser.android;
-  if (mobile) {
-    return <MobileTodo {...props} />;
-  }
   const { node, view, handleRef, updateAttrs } = props;
 
-  let uid = node.type.name + counter++;
+  let uid = node.type.name + objUid.get(node);
 
   const { 'data-done': done } = node.attrs;
   return (
     <>
-      <span className="todo-checkbox mr-2 self-start" contentEditable={false}>
+      <span
+        className="todo-checkbox mr-2 self-start flex-none"
+        contentEditable={false}
+      >
         <input
           className="inline-block"
           type="checkbox"
@@ -123,7 +141,7 @@ function TodoItemComp(props) {
         <label htmlFor={uid} />
       </span>
       <div
-        className="todo-content inline-block"
+        className="todo-content flex-grow"
         ref={handleRef}
         data-done={done.toString()}
       />
@@ -136,7 +154,7 @@ function MobileTodo(props) {
   const { 'data-done': done } = node.attrs;
 
   return (
-    <div contentEditable={true}>
+    <div contentEditable={true} className="flex flex-grow">
       <button
         contentEditable={false}
         style={{
@@ -144,6 +162,7 @@ function MobileTodo(props) {
           padding: '20px 36px 20px 36px',
         }}
         className={cx({
+          'flex-none': true,
           'bg-green-200': done,
           'bg-yellow-200': !done,
         })}
@@ -156,7 +175,7 @@ function MobileTodo(props) {
         {done ? '✅' : '🟨'}
       </button>
       <div
-        className="todo-content inline-block"
+        className="todo-content inline-block flex flex-grow"
         ref={handleRef}
         data-done={done.toString()}
         contentEditable={true}

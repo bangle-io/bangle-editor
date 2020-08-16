@@ -23,6 +23,7 @@
         "archive",
         "public",
         ".cache",
-        ".yarn"
+        ".yarn",
+        "coverage"
     ]
 }
