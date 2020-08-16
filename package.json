@@ -96,7 +96,7 @@
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
-    "jest": "^26.1.0",
+    "jest": "^26.4.0",
     "jest-circus": "^26.1.0",
     "jest-diff": "^26.1.0",
     "jest-environment-node": "^26.2.0",
