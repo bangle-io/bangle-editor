@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import {} from 'tiptap-commands';
+import React from 'react';
+import { chainCommands } from 'prosemirror-commands';
+
 import browser from '../utils/browser';
 import { uuid } from '../utils/js-utils';
 import cx from 'classnames';
@@ -10,10 +11,11 @@ import {
   backspaceKeyCommand,
   indentList,
   outdentList,
-  moveList,
   cutEmptyCommand,
   copyEmptyCommand,
   updateNodeAttrs,
+  moveNode,
+  moveEdgeListItem,
 } from './list-item/commands';
 
 const LOG = false;
@@ -82,14 +84,20 @@ export class TodoItem extends Node {
     };
   }
 
-  keys({ type }) {
+  keys({ type, schema }) {
+    const move = (dir) =>
+      chainCommands(
+        moveNode(type, schema.nodes['todo_list'], dir),
+        moveEdgeListItem(type, dir),
+      );
+
     return {
       'Enter': enterKeyCommand(type),
       'Backspace': backspaceKeyCommand(type),
       'Tab': this.options.nested ? indentList(type) : () => {},
       'Shift-Tab': outdentList(type),
-      'Alt-ArrowUp': moveList(type, 'UP'),
-      'Alt-ArrowDown': moveList(type, 'DOWN'),
+      'Alt-ArrowUp': move('UP'),
+      'Alt-ArrowDown': move('DOWN'),
       'Cmd-x': cutEmptyCommand(type),
       'Cmd-c': copyEmptyCommand(type),
       'Ctrl-Enter': updateNodeAttrs(type, (attrs) => ({

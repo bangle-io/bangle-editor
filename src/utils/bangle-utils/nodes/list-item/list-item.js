@@ -4,10 +4,14 @@ import {
   backspaceKeyCommand,
   enterKeyCommand,
   outdentList,
-  moveList,
   cutEmptyCommand,
   copyEmptyCommand,
+  moveNode,
+  isInsideListItem,
+  moveEdgeListItem,
 } from './commands';
+import { filter } from '../../utils/pm-utils';
+import { chainCommands } from 'prosemirror-commands';
 
 export class ListItem extends Node {
   get name() {
@@ -30,14 +34,24 @@ export class ListItem extends Node {
     };
   }
 
-  keys({ type }) {
+  keys({ type, schema }) {
+    const move = (dir) =>
+      chainCommands(
+        moveNode(
+          type,
+          [schema.nodes['bullet_list'], schema.nodes['ordered_list']],
+          dir,
+        ),
+        moveEdgeListItem(type, dir),
+      );
+
     return {
       'Backspace': backspaceKeyCommand(type),
       'Tab': indentList(type),
       'Enter': enterKeyCommand(type),
       'Shift-Tab': outdentList(type),
-      'Alt-ArrowUp': moveList(type, 'UP'),
-      'Alt-ArrowDown': moveList(type, 'DOWN'),
+      'Alt-ArrowUp': move('UP'),
+      'Alt-ArrowDown': move('DOWN'),
       'Cmd-x': cutEmptyCommand(type),
       'Cmd-c': copyEmptyCommand(type),
     };
