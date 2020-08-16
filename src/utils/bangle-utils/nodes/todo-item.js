@@ -13,6 +13,7 @@ import {
   moveList,
   cutEmptyCommand,
   copyEmptyCommand,
+  updateNodeAttrs,
 } from './list-item/commands';
 
 const LOG = false;
@@ -91,6 +92,10 @@ export class TodoItem extends Node {
       'Alt-ArrowDown': moveList(type, 'DOWN'),
       'Cmd-x': cutEmptyCommand(type),
       'Cmd-c': copyEmptyCommand(type),
+      'Ctrl-Enter': updateNodeAttrs(type, (attrs) => ({
+        ...attrs,
+        'data-done': !attrs['data-done'],
+      })),
     };
   }
 

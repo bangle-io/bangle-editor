@@ -482,3 +482,82 @@ describe('Nesting heterogenous lists', () => {
     );
   });
 });
+
+describe('Toggle todo list with keyboard shortcut', () => {
+  it('toggles the todo with the command', async () => {
+    // prettier-ignore
+    const { editorView } = await testEditor(
+      doc(todoList(
+        todoItem(
+          p('top{<>}'), 
+          ul(
+            li(p('nested 1')),
+          )
+        )
+      )),
+    );
+
+    sendKeyToPm(editorView, 'Ctrl-Enter');
+
+    let { $from } = editorView.state.selection;
+    let node = $from.node(-1);
+
+    expect(node.attrs).toEqual({
+      'data-done': true,
+      'data-type': 'todo_item',
+    });
+
+    sendKeyToPm(editorView, 'Ctrl-Enter');
+
+    ({ $from } = editorView.state.selection);
+    node = $from.node(-1);
+
+    expect(node.attrs).toEqual({
+      'data-done': false,
+      'data-type': 'todo_item',
+    });
+  });
+
+  it('handles nested todo', async () => {
+    // prettier-ignore
+    const { editorView } = await testEditor(
+      doc(todoList(
+        todoItem(
+          p('top'), 
+          todoList(
+            todoItem(p('nested 1 {<>}')),
+          )
+        )
+      )),
+    );
+
+    sendKeyToPm(editorView, 'Ctrl-Enter');
+
+    let { $from } = editorView.state.selection;
+    let node = $from.node(-1);
+    let ancestorTodo = $from.node(-3);
+    expect(node.attrs).toEqual({
+      'data-done': true,
+      'data-type': 'todo_item',
+    });
+    expect(ancestorTodo.attrs).toEqual({
+      'data-done': false,
+      'data-type': 'todo_item',
+    });
+
+    sendKeyToPm(editorView, 'Ctrl-Enter');
+
+    ({ $from } = editorView.state.selection);
+    node = $from.node(-1);
+    ancestorTodo = $from.node(-3);
+
+    expect(node.attrs).toEqual({
+      'data-done': false,
+      'data-type': 'todo_item',
+    });
+    expect(ancestorTodo.attrs).toEqual({
+      'data-done': false,
+      'data-type': 'todo_item',
+    });
+  });
+});

@@ -965,3 +965,20 @@ function moveEdgeListItem(type, dir = 'UP') {
     return true;
   };
 }
+
+export function updateNodeAttrs(type, cb) {
+  return (state, dispatch) => {
+    const { $from } = state.selection;
+    const current = $from.node(-1);
+    if (current && current.type === type) {
+      const { tr } = state;
+      const nodePos = $from.before(-1);
+
+      tr.setNodeMarkup(nodePos, undefined, cb(current.attrs));
+
+      dispatch(tr);
+      return true;
+    }
+    return false;
+  };
+}
