@@ -239,6 +239,8 @@ export const li = nodeFactory({ name: 'list_item' }, {});
 export const ul = nodeFactory({ name: 'bullet_list' }, {});
 export const ol = nodeFactory({ name: 'ordered_list' }, {});
 export const br = nodeFactory({ name: 'hard_break' }, {});
+export const todoItem = nodeFactory({ name: 'todo_item' }, {});
+export const todoList = nodeFactory({ name: 'todo_list' }, {});
 export const codeBlock = (attrs = {}) =>
   nodeFactory({ name: 'code_block' }, attrs);
 //

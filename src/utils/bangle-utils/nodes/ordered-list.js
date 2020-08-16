@@ -33,12 +33,12 @@ export class OrderedList extends Node {
   }
 
   commands({ type, schema }) {
-    return () => toggleList(this.name);
+    return () => toggleList(type);
   }
 
   keys({ type, schema }) {
     return {
-      'Shift-Ctrl-9': toggleList(this.name),
+      'Shift-Ctrl-9': toggleList(type),
     };
   }
 

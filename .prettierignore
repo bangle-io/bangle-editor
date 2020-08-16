@@ -1,2 +1,8 @@
+archive
+.cache
+dist
+node_modules
+build
 .yarn
 .pnp.js
+coverage

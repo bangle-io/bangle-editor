@@ -2,6 +2,13 @@ import { Node } from 'prosemirror-model';
 import prettier from 'prettier';
 import { NodeSelection } from 'prosemirror-state';
 
+global.db = function db(fn) {
+  return (...args) => {
+    debugger;
+    return fn(...args);
+  };
+};
+
 export const jestExpect = {
   toEqualDocAndSelection,
   toEqualDocument(actual, expected) {

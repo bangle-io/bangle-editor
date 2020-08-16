@@ -26,7 +26,7 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
 
     const result = render(
       <EditorContextProvider>
-        <ReactEditor options={_options} />
+        <ReactEditor options={_options} content="" />
         <EditorContext.Consumer>
           {(context) => {
             if (context.getEditor() && !_editor) {

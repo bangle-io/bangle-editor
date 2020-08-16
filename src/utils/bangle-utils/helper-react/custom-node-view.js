@@ -20,9 +20,10 @@ export class CustomNodeView {
     this.decorations = decorations;
     // Note it is important that we not set contentDOM for leaf nodes
     // as it causes silent bugs
-    this._getContentDOM = extension.options.getContentDOM;
-    this._createDomRef = extension.options.createDomRef;
+    this._createContentDOM = extension.options.createContentDOM;
+    this._createDom = extension.options.createDom;
     this._viewShouldUpdate = extension.options.viewShouldUpdate;
+    this._domRefClasses = extension.options.domRefClasses;
     this._renderNodeView = renderNodeView;
     this._destroyNodeView = destroyNodeView;
     this.init();
@@ -33,9 +34,9 @@ export class CustomNodeView {
       throw new Error(`NodeView:${this.extension.name} must have a data-type`);
     }
 
-    this.domRef = this.createDomRef();
+    this.domRef = this.createDom();
     this.setDomAttrs(this.node, this.domRef); // copied from atlas's reactnodeview
-    const { dom: contentDOMWrapper, contentDOM } = this.getContentDOM();
+    const { dom: contentDOMWrapper, contentDOM } = this.createContentDOM();
 
     if (this.domRef && contentDOMWrapper) {
       this.domRef.appendChild(contentDOMWrapper);
@@ -128,6 +129,17 @@ export class CustomNodeView {
 
   // copied from atlasmk2
   setDomAttrs(node, element) {
+    if (node.attrs['class']) {
+      throw new Error('Use domRefClasses instead');
+    }
+    if (this._domRefClasses) {
+      this._domRefClasses()
+        .split(' ')
+        .filter((r) => Boolean(r))
+        .forEach((c) => {
+          element.classList.add(c);
+        });
+    }
     Object.keys(
       node.attrs || {
         'data-type': this.extension.name,
@@ -138,9 +150,9 @@ export class CustomNodeView {
   }
 
   // from atlas expected that the person may implement
-  createDomRef() {
-    if (this._createDomRef) {
-      return this._createDomRef();
+  createDom() {
+    if (this._createDom) {
+      return this._createDom();
     }
 
     return this.node.isInline
@@ -149,9 +161,9 @@ export class CustomNodeView {
   }
 
   // from atlas expected that the person may implement it different
-  getContentDOM() {
-    if (this._getContentDOM) {
-      return this._getContentDOM();
+  createContentDOM() {
+    if (this._createContentDOM) {
+      return this._createContentDOM();
     }
 
     return {
@@ -173,7 +185,7 @@ export class CustomNodeView {
       }
       return;
     }
-    if (!this._getContentDOM) {
+    if (!this._createContentDOM) {
       throw new Error('Not allowed as no content dom allowed');
     }
 
@@ -218,6 +230,7 @@ export class CustomNodeView {
         view: this.view,
         handleRef: this.handleRef,
         updateAttrs: this.updateAttrs,
+        getPos: this.getPos,
         selected: selected,
       },
 

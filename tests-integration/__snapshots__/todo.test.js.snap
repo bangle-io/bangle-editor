@@ -8,7 +8,6 @@ Object {
         "content": Array [
           Object {
             "attrs": Object {
-              "class": "flex",
               "data-done": false,
               "data-type": "todo_item",
             },

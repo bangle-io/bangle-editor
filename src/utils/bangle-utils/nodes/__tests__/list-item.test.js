@@ -60,7 +60,7 @@ describe('Command: toggleList', () => {
     updateDoc(doc(p('foobar{<>}')));
     // because togglelist requires a view to work
     // we are not using the applyCommand helper
-    toggleList('bullet_list')(
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -81,7 +81,7 @@ describe('Command: backspaceKeyCommand', () => {
   const testEditor = renderTestEditor({ extensions });
   let updateDoc,
     editorView,
-    cmd = applyCommand(backspaceKeyCommand);
+    cmd = applyCommand(backspaceKeyCommand());
 
   beforeEach(async () => {
     ({ editorView, updateDoc } = await testEditor());
@@ -94,12 +94,20 @@ describe('Command: backspaceKeyCommand', () => {
       doc(p('{<>}text')),
     );
   });
+
+  test('toggles correctly with multi paragraphs', async () => {
+    updateDoc(doc(ol(li(p('{<>}text'), p('other')))));
+
+    expect(await cmd(editorView.state)).toEqualDocAndSelection(
+      doc(p('{<>}text'), p('other')),
+    );
+  });
 });
 
 describe('Command: enterKeyCommand', () => {
   let updateDoc,
     editorView,
-    cmd = applyCommand(enterKeyCommand);
+    cmd = applyCommand(enterKeyCommand());
 
   beforeEach(async () => {
     ({ editorView, updateDoc } = await testEditor());
@@ -431,6 +439,53 @@ describe('Pressing Backspace', () => {
         ol(li(p('')), li(p('nice'), p('two', br(), '{<>}'))),
 
         p('after'),
+      ),
+    );
+  });
+});
+
+// TODO fix these edge cases
+describe('Pressing Forward delete', () => {
+  const check = async (beforeDoc, afterDoc) => {
+    const { editorView } = await testEditor(beforeDoc);
+    sendKeyToPm(editorView, 'Delete');
+    expect(editorView.state).toEqualDocAndSelection(afterDoc);
+  };
+
+  it.skip('Should handle empty paragraph', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}'))
+        ), 
+        p('')
+      ),
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}'))
+        ), 
+      ),
+    );
+  });
+
+  it.skip('Should handle non-empty paragraph', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}'))
+        ), 
+        p('hello')
+      ),
+      doc(
+        ol(
+          li(p('text')), 
+          li(p('{<>}hello'))
+        ), 
       ),
     );
   });
@@ -1052,13 +1107,13 @@ describe('Command-x on empty selections', () => {
 
 describe('Toggling the list', () => {
   const toggleOrderedList = (editorView) =>
-    toggleList('ordered_list')(
+    toggleList(editorView.state.schema.nodes['ordered_list'])(
       editorView.state,
       editorView.dispatch,
       editorView,
     );
   const toggleBulletList = (editorView) =>
-    toggleList('bullet_list')(
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,
       editorView.dispatch,
       editorView,

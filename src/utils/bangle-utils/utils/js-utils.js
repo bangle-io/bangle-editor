@@ -127,7 +127,12 @@ export function getIdleCallback(cb) {
  * @param {*} coolTime - The time period which it checks for violations, if exceeded it will start debouncing the function
  * @param  {...any} debounceOpts - lodash debounce options
  */
-export function smartDebounce(cb, violationMax = 5, coolTime, ...debounceOpts) {
+export function smartDebounce(
+  cb,
+  violationMax = 100,
+  coolTime,
+  ...debounceOpts
+) {
   const debouncedCb = debounce(cb, ...debounceOpts);
   let lastCalled = Date.now();
   let violations = 0;

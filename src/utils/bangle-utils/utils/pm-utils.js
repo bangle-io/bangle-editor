@@ -18,8 +18,12 @@ export const validPos = (pos, doc) =>
   Number.isInteger(pos) && pos >= 0 && pos < doc.content.size;
 
 export const validListParent = (type, schemaNodes) => {
-  const { bullet_list: bulletList, ordered_list: orderedList } = schemaNodes;
-  return [bulletList, orderedList].includes(type);
+  const {
+    bullet_list: bulletList,
+    ordered_list: orderedList,
+    todo_list: todoList,
+  } = schemaNodes;
+  return [bulletList, orderedList, todoList].includes(type);
 };
 // export function isMarkActive(mark, doc, from, to) {
 //   let active = false;
@@ -319,21 +323,31 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 };
 
 // This will return (depth - 1) for root list parent of a list.
-export const getListLiftTarget = (schema, resPos) => {
+export const getListLiftTarget = (type, schema, resPos) => {
   let target = resPos.depth;
   const {
     bullet_list: bulletList,
     ordered_list: orderedList,
-    list_item: listItem,
+    todo_list: todoList,
   } = schema.nodes;
+  let listItem = type;
+  if (!listItem) {
+    ({ list_item: listItem } = schema.nodes);
+  }
+
   for (let i = resPos.depth; i > 0; i--) {
     const node = resPos.node(i);
-    if (node.type === bulletList || node.type === orderedList) {
+    if (
+      node.type === bulletList ||
+      node.type === orderedList ||
+      node.type === todoList
+    ) {
       target = i;
     }
     if (
       node.type !== bulletList &&
       node.type !== orderedList &&
+      node.type !== todoList &&
       node.type !== listItem
     ) {
       break;
