@@ -973,11 +973,12 @@ export function updateNodeAttrs(type, cb) {
     if (current && current.type === type) {
       const { tr } = state;
       const nodePos = $from.before(-1);
-
-      tr.setNodeMarkup(nodePos, undefined, cb(current.attrs));
-
-      dispatch(tr);
-      return true;
+      const newAttrs = cb(current.attrs);
+      if (newAttrs !== current.attrs) {
+        tr.setNodeMarkup(nodePos, undefined, cb(current.attrs));
+        dispatch(tr);
+        return true;
+      }
     }
     return false;
   };
