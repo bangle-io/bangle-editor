@@ -1,6 +1,7 @@
 import { setBlockType } from 'tiptap-commands';
 
 import { Node } from './node';
+import { moveNode } from './list-item/commands';
 
 export class Paragraph extends Node {
   get name() {
@@ -23,5 +24,12 @@ export class Paragraph extends Node {
 
   commands({ type }) {
     return () => setBlockType(type);
+  }
+
+  keys({ type, schema }) {
+    return {
+      'Alt-ArrowUp': moveNode(type, schema.nodes.doc, 'UP'),
+      'Alt-ArrowDown': moveNode(type, schema.nodes.doc, 'DOWN'),
+    };
   }
 }
