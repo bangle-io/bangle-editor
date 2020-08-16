@@ -1,4 +1,8 @@
-import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
+import {
+  liftTarget,
+  ReplaceAroundStep,
+  ReplaceStep,
+} from 'prosemirror-transform';
 import * as pmListCommands from 'prosemirror-schema-list';
 import * as baseCommand from 'prosemirror-commands';
 import { Fragment, Slice } from 'prosemirror-model';
@@ -8,9 +12,9 @@ import {
   hasParentNodeOfType,
   findPositionOfNodeBefore,
   findParentNode,
-  replaceSelectedNode,
 } from 'prosemirror-utils';
 import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
+
 import { compose } from '../../../../../src/utils/bangle-utils/utils/js-utils';
 import {
   hasVisibleContent,
@@ -834,75 +838,42 @@ export function copyEmptyCommand(type) {
   };
 }
 
-export function moveList(type, dir = 'UP') {
+export function moveEdgeListItem(type, dir = 'UP') {
   const isDown = dir === 'DOWN';
-  return (state, dispatch) => {
-    let listItem = type;
-    if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
-    }
-
-    if (!isInsideListItem(listItem)(state) || !state.selection.empty) {
+  const isItemAtEdge = (state) => {
+    const currentResolved = findParentNodeOfType(type)(state.selection);
+    if (!currentResolved) {
       return false;
     }
+    const currentNode = currentResolved.node;
+    const { $from } = state.selection;
+    const parent = $from.node(currentResolved.depth - 1);
+    const matchedChild = parent?.[isDown ? 'lastChild' : 'firstChild'];
 
-    const parent = findParentNode((node) =>
-      validListParent(node.type, state.schema.nodes),
-    )(state.selection);
-    const current = findParentNodeOfType(listItem)(state.selection);
-
-    if (!parent.node || !current.node) {
-      return false;
+    if (currentNode && matchedChild === currentNode) {
+      return true;
     }
 
-    const arr = mapChildren(parent.node, (node) => node);
-
-    let index = arr.indexOf(current.node);
-
-    let swapWith = isDown ? index + 1 : index - 1;
-    if (swapWith >= arr.length || swapWith < 0) {
-      return moveEdgeListItem(listItem, dir)(state, dispatch);
-    }
-
-    const swapWithNodeSize = arr[swapWith].nodeSize;
-    [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
-
-    const $from = state.selection.$from;
-    const newGrandParent = parent.node.copy(Fragment.fromArray(arr));
-
-    let tr = state.tr;
-    tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
-    tr = replaceSelectedNode(newGrandParent)(tr);
-    tr = tr.setSelection(
-      Selection.near(
-        tr.doc.resolve(
-          isDown ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
-        ),
-      ),
-    );
-    if (dispatch) dispatch(tr);
-    return true;
+    return false;
   };
-}
 
-function moveEdgeListItem(type, dir = 'UP') {
-  const isDown = dir === 'DOWN';
-  return (state, dispatch) => {
+  const command = (state, dispatch) => {
     let listItem = type;
 
     if (!listItem) {
       ({ list_item: listItem } = state.schema.nodes);
     }
 
-    if (!isInsideListItem(listItem)(state) || !state.selection.empty) {
+    if (!state.selection.empty) {
       return false;
     }
+
     const grandParent = findParentNode((node) =>
       validListParent(node.type, state.schema.nodes),
     )(state.selection);
     const parent = findParentNodeOfType(listItem)(state.selection);
 
-    if (!grandParent.node || !parent.node) {
+    if (!grandParent?.node || !parent?.node) {
       return false;
     }
 
@@ -962,6 +933,8 @@ function moveEdgeListItem(type, dir = 'UP') {
     if (dispatch) dispatch(newTr);
     return true;
   };
+
+  return filter([isItemAtEdge], command);
 }
 
 export function updateNodeAttrs(type, cb) {
@@ -979,5 +952,82 @@ export function updateNodeAttrs(type, cb) {
       }
     }
     return false;
+  };
+}
+
+/**
+ * Moves a node up and down. Please do a sanity check if the node is allowed to move or not
+ * before calling this command.
+ *
+ * @param {PMNodeType} type The items type
+ * @param {PMNodeType} parentType The parent's type, if not match will return false
+ * @param {['UP', 'DOWN']} dir
+ */
+export function moveNode(type, parentType, dir = 'UP') {
+  const isDown = dir === 'DOWN';
+  parentType = Array.isArray(parentType) ? parentType : [parentType];
+  return (state, dispatch) => {
+    if (!state.selection.empty) {
+      return false;
+    }
+
+    const { $from } = state.selection;
+
+    const currentResolved = findParentNodeOfType(type)(state.selection);
+
+    if (!currentResolved) {
+      return false;
+    }
+
+    const { node: currentNode } = currentResolved;
+    const parentDepth = currentResolved.depth - 1;
+    const parent = $from.node(parentDepth);
+    const parentPos = $from.start(parentDepth);
+
+    if (!parentType.includes(parent?.type) || currentNode.type !== type) {
+      return false;
+    }
+
+    const arr = mapChildren(parent, (node) => node);
+    let index = arr.indexOf(currentNode);
+
+    let swapWith = isDown ? index + 1 : index - 1;
+
+    // If swap is out of bound
+    if (swapWith >= arr.length || swapWith < 0) {
+      return false;
+    }
+
+    const swapWithNodeSize = arr[swapWith].nodeSize;
+    [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
+
+    let tr = state.tr;
+    let replaceStart = parentPos;
+    let replaceEnd = $from.end(parentDepth);
+
+    // TODO Explain why it behaves weird with Doc
+    if (parentPos > 0) {
+      replaceStart += 1;
+      replaceEnd -= 1;
+    }
+
+    tr = tr.step(
+      new ReplaceStep(
+        replaceStart,
+        replaceEnd,
+        new Slice(Fragment.fromArray(arr), parentDepth, parentDepth),
+        false,
+      ),
+    );
+
+    tr = tr.setSelection(
+      Selection.near(
+        tr.doc.resolve(
+          isDown ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
+        ),
+      ),
+    );
+    if (dispatch) dispatch(tr);
+    return true;
   };
 }
