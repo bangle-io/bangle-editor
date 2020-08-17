@@ -10284,7 +10284,7 @@ fsevents@^1.2.7:
     prettier: ^2.0.5
     prop-types: ^15.7.2
     prosemirror-commands: ^1.1.4
-    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.1"
+    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     prosemirror-dropcursor: ^1.1.1
     prosemirror-gapcursor: ^1.1.5
     prosemirror-history: ^1.0.4
@@ -10722,13 +10722,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-dev-tools@https://github.com/kepta/prosemirror-dev-tools#v3.3.1":
-  version: 3.3.1
-  resolution: "prosemirror-dev-tools@https://github.com/kepta/prosemirror-dev-tools.git#commit=9221296f22a55890c1b2131076d4efeb3261a9d7"
+"prosemirror-dev-tools@https://github.com/kepta/prosemirror-dev-tools#v3.3.4":
+  version: 3.3.4
+  resolution: "prosemirror-dev-tools@https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"
   peerDependencies:
     react: ^16.*
     react-dom: ^16.*
-  checksum: f706af27af25522194158bda576c1bb75e4c9e38ea55651dc42261c6157088e3e5a9a2afdd54444e1010b3787ac84fdaca9c53d13417b37a630784f4f7c18fd3
+  checksum: 4368c6c42ccf07edb3e1205931398ee13331e4e769b46b76e161c0c05da6708801a6b320742c99aa856b1194ba2ad7f3866cfd81c2d7dedf63b7c0ad008370de
   languageName: node
   linkType: hard
 
