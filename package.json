@@ -21,7 +21,7 @@
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.1.4",
-    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools#v3.3.1",
+    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools#v3.3.4",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.1.5",
     "prosemirror-history": "^1.0.4",
