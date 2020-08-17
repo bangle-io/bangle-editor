@@ -33,6 +33,8 @@ export class EditorContextProvider extends React.Component {
   };
 
   // TODO do we need this?
+  // - we do need this for menu and other react components to react
+  //    but it seems kinda wasteful
   handleEditorUpdate = () => {
     log('handleEditorUpdate updating state');
     // This is needed to automatically update NodeViews in portal.js
@@ -46,11 +48,11 @@ export class EditorContextProvider extends React.Component {
     this.setState({
       editorValue: { editor },
     });
-    editor.on('transaction', this.handleEditorUpdate);
+    editor.on('update', this.handleEditorUpdate);
   }
 
   cleanupEditor(editor) {
-    editor.off('transaction', this.handleEditorUpdate);
+    editor.off('update', this.handleEditorUpdate);
   }
 
   componentWillUnmount() {
@@ -64,6 +66,7 @@ export class EditorContextProvider extends React.Component {
   };
 
   render() {
+    log('rendering editor context provider');
     return (
       <EditorContext.Provider value={{ getEditor: this.getEditor }}>
         <EditorOnReadyContext.Provider

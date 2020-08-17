@@ -5,6 +5,7 @@ import {
 } from 'tiptap-commands';
 
 import { Node } from './node';
+import { moveNode } from './list-item/commands';
 
 export class CodeBlock extends Node {
   get name() {
@@ -28,9 +29,11 @@ export class CodeBlock extends Node {
     return () => toggleBlockType(type, schema.nodes.paragraph);
   }
 
-  keys({ type }) {
+  keys({ type, schema }) {
     return {
       'Shift-Ctrl-\\': setBlockType(type),
+      'Alt-ArrowUp': moveNode(type, schema.nodes.doc, 'UP'),
+      'Alt-ArrowDown': moveNode(type, schema.nodes.doc, 'DOWN'),
     };
   }
 

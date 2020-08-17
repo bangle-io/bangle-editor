@@ -5,6 +5,7 @@ import {
 } from 'tiptap-commands';
 
 import { Node } from './node';
+import { moveNode } from './list-item/commands';
 
 export class Heading extends Node {
   get name() {
@@ -55,7 +56,7 @@ export class Heading extends Node {
     return (attrs) => toggleBlockType(type, schema.nodes.paragraph, attrs);
   }
 
-  keys({ type }) {
+  keys({ type, schema }) {
     return this.options.levels.reduce(
       (items, level) => ({
         ...items,
@@ -63,7 +64,10 @@ export class Heading extends Node {
           [`Shift-Ctrl-${level}`]: setBlockType(type, { level }),
         },
       }),
-      {},
+      {
+        'Alt-ArrowUp': moveNode(type, schema.nodes.doc, 'UP'),
+        'Alt-ArrowDown': moveNode(type, schema.nodes.doc, 'DOWN'),
+      },
     );
   }
 
