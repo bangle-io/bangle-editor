@@ -585,6 +585,30 @@ describe('Press Alt-Up / Down to move list', () => {
       doc(ul(li(p('sec{<>}ond')), li(p('')))),
     );
   });
+
+  it('works for nested ul list', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2{<>}'))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:2{<>}')),
+            li(p('nested:1')),
+          ))
+        )
+      ),
+    );
+  });
 });
 
 describe('Move up for first item in their level', () => {
@@ -1064,6 +1088,60 @@ describe('Press Alt-Down to move list', () => {
     await check(
       doc(ul(li(p('{<>}')), li(p('first')))),
       doc(ul(li(p('first')), li(p('{<>}')))),
+    );
+  });
+
+  it('works for nested ul list', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1{<>}')),
+            li(p('nested:2'))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:2')),
+            li(p('nested:1{<>}')),
+          ))
+        )
+      ),
+    );
+  });
+
+  it('works for 2x nested ul list', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2'), ul(
+              li(p('nested:1:1{<>}')),
+              li(p('nested:2:2')),
+            ))
+          ))
+        )
+      ),
+      doc(
+        ul(
+          li(p('first')),
+          li(p('second'), ul(
+            li(p('nested:1')),
+            li(p('nested:2'), ul(
+              li(p('nested:2:2')),
+              li(p('nested:1:1{<>}')),
+            ))
+          ))
+        )
+      ),
     );
   });
 });
