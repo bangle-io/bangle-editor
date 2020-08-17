@@ -1005,20 +1005,9 @@ export function moveNode(type, parentType, dir = 'UP') {
     let replaceStart = parentPos;
     let replaceEnd = $from.end(parentDepth);
 
-    // TODO Explain why it behaves weird with Doc
-    if (parentPos > 0) {
-      replaceStart += 1;
-      replaceEnd -= 1;
-    }
-
-    tr = tr.step(
-      new ReplaceStep(
-        replaceStart,
-        replaceEnd,
-        new Slice(Fragment.fromArray(arr), parentDepth, parentDepth),
-        false,
-      ),
-    );
+    const slice = new Slice(Fragment.fromArray(arr), 0, 0); // the zeros  lol -- are not depth they are something that represents the opening closing
+    // .toString on slice gives you an idea. for this case we want them balanced
+    tr = tr.step(new ReplaceStep(replaceStart, replaceEnd, slice, false));
 
     tr = tr.setSelection(
       Selection.near(

@@ -333,6 +333,29 @@ describe('Pressing Alt-Up / Down to move list', () => {
       doc(todoList(todoItem(p('sec{<>}ond')), todoItem(p('')))),
     );
   });
+  it('works for nested todo list', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        todoList(
+          todoItem(p('first')),
+          todoItem(p('second'), todoList(
+            todoItem(p('nested:1')),
+            todoItem(p('nested:2{<>}'))
+          ))
+        )
+      ),
+      doc(
+        todoList(
+          todoItem(p('first')),
+          todoItem(p('second'), todoList(
+            todoItem(p('nested:2{<>}')),
+            todoItem(p('nested:1')),
+          ))
+        )
+      ),
+    );
+  });
 });
 
 describe('Alt-up/down of nesting ol/ul list', () => {
