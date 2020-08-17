@@ -37,6 +37,13 @@ export class CachedMap extends Map {
   }
 }
 
+export function arrayify(x) {
+  if (x == null) {
+    throw new Error('undefined value passed');
+  }
+  return Array.isArray(x) ? x : [x];
+}
+
 // simple higher order compose
 export function compose(func, ...funcs) {
   const allFuncs = [func, ...funcs];
