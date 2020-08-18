@@ -32,8 +32,8 @@ export class CodeBlock extends Node {
   keys({ type, schema }) {
     return {
       'Shift-Ctrl-\\': setBlockType(type),
-      'Alt-ArrowUp': moveNode(type, schema.nodes.doc, 'UP'),
-      'Alt-ArrowDown': moveNode(type, schema.nodes.doc, 'DOWN'),
+      'Alt-ArrowUp': moveNode(type, 'UP'),
+      'Alt-ArrowDown': moveNode(type, 'DOWN'),
     };
   }
 

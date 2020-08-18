@@ -6,6 +6,12 @@ import {
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
+import { filter } from '../utils/pm-utils';
+import {
+  parentHasDirectParentOfType,
+  copyEmptyCommand,
+  cutEmptyCommand,
+} from '../core-commands';
 
 export class Heading extends Node {
   get name() {
@@ -65,8 +71,10 @@ export class Heading extends Node {
         },
       }),
       {
-        'Alt-ArrowUp': moveNode(type, schema.nodes.doc, 'UP'),
-        'Alt-ArrowDown': moveNode(type, schema.nodes.doc, 'DOWN'),
+        'Alt-ArrowUp': moveNode(type, 'UP'),
+        'Alt-ArrowDown': moveNode(type, 'DOWN'),
+        'Cmd-c': copyEmptyCommand(type),
+        'Cmd-x': cutEmptyCommand(type),
       },
     );
   }

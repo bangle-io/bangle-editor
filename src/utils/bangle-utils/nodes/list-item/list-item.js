@@ -4,14 +4,16 @@ import {
   backspaceKeyCommand,
   enterKeyCommand,
   outdentList,
-  cutEmptyCommand,
-  copyEmptyCommand,
   moveNode,
-  isInsideListItem,
   moveEdgeListItem,
 } from './commands';
 import { filter } from '../../utils/pm-utils';
 import { chainCommands } from 'prosemirror-commands';
+import {
+  cutEmptyCommand,
+  copyEmptyCommand,
+  parentHasDirectParentOfType,
+} from '../../core-commands';
 
 export class ListItem extends Node {
   get name() {
@@ -35,25 +37,23 @@ export class ListItem extends Node {
   }
 
   keys({ type, schema }) {
+    const parentCheck = parentHasDirectParentOfType(type, [
+      schema.nodes['bullet_list'],
+      schema.nodes['ordered_list'],
+    ]);
+
     const move = (dir) =>
-      chainCommands(
-        moveNode(
-          type,
-          [schema.nodes['bullet_list'], schema.nodes['ordered_list']],
-          dir,
-        ),
-        moveEdgeListItem(type, dir),
-      );
+      chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
     return {
       'Backspace': backspaceKeyCommand(type),
       'Tab': indentList(type),
       'Enter': enterKeyCommand(type),
       'Shift-Tab': outdentList(type),
-      'Alt-ArrowUp': move('UP'),
-      'Alt-ArrowDown': move('DOWN'),
-      'Cmd-x': cutEmptyCommand(type),
-      'Cmd-c': copyEmptyCommand(type),
+      'Alt-ArrowUp': filter(parentCheck, move('UP')),
+      'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
+      'Cmd-x': filter(parentCheck, cutEmptyCommand(type)),
+      'Cmd-c': filter(parentCheck, copyEmptyCommand(type)),
     };
   }
 }

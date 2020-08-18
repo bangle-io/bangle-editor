@@ -2,6 +2,7 @@ import { wrappingInputRule, toggleWrap } from 'tiptap-commands';
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
+import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
 
 export class Blockquote extends Node {
   get name() {
@@ -26,8 +27,10 @@ export class Blockquote extends Node {
   keys({ type, schema }) {
     return {
       'Ctrl-ArrowRight': toggleWrap(type),
-      'Alt-ArrowUp': moveNode(type, schema.nodes.doc, 'UP'),
-      'Alt-ArrowDown': moveNode(type, schema.nodes.doc, 'DOWN'),
+      'Alt-ArrowUp': moveNode(type, 'UP'),
+      'Alt-ArrowDown': moveNode(type, 'DOWN'),
+      'Cmd-c': copyEmptyCommand(type),
+      'Cmd-x': cutEmptyCommand(type),
     };
   }
 
