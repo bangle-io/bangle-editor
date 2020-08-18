@@ -896,7 +896,6 @@ export function updateNodeAttrs(type, cb) {
  * before calling this command.
  *
  * @param {PMNodeType} type The items type
- * @param {PMNodeType} parentType The parent's type, if not match will return false
  * @param {['UP', 'DOWN']} dir
  */
 export function moveNode(type, dir = 'UP') {
