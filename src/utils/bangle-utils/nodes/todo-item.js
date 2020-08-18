@@ -11,12 +11,16 @@ import {
   backspaceKeyCommand,
   indentList,
   outdentList,
-  cutEmptyCommand,
-  copyEmptyCommand,
   updateNodeAttrs,
   moveNode,
   moveEdgeListItem,
 } from './list-item/commands';
+import {
+  cutEmptyCommand,
+  copyEmptyCommand,
+  parentHasDirectParentOfType,
+} from '../core-commands';
+import { filter } from '../utils/pm-utils';
 
 const LOG = false;
 
@@ -86,24 +90,28 @@ export class TodoItem extends Node {
 
   keys({ type, schema }) {
     const move = (dir) =>
-      chainCommands(
-        moveNode(type, schema.nodes['todo_list'], dir),
-        moveEdgeListItem(type, dir),
-      );
+      chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
+    const parentCheck = parentHasDirectParentOfType(
+      type,
+      schema.nodes['todo_list'],
+    );
     return {
       'Enter': enterKeyCommand(type),
       'Backspace': backspaceKeyCommand(type),
       'Tab': this.options.nested ? indentList(type) : () => {},
       'Shift-Tab': outdentList(type),
-      'Alt-ArrowUp': move('UP'),
-      'Alt-ArrowDown': move('DOWN'),
-      'Cmd-x': cutEmptyCommand(type),
-      'Cmd-c': copyEmptyCommand(type),
-      'Ctrl-Enter': updateNodeAttrs(type, (attrs) => ({
-        ...attrs,
-        'data-done': !attrs['data-done'],
-      })),
+      'Alt-ArrowUp': filter(parentCheck, move('UP')),
+      'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
+      'Cmd-x': filter(parentCheck, cutEmptyCommand(type)),
+      'Cmd-c': filter(parentCheck, copyEmptyCommand(type)),
+      'Ctrl-Enter': filter(
+        parentCheck,
+        updateNodeAttrs(type, (attrs) => ({
+          ...attrs,
+          'data-done': !attrs['data-done'],
+        })),
+      ),
     };
   }
 

@@ -774,70 +774,6 @@ function deletePreviousEmptyListItem(type) {
   };
 }
 
-export function cutEmptyCommand(type) {
-  return (state, dispatch) => {
-    let listItem = type;
-    if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
-    }
-
-    if (!state.selection.empty || !isInsideListItem(listItem)(state)) {
-      return false;
-    }
-
-    const parent = findParentNodeOfType(listItem)(state.selection);
-
-    if (!parent || !parent.node) {
-      return false;
-    }
-
-    let tr = state.tr;
-    tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
-
-    if (dispatch) {
-      dispatch(tr);
-    }
-
-    document.execCommand('cut');
-
-    return true;
-  };
-}
-
-export function copyEmptyCommand(type) {
-  return (state, dispatch, view) => {
-    let listItem = type;
-    if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
-    }
-
-    if (!state.selection.empty || !isInsideListItem(listItem)(state)) {
-      return false;
-    }
-    const parent = findParentNodeOfType(listItem)(state.selection);
-
-    if (!parent) {
-      return false;
-    }
-    const selection = state.selection;
-    let tr = state.tr;
-    tr = tr.setSelection(NodeSelection.create(tr.doc, parent.pos));
-
-    if (dispatch) {
-      dispatch(tr);
-    }
-    document.execCommand('copy');
-
-    // restore the selection
-    const tr2 = view.state.tr;
-    if (dispatch)
-      dispatch(
-        tr2.setSelection(Selection.near(tr2.doc.resolve(selection.$from.pos))),
-      );
-    return true;
-  };
-}
-
 export function moveEdgeListItem(type, dir = 'UP') {
   const isDown = dir === 'DOWN';
   const isItemAtEdge = (state) => {
@@ -963,9 +899,8 @@ export function updateNodeAttrs(type, cb) {
  * @param {PMNodeType} parentType The parent's type, if not match will return false
  * @param {['UP', 'DOWN']} dir
  */
-export function moveNode(type, parentType, dir = 'UP') {
+export function moveNode(type, dir = 'UP') {
   const isDown = dir === 'DOWN';
-  parentType = Array.isArray(parentType) ? parentType : [parentType];
   return (state, dispatch) => {
     if (!state.selection.empty) {
       return false;
@@ -984,7 +919,7 @@ export function moveNode(type, parentType, dir = 'UP') {
     const parent = $from.node(parentDepth);
     const parentPos = $from.start(parentDepth);
 
-    if (!parentType.includes(parent?.type) || currentNode.type !== type) {
+    if (currentNode.type !== type) {
       return false;
     }
 
