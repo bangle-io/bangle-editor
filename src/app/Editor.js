@@ -69,6 +69,17 @@ export class Editor extends React.PureComponent {
             options={this.options}
             content={this.props.entry.content}
           />
+          {/* adds white space at bottoms */}
+          <div
+            style={{
+              display: 'flex',
+              flexGrow: 1,
+              height: '25vh',
+              backgroundColor: 'transparent',
+            }}
+          >
+            &nbsp;
+          </div>
         </div>
       </div>
     );
