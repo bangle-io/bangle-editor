@@ -24,7 +24,7 @@ import {
   TodoList,
 } from '../../src/utils/bangle-utils/nodes/index';
 import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
-import { TrailingNodePlugin } from '../../src/utils/bangle-utils/plugins/trailing-node-plugin';
+import { TrailingNode } from '../utils/bangle-utils/addons';
 
 const DEBUG = true;
 
@@ -54,7 +54,7 @@ export class Editor extends React.PureComponent {
       new Dinos(),
       new Emoji(),
       new History(),
-      new TrailingNodePlugin(),
+      new TrailingNode(),
     ],
     editorProps: {
       attributes: { class: 'bangle-editor content' },

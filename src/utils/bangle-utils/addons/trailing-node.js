@@ -1,9 +1,9 @@
-import { Extension } from '../extensions';
 import { PluginKey, Plugin } from 'prosemirror-state';
+import { Addon } from './addon';
 
-export class TrailingNodePlugin extends Extension {
+export class TrailingNode extends Addon {
   get name() {
-    return 'trailing_node_plugin';
+    return 'trailing_node_addon';
   }
 
   get defaultOptions() {
