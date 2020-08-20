@@ -44,6 +44,12 @@ export function arrayify(x) {
   return Array.isArray(x) ? x : [x];
 }
 
+export function rafWrap(cb) {
+  return (...args) => {
+    requestAnimationFrame(() => cb(...args));
+  };
+}
+
 // simple higher order compose
 export function compose(func, ...funcs) {
   const allFuncs = [func, ...funcs];

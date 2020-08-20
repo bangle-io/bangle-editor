@@ -156,7 +156,9 @@ export class ExtensionManager {
             if (!view.editable) {
               return false;
             }
-            view.focus();
+            if (!view.hasFocus()) {
+              view.focus();
+            }
             return cb(attrs)(view.state, view.dispatch, view);
           };
 
