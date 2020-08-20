@@ -29,11 +29,11 @@
 }
 
 .bangle-editor > ul {
-  @apply list-disc list-outside  pl-6 mt-2 mb-1;
+  @apply list-disc list-outside  pl-6 mt-2 mb-2;
 }
 
 .bangle-editor > ol {
-  @apply list-decimal list-outside pl-6 mt-2 mb-1;
+  @apply list-decimal list-outside pl-6 mt-2 mb-2;
 }
 
 .bangle-editor ul[data-type='todo_list'] {
