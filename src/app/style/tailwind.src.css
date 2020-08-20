@@ -41,11 +41,11 @@
 }
 
 .bangle-editor a {
-  @apply text-blue-500 px-1;
+  @apply text-blue-500 underline;
 }
 
 .bangle-editor a:hover {
-  @apply text-blue-800;
+  @apply text-blue-700;
 }
 
 .bangle-editor blockquote {
