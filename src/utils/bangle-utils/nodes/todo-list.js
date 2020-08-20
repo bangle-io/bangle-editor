@@ -2,6 +2,7 @@ import { wrappingInputRule } from 'tiptap-commands';
 
 import { Node } from './node';
 import { toggleList } from './list-item/commands';
+import { rafWrap } from '../utils/js-utils';
 
 export class TodoList extends Node {
   get name() {
@@ -24,7 +25,10 @@ export class TodoList extends Node {
 
   commands({ type, schema }) {
     return {
-      todo_list: () => toggleList(type, schema.nodes.todo_item),
+      // I am not sure why raf fixes the problem,
+      // but wrapping it inside an raf seems to avoid the
+      // problem of losing focus and getting the selection in wrong place
+      todo_list: () => rafWrap(toggleList(type, schema.nodes.todo_item)),
     };
   }
 

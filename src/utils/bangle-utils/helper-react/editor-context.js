@@ -48,11 +48,12 @@ export class EditorContextProvider extends React.Component {
     this.setState({
       editorValue: { editor },
     });
-    editor.on('update', this.handleEditorUpdate);
+    editor.on('transaction', this.handleEditorUpdate);
   }
+  transaction;
 
   cleanupEditor(editor) {
-    editor.off('update', this.handleEditorUpdate);
+    editor.off('transaction', this.handleEditorUpdate);
   }
 
   componentWillUnmount() {
