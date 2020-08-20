@@ -77,6 +77,15 @@ export function MenuBar({ getEditor }) {
         label="flower"
         iconType="check-square"
       />
+      <MenuItemButton
+        active={getEditor().isActive.stopwatch()}
+        enabled={true}
+        onClick={() => {
+          getEditor().commands.stopwatch();
+        }}
+        label="flower"
+        iconType="stopwatch"
+      />
     </div>
   );
 }
