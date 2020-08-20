@@ -33,7 +33,7 @@ export class ExtensionManager {
             Object.assign(obj, { [prop]: value });
 
             if (changed) {
-              extension.update(view);
+              view.updateState(view.state);
             }
 
             return true;
@@ -142,42 +142,41 @@ export class ExtensionManager {
         .filter((extension) => extension.commands)
         .flatMap((extension) => {
           const { name, type } = extension;
-          const commands = [];
-          const value = extension.commands({
+          let value = extension.commands({
             schema,
-            ...(['node', 'mark'].includes(type)
-              ? {
-                  type: schema[`${type}s`][name],
-                }
-              : {}),
+            type: schema[`${type}s`]?.[name], // type can be node,  mark
           });
 
+          if (typeof value !== 'object') {
+            value = {
+              [name]: value,
+            };
+          }
           const apply = (cb, attrs) => {
             if (!view.editable) {
               return false;
             }
-            view.focus();
+            if (!view.hasFocus()) {
+              view.focus();
+            }
             return cb(attrs)(view.state, view.dispatch, view);
           };
 
-          const objValue = typeof value === 'object' ? value : { name: value };
-
-          Object.entries(objValue).forEach(([commandName, commandValue]) => {
+          const handle = ([commandName, commandValue]) => {
             if (Array.isArray(commandValue)) {
-              commands.push([
+              return [
                 commandName,
                 (attrs) =>
                   commandValue.forEach((callback) => apply(callback, attrs)),
-              ]);
+              ];
             } else if (typeof commandValue === 'function') {
-              commands.push([
-                commandName,
-                (attrs) => apply(commandValue, attrs),
-              ]);
+              return [commandName, (attrs) => apply(commandValue, attrs)];
+            } else {
+              throw new Error('unknown command value');
             }
-          });
+          };
 
-          return commands;
+          return Object.entries(value).map(handle);
         }, {}),
     );
   }
