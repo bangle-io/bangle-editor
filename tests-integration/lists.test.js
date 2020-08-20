@@ -27,7 +27,8 @@ describe('Basic typing', () => {
       "doc(
         bullet_list(
           list_item(paragraph('First'))
-        )
+        ),
+        paragraph
       )
       "
     `);
@@ -40,7 +41,8 @@ describe('Basic typing', () => {
       "doc(
         ordered_list(
           list_item(paragraph('First'))
-        )
+        ),
+        paragraph
       )
       "
     `);
@@ -63,7 +65,8 @@ describe('Basic typing', () => {
               )
             )
           )
-        )
+        ),
+        paragraph
       )
       "
     `);

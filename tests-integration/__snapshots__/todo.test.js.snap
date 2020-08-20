@@ -27,6 +27,9 @@ Object {
         ],
         "type": "todo_list",
       },
+      Object {
+        "type": "paragraph",
+      },
     ],
     "type": "doc",
   },

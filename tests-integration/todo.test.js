@@ -33,7 +33,8 @@ describe('Todo test', () => {
       "doc(
         todo_list(
           todo_item(paragraph('my task'))
-        )
+        ),
+        paragraph
       )
       "
     `);
