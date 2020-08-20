@@ -1,4 +1,4 @@
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('customer-node-view.js', ...args);
@@ -107,6 +107,8 @@ export class CustomNodeView {
 
   destroy() {
     if (!this.domRef) {
+      log('no domRef to destroy');
+
       return;
     }
     log('destroy');

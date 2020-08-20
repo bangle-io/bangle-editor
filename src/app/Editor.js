@@ -25,6 +25,7 @@ import {
 } from '../../src/utils/bangle-utils/nodes/index';
 import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
 import { TrailingNode } from '../utils/bangle-utils/addons';
+import StopwatchExtension from '../../src/plugins/stopwatch/index';
 
 const DEBUG = true;
 
@@ -55,6 +56,7 @@ export class Editor extends React.PureComponent {
       new Emoji(),
       new History(),
       new TrailingNode(),
+      new StopwatchExtension(),
     ],
     editorProps: {
       attributes: { class: 'bangle-editor content' },
