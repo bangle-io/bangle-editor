@@ -25,7 +25,7 @@ import {
 } from '../../src/utils/bangle-utils/nodes/index';
 import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
 import { TrailingNode } from '../utils/bangle-utils/addons';
-import StopwatchExtension from '../../src/plugins/stopwatch/index';
+import StopwatchExtension from '../plugins/stopwatch/stopwatch';
 
 const DEBUG = true;
 

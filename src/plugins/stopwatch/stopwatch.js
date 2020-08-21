@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Node } from '../../utils/bangle-utils/nodes/index';
 import { getIdleCallback } from '../../utils/bangle-utils/utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('stopwatch/index.js:', ...args);
@@ -99,11 +99,7 @@ export default class StopwatchExtension extends Node {
       if (!$from.parent.canReplaceWith(index, index, stopwatchType))
         return false;
       if (dispatch) {
-        const attr = {
-          'data-stopwatch-time': Date.now() + '',
-        };
-
-        dispatch(state.tr.replaceSelectionWith(stopwatchType.create(attr)));
+        dispatch(state.tr.replaceSelectionWith(stopwatchType.create()));
       }
       return true;
     };
@@ -136,13 +132,13 @@ function StopwatchComponent({ node, updateAttrs, selected }) {
     <span
       contentEditable={false}
       style={{
-        'backgroundColor': !paused ? '#00CED1' : 'pink',
-        'outline': selected ? '2px solid blue' : null,
-        'border-radius': 10,
-        'padding': '1px 2px 1px 2px',
-        'margin': '1px 2px',
-        'fontWeight': 500,
-        'fontFamily': 'monospace',
+        backgroundColor: !paused ? '#00CED1' : 'pink',
+        outline: selected ? '2px solid blue' : null,
+        borderRadius: 10,
+        padding: '1px 2px 1px 2px',
+        margin: '1px 2px',
+        fontWeight: 500,
+        fontFamily: 'monospace',
       }}
       onClick={() => {
         if (paused === 0) {
