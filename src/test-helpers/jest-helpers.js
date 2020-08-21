@@ -134,9 +134,19 @@ function toEqualDocument(equals, utils, expand) {
           )}\n` +
           `Actual JSON:\n  ${utils.printReceived(actual)}`
       : () => {
-          const diffString = utils.diff(frmt(expected), frmt(actual), {
-            expand: expand,
-          });
+          const [expectedFrmt, actualFrmt] = [frmt(expected), frmt(actual)];
+
+          let diffString;
+          if (expectedFrmt === actualFrmt) {
+            diffString = utils.diff(expected, actual, {
+              expand: expand,
+            });
+          } else {
+            diffString = utils.diff(expectedFrmt, actualFrmt, {
+              expand: expand,
+            });
+          }
+
           return (
             `${utils.matcherHint('.toEqualDocument')}\n\n` +
             `Expected Tree value of document to equal:\n${frmt(expected)}\n` +
