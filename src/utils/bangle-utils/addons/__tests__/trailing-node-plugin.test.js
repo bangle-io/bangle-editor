@@ -12,14 +12,7 @@ import {
 } from '../../../../test-helpers';
 // import { applyCommand } from '../../../../test-helpers/commands-helpers';
 
-import {
-  OrderedList,
-  BulletList,
-  ListItem,
-  HardBreak,
-  Heading,
-} from '../../nodes';
-import { Underline } from '../../marks';
+import { Heading } from '../../nodes';
 
 import { TrailingNode } from '../trailing-node';
 

@@ -250,3 +250,4 @@ export const italic = markFactory({ name: 'italic' }, {});
 export const underline = markFactory({ name: 'underline' }, {});
 export const bold = markFactory({ name: 'bold' }, {});
 export const code = markFactory({ name: 'code' }, {});
+export const link = (attrs) => markFactory({ name: 'link' }, attrs);
