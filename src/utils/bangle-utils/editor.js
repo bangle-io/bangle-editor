@@ -63,6 +63,7 @@ export class Editor extends Emitter {
       disablePasteRules: false,
       dropCursor: {},
       parseOptions: {},
+      // these are used
       onInit: () => {},
       onTransaction: () => {},
       onUpdate: () => {},
@@ -107,6 +108,7 @@ export class Editor extends Emitter {
     this.emit('init', {
       view: this.view,
       state: this.state,
+      editor: this,
     });
 
     // give extension manager access to our view
