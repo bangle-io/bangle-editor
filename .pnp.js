@@ -222,6 +222,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:15.7.2"
       ],
       [
+        "prosemirror-collab",
+        "npm:1.2.2"
+      ],
+      [
         "prosemirror-commands",
         "npm:1.1.4"
       ],
@@ -385,6 +389,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss-nested", "npm:4.2.3"],
             ["prettier", "npm:2.0.5"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-dev-tools", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
@@ -11855,6 +11860,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss-nested", "npm:4.2.3"],
             ["prettier", "npm:2.0.5"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-dev-tools", "virtual:8583e4c83e0d97aa3ed42e5a61bd1fd25fc58f41d03284923d3f5c8884b1d5c9ddf1e40acad4643e51b31e4e658be4ef34a8603931677c470df75ae8210470c3#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
@@ -12319,6 +12325,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["loose-envify", "npm:1.4.0"],
             ["object-assign", "npm:4.1.1"],
             ["react-is", "npm:16.13.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["prosemirror-collab", [
+        ["npm:1.2.2", {
+          "packageLocation": "./.yarn/cache/prosemirror-collab-npm-1.2.2-1fdb590336-44d68c7619.zip/node_modules/prosemirror-collab/",
+          "packageDependencies": [
+            ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-state", "npm:1.3.3"]
           ],
           "linkType": "HARD",
         }]
