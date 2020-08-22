@@ -121,12 +121,22 @@ class PMEditorWrapper extends React.Component {
     } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
-      this.editor = new Editor(node, {
+      const editor = new Editor(node, {
         ...editorOptions,
         content,
         renderNodeView,
         destroyNodeView,
+        onInit: ({ view, state, editor }) => {
+          this.context.onEditorReady(editor);
+          editor.focus();
+          if (editorOptions.onInit) {
+            editorOptions.onInit({ view, state, editor });
+          }
+        },
       });
+
+      this.editor = editor;
+
       if (editorOptions.devtools) {
         window.editor = this.editor;
 
@@ -138,9 +148,6 @@ class PMEditorWrapper extends React.Component {
           });
         });
       }
-      // TODO look into this?
-      this.context.onEditorReady(this.editor);
-      this.editor.focus();
     }
   }
 
@@ -152,7 +159,9 @@ class PMEditorWrapper extends React.Component {
       this.devtools();
     }
     this.editor = undefined;
-    window.editor = null;
+    if (window.editor) {
+      window.editor = null;
+    }
   }
 
   render() {
