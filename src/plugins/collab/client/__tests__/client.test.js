@@ -63,14 +63,13 @@ async function setupEditor(document, version) {
       clientID: 'test',
     }),
   ];
-  const { editor } = await renderTestEditor(
+  return renderTestEditor(
     {
       extensions,
       content: document,
     },
-    'data-test' + Math.random(),
+    'data-test-' + Math.random(),
   )();
-  return editor;
 }
 
 const consoleError = console.error;
@@ -100,7 +99,7 @@ describe('pull events', () => {
       },
       pushEvents: async () => {},
       createEditorState: async (document, version) => {
-        editor = await setupEditor(document, version);
+        ({ editor } = await setupEditor(document, version));
         return editor.state;
       },
       updateState: jest.fn((state) => {
@@ -150,7 +149,7 @@ describe('pull events', () => {
       },
       pushEvents: async () => {},
       createEditorState: async (document, version) => {
-        editor = await setupEditor(document, version);
+        ({ editor } = await setupEditor(document, version));
         return editor.state;
       },
 
@@ -220,7 +219,7 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async (payload) => {}),
       createEditorState: async (document, version) => {
-        editor = await setupEditor(document, version);
+        ({ editor } = await setupEditor(document, version));
         return editor.state;
       },
       updateState: jest.fn((state) => {
@@ -263,7 +262,7 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async (payload) => {}),
       createEditorState: async (document, version) => {
-        editor = await setupEditor(document, version);
+        ({ editor } = await setupEditor(document, version));
         return editor.state;
       },
       updateState: jest.fn((state) => {
@@ -330,8 +329,7 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async (payload) => {}),
       createEditorState: jest.fn(async (document, version) => {
-        editor = await setupEditor(document, version);
-        console.log('here', Math.random());
+        ({ editor } = await setupEditor(document, version));
         return editor.state;
       }),
       updateState: jest.fn((state) => {
@@ -357,74 +355,153 @@ describe('pull events', () => {
   });
 });
 
-test('pushes changes to server', async () => {
-  let editor;
-  let pullTimes = 0;
-  const handlers = {
-    getDocument: async () => {
-      return getInitialDoc(2);
-    },
-    pullEvents: async () => {
-      if (pullTimes++ > 0) {
-        return promiseNever();
-      }
-
-      return {
-        version: 4,
-        steps: 'add '.split('').map((key, i) => ({
-          stepType: 'replace',
-          from: 7 + i,
-          to: 7 + i,
-          slice: { content: [{ type: 'text', text: key }] },
-        })),
-        clientIDs: [2, 2, 2, 2],
-      };
-    },
-    pushEvents: jest.fn(async (payload) => {}),
-
-    createEditorState: async (document, version) => {
-      editor = await setupEditor(document, version);
-      return editor.state;
-    },
-
-    updateState: jest.fn((state) => {
-      editor.view.updateState(state);
-    }),
-    onDispatchTransaction: (cb) => {
-      editor.on('transaction', ({ transaction }) => cb(transaction));
-    },
-    destroyView: () => {
-      editor.destroy();
-    },
-  };
-  new EditorConnection('ole', handlers);
-  await sleep(16);
-
-  typeText(editor.view, 'X');
-
-  expect(handlers.pushEvents).toBeCalledTimes(1);
-  expect(handlers.pushEvents).toHaveBeenNthCalledWith(1, {
-    clientID: 'test',
-    steps: [
-      {
-        from: 1,
-        slice: {
-          content: [
-            {
-              text: 'X',
-              type: 'text',
-            },
-          ],
-        },
-        stepType: 'replace',
-        to: 1,
+describe('pushing events', () => {
+  test('pushes changes to server', async () => {
+    let editor;
+    let pullTimes = 0;
+    const handlers = {
+      getDocument: async () => {
+        return getInitialDoc(2);
       },
-    ],
-    version: 6,
+      pullEvents: async () => {
+        if (pullTimes++ > 0) {
+          return promiseNever();
+        }
+
+        return {
+          version: 4,
+          steps: 'add '.split('').map((key, i) => ({
+            stepType: 'replace',
+            from: 7 + i,
+            to: 7 + i,
+            slice: { content: [{ type: 'text', text: key }] },
+          })),
+          clientIDs: [2, 2, 2, 2],
+        };
+      },
+      pushEvents: jest.fn(async (payload) => {}),
+
+      createEditorState: async (document, version) => {
+        ({ editor } = await setupEditor(document, version));
+        return editor.state;
+      },
+
+      updateState: jest.fn((state) => {
+        editor.view.updateState(state);
+      }),
+      onDispatchTransaction: (cb) => {
+        editor.on('transaction', ({ transaction }) => cb(transaction));
+      },
+      destroyView: () => {
+        editor.destroy();
+      },
+    };
+    new EditorConnection('ole', handlers);
+    await sleep(16);
+
+    typeText(editor.view, 'X');
+
+    expect(handlers.pushEvents).toBeCalledTimes(1);
+    expect(handlers.pushEvents).toHaveBeenNthCalledWith(1, {
+      clientID: 'test',
+      steps: [
+        {
+          from: 1,
+          slice: {
+            content: [
+              {
+                text: 'X',
+                type: 'text',
+              },
+            ],
+          },
+          stepType: 'replace',
+          to: 1,
+        },
+      ],
+      version: 6,
+    });
+
+    expect(editor.state.doc.toString()).toMatchInlineSnapshot(
+      `"doc(paragraph(\\"Xhello add world\\"))"`,
+    );
+    expect(getVersion(editor.state)).toBe(6);
   });
 
-  expect(editor.state.doc.toString()).toMatchInlineSnapshot(
-    `"doc(paragraph(\\"Xhello add world\\"))"`,
-  );
-  expect(getVersion(editor.state)).toBe(6);
+  test('handles invalid version error when pushing event  by restarting', async () => {
+    console.error = jest.fn();
+    let editor;
+    let unmount;
+    let pullTimes = 0;
+    let getDocTimes = 0;
+    let pushTimes = 0;
+    const handlers = {
+      getDocument: jest.fn(async () => {
+        if (getDocTimes++ > 0) {
+          return getInitialDoc(6, 'corrected document');
+        }
+        return getInitialDoc(2);
+      }),
+      pullEvents: jest.fn(async () => {
+        if (pullTimes++ > 3) {
+          return promiseNever();
+        }
+
+        if (pullTimes === 3) {
+          return {
+            version: 10,
+            steps: ' new'.split('').map((key, i) => ({
+              stepType: 'replace',
+              from: 3 + i,
+              to: 3 + i,
+              slice: { content: [{ type: 'text', text: key }] },
+            })),
+            clientIDs: [2, 2, 2, 2],
+          };
+        }
+
+        return {
+          version: 4,
+          steps: [],
+          clientIDs: [],
+        };
+      }),
+      pushEvents: jest.fn(async (payload) => {
+        if (pushTimes++ > 0) {
+          return;
+        }
+        let err = new Error('Invalid version ' + 43);
+        err.status = 400;
+        throw err;
+      }),
+      createEditorState: jest.fn(async (document, version) => {
+        ({ editor, unmount } = await setupEditor(document, version));
+        return editor.state;
+      }),
+      updateState: jest.fn((state) => {
+        editor.view.updateState(state);
+      }),
+      onDispatchTransaction: (cb) => {
+        editor.on('transaction', ({ transaction }) => {
+          cb(transaction);
+        });
+      },
+      destroyView: () => {
+        editor.destroy();
+      },
+    };
+    new EditorConnection('ole', handlers);
+    await sleep(100);
+    typeText(editor.view, 'X');
+    await sleep(100);
+    typeText(editor.view, 'Y');
+    expect(handlers.pushEvents).toBeCalledTimes(2);
+    expect(handlers.createEditorState).toBeCalledTimes(2);
+    expect(handlers.pullEvents).toBeCalledTimes(6);
+    expect(handlers.getDocument).toBeCalledTimes(2);
+    expect(editor.state.doc.toString()).toMatchInlineSnapshot(
+      `"doc(paragraph(\\"Ycorrected document\\"))"`,
+    );
+    expect(getVersion(editor.state)).toBe(6);
+  });
 });
