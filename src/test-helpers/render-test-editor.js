@@ -10,7 +10,6 @@ import {
   GapCursorSelection,
   GapCursorSide,
 } from '../../src/utils/bangle-utils/gap-cursor';
-import { sleep } from './keyboard';
 
 export function renderTestEditor(options = {}, testId = 'test-editor') {
   return async (testDoc) => {

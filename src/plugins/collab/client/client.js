@@ -1,20 +1,13 @@
 import { Step } from 'prosemirror-transform';
-import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { history } from 'prosemirror-history';
+
 import {
-  collab,
   receiveTransaction,
   sendableSteps,
   getVersion,
 } from 'prosemirror-collab';
 import { MenuItem } from 'prosemirror-menu';
 
-import {
-  cancelablePromise,
-  getIdleCallback,
-} from '../../../utils/bangle-utils/utils/js-utils';
-import { sleep } from '../../../test-helpers';
+import { cancelablePromise } from '../../../utils/bangle-utils/utils/js-utils';
 
 class State {
   edit;
@@ -33,7 +26,7 @@ export class EditorConnection {
   schema;
   docName;
 
-  constructor(docName = 'ole', handlers) {
+  constructor(docName, handlers) {
     this.docName = docName;
     this.handlers = {
       getDocument: handlers.getDocument,
