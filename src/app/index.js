@@ -47,7 +47,7 @@ export default class App extends React.PureComponent {
     return (
       <EditorContextProvider>
         <div className="h-screen main-wrapper">
-          {!isMobile && <Header entry={this.state.entry} />}
+          {/* {!isMobile && <Header entry={this.state.entry} />} */}
           <div className="editor-wrapper overflow-auto">
             {this.state.entry && <Editor entry={this.state.entry} />}
           </div>
@@ -58,7 +58,7 @@ export default class App extends React.PureComponent {
             handleNewEntry={this.handleNewEntry}
             toggleSidebar={this.toggleSidebar}
           >
-            {isMobile && <Header entry={this.state.entry} />}
+            {/* {isMobile && <Header entry={this.state.entry} />} */}
           </Aside>
         </div>
       </EditorContextProvider>
