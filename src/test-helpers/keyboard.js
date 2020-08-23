@@ -103,21 +103,6 @@ export async function typeText(view, text) {
       );
     }
   });
-
-  // const { tr } = view.state;
-  // for (const character of [...text]) {
-  //   let _index = index;
-  //   if (
-  //     !view.someProp('handleTextInput', (f) =>
-  //       f(view, pos + _index, pos + _index, character),
-  //     )
-  //   ) {
-  //     tr.insertText(character, pos + _index);
-  //   }
-  //   index++;
-  // }
-  // view.dispatch(tr);
-  // await sleep();
 }
 
 export function sleep(t = 20) {
