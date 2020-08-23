@@ -98,7 +98,6 @@ export async function typeText(view, text) {
         ),
       )
     ) {
-      // console.log(index, character);
       view.dispatch(
         view.state.tr.insertText(character, view.state.selection.from),
       );

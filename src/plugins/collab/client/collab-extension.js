@@ -12,6 +12,11 @@ export class CollabExtension extends Extension {
   }
 
   get plugins() {
-    return [collab({ version: this.options.version })];
+    return [
+      collab({
+        version: this.options.version,
+        clientID: this.options.clientID,
+      }),
+    ];
   }
 }
