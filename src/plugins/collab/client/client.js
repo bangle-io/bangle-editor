@@ -10,7 +10,10 @@ import {
 } from 'prosemirror-collab';
 import { MenuItem } from 'prosemirror-menu';
 
-import { cancelablePromise } from '../../../utils/bangle-utils/utils/js-utils';
+import {
+  cancelablePromise,
+  getIdleCallback,
+} from '../../../utils/bangle-utils/utils/js-utils';
 import { sleep } from '../../../test-helpers';
 
 class State {
@@ -40,7 +43,7 @@ export class EditorConnection {
       updateState: handlers.updateState,
       onDispatchTransaction: handlers.onDispatchTransaction,
       destroyView: handlers.destroyView,
-      onSetup: handlers.onSetup,
+      onSleep: handlers.onSleep ?? sleep,
     };
     this.start(docName);
   }
@@ -53,7 +56,10 @@ export class EditorConnection {
     let newEditState = null;
 
     if (action.type === 'loaded') {
-      let editState = await this.createEditorState(action.doc, action.version);
+      let editState = await this.handlers.createEditorState(
+        action.doc,
+        action.version,
+      );
       this.state = new State(editState, 'poll');
       this.poll();
     } else if (action.type === 'restart') {
@@ -101,22 +107,12 @@ export class EditorConnection {
       if (this.loaded) {
         this.handlers.updateState(this.state.edit);
       } else {
-        // this.handlers
-        //   .onSetup({
-        //     doc: action.doc,
-        //     version: action.version,
-        //     dispatch: (transaction) =>
-        //       this.dispatch({ type: 'transaction', transaction }),
-        //   })
-        //   .then((view) => {
-
-        // this.handlers.updateState(this.state.edit);
         this.handlers.updateState(this.state.edit);
         this.handlers.onDispatchTransaction(this.dispatchTransaction);
         this.loaded = true;
-        // });
       }
     } else {
+      // todo change this to this.close()
       this.handlers.destroyView();
       this.loaded = false;
     }
@@ -127,48 +123,46 @@ export class EditorConnection {
     return this.request;
   }
 
-  createEditorState(doc, version) {
-    return this.handlers.createEditorState(doc, version);
-  }
-
   poll() {
-    this.run(
-      this.handlers.pullEvents({
-        version: getVersion(this.state.edit),
-        name: this.docName,
-      }),
-    ).promise.then(
-      async (data) => {
-        console.log('success polling ', Math.random());
-        this.backOff = 0;
-        if (data.steps && data.steps.length) {
-          let tr = receiveTransaction(
-            this.state.edit,
-            data.steps.map((j) => Step.fromJSON(this.state.edit.schema, j)), // TODO get this schema from editor
-            data.clientIDs,
-          );
+    getIdleCallback(() => {
+      this.run(
+        this.handlers.pullEvents({
+          version: getVersion(this.state.edit),
+          name: this.docName,
+        }),
+      ).promise.then(
+        async (data) => {
+          console.log('success polling ', Math.random());
+          this.backOff = 0;
+          if (data.steps && data.steps.length) {
+            let tr = receiveTransaction(
+              this.state.edit,
+              data.steps.map((j) => Step.fromJSON(this.state.edit.schema, j)),
+              data.clientIDs,
+            );
 
-          this.dispatch({
-            type: 'transaction',
-            transaction: tr,
-            requestDone: true,
-          });
-        } else {
-          await sleep(1000);
-          this.poll();
-        }
-      },
-      (err) => {
-        if (err.status === 410 || badVersion(err)) {
-          // Too far behind. Revert to server state
-          console.error(err);
-          console.log('failed while polling');
-          this.dispatch({ type: 'restart' });
-        } else if (err) {
-          this.dispatch({ type: 'recover', error: err });
-        }
-      },
-    );
+            this.dispatch({
+              type: 'transaction',
+              transaction: tr,
+              requestDone: true,
+            });
+          } else {
+            await this.handlers.onSleep(1000);
+            this.poll();
+          }
+        },
+        (err) => {
+          if (err.status === 410 || badVersion(err)) {
+            // Too far behind. Revert to server state
+            console.error(err);
+            console.log('failed while polling');
+            this.dispatch({ type: 'restart' });
+          } else if (err) {
+            this.dispatch({ type: 'recover', error: err });
+          }
+        },
+      );
+    });
   }
 
   start(docName) {
