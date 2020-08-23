@@ -103,7 +103,8 @@ class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
     editorOptions: PropTypes.object.isRequired,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+      .isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
   };
