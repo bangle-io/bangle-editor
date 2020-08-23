@@ -1,10 +1,15 @@
-import { Emitter } from '../../utils/bangle-utils/utils/emitter';
+import { Emitter } from '../../../utils/bangle-utils/utils/emitter';
 
 const MAX_STEP_HISTORY = 1000;
 
-export class LocalInstance extends Emitter {
-  constructor(id, doc, schema, scheduleSave) {
-    super();
+const LOG = true;
+
+function log(...args) {
+  if (LOG) console.log('collab/server/instance', ...args);
+}
+
+export class Instance {
+  constructor(id, doc, schema, scheduleSave, created) {
     this.scheduleSave = scheduleSave;
     this.id = id;
     this.doc =
@@ -24,6 +29,8 @@ export class LocalInstance extends Emitter {
     this.userCount = 0;
     this.waiting = [];
     this.collecting = null;
+    this.lastModified = this.lastActive;
+    this.created = created || Date.now();
   }
 
   stop() {
@@ -56,15 +63,23 @@ export class LocalInstance extends Emitter {
   }
 
   sendUpdates() {
-    while (this.waiting.length) this.waiting.pop().finish();
+    while (this.waiting.length) {
+      const popped = this.waiting.pop();
+      log('sending up to ip', popped.ip);
+      popped.finish();
+    }
   }
 
   // : (Number)
   // Check if a document version number relates to an existing
   // document version.
   checkVersion(version) {
+    if (typeof version !== 'number') {
+      throw new Error('version is not a number');
+    }
     if (version < 0 || version > this.version) {
       let err = new Error('Invalid version ' + version);
+      err.status = 400;
       throw err;
     }
   }
@@ -88,18 +103,21 @@ export class LocalInstance extends Emitter {
     this.users = Object.create(null);
     this.userCount = 0;
     this.collecting = null;
+    log('collectUsers', [...Object.entries(this.users || {})]);
+    log('waiting', [...this.waiting.map((r) => r.ip)]);
     for (let i = 0; i < this.waiting.length; i++)
       this._registerUser(this.waiting[i].ip);
     if (this.userCount !== oldUserCount) this.sendUpdates();
   }
 
   registerUser(ip) {
+    log('registerUser', [...Object.entries(this.users || {})]);
     if (!(ip in this.users)) {
       this._registerUser(ip);
       this.sendUpdates();
     }
   }
-
+  // TODO when switching docs its a good idea to kill users
   _registerUser(ip) {
     if (!(ip in this.users)) {
       this.users[ip] = true;
@@ -107,5 +125,6 @@ export class LocalInstance extends Emitter {
       if (this.collecting == null)
         this.collecting = setTimeout(() => this.collectUsers(), 5000);
     }
+    log('_registerUser', [...Object.entries(this.users || {})]);
   }
 }

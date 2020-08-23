@@ -1,5 +1,6 @@
 import React from 'react';
 import format from 'date-fns/format';
+import localforage from 'localforage';
 
 import { localManager } from '../store/local';
 import { BaseButton, StackButton } from './Button';
@@ -7,47 +8,92 @@ import { BaseButton, StackButton } from './Button';
 export class Aside extends React.PureComponent {
   state = {
     showSidebar: null,
+    store: localforage.createInstance({
+      name: 'local_disk',
+    }),
   };
+  constructor(props) {
+    super(props);
+    this.getSavedData();
+  }
+
+  async getSavedData(result = new Map()) {
+    this.newItems = [];
+    return new Promise((res, rej) => {
+      this.state.store
+        .iterate((value, key, iterationNumber) => {
+          delete value.doc;
+          this.newItems.push(value);
+        })
+        .then(() => {
+          console.log('Iteration has completed');
+          res();
+        })
+        .catch((err) => {
+          // This code runs if there were any errors
+          console.error(err);
+          rej(err);
+        });
+    });
+  }
 
   toggleSidebar = (state = !this.state.showSidebar) => {
     this.setState({ showSidebar: state });
   };
 
   renderSidebar = () => {
-    return localManager.entries
+    const legacyResults = localManager.entries
       .sort((a, b) => b.created - a.created)
-      .map((entry) => (
-        <div
-          key={entry.uid}
-          onClick={() => {
-            if (this.props.entry.uid === entry.uid) {
-              return;
-            }
-            this.props.handleLoadEntry(entry);
-          }}
-          className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
-            this.props.entry.uid === entry.uid ? `bg-gray-300` : ''
-          } hover:bg-gray-400 rounded-lg`}
-        >
-          <div className="flex-1 flex flex-col">
-            <span className="text-white font-bold text-gray-800">
-              {entry.title}
-            </span>
-            <span className="text-sm font-light">
-              {format(new Date(entry.modified), 'eee dd MMM HH:mm')}
-            </span>
-          </div>
-          <BaseButton
-            className="text-gray-600 hover:text-gray-900"
-            faType="fas fa-times-circle "
-            onClick={async (e) => {
-              e.stopPropagation();
-              await this.props.handleRemoveEntry(entry);
-              this.forceUpdate();
-            }}
-          />
+      .map((r) => ({
+        ...r,
+        title: 'legacy ' + r.title,
+      }));
+
+    const newResults = this.newItems
+      .sort((a, b) => b.created - a.created)
+      .map((r) => ({
+        ...r,
+        title: r.title,
+      }));
+
+    // const newREsults
+    return [...newResults, ...legacyResults].map((entry, i) => (
+      <div
+        key={entry.uid + i}
+        onClick={() => {
+          if (this.props.entry.uid === entry.uid) {
+            return;
+          }
+          this.props.handleLoadEntry(entry);
+        }}
+        className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
+          this.props.entry.uid === entry.uid ? `bg-gray-300` : ''
+        } hover:bg-gray-400 rounded-lg`}
+      >
+        <div className="flex-1 flex flex-col">
+          <span className="text-white font-bold text-gray-800">
+            {entry.title}
+          </span>
+          <span className="text-sm font-light">
+            {format(new Date(entry.modified || 0), 'eee dd MMM HH:mm')}
+          </span>
         </div>
-      ));
+        <BaseButton
+          className="text-gray-600 hover:text-gray-900"
+          faType="fas fa-times-circle "
+          onClick={async (e) => {
+            e.stopPropagation();
+            if (e.title?.startsWith('legacy')) {
+              await this.props.handleRemoveEntry(entry);
+            } else {
+              this.state.store.removeItem(entry.uid);
+              await this.getSavedData();
+            }
+            this.forceUpdate();
+          }}
+        />
+      </div>
+    ));
   };
 
   sideBarMenu = () => (

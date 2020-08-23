@@ -1,5 +1,5 @@
 const URL = `http://localhost:4444`;
-const PM_ID = '.ProseMirror';
+const PM_ID = '#bangle-play-react-editor1';
 
 const { mountEditor, getEditorState, ctrlKey } = require('./helpers');
 

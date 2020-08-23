@@ -40,6 +40,7 @@ export class Editor extends Emitter {
     super();
 
     const defaultOptions = {
+      manualViewCreate: null, // allow for customization of when the view is created
       renderNodeView: null,
       destroyNodeView: null,
       editorProps: {},
@@ -92,27 +93,43 @@ export class Editor extends Emitter {
     this.inputRules = this.createInputRules();
     this.pasteRules = this.createPasteRules();
     this.nodeViews = this.initNodeViews();
-    this.view = this.createView();
-    this.commands = this.createCommands(); // setting command after view is important
-    this.setActiveNodesAndMarks();
+    // TODO this `manualViewCreate` needs to be fixed
+    // do we need to couple the editor setup in one huge chunk
+    //   i kind of like the flexibility of PM setup which allows for decoupling
+    // of state creation from view, allowing you to get schema without creating view
+    const viewSetup = () => {
+      this.view = this.createView();
+      this.commands = this.createCommands(); // setting command after view is important
+      this.setActiveNodesAndMarks();
 
-    if (this.options.autoFocus !== null) {
-      this.focus(this.options.autoFocus);
+      if (this.options.autoFocus !== null) {
+        this.focus(this.options.autoFocus);
+      }
+
+      EVENTS.forEach((name) => {
+        this.on(name, this.options[toCamelCase(`on ${name}`)] || (() => {}));
+      });
+
+      this.emit('init', {
+        view: this.view,
+        state: this.state,
+        editor: this,
+      });
+
+      // give extension manager access to our view
+      this.extensions.view = this.view;
+
+      if (this.viewSetup) {
+        this.viewSetup = null;
+      }
+      log('editor setup');
+    };
+
+    if (this.options.manualViewCreate) {
+      this.viewSetup = viewSetup;
+    } else {
+      viewSetup();
     }
-
-    EVENTS.forEach((name) => {
-      this.on(name, this.options[toCamelCase(`on ${name}`)] || (() => {}));
-    });
-
-    this.emit('init', {
-      view: this.view,
-      state: this.state,
-      editor: this,
-    });
-
-    // give extension manager access to our view
-    this.extensions.view = this.view;
-    log('editor setup');
   }
 
   setOptions(options) {

@@ -30,8 +30,9 @@ export class EditorConnection {
   schema;
   docName;
 
-  constructor(docName, handlers) {
+  constructor(docName, handlers, ip) {
     this.docName = docName;
+    this.ip = ip;
     this.handlers = {
       getDocument: handlers.getDocument,
       pullEvents: handlers.pullEvents,
@@ -42,6 +43,9 @@ export class EditorConnection {
       destroyView: handlers.destroyView,
     };
     this.start(docName);
+    this.log = (...args) => {
+      log(`ip-${this.ip}`, ...args);
+    };
   }
 
   dispatchTransaction = (transaction) => {
@@ -125,6 +129,7 @@ export class EditorConnection {
   // and resolved whenever the server responds. So the client.js will eagerly
   // call this and wait for it to finish whenever it feels like.
   poll() {
+    this.log('poll started', this.state);
     this.run(
       this.handlers.pullEvents({
         version: getVersion(this.state.edit),
@@ -132,7 +137,7 @@ export class EditorConnection {
       }),
     ).promise.then(
       async (data) => {
-        log('success polling ', Math.random());
+        this.log('success polling ', Math.random(), this.state);
         this.backOff = 0;
         if (data.steps && data.steps.length) {
           let tr = receiveTransaction(
@@ -154,13 +159,15 @@ export class EditorConnection {
         if (err.isCanceled) {
           return;
         }
+        console.error(err);
         if (err.status === 410 || badVersion(err)) {
           // Too far behind. Revert to server state
           console.error(err);
-          log('poll: bad version');
+          this.log('poll: bad version', this.state);
           this.dispatch({ type: 'restart' });
         } else if (err) {
-          log('poll: recover');
+          console.error(err);
+          this.log('poll: recover', this.state);
           this.dispatch({ type: 'recover', error: err });
         }
       },
@@ -170,7 +177,7 @@ export class EditorConnection {
   start(docName) {
     this.run(this.handlers.getDocument({ docName })).promise.then(
       (data) => {
-        log('start:success');
+        this.log('start:success', this.state);
         this.backOff = 0;
         this.dispatch({
           type: 'loaded',
@@ -188,7 +195,7 @@ export class EditorConnection {
   recover(err) {
     let newBackOff = this.backOff ? Math.min(this.backOff * 2, 6e4) : 200;
     if (newBackOff > 1000 && this.backOff < 1000) {
-      log('recover backing off');
+      this.log('recover backing off', this.state);
       console.error(err);
     }
     this.backOff = newBackOff;
@@ -209,15 +216,23 @@ export class EditorConnection {
 
     this.run(this.handlers.pushEvents(payload, this.docName)).promise.then(
       (data) => {
-        log('send:success');
+        this.log('send:success', this.state);
         this.backOff = 0;
-        let tr = steps
-          ? receiveTransaction(
-              this.state.edit,
-              steps.steps,
-              repeat(steps.clientID, steps.steps.length),
-            )
-          : this.state.edit.tr;
+        let tr;
+        try {
+          tr = steps
+            ? receiveTransaction(
+                this.state.edit,
+                steps.steps,
+                repeat(steps.clientID, steps.steps.length),
+              )
+            : this.state.edit.tr;
+        } catch (err) {
+          console.error(err);
+          this.log('err when receving transaction', this.state);
+          this.dispatch({ type: 'recover', error: err });
+          return;
+        }
         this.dispatch({
           type: 'transaction',
           transaction: tr,
@@ -229,17 +244,18 @@ export class EditorConnection {
           return;
         }
         if (err.status === 409) {
-          log('send:err 409, polling');
+          this.log('send:err 409, polling', this.state);
           // The client's document conflicts with the server's version.
           // Poll for changes and then try again.
           this.backOff = 0;
           this.dispatch({ type: 'poll' });
         } else if (badVersion(err)) {
           console.error(err);
-          log('send:err bad version, restarting');
+          this.log('send:err bad version, restarting', this.state);
           this.dispatch({ type: 'restart' });
         } else {
-          log('send:err other error, recovering');
+          console.error(err);
+          this.log('send:err other error, recovering', this.state);
           this.dispatch({ type: 'recover', error: err });
         }
       },
