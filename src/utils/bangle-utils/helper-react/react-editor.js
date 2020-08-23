@@ -20,7 +20,13 @@ export class ReactEditor extends React.PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.content !== prevProps.content) {
+    // if (this.props.content !== prevProps.content) {
+    //   log('Content not same, creating a new Editor');
+    //   this.setState((state) => ({
+    //     editorKey: state.editorKey + 1,
+    //   }));
+    // }
+    if (this.props.docName !== prevProps.docName) {
       log('Content not same, creating a new Editor');
       this.setState((state) => ({
         editorKey: state.editorKey + 1,
@@ -36,7 +42,9 @@ export class ReactEditor extends React.PureComponent {
             // This allows us to let react handle creating destroying Editor
             key={this.state.editorKey}
             editorOptions={this.props.options}
-            content={this.props.content}
+            // content={this.props.content}
+            docName={this.props.docName}
+            manager={this.props.manager}
             renderNodeView={renderNodeView}
             destroyNodeView={destroyNodeView}
           />
@@ -103,9 +111,11 @@ class PortalWrapper extends React.PureComponent {
 class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
+    manager: PropTypes.object.isRequired,
+    docName: PropTypes.string.isRequired,
     editorOptions: PropTypes.object.isRequired,
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-      .isRequired,
+    // content: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    //   .isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
   };
@@ -117,9 +127,11 @@ class PMEditorWrapper extends React.Component {
   async componentDidMount() {
     const {
       editorOptions,
-      content,
+      // content,
       renderNodeView,
       destroyNodeView,
+      docName,
+      manager,
     } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
@@ -145,19 +157,24 @@ class PMEditorWrapper extends React.Component {
       if (process.env.NODE_ENV === 'test') {
         editor = new Editor(node, {
           ...editorOptions,
-          content,
+          // content,
           renderNodeView,
           destroyNodeView,
           onInit,
         });
       } else {
-        ({ editor } = new CollabEditor(node, {
-          ...editorOptions,
-          content,
-          renderNodeView,
-          destroyNodeView,
-          onInit,
-        }));
+        ({ editor } = new CollabEditor(
+          node,
+          {
+            ...editorOptions,
+            // content,
+            renderNodeView,
+            destroyNodeView,
+            onInit,
+          },
+          docName,
+          manager,
+        ));
       }
       this.editor = editor;
     }

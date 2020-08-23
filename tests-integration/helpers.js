@@ -19,16 +19,9 @@ function frmt(doc) {
   });
 }
 async function mountEditor(page, props) {
-  await page.waitForSelector('#bangle-play-react-editor');
-  //   await page.$eval(
-  //     '#editor-container',
-  //     (_, props) => {
-  //       window.__mountEditor(props);
-  //     },
-  //     props,
-  //   );
+  await page.waitForSelector('#bangle-play-react-editor1');
   await page.waitForSelector('.ProseMirror', { timeout: 500 });
-  await page.click('.ProseMirror');
+  await page.click('#bangle-play-react-editor1');
 }
 
 async function getEditorState(page) {

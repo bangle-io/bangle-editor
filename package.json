@@ -18,6 +18,7 @@
     "emojis-list": "^3.0.0",
     "localforage": "^1.7.3",
     "lodash.debounce": "^4.0.8",
+    "p-queue": "^6.6.1",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "prosemirror-collab": "^1.2.2",

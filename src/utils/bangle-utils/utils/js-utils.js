@@ -192,3 +192,21 @@ export function cancelablePromise(promise) {
 export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));
 }
+
+export function objectMapValues(obj, map) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => {
+      return [key, map([key, value])];
+    }),
+  );
+}
+
+export function handleAsyncError(fn, onError) {
+  return async (...args) => {
+    try {
+      return await fn(...args);
+    } catch (err) {
+      return onError(err);
+    }
+  };
+}
