@@ -6,6 +6,7 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
+import { CollabEditor } from '../../../plugins/collab/client/CollabClient';
 
 const LOG = false;
 
@@ -122,33 +123,43 @@ class PMEditorWrapper extends React.Component {
     } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
-      const editor = new Editor(node, {
-        ...editorOptions,
-        content,
-        renderNodeView,
-        destroyNodeView,
-        onInit: ({ view, state, editor }) => {
-          this.context.onEditorReady(editor);
-          editor.focus();
-          if (editorOptions.onInit) {
-            editorOptions.onInit({ view, state, editor });
-          }
-        },
-      });
-
-      this.editor = editor;
-
-      if (editorOptions.devtools) {
-        window.editor = this.editor;
-
-        getIdleCallback(() => {
-          import(
-            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-          ).then((args) => {
-            this.devtools = args.applyDevTools(this.editor.view);
+      let editor;
+      const onInit = ({ view, state, editor }) => {
+        this.context.onEditorReady(editor);
+        editor.focus();
+        if (editorOptions.onInit) {
+          editorOptions.onInit({ view, state, editor });
+        }
+        if (editorOptions.devtools) {
+          window.editor = editor;
+          getIdleCallback(() => {
+            import(
+              /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+            ).then((args) => {
+              this.devtools = args.applyDevTools(view);
+            });
           });
+        }
+      };
+      // TODO fix this mess
+      if (process.env.NODE_ENV === 'test') {
+        editor = new Editor(node, {
+          ...editorOptions,
+          content,
+          renderNodeView,
+          destroyNodeView,
+          onInit,
         });
+      } else {
+        ({ editor } = new CollabEditor(node, {
+          ...editorOptions,
+          content,
+          renderNodeView,
+          destroyNodeView,
+          onInit,
+        }));
       }
+      this.editor = editor;
     }
   }
 

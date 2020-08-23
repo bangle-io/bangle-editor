@@ -188,3 +188,7 @@ export function cancelablePromise(promise) {
     },
   };
 }
+
+export function sleep(t = 20) {
+  return new Promise((res) => setTimeout(res, t));
+}

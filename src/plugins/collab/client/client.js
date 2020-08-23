@@ -5,9 +5,13 @@ import {
   sendableSteps,
   getVersion,
 } from 'prosemirror-collab';
-import { MenuItem } from 'prosemirror-menu';
-
 import { cancelablePromise } from '../../../utils/bangle-utils/utils/js-utils';
+
+const LOG = true;
+
+function log(...args) {
+  if (LOG) console.log('collab/client.js', ...args);
+}
 
 class State {
   edit;
@@ -54,6 +58,10 @@ export class EditorConnection {
       );
       this.state = new State(editState, 'poll');
       this.poll();
+      if (editState && !this.loaded) {
+        this.handlers.updateState(this.state.edit);
+        this.handlers.onDispatchTransaction(this.dispatchTransaction);
+      }
     } else if (action.type === 'restart') {
       this.state = new State(null, 'start');
       this.start(this.docName);
@@ -99,8 +107,6 @@ export class EditorConnection {
       if (this.loaded) {
         this.handlers.updateState(this.state.edit);
       } else {
-        this.handlers.updateState(this.state.edit);
-        this.handlers.onDispatchTransaction(this.dispatchTransaction);
         this.loaded = true;
       }
     } else {
@@ -122,11 +128,11 @@ export class EditorConnection {
     this.run(
       this.handlers.pullEvents({
         version: getVersion(this.state.edit),
-        name: this.docName,
+        docName: this.docName,
       }),
     ).promise.then(
       async (data) => {
-        console.log('success polling ', Math.random());
+        log('success polling ', Math.random());
         this.backOff = 0;
         if (data.steps && data.steps.length) {
           let tr = receiveTransaction(
@@ -145,12 +151,16 @@ export class EditorConnection {
         }
       },
       (err) => {
+        if (err.isCanceled) {
+          return;
+        }
         if (err.status === 410 || badVersion(err)) {
           // Too far behind. Revert to server state
           console.error(err);
-          console.log('failed while polling');
+          log('poll: bad version');
           this.dispatch({ type: 'restart' });
         } else if (err) {
+          log('poll: recover');
           this.dispatch({ type: 'recover', error: err });
         }
       },
@@ -160,7 +170,7 @@ export class EditorConnection {
   start(docName) {
     this.run(this.handlers.getDocument({ docName })).promise.then(
       (data) => {
-        console.log('success');
+        log('start:success');
         this.backOff = 0;
         this.dispatch({
           type: 'loaded',
@@ -178,7 +188,7 @@ export class EditorConnection {
   recover(err) {
     let newBackOff = this.backOff ? Math.min(this.backOff * 2, 6e4) : 200;
     if (newBackOff > 1000 && this.backOff < 1000) {
-      console.log('delaying');
+      log('recover backing off');
       console.error(err);
     }
     this.backOff = newBackOff;
@@ -197,9 +207,9 @@ export class EditorConnection {
       clientID: steps ? steps.clientID : 0,
     };
 
-    this.run(this.handlers.pushEvents(payload)).promise.then(
+    this.run(this.handlers.pushEvents(payload, this.docName)).promise.then(
       (data) => {
-        console.log('success');
+        log('send:success');
         this.backOff = 0;
         let tr = steps
           ? receiveTransaction(
@@ -215,15 +225,21 @@ export class EditorConnection {
         });
       },
       (err) => {
+        if (err.isCanceled) {
+          return;
+        }
         if (err.status === 409) {
+          log('send:err 409, polling');
           // The client's document conflicts with the server's version.
           // Poll for changes and then try again.
           this.backOff = 0;
           this.dispatch({ type: 'poll' });
         } else if (badVersion(err)) {
           console.error(err);
+          log('send:err bad version, restarting');
           this.dispatch({ type: 'restart' });
         } else {
+          log('send:err other error, recovering');
           this.dispatch({ type: 'recover', error: err });
         }
       },

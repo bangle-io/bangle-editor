@@ -402,25 +402,29 @@ describe('pushing events', () => {
     typeText(editor.view, 'X');
 
     expect(handlers.pushEvents).toBeCalledTimes(1);
-    expect(handlers.pushEvents).toHaveBeenNthCalledWith(1, {
-      clientID: 'test',
-      steps: [
-        {
-          from: 1,
-          slice: {
-            content: [
-              {
-                text: 'X',
-                type: 'text',
-              },
-            ],
+    expect(handlers.pushEvents).toHaveBeenNthCalledWith(
+      1,
+      {
+        clientID: 'test',
+        steps: [
+          {
+            from: 1,
+            slice: {
+              content: [
+                {
+                  text: 'X',
+                  type: 'text',
+                },
+              ],
+            },
+            stepType: 'replace',
+            to: 1,
           },
-          stepType: 'replace',
-          to: 1,
-        },
-      ],
-      version: 6,
-    });
+        ],
+        version: 6,
+      },
+      'ole',
+    );
 
     expect(editor.state.doc.toString()).toMatchInlineSnapshot(
       `"doc(paragraph(\\"Xhello add world\\"))"`,
