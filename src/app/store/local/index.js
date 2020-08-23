@@ -47,6 +47,7 @@ export class LocalManager {
 
   async refreshEntries() {
     this._entries = await getSavedData(this._entries);
+    window._entries = this.entries;
     console.log('refreshEntries', this._entries);
   }
 

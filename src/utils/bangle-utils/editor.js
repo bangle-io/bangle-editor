@@ -93,7 +93,6 @@ export class Editor extends Emitter {
     this.pasteRules = this.createPasteRules();
     this.nodeViews = this.initNodeViews();
     this.view = this.createView();
-
     this.commands = this.createCommands(); // setting command after view is important
     this.setActiveNodesAndMarks();
 
