@@ -39,7 +39,7 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
       </EditorContextProvider>,
     );
 
-    await result.findByTestId('test-editor');
+    await result.findByTestId(testId);
 
     let refs;
 

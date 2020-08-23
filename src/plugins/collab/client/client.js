@@ -43,7 +43,6 @@ export class EditorConnection {
       updateState: handlers.updateState,
       onDispatchTransaction: handlers.onDispatchTransaction,
       destroyView: handlers.destroyView,
-      onSleep: handlers.onSleep ?? sleep,
     };
     this.start(docName);
   }
@@ -119,50 +118,50 @@ export class EditorConnection {
   };
 
   run(promise) {
-    this.request = cancelablePromise(promise);
+    this.request = cancelablePromise(Promise.resolve(promise));
     return this.request;
   }
 
+  // Poll is meant to be kept in a state where the request is pending
+  // and resolved whenever the server responds. So the client.js will eagerly
+  // call this and wait for it to finish whenever it feels like.
   poll() {
-    getIdleCallback(() => {
-      this.run(
-        this.handlers.pullEvents({
-          version: getVersion(this.state.edit),
-          name: this.docName,
-        }),
-      ).promise.then(
-        async (data) => {
-          console.log('success polling ', Math.random());
-          this.backOff = 0;
-          if (data.steps && data.steps.length) {
-            let tr = receiveTransaction(
-              this.state.edit,
-              data.steps.map((j) => Step.fromJSON(this.state.edit.schema, j)),
-              data.clientIDs,
-            );
+    this.run(
+      this.handlers.pullEvents({
+        version: getVersion(this.state.edit),
+        name: this.docName,
+      }),
+    ).promise.then(
+      async (data) => {
+        console.log('success polling ', Math.random());
+        this.backOff = 0;
+        if (data.steps && data.steps.length) {
+          let tr = receiveTransaction(
+            this.state.edit,
+            data.steps.map((j) => Step.fromJSON(this.state.edit.schema, j)),
+            data.clientIDs,
+          );
 
-            this.dispatch({
-              type: 'transaction',
-              transaction: tr,
-              requestDone: true,
-            });
-          } else {
-            await this.handlers.onSleep(1000);
-            this.poll();
-          }
-        },
-        (err) => {
-          if (err.status === 410 || badVersion(err)) {
-            // Too far behind. Revert to server state
-            console.error(err);
-            console.log('failed while polling');
-            this.dispatch({ type: 'restart' });
-          } else if (err) {
-            this.dispatch({ type: 'recover', error: err });
-          }
-        },
-      );
-    });
+          this.dispatch({
+            type: 'transaction',
+            transaction: tr,
+            requestDone: true,
+          });
+        } else {
+          this.poll();
+        }
+      },
+      (err) => {
+        if (err.status === 410 || badVersion(err)) {
+          // Too far behind. Revert to server state
+          console.error(err);
+          console.log('failed while polling');
+          this.dispatch({ type: 'restart' });
+        } else if (err) {
+          this.dispatch({ type: 'recover', error: err });
+        }
+      },
+    );
   }
 
   start(docName) {
