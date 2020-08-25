@@ -31,15 +31,15 @@ export class TrailingNode extends Addon {
               return;
             }
 
-            getIdleCallback(() => {
-              const { doc, schema, tr } = view.state;
-              const type = schema.nodes[this.options.node];
-              const transaction = tr.insert(
-                doc.content.size,
-                type.create('last'),
-              );
-              view.dispatch(transaction);
-            });
+            // getIdleCallback(() => {
+            const { doc, schema, tr } = view.state;
+            const type = schema.nodes[this.options.node];
+            const transaction = tr.insert(
+              doc.content.size,
+              type.create('last'),
+            );
+            view.dispatch(transaction);
+            // });
           },
         }),
         state: {

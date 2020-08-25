@@ -7,7 +7,7 @@ import {
 } from 'prosemirror-collab';
 import { cancelablePromise } from '../../../utils/bangle-utils/utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('collab/client.js', ...args);

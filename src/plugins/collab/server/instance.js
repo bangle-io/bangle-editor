@@ -2,7 +2,7 @@ import { Emitter } from '../../../utils/bangle-utils/utils/emitter';
 
 const MAX_STEP_HISTORY = 1000;
 
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('collab/server/instance', ...args);
@@ -34,7 +34,9 @@ export class Instance {
   }
 
   stop() {
-    if (this.collecting != null) clearInterval(this.collecting);
+    if (this.collecting != null) {
+      clearInterval(this.collecting);
+    }
   }
 
   addEvents(version, steps, clientID) {

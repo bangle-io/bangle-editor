@@ -210,3 +210,23 @@ export function handleAsyncError(fn, onError) {
     }
   };
 }
+
+export function serialExecuteQueue() {
+  let prev = Promise.resolve();
+  return {
+    add: (cb) => {
+      return new Promise((resolve, reject) => {
+        prev = prev.then(() => {
+          return Promise.resolve(cb()).then(
+            (resultCb) => {
+              resolve(resultCb);
+            },
+            (err) => {
+              reject(err);
+            },
+          );
+        });
+      });
+    },
+  };
+}

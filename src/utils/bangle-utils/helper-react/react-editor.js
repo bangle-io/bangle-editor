@@ -42,7 +42,7 @@ export class ReactEditor extends React.PureComponent {
             // This allows us to let react handle creating destroying Editor
             key={this.state.editorKey}
             editorOptions={this.props.options}
-            // content={this.props.content}
+            content={this.props.content}
             docName={this.props.docName}
             manager={this.props.manager}
             renderNodeView={renderNodeView}
@@ -111,10 +111,10 @@ class PortalWrapper extends React.PureComponent {
 class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
-    manager: PropTypes.object.isRequired,
-    docName: PropTypes.string.isRequired,
+    manager: PropTypes.object,
+    docName: PropTypes.string,
     editorOptions: PropTypes.object.isRequired,
-    // content: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     //   .isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
@@ -127,7 +127,7 @@ class PMEditorWrapper extends React.Component {
   async componentDidMount() {
     const {
       editorOptions,
-      // content,
+      content,
       renderNodeView,
       destroyNodeView,
       docName,
@@ -154,10 +154,10 @@ class PMEditorWrapper extends React.Component {
         }
       };
       // TODO fix this mess
-      if (process.env.NODE_ENV === 'test') {
+      if (!manager) {
         editor = new Editor(node, {
           ...editorOptions,
-          // content,
+          content,
           renderNodeView,
           destroyNodeView,
           onInit,

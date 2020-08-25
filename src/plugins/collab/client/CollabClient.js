@@ -7,7 +7,7 @@ import { Manager } from '../server/manager';
 import { getVersion } from 'prosemirror-collab';
 
 const url = `http://localhost:8000/docs/`;
-const LOG = true;
+const LOG = false;
 
 function log(...args) {
   if (LOG) console.log('collab/CollabClient', ...args);
