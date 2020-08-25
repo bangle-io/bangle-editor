@@ -120,7 +120,7 @@ function StopwatchComponent({ node, updateAttrs, selected }) {
     const interval = setInterval(() => {
       log('setting interval');
       if (paused === 0) {
-        getIdleCallback(() => setCounter((counter) => counter + 1));
+        requestAnimationFrame(() => setCounter((counter) => counter + 1));
       }
     }, 1000);
 

@@ -4,15 +4,14 @@ import {
   sleep,
   objectMapValues,
   handleAsyncError,
+  serialExecuteQueue,
 } from '../../../utils/bangle-utils/utils/js-utils';
 import { Instance } from './instance';
 import { LocalDisk } from './disk';
-import PQueue from 'p-queue';
-const LOG = true;
+// import PQueue from 'p-queue';
+const LOG = false;
 
-function log(...args) {
-  if (LOG) console.log('collab/server/manager', ...args);
-}
+let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 
 export class Manager {
   instanceCount = 0;
@@ -31,7 +30,29 @@ export class Manager {
     // Queue is very important
     // to prevent parallel requests from creating deadlock
     // for example two requests parallely comming and creating two new instances of the same doc
-    this.getDocumentQueue = new PQueue({ concurrency: 1 });
+    this.getDocumentQueue = serialExecuteQueue();
+    // this.getDocumentQueue =  new PQueue({ concurrency: 1 });
+
+    this.cleanup = () => {
+      // TODO this is not ideal we shouldnt have so many timers
+      // everythign should be stateless dry plugggable
+      const instances = Object.values(this.instances);
+      if (instances.length <= 1) {
+        return;
+      }
+      Object.values(this.instances).forEach((i) => {
+        if (i.userCount === 0) {
+          log('shutting down ', i.doc.firstChild?.textContent);
+          this.localDisk.saveInstance(i).then(() => {
+            i.stop();
+            i.waiting.forEach((z) => z.abort());
+            delete this.instances[i.id];
+          });
+        }
+      });
+    };
+    // window.cleanups = this.cleanup;
+    setInterval(this.cleanup, 5000);
   }
 
   async handleRequest(path, payload) {
@@ -164,7 +185,7 @@ class Waiting {
     // called by instance.js
     this.finish = finish;
     this.done = false;
-    this.timer = cancelablePromise(sleep(1000 * 60 * 1));
+    this.timer = cancelablePromise(sleep(1000 * 30));
     this.timer.promise.then(
       () => {
         this.abort();
@@ -237,7 +258,7 @@ function handle(fn) {
     },
     (err) => {
       console.error(err);
-      let error = new Error(err.toString());
+      let error = new Error(err.body || err.message);
       error.status = err.status || 500;
       throw error;
     },

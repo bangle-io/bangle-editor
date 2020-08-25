@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 
-const SAVE_EVERY = 4000;
+const SAVE_EVERY = 14000;
 
 localforage.config({
   name: 'bangle/1',
@@ -89,16 +89,20 @@ export class LocalDisk {
     this.saveTimeout = null;
     for (var prop in this.instances) {
       if (this.instances[prop].doc) {
-        await this.store.putObject(prop, {
-          doc: this.instances[prop].doc.toJSON(),
-          uid: prop,
-          title: this.instances[prop].doc.firstChild?.textContent || prop,
-          modified: Date.now(),
-          created: this.instances[prop].created,
-        });
+        await this.saveInstance(this.instances[prop]);
       } else {
         console.error('instance', prop, 'is undefined', this.instances[prop]);
       }
     }
   };
+
+  async saveInstance(instance) {
+    await this.store.putObject(instance.id, {
+      doc: instance.doc.toJSON(),
+      uid: instance.id,
+      title: instance.doc.firstChild?.textContent || instance.id,
+      modified: Date.now(),
+      created: instance.created,
+    });
+  }
 }

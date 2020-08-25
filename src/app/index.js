@@ -44,7 +44,6 @@ export default class App extends React.PureComponent {
 
   render() {
     const isMobile = browser.ios || browser.android;
-    console.log(this.state.entry);
     return (
       <EditorContextProvider>
         <div className="h-screen main-wrapper">
