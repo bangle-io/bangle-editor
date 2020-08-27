@@ -6,7 +6,7 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
-import { CollabEditor } from '../../../plugins/collab/client/CollabClient';
+import { CollabEditor } from '../../../plugins/collab/CollabClient';
 
 const LOG = false;
 

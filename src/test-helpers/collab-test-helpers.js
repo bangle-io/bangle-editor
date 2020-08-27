@@ -52,7 +52,7 @@ class TestDisk extends LocalDisk {
     this.saveEvery = DISK_SAVE_TIMEOUT;
   }
 }
-export function setup(store = setupStore()) {
+export function setup(store = setupStore(), { managerOpts }) {
   localforage.createInstance.mockImplementation(() => store);
 
   const extensions = (uid = uuid()) => [
@@ -66,9 +66,11 @@ export function setup(store = setupStore()) {
   ];
 
   return {
-    manager: new Manager(createOneOffSchema(extensions()), TestDisk, {
-      collectUsersTimeout: 100,
-    }),
+    manager: new Manager(
+      createOneOffSchema(extensions()),
+      TestDisk,
+      managerOpts,
+    ),
     editors: [],
     getEditor: function (id) {
       return this.editors.find((e) => e[0] === id)?.[1];
@@ -89,7 +91,7 @@ export function setup(store = setupStore()) {
           manager: this.manager,
           extensions: extensions(id),
           content: docName,
-          collabClientId: 'collab-client' + id,
+          collabClientId: id,
         },
         'data-test-' + id,
       )();
@@ -107,19 +109,21 @@ export async function* spinEditors(
     typeInterval = 1,
     columnGapInterval = 10,
     snoozeInterval = 10,
+    managerOpts = {},
   } = {},
 ) {
   const START = '💚';
-  const END = '✕';
+  const END = '🖤';
   const PAUSE_FOR_ASSERTIONS = '🍌';
   const NOOP = '_';
-  const EMOJI_NOOP = '🤍'; // usefull for balancing lenghts of seq
+  const EMOJI_NOOP = '🐑'; // usefull for balancing lengths of seq, as emojis are large and take space
   const ENTER = '↵';
-  const PAUSE_NETWORK_REQUESTS = '';
   // chars of this type must either exist in the entire column
   const columnOnlyChars = [PAUSE_FOR_ASSERTIONS];
 
-  const base = setup(store);
+  const base = setup(store, {
+    managerOpts,
+  });
   const iter = iterateCases(base, testCase, { typeInterval, columnOnlyChars });
 
   for (let cur = await iter.next(); !cur.done; cur = await iter.next()) {
@@ -143,6 +147,7 @@ export async function* spinEditors(
         await base.createEditor(editorName, docName);
         continue;
       }
+
       if (char === END) {
         resolveAtEndOfColumn(base.unmount(editorName));
         continue;

@@ -12,12 +12,17 @@ import {
   spinEditors,
   expectToHaveIdenticalElements,
 } from '../../../test-helpers/collab-test-helpers';
+import {
+  cancelablePromise,
+  sleep,
+} from '../../../utils/bangle-utils/utils/js-utils';
 
 jest.mock('localforage', () => ({
   config: jest.fn(),
   createInstance: jest.fn(),
 }));
 
+jest.setTimeout(1000000);
 const dateNow = Date.now;
 
 afterEach(() => {
@@ -89,11 +94,10 @@ describe('one client - server', () => {
 });
 
 it('changing selection in one client', async () => {
-  // prettier-ignore
   const case1 = {
-      seq1: '💚_____🍌_________________🍌',
-      seq2: '💚_____🍌- I am a bullet__🍌',
-    }
+    seq1: '💚_____🍌_________________🍌',
+    seq2: '💚_____🍌- I am a bullet__🍌',
+  };
 
   const store = setupStore();
   const iter = spinEditors(case1, { store });
@@ -115,6 +119,222 @@ it('changing selection in one client', async () => {
     doc(p('hello world!'), ul(li(p('I am a bullet{<>}')))),
   );
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
+});
+
+it('hold incoming of a client', async () => {
+  // prettier-ignore
+  const case1 = {
+      seq1: '💚_____🍌_____🍌___🍌',
+      seq2: '💚_____🍌- I__🍌___🍌',
+    }
+
+  const store = setupStore();
+  let seq1Resume = null;
+  let shouldStopSeq1 = false;
+  let interceptRequests = (path, payload) => {
+    if (payload.userId !== 'user-seq1') {
+      return;
+    }
+    if (shouldStopSeq1 && path === 'get_events') {
+      console.log('sending never promise to ', payload.userId);
+      return new Promise((res) => {
+        seq1Resume = res;
+      });
+    }
+  };
+
+  const iter = spinEditors(case1, {
+    store,
+    managerOpts: { interceptRequests },
+  });
+  let nextViews = async () => (await iter.next()).value.views;
+
+  shouldStopSeq1 = true;
+  // first 🍌
+  let { seq1: view1, seq2: view2 } = await nextViews();
+  view2.dispatch(
+    view2.state.tr.setSelection(
+      TextSelection.create(view2.state.doc, view2.state.doc.content.size),
+    ),
+  );
+
+  view1.dispatch(
+    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 0)),
+  );
+
+  // second 🍌 : view1 should be outdated
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  expect(view2.state.doc).toEqualDocument(
+    doc(p('hello world!'), ul(li(p('I{<>}')))),
+  );
+  expect(view1.state.doc).toEqualDocument(doc(p('hello world!')));
+
+  seq1Resume();
+  shouldStopSeq1 = false;
+
+  // third 🍌 : view1 should be upto date
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  expect(view1.state.doc).toEqualDocument(
+    doc(p('hello world!'), ul(li(p('I{<>}')))),
+  );
+  expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
+});
+
+it('hold incoming of a client but it still continues to type', async () => {
+  // prettier-ignore
+  const case1 = {
+      seq1: '💚_____🍌__A__🍌___🍌',
+      seq2: '💚_____🍌__Z__🍌___🍌',
+    }
+
+  const store = setupStore();
+  let seq1Resume = null;
+  let shouldStopSeq1 = false;
+  let interceptRequests = (path, payload) => {
+    if (payload.userId !== 'user-seq1') {
+      return;
+    }
+    if (shouldStopSeq1 && path === 'get_events') {
+      console.log('sending never promise to ', payload.userId);
+      return new Promise((res) => {
+        seq1Resume = res;
+      });
+    }
+  };
+
+  const iter = spinEditors(case1, {
+    store,
+    managerOpts: { interceptRequests },
+  });
+  let nextViews = async () => (await iter.next()).value.views;
+
+  shouldStopSeq1 = true;
+  // first 🍌
+  let { seq1: view1, seq2: view2 } = await nextViews();
+  view2.dispatch(
+    view2.state.tr.setSelection(
+      TextSelection.create(view2.state.doc, view2.state.doc.content.size - 1),
+    ),
+  );
+
+  view1.dispatch(
+    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 1)),
+  );
+
+  // second 🍌 : view1 should be out of sync
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  // view2 gets the view1's `A` as we have only paused view1's ability to pull
+  // in data and not the other way round.
+  expect(view2.state.doc).toEqualDocument(doc(p('Ahello world!Z')));
+  expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!')));
+
+  seq1Resume();
+  shouldStopSeq1 = false;
+
+  // third 🍌 : view1 should be upto date
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!Z')));
+  expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
+});
+
+it.each([
+  [
+    {
+      seq1: '💚_____🍌__AA___🍌_____🍌',
+      seq2: '💚_____🍌__ZZZ__🍌_____🍌',
+    },
+    {
+      seq1: doc(p('AAhello world!')),
+      seq2: doc(p('hello world!ZZZ')),
+    },
+    {
+      seq1: doc(p('AAhello world!ZZZ')),
+      seq2: doc(p('AAhello world!ZZZ')),
+    },
+  ],
+
+  [
+    {
+      seq1: '💚_____🍌__AA___🍌_BB__🍌',
+      seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
+    },
+    {
+      seq1: doc(p('AAhello world!')),
+      seq2: doc(p('hello world!ZZZ')),
+    },
+    {
+      seq1: doc(p('AABBhello world!ZZZYY')),
+      seq2: doc(p('AABBhello world!ZZZYY')),
+    },
+  ],
+
+  [
+    {
+      seq1: '💚_____🍌__AA___🍌_↵B↵__🍌',
+      seq2: '💚_____🍌__ZZZ__🍌_YYY__🍌',
+    },
+    {
+      seq1: doc(p('AAhello world!')),
+      seq2: doc(p('hello world!ZZZ')),
+    },
+    {
+      seq1: doc(p('AA'), p('B'), p('hello world!ZZZYYY')),
+      seq2: doc(p('AA'), p('B'), p('hello world!ZZZYYY')),
+    },
+  ],
+])('%# more sync cases', async (seq, secondBananaResult, thirdBananaResult) => {
+  const store = setupStore();
+  let seq1GetResume = null;
+  let seq1PushResume = null;
+  let shouldStopSeq1 = false;
+  let interceptRequests = (path, payload) => {
+    if (payload.userId !== 'user-seq1') {
+      return;
+    }
+    if (shouldStopSeq1 && path === 'get_events') {
+      return new Promise((res) => {
+        seq1GetResume = res;
+      });
+    }
+    if (shouldStopSeq1 && path === 'push_events') {
+      return new Promise((res) => {
+        seq1PushResume = res;
+      });
+    }
+  };
+
+  const iter = spinEditors(seq, { store, managerOpts: { interceptRequests } });
+  let nextViews = async () => (await iter.next()).value.views;
+
+  shouldStopSeq1 = true;
+
+  // first 🍌: setup selections
+  let { seq1: view1, seq2: view2 } = await nextViews();
+  view2.dispatch(
+    view2.state.tr.setSelection(
+      TextSelection.create(view2.state.doc, view2.state.doc.content.size - 1),
+    ),
+  );
+
+  view1.dispatch(
+    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 1)),
+  );
+
+  // second 🍌 :
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  // view2 gets the view1's `A` as we have only paused view1's ability to pull
+  // in data and not the other way round.
+  expect(view1.state.doc).toEqualDocument(secondBananaResult.seq1);
+  expect(view2.state.doc).toEqualDocument(secondBananaResult.seq2);
+
+  seq1PushResume();
+  seq1GetResume();
+  shouldStopSeq1 = false;
+
+  // third 🍌 : views should sync up
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  expect(view1.state.doc).toEqualDocument(thirdBananaResult.seq1);
+  expect(view2.state.doc).toEqualDocument(thirdBananaResult.seq2);
 });
 
 test.each([
@@ -210,10 +430,10 @@ it('four clients correctly call store', async () => {
   }
 });
 
-describe('unmounting of editor', () => {
+describe('🖤unmounting of editor🖤', () => {
   it('shutting down one editor', async () => {
     const seq = {
-      seq1: '💚______aaaaaa______aaaaaa_✕🍌',
+      seq1: '💚______aaaaaa______aaaaaa_🖤🍌',
     };
 
     const store = setupStore(emptyDoc);
@@ -229,7 +449,7 @@ describe('unmounting of editor', () => {
   test.each([
     [
       {
-        seq1: '💚__hello____✕_🍌',
+        seq1: '💚__hello____🖤_🍌',
         seq2: '💚______ttt__tt🍌',
       },
       [undefined, doc(p('hellottttt{<>}'))],
@@ -237,18 +457,18 @@ describe('unmounting of editor', () => {
 
     [
       {
-        seq1: '💚_____________✕_🍌',
-        seq2: '💚_well _ well___🍌',
-        seq3: '____________💚___🍌',
+        seq1: '💚_____________🖤_🍌',
+        seq2: '💚_well 🐑 well___🍌',
+        seq3: '___🐑________💚___🍌',
       },
       [undefined, doc(p('well  well{<>}')), doc(p('well  well'))],
     ],
 
     [
       {
-        seq1: '💚_____________✕____🍌',
-        seq2: '💚_well _ well______🍌',
-        seq3: '____________💚__why_🍌',
+        seq1: '_💚____________🖤____🍌',
+        seq2: '🐑💚_well _ well_____🍌',
+        seq3: '🐑___________💚__why_🍌',
       },
       [undefined, doc(p('whywell  well{<>}')), doc(p('why{<>}well  well'))],
     ],
@@ -269,10 +489,10 @@ describe('unmounting of editor', () => {
 
   test('multiple closing', async () => {
     const seq = {
-      seq1: '💚_one___✕______________🍌',
-      seq2: '____💚_two__✕___________🍌',
-      seq3: '________💚_three_✕______🍌',
-      seq4: '___________💚___four____🍌',
+      seq1: '💚_one___🖤______________🍌',
+      seq2: '____💚_two__🖤___________🍌',
+      seq3: '________💚_three_🖤______🍌',
+      seq4: '🐑__________💚___four____🍌',
     };
     const store = setupStore(emptyDoc);
 
@@ -288,10 +508,10 @@ describe('unmounting of editor', () => {
 
   test('reviving of previous', async () => {
     const seq = {
-      seq1: '💚_one___✕____💚_____alive___🍌',
-      seq2: '🤍___💚_two__✕_______________🍌',
-      seq3: '🤍_______💚_three_✕__________🍌',
-      seq4: '🤍__________💚___four________🍌',
+      seq1: '💚_one___🖤____💚_____alive___🍌',
+      seq2: '🐑___💚_two__🖤_______________🍌',
+      seq3: '🐑_______💚_three_🖤__________🍌',
+      seq4: '🐑🐑_________💚___four________🍌',
     };
     const store = setupStore(emptyDoc);
 
@@ -309,3 +529,48 @@ describe('unmounting of editor', () => {
     expect.hasAssertions();
   });
 });
+
+test.each([
+  [
+    {
+      seq1: '💚_🍌_one_____🍌___three____🍌',
+      seq2: '💚_🍌___two___🍌____________🍌',
+    },
+    doc(p('onehello world!two')),
+    doc(p('onethreehello world!two')),
+  ],
+])(
+  "Clients recover after server times out the 'get_events' request",
+  async (seq, secondBananaResult, thirdBananaResult) => {
+    const userWaitTimeout = 500;
+    const store = setupStore();
+    const iter = spinEditors(seq, {
+      store,
+      managerOpts: { userWaitTimeout },
+    });
+    let nextViews = async () => (await iter.next()).value.views;
+
+    // first 🍌
+    let { seq1: view1, seq2: view2 } = await nextViews();
+    view2.dispatch(
+      view2.state.tr.setSelection(
+        TextSelection.create(view2.state.doc, view2.state.doc.content.size - 1),
+      ),
+    );
+
+    view1.dispatch(
+      view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 1)),
+    );
+
+    await sleep(1.5 * userWaitTimeout);
+    // second 🍌 : wait to allow server to disconnect
+    ({ seq1: view1, seq2: view2 } = await nextViews());
+
+    await sleep(1.5 * userWaitTimeout);
+    // third 🍌 : wait to allow server to disconnect
+    ({ seq1: view1, seq2: view2 } = await nextViews());
+
+    expect(view2.state.doc).toEqualDocument(thirdBananaResult);
+    expect(view1.state.doc).toEqualDocument(thirdBananaResult);
+  },
+);

@@ -6,6 +6,7 @@ import {
   getVersion,
 } from 'prosemirror-collab';
 import { cancelablePromise } from '../../../utils/bangle-utils/utils/js-utils';
+import { CollabError } from '../collab-error';
 
 const LOG = false;
 
@@ -71,7 +72,7 @@ export class EditorConnection {
       this.state = new State(this.state.edit, 'poll');
       this.poll();
     } else if (action.type === 'recover') {
-      if (action.error.status && action.error.status < 500) {
+      if (action.error.errorCode && action.error.errorCode < 500) {
         console.error(action.error);
         this.state = new State(null, null);
       } else {
@@ -127,7 +128,7 @@ export class EditorConnection {
   // and resolved whenever the server responds. So the client.js will eagerly
   // call this and wait for it to finish whenever it feels like.
   poll() {
-    this.log('poll started', this.state);
+    this.log('poll started', this.state.comm);
     this.run(
       this.handlers.pullEvents({
         version: getVersion(this.state.edit),
@@ -157,16 +158,23 @@ export class EditorConnection {
         if (err.isCanceled) {
           return;
         }
-        console.error(err);
-        if (err.status === 410 || badVersion(err)) {
+
+        if (!(err instanceof CollabError)) {
+          throw err;
+        }
+
+        if (err.errorCode === 410 || badVersion(err)) {
           // Too far behind. Revert to server state
           console.error(err);
-          this.log('poll: bad version', this.state);
+          this.log('poll: bad version', this.state.comm);
           this.dispatch({ type: 'restart' });
         } else if (err) {
           console.error(err);
-          this.log('poll: recover', this.state);
+          this.log('poll: recover', this.state.comm);
           this.dispatch({ type: 'recover', error: err });
+        } else {
+          console.error(err);
+          console.error('unknown error with errorCode', err.errorCode);
         }
       },
     );
@@ -175,7 +183,7 @@ export class EditorConnection {
   start(docName) {
     this.run(this.handlers.getDocument({ docName })).promise.then(
       (data) => {
-        this.log('start:success', this.state);
+        this.log('start:success', this.state.comm);
         this.backOff = 0;
         this.dispatch({
           type: 'loaded',
@@ -184,6 +192,9 @@ export class EditorConnection {
         });
       },
       (err) => {
+        if (!(err instanceof CollabError)) {
+          throw err;
+        }
         console.error(err);
       },
     );
@@ -193,7 +204,7 @@ export class EditorConnection {
   recover(err) {
     let newBackOff = this.backOff ? Math.min(this.backOff * 2, 6e4) : 200;
     if (newBackOff > 1000 && this.backOff < 1000) {
-      this.log('recover backing off', this.state);
+      this.log('recover backing off', this.state.comm);
       console.error(err);
     }
     this.backOff = newBackOff;
@@ -214,7 +225,7 @@ export class EditorConnection {
 
     this.run(this.handlers.pushEvents(payload, this.docName)).promise.then(
       (data) => {
-        this.log('send:success', this.state);
+        this.log('send:success', this.state.comm);
         this.backOff = 0;
         let tr;
         try {
@@ -226,8 +237,9 @@ export class EditorConnection {
               )
             : this.state.edit.tr;
         } catch (err) {
+          // TODO do we need this?
           console.error(err);
-          this.log('err when receving transaction', this.state);
+          this.log('err when receving transaction', this.state.comm);
           this.dispatch({ type: 'recover', error: err });
           return;
         }
@@ -241,19 +253,24 @@ export class EditorConnection {
         if (err.isCanceled) {
           return;
         }
-        if (err.status === 409) {
-          this.log('send:err 409, polling', err.status, this.state);
+
+        if (!(err instanceof CollabError)) {
+          throw err;
+        }
+
+        if (err.errorCode === 409) {
+          this.log('send:err 409, polling', err.errorCode, this.state);
           // The client's document conflicts with the server's version.
           // Poll for changes and then try again.
           this.backOff = 0;
           this.dispatch({ type: 'poll' });
         } else if (badVersion(err)) {
           console.error(err);
-          this.log('send:err bad version, restarting', this.state);
+          this.log('send:err bad version, restarting', this.state.comm);
           this.dispatch({ type: 'restart' });
         } else {
           console.error(err);
-          this.log('send:err other error, recovering', this.state);
+          this.log('send:err other error, recovering', this.state.comm);
           this.dispatch({ type: 'recover', error: err });
         }
       },
@@ -280,7 +297,7 @@ export class EditorConnection {
 }
 
 function badVersion(err) {
-  return err.status === 400 && /invalid version/i.test(err);
+  return err.errorCode === 400 && /invalid version/i.test(err);
 }
 
 function repeat(val, n) {
