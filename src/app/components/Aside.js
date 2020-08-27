@@ -56,44 +56,47 @@ export class Aside extends React.PureComponent {
         title: r.title,
       }));
 
-    // const newREsults
-    return [...newResults, ...legacyResults].map((entry, i) => (
-      <div
-        key={entry.uid + i}
-        onClick={() => {
-          if (this.props.entry.uid === entry.uid) {
-            return;
-          }
-          this.props.handleLoadEntry(entry);
-        }}
-        className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
-          this.props.entry.uid === entry.uid ? `bg-gray-300` : ''
-        } hover:bg-gray-400 rounded-lg`}
-      >
-        <div className="flex-1 flex flex-col">
-          <span className="text-white font-bold text-gray-800">
-            {entry.title}
-          </span>
-          <span className="text-sm font-light">
-            {format(new Date(entry.modified || 0), 'eee dd MMM HH:mm')}
-          </span>
-        </div>
-        <BaseButton
-          className="text-gray-600 hover:text-gray-900"
-          faType="fas fa-times-circle "
-          onClick={async (e) => {
-            e.stopPropagation();
-            if (e.title?.startsWith('legacy')) {
-              await this.props.handleRemoveEntry(entry);
-            } else {
-              this.state.store.removeItem(entry.uid);
-              await this.getSavedData();
+    // const newResults
+    return [...newResults, ...legacyResults].map((entry, i) => {
+      let docName = entry.docName || entry.uid;
+      return (
+        <div
+          key={docName + i}
+          onClick={() => {
+            if (this.props.docName === docName) {
+              return;
             }
-            this.forceUpdate();
+            this.props.handleLoadEntry(entry);
           }}
-        />
-      </div>
-    ));
+          className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
+            this.props.docName === docName ? `bg-gray-300` : ''
+          } hover:bg-gray-400 rounded-lg`}
+        >
+          <div className="flex-1 flex flex-col">
+            <span className="text-white font-bold text-gray-800">
+              {entry.title}
+            </span>
+            <span className="text-sm font-light">
+              {format(new Date(entry.modified || 0), 'eee dd MMM HH:mm')}
+            </span>
+          </div>
+          <BaseButton
+            className="text-gray-600 hover:text-gray-900"
+            faType="fas fa-times-circle "
+            onClick={async (e) => {
+              e.stopPropagation();
+              if (e.title?.startsWith('legacy')) {
+                await this.props.handleRemoveEntry(entry);
+              } else {
+                this.state.store.removeItem(docName);
+                await this.getSavedData();
+              }
+              this.forceUpdate();
+            }}
+          />
+        </div>
+      );
+    });
   };
 
   sideBarMenu = () => (

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`one client - server loads document 1`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "text": "hello world!",
+            "type": "text",
+          },
+        ],
+        "type": "paragraph",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 1,
+    "head": 1,
+    "type": "text",
+  },
+}
+`;

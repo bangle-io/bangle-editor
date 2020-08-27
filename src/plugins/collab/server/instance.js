@@ -9,9 +9,16 @@ function log(...args) {
 }
 
 export class Instance {
-  constructor(id, doc, schema, scheduleSave, created) {
+  constructor({
+    docName,
+    doc,
+    schema,
+    scheduleSave,
+    created,
+    collectUsersTimeout = 5000,
+  } = {}) {
     this.scheduleSave = scheduleSave;
-    this.id = id;
+    this.docName = docName;
     this.doc =
       doc ||
       schema.node('doc', null, [
@@ -30,6 +37,7 @@ export class Instance {
     this.waiting = [];
     this.collecting = null;
     this.lastModified = this.lastActive;
+    this.collectUsersTimeout = collectUsersTimeout;
     this.created = created || Date.now();
   }
 
@@ -67,7 +75,7 @@ export class Instance {
   sendUpdates() {
     while (this.waiting.length) {
       const popped = this.waiting.pop();
-      log('sending up to ip', popped.ip);
+      log('sending up to user:', popped.userId);
       popped.finish();
     }
   }
@@ -106,26 +114,29 @@ export class Instance {
     this.userCount = 0;
     this.collecting = null;
     log('collectUsers', [...Object.entries(this.users || {})]);
-    log('waiting', [...this.waiting.map((r) => r.ip)]);
+    log('waiting', [...this.waiting.map((r) => r.userId)]);
     for (let i = 0; i < this.waiting.length; i++)
-      this._registerUser(this.waiting[i].ip);
+      this._registerUser(this.waiting[i].userId);
     if (this.userCount !== oldUserCount) this.sendUpdates();
   }
 
-  registerUser(ip) {
+  registerUser(userId) {
     log('registerUser', [...Object.entries(this.users || {})]);
-    if (!(ip in this.users)) {
-      this._registerUser(ip);
+    if (!(userId in this.users)) {
+      this._registerUser(userId);
       this.sendUpdates();
     }
   }
   // TODO when switching docs its a good idea to kill users
-  _registerUser(ip) {
-    if (!(ip in this.users)) {
-      this.users[ip] = true;
+  _registerUser(userId) {
+    if (!(userId in this.users)) {
+      this.users[userId] = true;
       this.userCount++;
       if (this.collecting == null)
-        this.collecting = setTimeout(() => this.collectUsers(), 5000);
+        this.collecting = setTimeout(
+          () => this.collectUsers(),
+          this.collectUsersTimeout,
+        );
     }
     log('_registerUser', [...Object.entries(this.users || {})]);
   }

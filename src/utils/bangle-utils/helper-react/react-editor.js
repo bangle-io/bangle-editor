@@ -20,18 +20,18 @@ export class ReactEditor extends React.PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    // if (this.props.content !== prevProps.content) {
-    //   log('Content not same, creating a new Editor');
-    //   this.setState((state) => ({
-    //     editorKey: state.editorKey + 1,
-    //   }));
-    // }
-    if (this.props.docName !== prevProps.docName) {
+    if (this.props.content !== prevProps.content) {
       log('Content not same, creating a new Editor');
       this.setState((state) => ({
         editorKey: state.editorKey + 1,
       }));
     }
+    // if (this.props.docName !== prevProps.docName) {
+    //   log('Content not same, creating a new Editor');
+    //   this.setState((state) => ({
+    //     editorKey: state.editorKey + 1,
+    //   }));
+    // }
   }
 
   render() {
@@ -43,8 +43,6 @@ export class ReactEditor extends React.PureComponent {
             key={this.state.editorKey}
             editorOptions={this.props.options}
             content={this.props.content}
-            docName={this.props.docName}
-            manager={this.props.manager}
             renderNodeView={renderNodeView}
             destroyNodeView={destroyNodeView}
           />
@@ -112,7 +110,6 @@ class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
     manager: PropTypes.object,
-    docName: PropTypes.string,
     editorOptions: PropTypes.object.isRequired,
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     //   .isRequired,
@@ -121,6 +118,7 @@ class PMEditorWrapper extends React.Component {
   };
   editorRenderTarget = React.createRef();
   devtools;
+  editorCleanupCb;
   shouldComponentUpdate() {
     return false;
   }
@@ -130,8 +128,6 @@ class PMEditorWrapper extends React.Component {
       content,
       renderNodeView,
       destroyNodeView,
-      docName,
-      manager,
     } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
@@ -154,7 +150,7 @@ class PMEditorWrapper extends React.Component {
         }
       };
       // TODO fix this mess
-      if (!manager) {
+      if (!editorOptions.manager) {
         editor = new Editor(node, {
           ...editorOptions,
           content,
@@ -162,32 +158,31 @@ class PMEditorWrapper extends React.Component {
           destroyNodeView,
           onInit,
         });
+        this.editorCleanupCb = () => {
+          editor.destroy();
+        };
       } else {
-        ({ editor } = new CollabEditor(
-          node,
-          {
-            ...editorOptions,
-            // content,
-            renderNodeView,
-            destroyNodeView,
-            onInit,
-          },
-          docName,
-          manager,
-        ));
+        let collabEditor = new CollabEditor(node, {
+          ...editorOptions,
+          content, // TODO for now calling docName content , fix this this mess
+          renderNodeView,
+          destroyNodeView,
+          onInit,
+        });
+        this.editorCleanupCb = () => {
+          collabEditor.destroy();
+        };
       }
-      this.editor = editor;
     }
   }
 
   componentWillUnmount() {
     log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
-    this.editor && this.editor.destroy();
+    this.editorCleanupCb && this.editorCleanupCb();
     if (this.props.editorOptions.devtools && this.devtools) {
       this.devtools();
     }
-    this.editor = undefined;
     if (window.editor) {
       window.editor = null;
     }

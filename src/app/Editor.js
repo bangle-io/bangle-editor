@@ -28,6 +28,7 @@ import { TrailingNode } from '../utils/bangle-utils/addons';
 import StopwatchExtension from '../plugins/stopwatch/stopwatch';
 import { Manager } from '../plugins/collab/server/manager';
 import { Editor as PMEditor } from '../../src/utils/bangle-utils/editor';
+import { LocalDisk } from '../plugins/collab/server/disk';
 
 const DEBUG = true;
 
@@ -35,6 +36,7 @@ export class Editor extends React.PureComponent {
   state = {
     docNames: ['ole', 'ole'],
   };
+  devtools = process.env.JEST_INTEGRATION || DEBUG;
   constructor(props) {
     super(props);
 
@@ -47,12 +49,17 @@ export class Editor extends React.PureComponent {
       manualViewCreate: true,
     });
     const schema = dummyEditor.schema;
-    this.manager = new Manager(schema);
+    this.manager = new Manager(schema, LocalDisk);
+    if (this.devtools) {
+      window.manager = this.manager;
+    }
     dummyEditor.destroy();
   }
   options = (id) => ({
+    docName: this.props.docName,
+    manager: this.manager,
     id,
-    devtools: process.env.JEST_INTEGRATION || DEBUG,
+    devtools: this.devtools,
     extensions: [
       new Bold(),
       new Code(),
@@ -93,10 +100,8 @@ export class Editor extends React.PureComponent {
             style={{ overflow: 'scroll', height: '90vh' }}
           >
             <ReactEditor
-              docName={this.props.docName}
               options={this.options('bangle-play-react-editor' + i)}
-              content={this.props.entry.content}
-              manager={this.manager}
+              content={this.props.docName}
             />
             {/* adds white space at bottoms */}
             <div

@@ -394,7 +394,7 @@ export class Editor extends Emitter {
 
     this.setSelection(from, to);
 
-    setTimeout(() => this.view.focus(), 10);
+    setTimeout(() => this.view?.focus(), 10); // TODO is this timeout needed
   }
 
   setSelection(from = 0, to = 0) {
