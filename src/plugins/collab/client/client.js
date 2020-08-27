@@ -9,9 +9,7 @@ import { cancelablePromise } from '../../../utils/bangle-utils/utils/js-utils';
 
 const LOG = false;
 
-function log(...args) {
-  if (LOG) console.log('collab/client.js', ...args);
-}
+let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 
 class State {
   edit;
@@ -30,9 +28,9 @@ export class EditorConnection {
   schema;
   docName;
 
-  constructor(docName, handlers, ip) {
+  constructor(docName, handlers, userId) {
     this.docName = docName;
-    this.ip = ip;
+    this.userId = userId;
     this.handlers = {
       getDocument: handlers.getDocument,
       pullEvents: handlers.pullEvents,
@@ -44,7 +42,7 @@ export class EditorConnection {
     };
     this.start(docName);
     this.log = (...args) => {
-      log(`ip-${this.ip}`, ...args);
+      log(`userId: ${this.userId}`, ...args);
     };
   }
 
@@ -244,7 +242,7 @@ export class EditorConnection {
           return;
         }
         if (err.status === 409) {
-          this.log('send:err 409, polling', this.state);
+          this.log('send:err 409, polling', err.status, this.state);
           // The client's document conflicts with the server's version.
           // Poll for changes and then try again.
           this.backOff = 0;

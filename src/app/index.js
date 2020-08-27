@@ -44,17 +44,16 @@ export default class App extends React.PureComponent {
 
   render() {
     const isMobile = browser.ios || browser.android;
+    const docName = this.state.entry?.docName || this.state.entry?.uid;
     return (
       <EditorContextProvider>
         <div className="h-screen main-wrapper">
           {/* {!isMobile && <Header entry={this.state.entry} />} */}
           <div className="editor-wrapper overflow-auto">
-            {this.state.entry && (
-              <Editor entry={this.state.entry} docName={this.state.entry.uid} />
-            )}
+            {docName && <Editor docName={docName} />}
           </div>
           <Aside
-            entry={this.state.entry}
+            docName={docName}
             handleLoadEntry={this.handleLoadEntry}
             handleRemoveEntry={this.handleRemoveEntry}
             handleNewEntry={this.handleNewEntry}

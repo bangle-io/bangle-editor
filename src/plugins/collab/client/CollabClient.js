@@ -1,10 +1,10 @@
 import React from 'react';
+import { getVersion } from 'prosemirror-collab';
+
 import { EditorConnection } from './client';
 import { Editor } from '../../../utils/bangle-utils';
 import { CollabExtension } from './collab-extension';
 import { uuid, sleep } from '../../../utils/bangle-utils/utils/js-utils';
-import { Manager } from '../server/manager';
-import { getVersion } from 'prosemirror-collab';
 
 const url = `http://localhost:8000/docs/`;
 const LOG = false;
@@ -20,19 +20,24 @@ function localReq(manager) {
       console.error(response);
       throw response;
     }
+
+    // TODO this is complete lol
     if (response.code && response.code !== 200) {
       log('received code', response.code);
-      response.state = response.code;
+      response.status = response.code;
       return response;
     }
     return JSON.parse(response.body);
   };
 }
 export class CollabEditor {
-  constructor(domElement, options, docName, manager) {
-    const req = localReq(manager);
-    const userId = parseInt(Math.random() * 100);
-    let editor;
+  editor;
+
+  constructor(domElement, options) {
+    const { content: docName, collabClientId = 'test-' + uuid() } = options;
+    const req = localReq(options.manager);
+    const userId = 'user-' + collabClientId;
+
     const handlersLocal = {
       getDocument: async ({ docName }) => {
         const body = await req('get_document', { docName, userId });
@@ -53,32 +58,32 @@ export class CollabEditor {
         return body;
       },
       createEditorState: async (document, version) => {
-        editor = new Editor(domElement, {
+        this.editor = new Editor(domElement, {
           ...options,
           content: document,
           extensions: [
             ...options.extensions,
             new CollabExtension({
               version,
-              clientID: 'test-' + uuid(),
+              clientID: collabClientId,
             }),
           ],
         });
-        return editor.state;
+        return this.editor.state;
       },
       updateState: (state) => {
         log('version', userId, getVersion(state));
-        editor.view.updateState(state);
+        this.editor.view.updateState(state);
       },
       onDispatchTransaction: (cb) => {
         // todo need to make this sync as it is causing problems
         // especially with trailing node
-        editor.on('transaction', ({ transaction }) => {
+        this.editor.on('transaction', ({ transaction }) => {
           cb(transaction);
         });
       },
       destroyView: () => {
-        editor.destroy();
+        this.editor.destroy();
       },
     };
 

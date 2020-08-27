@@ -4,30 +4,8 @@
 import '../../../../test-helpers/jest-helpers';
 import { fireEvent, wait, screen } from '@testing-library/react';
 
-import {
-  renderTestEditor,
-  sendKeyToPm,
-  sleep,
-  typeText,
-} from '../../../../test-helpers';
+import { renderTestEditor, sleep, typeText } from '../../../../test-helpers';
 
-import { Underline } from '../../../../utils/bangle-utils/marks';
-import {
-  OrderedList,
-  BulletList,
-  ListItem,
-  Heading,
-  HardBreak,
-  TodoList,
-  TodoItem,
-} from '../../../../utils/bangle-utils/nodes';
-import {
-  doc,
-  p,
-  todoList,
-  todoItem,
-  nodeFactory,
-} from '../../../../test-helpers/test-builders';
 import { EditorConnection } from '../client';
 import { CollabExtension } from '../collab-extension';
 import { getVersion } from 'prosemirror-collab';
