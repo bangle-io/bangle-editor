@@ -203,11 +203,7 @@ export function objectMapValues(obj, map) {
 
 export function handleAsyncError(fn, onError) {
   return async (...args) => {
-    try {
-      return await fn(...args);
-    } catch (err) {
-      return onError(err);
-    }
+    return Promise.resolve(fn(...args)).catch(onError);
   };
 }
 
@@ -227,6 +223,30 @@ export function serialExecuteQueue() {
           );
         });
       });
+    },
+  };
+}
+
+export function simpleLRU(size) {
+  let array = [];
+  let clear = () => {
+    while (array.length > size) {
+      log('removing', array.shift());
+    }
+  };
+  return {
+    entries: () => array.slice(0),
+    get: (key) => {
+      clear();
+      let result = array.find((item) => item.key === key);
+      if (result) {
+        return result.value;
+      }
+    },
+    set: (key, value) => {
+      clear();
+      array = array.filter((item) => item.key !== key);
+      array.push({ key, value });
     },
   };
 }

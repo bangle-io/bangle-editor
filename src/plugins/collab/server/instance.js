@@ -1,4 +1,4 @@
-import { Emitter } from '../../../utils/bangle-utils/utils/emitter';
+import { CollabError } from '../collab-error';
 
 const MAX_STEP_HISTORY = 1000;
 
@@ -15,7 +15,7 @@ export class Instance {
     schema,
     scheduleSave,
     created,
-    collectUsersTimeout = 5000,
+    collectUsersTimeout,
   } = {}) {
     this.scheduleSave = scheduleSave;
     this.docName = docName;
@@ -76,7 +76,7 @@ export class Instance {
     while (this.waiting.length) {
       const popped = this.waiting.pop();
       log('sending up to user:', popped.userId);
-      popped.finish();
+      popped.onFinish();
     }
   }
 
@@ -88,9 +88,7 @@ export class Instance {
       throw new Error('version is not a number');
     }
     if (version < 0 || version > this.version) {
-      let err = new Error('Invalid version ' + version);
-      err.status = 400;
-      throw err;
+      throw new CollabError(400, 'Invalid version ' + version);
     }
   }
 

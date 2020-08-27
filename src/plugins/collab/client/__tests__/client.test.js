@@ -9,6 +9,7 @@ import { renderTestEditor, sleep, typeText } from '../../../../test-helpers';
 import { EditorConnection } from '../client';
 import { CollabExtension } from '../collab-extension';
 import { getVersion } from 'prosemirror-collab';
+import { CollabError } from '../../collab-error';
 
 function promiseNever() {
   return new Promise((res) => {});
@@ -294,8 +295,7 @@ describe('pull events', () => {
         }
 
         if (pullTimes === 2) {
-          let err = new Error('Invalid version ' + 43);
-          err.status = 400;
+          let err = new CollabError(400, 'Invalid version ' + 43);
           throw err;
         }
 
@@ -452,8 +452,7 @@ describe('pushing events', () => {
         if (pushTimes++ > 0) {
           return;
         }
-        let err = new Error('Invalid version ' + 43);
-        err.status = 400;
+        let err = new CollabError(400, 'Invalid version ' + 43);
         throw err;
       }),
       createEditorState: jest.fn(async (document, version) => {
