@@ -9077,7 +9077,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chalk", "npm:3.0.0"],
             ["cwd", "npm:0.10.0"],
             ["jest-dev-server", "npm:4.4.0"],
-            ["merge-deep", "npm:3.0.2"]
+            ["jest-environment-node", "npm:26.2.0"],
+            ["merge-deep", "npm:3.0.2"],
+            ["puppeteer", "npm:5.2.1"]
           ],
           "linkType": "HARD",
         }]
