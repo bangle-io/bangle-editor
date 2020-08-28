@@ -1,5 +1,6 @@
 import React from 'react';
 import format from 'date-fns/format';
+import localforage from 'localforage';
 
 import { localManager } from '../store/local';
 import { BaseButton, StackButton } from './Button';
@@ -7,26 +8,68 @@ import { BaseButton, StackButton } from './Button';
 export class Aside extends React.PureComponent {
   state = {
     showSidebar: null,
+    store: localforage.createInstance({
+      name: 'local_disk',
+    }),
   };
+  constructor(props) {
+    super(props);
+    this.getSavedData();
+  }
+
+  async getSavedData(result = new Map()) {
+    this.newItems = [];
+    return new Promise((res, rej) => {
+      this.state.store
+        .iterate((value, key, iterationNumber) => {
+          delete value.doc;
+          this.newItems.push(value);
+        })
+        .then(() => {
+          console.log('Iteration has completed');
+          res();
+        })
+        .catch((err) => {
+          // This code runs if there were any errors
+          console.error(err);
+          rej(err);
+        });
+    });
+  }
 
   toggleSidebar = (state = !this.state.showSidebar) => {
     this.setState({ showSidebar: state });
   };
 
   renderSidebar = () => {
-    return localManager.entries
+    const legacyResults = localManager.entries
       .sort((a, b) => b.created - a.created)
-      .map((entry) => (
+      .map((r) => ({
+        ...r,
+        title: 'legacy ' + r.title,
+      }));
+
+    const newResults = this.newItems
+      .sort((a, b) => b.created - a.created)
+      .map((r) => ({
+        ...r,
+        title: r.title,
+      }));
+
+    // const newResults
+    return [...newResults, ...legacyResults].map((entry, i) => {
+      let docName = entry.docName || entry.uid;
+      return (
         <div
-          key={entry.uid}
+          key={docName + i}
           onClick={() => {
-            if (this.props.entry.uid === entry.uid) {
+            if (this.props.docName === docName) {
               return;
             }
             this.props.handleLoadEntry(entry);
           }}
           className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
-            this.props.entry.uid === entry.uid ? `bg-gray-300` : ''
+            this.props.docName === docName ? `bg-gray-300` : ''
           } hover:bg-gray-400 rounded-lg`}
         >
           <div className="flex-1 flex flex-col">
@@ -34,7 +77,7 @@ export class Aside extends React.PureComponent {
               {entry.title}
             </span>
             <span className="text-sm font-light">
-              {format(new Date(entry.modified), 'eee dd MMM HH:mm')}
+              {format(new Date(entry.modified || 0), 'eee dd MMM HH:mm')}
             </span>
           </div>
           <BaseButton
@@ -42,12 +85,18 @@ export class Aside extends React.PureComponent {
             faType="fas fa-times-circle "
             onClick={async (e) => {
               e.stopPropagation();
-              await this.props.handleRemoveEntry(entry);
+              if (e.title?.startsWith('legacy')) {
+                await this.props.handleRemoveEntry(entry);
+              } else {
+                this.state.store.removeItem(docName);
+                await this.getSavedData();
+              }
               this.forceUpdate();
             }}
           />
         </div>
-      ));
+      );
+    });
   };
 
   sideBarMenu = () => (

@@ -26,13 +26,40 @@ import {
 import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
 import { TrailingNode } from '../utils/bangle-utils/addons';
 import StopwatchExtension from '../plugins/stopwatch/stopwatch';
+import { Manager } from '../plugins/collab/server/manager';
+import { Editor as PMEditor } from '../../src/utils/bangle-utils/editor';
+import { LocalDisk } from '../plugins/collab/server/disk';
 
 const DEBUG = true;
 
 export class Editor extends React.PureComponent {
-  options = {
-    id: 'bangle-play-react-editor',
-    devtools: process.env.JEST_INTEGRATION || DEBUG,
+  state = {
+    docNames: ['ole', 'ole'],
+  };
+  devtools = process.env.JEST_INTEGRATION || DEBUG;
+  constructor(props) {
+    super(props);
+
+    // todo this is temporary way of getting schema we need better than this
+    const dummyEditor = new PMEditor(document.createElement('div'), {
+      ...this.options(),
+      renderNodeView: () => {},
+      destroyNodeView: () => {},
+      onInit: () => {},
+      manualViewCreate: true,
+    });
+    const schema = dummyEditor.schema;
+    this.manager = new Manager(schema, LocalDisk);
+    if (this.devtools) {
+      window.manager = this.manager;
+    }
+    dummyEditor.destroy();
+  }
+  options = (id) => ({
+    docName: this.props.docName,
+    manager: this.manager,
+    id,
+    devtools: this.devtools,
     extensions: [
       new Bold(),
       new Code(),
@@ -61,28 +88,34 @@ export class Editor extends React.PureComponent {
     editorProps: {
       attributes: { class: 'bangle-editor content' },
     },
-  };
+  });
 
   render() {
     return (
       <div className="flex justify-center flex-row">
-        <div className="flex-1 max-w-screen-md ml-6 mr-6">
-          <ReactEditor
-            options={this.options}
-            content={this.props.entry.content}
-          />
-          {/* adds white space at bottoms */}
+        {this.state.docNames.map((docName, i) => (
           <div
-            style={{
-              display: 'flex',
-              flexGrow: 1,
-              height: '25vh',
-              backgroundColor: 'transparent',
-            }}
+            key={i}
+            className="flex-1 max-w-screen-md ml-6 mr-6"
+            style={{ overflow: 'scroll', height: '90vh' }}
           >
-            &nbsp;
+            <ReactEditor
+              options={this.options('bangle-play-react-editor' + i)}
+              content={this.props.docName}
+            />
+            {/* adds white space at bottoms */}
+            <div
+              style={{
+                display: 'flex',
+                flexGrow: 1,
+                height: '25vh',
+                backgroundColor: 'transparent',
+              }}
+            >
+              &nbsp;
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     );
   }

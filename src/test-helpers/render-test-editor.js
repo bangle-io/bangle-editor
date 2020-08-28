@@ -26,7 +26,7 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
 
     const result = render(
       <EditorContextProvider>
-        <ReactEditor options={_options} content="" />
+        <ReactEditor options={_options} content={_options.content || ''} />
         <EditorContext.Consumer>
           {(context) => {
             if (context.getEditor() && !_editor) {
@@ -38,9 +38,13 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
       </EditorContextProvider>,
     );
 
-    await result.findByTestId('test-editor');
+    await result.findByTestId(testId);
 
-    const refs = updateDoc(testDoc);
+    let refs;
+
+    if (testDoc) {
+      refs = updateDoc(testDoc);
+    }
 
     function updateDoc(doc) {
       if (!doc) {

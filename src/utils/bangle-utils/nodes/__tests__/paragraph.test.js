@@ -80,6 +80,15 @@ describe('Basics', () => {
 
     expect(editor.state).toEqualDocAndSelection(doc(p('foobar'), p('{<>}')));
   });
+
+  // TODO this is broken for some reason
+  test.skip('is able to backspace', async () => {
+    const { editor } = await testEditor(doc(p('foobar{<>}')));
+
+    sendKeyToPm(editor.view, 'Backspace');
+
+    expect(editor.state).toEqualDocAndSelection(doc(p('fooba{<>}')));
+  });
 });
 
 test.todo('Bold italics etc');

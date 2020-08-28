@@ -88,37 +88,18 @@ export function sendKeyToPm(editorView, keys) {
 
 export async function typeText(view, text) {
   text.split('').forEach((character, index) => {
-    if (
-      !view.someProp('handleTextInput', (f) =>
-        f(
-          view,
-          view.state.selection.from,
-          view.state.selection.from,
-          character,
-        ),
-      )
-    ) {
-      // console.log(index, character);
-      view.dispatch(
-        view.state.tr.insertText(character, view.state.selection.from),
-      );
-    }
+    typeChar(view, character);
   });
+}
 
-  // const { tr } = view.state;
-  // for (const character of [...text]) {
-  //   let _index = index;
-  //   if (
-  //     !view.someProp('handleTextInput', (f) =>
-  //       f(view, pos + _index, pos + _index, character),
-  //     )
-  //   ) {
-  //     tr.insertText(character, pos + _index);
-  //   }
-  //   index++;
-  // }
-  // view.dispatch(tr);
-  // await sleep();
+export async function typeChar(view, char) {
+  if (
+    !view.someProp('handleTextInput', (f) =>
+      f(view, view.state.selection.from, view.state.selection.from, char),
+    )
+  ) {
+    view.dispatch(view.state.tr.insertText(char, view.state.selection.from));
+  }
 }
 
 export function sleep(t = 20) {

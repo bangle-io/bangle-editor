@@ -1,5 +1,6 @@
 import { PluginKey, Plugin } from 'prosemirror-state';
 import { Addon } from './addon';
+import { getIdleCallback } from '../utils/js-utils';
 
 export class TrailingNode extends Addon {
   get name() {
@@ -26,16 +27,19 @@ export class TrailingNode extends Addon {
           update: (view) => {
             const { state } = view;
             const { incorrectNodeAtEnd } = plugin.getState(state);
-
             if (!incorrectNodeAtEnd) {
               return;
             }
 
-            const { doc, schema, tr } = state;
+            // getIdleCallback(() => {
+            const { doc, schema, tr } = view.state;
             const type = schema.nodes[this.options.node];
-            const transaction = tr.insert(doc.content.size, type.create());
-
+            const transaction = tr.insert(
+              doc.content.size,
+              type.create('last'),
+            );
             view.dispatch(transaction);
+            // });
           },
         }),
         state: {

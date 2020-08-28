@@ -168,3 +168,85 @@ export function smartDebounce(
     return cb(arg);
   };
 }
+
+export function cancelablePromise(promise) {
+  let hasCanceled = false;
+
+  const wrappedPromise = new Promise((resolve, reject) =>
+    promise
+      .then((val) =>
+        hasCanceled ? reject({ isCanceled: true }) : resolve(val),
+      )
+      .catch((error) =>
+        hasCanceled ? reject({ isCanceled: true }) : reject(error),
+      ),
+  );
+  return {
+    promise: wrappedPromise,
+    cancel() {
+      hasCanceled = true;
+    },
+  };
+}
+
+export function sleep(t = 20) {
+  return new Promise((res) => setTimeout(res, t));
+}
+
+export function objectMapValues(obj, map) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => {
+      return [key, map([key, value])];
+    }),
+  );
+}
+
+export function handleAsyncError(fn, onError) {
+  return async (...args) => {
+    return Promise.resolve(fn(...args)).catch(onError);
+  };
+}
+
+export function serialExecuteQueue() {
+  let prev = Promise.resolve();
+  return {
+    add: (cb) => {
+      return new Promise((resolve, reject) => {
+        prev = prev.then(() => {
+          return Promise.resolve(cb()).then(
+            (resultCb) => {
+              resolve(resultCb);
+            },
+            (err) => {
+              reject(err);
+            },
+          );
+        });
+      });
+    },
+  };
+}
+
+export function simpleLRU(size) {
+  let array = [];
+  let clear = () => {
+    while (array.length > size) {
+      log('removing', array.shift());
+    }
+  };
+  return {
+    entries: () => array.slice(0),
+    get: (key) => {
+      clear();
+      let result = array.find((item) => item.key === key);
+      if (result) {
+        return result.value;
+      }
+    },
+    set: (key, value) => {
+      clear();
+      array = array.filter((item) => item.key !== key);
+      array.push({ key, value });
+    },
+  };
+}

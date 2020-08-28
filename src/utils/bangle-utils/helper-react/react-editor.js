@@ -6,6 +6,7 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
+import { CollabEditor } from '../../../plugins/collab/CollabClient';
 
 const LOG = false;
 
@@ -25,6 +26,12 @@ export class ReactEditor extends React.PureComponent {
         editorKey: state.editorKey + 1,
       }));
     }
+    // if (this.props.docName !== prevProps.docName) {
+    //   log('Content not same, creating a new Editor');
+    //   this.setState((state) => ({
+    //     editorKey: state.editorKey + 1,
+    //   }));
+    // }
   }
 
   render() {
@@ -102,13 +109,16 @@ class PortalWrapper extends React.PureComponent {
 class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
+    manager: PropTypes.object,
     editorOptions: PropTypes.object.isRequired,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    //   .isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
   };
   editorRenderTarget = React.createRef();
   devtools;
+  editorCleanupCb;
   shouldComponentUpdate() {
     return false;
   }
@@ -121,32 +131,47 @@ class PMEditorWrapper extends React.Component {
     } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
-      const editor = new Editor(node, {
-        ...editorOptions,
-        content,
-        renderNodeView,
-        destroyNodeView,
-        onInit: ({ view, state, editor }) => {
-          this.context.onEditorReady(editor);
-          editor.focus();
-          if (editorOptions.onInit) {
-            editorOptions.onInit({ view, state, editor });
-          }
-        },
-      });
-
-      this.editor = editor;
-
-      if (editorOptions.devtools) {
-        window.editor = this.editor;
-
-        getIdleCallback(() => {
-          import(
-            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-          ).then((args) => {
-            this.devtools = args.applyDevTools(this.editor.view);
+      let editor;
+      const onInit = ({ view, state, editor }) => {
+        this.context.onEditorReady(editor);
+        editor.focus();
+        if (editorOptions.onInit) {
+          editorOptions.onInit({ view, state, editor });
+        }
+        if (editorOptions.devtools) {
+          window.editor = editor;
+          getIdleCallback(() => {
+            import(
+              /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+            ).then((args) => {
+              this.devtools = args.applyDevTools(view);
+            });
           });
+        }
+      };
+      // TODO fix this mess
+      if (!editorOptions.manager) {
+        editor = new Editor(node, {
+          ...editorOptions,
+          content,
+          renderNodeView,
+          destroyNodeView,
+          onInit,
         });
+        this.editorCleanupCb = () => {
+          editor.destroy();
+        };
+      } else {
+        let collabEditor = new CollabEditor(node, {
+          ...editorOptions,
+          content, // TODO for now calling docName content , fix this this mess
+          renderNodeView,
+          destroyNodeView,
+          onInit,
+        });
+        this.editorCleanupCb = () => {
+          collabEditor.destroy();
+        };
       }
     }
   }
@@ -154,11 +179,10 @@ class PMEditorWrapper extends React.Component {
   componentWillUnmount() {
     log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
-    this.editor && this.editor.destroy();
+    this.editorCleanupCb && this.editorCleanupCb();
     if (this.props.editorOptions.devtools && this.devtools) {
       this.devtools();
     }
-    this.editor = undefined;
     if (window.editor) {
       window.editor = null;
     }

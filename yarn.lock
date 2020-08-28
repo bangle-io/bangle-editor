@@ -10283,6 +10283,7 @@ fsevents@^1.2.7:
     postcss-nested: ^4.2.3
     prettier: ^2.0.5
     prop-types: ^15.7.2
+    prosemirror-collab: ^1.2.2
     prosemirror-commands: ^1.1.4
     prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     prosemirror-dropcursor: ^1.1.1
@@ -10708,6 +10709,15 @@ fsevents@^1.2.7:
     object-assign: ^4.1.1
     react-is: ^16.8.1
   checksum: a440dd406c5cf53bf39f3e898d2c65178511d34ca3c8c789b30c177992408b9e4273969726b274719aa69ccce5ab34b2fd8caa60b90f23cd2e910cdcf682de52
+  languageName: node
+  linkType: hard
+
+"prosemirror-collab@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "prosemirror-collab@npm:1.2.2"
+  dependencies:
+    prosemirror-state: ^1.0.0
+  checksum: 44d68c7619ae4fc974a982f203e279481a5d106d2763b515a0d2beedcbc28e7e84eeb31fc199c039baac9c963c40e3fa03280c3bb42384868842fe209a69a226
   languageName: node
   linkType: hard
 
