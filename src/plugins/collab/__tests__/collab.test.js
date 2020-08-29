@@ -5,28 +5,27 @@ import '../../../test-helpers/jest-helpers';
 
 import {} from '../../../test-helpers';
 import {} from './../../../utils/bangle-utils/nodes';
-import { doc, p, ul, li } from './../../../test-helpers/test-builders';
+import { doc, p, ul, li, ol } from './../../../test-helpers/test-builders';
 import { TextSelection } from 'prosemirror-state';
 import {
   setupStore,
   spinEditors,
   expectToHaveIdenticalElements,
 } from '../../../test-helpers/collab-test-helpers';
-import {
-  cancelablePromise,
-  sleep,
-} from '../../../utils/bangle-utils/utils/js-utils';
+import { sleep } from '../../../utils/bangle-utils/utils/js-utils';
+import { EditorConnection } from '../client/client';
 
 jest.mock('localforage', () => ({
   config: jest.fn(),
   createInstance: jest.fn(),
 }));
 
-jest.setTimeout(1000000);
+jest.setTimeout(60 * 1000);
 const dateNow = Date.now;
-
+const consoleError = console.error;
 afterEach(() => {
   Date.now = dateNow;
+  console.error = consoleError;
 });
 
 const emptyDoc = {
@@ -37,6 +36,16 @@ const emptyDoc = {
       content: [],
     },
   ],
+};
+
+const setSelectionAtStart = (view) => {
+  return view.state.tr.setSelection(TextSelection.create(view.state.doc, 1));
+};
+
+const setSelectionAtEnd = (view) => {
+  return view.state.tr.setSelection(
+    TextSelection.create(view.state.doc, view.state.doc.content.size - 1),
+  );
 };
 
 describe('one client - server', () => {
@@ -57,21 +66,17 @@ describe('one client - server', () => {
   it('types correctly and save correctly', async () => {
     expect.hasAssertions();
     // prettier-ignore
-    const case1 = {
+    const seq = {
       seq1: '💚_____🍌↵- I am a bullet__🍌',
     }
 
     const store = setupStore();
-    const iter = spinEditors(case1, { store });
+    const iter = spinEditors(seq, { store });
     let nextViews = async () => (await iter.next()).value.views;
 
     let { seq1: view } = await nextViews();
 
-    view.dispatch(
-      view.state.tr.setSelection(
-        TextSelection.create(view.state.doc, view.state.doc.content.size),
-      ),
-    );
+    view.dispatch(setSelectionAtEnd(view));
 
     ({ seq1: view } = await nextViews());
 
@@ -94,24 +99,19 @@ describe('one client - server', () => {
 });
 
 it('changing selection in one client', async () => {
-  const case1 = {
-    seq1: '💚_____🍌_________________🍌',
-    seq2: '💚_____🍌- I am a bullet__🍌',
+  const seq = {
+    seq1: '💚_____🍌__________________🍌',
+    seq2: '💚_____🍌↵- I am a bullet__🍌',
   };
 
   const store = setupStore();
-  const iter = spinEditors(case1, { store });
+  const iter = spinEditors(seq, { store });
   let nextViews = async () => (await iter.next()).value.views;
 
   let { seq1: view1, seq2: view2 } = await nextViews();
-  view2.dispatch(
-    view2.state.tr.setSelection(
-      TextSelection.create(view2.state.doc, view2.state.doc.content.size),
-    ),
-  );
-  view1.dispatch(
-    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 0)),
-  );
+
+  view2.dispatch(setSelectionAtEnd(view2));
+  view1.dispatch(setSelectionAtStart(view1));
 
   ({ seq1: view1, seq2: view2 } = await nextViews());
 
@@ -121,12 +121,11 @@ it('changing selection in one client', async () => {
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
 });
 
-it('hold incoming of a client', async () => {
-  // prettier-ignore
-  const case1 = {
-      seq1: '💚_____🍌_____🍌___🍌',
-      seq2: '💚_____🍌- I__🍌___🍌',
-    }
+it('hold incoming of a seq1 client', async () => {
+  const seq = {
+    seq1: '💚_____🍌______🍌___🍌',
+    seq2: '💚_____🍌↵- I__🍌___🍌',
+  };
 
   const store = setupStore();
   let seq1Resume = null;
@@ -136,14 +135,13 @@ it('hold incoming of a client', async () => {
       return;
     }
     if (shouldStopSeq1 && path === 'get_events') {
-      console.log('sending never promise to ', payload.userId);
       return new Promise((res) => {
         seq1Resume = res;
       });
     }
   };
 
-  const iter = spinEditors(case1, {
+  const iter = spinEditors(seq, {
     store,
     managerOpts: { interceptRequests },
   });
@@ -152,15 +150,9 @@ it('hold incoming of a client', async () => {
   shouldStopSeq1 = true;
   // first 🍌
   let { seq1: view1, seq2: view2 } = await nextViews();
-  view2.dispatch(
-    view2.state.tr.setSelection(
-      TextSelection.create(view2.state.doc, view2.state.doc.content.size),
-    ),
-  );
+  view2.dispatch(setSelectionAtEnd(view2));
 
-  view1.dispatch(
-    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 0)),
-  );
+  view1.dispatch(setSelectionAtStart(view1));
 
   // second 🍌 : view1 should be outdated
   ({ seq1: view1, seq2: view2 } = await nextViews());
@@ -180,12 +172,11 @@ it('hold incoming of a client', async () => {
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
 });
 
-it('hold incoming of a client but it still continues to type', async () => {
-  // prettier-ignore
-  const case1 = {
-      seq1: '💚_____🍌__A__🍌___🍌',
-      seq2: '💚_____🍌__Z__🍌___🍌',
-    }
+it('hold incoming of a seq1 client but it still continues to type', async () => {
+  const seq = {
+    seq1: '💚_____🍌__A__🍌___🍌',
+    seq2: '💚_____🍌__Z__🍌___🍌',
+  };
 
   const store = setupStore();
   let seq1Resume = null;
@@ -195,14 +186,13 @@ it('hold incoming of a client but it still continues to type', async () => {
       return;
     }
     if (shouldStopSeq1 && path === 'get_events') {
-      console.log('sending never promise to ', payload.userId);
       return new Promise((res) => {
         seq1Resume = res;
       });
     }
   };
 
-  const iter = spinEditors(case1, {
+  const iter = spinEditors(seq, {
     store,
     managerOpts: { interceptRequests },
   });
@@ -211,22 +201,15 @@ it('hold incoming of a client but it still continues to type', async () => {
   shouldStopSeq1 = true;
   // first 🍌
   let { seq1: view1, seq2: view2 } = await nextViews();
-  view2.dispatch(
-    view2.state.tr.setSelection(
-      TextSelection.create(view2.state.doc, view2.state.doc.content.size - 1),
-    ),
-  );
-
-  view1.dispatch(
-    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 1)),
-  );
+  view2.dispatch(setSelectionAtEnd(view2));
+  view1.dispatch(setSelectionAtStart(view1));
 
   // second 🍌 : view1 should be out of sync
   ({ seq1: view1, seq2: view2 } = await nextViews());
   // view2 gets the view1's `A` as we have only paused view1's ability to pull
   // in data and not the other way round.
   expect(view2.state.doc).toEqualDocument(doc(p('Ahello world!Z')));
-  expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!')));
+  expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!'))); // <-- view1 didn't get the Z
 
   seq1Resume();
   shouldStopSeq1 = false;
@@ -234,7 +217,70 @@ it('hold incoming of a client but it still continues to type', async () => {
   // third 🍌 : view1 should be upto date
   ({ seq1: view1, seq2: view2 } = await nextViews());
   expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!Z')));
+  // doing a .json since they both are using different schema
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
+});
+
+it('throw an error for seq1 client and expect it to recover', async () => {
+  console.error = jest.fn();
+  // prettier-ignore
+  const seq = {
+      seq1: '💚_____🍌______🍌',
+      seq2: '💚_____🍌↵- I__🍌',
+    }
+
+  const store = setupStore();
+  let requestCounter = 0;
+
+  let interceptRequests = (path, payload) => {
+    if (payload.userId === 'user-seq1' && path === 'get_events') {
+      if (requestCounter++ === 1) {
+        throw new Error('A weird error');
+      }
+    }
+  };
+
+  const iter = spinEditors(seq, {
+    store,
+    managerOpts: { interceptRequests },
+  });
+  let nextViews = async () => (await iter.next()).value.views;
+
+  // first 🍌
+  let { seq1: view1, seq2: view2 } = await nextViews();
+  view2.dispatch(setSelectionAtEnd(view2));
+  view1.dispatch(setSelectionAtStart(view1));
+
+  // second 🍌
+  await sleep(EditorConnection.defaultOpts.recoveryBackOffInterval); // wait for the server to retry after backoff
+
+  ({ seq1: view1, seq2: view2 } = await nextViews());
+  const match = doc(p('hello world!'), ul(li(p('I{<>}'))));
+  expect(view2.state.doc).toEqualDocument(match);
+  expect(view1.state.doc).toEqualDocument(match); // <-- view1 should have recovered
+
+  expect(console.error).toMatchInlineSnapshot(`
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          "CRITICAL ERROR THROWN",
+        ],
+        Array [
+          [Error: A weird error],
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  `);
 });
 
 it.each([
@@ -310,15 +356,9 @@ it.each([
 
   // first 🍌: setup selections
   let { seq1: view1, seq2: view2 } = await nextViews();
-  view2.dispatch(
-    view2.state.tr.setSelection(
-      TextSelection.create(view2.state.doc, view2.state.doc.content.size - 1),
-    ),
-  );
+  view2.dispatch(setSelectionAtEnd(view2));
 
-  view1.dispatch(
-    view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 1)),
-  );
+  view1.dispatch(setSelectionAtStart(view1));
 
   // second 🍌 :
   ({ seq1: view1, seq2: view2 } = await nextViews());
@@ -384,12 +424,12 @@ test.each([
   ],
   [
     {
-      seq1: '💚__x_🍌',
+      seq1: '💚__c_🍌',
       seq2: '💚____🍌',
       seq3: '💚____🍌',
       seq4: '💚____🍌',
     },
-    doc(p('xhello world!')),
+    doc(p('chello world!')),
   ],
   [
     {
@@ -506,7 +546,7 @@ describe('🖤unmounting of editor🖤', () => {
     expect.hasAssertions();
   });
 
-  test('reviving of previous', async () => {
+  test('reviving of previous editor', async () => {
     const seq = {
       seq1: '💚_one___🖤____💚_____alive___🍌',
       seq2: '🐑___💚_two__🖤_______________🍌',
@@ -539,10 +579,22 @@ test.each([
     doc(p('onehello world!two')),
     doc(p('onethreehello world!two')),
   ],
+
+  [
+    {
+      seq1: '💚_🍌_one something good _____🍌____top ______🍌',
+      seq2: '💚_🍌__ two↵ - Twos bullet____🍌___ bottom____🍌',
+    },
+    doc(p('one something good hello world! two'), ul(li(p('Twos bullet')))),
+    doc(
+      p('one something good top hello world! two'),
+      ul(li(p('Twos bullet bottom'))),
+    ),
+  ],
 ])(
-  "Clients recover after server times out the 'get_events' request",
+  "Clients works after server times out the 'get_events' request",
   async (seq, secondBananaResult, thirdBananaResult) => {
-    const userWaitTimeout = 500;
+    const userWaitTimeout = 150;
     const store = setupStore();
     const iter = spinEditors(seq, {
       store,
@@ -552,21 +604,18 @@ test.each([
 
     // first 🍌
     let { seq1: view1, seq2: view2 } = await nextViews();
-    view2.dispatch(
-      view2.state.tr.setSelection(
-        TextSelection.create(view2.state.doc, view2.state.doc.content.size - 1),
-      ),
-    );
-
-    view1.dispatch(
-      view1.state.tr.setSelection(TextSelection.create(view1.state.doc, 1)),
-    );
+    view2.dispatch(setSelectionAtEnd(view2));
+    view1.dispatch(setSelectionAtStart(view1));
 
     await sleep(1.5 * userWaitTimeout);
     // second 🍌 : wait to allow server to disconnect
     ({ seq1: view1, seq2: view2 } = await nextViews());
 
+    expect(view2.state.doc).toEqualDocument(secondBananaResult);
+    expect(view1.state.doc).toEqualDocument(secondBananaResult);
+
     await sleep(1.5 * userWaitTimeout);
+
     // third 🍌 : wait to allow server to disconnect
     ({ seq1: view1, seq2: view2 } = await nextViews());
 

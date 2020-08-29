@@ -18,6 +18,13 @@ import { LocalDisk } from '../plugins/collab/server/disk';
 import localforage from 'localforage';
 import { uuid } from '../utils/bangle-utils/utils/js-utils';
 
+const START = '💚';
+const END = '🖤';
+const PAUSE_FOR_ASSERTIONS = '🍌';
+const NOOP = '_';
+const EMOJI_NOOP = '🐑'; // usefull for balancing lengths of seq, as emojis are large and take space
+const ENTER = '↵';
+
 const DISK_SAVE_TIMEOUT = 10;
 
 export function setupStore(doc) {
@@ -52,6 +59,7 @@ class TestDisk extends LocalDisk {
     this.saveEvery = DISK_SAVE_TIMEOUT;
   }
 }
+
 export function setup(store = setupStore(), { managerOpts }) {
   localforage.createInstance.mockImplementation(() => store);
 
@@ -112,12 +120,6 @@ export async function* spinEditors(
     managerOpts = {},
   } = {},
 ) {
-  const START = '💚';
-  const END = '🖤';
-  const PAUSE_FOR_ASSERTIONS = '🍌';
-  const NOOP = '_';
-  const EMOJI_NOOP = '🐑'; // usefull for balancing lengths of seq, as emojis are large and take space
-  const ENTER = '↵';
   // chars of this type must either exist in the entire column
   const columnOnlyChars = [PAUSE_FOR_ASSERTIONS];
 

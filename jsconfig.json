@@ -1,29 +1,21 @@
 {
-    "compilerOptions": {
-        "baseUrl": "src",
-        "paths": {
-            "app/*": [
-                "./app/*"
-            ],
-            "utils/*": [
-                "./utils/*"
-            ],
-            "plugins/*": [
-                "./plugins/*"
-            ],
-            "test-helpers/*": [
-                "./test-helpers/*"
-            ]
-        }
-    },
-    "exclude": [
-        "node_modules",
-        "build",
-        "dist",
-        "archive",
-        "public",
-        ".cache",
-        ".yarn",
-        "coverage"
-    ]
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "app/*": ["./app/*"],
+      "utils/*": ["./utils/*"],
+      "plugins/*": ["./plugins/*"],
+      "test-helpers/*": ["./test-helpers/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "archive",
+    "public",
+    ".cache",
+    ".yarn",
+    "coverage"
+  ]
 }

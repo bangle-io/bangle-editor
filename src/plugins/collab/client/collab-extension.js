@@ -1,10 +1,5 @@
+import { collab } from 'prosemirror-collab';
 import { Extension } from '../../../utils/bangle-utils';
-import {
-  collab,
-  sendableSteps,
-  getVersion,
-  receiveTransaction,
-} from 'prosemirror-collab';
 
 export class CollabExtension extends Extension {
   get name() {

@@ -101,23 +101,22 @@ export class Manager {
     }));
   }
 
-  // do not use directly! use queued version
-  async __getInstance(docName, userId) {
-    await this.localDisk.isReady; // TODO this seems fragile
-    let inst = this.instances[docName] || (await this._newInstance(docName));
-    if (userId) inst.registerUser(userId);
-    inst.lastActive = Date.now();
-    return inst;
-  }
-
   async _getInstanceQueued(docName, userId) {
-    return this.getDocumentQueue.add(() => this.__getInstance(docName, userId));
+    if (!userId) {
+      throw new Error('userId is required');
+    }
+    return this.getDocumentQueue.add(async () => {
+      await this.localDisk.isReady; // TODO this seems fragile
+      let inst = this.instances[docName] || (await this._newInstance(docName));
+      if (userId) inst.registerUser(userId);
+      inst.lastActive = Date.now();
+      return inst;
+    });
   }
 
   routes = {
     get_document: async ({ docName, userId }) => {
       log('get_document', { docName, userId });
-      nullyObj({ docName, userId });
 
       let inst = await this._getInstanceQueued(docName, userId);
       return Output.json({
@@ -128,7 +127,6 @@ export class Manager {
     },
 
     get_events: async ({ docName, version, userId }) => {
-      nullyObj({ docName, version, userId });
       // An endpoint for a collaborative document instance which
       // returns all events between a given version and the server's
       // current version of the document.
@@ -191,7 +189,6 @@ export class Manager {
     },
 
     push_events: async ({ clientID, version, steps, docName, userId }) => {
-      nullyObj({ clientID, version, steps, docName, userId });
       version = nonNegInteger(version);
       steps = steps.map((s) => Step.fromJSON(this.schema, s));
       let result = (await this._getInstanceQueued(docName, userId)).addEvents(
@@ -250,10 +247,4 @@ function handle(fn) {
     }
     return result.resp();
   };
-}
-
-function nullyObj(obj) {
-  if (Object.values(obj).some((r) => r == null)) {
-    throw new Error('undefined values');
-  }
 }

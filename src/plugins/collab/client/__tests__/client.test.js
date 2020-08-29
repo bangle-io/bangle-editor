@@ -413,7 +413,6 @@ describe('pushing events', () => {
   test('handles invalid version error when pushing event  by restarting', async () => {
     console.error = jest.fn();
     let editor;
-    let unmount;
     let pullTimes = 0;
     let getDocTimes = 0;
     let pushTimes = 0;
@@ -456,7 +455,7 @@ describe('pushing events', () => {
         throw err;
       }),
       createEditorState: jest.fn(async (document, version) => {
-        ({ editor, unmount } = await setupEditor(document, version));
+        ({ editor } = await setupEditor(document, version));
         return editor.state;
       }),
       updateState: jest.fn((state) => {

@@ -50,7 +50,7 @@ export class Instance {
   addEvents(version, steps, clientID) {
     this.checkVersion(version);
     if (this.version !== version) {
-      console.log('this version', this.version, 'not same as ', version);
+      log('this version', this.version, 'not same as ', version);
       return false;
     }
     let doc = this.doc,
