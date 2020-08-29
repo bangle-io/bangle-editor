@@ -8,48 +8,24 @@ import browser from '../../src/utils/bangle-utils/utils/browser';
 import localforage from 'localforage';
 
 import { Editor } from './Editor';
-import { Header } from './components/Header';
 import { Aside } from './components/Aside';
 import {
   uuid,
   getIdleCallback,
 } from '../../src/utils/bangle-utils/utils/js-utils';
-
+import {
+  getAllDbData,
+  backupDb,
+  putDbData,
+} from './store/local/database-helpers';
 window.localforage = localforage;
 window.backupDb = backupDb;
+window.getAllDbData = getAllDbData;
+window.putDbData = putDbData;
 
 const db = new URLSearchParams(window.location.search).get('database');
 const DATABASE = db || 'bangle-play/v1';
 console.log('using db', DATABASE);
-
-async function backupDb(id = DATABASE, backUpId = 'backup/' + id) {
-  let source = localforage.createInstance({
-    name: id,
-  });
-
-  let target = localforage.createInstance({
-    name: backUpId,
-  });
-  const items = await new Promise((res) => {
-    let result = [];
-    source
-      .iterate((value, key, iterationNumber) => {
-        result.push(value);
-      })
-      .then(() => {
-        res(result);
-      });
-  });
-
-  for (const item of items) {
-    await target.setItem(item.docName || item.uid, {
-      ...item,
-      docName: item.docName || item.uid,
-      doc: item.doc || item.content,
-      version: item.version || 1,
-    });
-  }
-}
 
 export default class App extends React.PureComponent {
   state = {
