@@ -89,6 +89,7 @@ class LocalDisk {
       doc: doc.toJSON(),
       modified: Date.now(),
       created: inMemory?.created || Date.now(),
+      version: 1,
     };
 
     this._memory.set(docName, { created: item.created, doc });
