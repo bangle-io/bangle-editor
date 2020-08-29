@@ -6,7 +6,7 @@ import {
 } from '../../../utils/bangle-utils/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
-const LOG = false;
+const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 
@@ -95,7 +95,9 @@ export class Manager {
     let created;
     if (!doc) {
       let rawDoc = await this.disk.getDoc(docName);
-      doc = rawDoc ? this.schema.nodeFromJSON(rawDoc) : undefined;
+      doc = this.schema.nodeFromJSON(rawDoc);
+      // in case the doc was created save it
+      this.disk.flushDoc(docName, doc);
     }
 
     if (++this.instanceCount > this.maxCount) {
