@@ -29,9 +29,17 @@ export class EditorConnection {
   schema;
   docName;
 
-  constructor(docName, handlers, userId) {
+  static defaultOpts = {
+    recoveryBackOffInterval: 200,
+  };
+
+  constructor(docName, handlers, userId, opts = {}) {
     this.docName = docName;
     this.userId = userId;
+    this.opts = {
+      ...EditorConnection.defaultOpts,
+      ...opts,
+    };
     this.handlers = {
       getDocument: handlers.getDocument,
       pullEvents: handlers.pullEvents,
@@ -160,7 +168,7 @@ export class EditorConnection {
         }
 
         if (!(err instanceof CollabError)) {
-          throw err;
+          console.log('Not a collab error');
         }
 
         if (err.errorCode === 410 || badVersion(err)) {
@@ -168,14 +176,11 @@ export class EditorConnection {
           console.error(err);
           this.log('poll: bad version', this.state.comm);
           this.dispatch({ type: 'restart' });
-        } else if (err) {
-          console.error(err);
-          this.log('poll: recover', this.state.comm);
-          this.dispatch({ type: 'recover', error: err });
-        } else {
-          console.error(err);
-          console.error('unknown error with errorCode', err.errorCode);
+          return;
         }
+
+        this.log('poll: recover', this.state.comm);
+        this.dispatch({ type: 'recover', error: err });
       },
     );
   }
@@ -202,13 +207,17 @@ export class EditorConnection {
 
   // Try to recover from an error
   recover(err) {
-    let newBackOff = this.backOff ? Math.min(this.backOff * 2, 6e4) : 200;
+    this.clearBackOffTimeout();
+    let newBackOff = this.backOff
+      ? Math.min(this.backOff * 2, 6e4)
+      : this.opts.recoveryBackOffInterval;
+
     if (newBackOff > 1000 && this.backOff < 1000) {
       this.log('recover backing off', this.state.comm);
       console.error(err);
     }
     this.backOff = newBackOff;
-    setTimeout(() => {
+    this.backOffTimeout = setTimeout(() => {
       if (this.state.comm === 'recover') {
         this.dispatch({ type: 'poll' });
       }
@@ -289,8 +298,16 @@ export class EditorConnection {
     }
   }
 
+  clearBackOffTimeout() {
+    if (this.backOffTimeout) {
+      clearTimeout(this.backOffTimeout);
+      this.backOffTimeout = null;
+    }
+  }
+
   close() {
     this.closeRequest();
+    this.clearBackOffTimeout();
     this.handlers.destroyView();
     this.loaded = false;
   }
