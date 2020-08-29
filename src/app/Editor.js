@@ -28,7 +28,8 @@ import { TrailingNode } from '../utils/bangle-utils/addons';
 import StopwatchExtension from '../plugins/stopwatch/stopwatch';
 import { Manager } from '../plugins/collab/server/manager';
 import { Editor as PMEditor } from '../../src/utils/bangle-utils/editor';
-import { LocalDisk } from '../plugins/collab/server/disk';
+import { Disk } from '../plugins/persistence/disk';
+import { defaultContent } from './components/constants';
 
 const DEBUG = true;
 
@@ -49,7 +50,16 @@ export class Editor extends React.PureComponent {
       manualViewCreate: true,
     });
     const schema = dummyEditor.schema;
-    this.manager = new Manager(schema, LocalDisk);
+
+    this.manager = new Manager(schema, {
+      disk: new Disk({ db: this.props.database, defaultDoc: defaultContent }),
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+      this.manager.flush();
+      event.returnValue = `Are you sure you want to leave?`;
+    });
+
     if (this.devtools) {
       window.manager = this.manager;
     }
@@ -93,7 +103,7 @@ export class Editor extends React.PureComponent {
   render() {
     return (
       <div className="flex justify-center flex-row">
-        {this.state.docNames.map((docName, i) => (
+        {this.state.docNames.map((_, i) => (
           <div
             key={i}
             className="flex-1 max-w-screen-md ml-6 mr-6"

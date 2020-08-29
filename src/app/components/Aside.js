@@ -1,64 +1,24 @@
 import React from 'react';
 import format from 'date-fns/format';
-import localforage from 'localforage';
 
-import { localManager } from '../store/local';
 import { BaseButton, StackButton } from './Button';
 
 export class Aside extends React.PureComponent {
   state = {
     showSidebar: null,
-    store: localforage.createInstance({
-      name: 'local_disk',
-    }),
-  };
-  constructor(props) {
-    super(props);
-    this.getSavedData();
-  }
-
-  async getSavedData(result = new Map()) {
-    this.newItems = [];
-    return new Promise((res, rej) => {
-      this.state.store
-        .iterate((value, key, iterationNumber) => {
-          delete value.doc;
-          this.newItems.push(value);
-        })
-        .then(() => {
-          console.log('Iteration has completed');
-          res();
-        })
-        .catch((err) => {
-          // This code runs if there were any errors
-          console.error(err);
-          rej(err);
-        });
-    });
-  }
-
-  toggleSidebar = (state = !this.state.showSidebar) => {
-    this.setState({ showSidebar: state });
   };
 
   renderSidebar = () => {
-    const legacyResults = localManager.entries
-      .sort((a, b) => b.created - a.created)
-      .map((r) => ({
-        ...r,
-        title: 'legacy ' + r.title,
-      }));
-
-    const newResults = this.newItems
+    const newResults = this.props.dbItems
+      .filter((r) => r)
       .sort((a, b) => b.created - a.created)
       .map((r) => ({
         ...r,
         title: r.title,
       }));
 
-    // const newResults
-    return [...newResults, ...legacyResults].map((entry, i) => {
-      let docName = entry.docName || entry.uid;
+    return newResults.map((entry, i) => {
+      let docName = entry.docName;
       return (
         <div
           key={docName + i}
@@ -66,7 +26,7 @@ export class Aside extends React.PureComponent {
             if (this.props.docName === docName) {
               return;
             }
-            this.props.handleLoadEntry(entry);
+            this.props.handleClick(docName);
           }}
           className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
             this.props.docName === docName ? `bg-gray-300` : ''
@@ -85,13 +45,7 @@ export class Aside extends React.PureComponent {
             faType="fas fa-times-circle "
             onClick={async (e) => {
               e.stopPropagation();
-              if (e.title?.startsWith('legacy')) {
-                await this.props.handleRemoveEntry(entry);
-              } else {
-                this.state.store.removeItem(docName);
-                await this.getSavedData();
-              }
-              this.forceUpdate();
+              await this.props.handleRemoveEntry(docName);
             }}
           />
         </div>
@@ -103,8 +57,8 @@ export class Aside extends React.PureComponent {
     <>
       <div className="flex align-center justify-center">
         <StackButton
-          onClick={() => this.toggleSidebar()}
-          isActive={this.state.showSidebar}
+          onClick={() => this.props.toggleSidebar()}
+          isActive={this.props.showSidebar}
           faType="fas fa-folder"
           stack={true}
         />
@@ -119,7 +73,7 @@ export class Aside extends React.PureComponent {
           {this.sideBarMenu()}
           {this.props.children}
         </div>
-        {this.state.showSidebar ? (
+        {this.props.showSidebar ? (
           <div className="aside-content bg-gray-200  flex flex-col z-20 shadow-2xl px-3 pt-5 overflow-auto ">
             <div className="text-2xl pb-1 ml-3">Files</div>
             {this.renderSidebar()}
@@ -127,7 +81,7 @@ export class Aside extends React.PureComponent {
               className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
               onClick={async () => {
                 await this.props.handleNewEntry();
-                this.toggleSidebar();
+                this.props.toggleSidebar();
               }}
             >
               New
