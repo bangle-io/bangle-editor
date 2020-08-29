@@ -16,6 +16,36 @@ import {
 } from '../../src/utils/bangle-utils/utils/js-utils';
 
 window.localforage = localforage;
+window.backupDb = backupDb;
+
+const DATABASE = 'bangle-play/v1';
+
+async function backupDb(id = DATABASE, backUpId = 'backup/' + id) {
+  let source = localforage.createInstance({
+    name: id,
+  });
+
+  let target = localforage.createInstance({
+    name: backUpId,
+  });
+  const items = await new Promise((res) => {
+    let result = [];
+    source
+      .iterate((value, key, iterationNumber) => {
+        result.push(value);
+      })
+      .then(() => {
+        res(result);
+      });
+  });
+
+  for (const item of items) {
+    await target.setItem(item.docName || item.uid, {
+      ...item,
+      docName: item.docName || item.uid,
+    });
+  }
+}
 
 export default class App extends React.PureComponent {
   state = {
