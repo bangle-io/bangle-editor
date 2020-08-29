@@ -1,11 +1,15 @@
-import { simpleLRU } from '../../utils/bangle-utils/utils/js-utils';
+import {
+  simpleLRU,
+  getIdleCallback,
+} from '../../utils/bangle-utils/utils/js-utils';
+
 const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'persistence/disk') : () => {};
 
 export class Disk {
-  constructor(db, saveEvery = 5000, lruSize = 5) {
-    this.myMainDisk = new LocalDisk(db, saveEvery, lruSize);
+  constructor({ db, defaultDoc, saveEvery = 500, lruSize = 5 }) {
+    this.myMainDisk = new LocalDisk({ db, defaultDoc, saveEvery, lruSize });
   }
 
   // if doc does not exist create it
@@ -23,9 +27,9 @@ export class Disk {
 }
 
 class LocalDisk {
-  constructor(db, saveEvery, lruSize) {
+  constructor({ db, defaultDoc, saveEvery, lruSize }) {
     this._db = db;
-
+    this._defaultDoc = defaultDoc;
     this._memory = simpleLRU(lruSize);
     this._saveTimeout = null;
     this._saveEvery = saveEvery;
@@ -41,7 +45,7 @@ class LocalDisk {
       return item.doc;
     }
 
-    return null; // todo create doc
+    return this._defaultDoc;
   }
 
   async flushDoc(docName, doc) {
@@ -63,7 +67,7 @@ class LocalDisk {
     if (this._saveTimeout != null) return;
 
     this._saveTimeout = setTimeout(() => {
-      this._doSaveDoc(docName, getLatestDoc());
+      getIdleCallback(() => this._doSaveDoc(docName, getLatestDoc()));
     }, this._saveEvery);
   }
 

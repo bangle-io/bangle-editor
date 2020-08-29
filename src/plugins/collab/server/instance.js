@@ -22,11 +22,7 @@ export class Instance {
     this.doc =
       doc ||
       schema.node('doc', null, [
-        schema.node('paragraph', null, [
-          schema.text(
-            'This is a collaborative test document. Start editing to make it more interesting!',
-          ),
-        ]),
+        schema.node('paragraph', null, [schema.text('Namaste!')]),
       ]);
     // The version number of the document instance.
     this.version = 0;

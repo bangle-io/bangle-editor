@@ -61,7 +61,7 @@ export function setup(db = setupDb(), { managerOpts }) {
     new TodoItem(),
   ];
 
-  let disk = new Disk(db, 50);
+  let disk = new Disk({ db, saveEvery: 50 });
 
   return {
     manager: new Manager(createOneOffSchema(extensions()), {
