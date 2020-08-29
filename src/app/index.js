@@ -18,7 +18,9 @@ import {
 window.localforage = localforage;
 window.backupDb = backupDb;
 
-const DATABASE = 'bangle-play/v1';
+const db = new URLSearchParams(window.location.search).get('database');
+const DATABASE = db || 'bangle-play/v1';
+console.log('using db', DATABASE);
 
 async function backupDb(id = DATABASE, backUpId = 'backup/' + id) {
   let source = localforage.createInstance({
@@ -43,6 +45,8 @@ async function backupDb(id = DATABASE, backUpId = 'backup/' + id) {
     await target.setItem(item.docName || item.uid, {
       ...item,
       docName: item.docName || item.uid,
+      doc: item.doc || item.content,
+      version: item.version || 1,
     });
   }
 }
@@ -55,7 +59,7 @@ export default class App extends React.PureComponent {
   };
 
   database = localforage.createInstance({
-    name: 'bangle-play/v1',
+    name: DATABASE,
   });
 
   updateDbItems = async () => {};
