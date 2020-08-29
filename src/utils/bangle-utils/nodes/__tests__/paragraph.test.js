@@ -91,6 +91,64 @@ describe('Basics', () => {
   });
 });
 
+describe.only('Moving selection start and end', () => {
+  it('Moves selection to the start', async () => {
+    const { editor } = await testEditor(doc(p('foobar{<>}')));
+
+    sendKeyToPm(editor.view, 'Ctrl-a');
+
+    expect(editor.state).toEqualDocAndSelection(doc(p('{<>}foobar')));
+  });
+
+  it('Moves selection to the start', async () => {
+    const { editor } = await testEditor(doc(p('f{<>}oobar')));
+
+    sendKeyToPm(editor.view, 'Ctrl-a');
+
+    expect(editor.state).toEqualDocAndSelection(doc(p('{<>}foobar')));
+  });
+
+  it('Moves selection to the start', async () => {
+    const { editor } = await testEditor(doc(p('{<>}foobar')));
+
+    sendKeyToPm(editor.view, 'Ctrl-a');
+
+    expect(editor.state).toEqualDocAndSelection(doc(p('{<>}foobar')));
+  });
+
+  it('Moves selection to start when inside a list', async () => {
+    const { editor } = await testEditor(doc(ul(li(p('foobar{<>}')))));
+
+    sendKeyToPm(editor.view, 'Ctrl-a');
+
+    expect(editor.state).toEqualDocAndSelection(doc(ul(li(p('{<>}foobar')))));
+  });
+
+  it('Moves selection to the end', async () => {
+    const { editor } = await testEditor(doc(p('{<>}foobar')));
+
+    sendKeyToPm(editor.view, 'Ctrl-e');
+
+    expect(editor.state).toEqualDocAndSelection(doc(p('foobar{<>}')));
+  });
+
+  it('Moves selection to the end', async () => {
+    const { editor } = await testEditor(doc(p('fooba{<>}r')));
+
+    sendKeyToPm(editor.view, 'Ctrl-e');
+
+    expect(editor.state).toEqualDocAndSelection(doc(p('foobar{<>}')));
+  });
+
+  it('Moves selection to end when inside a list', async () => {
+    const { editor } = await testEditor(doc(ul(li(p('{<>}foobar')))));
+
+    sendKeyToPm(editor.view, 'Ctrl-e');
+
+    expect(editor.state).toEqualDocAndSelection(doc(ul(li(p('foobar{<>}')))));
+  });
+});
+
 test.todo('Bold italics etc');
 test.todo('Convert to different node type to para');
 
