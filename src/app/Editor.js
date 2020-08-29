@@ -1,5 +1,4 @@
 import React from 'react';
-import localforage from 'localforage';
 
 import Dinos from '../../src/plugins/dinos/index';
 import Emoji from '../../src/plugins/emoji/index';
