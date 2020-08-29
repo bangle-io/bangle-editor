@@ -26,12 +26,12 @@ export class TrailingNode extends Addon {
         view: () => ({
           update: (view) => {
             const { state } = view;
+
+            // getIdleCallback(() => {
             const { incorrectNodeAtEnd } = plugin.getState(state);
             if (!incorrectNodeAtEnd) {
               return;
             }
-
-            // getIdleCallback(() => {
             const { doc, schema, tr } = view.state;
             const type = schema.nodes[this.options.node];
             const transaction = tr.insert(

@@ -14,9 +14,8 @@ import {
 } from '../utils/bangle-utils/nodes';
 
 import { Manager } from '../plugins/collab/server/manager';
-import { LocalDisk } from '../plugins/collab/server/disk';
-import localforage from 'localforage';
 import { uuid } from '../utils/bangle-utils/utils/js-utils';
+import { Disk } from '../plugins/persistence/disk';
 
 const START = '💚';
 const END = '🖤';
@@ -25,12 +24,9 @@ const NOOP = '_';
 const EMOJI_NOOP = '🐑'; // usefull for balancing lengths of seq, as emojis are large and take space
 const ENTER = '↵';
 
-const DISK_SAVE_TIMEOUT = 10;
-
-export function setupStore(doc) {
+export function setupDb(doc) {
   return {
-    iterate: jest.fn().mockResolvedValue(),
-    getItem: jest.fn(() => {
+    getItem: jest.fn(async () => {
       return {
         uid: 'ole',
         doc: doc || {
@@ -50,19 +46,11 @@ export function setupStore(doc) {
         created: 0,
       };
     }),
-    setItem: jest.fn(),
+    setItem: jest.fn(async () => {}),
   };
 }
-class TestDisk extends LocalDisk {
-  constructor(...args) {
-    super(...args);
-    this.saveEvery = DISK_SAVE_TIMEOUT;
-  }
-}
 
-export function setup(store = setupStore(), { managerOpts }) {
-  localforage.createInstance.mockImplementation(() => store);
-
+export function setup(db = setupDb(), { managerOpts }) {
   const extensions = (uid = uuid()) => [
     new OrderedList(),
     new BulletList(),
@@ -73,12 +61,13 @@ export function setup(store = setupStore(), { managerOpts }) {
     new TodoItem(),
   ];
 
+  let disk = new Disk(db, 50);
+
   return {
-    manager: new Manager(
-      createOneOffSchema(extensions()),
-      TestDisk,
-      managerOpts,
-    ),
+    manager: new Manager(createOneOffSchema(extensions()), {
+      disk,
+      ...managerOpts,
+    }),
     editors: [],
     getEditor: function (id) {
       return this.editors.find((e) => e[0] === id)?.[1];
@@ -112,7 +101,7 @@ export function setup(store = setupStore(), { managerOpts }) {
 export async function* spinEditors(
   testCase,
   {
-    store = setupStore(),
+    store = setupDb(),
     docName = 'ole',
     typeInterval = 1,
     columnGapInterval = 10,

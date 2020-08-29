@@ -229,24 +229,35 @@ export function serialExecuteQueue() {
 
 export function simpleLRU(size) {
   let array = [];
-  let clear = () => {
+  let removeItems = () => {
     while (array.length > size) {
       log('removing', array.shift());
     }
   };
   return {
-    entries: () => array.slice(0),
-    get: (key) => {
-      clear();
+    entries() {
+      return array.slice(0);
+    },
+
+    remove(key) {
+      array = array.filter((item) => item.key !== key);
+    },
+
+    clear() {
+      array = undefined;
+    },
+
+    get(key) {
       let result = array.find((item) => item.key === key);
       if (result) {
+        this.set(key, result.value); // put the item in the front
         return result.value;
       }
     },
-    set: (key, value) => {
-      clear();
-      array = array.filter((item) => item.key !== key);
+    set(key, value) {
+      this.remove(key);
       array.push({ key, value });
+      removeItems();
     },
   };
 }
