@@ -98,7 +98,7 @@ export default class App extends React.PureComponent {
     }
   }
 
-  handleLoadEntry = (docName) => {
+  handleClick = (docName) => {
     this.setState({ docName });
   };
 
@@ -148,7 +148,7 @@ export default class App extends React.PureComponent {
             docName={docName}
             database={this.database}
             dbItems={this.state.dbItems}
-            handleLoadEntry={this.handleLoadEntry}
+            handleClick={this.handleClick}
             handleRemoveEntry={this.handleRemoveEntry}
             handleNewEntry={this.handleNewEntry}
             toggleSidebar={this.toggleSidebar}

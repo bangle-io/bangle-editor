@@ -1,7 +1,6 @@
 import React from 'react';
 import format from 'date-fns/format';
 
-import { localManager } from '../store/local';
 import { BaseButton, StackButton } from './Button';
 
 export class Aside extends React.PureComponent {
@@ -18,7 +17,6 @@ export class Aside extends React.PureComponent {
         title: r.title,
       }));
 
-    // const newResults
     return newResults.map((entry, i) => {
       let docName = entry.docName;
       return (
@@ -28,7 +26,7 @@ export class Aside extends React.PureComponent {
             if (this.props.docName === docName) {
               return;
             }
-            this.props.handleLoadEntry(docName);
+            this.props.handleClick(docName);
           }}
           className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
             this.props.docName === docName ? `bg-gray-300` : ''

@@ -96,7 +96,7 @@ export class Manager {
     if (!doc) {
       let rawDoc = await this.disk.getDoc(docName);
       doc = this.schema.nodeFromJSON(rawDoc);
-      // in case the doc was created save it
+      // in case the doc was newly created save it
       this.disk.flushDoc(docName, doc);
     }
 
