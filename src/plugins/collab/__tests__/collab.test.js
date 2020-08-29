@@ -63,7 +63,7 @@ describe('one client - server', () => {
     }
   });
 
-  it.only('types correctly and save correctly', async () => {
+  it('types correctly and save correctly', async () => {
     expect.hasAssertions();
     // prettier-ignore
     const seq = {
@@ -96,6 +96,7 @@ describe('one client - server', () => {
       modified: expect.any(Number),
       title: 'hello world!',
       docName: 'ole',
+      version: 1,
     });
   });
 });

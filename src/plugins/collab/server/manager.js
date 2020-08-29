@@ -188,8 +188,8 @@ export class Manager {
       });
 
       const timeout = sleep(this.opts.userWaitTimeout).then(() => {
+        log('timeout', abort);
         if (abort) abort();
-        log('timeout');
         return 'timeout';
       });
 

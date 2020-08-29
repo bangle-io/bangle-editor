@@ -91,7 +91,7 @@ describe('Basics', () => {
   });
 });
 
-describe.only('Moving selection start and end', () => {
+describe('Moving selection start and end', () => {
   it('Moves selection to the start', async () => {
     const { editor } = await testEditor(doc(p('foobar{<>}')));
 

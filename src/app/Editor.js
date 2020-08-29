@@ -55,10 +55,10 @@ export class Editor extends React.PureComponent {
       disk: new Disk({ db: this.props.database, defaultDoc: defaultContent }),
     });
 
-    window.addEventListener('beforeunload', (event) => {
-      this.manager.flush();
-      event.returnValue = `Are you sure you want to leave?`;
-    });
+    // window.addEventListener('beforeunload', (event) => {
+    //   this.manager.flush();
+    //   event.returnValue = `Are you sure you want to leave?`;
+    // });
 
     if (this.devtools) {
       window.manager = this.manager;
