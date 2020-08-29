@@ -1,4 +1,5 @@
 import React from 'react';
+import localforage from 'localforage';
 
 import Dinos from '../../src/plugins/dinos/index';
 import Emoji from '../../src/plugins/emoji/index';
@@ -28,9 +29,13 @@ import { TrailingNode } from '../utils/bangle-utils/addons';
 import StopwatchExtension from '../plugins/stopwatch/stopwatch';
 import { Manager } from '../plugins/collab/server/manager';
 import { Editor as PMEditor } from '../../src/utils/bangle-utils/editor';
-import { LocalDisk } from '../plugins/collab/server/disk';
+import { Disk } from '../plugins/persistence/disk';
 
 const DEBUG = true;
+
+const db = localforage.createInstance({
+  name: 'local_disk',
+});
 
 export class Editor extends React.PureComponent {
   state = {
@@ -49,7 +54,16 @@ export class Editor extends React.PureComponent {
       manualViewCreate: true,
     });
     const schema = dummyEditor.schema;
-    this.manager = new Manager(schema, LocalDisk);
+
+    this.manager = new Manager(schema, {
+      disk: new Disk(db),
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+      this.manager.flush();
+      event.returnValue = `Are you sure you want to leave?`;
+    });
+
     if (this.devtools) {
       window.manager = this.manager;
     }

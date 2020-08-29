@@ -5,10 +5,10 @@ import '../../../test-helpers/jest-helpers';
 
 import {} from '../../../test-helpers';
 import {} from './../../../utils/bangle-utils/nodes';
-import { doc, p, ul, li, ol } from './../../../test-helpers/test-builders';
+import { doc, p, ul, li } from './../../../test-helpers/test-builders';
 import { TextSelection } from 'prosemirror-state';
 import {
-  setupStore,
+  setupDb,
   spinEditors,
   expectToHaveIdenticalElements,
 } from '../../../test-helpers/collab-test-helpers';
@@ -55,7 +55,7 @@ describe('one client - server', () => {
       seq1: '💚_🍌',
     };
 
-    let store = setupStore();
+    let store = setupDb();
     for await (const { states } of spinEditors(seq, { store })) {
       expect(states.seq1).toMatchSnapshot();
       expect(store.getItem).toBeCalledTimes(1);
@@ -63,14 +63,14 @@ describe('one client - server', () => {
     }
   });
 
-  it('types correctly and save correctly', async () => {
+  it.only('types correctly and save correctly', async () => {
     expect.hasAssertions();
     // prettier-ignore
     const seq = {
       seq1: '💚_____🍌↵- I am a bullet__🍌',
     }
 
-    const store = setupStore();
+    const store = setupDb();
     const iter = spinEditors(seq, { store });
     let nextViews = async () => (await iter.next()).value.views;
 
@@ -88,6 +88,8 @@ describe('one client - server', () => {
       ),
     );
 
+    await sleep(50); // wait for disk
+
     expect(store.setItem).lastCalledWith('ole', {
       created: expect.any(Number),
       doc: view.state.doc.toJSON(),
@@ -104,7 +106,7 @@ it('changing selection in one client', async () => {
     seq2: '💚_____🍌↵- I am a bullet__🍌',
   };
 
-  const store = setupStore();
+  const store = setupDb();
   const iter = spinEditors(seq, { store });
   let nextViews = async () => (await iter.next()).value.views;
 
@@ -127,7 +129,7 @@ it('hold incoming of a seq1 client', async () => {
     seq2: '💚_____🍌↵- I__🍌___🍌',
   };
 
-  const store = setupStore();
+  const store = setupDb();
   let seq1Resume = null;
   let shouldStopSeq1 = false;
   let interceptRequests = (path, payload) => {
@@ -178,7 +180,7 @@ it('hold incoming of a seq1 client but it still continues to type', async () => 
     seq2: '💚_____🍌__Z__🍌___🍌',
   };
 
-  const store = setupStore();
+  const store = setupDb();
   let seq1Resume = null;
   let shouldStopSeq1 = false;
   let interceptRequests = (path, payload) => {
@@ -229,7 +231,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
       seq2: '💚_____🍌↵- I__🍌',
     }
 
-  const store = setupStore();
+  const store = setupDb();
   let requestCounter = 0;
 
   let interceptRequests = (path, payload) => {
@@ -329,7 +331,7 @@ it.each([
     },
   ],
 ])('%# more sync cases', async (seq, secondBananaResult, thirdBananaResult) => {
-  const store = setupStore();
+  const store = setupDb();
   let seq1GetResume = null;
   let seq1PushResume = null;
   let shouldStopSeq1 = false;
@@ -400,7 +402,7 @@ test.each([
     doc(p('abaaaaaaabaaaa')),
   ],
 ])('2 clients Case %#', async (seq, expected) => {
-  const store = setupStore(emptyDoc);
+  const store = setupDb(emptyDoc);
 
   for await (const { views } of spinEditors(seq, { store })) {
     const { seq1: view1, seq2: view2 } = views;
@@ -463,7 +465,7 @@ it('four clients correctly call store', async () => {
     seq4: '💚____🍌',
   };
 
-  const store = setupStore();
+  const store = setupDb();
   for await (const _ of spinEditors(seq, { store })) {
     expect(store.getItem).toBeCalledTimes(1);
     expect(store.getItem).toHaveBeenNthCalledWith(1, 'ole');
@@ -476,7 +478,7 @@ describe('🖤unmounting of editor🖤', () => {
       seq1: '💚______aaaaaa______aaaaaa_🖤🍌',
     };
 
-    const store = setupStore(emptyDoc);
+    const store = setupDb(emptyDoc);
 
     for await (const { views } of spinEditors(seq, { store })) {
       const { seq1: view1 } = views;
@@ -515,7 +517,7 @@ describe('🖤unmounting of editor🖤', () => {
   ])(
     'Case %# editor state syncs',
     async (seq, [expected1, expected2, expected3]) => {
-      const store = setupStore(emptyDoc);
+      const store = setupDb(emptyDoc);
 
       for await (const { views } of spinEditors(seq, { store })) {
         const { seq1: view1, seq2: view2, seq3: view3 } = views;
@@ -534,7 +536,7 @@ describe('🖤unmounting of editor🖤', () => {
       seq3: '________💚_three_🖤______🍌',
       seq4: '🐑__________💚___four____🍌',
     };
-    const store = setupStore(emptyDoc);
+    const store = setupDb(emptyDoc);
 
     for await (const { views } of spinEditors(seq, { store })) {
       const { seq1: view1, seq2: view2, seq3: view3, seq4: view4 } = views;
@@ -553,7 +555,7 @@ describe('🖤unmounting of editor🖤', () => {
       seq3: '🐑_______💚_three_🖤__________🍌',
       seq4: '🐑🐑_________💚___four________🍌',
     };
-    const store = setupStore(emptyDoc);
+    const store = setupDb(emptyDoc);
 
     for await (const { views } of spinEditors(seq, { store })) {
       const { seq1: view1, seq2: view2, seq3: view3, seq4: view4 } = views;
@@ -595,7 +597,7 @@ test.each([
   "Clients works after server times out the 'get_events' request",
   async (seq, secondBananaResult, thirdBananaResult) => {
     const userWaitTimeout = 150;
-    const store = setupStore();
+    const store = setupDb();
     const iter = spinEditors(seq, {
       store,
       managerOpts: { userWaitTimeout },

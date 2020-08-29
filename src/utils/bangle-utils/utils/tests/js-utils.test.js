@@ -1,4 +1,9 @@
-import { matchAllPlus, serialExecuteQueue, sleep } from '../js-utils';
+import {
+  matchAllPlus,
+  serialExecuteQueue,
+  sleep,
+  simpleLRU,
+} from '../js-utils';
 
 describe('matchAllPlus', () => {
   test('works when match', () => {
@@ -197,5 +202,75 @@ describe('serialExecuteQueue', () => {
     });
 
     expect(result).toEqual(['🐅', '🐌']);
+  });
+});
+
+describe('Simple LRU', () => {
+  test('Pushed item in the LRU', () => {
+    let lru = simpleLRU(3);
+    lru.set('one', 1);
+    lru.set('two', 2);
+    lru.set('three', 3);
+    expect(lru.entries()).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "key": "one",
+          "value": 1,
+        },
+        Object {
+          "key": "two",
+          "value": 2,
+        },
+        Object {
+          "key": "three",
+          "value": 3,
+        },
+      ]
+    `);
+  });
+
+  test('Retreiving item makes it recently used', () => {
+    let lru = simpleLRU(3);
+    lru.set('one', 1);
+    lru.set('two', 2);
+    lru.set('three', 3);
+    expect(lru.get('one')).toBe(1);
+
+    let result = lru.entries();
+    expect(result).toHaveLength(3);
+    expect(result[result.length - 1]).toEqual({
+      key: 'one',
+      value: 1,
+    });
+  });
+
+  test('Clears item correct', () => {
+    let lru = simpleLRU(3);
+    lru.set('one', 1);
+    lru.set('two', 2);
+    lru.set('three', 3);
+    lru.get('one', 1);
+    lru.set('four', 4);
+    expect(lru.get('two')).toBe(undefined);
+
+    let result = lru.entries();
+    expect(result).toHaveLength(3);
+
+    expect(lru.entries()).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "key": "three",
+          "value": 3,
+        },
+        Object {
+          "key": "one",
+          "value": 1,
+        },
+        Object {
+          "key": "four",
+          "value": 4,
+        },
+      ]
+    `);
   });
 });

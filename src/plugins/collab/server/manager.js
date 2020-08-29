@@ -14,43 +14,62 @@ export class Manager {
   instanceCount = 0;
   maxCount = 20;
   defaultOpts = {
+    disk: {
+      getDoc: async () => {},
+      updateDoc: async () => {},
+      flushDoc: async () => {},
+    },
     // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
     userWaitTimeout: 30 * 1000,
     collectUsersTimeout: 5 * 1000,
     instanceCleanupTimeout: 5 * 1000,
     interceptRequests: undefined, // useful for testing or debugging
   };
-  constructor(schema, LocalDisk, opts = {}) {
+  constructor(schema, opts = {}) {
     this.opts = { ...this.defaultOpts, ...opts };
     this.schema = schema;
     this.instances = {};
-    this.localDisk = new LocalDisk(this.instances);
+    this.disk = this.opts.disk;
     this.routes = objectMapValues(this.routes, ([key, value]) => {
       return handle(value);
     });
-    // Queue is very important
+
     // to prevent parallel requests from creating deadlock
     // for example two requests parallely comming and creating two new instances of the same doc
     this.getDocumentQueue = serialExecuteQueue();
 
-    this.cleanup = () => {
-      // TODO this is not ideal we shouldnt have so many timers
-      // everythign should be stateless dry plugggable
-      const instances = Object.values(this.instances);
-      if (instances.length <= 1) {
-        return;
+    if (this.opts.instanceCleanupTimeout > 0) {
+      setInterval(this.cleanup, this.opts.instanceCleanupTimeout);
+    }
+  }
+
+  flush(instances, shutdown = false) {
+    log('received flush request');
+    if (!instances) {
+      instances = Object.values(this.instances);
+    }
+
+    for (const i of instances) {
+      log('flushing down ', i.docId, i.doc.firstChild?.textContent);
+      if (shutdown) {
+        i.stop();
       }
-      Object.values(this.instances).forEach((i) => {
-        if (i.userCount === 0) {
-          log('shutting down ', i.docId, i.doc.firstChild?.textContent);
-          this.localDisk.saveInstance(i).then(() => {
-            i.stop();
-            delete this.instances[i.docName];
-          });
-        }
-      });
-    };
-    setInterval(this.cleanup, this.opts.instanceCleanupTimeout);
+      this.disk.flushDoc(i.docName, i.doc);
+    }
+  }
+
+  cleanup = () => {
+    const instances = Object.values(this.instances);
+    // TODO maybe donot need to do this check
+    if (instances.length <= 1) {
+      return;
+    }
+    this.flush(instances.filter((i) => i.userCount === 0));
+  };
+
+  destroy() {
+    // todo need to abort `get_events` pending requests
+    this.flush(Object.values(this.instances), true);
   }
 
   async handleRequest(path, payload) {
@@ -75,12 +94,10 @@ export class Manager {
     const { instances } = this;
     let created;
     if (!doc) {
-      let saved = await this.localDisk.retrieveObject(docName);
-      if (saved) {
-        doc = this.schema.nodeFromJSON(saved.doc);
-        created = saved.created;
-      }
+      let rawDoc = await this.disk.getDoc(docName);
+      doc = rawDoc ? this.schema.nodeFromJSON(rawDoc) : undefined;
     }
+
     if (++this.instanceCount > this.maxCount) {
       let oldest = null;
       for (let id in instances) {
@@ -95,7 +112,9 @@ export class Manager {
       docName,
       doc,
       schema: this.schema,
-      scheduleSave: this.localDisk.scheduleSave,
+      scheduleSave: () => {
+        this.disk.updateDoc(docName, () => instances[docName].doc);
+      },
       created,
       collectUsersTimeout: this.opts.collectUsersTimeout,
     }));
@@ -106,7 +125,6 @@ export class Manager {
       throw new Error('userId is required');
     }
     return this.getDocumentQueue.add(async () => {
-      await this.localDisk.isReady; // TODO this seems fragile
       let inst = this.instances[docName] || (await this._newInstance(docName));
       if (userId) inst.registerUser(userId);
       inst.lastActive = Date.now();
