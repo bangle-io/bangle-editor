@@ -181,6 +181,7 @@ export function cancelablePromise(promise) {
         hasCanceled ? reject({ isCanceled: true }) : reject(error),
       ),
   );
+
   return {
     promise: wrappedPromise,
     cancel() {
@@ -260,4 +261,34 @@ export function simpleLRU(size) {
       removeItems();
     },
   };
+}
+
+export async function raceTimeout(promise, ts) {
+  let timerId;
+  let timeout = false;
+  return new Promise((resolve, reject) => {
+    timerId = setTimeout(() => {
+      timeout = true;
+      reject({ timeout: true });
+    }, ts);
+
+    promise.then(
+      (result) => {
+        if (timeout) {
+          return;
+        }
+        clearTimeout(timerId);
+        timerId = null;
+        resolve(result);
+      },
+      (error) => {
+        if (timeout) {
+          return;
+        }
+        clearTimeout(timerId);
+        timerId = null;
+        reject(error);
+      },
+    );
+  });
 }
