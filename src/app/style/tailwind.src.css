@@ -4,20 +4,18 @@
 
 .bangle-editor p {
   @apply text-base whitespace-pre-wrap break-words leading-relaxed text-lg;
-  font-family: 'Montserrat', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 .bangle-editor h1 {
   @apply text-4xl my-2 mt-5;
-  font-family: 'Lato', sans-serif;
 }
 .bangle-editor h2 {
   @apply text-3xl mb-1 mt-4;
-  font-family: 'Lato', sans-serif;
 }
 .bangle-editor h3 {
   @apply text-xl font-medium mb-1 mt-4;
-  font-family: 'Lato', sans-serif;
 }
 
 .bangle-editor ul {
@@ -53,7 +51,6 @@
 }
 
 .bangle-editor blockquote > p {
-  font-family: 'Arvo', serif;
   @apply text-base;
 }
 
