@@ -43,10 +43,14 @@ export class Paragraph extends Node {
       'Ctrl-a': filter(
         [(state) => state.selection.empty],
         (state, dispatch) => {
-          const { node, start } = findParentNodeOfType(type)(state.selection);
-          if (!node) {
+          const current = findParentNodeOfType(type)(state.selection);
+
+          if (!current) {
             return false;
           }
+
+          const { node, start } = current;
+
           dispatch(
             state.tr.setSelection(TextSelection.create(state.doc, start)),
           );
@@ -56,10 +60,13 @@ export class Paragraph extends Node {
       'Ctrl-e': filter(
         [(state) => state.selection.empty],
         (state, dispatch) => {
-          const { node, start } = findParentNodeOfType(type)(state.selection);
-          if (!node) {
+          const current = findParentNodeOfType(type)(state.selection);
+
+          if (!current) {
             return false;
           }
+
+          const { node, start } = current;
 
           dispatch(
             state.tr.setSelection(
