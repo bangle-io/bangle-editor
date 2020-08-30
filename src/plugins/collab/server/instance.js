@@ -40,6 +40,8 @@ export class Instance {
   stop() {
     if (this.collecting != null) {
       clearInterval(this.collecting);
+      this.collecting = null;
+      this.scheduleSave(true);
     }
   }
 
