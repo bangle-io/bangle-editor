@@ -51,14 +51,19 @@ export class Editor extends React.PureComponent {
     });
     const schema = dummyEditor.schema;
 
-    this.manager = new Manager(schema, {
-      disk: new Disk({ db: this.props.database, defaultDoc: defaultContent }),
+    const disk = new Disk({
+      db: this.props.database,
+      defaultDoc: defaultContent,
     });
 
-    // window.addEventListener('beforeunload', (event) => {
-    //   this.manager.flush();
-    //   event.returnValue = `Are you sure you want to leave?`;
-    // });
+    this.manager = new Manager(schema, {
+      disk,
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+      disk.myMainDisk.flushAll();
+      event.returnValue = `Are you sure you want to leave?`;
+    });
 
     if (this.devtools) {
       window.manager = this.manager;

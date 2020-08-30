@@ -45,33 +45,29 @@ export class Manager {
     }
   }
 
-  flush(instances, shutdown = false) {
-    log('received flush request');
-    if (!instances) {
-      instances = Object.values(this.instances);
-    }
-
-    for (const i of instances) {
-      log('flushing down ', i.docName, i.doc.firstChild?.textContent);
-      if (shutdown) {
-        i.stop();
-      }
-      this.disk.flushDoc(i.docName, i.doc);
-    }
-  }
-
   cleanup = () => {
-    const instances = Object.values(this.instances);
-    // TODO maybe donot need to do this check
-    if (instances.length <= 1) {
-      return;
+    const instances = Object.entries(this.instances);
+    const toKeep = {};
+    for (const [docName, i] of instances) {
+      if (i.userCount === 0) {
+        log('stopping instances', i.docName, i.doc.firstChild?.textContent);
+        i.stop();
+      } else {
+        toKeep[docName] = i;
+      }
     }
-    this.flush(instances.filter((i) => i.userCount === 0));
+    this.instances = toKeep;
   };
 
   destroy() {
     // todo need to abort `get_events` pending requests
-    this.flush(Object.values(this.instances), true);
+    const instances = Object.values(this.instances);
+
+    for (const i of instances) {
+      log('stopping instances', i.docName, i.doc.firstChild?.textContent);
+      i.stop();
+    }
+    this.instances = {};
   }
 
   async handleRequest(path, payload) {
@@ -116,8 +112,10 @@ export class Manager {
       docName,
       doc,
       schema: this.schema,
-      scheduleSave: () => {
-        this.disk.updateDoc(docName, () => instances[docName].doc);
+      scheduleSave: (final) => {
+        final
+          ? this.disk.flushDoc(docName, instances[docName].doc)
+          : this.disk.updateDoc(docName, () => instances[docName].doc);
       },
       created,
       collectUsersTimeout: this.opts.collectUsersTimeout,

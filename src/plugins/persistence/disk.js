@@ -1,14 +1,11 @@
-import {
-  simpleLRU,
-  getIdleCallback,
-} from '../../utils/bangle-utils/utils/js-utils';
+import { simpleLRU } from '../../utils/bangle-utils/utils/js-utils';
 
 const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'persistence/disk') : () => {};
 
 export class Disk {
-  constructor({ db, defaultDoc, saveEvery = 500, lruSize = 5 }) {
+  constructor({ db, defaultDoc, saveEvery = 2000, lruSize = 10 }) {
     this.myMainDisk = new LocalDisk({ db, defaultDoc, saveEvery, lruSize });
   }
 
@@ -33,14 +30,20 @@ class LocalDisk {
     this._memory = simpleLRU(lruSize);
     this._saveTimeout = null;
     this._saveEvery = saveEvery;
+    this._pendingTimers = {};
+  }
+
+  async flushAll() {
+    const promises = Object.values(this._pendingTimers).map((r) => r());
+    await Promise.all(promises);
   }
 
   async getDoc(docName) {
     let item = await this._db.getItem(docName);
 
     if (item) {
-      // saving doc as undefined because item.doc is a json and not a PM doc
-      this._memory.set(docName, { created: item.created, doc: undefined });
+      // saving created date
+      this._memory.set(docName, item.created);
 
       return item.doc;
     }
@@ -49,7 +52,7 @@ class LocalDisk {
   }
 
   async flushDoc(docName, doc) {
-    log('flush doc called');
+    log(docName, 'flush doc called');
     // clear the timeout so that we do not
     // overwrite the doc due to the timeout
     if (this._saveTimeout) {
@@ -61,14 +64,26 @@ class LocalDisk {
     this._memory.remove(docName);
   }
 
-  // TODO right now this will clear any save request of other docName
-  // making it not save older docs
   async updateDoc(docName, getLatestDoc) {
-    if (this._saveTimeout != null) return;
+    const exists = this._pendingTimers[docName];
+    if (exists) {
+      log(docName, 'timeout already exists');
+      return;
+    }
 
-    this._saveTimeout = setTimeout(() => {
-      getIdleCallback(() => this._doSaveDoc(docName, getLatestDoc()));
+    const timeout = setTimeout(() => {
+      log(docName, 'timeout calling callback');
+      callback();
     }, this._saveEvery);
+
+    const callback = async () => {
+      log(docName, 'callback');
+      await this._doSaveDoc(docName, getLatestDoc());
+      delete this._pendingTimers[docName];
+      clearTimeout(timeout);
+    };
+
+    this._pendingTimers[docName] = callback;
   }
 
   async _doSaveDoc(docName, doc) {
@@ -78,21 +93,16 @@ class LocalDisk {
 
     let inMemory = this._memory.get(docName);
 
-    if (inMemory?.doc && doc.eq(inMemory.doc)) {
-      log(docName, 'same document');
-      return;
-    }
-
     let item = {
       docName: docName,
       title: doc.firstChild?.textContent || docName,
       doc: doc.toJSON(),
       modified: Date.now(),
-      created: inMemory?.created || Date.now(),
+      created: inMemory || Date.now(),
       version: 1,
     };
 
-    this._memory.set(docName, { created: item.created, doc });
+    this._memory.set(docName, item.created);
 
     await this._db.setItem(docName, item);
   }
