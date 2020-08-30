@@ -103,7 +103,7 @@ export function matchAllPlus(regexp, str) {
 
   if (lastItemEnd && lastItemEnd !== str.length) {
     result.push({
-      start: lastItemEnd + 1,
+      start: lastItemEnd,
       end: str.length,
       match: false,
     });
