@@ -6,6 +6,10 @@ import { Mark } from './mark';
 import { matchAllPlus } from '../utils/js-utils';
 import { mapSlice } from '../utils/pm-utils';
 
+const LOG = true;
+
+let log = LOG ? console.log.bind(console, 'marks/link') : () => {};
+
 export class Link extends Mark {
   get name() {
     return 'link';

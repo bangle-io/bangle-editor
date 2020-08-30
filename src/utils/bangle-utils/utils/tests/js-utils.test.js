@@ -53,7 +53,7 @@ describe('matchAllPlus', () => {
         "football",
         " ",
         "foosball",
-        "gobhi",
+        " gobhi",
       ]
     `);
   });
@@ -80,6 +80,31 @@ describe('matchAllPlus', () => {
       ]
     `);
   });
+
+  test.each([
+    ['hello https://google.com two https://bangle.io', 2],
+    ['hello https://google.com https://bangle.io', 2],
+    ['https://google.com https://bangle.io', 2],
+    ['https://google.com t https://bangle.io ', 2],
+    ['https://google.com 🙆‍♀️ https://bangle.io 👯‍♀️', 2],
+    ['hello https://google.com two s', 1],
+    ["hello https://google.com'", 1],
+    ["hello https://google.com' two", 1],
+  ])(
+    '%# string start and end positions should be correct',
+    (str, matchCount) => {
+      const result = matchAllPlus(
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
+        str,
+      );
+
+      expect(result.filter((r) => r.match)).toHaveLength(matchCount);
+
+      expect(
+        result.reduce((prev, cur) => prev + str.slice(cur.start, cur.end), ''),
+      ).toBe(str);
+    },
+  );
 });
 
 describe('serialExecuteQueue', () => {
