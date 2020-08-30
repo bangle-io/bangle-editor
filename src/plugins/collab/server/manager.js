@@ -3,6 +3,8 @@ import {
   sleep,
   objectMapValues,
   serialExecuteQueue,
+  clearableSleep,
+  raceTimeout,
 } from '../../../utils/bangle-utils/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
@@ -20,7 +22,7 @@ export class Manager {
       flushDoc: async () => {},
     },
     // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
-    userWaitTimeout: 30 * 1000,
+    userWaitTimeout: 7 * 1000,
     collectUsersTimeout: 5 * 1000,
     instanceCleanupTimeout: 5 * 1000,
     interceptRequests: undefined, // useful for testing or debugging
@@ -50,7 +52,7 @@ export class Manager {
     }
 
     for (const i of instances) {
-      log('flushing down ', i.docId, i.doc.firstChild?.textContent);
+      log('flushing down ', i.docName, i.doc.firstChild?.textContent);
       if (shutdown) {
         i.stop();
       }
@@ -174,7 +176,7 @@ export class Manager {
         let waiter = {
           userId,
           onFinish: () => {
-            res('finished');
+            res();
           },
         };
         inst.waiting.push(waiter);
@@ -182,30 +184,25 @@ export class Manager {
           // note instance.js removes item from the waiting array
           // before calling onFinish
           let found = inst.waiting.indexOf(waiter);
+          log('in abort waiting =', inst.waiting.length);
+
           if (found > -1) inst.waiting.splice(found, 1);
           abort = null;
         };
       });
 
-      const timeout = sleep(this.opts.userWaitTimeout).then(() => {
-        log('timeout', abort);
-        if (abort) abort();
-        return 'timeout';
-      });
-
-      const outcome = await Promise.race([timeout, waitForChanges]);
-      log('sending outcome', outcome, 'to ', userId);
-
-      if (outcome === 'finished') {
+      try {
+        await raceTimeout(waitForChanges, this.opts.userWaitTimeout);
         log('finished');
-
         return Output.outputEvents(inst, inst.getEvents(version, null));
+      } catch (err) {
+        if (err.timeout === true) {
+          log('timeout aborting');
+          if (abort) abort();
+          return Output.json({});
+        }
+        throw err;
       }
-      if (outcome === 'timeout') {
-        return Output.json({});
-      }
-
-      throw new Error('Unknown outcome ' + outcome);
     },
 
     push_events: async ({ clientID, version, steps, docName, userId }) => {
