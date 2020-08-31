@@ -1,13 +1,15 @@
 const prettier = require('prettier');
 
 const ctrlKey = process.env.CI ? 'Control' : 'Meta';
-
+const EDITOR_ID = `bangle-play-react-editor`;
+const EDITOR_SELECTOR = `[id^='${EDITOR_ID}']`;
 module.exports = {
   mountEditor,
   getEditorState,
   ctrlKey,
   getDoc,
   sleep,
+  EDITOR_SELECTOR,
 };
 
 function frmt(doc) {
@@ -19,9 +21,9 @@ function frmt(doc) {
   });
 }
 async function mountEditor(page, props) {
-  await page.waitForSelector('#bangle-play-react-editor1');
+  await page.waitForSelector(EDITOR_SELECTOR);
   await page.waitForSelector('.ProseMirror', { timeout: 500 });
-  await page.click('#bangle-play-react-editor1');
+  await page.click(EDITOR_SELECTOR);
 }
 
 async function getEditorState(page) {

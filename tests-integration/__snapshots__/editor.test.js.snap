@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Basic typing should  delete text correctly 1`] = `
+exports[`Basic typing should delete text correctly 1`] = `
 Object {
   "doc": Object {
     "content": Array [
