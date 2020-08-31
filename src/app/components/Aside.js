@@ -1,5 +1,6 @@
 import React from 'react';
 import format from 'date-fns/format';
+import PropTypes from 'prop-types';
 
 import { BaseButton, StackButton } from './Button';
 
@@ -7,7 +8,12 @@ export class Aside extends React.PureComponent {
   state = {
     showSidebar: null,
   };
-
+  static propTypes = {
+    docNames: PropTypes.arrayOf(
+      PropTypes.shape({ key: PropTypes.string, docName: PropTypes.string })
+        .isRequired,
+    ).isRequired,
+  };
   renderSidebar = () => {
     const newResults = this.props.dbItems
       .filter((r) => r)
@@ -19,17 +25,18 @@ export class Aside extends React.PureComponent {
 
     return newResults.map((entry, i) => {
       let docName = entry.docName;
+      const isActive = this.props.docNames.find((r) => r.docName === docName);
       return (
         <div
           key={docName + i}
           onClick={() => {
-            if (this.props.docName === docName) {
-              return;
-            }
+            // if (this.props.docName === docName) {
+            //   return;
+            // }
             this.props.handleClick(docName);
           }}
           className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
-            this.props.docName === docName ? `bg-gray-300` : ''
+            isActive ? `bg-gray-300` : ''
           } hover:bg-gray-400 rounded-lg`}
         >
           <div className="flex-1 flex flex-col">

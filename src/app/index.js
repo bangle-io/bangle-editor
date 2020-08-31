@@ -26,11 +26,14 @@ window.putDbData = putDbData;
 const db = new URLSearchParams(window.location.search).get('database');
 const DATABASE = db || 'bangle-play/v1';
 console.log('using db', DATABASE);
+const isMobile = browser.ios || browser.android;
+
+const MAX_WINDOWS = isMobile ? 1 : 2;
 
 export default class App extends React.PureComponent {
   state = {
     dbItems: [],
-    docName: undefined,
+    docNames: [],
     showSidebar: false,
   };
 
@@ -38,7 +41,34 @@ export default class App extends React.PureComponent {
     name: DATABASE,
   });
 
-  updateDbItems = async () => {};
+  updateDocName(docName, otherState) {
+    // treating left as a staging area i.e. new things will show up there
+    // while right tries to stay static as much as possible
+    const makeNew = (docName) => ({ docName, key: docName + '-' + uuid(4) });
+    const existingDocNames = this.state.docNames;
+    if (existingDocNames.length < MAX_WINDOWS) {
+      this.setState({
+        docNames: [makeNew(docName), ...existingDocNames], // we put new things on the left
+        ...otherState,
+      });
+
+      return;
+    }
+    // replace the first non matching from left
+    let match = existingDocNames.findIndex((r) => r.docName !== docName);
+    // if no match replace the first item
+    if (match === -1) {
+      match = 0;
+    }
+    const newDocNames = existingDocNames.map((item, index) =>
+      index === match ? makeNew(docName) : item,
+    );
+
+    this.setState({
+      docNames: newDocNames,
+      ...otherState,
+    });
+  }
 
   getDbItemsWithoutDoc = () => {
     return new Promise((res) => {
@@ -74,29 +104,34 @@ export default class App extends React.PureComponent {
     if (!docName) {
       this.handleNewEntry();
     } else {
-      this.setState({ docName, dbItems: dbItems });
+      this.updateDocName(docName, { dbItems });
     }
   }
 
   handleClick = (docName) => {
-    this.setState({ docName });
+    this.updateDocName(docName);
   };
 
   handleNewEntry = async () => {
-    this.setState({ docName: uuid(6) });
+    this.updateDocName(uuid(6));
+
     getIdleCallback(async () => {
       this.setState({ dbItems: await this.getDbItemsWithoutDoc() });
     });
   };
 
   handleRemoveEntry = async (docName) => {
+    console.log('requesting delete');
     await this.database.removeItem(docName);
     const dbItems = await this.getDbItemsWithoutDoc();
 
     if (dbItems.length === 0) {
-      this.setState({ docName: uuid(6), dbItems: [] });
+      this.updateDocName(uuid(6), { dbItems: [] });
     } else {
-      this.setState({ docName: this.getLastModifiedDocName(dbItems), dbItems });
+      this.setState({
+        docNames: this.state.docNames.filter((r) => r.docName !== docName),
+        dbItems,
+      });
     }
   };
 
@@ -115,17 +150,18 @@ export default class App extends React.PureComponent {
   };
 
   render() {
-    const isMobile = browser.ios || browser.android;
-    const docName = this.state.docName;
+    const docNames = this.state.docNames;
     return (
       <EditorContextProvider>
         <div className="h-screen main-wrapper">
           {/* {!isMobile && <Header entry={this.state.entry} />} */}
           <div className="editor-wrapper overflow-auto">
-            {docName && <Editor docName={docName} database={this.database} />}
+            {docNames.length > 0 && (
+              <Editor docNames={docNames} database={this.database} />
+            )}
           </div>
           <Aside
-            docName={docName}
+            docNames={docNames}
             database={this.database}
             dbItems={this.state.dbItems}
             handleClick={this.handleClick}
