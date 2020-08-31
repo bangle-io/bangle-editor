@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Dinos from '../../src/plugins/dinos/index';
 import Emoji from '../../src/plugins/emoji/index';
@@ -34,8 +35,11 @@ import { defaultContent } from './components/constants';
 const DEBUG = true;
 
 export class Editor extends React.PureComponent {
-  state = {
-    docNames: ['ole', 'ole'],
+  static propTypes = {
+    docNames: PropTypes.arrayOf(
+      PropTypes.shape({ key: PropTypes.string, docName: PropTypes.string })
+        .isRequired,
+    ).isRequired,
   };
   devtools = process.env.JEST_INTEGRATION || DEBUG;
   constructor(props) {
@@ -60,18 +64,18 @@ export class Editor extends React.PureComponent {
       disk,
     });
 
-    window.addEventListener('beforeunload', (event) => {
-      disk.myMainDisk.flushAll();
-      event.returnValue = `Are you sure you want to leave?`;
-    });
+    // window.addEventListener('beforeunload', (event) => {
+    //   disk.myMainDisk.flushAll();
+    //   event.returnValue = `Are you sure you want to leave?`;
+    // });
 
     if (this.devtools) {
       window.manager = this.manager;
     }
     dummyEditor.destroy();
   }
-  options = (id) => ({
-    docName: this.props.docName,
+  options = (docName, id) => ({
+    docName,
     manager: this.manager,
     id,
     devtools: this.devtools,
@@ -108,15 +112,18 @@ export class Editor extends React.PureComponent {
   render() {
     return (
       <div className="flex justify-center flex-row">
-        {this.state.docNames.map((_, i) => (
+        {this.props.docNames.map((obj, i) => (
           <div
-            key={i}
+            key={obj.key}
             className="flex-1 max-w-screen-md ml-6 mr-6"
             style={{ overflow: 'scroll', height: '90vh' }}
           >
             <ReactEditor
-              options={this.options('bangle-play-react-editor' + i)}
-              content={this.props.docName}
+              options={this.options(
+                obj.docName,
+                'bangle-play-react-editor' + obj.key,
+              )}
+              content={obj.docName}
             />
             {/* adds white space at bottoms */}
             <div
