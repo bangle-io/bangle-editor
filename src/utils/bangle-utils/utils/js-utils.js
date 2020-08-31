@@ -197,7 +197,7 @@ export function sleep(t = 20) {
 export function objectMapValues(obj, map) {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
-      return [key, map([key, value])];
+      return [key, map(value, key)];
     }),
   );
 }
