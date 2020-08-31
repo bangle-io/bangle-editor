@@ -1,7 +1,12 @@
 const URL = `http://localhost:4444`;
-const PM_ID = '#bangle-play-react-editor1';
+// const PM_ID = '#bangle-play-react-editor1';
 
-const { mountEditor, getEditorState, ctrlKey } = require('./helpers');
+const {
+  mountEditor,
+  getEditorState,
+  ctrlKey,
+  EDITOR_SELECTOR,
+} = require('./helpers');
 
 jest.setTimeout(25 * 1000);
 
@@ -32,7 +37,7 @@ describe('Basic typing', () => {
   });
 
   it('should type sentence correctly', async () => {
-    await page.type(PM_ID, 'World', { delay: 70 });
+    await page.type(EDITOR_SELECTOR, 'World', { delay: 70 });
     const editorState = await getEditorState(page);
     expect(editorState.doc.content[0].content).toEqual([
       {
@@ -44,7 +49,7 @@ describe('Basic typing', () => {
   });
 
   it('should type  new line correctly', async () => {
-    await page.type(PM_ID, 'Hello!', { delay: 70 });
+    await page.type(EDITOR_SELECTOR, 'Hello!', { delay: 70 });
     await page.keyboard.press('Enter');
     const editorState = await getEditorState(page);
 
@@ -58,8 +63,8 @@ describe('Basic typing', () => {
     expect(editorState).toMatchSnapshot();
   });
 
-  it('should  delete text correctly', async () => {
-    await page.type(PM_ID, 'My name is kj');
+  it('should delete text correctly', async () => {
+    await page.type(EDITOR_SELECTOR, 'My name is kj');
     await page.keyboard.press('Enter');
     await page.keyboard.press('Backspace');
     await page.keyboard.press('Backspace');

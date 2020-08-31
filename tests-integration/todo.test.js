@@ -34,7 +34,6 @@ describe('Todo test', () => {
         todo_list(
           todo_item(paragraph('my task'))
         ),
-        paragraph,
         paragraph
       )
       "
