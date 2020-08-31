@@ -1,6 +1,6 @@
 import { simpleLRU } from '../../utils/bangle-utils/utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'persistence/disk') : () => {};
 
