@@ -3,6 +3,8 @@ import format from 'date-fns/format';
 import PropTypes from 'prop-types';
 
 import { BaseButton, StackButton } from './Button';
+import { activeDB } from '../store/local/database-helpers';
+const isSerious = ['production', 'staging'].includes(activeDB);
 
 export class Aside extends React.PureComponent {
   state = {
@@ -30,9 +32,6 @@ export class Aside extends React.PureComponent {
         <div
           key={docName + i}
           onClick={() => {
-            // if (this.props.docName === docName) {
-            //   return;
-            // }
             this.props.handleClick(docName);
           }}
           className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
@@ -76,7 +75,11 @@ export class Aside extends React.PureComponent {
   render() {
     return (
       <>
-        <div className="aside-menu flex flex-row bg-gray-900 py-3 flex flex-col z-30 shadow-outline">
+        <div
+          className={`aside-menu flex flex-row ${
+            isSerious ? 'bg-pink-900' : 'bg-gray-900'
+          } py-3 flex flex-col z-30 shadow-outline`}
+        >
           {this.sideBarMenu()}
           {this.props.children}
         </div>
