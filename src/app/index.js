@@ -17,15 +17,17 @@ import {
   getAllDbData,
   backupDb,
   putDbData,
+  activeDB,
 } from './store/local/database-helpers';
+
 window.localforage = localforage;
 window.backupDb = backupDb;
 window.getAllDbData = getAllDbData;
 window.putDbData = putDbData;
 
-const db = new URLSearchParams(window.location.search).get('database');
-const DATABASE = db || 'bangle-play/v1';
+const DATABASE = activeDB;
 console.log('using db', DATABASE);
+
 const isMobile = browser.ios || browser.android;
 
 const MAX_WINDOWS = isMobile ? 1 : 2;

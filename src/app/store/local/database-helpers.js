@@ -39,3 +39,7 @@ export async function backupDb(id, backUpId = 'backup/' + id) {
 
   await putDbData(backUpId, items);
 }
+
+export const activeDB =
+  new URLSearchParams(window.location.search).get('database') ||
+  'bangle-play/v1';
