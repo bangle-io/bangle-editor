@@ -546,7 +546,7 @@ export const backspaceKeyCommand = (type) => (...args) => {
 };
 
 export function enterKeyCommand(type) {
-  return (state, dispatch) => {
+  return (state, dispatch, view) => {
     const { selection } = state;
     if (selection.empty) {
       const { $from } = selection;
@@ -554,7 +554,7 @@ export function enterKeyCommand(type) {
       if (!listItem) {
         ({ list_item: listItem } = state.schema.nodes);
       }
-      const { code_block: codeBlock } = state.schema.nodes;
+      const { code_block: codeBlock, todo_item: todoItem } = state.schema.nodes;
 
       const node = $from.node($from.depth);
       const wrapper = $from.node($from.depth - 1);
@@ -562,7 +562,24 @@ export function enterKeyCommand(type) {
         /** Check if the wrapper has any visible content */
         const wrapperHasContent = hasVisibleContent(wrapper);
         if (isNodeEmpty(node) && !wrapperHasContent) {
-          return outdentList(listItem)(state, dispatch);
+          // To allow for cases where a non-todo item is nested inside a todo item
+          // pressing enter should convert that type into a todo type and outdent.
+          if (isGrandParentTodoList(state) && listItem !== todoItem) {
+            const result = toggleList(
+              state.schema.nodes.todo_list,
+              state.schema.nodes.todo_item,
+            )(state, dispatch, view);
+            if (!result) {
+              return false;
+            }
+            return outdentList(state.schema.nodes.todo_item)(
+              view.state, // use the updated state
+              dispatch,
+              view,
+            );
+          } else {
+            return outdentList(listItem)(state, dispatch);
+          }
         } else if (!hasParentNodeOfType(codeBlock)(selection)) {
           return splitListItem(listItem)(state, dispatch);
         }

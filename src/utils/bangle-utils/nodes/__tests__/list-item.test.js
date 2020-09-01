@@ -152,6 +152,14 @@ describe('Command: enterKeyCommand', () => {
       doc(ul(li(p('first')), li(p('{<>}')))),
     );
   });
+
+  test('preserves the type of parent list (ul) if enter on empty 2nd nest ol list', async () => {
+    updateDoc(doc(ul(li(p('first'), ol(li(p('{<>}')))))));
+
+    expect(await cmd(editorView.state)).toEqualDocAndSelection(
+      doc(ul(li(p('first')), li(p('{<>}')))),
+    );
+  });
 });
 
 describe('Markdown shortcuts Input rules', () => {

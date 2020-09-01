@@ -473,6 +473,117 @@ describe('Nesting heterogenous lists', () => {
     );
   });
 
+  it('pressing enter on empty nested li should outdent and take the type of the parent', async () => {
+    const { editor } = await testEditor(
+      // prettier-ignore
+      doc(
+        todoList(
+          todoItem(
+            p('first'),
+            ol(
+              li(p('{<>}')),
+            )
+          )
+        )
+      ),
+    );
+
+    sendKeyToPm(editor.view, 'Enter');
+
+    expect(editor.state).toEqualDocAndSelection(
+      // prettier-ignore
+      doc(
+        todoList(
+          todoItem(
+            p('first'),
+          ),
+          todoItem(
+            p('{<>}')
+          )
+        )
+      ),
+    );
+  });
+
+  // TODO I think this blocked by the bug described by a test in list item https://github.com/kepta/bangle-play/blob/ee3305892fbe46e1217b28045b14955e94f24430/src/utils/bangle-utils/nodes/__tests__/list-item.test.js#L553
+  it.skip('pressing enter on empty nested li should outdent and take the type of the parent when their are other sibblings', async () => {
+    const { editor } = await testEditor(
+      // prettier-ignore
+      doc(
+        todoList(
+          todoItem(
+            p('first'),
+            ol(
+              li(p('{<>}')),
+              li(p('last')),
+            )
+          )
+        )
+      ),
+    );
+
+    sendKeyToPm(editor.view, 'Enter');
+
+    expect(editor.state).toEqualDocAndSelection(
+      // prettier-ignore
+      doc(
+        todoList(
+          todoItem(
+            p('first'),
+          ),
+          todoItem(
+            p('{<>}')
+          ),
+          ol(
+            li(p('last')),
+          )
+        )
+      ),
+    );
+  });
+
+  it('pressing enter on empty double nested li should outdent and take the type of the parent', async () => {
+    const { editor } = await testEditor(
+      // prettier-ignore
+      doc(
+        todoList(
+          todoItem(
+            p('first'),
+            todoList(
+              todoItem(
+                p('first'),
+                ol(
+                  li(p('{<>}')),
+                )
+              )
+            )
+          )
+        )
+      ),
+    );
+
+    sendKeyToPm(editor.view, 'Enter');
+
+    expect(editor.state).toEqualDocAndSelection(
+      // prettier-ignore
+      doc(
+        todoList(
+          todoItem(
+            p('first'),
+            todoList(
+              todoItem(
+                p('first'),
+              ),
+              todoItem(
+                p('{<>}')
+              )
+            )
+          )
+        )
+      ),
+    );
+  });
+
   // Do we want this ? A user can in theory select all the items and
   // convert them to whatever the want
   it.skip('converts every sibbling to ol', async () => {
