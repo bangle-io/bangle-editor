@@ -513,8 +513,53 @@ describe('Pressing Shift-Ctrl-8', () => {
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
 
-  it('should outdent the list', async () => {
+  it('should indent the list', async () => {
     await check(doc(p('One{<>}')), doc(ul(li(p('One')))));
+  });
+
+  it('should outdent the list', async () => {
+    await check(doc(ul(li(p('One{<>}')))), doc(p('One{<>}')));
+  });
+
+  it('works with nested list', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ul(
+          li(
+            p('One{<>}'), 
+            ul(
+              li(p('nested:1')),
+            )
+          )
+        ),
+      ), 
+      doc(
+        p('One{<>}'),
+        ul(li(p('nested:1')))
+      ), 
+    );
+  });
+
+  // TODO this is a bug
+  it.skip('works with nested list with empty content', async () => {
+    // prettier-ignore
+    await check(
+      doc(
+        ul(
+          li(
+            p('One{<>}'), 
+            ul(
+              li(p('')),
+            )
+          )
+        ),
+      ), 
+      doc(
+        p('One{<>}'),
+        ul(li(p('')))
+      ), 
+  );
   });
 });
 
