@@ -14,6 +14,8 @@ import {
   copyEmptyCommand,
   parentHasDirectParentOfType,
 } from '../../core-commands';
+import { safeInsert } from 'prosemirror-utils';
+import { Selection } from 'prosemirror-state';
 
 export class ListItem extends Node {
   get name() {
@@ -54,6 +56,37 @@ export class ListItem extends Node {
       'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
       'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
       'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
+      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, schema, 'UP')),
+      'Ctrl-Enter': filter(parentCheck, insertEmpty(type, schema, 'DOWN')),
     };
   }
+}
+
+function insertEmpty(type, schema, direction) {
+  const isUp = direction === 'UP';
+  return (state, dispatch) => {
+    const insertPos = isUp
+      ? state.selection.$from.before(-1)
+      : state.selection.$from.after(-1);
+
+    const nodeToInsert = type.createChecked(
+      {},
+      schema.nodes.paragraph.createChecked({}),
+    );
+
+    const tr = state.tr;
+    let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
+
+    if (tr === newTr) {
+      return false;
+    }
+
+    newTr = newTr.setSelection(Selection.near(newTr.doc.resolve(insertPos)));
+
+    if (dispatch) {
+      dispatch(newTr);
+    }
+
+    return true;
+  };
 }
