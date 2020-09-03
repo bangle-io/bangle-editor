@@ -29,8 +29,8 @@ export class Blockquote extends Node {
       'Ctrl-ArrowRight': toggleWrap(type),
       'Alt-ArrowUp': moveNode(type, 'UP'),
       'Alt-ArrowDown': moveNode(type, 'DOWN'),
-      'Cmd-c': copyEmptyCommand(type),
-      'Cmd-x': cutEmptyCommand(type),
+      'Meta-c': copyEmptyCommand(type),
+      'Meta-x': cutEmptyCommand(type),
     };
   }
 

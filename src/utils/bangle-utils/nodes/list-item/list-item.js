@@ -52,8 +52,8 @@ export class ListItem extends Node {
       'Shift-Tab': outdentList(type),
       'Alt-ArrowUp': filter(parentCheck, move('UP')),
       'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
-      'Cmd-x': filter(parentCheck, cutEmptyCommand(type)),
-      'Cmd-c': filter(parentCheck, copyEmptyCommand(type)),
+      'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
+      'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
     };
   }
 }

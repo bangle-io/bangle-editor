@@ -76,12 +76,12 @@ export class Paragraph extends Node {
           return true;
         },
       ),
-      'Cmd-c': filter(
+      'Meta-c': filter(
         // So that we donot interfere with nested p's in other nodes
         parentCheck,
         copyEmptyCommand(type),
       ),
-      'Cmd-x': filter(
+      'Meta-x': filter(
         // So that we donot interfere with nested p's in other nodes
         parentCheck,
         cutEmptyCommand(type),
