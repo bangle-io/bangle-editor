@@ -1199,7 +1199,7 @@ describe('Press Alt-Down to move list', () => {
   });
 });
 
-describe('Command-c on empty selections', () => {
+describe('Meta-c on empty selections', () => {
   it('should work', async () => {
     document.execCommand = jest.fn(() => {});
 
@@ -1215,7 +1215,7 @@ describe('Command-c on empty selections', () => {
   });
 });
 
-describe('Command-x on empty selections', () => {
+describe('Meta-x on empty selections', () => {
   test('should cut a document', async () => {
     document.execCommand = jest.fn(() => {});
 

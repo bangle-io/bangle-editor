@@ -73,8 +73,8 @@ export class Heading extends Node {
       {
         'Alt-ArrowUp': moveNode(type, 'UP'),
         'Alt-ArrowDown': moveNode(type, 'DOWN'),
-        'Cmd-c': copyEmptyCommand(type),
-        'Cmd-x': cutEmptyCommand(type),
+        'Meta-c': copyEmptyCommand(type),
+        'Meta-x': cutEmptyCommand(type),
       },
     );
   }
