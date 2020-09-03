@@ -36,60 +36,40 @@ export class Paragraph extends Node {
   }
 
   keys({ type, schema }) {
-    // Enables certain command to only work if paragraph is direct child of `doc` node
-    const parentCheck = parentHasDirectParentOfType(type, schema.nodes.doc);
+    // Enables certain command to only work if paragraph is direct child of the `doc` node
+    const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
 
     return {
-      'Alt-ArrowUp': filter(parentCheck, moveNode(type, 'UP')),
-      'Alt-ArrowDown': filter(parentCheck, moveNode(type, 'DOWN')),
-      'Ctrl-a': filter(
-        [(state) => state.selection.empty],
-        (state, dispatch) => {
-          const current = findParentNodeOfType(type)(state.selection);
+      'Alt-ArrowUp': filter(isTopLevel, moveNode(type, 'UP')),
+      'Alt-ArrowDown': filter(isTopLevel, moveNode(type, 'DOWN')),
 
-          if (!current) {
-            return false;
-          }
+      'Ctrl-a': (state, dispatch) => {
+        const current = findParentNodeOfType(type)(state.selection);
+        if (!current) {
+          return false;
+        }
+        const { start } = current;
+        dispatch(state.tr.setSelection(TextSelection.create(state.doc, start)));
+        return true;
+      },
 
-          const { node, start } = current;
-
-          dispatch(
-            state.tr.setSelection(TextSelection.create(state.doc, start)),
-          );
-          return true;
-        },
-      ),
-      'Ctrl-e': filter(
-        [(state) => state.selection.empty],
-        (state, dispatch) => {
-          const current = findParentNodeOfType(type)(state.selection);
-
-          if (!current) {
-            return false;
-          }
-
-          const { node, start } = current;
-
-          dispatch(
-            state.tr.setSelection(
-              TextSelection.create(state.doc, start + node.content.size),
-            ),
-          );
-          return true;
-        },
-      ),
-      'Meta-c': filter(
-        // So that we donot interfere with nested p's in other nodes
-        parentCheck,
-        copyEmptyCommand(type),
-      ),
-      'Meta-x': filter(
-        // So that we donot interfere with nested p's in other nodes
-        parentCheck,
-        cutEmptyCommand(type),
-      ),
-      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, schema, 'UP')),
-      'Ctrl-Enter': filter(parentCheck, insertEmpty(type, schema, 'DOWN')),
+      'Ctrl-e': (state, dispatch) => {
+        const current = findParentNodeOfType(type)(state.selection);
+        if (!current) {
+          return false;
+        }
+        const { node, start } = current;
+        dispatch(
+          state.tr.setSelection(
+            TextSelection.create(state.doc, start + node.content.size),
+          ),
+        );
+        return true;
+      },
+      'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
+      'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
+      'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
+      'Ctrl-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
     };
   }
 }
