@@ -9,6 +9,8 @@ import {
   cutEmptyCommand,
 } from '../core-commands';
 import { TextSelection } from 'prosemirror-state';
+import { safeInsert } from 'prosemirror-utils';
+import { Selection } from 'prosemirror-state';
 
 export class Paragraph extends Node {
   get name() {
@@ -86,6 +88,34 @@ export class Paragraph extends Node {
         parentCheck,
         cutEmptyCommand(type),
       ),
+      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, schema, 'UP')),
+      'Ctrl-Enter': filter(parentCheck, insertEmpty(type, schema, 'DOWN')),
     };
   }
+}
+
+function insertEmpty(type, schema, direction) {
+  const isUp = direction === 'UP';
+  return (state, dispatch) => {
+    const insertPos = isUp
+      ? state.selection.$from.before()
+      : state.selection.$from.after();
+
+    const nodeToInsert = schema.nodes.paragraph.createChecked({});
+
+    const tr = state.tr;
+    let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
+
+    if (tr === newTr) {
+      return false;
+    }
+
+    newTr = newTr.setSelection(Selection.near(newTr.doc.resolve(insertPos)));
+
+    if (dispatch) {
+      dispatch(newTr);
+    }
+
+    return true;
+  };
 }
