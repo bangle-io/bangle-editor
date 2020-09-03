@@ -1,4 +1,4 @@
-import { Plugin } from 'prosemirror-state';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import { updateMark, removeMark } from 'tiptap-commands';
 import { getMarkAttrs } from 'tiptap-utils';
 
@@ -78,6 +78,7 @@ export class Link extends Mark {
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
       ),
       new Plugin({
+        key: new PluginKey('link-handle-click'),
         props: {
           handleClick: (view, pos, event) => {
             const { schema } = view.state;
@@ -96,6 +97,7 @@ export class Link extends Mark {
 
 function pasteLinkify(regexp) {
   return new Plugin({
+    key: new PluginKey('link-paste-linkify'),
     props: {
       handlePaste: function handlePastedLink(view, rawEvent, slice) {
         const event = rawEvent;
@@ -135,6 +137,7 @@ function pasteLinkify(regexp) {
 
 function markPasteRule(regexp, type, getAttrs) {
   return new Plugin({
+    key: new PluginKey('link-mark-paste-rule'),
     props: {
       transformPasted: function transformPasted(slice) {
         return mapSlice(slice, (node) => {

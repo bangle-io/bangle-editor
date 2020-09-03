@@ -1,7 +1,15 @@
-import { keymap } from 'prosemirror-keymap';
+import { keydownHandler } from 'prosemirror-keymap';
 
 import { Extension } from '../extensions';
 import { Editor } from '../editor';
+import { Plugin, PluginKey } from 'prosemirror-state';
+
+function keymap(bindings, name) {
+  return new Plugin({
+    props: { handleKeyDown: keydownHandler(bindings) },
+    ...(name && { key: new PluginKey(name) }),
+  });
+}
 
 export class ExtensionManager {
   constructor(extensions = [new Extension()], editor = new Editor()) {
@@ -61,20 +69,24 @@ export class ExtensionManager {
     const extensionKeymaps = this.extensions
       .filter((extension) => ['extension'].includes(extension.type))
       .filter((extension) => extension.keys)
-      .map((extension) => extension.keys({ schema }));
+      .map((extension) => [
+        'key-ext-' + extension.name,
+        extension.keys({ schema }),
+      ]);
 
     const nodeMarkKeymaps = this.extensions
       .filter((extension) => ['node', 'mark'].includes(extension.type))
       .filter((extension) => extension.keys)
-      .map((extension) =>
+      .map((extension) => [
+        'key-node-mark-' + extension.name,
         extension.keys({
           type: schema[`${extension.type}s`][extension.name],
           schema,
         }),
-      );
+      ]);
 
-    return [...extensionKeymaps, ...nodeMarkKeymaps].map((keys) =>
-      keymap(keys),
+    return [...extensionKeymaps, ...nodeMarkKeymaps].map(([name, keys]) =>
+      keymap(keys, name),
     );
   }
 
