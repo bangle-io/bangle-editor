@@ -31,6 +31,7 @@ import { Manager } from '../plugins/collab/server/manager';
 import { Editor as PMEditor } from '../../src/utils/bangle-utils/editor';
 import { Disk } from '../plugins/persistence/disk';
 import { defaultContent } from './components/constants';
+import { Timestamp } from '../plugins/timestamp';
 
 const DEBUG = true;
 
@@ -103,6 +104,7 @@ export class Editor extends React.PureComponent {
       new History(),
       new TrailingNode(),
       new StopwatchExtension(),
+      new Timestamp(),
     ],
     editorProps: {
       attributes: { class: 'bangle-editor content' },
