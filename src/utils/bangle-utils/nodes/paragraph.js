@@ -57,8 +57,9 @@ export class Paragraph extends Node {
 
       'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
       'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
+
       'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
-      'Ctrl-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
+      'Meta-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
     };
   }
 }
@@ -93,6 +94,7 @@ function jumpToEndOfLine(type) {
 function insertEmpty(type, schema, direction) {
   const isUp = direction === 'UP';
   return (state, dispatch) => {
+    console.log('handling');
     const insertPos = isUp
       ? state.selection.$from.before()
       : state.selection.$from.after();

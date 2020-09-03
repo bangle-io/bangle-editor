@@ -57,7 +57,7 @@ export class ListItem extends Node {
       'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
       'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
       'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, schema, 'UP')),
-      'Ctrl-Enter': filter(parentCheck, insertEmpty(type, schema, 'DOWN')),
+      'Meta-Enter': filter(parentCheck, insertEmpty(type, schema, 'DOWN')),
     };
   }
 }
