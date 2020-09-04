@@ -7,8 +7,9 @@ import { EditorOnReadyContext } from './editor-context';
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
 import { CollabEditor } from '../../../plugins/collab/CollabClient';
+import { ProseMirrorDevtools } from '../../../utils/prosemirror-devtools';
 
-const LOG = false;
+const LOG = true;
 
 function log(...args) {
   if (LOG) console.log('react-editor.js', ...args);
@@ -119,9 +120,22 @@ class PMEditorWrapper extends React.Component {
   editorRenderTarget = React.createRef();
   devtools;
   editorCleanupCb;
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(
+      nextProps,
+      nextState,
+      this.state.showDevtools,
+      nextState.showDevtools,
+    );
+    if (this.state.showDevtools !== nextState.showDevtools) {
+      return true;
+    }
     return false;
   }
+  state = {
+    showDevtools: false,
+  };
+
   async componentDidMount() {
     const {
       editorOptions,
@@ -140,6 +154,9 @@ class PMEditorWrapper extends React.Component {
         }
         if (editorOptions.devtools) {
           window.editor = editor;
+          this.setState({
+            showDevtools: true,
+          });
           getIdleCallback(() => {
             import(
               /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
@@ -191,7 +208,12 @@ class PMEditorWrapper extends React.Component {
   render() {
     log('rendering PMEditorWrapper');
     return (
-      <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
+      <>
+        <div ref={this.editorRenderTarget} id={this.props.editorOptions.id} />
+        {this.state.showDevtools && (
+          <ProseMirrorDevtools view={window.editor.view} />
+        )}
+      </>
     );
   }
 }

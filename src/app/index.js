@@ -19,7 +19,6 @@ import {
   putDbData,
   activeDB,
 } from './store/local/database-helpers';
-import { ProseMirrorDevtools } from '../utils/prosemirror-devtools';
 
 window.localforage = localforage;
 window.backupDb = backupDb;
@@ -175,7 +174,6 @@ export default class App extends React.PureComponent {
           >
             {/* {isMobile && <Header entry={this.state.entry} />} */}
           </Aside>
-          <ProseMirrorDevtools />
         </div>
       </EditorContextProvider>
     );

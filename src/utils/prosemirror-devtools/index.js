@@ -1,56 +1,97 @@
+import './index.css';
 import React, { useRef, useState, useEffect } from 'react';
 import { PrettyObj } from './PrettyObj';
 
-export function ProseMirrorDevtools({ editorView }) {
-  return <Main />;
-}
+export const ProseMirrorDevtools = React.memo(function ProseMirrorDevtools({
+  view,
+}) {
+  console.log('here');
+  return <Main view={view} />;
+});
 
-function Main() {
+function Main({ view }) {
   const [toggle, toggleDevtools] = useState(false);
-  const [currentTab, changeTab] = useState('state');
+  const [activeTab, changeTab] = useState('state');
+  console.log(toggle, activeTab);
 
-  return (
+  return !toggle ? (
+    <div
+      style={{
+        fontSize: '6rem',
+        position: 'fixed',
+        bottom: 20,
+        left: 20,
+        zIndex: 10000,
+      }}
+    >
+      <span
+        role="img"
+        aria-label="debug"
+        onClick={() => toggleDevtools(!toggle)}
+      >
+        👩‍💻
+      </span>
+    </div>
+  ) : (
     <GridLayout
-      tabs={<Tabs currentTab={currentTab} onClick={changeTab} />}
-      main={<MainContent />}
+      tabs={<Tabs activeTab={activeTab} onClick={changeTab} />}
+      main={<MainContent activeTab={activeTab} view={view} />}
       side={<SideContent />}
+      onClose={() => toggleDevtools(!toggle)}
     />
   );
 }
 
-function GridLayout({ tabs, main, side }) {
+function GridLayout({ tabs, main, side, onClose }) {
   return (
     <div
       style={{
-        'display': 'grid',
-        'grid-template-rows': '2.5rem 1fr',
-        'grid-template-columns': '1fr minmax(150px, 33%)',
-        'grid-row-gap': '2px',
-        'grid-column-gap': '2px',
-        'border': '2px darkslategrey solid',
-        'position': 'absolute',
-        'backgroundColor': 'darkslategrey',
-        'max-height': '40vh',
-        'bottom': 0,
-        'width': '100vw',
-        'zIndex': 10000,
-        'resize': 'vertical',
+        position: 'fixed',
+        display: 'grid',
+        gridTemplateRows: '2.5rem 1fr',
+        gridTemplateColumns: '1fr minmax(150px, 33%)',
+        gridRowGap: '2px',
+        gridColumnGap: '2px',
+        border: '2px darkslategrey solid',
+        backgroundColor: 'darkslategrey',
+        maxHeight: '40vh',
+        bottom: 0,
+        left: 0,
+        width: '100vw',
+        zIndex: 10000,
+        resize: 'vertical',
       }}
     >
       <div
         style={{
-          'grid-row': '1 / 2',
-          'grid-column': '1/3',
-          'backgroundColor': 'white',
+          gridRow: '1 / 2',
+          gridColumn: '1/3',
+          backgroundColor: 'white',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingRight: '3rem',
+          paddingLeft: '3rem',
         }}
       >
-        {tabs}
+        <div>{tabs}</div>
+        <div
+          className="pm-devtools-hover"
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <span onClick={onClose}>Close</span>
+        </div>
       </div>
       <div
         style={{
-          'backgroundColor': 'yellow',
-          'grid-row': '2 / 3',
-          'grid-column': '1/2',
+          backgroundColor: 'yellow',
+          gridRow: '2 / 3',
+          gridColumn: '1/2',
         }}
       >
         {main}
@@ -58,10 +99,10 @@ function GridLayout({ tabs, main, side }) {
 
       <div
         style={{
-          'backgroundColor': 'green',
-          'grid-row': '2 / 3',
-          'grid-column': '2 / 3',
-          'overflowY': 'scroll',
+          backgroundColor: 'green',
+          gridRow: '2 / 3',
+          gridColumn: '2 / 3',
+          overflowY: 'scroll',
         }}
       >
         {side}
@@ -70,7 +111,7 @@ function GridLayout({ tabs, main, side }) {
   );
 }
 
-function Tabs({ currentTab, onClick }) {
+function Tabs({ activeTab, onClick }) {
   const tabs = [
     'state',
     'history',
@@ -93,7 +134,7 @@ function Tabs({ currentTab, onClick }) {
         <Tab
           key={t}
           name={t}
-          active={t === currentTab}
+          active={t === activeTab}
           onClick={() => onClick(t)}
         />
       ))}
@@ -102,10 +143,9 @@ function Tabs({ currentTab, onClick }) {
 }
 
 function Tab({ name, active, onClick }) {
-  const [hoverRef, isHovered] = useHover();
+  const isHovered = false;
   return (
     <span
-      ref={hoverRef}
       onClick={onClick}
       style={{
         cursor: 'pointer',
@@ -122,10 +162,15 @@ function Tab({ name, active, onClick }) {
   );
 }
 
-function MainContent({ state = {} }) {
+function MainContent({ activeTab, view }) {
+  let children;
+  activeTab = (activeTab && activeTab).toLocaleLowerCase();
+  if (activeTab === 'plugins') {
+    children = <Plugins view={view}></Plugins>;
+  }
   return (
     <div style={{ padding: '5px 10px', height: '100%' }}>
-      {JSON.stringify(state, null, 2)}
+      {children || JSON.stringify({}, null, 2)}
     </div>
   );
 }
@@ -140,29 +185,83 @@ function SideContent() {
   );
 }
 
-function useHover() {
-  const [value, setValue] = useState(false);
+function Plugins({ view }) {
+  useEffect(() => {
+    const someProp = view.someProp.bind(view);
+    const originalPlugs = view.state.config.plugins;
 
-  const ref = useRef(null);
+    let map = new Map();
 
-  const handleMouseOver = () => setValue(true);
-  const handleMouseOut = () => setValue(false);
+    view.state.config.plugins = originalPlugs.map((r) =>
+      watchObject(r, {
+        name: r.key,
+        prop: 'handleKeyDown',
+        trap: ({ result, args, time }) => {
+          const [, event] = args;
+          if (map.has(event)) {
+            map.get(event).push({
+              name: r.key,
+              result,
+              time,
+            });
+          } else {
+            map.set(event, [
+              {
+                name: r.key,
+                result,
+                time,
+              },
+            ]);
+          }
+        },
+      }),
+    );
 
-  useEffect(
-    () => {
-      const node = ref.current;
-      if (node) {
-        node.addEventListener('mouseover', handleMouseOver);
-        node.addEventListener('mouseout', handleMouseOut);
+    window.map = map;
 
-        return () => {
-          node.removeEventListener('mouseover', handleMouseOver);
-          node.removeEventListener('mouseout', handleMouseOut);
+    return function cleanup() {
+      view.someProp = someProp;
+      view.state.config.plugins = originalPlugs;
+      map = null;
+    };
+  });
+
+  return <span>hi</span>;
+}
+
+function isPlainObj(value) {
+  if (Object.prototype.toString.call(value) !== '[object Object]') {
+    return false;
+  }
+
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === null || prototype === Object.prototype;
+}
+
+function watchObject(obj, opts) {
+  return new Proxy(obj, {
+    get(target, propKey, receiver) {
+      const targetValue = Reflect.get(target, propKey, receiver);
+      if (typeof targetValue !== 'function') {
+        return isPlainObj(targetValue)
+          ? watchObject(targetValue, opts)
+          : targetValue;
+      }
+
+      if (propKey === opts.prop) {
+        return function (...args) {
+          const t0 = performance.now();
+          const result = Reflect.apply(targetValue, target, args);
+          const t1 = performance.now();
+          opts.trap({
+            result,
+            args,
+            time: t1 - t0,
+          });
+          return result;
         };
       }
+      return targetValue;
     },
-    [ref.current], // Recall only if ref changes
-  );
-
-  return [ref, value];
+  });
 }
