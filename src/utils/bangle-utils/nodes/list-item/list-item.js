@@ -7,7 +7,7 @@ import {
   moveNode,
   moveEdgeListItem,
 } from './commands';
-import { filter } from '../../utils/pm-utils';
+import { filter, insertEmpty } from '../../utils/pm-utils';
 import { chainCommands } from 'prosemirror-commands';
 import {
   cutEmptyCommand,
@@ -56,37 +56,8 @@ export class ListItem extends Node {
       'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
       'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
       'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
-      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, schema, 'UP')),
-      'Meta-Enter': filter(parentCheck, insertEmpty(type, schema, 'DOWN')),
+      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, 'above', true)),
+      'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
     };
   }
-}
-
-function insertEmpty(type, schema, direction) {
-  const isUp = direction === 'UP';
-  return (state, dispatch) => {
-    const insertPos = isUp
-      ? state.selection.$from.before(-1)
-      : state.selection.$from.after(-1);
-
-    const nodeToInsert = type.createChecked(
-      {},
-      schema.nodes.paragraph.createChecked({}),
-    );
-
-    const tr = state.tr;
-    let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
-
-    if (tr === newTr) {
-      return false;
-    }
-
-    newTr = newTr.setSelection(Selection.near(newTr.doc.resolve(insertPos)));
-
-    if (dispatch) {
-      dispatch(newTr);
-    }
-
-    return true;
-  };
 }

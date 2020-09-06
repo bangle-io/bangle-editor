@@ -1,11 +1,9 @@
 import { setBlockType } from 'tiptap-commands';
-import { findParentNodeOfType } from 'prosemirror-utils';
-import { Selection, TextSelection } from 'prosemirror-state';
-import { safeInsert } from 'prosemirror-utils';
+import { TextSelection } from 'prosemirror-state';
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
-import { filter } from '../utils/pm-utils';
+import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import {
   parentHasDirectParentOfType,
   copyEmptyCommand,
@@ -58,8 +56,8 @@ export class Paragraph extends Node {
       'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
       'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
 
-      'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
-      'Meta-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
+      'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, 'above')),
+      'Meta-Enter': filter(isTopLevel, insertEmpty(type, 'below')),
     };
   }
 }
@@ -88,32 +86,5 @@ function jumpToEndOfLine(type) {
         TextSelection.create(state.doc, start + node.content.size),
       ),
     );
-  };
-}
-
-function insertEmpty(type, schema, direction) {
-  const isUp = direction === 'UP';
-  return (state, dispatch) => {
-    console.log('handling');
-    const insertPos = isUp
-      ? state.selection.$from.before()
-      : state.selection.$from.after();
-
-    const nodeToInsert = schema.nodes.paragraph.createChecked({});
-
-    const tr = state.tr;
-    let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
-
-    if (tr === newTr) {
-      return false;
-    }
-
-    newTr = newTr.setSelection(Selection.near(newTr.doc.resolve(insertPos)));
-
-    if (dispatch) {
-      dispatch(newTr);
-    }
-
-    return true;
   };
 }

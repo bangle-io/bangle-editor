@@ -6,12 +6,8 @@ import {
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
-import { filter } from '../utils/pm-utils';
-import {
-  parentHasDirectParentOfType,
-  copyEmptyCommand,
-  cutEmptyCommand,
-} from '../core-commands';
+import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
+import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
 
 export class Heading extends Node {
   get name() {
@@ -63,6 +59,8 @@ export class Heading extends Node {
   }
 
   keys({ type, schema }) {
+    const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
+
     return this.options.levels.reduce(
       (items, level) => ({
         ...items,
@@ -73,8 +71,18 @@ export class Heading extends Node {
       {
         'Alt-ArrowUp': moveNode(type, 'UP'),
         'Alt-ArrowDown': moveNode(type, 'DOWN'),
+
         'Meta-c': copyEmptyCommand(type),
         'Meta-x': cutEmptyCommand(type),
+
+        'Meta-Shift-Enter': filter(
+          isInHeading,
+          insertEmpty(schema.nodes.paragraph, 'above', false),
+        ),
+        'Meta-Enter': filter(
+          isInHeading,
+          insertEmpty(schema.nodes.paragraph, 'below', false),
+        ),
       },
     );
   }
