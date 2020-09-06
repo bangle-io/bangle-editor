@@ -71,17 +71,16 @@ test('Renders react component correctly', async () => {
     .toMatchInlineSnapshot(`
     <span
       class="stopwatch-NodeView-Wrap"
-      data-stopwatch-paused="0"
-      data-stopwatch-time="0"
+      data-stopwatch="{\\"startTime\\":0,\\"stopTime\\":0}"
       data-type="stopwatch"
       draggable="true"
     >
       <span
         contenteditable="false"
-        style="background-color: rgb(0, 206, 209); border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
+        style="background-color: pink; border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
       >
         ⏲
-        0
+        00:00:00
       </span>
     </span>
   `);
@@ -110,21 +109,20 @@ test('Renders clicking correctly', async () => {
   await wait(() => {
     expect(container.querySelector(`[data-type="stopwatch"]`))
       .toMatchInlineSnapshot(`
-    <span
-      class="stopwatch-NodeView-Wrap"
-      data-stopwatch-paused="150"
-      data-stopwatch-time="10"
-      data-type="stopwatch"
-      draggable="true"
-    >
       <span
-        contenteditable="false"
-        style="background-color: pink; border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
+        class="stopwatch-NodeView-Wrap"
+        data-stopwatch="{\\"stopTime\\":null,\\"startTime\\":1}"
+        data-type="stopwatch"
+        draggable="true"
       >
-        ⏲
-        0
+        <span
+          contenteditable="false"
+          style="background-color: rgb(0, 206, 209); border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
+        >
+          ⏲
+          00:00:00
+        </span>
       </span>
-    </span>
-  `);
+    `);
   });
 });
