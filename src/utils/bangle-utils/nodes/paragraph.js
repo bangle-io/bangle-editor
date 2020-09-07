@@ -50,8 +50,8 @@ export class Paragraph extends Node {
       'Alt-ArrowUp': filter(parentCheck, moveNode(type, 'UP')),
       'Alt-ArrowDown': filter(parentCheck, moveNode(type, 'DOWN')),
 
-      [this.options.key.jumpToStartOfLine]: jumpToStartOfLine,
-      [this.options.key.jumpToEndOfLine]: jumpToEndOfLine,
+      [this.options.keys.jumpToStartOfLine]: jumpToStartOfLine,
+      [this.options.keys.jumpToEndOfLine]: jumpToEndOfLine,
 
       'Ctrl-e': filter(
         [(state) => state.selection.empty],
