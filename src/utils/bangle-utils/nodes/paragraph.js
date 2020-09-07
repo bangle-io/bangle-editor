@@ -43,7 +43,7 @@ export class Paragraph extends Node {
       'Alt-ArrowUp': filter(isTopLevel, moveNode(type, 'UP')),
       'Alt-ArrowDown': filter(isTopLevel, moveNode(type, 'DOWN')),
 
-      'Ctrl-a': (state, dispatch) => {
+      'Meta-a': (state, dispatch) => {
         const current = findParentNodeOfType(type)(state.selection);
         if (!current) {
           return false;
@@ -53,7 +53,7 @@ export class Paragraph extends Node {
         return true;
       },
 
-      'Ctrl-e': (state, dispatch) => {
+      'Meta-e': (state, dispatch) => {
         const current = findParentNodeOfType(type)(state.selection);
         if (!current) {
           return false;
@@ -68,8 +68,8 @@ export class Paragraph extends Node {
       },
       'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
       'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
-      // 'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
-      // 'Ctrl-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
+      'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
+      'Ctrl-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
     };
   }
 }
