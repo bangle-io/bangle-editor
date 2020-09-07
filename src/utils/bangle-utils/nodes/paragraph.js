@@ -68,8 +68,8 @@ export class Paragraph extends Node {
       },
       'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
       'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
-      'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
-      'Ctrl-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
+      // 'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, schema, 'UP')),
+      // 'Ctrl-Enter': filter(isTopLevel, insertEmpty(type, schema, 'DOWN')),
     };
   }
 }
