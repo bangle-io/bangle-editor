@@ -7,13 +7,15 @@ import {
   moveNode,
   moveEdgeListItem,
 } from './commands';
-import { filter } from '../../utils/pm-utils';
+import { filter, insertEmpty } from '../../utils/pm-utils';
 import { chainCommands } from 'prosemirror-commands';
 import {
   cutEmptyCommand,
   copyEmptyCommand,
   parentHasDirectParentOfType,
 } from '../../core-commands';
+import { safeInsert } from 'prosemirror-utils';
+import { Selection } from 'prosemirror-state';
 
 export class ListItem extends Node {
   get name() {
@@ -54,6 +56,8 @@ export class ListItem extends Node {
       'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
       'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
       'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
+      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, 'above', true)),
+      'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
     };
   }
 }

@@ -6,6 +6,7 @@ import {
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
+import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 
 export class CodeBlock extends Node {
   get name() {
@@ -30,10 +31,23 @@ export class CodeBlock extends Node {
   }
 
   keys({ type, schema }) {
+    const isInCodeBlock = (state) =>
+      findParentNodeOfType(type)(state.selection);
+
     return {
       'Shift-Ctrl-\\': setBlockType(type),
+
       'Alt-ArrowUp': moveNode(type, 'UP'),
       'Alt-ArrowDown': moveNode(type, 'DOWN'),
+
+      'Meta-Shift-Enter': filter(
+        isInCodeBlock,
+        insertEmpty(schema.nodes.paragraph, 'above', false),
+      ),
+      'Meta-Enter': filter(
+        isInCodeBlock,
+        insertEmpty(schema.nodes.paragraph, 'below', false),
+      ),
     };
   }
 
