@@ -122,27 +122,13 @@ export function sequence(...content) {
 }
 
 /**
- * Given a jagged array, flatten it down to a single level.
- */
-export function flatten(deep) {
-  const flat = [];
-  for (const item of deep) {
-    if (Array.isArray(item)) {
-      flat.splice(flat.length, 0, ...item);
-    } else {
-      flat.push(item);
-    }
-  }
-  return flat;
-}
-/**
  * Coerce builder content into ref nodes.
  */
 export function coerce(content, schema) {
-  const refsContent = content.map((item) =>
+  const refsContent = content.flatMap((item) =>
     typeof item === 'string' ? text(item, schema) : item(schema),
   );
-  return sequence(...flatten(refsContent));
+  return sequence(...refsContent);
 }
 /**
  * Create a factory for nodes.
@@ -197,9 +183,6 @@ export function markFactory(type, attrs = {}, allowDupes = false) {
     };
   };
 }
-export const fragment = (...content) => flatten(content);
-// export const slice = (...content) =>
-//   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
 /**
  * Builds a 'clean' version of the nodes, without Refs or RefTrackers

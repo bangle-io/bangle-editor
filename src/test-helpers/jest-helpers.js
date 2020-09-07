@@ -1,6 +1,7 @@
 import { Node } from 'prosemirror-model';
 import prettier from 'prettier';
 import { NodeSelection } from 'prosemirror-state';
+import { getPosLabels } from './jestxy-builders';
 
 global.db = function db(fn) {
   return (...args) => {
@@ -47,11 +48,12 @@ function toEqualDocAndSelection(actual, expected) {
     message: () => 'Expected specified selections to match in both values.',
   };
 
-  if (expected.refs) {
+  const posLabels = getPosLabels(expected);
+  if (posLabels) {
     const refConditions = {
-      '<': (position, selection) => position === selection.$from.pos,
-      '>': (position, selection) => position === selection.$to.pos,
-      '<>': (position, selection) =>
+      '[': (position, selection) => position === selection.$from.pos,
+      ']': (position, selection) => position === selection.$to.pos,
+      '[]': (position, selection) =>
         position === selection.$from.pos && position === selection.$to.pos,
       '<node>': (position, selection) =>
         selection instanceof NodeSelection && position === selection.$from.pos,
@@ -70,8 +72,8 @@ function toEqualDocAndSelection(actual, expected) {
 
     if (
       !Object.keys(refConditions).every((key) => {
-        if (key in expected.refs) {
-          return refConditions[key](expected.refs[key], actualSelection);
+        if (key in posLabels) {
+          return refConditions[key](posLabels[key], actualSelection);
         }
         return true;
       })

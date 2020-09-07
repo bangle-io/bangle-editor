@@ -56,10 +56,10 @@ const extensions = [
   new CodeBlock(),
 ];
 
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor({ extensions, type: 'new' });
 
-describe('Basics', () => {
-  test('is able to type paragraph', async () => {
+describe.only('Basics', () => {
+  test.only('is able to type paragraph', async () => {
     const { editor } = await testEditor(doc(p('foo{<>}bar')));
 
     typeText(editor.view, 'hello');
