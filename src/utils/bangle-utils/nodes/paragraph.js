@@ -15,8 +15,8 @@ export class Paragraph extends Node {
   get defaultOptions() {
     return {
       keys: {
-        jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Home',
-        jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'End',
+        jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
+        jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
       },
     };
   }
@@ -50,28 +50,9 @@ export class Paragraph extends Node {
       'Alt-ArrowUp': filter(parentCheck, moveNode(type, 'UP')),
       'Alt-ArrowDown': filter(parentCheck, moveNode(type, 'DOWN')),
 
-      [this.options.keys.jumpToStartOfLine]: jumpToStartOfLine,
-      [this.options.keys.jumpToEndOfLine]: jumpToEndOfLine,
+      [this.options.keys.jumpToStartOfLine]: jumpToStartOfLine(type),
+      [this.options.keys.jumpToEndOfLine]: jumpToEndOfLine(type),
 
-      'Ctrl-e': filter(
-        [(state) => state.selection.empty],
-        (state, dispatch) => {
-          const current = findParentNodeOfType(type)(state.selection);
-
-          if (!current) {
-            return false;
-          }
-
-          const { node, start } = current;
-
-          dispatch(
-            state.tr.setSelection(
-              TextSelection.create(state.doc, start + node.content.size),
-            ),
-          );
-          return true;
-        },
-      ),
       'Meta-c': filter(
         // So that we donot interfere with nested p's in other nodes
         parentCheck,
