@@ -143,11 +143,11 @@ function markPasteRule(regexp, type, getAttrs) {
           }
           const text = node.text;
           const matches = matchAllPlus(regexp, text);
-          return matches.map(({ start, end, match, matchedStr }) => {
+          return matches.map(({ start, end, match, subString }) => {
             let newNode = node.cut(start, end);
             if (match) {
               var attrs =
-                getAttrs instanceof Function ? getAttrs(matchedStr) : getAttrs;
+                getAttrs instanceof Function ? getAttrs(subString) : getAttrs;
               newNode = newNode.mark(type.create(attrs).addToSet(node.marks));
             }
             return newNode;

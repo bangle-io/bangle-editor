@@ -5,8 +5,8 @@ Array [
   Object {
     "end": 8,
     "match": true,
-    "matchedStr": "foozball",
     "start": 0,
+    "subString": "foozball",
   },
 ]
 `;
@@ -16,14 +16,14 @@ Array [
   Object {
     "end": 10,
     "match": false,
-    "matchedStr": "baseball  ",
     "start": 0,
+    "subString": "baseball  ",
   },
   Object {
     "end": 18,
     "match": true,
-    "matchedStr": "foozball",
     "start": 10,
+    "subString": "foozball",
   },
 ]
 `;
@@ -33,8 +33,8 @@ Array [
   Object {
     "end": 18,
     "match": false,
-    "matchedStr": "baseball  boozball",
     "start": 0,
+    "subString": "baseball  boozball",
   },
 ]
 `;

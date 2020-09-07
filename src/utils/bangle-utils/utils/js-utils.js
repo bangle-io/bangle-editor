@@ -72,7 +72,7 @@ export function matchAllPlus(regexp, str) {
         start: 0,
         end: str.length,
         match: false,
-        matchedStr: str,
+        subString: str,
       },
     ];
   }
@@ -109,7 +109,7 @@ export function matchAllPlus(regexp, str) {
     });
   }
 
-  result = result.map((r) => ({ ...r, matchedStr: str.slice(r.start, r.end) }));
+  result = result.map((r) => ({ ...r, subString: str.slice(r.start, r.end) }));
   return result;
 }
 

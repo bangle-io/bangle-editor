@@ -12,7 +12,7 @@ const clearTimeoutBackup = window.clearTimeout;
 describe('matchAllPlus', () => {
   test('works when match', () => {
     const result = matchAllPlus(/foo[a-z]*/g, 'baseball  foozball');
-    expect(result.map((r) => r.matchedStr)).toMatchInlineSnapshot(`
+    expect(result.map((r) => r.subString)).toMatchInlineSnapshot(`
       Array [
         "baseball  ",
         "foozball",
@@ -23,7 +23,7 @@ describe('matchAllPlus', () => {
 
   test('works when direct match', () => {
     const result = matchAllPlus(/foo[a-z]*/g, 'foozball');
-    expect(result.map((r) => r.matchedStr)).toMatchInlineSnapshot(`
+    expect(result.map((r) => r.subString)).toMatchInlineSnapshot(`
       Array [
         "foozball",
       ]
@@ -33,7 +33,7 @@ describe('matchAllPlus', () => {
 
   test('works when no match', () => {
     const result = matchAllPlus(/foo[a-z]*/g, 'baseball  boozball');
-    expect(result.map((r) => r.matchedStr)).toMatchInlineSnapshot(`
+    expect(result.map((r) => r.subString)).toMatchInlineSnapshot(`
       Array [
         "baseball  boozball",
       ]
@@ -47,7 +47,7 @@ describe('matchAllPlus', () => {
       /foo[a-z]*/g,
       'baseball  football foosball gobhi',
     );
-    expect(result.map((r) => r.matchedStr)).toMatchInlineSnapshot(`
+    expect(result.map((r) => r.subString)).toMatchInlineSnapshot(`
       Array [
         "baseball  ",
         "football",
@@ -63,7 +63,7 @@ describe('matchAllPlus', () => {
       /foo[a-z]*/g,
       'baseball  football gobhi tamatar foosball',
     );
-    expect(result.map((r) => r.matchedStr)).toMatchInlineSnapshot(`
+    expect(result.map((r) => r.subString)).toMatchInlineSnapshot(`
       Array [
         "baseball  ",
         "football",
