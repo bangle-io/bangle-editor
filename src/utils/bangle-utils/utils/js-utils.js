@@ -202,6 +202,26 @@ export function objectMapValues(obj, map) {
   );
 }
 
+export function objectFilter(obj, cb) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key, value]) => {
+      return cb(value, key);
+    }),
+  );
+}
+
+export function safeMergeObject(obj1 = {}, obj2 = {}) {
+  const culpritKey = Object.keys(obj1).find((key) => obj2.hasOwnProperty(key));
+  if (culpritKey) {
+    throw new Error(`Key ${culpritKey} already exists `);
+  }
+
+  return {
+    ...obj1,
+    ...obj2,
+  };
+}
+
 export function handleAsyncError(fn, onError) {
   return async (...args) => {
     return Promise.resolve(fn(...args)).catch(onError);

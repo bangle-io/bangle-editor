@@ -1,7 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-
+/** @jsx psx */
+import { psx } from '../../../../test-helpers/schema-builders';
 import '../../../../../src/test-helpers/jest-helpers';
 
 import {
@@ -15,7 +16,8 @@ import {
   codeBlock,
   underline,
 } from '../../../../../src/test-helpers/test-builders';
-import { renderTestEditor } from '../../../../../src/test-helpers/render-test-editor';
+import { renderTestEditor } from '../../../../test-helpers/render-helper';
+
 import { applyCommand } from '../../../../../src/test-helpers/commands-helpers';
 
 import { OrderedList } from '../ordered-list';
@@ -25,7 +27,6 @@ import {
   sendKeyToPm,
   typeText,
 } from '../../../../../src/test-helpers/keyboard';
-import { GapCursorSelection } from '../../../../../src/utils/bangle-utils/gap-cursor';
 import { Underline } from '../../../../../src/utils/bangle-utils/marks';
 
 import { CodeBlock } from '../code-block';
@@ -60,14 +61,27 @@ const testEditor = renderTestEditor({ extensions, type: 'new' });
 
 describe.only('Basics', () => {
   test.only('is able to type paragraph', async () => {
-    const { editor } = await testEditor(doc(p('foo{<>}bar')));
+    const { editor } = await testEditor(
+      <doc>
+        <para>foo[]bar</para>
+      </doc>,
+    );
 
     typeText(editor.view, 'hello');
 
-    expect(editor.state).toEqualDocAndSelection(doc(p('foohello{<>}bar')));
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <para>foohello[]bar</para>
+      </doc>,
+    );
   });
+
   test('is able to create a new paragraph', async () => {
-    const { editor } = await testEditor(doc(p('foo{<>}bar')));
+    const { editor } = await testEditor(
+      <doc>
+        <p>foo[]bar</p>
+      </doc>,
+    );
 
     sendKeyToPm(editor.view, 'Enter');
 
@@ -277,7 +291,7 @@ describe('Insert empty paragraph above and below', () => {
     // prettier-ignore
     [
       [
-        doc(p('foo{<>}bar')), 
+        <doc><p>foo[]bar</p></doc>, 
         doc(p('{<>}'), p('foobar'))
       ],
       [
@@ -323,7 +337,7 @@ describe('Insert empty paragraph above and below', () => {
     // prettier-ignore
     [
       [
-        doc(p('foo{<>}bar')), 
+        <doc><p>foo[]bar</p></doc>, 
         doc(p('foobar'), p('{<>}'))
       ],
       [

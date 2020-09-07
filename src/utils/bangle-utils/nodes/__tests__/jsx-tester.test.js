@@ -3,7 +3,7 @@
  */
 import '../../../../test-helpers/jest-helpers';
 /** @jsx psx */
-import { psx } from '../../../../test-helpers/jestxy-builders';
+import { psx } from '../../../../test-helpers/schema-builders';
 import { renderTestEditor } from '../../../../test-helpers/render-helper';
 
 import { OrderedList } from '../ordered-list';
@@ -36,7 +36,7 @@ const extensions = [
 
 const testEditor = renderTestEditor({ extensions, type: 'new' });
 
-test.skip.each([
+test.each([
   [
     'paragraph',
     <doc>
@@ -233,6 +233,20 @@ test.each([
   ],
 
   [
+    'multiple paragraph empty middle',
+    <doc>
+      <para>foo</para>
+      <para>[]</para>
+      <para>bar</para>
+    </doc>,
+    <doc>
+      <para>foo</para>
+      <para>hello[]</para>
+      <para>bar</para>
+    </doc>,
+  ],
+
+  [
     'bullet list start',
     <doc>
       <ul>
@@ -395,7 +409,7 @@ test.each([
   ],
 
   [
-    'heading',
+    'heading level 1',
     <doc>
       <heading level="1">f[]oo</heading>
     </doc>,
@@ -405,7 +419,7 @@ test.each([
   ],
 
   [
-    'hardBreak',
+    'hardBreak 1',
     <doc>
       <para>
         foo
@@ -421,9 +435,151 @@ test.each([
       </para>
     </doc>,
   ],
-])('Case %# %s schema is created correctly', async (type, input, expected) => {
-  const { editor, selection } = await testEditor(input);
+
+  [
+    'hardBreak 2',
+    <doc>
+      <para>
+        foo
+        <br />
+        []
+        <br />
+      </para>
+    </doc>,
+    <doc>
+      <para>
+        foo
+        <br />
+        hello[]
+        <br />
+      </para>
+    </doc>,
+  ],
+
+  // marks
+  [
+    'link',
+    <doc>
+      <para>
+        foo
+        <link href="https://example.com">example[].com</link>
+      </para>
+    </doc>,
+    <doc>
+      <para>
+        foo
+        <link href="https://example.com">examplehello[].com</link>
+      </para>
+    </doc>,
+  ],
+
+  [
+    'underline 1',
+    <doc>
+      <para>
+        foo
+        <underline>bar[]</underline>
+      </para>
+    </doc>,
+    <doc>
+      <para>
+        foo
+        <underline>barhello[]</underline>
+      </para>
+    </doc>,
+  ],
+
+  [
+    'underline 2',
+    <doc>
+      <para>
+        foo
+        <underline>[]bar</underline>
+      </para>
+    </doc>,
+    <doc>
+      <para>
+        foohello
+        <underline>[]bar</underline>
+      </para>
+    </doc>,
+  ],
+])('Empty Selection Case %# %s ', async (type, input, expected) => {
+  const { editor } = await testEditor(input);
   typeText(editor.view, 'hello');
-  console.log(selection);
+
   expect(editor.state).toEqualDocAndSelection(expected);
+});
+
+test('Selection range paragraph', async () => {
+  const { editor, selection } = await testEditor(
+    <doc>
+      <para>[foo]</para>
+    </doc>,
+  );
+  expect(selection).toMatchInlineSnapshot(`
+    Object {
+      "anchor": 1,
+      "head": 5,
+      "type": "text",
+    }
+  `);
+  expect(editor.state).toEqualDocAndSelection(
+    <doc>
+      <para>[foo]</para>
+    </doc>,
+  );
+});
+
+test('Selection range paragraph 2', async () => {
+  const { editor, selection } = await testEditor(
+    <doc>
+      <para>[fo]o bar</para>
+    </doc>,
+  );
+  expect(selection).toMatchInlineSnapshot(`
+    Object {
+      "anchor": 1,
+      "head": 4,
+      "type": "text",
+    }
+  `);
+  expect(editor.state).toEqualDocAndSelection(
+    <doc>
+      <para>[fo]o bar</para>
+    </doc>,
+  );
+});
+
+test('Selection range spanning multiple paragraphs ', async () => {
+  const { selection } = await testEditor(
+    <doc>
+      <para>[foo bar</para>
+      <para>fo]o bar</para>
+    </doc>,
+  );
+  expect(selection).toMatchInlineSnapshot(`
+    Object {
+      "anchor": 1,
+      "head": 12,
+      "type": "text",
+    }
+  `);
+});
+
+test('Selection range spanning multiple paragraphs 2', async () => {
+  const { selection } = await testEditor(
+    <doc>
+      <para>[foo bar</para>
+      <para>hello</para>
+      <para>]</para>
+    </doc>,
+  );
+  expect(selection).toMatchInlineSnapshot(`
+    Object {
+      "anchor": 1,
+      "head": 17,
+      "type": "text",
+    }
+  `);
 });

@@ -46,14 +46,12 @@ const testEditor = renderTestEditor({ extensions });
 
 describe('Basics', () => {
   test.only('is able to type paragraph', async () => {
-    const { editor } = await testEditor(
-      doc(ul(li(p('foo'), p('{<>}bar'), p('zoo')))),
-    );
+    const { editor } = await testEditor(doc(p('foo', br(), '{<>}', br())));
 
     typeText(editor.view, 'hello');
 
     expect(editor.state).toEqualDocAndSelection(
-      doc(ul(li(p('foo'), p('hello{<>}bar'), p('zoo')))),
+      doc(p('foo', br(), '{<>}', br())),
     );
   });
 
