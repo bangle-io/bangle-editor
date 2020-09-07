@@ -9,8 +9,17 @@ import {
   cutEmptyCommand,
 } from '../core-commands';
 import { TextSelection } from 'prosemirror-state';
+import browser from '../utils/browser';
 
 export class Paragraph extends Node {
+  get defaultOptions() {
+    return {
+      keys: {
+        jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
+        jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
+      },
+    };
+  }
   get name() {
     return 'paragraph';
   }
@@ -40,42 +49,10 @@ export class Paragraph extends Node {
     return {
       'Alt-ArrowUp': filter(parentCheck, moveNode(type, 'UP')),
       'Alt-ArrowDown': filter(parentCheck, moveNode(type, 'DOWN')),
-      'Ctrl-a': filter(
-        [(state) => state.selection.empty],
-        (state, dispatch) => {
-          const current = findParentNodeOfType(type)(state.selection);
 
-          if (!current) {
-            return false;
-          }
+      [this.options.keys.jumpToStartOfLine]: jumpToStartOfLine(type),
+      [this.options.keys.jumpToEndOfLine]: jumpToEndOfLine(type),
 
-          const { node, start } = current;
-
-          dispatch(
-            state.tr.setSelection(TextSelection.create(state.doc, start)),
-          );
-          return true;
-        },
-      ),
-      'Ctrl-e': filter(
-        [(state) => state.selection.empty],
-        (state, dispatch) => {
-          const current = findParentNodeOfType(type)(state.selection);
-
-          if (!current) {
-            return false;
-          }
-
-          const { node, start } = current;
-
-          dispatch(
-            state.tr.setSelection(
-              TextSelection.create(state.doc, start + node.content.size),
-            ),
-          );
-          return true;
-        },
-      ),
       'Meta-c': filter(
         // So that we donot interfere with nested p's in other nodes
         parentCheck,
@@ -88,4 +65,32 @@ export class Paragraph extends Node {
       ),
     };
   }
+}
+
+function jumpToStartOfLine(type) {
+  return (state, dispatch) => {
+    const current = findParentNodeOfType(type)(state.selection);
+    if (!current) {
+      return false;
+    }
+    const { start } = current;
+    dispatch(state.tr.setSelection(TextSelection.create(state.doc, start)));
+    return true;
+  };
+}
+
+function jumpToEndOfLine(type) {
+  return (state, dispatch) => {
+    const current = findParentNodeOfType(type)(state.selection);
+    if (!current) {
+      return false;
+    }
+    const { node, start } = current;
+    dispatch(
+      state.tr.setSelection(
+        TextSelection.create(state.doc, start + node.content.size),
+      ),
+    );
+    return true;
+  };
 }
