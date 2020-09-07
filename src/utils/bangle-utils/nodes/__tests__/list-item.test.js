@@ -2092,3 +2092,179 @@ describe('Toggling the list', () => {
     });
   });
 });
+
+describe('Insert empty list above and below', () => {
+  test.each(
+    // prettier-ignore
+    [
+      [
+        doc(
+          ul(
+            li(p('top{<>}'))
+          ),
+        ), 
+        doc(
+          ul(
+            li(p('{<>}')),
+            li(p('top'))
+          ),
+        )
+      ],
+      // empty 
+      [
+        doc(
+          ul(
+            li(p('{<>}'))
+          ),
+        ), 
+        doc(
+          ul(
+            li(p('{<>}')),
+            li(p()),
+          ),
+        )
+      ],
+      // nested
+      [
+        doc(
+          ul(
+            li(
+              p('first'), 
+              ul(
+                li(p('{<>}second'))
+              )
+            )
+          )
+        ), 
+        doc(
+          ul(
+            li(
+              p('first'), 
+              ul(
+                li(p('{<>}')),
+                li(p('second'))
+              )
+            )
+          )
+        )
+      ],
+      // nested but selection in parent
+      [
+        doc(
+          ul(
+            li(
+              p('first{<>}'), 
+              ul(
+                li(p('second'))
+              )
+            )
+          )
+        ), 
+        doc(
+          ul(
+            li(p('{<>}')),
+            li(
+              p('first'),
+              ul(
+                li(p('second'))
+              )
+            )
+          )
+        )
+      ]
+    ],
+  )('Case %# insert above', async (input, expected) => {
+    const { editor } = await testEditor(input);
+
+    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+
+    expect(editor.state).toEqualDocAndSelection(expected);
+  });
+
+  test.each(
+    // prettier-ignore
+    [
+      [
+        doc(
+          ul(
+            li(p('top{<>}')),
+          ),
+        ), 
+        doc(
+          ul(
+            li(p('top')),
+            li(p('{<>}')),
+          ),
+        )
+      ],
+      // empty 
+      [
+        doc(
+          ul(
+            li(p('{<>}')),
+          ),
+        ), 
+        doc(
+          ul(
+            li(p()),
+            li(p('{<>}')),
+          ),
+        )
+      ],
+      // nested
+      [
+        doc(
+          ul(
+            li(
+              p('first'), 
+              ul(
+                li(p('{<>}second')),
+              ),
+            )
+          )
+        ), 
+        doc(
+          ul(
+            li(
+              p('first'), 
+              ul(
+                li(p('second')),
+                li(p('{<>}')),
+              )
+            )
+          )
+        )
+      ],
+      // nested but selection in parent
+      [
+        doc(
+          ul(
+            li(
+              p('first{<>}'), 
+              ul(
+                li(p('second')),
+              ),
+            )
+          )
+        ), 
+        doc(
+          ul(
+            li(
+              p('first'),
+              ul(
+                li(p('second')),
+              ),
+            ),
+            li(p('{<>}')),
+          )
+        )
+      ]
+    ],
+  )('Case %# insert below', async (input, expected) => {
+    const { editor } = await testEditor(input);
+
+    sendKeyToPm(editor.view, 'Cmd-Enter');
+
+    expect(editor.state).toEqualDocAndSelection(expected);
+  });
+});

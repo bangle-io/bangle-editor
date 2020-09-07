@@ -695,3 +695,179 @@ describe('Toggle todo list with keyboard shortcut', () => {
     });
   });
 });
+
+describe('Insert empty todo above and below', () => {
+  test.each(
+    // prettier-ignore
+    [
+      [
+        doc(
+          todoList(
+            todoItem(p('top{<>}'))
+          ),
+        ), 
+        doc(
+          todoList(
+            todoItem(p('{<>}')),
+            todoItem(p('top'))
+          ),
+        )
+      ],
+      // empty 
+      [
+        doc(
+          todoList(
+            todoItem(p('{<>}'))
+          ),
+        ), 
+        doc(
+          todoList(
+            todoItem(p('{<>}')),
+            todoItem(p()),
+          ),
+        )
+      ],
+      // nested
+      [
+        doc(
+          todoList(
+            todoItem(
+              p('first'), 
+              todoList(
+                todoItem(p('{<>}second'))
+              )
+            )
+          )
+        ), 
+        doc(
+          todoList(
+            todoItem(
+              p('first'), 
+              todoList(
+                todoItem(p('{<>}')),
+                todoItem(p('second'))
+              )
+            )
+          )
+        )
+      ],
+      // nested but selection in parent
+      [
+        doc(
+          todoList(
+            todoItem(
+              p('first{<>}'), 
+              todoList(
+                todoItem(p('second'))
+              )
+            )
+          )
+        ), 
+        doc(
+          todoList(
+            todoItem(p('{<>}')),
+            todoItem(
+              p('first'),
+              todoList(
+                todoItem(p('second'))
+              )
+            )
+          )
+        )
+      ]
+    ],
+  )('Case %# insert above', async (input, expected) => {
+    const { editor } = await testEditor(input);
+
+    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+
+    expect(editor.state).toEqualDocAndSelection(expected);
+  });
+
+  test.each(
+    // prettier-ignore
+    [
+      [
+        doc(
+          todoList(
+            todoItem(p('top{<>}')),
+          ),
+        ), 
+        doc(
+          todoList(
+            todoItem(p('top')),
+            todoItem(p('{<>}')),
+          ),
+        )
+      ],
+      // empty 
+      [
+        doc(
+          todoList(
+            todoItem(p('{<>}')),
+          ),
+        ), 
+        doc(
+          todoList(
+            todoItem(p()),
+            todoItem(p('{<>}')),
+          ),
+        )
+      ],
+      // nested
+      [
+        doc(
+          todoList(
+            todoItem(
+              p('first'), 
+              todoList(
+                todoItem(p('{<>}second')),
+              ),
+            )
+          )
+        ), 
+        doc(
+          todoList(
+            todoItem(
+              p('first'), 
+              todoList(
+                todoItem(p('second')),
+                todoItem(p('{<>}')),
+              )
+            )
+          )
+        )
+      ],
+      // nested but selection in parent
+      [
+        doc(
+          todoList(
+            todoItem(
+              p('first{<>}'), 
+              todoList(
+                todoItem(p('second')),
+              ),
+            )
+          )
+        ), 
+        doc(
+          todoList(
+            todoItem(
+              p('first'),
+              todoList(
+                todoItem(p('second')),
+                ),
+              ),
+            todoItem(p('{<>}')),
+          )
+        )
+      ]
+    ],
+  )('Case %# insert below', async (input, expected) => {
+    const { editor } = await testEditor(input);
+
+    sendKeyToPm(editor.view, 'Cmd-Enter');
+
+    expect(editor.state).toEqualDocAndSelection(expected);
+  });
+});

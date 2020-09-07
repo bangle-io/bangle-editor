@@ -20,7 +20,7 @@ import {
   copyEmptyCommand,
   parentHasDirectParentOfType,
 } from '../core-commands';
-import { filter } from '../utils/pm-utils';
+import { filter, insertEmpty } from '../utils/pm-utils';
 
 const LOG = false;
 
@@ -97,14 +97,6 @@ export class TodoItem extends Node {
       schema.nodes['todo_list'],
     );
     return {
-      'Enter': enterKeyCommand(type),
-      'Backspace': backspaceKeyCommand(type),
-      'Tab': this.options.nested ? indentList(type) : () => {},
-      'Shift-Tab': outdentList(type),
-      'Alt-ArrowUp': filter(parentCheck, move('UP')),
-      'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
-      'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
-      'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
       'Ctrl-Enter': filter(
         parentCheck,
         updateNodeAttrs(type, (attrs) => ({
@@ -112,6 +104,22 @@ export class TodoItem extends Node {
           'data-done': !attrs['data-done'],
         })),
       ),
+
+      'Enter': enterKeyCommand(type),
+
+      'Backspace': backspaceKeyCommand(type),
+
+      'Tab': this.options.nested ? indentList(type) : () => {},
+      'Shift-Tab': outdentList(type),
+
+      'Alt-ArrowUp': filter(parentCheck, move('UP')),
+      'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
+
+      'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
+      'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
+
+      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, 'above', true)),
+      'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
     };
   }
 

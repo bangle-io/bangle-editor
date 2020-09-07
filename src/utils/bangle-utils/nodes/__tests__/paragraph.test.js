@@ -271,3 +271,97 @@ describe('Moving up and down', () => {
     );
   });
 });
+
+describe('Insert empty paragraph above and below', () => {
+  test.each(
+    // prettier-ignore
+    [
+      [
+        doc(p('foo{<>}bar')), 
+        doc(p('{<>}'), p('foobar'))
+      ],
+      [
+        doc(p('{<>}foobar')), 
+        doc(p('{<>}'), p('foobar'))
+      ],
+      [
+        doc(p('{<>}')), 
+        doc(p('{<>}'), p())
+      ],
+      [
+        doc(
+          p('other paragraph'),
+          p('hello{<>}')
+        ), 
+        doc(
+          p('other paragraph'),
+          p('{<>}'), 
+          p('hello'),
+        )
+      ],
+      [
+        doc(
+          ul(li(p('top'))),
+          p('hello{<>}'),
+        ), 
+        doc(
+          ul(li(p('top'))),
+          p('{<>}'), 
+          p('hello')
+        )
+      ]
+    ],
+  )('Case %# insert above', async (input, expected) => {
+    const { editor } = await testEditor(input);
+
+    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+
+    expect(editor.state).toEqualDocAndSelection(expected);
+  });
+
+  test.each(
+    // prettier-ignore
+    [
+      [
+        doc(p('foo{<>}bar')), 
+        doc(p('foobar'), p('{<>}'))
+      ],
+      [
+        doc(p('{<>}foobar')), 
+        doc(p('foobar'), p('{<>}'))
+      ],
+      [
+        doc(p('{<>}')), 
+        doc(p(), p('{<>}'))
+      ],
+      [
+        doc(
+          p('other paragraph'),
+          p('hello{<>}')
+        ), 
+        doc(
+          p('other paragraph'),
+          p('hello'),
+          p('{<>}'), 
+        )
+      ],
+      [
+        doc(
+          ul(li(p('top'))),
+          p('hello{<>}'),
+        ), 
+        doc(
+          ul(li(p('top'))),
+          p('hello'),
+          p('{<>}'), 
+        )
+      ]
+    ],
+  )('Case %# insert below', async (input, expected) => {
+    const { editor } = await testEditor(input);
+
+    sendKeyToPm(editor.view, 'Cmd-Enter');
+
+    expect(editor.state).toEqualDocAndSelection(expected);
+  });
+});

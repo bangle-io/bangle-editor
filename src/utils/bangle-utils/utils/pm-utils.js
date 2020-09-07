@@ -1,7 +1,12 @@
-import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
+import {
+  findParentNode,
+  safeInsert,
+  findSelectedNodeOfType,
+} from 'prosemirror-utils';
 import { GapCursorSelection } from '../gap-cursor';
 import { Fragment, Slice } from 'prosemirror-model';
 
+export { findParentNodeOfType } from 'prosemirror-utils';
 /**
  * whether the mark of type is active
  * @returns {Boolean}
@@ -371,14 +376,6 @@ export function mapChildren(node, callback) {
   return array;
 }
 
-/**
- *
- * -----------
- * State Helpers
- * ------------
- *
- */
-
 export const isFirstChildOfParent = (state) => {
   const { $from } = state.selection;
   return $from.depth > 1
@@ -432,4 +429,41 @@ export function mapFragment(
 
 export function getFragmentBackingArray(fragment) {
   return fragment.content;
+}
+
+/**
+ *
+ * @param {*} type The schema type of object to create
+ * @param {*} placement The placement of the node - above or below
+ * @param {*} nested putting this true will create the
+ *            empty node at -1. Set this to true   for nodes
+ *             which are nested, for example in:
+ *              `<ul> p1 <li> p2 <p>abc</p> p7 </li> p8 <ul>`
+ *            we want to insert empty `<li>` above, for which we
+ *            will  insert it at pos p1 and not p2. If nested was false,
+ *            the function would hav inserted at p2.
+ */
+export function insertEmpty(type, placement = 'above', nested = false) {
+  const isAbove = placement === 'above';
+  const depth = nested ? -1 : undefined;
+  return (state, dispatch) => {
+    const insertPos = isAbove
+      ? state.selection.$from.before(depth)
+      : state.selection.$from.after(depth);
+
+    const nodeToInsert = type.createAndFill();
+
+    const tr = state.tr;
+    let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
+
+    if (tr === newTr) {
+      return false;
+    }
+
+    if (dispatch) {
+      dispatch(newTr.scrollIntoView());
+    }
+
+    return true;
+  };
 }

@@ -23,7 +23,6 @@ export class HardBreak extends Node {
       return true;
     });
     return {
-      'Mod-Enter': command,
       'Shift-Enter': command,
     };
   }
