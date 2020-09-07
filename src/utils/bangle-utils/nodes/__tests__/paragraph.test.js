@@ -41,6 +41,7 @@ import {
 import { Blockquote } from '../blockquote';
 import { TodoList } from '../todo-list';
 import { TodoItem } from '../todo-item';
+import { Paragraph } from '../paragraph';
 
 const extensions = [
   new BulletList(),
@@ -92,10 +93,11 @@ describe('Basics', () => {
 });
 
 describe('Moving selection start and end', () => {
+  const { keys } = new Paragraph().options;
   it('Moves selection to the start', async () => {
     const { editor } = await testEditor(doc(p('foobar{<>}')));
 
-    sendKeyToPm(editor.view, 'Ctrl-a');
+    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(p('{<>}foobar')));
   });
@@ -103,7 +105,7 @@ describe('Moving selection start and end', () => {
   it('Moves selection to the start', async () => {
     const { editor } = await testEditor(doc(p('f{<>}oobar')));
 
-    sendKeyToPm(editor.view, 'Ctrl-a');
+    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(p('{<>}foobar')));
   });
@@ -111,7 +113,7 @@ describe('Moving selection start and end', () => {
   it('Moves selection to the start', async () => {
     const { editor } = await testEditor(doc(p('{<>}foobar')));
 
-    sendKeyToPm(editor.view, 'Ctrl-a');
+    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(p('{<>}foobar')));
   });
@@ -119,7 +121,7 @@ describe('Moving selection start and end', () => {
   it('Moves selection to start when inside a list', async () => {
     const { editor } = await testEditor(doc(ul(li(p('foobar{<>}')))));
 
-    sendKeyToPm(editor.view, 'Ctrl-a');
+    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(ul(li(p('{<>}foobar')))));
   });
@@ -127,7 +129,7 @@ describe('Moving selection start and end', () => {
   it('Moves selection to the end', async () => {
     const { editor } = await testEditor(doc(p('{<>}foobar')));
 
-    sendKeyToPm(editor.view, 'Ctrl-e');
+    sendKeyToPm(editor.view, keys.jumpToEndOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(p('foobar{<>}')));
   });
@@ -135,7 +137,7 @@ describe('Moving selection start and end', () => {
   it('Moves selection to the end', async () => {
     const { editor } = await testEditor(doc(p('fooba{<>}r')));
 
-    sendKeyToPm(editor.view, 'Ctrl-e');
+    sendKeyToPm(editor.view, keys.jumpToEndOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(p('foobar{<>}')));
   });
@@ -143,7 +145,7 @@ describe('Moving selection start and end', () => {
   it('Moves selection to end when inside a list', async () => {
     const { editor } = await testEditor(doc(ul(li(p('{<>}foobar')))));
 
-    sendKeyToPm(editor.view, 'Ctrl-e');
+    sendKeyToPm(editor.view, keys.jumpToEndOfLine);
 
     expect(editor.state).toEqualDocAndSelection(doc(ul(li(p('foobar{<>}')))));
   });
