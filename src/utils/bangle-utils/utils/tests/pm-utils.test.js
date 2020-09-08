@@ -147,16 +147,4 @@ describe('findCutBefore', () => {
     expect($cut.nodeAfter).toBeDefined();
     expect($cut.pos).toBe(refs['<>'] - 3);
   });
-
-  //   it.skip('does not search across isolating boundaries', async () => {
-  //     const { editorView } = await testEditor(
-  //       doc(table()(tr(td()(p('{<>}hey'))))),
-  //       (editorProps: { allowTables: true }),
-  //     );
-
-  //     const { $from } = editorView.state.selection;
-
-  //     const $cut = findCutBefore($from);
-  //     expect($cut).toBeNull();
-  //   });
 });

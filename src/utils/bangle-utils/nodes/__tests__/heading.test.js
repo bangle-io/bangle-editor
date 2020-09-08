@@ -5,7 +5,7 @@
 /** @jsx psx */
 import '../../../../../src/test-helpers/jest-helpers';
 import { psx } from '../../../../test-helpers/schema-builders';
-import { renderTestEditor } from '../../../../../src/test-helpers/render-test-editor';
+import { renderTestEditor } from '../../../../test-helpers/render-helper';
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';

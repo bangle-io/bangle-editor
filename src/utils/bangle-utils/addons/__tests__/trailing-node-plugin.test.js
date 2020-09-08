@@ -2,14 +2,11 @@
  * @jest-environment jsdom
  */
 
+/** @jsx psx */
 import '../../../../test-helpers/jest-helpers';
-
-import { doc, p, h1 } from '../../../../test-helpers/test-builders';
-import {
-  renderTestEditor,
-  sendKeyToPm,
-  typeText,
-} from '../../../../test-helpers';
+import { psx } from '../../../../test-helpers/schema-builders';
+import { sendKeyToPm, typeText } from '../../../../test-helpers';
+import { renderTestEditor } from '../../../../test-helpers/render-helper';
 // import { applyCommand } from '../../../../test-helpers/commands-helpers';
 
 import { Heading } from '../../nodes';
@@ -21,24 +18,39 @@ const extensions = [new Heading(), new TrailingNode()];
 const testEditor = renderTestEditor({ extensions });
 
 test('Does not add trailing node when typing paragraphs', async () => {
-  const { editor } = await testEditor(doc(p('foo{<>}bar')));
+  const { editor } = await testEditor(
+    <doc>
+      <para>foo[]bar</para>
+    </doc>,
+  );
 
   typeText(editor.view, 'hello');
   sendKeyToPm(editor.view, 'Enter');
   typeText(editor.view, 'lastpara');
 
   expect(editor.state).toEqualDocAndSelection(
-    doc(p('foohello'), p('lastpara{<>}bar')),
+    <doc>
+      <para>foohello</para>
+      <para>lastpara[]bar</para>
+    </doc>,
   );
 });
 
 test('creates an empty para below Heading', async () => {
-  const { editor } = await testEditor(doc(p('foobar{<>}')));
+  const { editor } = await testEditor(
+    <doc>
+      <para>foobar[]</para>
+    </doc>,
+  );
 
   sendKeyToPm(editor.view, 'Enter');
   typeText(editor.view, '# heading');
 
   expect(editor.state).toEqualDocAndSelection(
-    doc(p('foobar'), h1('heading'), p('')),
+    <doc>
+      <para>foobar</para>
+      <heading>heading</heading>
+      <para></para>
+    </doc>,
   );
 });
