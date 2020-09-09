@@ -1,11 +1,10 @@
 /**
  * @jest-environment jsdom
  */
+/** @jsx psx */
 import '../../../test-helpers/jest-helpers';
+import { psx } from '../../../test-helpers/schema-builders';
 
-import {} from '../../../test-helpers';
-import {} from './../../../utils/bangle-utils/nodes';
-import { doc, p, ul, li } from './../../../test-helpers/test-builders';
 import { TextSelection } from 'prosemirror-state';
 import {
   setupDb,
@@ -82,10 +81,10 @@ describe('one client - server', () => {
 
     // prettier-ignore
     expect(view.state).toEqualDocAndSelection(
-      doc(
-          p('hello world!'),
-          ul(li(p('I am a bullet{<>}')))
-      ),
+      <doc>
+          <para>hello world!</para>
+          <ul><li><para>I am a bullet[]</para></li></ul>
+      </doc>,
     );
 
     await sleep(50); // wait for disk
@@ -119,7 +118,14 @@ it('changing selection in one client', async () => {
   ({ seq1: view1, seq2: view2 } = await nextViews());
 
   expect(view1.state.doc).toEqualDocument(
-    doc(p('hello world!'), ul(li(p('I am a bullet{<>}')))),
+    <doc>
+      <para>hello world!</para>
+      <ul>
+        <li>
+          <para>I am a bullet[]</para>
+        </li>
+      </ul>
+    </doc>,
   );
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
 });
@@ -160,9 +166,20 @@ it('hold incoming of a seq1 client', async () => {
   // second 🍌 : view1 should be outdated
   ({ seq1: view1, seq2: view2 } = await nextViews());
   expect(view2.state.doc).toEqualDocument(
-    doc(p('hello world!'), ul(li(p('I{<>}')))),
+    <doc>
+      <para>hello world!</para>
+      <ul>
+        <li>
+          <para>I[]</para>
+        </li>
+      </ul>
+    </doc>,
   );
-  expect(view1.state.doc).toEqualDocument(doc(p('hello world!')));
+  expect(view1.state.doc).toEqualDocument(
+    <doc>
+      <para>hello world!</para>
+    </doc>,
+  );
 
   seq1Resume();
   shouldStopSeq1 = false;
@@ -170,7 +187,14 @@ it('hold incoming of a seq1 client', async () => {
   // third 🍌 : view1 should be upto date
   ({ seq1: view1, seq2: view2 } = await nextViews());
   expect(view1.state.doc).toEqualDocument(
-    doc(p('hello world!'), ul(li(p('I{<>}')))),
+    <doc>
+      <para>hello world!</para>
+      <ul>
+        <li>
+          <para>I[]</para>
+        </li>
+      </ul>
+    </doc>,
   );
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
 });
@@ -211,15 +235,27 @@ it('hold incoming of a seq1 client but it still continues to type', async () => 
   ({ seq1: view1, seq2: view2 } = await nextViews());
   // view2 gets the view1's `A` as we have only paused view1's ability to pull
   // in data and not the other way round.
-  expect(view2.state.doc).toEqualDocument(doc(p('Ahello world!Z')));
-  expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!'))); // <-- view1 didn't get the Z
+  expect(view2.state.doc).toEqualDocument(
+    <doc>
+      <para>Ahello world!Z</para>
+    </doc>,
+  );
+  expect(view1.state.doc).toEqualDocument(
+    <doc>
+      <para>Ahello world!</para>
+    </doc>,
+  ); // <-- view1 didn't get the Z
 
   seq1Resume();
   shouldStopSeq1 = false;
 
   // third 🍌 : view1 should be upto date
   ({ seq1: view1, seq2: view2 } = await nextViews());
-  expect(view1.state.doc).toEqualDocument(doc(p('Ahello world!Z')));
+  expect(view1.state.doc).toEqualDocument(
+    <doc>
+      <para>Ahello world!Z</para>
+    </doc>,
+  );
   // doing a .json since they both are using different schema
   expect(view2.state.doc.toJSON()).toEqual(view1.state.doc.toJSON());
 });
@@ -258,7 +294,12 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   await sleep(EditorConnection.defaultOpts.recoveryBackOffInterval); // wait for the server to retry after backoff
 
   ({ seq1: view1, seq2: view2 } = await nextViews());
-  const match = doc(p('hello world!'), ul(li(p('I{<>}'))));
+  // prettier-ignore
+  const match = <doc>
+    <para>hello world!</para>
+    <ul><li><para>I[]</para></li></ul>
+  </doc>
+
   expect(view2.state.doc).toEqualDocument(match);
   expect(view1.state.doc).toEqualDocument(match); // <-- view1 should have recovered
 
@@ -293,12 +334,28 @@ it.each([
       seq2: '💚_____🍌__ZZZ__🍌_____🍌',
     },
     {
-      seq1: doc(p('AAhello world!')),
-      seq2: doc(p('hello world!ZZZ')),
+      seq1: (
+        <doc>
+          <para>AAhello world!</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>hello world!ZZZ</para>
+        </doc>
+      ),
     },
     {
-      seq1: doc(p('AAhello world!ZZZ')),
-      seq2: doc(p('AAhello world!ZZZ')),
+      seq1: (
+        <doc>
+          <para>AAhello world!ZZZ</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>AAhello world!ZZZ</para>
+        </doc>
+      ),
     },
   ],
 
@@ -308,12 +365,28 @@ it.each([
       seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
     },
     {
-      seq1: doc(p('AAhello world!')),
-      seq2: doc(p('hello world!ZZZ')),
+      seq1: (
+        <doc>
+          <para>AAhello world!</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>hello world!ZZZ</para>
+        </doc>
+      ),
     },
     {
-      seq1: doc(p('AABBhello world!ZZZYY')),
-      seq2: doc(p('AABBhello world!ZZZYY')),
+      seq1: (
+        <doc>
+          <para>AABBhello world!ZZZYY</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>AABBhello world!ZZZYY</para>
+        </doc>
+      ),
     },
   ],
 
@@ -323,12 +396,32 @@ it.each([
       seq2: '💚_____🍌__ZZZ__🍌_YYY__🍌',
     },
     {
-      seq1: doc(p('AAhello world!')),
-      seq2: doc(p('hello world!ZZZ')),
+      seq1: (
+        <doc>
+          <para>AAhello world!</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>hello world!ZZZ</para>
+        </doc>
+      ),
     },
     {
-      seq1: doc(p('AA'), p('B'), p('hello world!ZZZYYY')),
-      seq2: doc(p('AA'), p('B'), p('hello world!ZZZYYY')),
+      seq1: (
+        <doc>
+          <para>AA</para>
+          <para>B</para>
+          <para>hello world!ZZZYYY</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>AA</para>
+          <para>B</para>
+          <para>hello world!ZZZYYY</para>
+        </doc>
+      ),
     },
   ],
 ])('%# more sync cases', async (seq, secondBananaResult, thirdBananaResult) => {
@@ -386,21 +479,31 @@ test.each([
       seq1: '💚_🍌',
       seq2: '💚_🍌',
     },
-    doc(p()),
+    <doc>
+      <para></para>
+    </doc>,
   ],
   [
     {
       seq1: '💚_____- I am a bullet__🍌',
       seq2: '💚______________________🍌',
     },
-    doc(ul(li(p('I am a bullet')))),
+    <doc>
+      <ul>
+        <li>
+          <para>I am a bullet</para>
+        </li>
+      </ul>
+    </doc>,
   ],
   [
     {
       seq1: '💚______aaaaaa____aaaaaa_🍌',
       seq2: '💚______b__________b_____🍌',
     },
-    doc(p('abaaaaaaabaaaa')),
+    <doc>
+      <para>abaaaaaaabaaaa</para>
+    </doc>,
   ],
 ])('2 clients Case %#', async (seq, expected) => {
   const store = setupDb(emptyDoc);
@@ -423,7 +526,9 @@ test.each([
       seq3: '💚______________________________🍌',
       seq4: '💚______________________________🍌',
     },
-    doc(p('good after noon everyone hello world!')),
+    <doc>
+      <para>good after noon everyone hello world!</para>
+    </doc>,
   ],
   [
     {
@@ -432,7 +537,9 @@ test.each([
       seq3: '💚____🍌',
       seq4: '💚____🍌',
     },
-    doc(p('chello world!')),
+    <doc>
+      <para>chello world!</para>
+    </doc>,
   ],
   [
     {
@@ -441,7 +548,9 @@ test.each([
       seq3: '💚__________________________________________________🍌',
       seq4: '💚_____________________________good night __________🍌',
     },
-    doc(p('good after noon everyone good night hello world!')),
+    <doc>
+      <para>good after noon everyone good night hello world!</para>
+    </doc>,
   ],
 ])('4 clients Case %# editor state syncs', async (seq, expected) => {
   for await (const { states } of spinEditors(seq)) {
@@ -495,25 +604,46 @@ describe('🖤unmounting of editor🖤', () => {
         seq1: '💚__hello____🖤_🍌',
         seq2: '💚______ttt__tt🍌',
       },
-      [undefined, doc(p('hellottttt{<>}'))],
+      [
+        undefined,
+        <doc>
+          <para>hellottttt[]</para>
+        </doc>,
+      ],
     ],
 
     [
       {
         seq1: '💚_____________🖤_🍌',
-        seq2: '💚_well 🐑 well___🍌',
+        seq2: '💚_well 🐑_well___🍌',
         seq3: '___🐑________💚___🍌',
       },
-      [undefined, doc(p('well  well{<>}')), doc(p('well  well'))],
+      [
+        undefined,
+        <doc>
+          <para>well well[]</para>
+        </doc>,
+        <doc>
+          <para>well well</para>
+        </doc>,
+      ],
     ],
 
     [
       {
         seq1: '_💚____________🖤____🍌',
-        seq2: '🐑💚_well _ well_____🍌',
+        seq2: '🐑💚_well __well_____🍌',
         seq3: '🐑___________💚__why_🍌',
       },
-      [undefined, doc(p('whywell  well{<>}')), doc(p('why{<>}well  well'))],
+      [
+        undefined,
+        <doc>
+          <para>whywell well[]</para>
+        </doc>,
+        <doc>
+          <para>why[]well well</para>
+        </doc>,
+      ],
     ],
   ])(
     'Case %# editor state syncs',
@@ -544,7 +674,11 @@ describe('🖤unmounting of editor🖤', () => {
       expect(view1).toBe(undefined);
       expect(view2).toBe(undefined);
       expect(view3).toBe(undefined);
-      expect(view4.state).toEqualDocAndSelection(doc(p('four{<>}threetwoone')));
+      expect(view4.state).toEqualDocAndSelection(
+        <doc>
+          <para>four[]threetwoone</para>
+        </doc>,
+      );
     }
     expect.hasAssertions();
   });
@@ -561,12 +695,16 @@ describe('🖤unmounting of editor🖤', () => {
     for await (const { views } of spinEditors(seq, { store })) {
       const { seq1: view1, seq2: view2, seq3: view3, seq4: view4 } = views;
       expect(view1.state).toEqualDocAndSelection(
-        doc(p('fouralive{<>}threetwoone')),
+        <doc>
+          <para>fouralive[]threetwoone</para>
+        </doc>,
       );
       expect(view2).toBe(undefined);
       expect(view3).toBe(undefined);
       expect(view4.state).toEqualDocAndSelection(
-        doc(p('fouralive{<>}threetwoone')),
+        <doc>
+          <para>fouralive[]threetwoone</para>
+        </doc>,
       );
     }
     expect.hasAssertions();
@@ -579,8 +717,12 @@ test.each([
       seq1: '💚_🍌_one_____🍌___three____🍌',
       seq2: '💚_🍌___two___🍌____________🍌',
     },
-    doc(p('onehello world!two')),
-    doc(p('onethreehello world!two')),
+    <doc>
+      <para>onehello world!two</para>
+    </doc>,
+    <doc>
+      <para>onethreehello world!two</para>
+    </doc>,
   ],
 
   [
@@ -588,11 +730,22 @@ test.each([
       seq1: '💚_🍌_one something good _____🍌____top ______🍌',
       seq2: '💚_🍌__ two↵ - Twos bullet____🍌___ bottom____🍌',
     },
-    doc(p('one something good hello world! two'), ul(li(p('Twos bullet')))),
-    doc(
-      p('one something good top hello world! two'),
-      ul(li(p('Twos bullet bottom'))),
-    ),
+    <doc>
+      <para>one something good hello world! two</para>
+      <ul>
+        <li>
+          <para>Twos bullet</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <para>one something good top hello world! two</para>
+      <ul>
+        <li>
+          <para>Twos bullet bottom</para>
+        </li>
+      </ul>
+    </doc>,
   ],
 ])(
   "Clients works after server times out the 'get_events' request",
