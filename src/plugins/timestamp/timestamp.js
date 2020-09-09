@@ -19,8 +19,9 @@ function printDate(type) {
     let { $from } = state.selection,
       index = $from.index();
 
-    if (!$from.parent.canReplaceWith(index, index, state.schema.nodes.text))
+    if (!$from.parent.canReplaceWith(index, index, state.schema.nodes.text)) {
       return false;
+    }
 
     if (dispatch) {
       let text;

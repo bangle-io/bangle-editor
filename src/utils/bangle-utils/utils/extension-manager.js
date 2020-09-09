@@ -79,7 +79,9 @@ export class ExtensionManager {
   }
 
   inputRules({ schema, excludedExtensions }) {
-    if (!Array.isArray(excludedExtensions) && excludedExtensions) return [];
+    if (!Array.isArray(excludedExtensions) && excludedExtensions) {
+      return [];
+    }
 
     const allowedExtensions = Array.isArray(excludedExtensions)
       ? this.extensions.filter(
@@ -108,7 +110,9 @@ export class ExtensionManager {
   }
 
   pasteRules({ schema, excludedExtensions }) {
-    if (!Array.isArray(excludedExtensions) && excludedExtensions) return [];
+    if (!Array.isArray(excludedExtensions) && excludedExtensions) {
+      return [];
+    }
 
     const allowedExtensions = Array.isArray(excludedExtensions)
       ? this.extensions.filter(

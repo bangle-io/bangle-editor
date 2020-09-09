@@ -25,7 +25,9 @@ import { filter, insertEmpty } from '../utils/pm-utils';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('todo-item.js', ...args);
+  if (LOG) {
+    console.log('todo-item.js', ...args);
+  }
 }
 
 export class TodoItem extends Node {

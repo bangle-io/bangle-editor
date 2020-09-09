@@ -8,7 +8,9 @@ import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('emoji/index.js:', ...args);
+  if (LOG) {
+    console.log('emoji/index.js:', ...args);
+  }
 }
 
 function insertEmoji(schema, name) {
@@ -16,7 +18,9 @@ function insertEmoji(schema, name) {
   return function (state, dispatch) {
     let { $from } = state.selection,
       index = $from.index();
-    if (!$from.parent.canReplaceWith(index, index, emojiType)) return false;
+    if (!$from.parent.canReplaceWith(index, index, emojiType)) {
+      return false;
+    }
     if (dispatch) {
       const attr = {
         'data-emojikind': name,

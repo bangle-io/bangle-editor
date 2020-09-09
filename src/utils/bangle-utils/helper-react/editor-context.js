@@ -7,7 +7,9 @@ export const EditorOnReadyContext = React.createContext(null);
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('editor-context.js', ...args);
+  if (LOG) {
+    console.log('editor-context.js', ...args);
+  }
 }
 
 export class EditorContextProvider extends React.Component {

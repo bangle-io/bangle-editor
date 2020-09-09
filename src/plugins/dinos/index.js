@@ -114,7 +114,9 @@ function insertDino(schema, dinoName) {
     let { $from } = state.selection;
     let index = $from.index();
 
-    if (!$from.parent.canReplaceWith(index, index, dinoType)) return false;
+    if (!$from.parent.canReplaceWith(index, index, dinoType)) {
+      return false;
+    }
     if (dispatch) {
       const attr = {
         'data-dinokind': dinoName,

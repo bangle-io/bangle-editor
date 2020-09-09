@@ -7,7 +7,9 @@ import { CachedMap } from '../utils/js-utils';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('portal.js:', ...args);
+  if (LOG) {
+    console.log('portal.js:', ...args);
+  }
 }
 
 export class PortalProviderAPI extends Emitter {

@@ -12,7 +12,9 @@ export function typeAheadInputRule(schema, trigger) {
      *            match[1]                     match[2]          match[3] – optional
      */
     const trigger = match[3] || match[2];
-    if (!trigger) return;
+    if (!trigger) {
+      return;
+    }
 
     const mark = schema.mark('typeAheadQuery', { trigger });
     const { tr, selection } = editorState;

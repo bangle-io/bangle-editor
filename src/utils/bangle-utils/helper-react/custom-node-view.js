@@ -1,7 +1,9 @@
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('custome-node-view.js', ...args);
+  if (LOG) {
+    console.log('custome-node-view.js', ...args);
+  }
 }
 export class CustomNodeView {
   constructor({
