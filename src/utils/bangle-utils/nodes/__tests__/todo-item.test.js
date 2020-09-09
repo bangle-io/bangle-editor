@@ -3,15 +3,6 @@
  */
 /** @jsx psx */
 import '../../../../../src/test-helpers/jest-helpers';
-import {
-  doc as reallyReallyReallyReallyReally__doc,
-  ul as reallyReallyReallyReallyReally__ul,
-  li as reallyReallyReallyReallyReally__li,
-  p as reallyReallyReallyReallyReally__p,
-  ol as reallyReallyReallyReallyReally__ol,
-  todoList as reallyReallyReallyReallyReally__todoList,
-  todoItem as reallyReallyReallyReallyReally__todoItem,
-} from '../../../../../src/test-helpers/test-builders';
 import { psx } from '../../../../test-helpers/schema-builders';
 import { renderTestEditor } from '../../../../test-helpers/render-helper';
 import { OrderedList } from '../ordered-list';
