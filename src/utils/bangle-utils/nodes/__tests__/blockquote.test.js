@@ -2,26 +2,17 @@
  * @jest-environment jsdom
  */
 
+/** @jsx psx */
+import { psx } from '../../../../test-helpers/schema-builders';
 import '../../../../../src/test-helpers/jest-helpers';
 
-import {
-  doc,
-  ul,
-  li,
-  p,
-  blockquote,
-} from '../../../../../src/test-helpers/test-builders';
-import { renderTestEditor } from '../../../../../src/test-helpers/render-test-editor';
+import { renderTestEditor } from '../../../../test-helpers/render-helper';
 
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';
-import {
-  sendKeyToPm,
-  typeText,
-} from '../../../../../src/test-helpers/keyboard';
+import { sendKeyToPm } from '../../../../../src/test-helpers/keyboard';
 import { Underline } from '../../../../../src/utils/bangle-utils/marks';
-
 import { CodeBlock } from '../code-block';
 import { Heading } from '../heading';
 import { HardBreak } from '../hard-break';
@@ -45,60 +36,121 @@ const extensions = [
 const testEditor = renderTestEditor({ extensions });
 
 describe('Insert empty paragraph above and below', () => {
-  test.each(
-    // prettier-ignore
+  test.each([
     [
-      [
-        doc(blockquote(p('foo{<>}bar'))), 
-        doc(p('{<>}'), blockquote(p('foobar')))
-      ],
-      [
-        doc(blockquote(p('{<>}foobar'))), 
-        doc(p('{<>}'), blockquote(p('foobar')))
-      ],
-      [
-        doc(blockquote(p('{<>}'))), 
-        doc(p('{<>}'), blockquote(p()))
-      ],
-      [
-        doc(blockquote(p('hello'), p('{<>}'))), 
-        doc(p('{<>}'), blockquote(p('hello'), p()))
-      ],
-      [
-        doc(
-          p('other paragraph'),
-          blockquote(p('hello'), p('{<>}'))
-        ), 
-        doc(
-          p('other paragraph'),
-          p('{<>}'), 
-          blockquote(p('hello'), p())
-        )
-      ],
-      [
-        doc(
-          blockquote(p('top')),
-          blockquote(p('hello{<>}')),
-        ), 
-        doc(
-          blockquote(p('top')),
-          p('{<>}'), 
-          blockquote(p('hello'))
-        )
-      ],
-      [
-        doc(
-          ul(li(p('top'))),
-          blockquote(p('hello{<>}')),
-        ), 
-        doc(
-          ul(li(p('top'))),
-          p('{<>}'), 
-          blockquote(p('hello'))
-        )
-      ]
+      <doc>
+        <blockquote>
+          <para>foo[]bar</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <para>[]</para>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+      </doc>,
     ],
-  )('Case %# insert empty paragraph above', async (input, expected) => {
+    [
+      <doc>
+        <blockquote>
+          <para>[]foobar</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <para>[]</para>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+      </doc>,
+    ],
+    [
+      <doc>
+        <blockquote>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <para>[]</para>
+        <blockquote>
+          <para></para>
+        </blockquote>
+      </doc>,
+    ],
+    [
+      <doc>
+        <blockquote>
+          <para>hello</para>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <para>[]</para>
+        <blockquote>
+          <para>hello</para>
+          <para></para>
+        </blockquote>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>other paragraph</para>
+        <blockquote>
+          <para>hello</para>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <para>other paragraph</para>
+        <para>[]</para>
+        <blockquote>
+          <para>hello</para>
+          <para></para>
+        </blockquote>
+      </doc>,
+    ],
+    [
+      <doc>
+        <blockquote>
+          <para>top</para>
+        </blockquote>
+        <blockquote>
+          <para>hello[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <blockquote>
+          <para>top</para>
+        </blockquote>
+        <para>[]</para>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+      </doc>,
+    ],
+    [
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <blockquote>
+          <para>hello[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <para>[]</para>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+      </doc>,
+    ],
+  ])('Case %# insert empty paragraph above', async (input, expected) => {
     const { editor } = await testEditor(input);
 
     sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
@@ -106,60 +158,121 @@ describe('Insert empty paragraph above and below', () => {
     expect(editor.state).toEqualDocAndSelection(expected);
   });
 
-  test.each(
-    // prettier-ignore
+  test.each([
     [
-      [
-        doc(blockquote(p('foo{<>}bar'))), 
-        doc(blockquote(p('foobar')), p('{<>}'))
-      ],
-      [
-        doc(blockquote(p('{<>}foobar'))), 
-        doc(blockquote(p('foobar')), p('{<>}'))
-      ],
-      [
-        doc(blockquote(p('{<>}'))), 
-        doc(blockquote(p()), p('{<>}'))
-      ],
-      [
-        doc(blockquote(p('hello'), p('{<>}'))), 
-        doc(blockquote(p('hello'), p()), p('{<>}'))
-      ],
-      [
-        doc(
-          p('other paragraph'),
-          blockquote(p('hello'), p('{<>}'))
-        ), 
-        doc(
-          p('other paragraph'),
-          blockquote(p('hello'), p()),
-          p('{<>}'), 
-        )
-      ],
-      [
-        doc(
-          blockquote(p('top')),
-          blockquote(p('hello{<>}')),
-        ), 
-        doc(
-          blockquote(p('top')),
-          blockquote(p('hello')),
-          p('{<>}'), 
-        )
-      ],
-      [
-        doc(
-          ul(li(p('top'))),
-          blockquote(p('{<>}hello')),
-        ), 
-        doc(
-          ul(li(p('top'))),
-          blockquote(p('hello')),
-          p('{<>}'), 
-        )
-      ]
+      <doc>
+        <blockquote>
+          <para>foo[]bar</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
     ],
-  )('Case %# insert empty paragraph below', async (input, expected) => {
+    [
+      <doc>
+        <blockquote>
+          <para>[]foobar</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <blockquote>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <blockquote>
+          <para></para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <blockquote>
+          <para>hello</para>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <blockquote>
+          <para>hello</para>
+          <para></para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>other paragraph</para>
+        <blockquote>
+          <para>hello</para>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <para>other paragraph</para>
+        <blockquote>
+          <para>hello</para>
+          <para></para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <blockquote>
+          <para>top</para>
+        </blockquote>
+        <blockquote>
+          <para>hello[]</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <blockquote>
+          <para>top</para>
+        </blockquote>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <blockquote>
+          <para>[]hello</para>
+        </blockquote>
+      </doc>,
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+        <para>[]</para>
+      </doc>,
+    ],
+  ])('Case %# insert empty paragraph below', async (input, expected) => {
     const { editor } = await testEditor(input);
 
     sendKeyToPm(editor.view, 'Cmd-Enter');

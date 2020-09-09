@@ -1,9 +1,6 @@
-// import './stopwatch.css';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Node } from '../../utils/bangle-utils/nodes/index';
-import { getIdleCallback } from '../../utils/bangle-utils/utils/js-utils';
 
 const LOG = false;
 

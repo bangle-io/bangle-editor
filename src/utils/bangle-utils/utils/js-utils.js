@@ -7,6 +7,23 @@ function log(...args) {
   }
 }
 
+/**
+ * @param {Function} fn - A unary function whose paramater is non-primitive,
+ *                        so that it can be cached using WeakMap
+ */
+export function weakCache(fn) {
+  const cache = new WeakMap();
+  return (arg) => {
+    let value = cache.get(arg);
+    if (value) {
+      return value;
+    }
+    value = fn(arg);
+    cache.set(arg, value);
+    return value;
+  };
+}
+
 export class CachedMap extends Map {
   #dirtyArrayValues = true;
   #cachedArrayValues;
@@ -74,7 +91,7 @@ export function matchAllPlus(regexp, str) {
         start: 0,
         end: str.length,
         match: false,
-        matchedStr: str,
+        subString: str,
       },
     ];
   }
@@ -111,7 +128,7 @@ export function matchAllPlus(regexp, str) {
     });
   }
 
-  result = result.map((r) => ({ ...r, matchedStr: str.slice(r.start, r.end) }));
+  result = result.map((r) => ({ ...r, subString: str.slice(r.start, r.end) }));
   return result;
 }
 
@@ -202,6 +219,30 @@ export function objectMapValues(obj, map) {
       return [key, map(value, key)];
     }),
   );
+}
+
+export function objectFilter(obj, cb) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key, value]) => {
+      return cb(value, key);
+    }),
+  );
+}
+
+export function safeMergeObject(obj1 = {}, obj2 = {}) {
+  const culpritKey = Object.keys(obj1).find((key) => hasOwnProperty(obj2, key));
+  if (culpritKey) {
+    throw new Error(`Key ${culpritKey} already exists `);
+  }
+
+  return {
+    ...obj1,
+    ...obj2,
+  };
+}
+
+export function hasOwnProperty(obj, property) {
+  return Object.prototype.hasOwnProperty.call(obj, property);
 }
 
 export function handleAsyncError(fn, onError) {

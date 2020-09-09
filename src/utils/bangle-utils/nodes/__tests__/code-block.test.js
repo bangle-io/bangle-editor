@@ -1,44 +1,19 @@
 /**
  * @jest-environment jsdom
  */
-
+/** @jsx psx */
+import { psx } from '../../../../test-helpers/schema-builders';
 import '../../../../../src/test-helpers/jest-helpers';
-
-import {
-  doc,
-  ul,
-  li,
-  p,
-  ol,
-  br,
-  h1,
-  codeBlock,
-  underline,
-} from '../../../../../src/test-helpers/test-builders';
-import { renderTestEditor } from '../../../../../src/test-helpers/render-test-editor';
-import { applyCommand } from '../../../../../src/test-helpers/commands-helpers';
-
+import { renderTestEditor } from '../../../../test-helpers/render-helper';
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';
-import {
-  sendKeyToPm,
-  typeText,
-} from '../../../../../src/test-helpers/keyboard';
-import { GapCursorSelection } from '../../../../../src/utils/bangle-utils/gap-cursor';
+import { sendKeyToPm } from '../../../../../src/test-helpers/keyboard';
 import { Underline } from '../../../../../src/utils/bangle-utils/marks';
 
 import { CodeBlock } from '../code-block';
 import { Heading } from '../heading';
 import { HardBreak } from '../hard-break';
-
-import {
-  enterKeyCommand,
-  splitListItem,
-  toggleList,
-  backspaceKeyCommand,
-} from '../list-item/commands';
-import { Blockquote } from '../blockquote';
 import { TodoList } from '../todo-list';
 import { TodoItem } from '../todo-item';
 
@@ -51,44 +26,53 @@ const extensions = [
   new Underline(),
   new TodoList(),
   new TodoItem(),
-  new Blockquote(),
   new CodeBlock(),
 ];
 
 const testEditor = renderTestEditor({ extensions });
 
 describe('Insert empty paragraph above and below', () => {
-  test.each(
-    // prettier-ignore
+  test.each([
     [
-      [
-        doc(codeBlock()('foo{<>}bar')),
-        doc(p('{<>}'), codeBlock()('foobar')),
-      ],
-      [
-        doc(
-          p('top'),
-          codeBlock()('hello{<>}'),
-        ), 
-        doc(
-          p('top'),
-          p('{<>}'), 
-          codeBlock()('hello'),
-        )
-      ],
-      [
-        doc(
-          ul(li(p('top'))),
-          codeBlock()('hello{<>}'),
-        ), 
-        doc(
-          ul(li(p('top'))),
-          p('{<>}'), 
-          codeBlock()('hello'),
-        )
-      ]
+      <doc>
+        <codeBlock>foo[]bar</codeBlock>
+      </doc>,
+      <doc>
+        <para>[]</para>
+        <codeBlock>foobar</codeBlock>
+      </doc>,
     ],
-  )('Case %# insert empty paragraph above', async (input, expected) => {
+    [
+      <doc>
+        <para>top</para>
+        <codeBlock>hello[]</codeBlock>
+      </doc>,
+      <doc>
+        <para>top</para>
+        <para>[]</para>
+        <codeBlock>hello</codeBlock>
+      </doc>,
+    ],
+    [
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <codeBlock>hello[]</codeBlock>
+      </doc>,
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <para>[]</para>
+        <codeBlock>hello</codeBlock>
+      </doc>,
+    ],
+  ])('Case %# insert empty paragraph above', async (input, expected) => {
     const { editor } = await testEditor(input);
 
     sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
@@ -96,37 +80,47 @@ describe('Insert empty paragraph above and below', () => {
     expect(editor.state).toEqualDocAndSelection(expected);
   });
 
-  test.each(
-    // prettier-ignore
+  test.each([
     [
-      [
-        doc(codeBlock()('foo{<>}bar')),
-        doc(codeBlock()('foobar'), p('{<>}')),
-      ],
-      [
-        doc(
-          p('top'),
-          codeBlock()('hello{<>}'),
-        ), 
-        doc(
-          p('top'),
-          codeBlock()('hello'),
-          p('{<>}'), 
-        )
-      ],
-      [
-        doc(
-          ul(li(p('top'))),
-          codeBlock()('hello{<>}'),
-        ), 
-        doc(
-          ul(li(p('top'))),
-          codeBlock()('hello'),
-          p('{<>}'), 
-        )
-      ]
+      <doc>
+        <codeBlock>foo[]bar</codeBlock>
+      </doc>,
+      <doc>
+        <codeBlock>foobar</codeBlock>
+        <para>[]</para>
+      </doc>,
     ],
-  )('Case %# insert empty paragraph below', async (input, expected) => {
+    [
+      <doc>
+        <para>top</para>
+        <codeBlock>hello[]</codeBlock>
+      </doc>,
+      <doc>
+        <para>top</para>
+        <codeBlock>hello</codeBlock>
+        <para>[]</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <codeBlock>hello[]</codeBlock>
+      </doc>,
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <codeBlock>hello</codeBlock>
+        <para>[]</para>
+      </doc>,
+    ],
+  ])('Case %# insert empty paragraph below', async (input, expected) => {
     const { editor } = await testEditor(input);
 
     sendKeyToPm(editor.view, 'Cmd-Enter');
