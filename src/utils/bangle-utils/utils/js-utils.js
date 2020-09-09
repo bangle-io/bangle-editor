@@ -5,6 +5,23 @@ function log(...args) {
   if (LOG) console.log('js-utils.js', ...args);
 }
 
+/**
+ * @param {Function} fn - A unary function whose paramater is non-primitive,
+ *                        so that it can be cached using WeakMap
+ */
+export function weakCache(fn) {
+  const cache = new WeakMap();
+  return (arg) => {
+    let value = cache.get(arg);
+    if (value) {
+      return value;
+    }
+    value = fn(arg);
+    cache.set(arg, value);
+    return value;
+  };
+}
+
 export class CachedMap extends Map {
   #dirtyArrayValues = true;
   #cachedArrayValues;
@@ -211,7 +228,7 @@ export function objectFilter(obj, cb) {
 }
 
 export function safeMergeObject(obj1 = {}, obj2 = {}) {
-  const culpritKey = Object.keys(obj1).find((key) => obj2.hasOwnProperty(key));
+  const culpritKey = Object.keys(obj1).find((key) => hasOwnProperty(obj2, key));
   if (culpritKey) {
     throw new Error(`Key ${culpritKey} already exists `);
   }
@@ -220,6 +237,10 @@ export function safeMergeObject(obj1 = {}, obj2 = {}) {
     ...obj1,
     ...obj2,
   };
+}
+
+export function hasOwnProperty(obj, property) {
+  return Object.prototype.hasOwnProperty.call(obj, property);
 }
 
 export function handleAsyncError(fn, onError) {

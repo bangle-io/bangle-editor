@@ -2,93 +2,74 @@ import {
   matchAllPlus,
   objectMapValues,
   safeMergeObject,
+  weakCache,
 } from '../utils/bangle-utils/utils/js-utils';
 
-const PMNodes = {
-  doc: 'doc',
-  paragraph: 'paragraph',
+// Short hand to allow for smaller jsx syntax
+// For example instead of `<paragraph>hello world</paragraph>`
+// we can write `<para>hello world</para>`
+const nodeAlias = {
   para: 'paragraph',
   ul: 'bullet_list',
   ol: 'ordered_list',
   li: 'list_item',
-  blockquote: 'blockquote',
   codeBlock: 'code_block',
   br: 'hard_break',
   hr: 'horizontal_rule',
   todoList: 'todo_list',
   todoItem: 'todo_item',
-  heading: 'heading',
 };
-const PMMarks = {
-  link: 'link',
-  underline: 'underline',
-  italic: 'italic',
-  bold: 'bold',
-  code: 'code',
-};
+const markAlias = {};
 
 const labelTypes = {
   // Empty Selection
-  '[]': /(\[\])/g,
+  '[]': /\[\]/,
   // Selection anchor
-  '[': /\[(?!\])/g,
+  '[': /\[(?!\])/,
   // Selection head
-  ']': /(?<!\[)\]/g,
+  ']': /(?<!\[)\]/,
 };
 
+const nodeLabelPosMap = new WeakMap();
 const isNotValidLabel = (label) => !Boolean(labelTypes[label]);
-const nodeLabelMap = new WeakMap();
-const docLabelMap = new WeakMap();
 
-const updateMap = (map, key, value) => {
-  const existing = map.get(key) || {};
-  map.set(key, safeMergeObject(existing, value));
-};
+const updateMap = (map, key, value) =>
+  map.set(key, safeMergeObject(map.get(key), value));
 
-export function getDocLabels(doc) {
-  if (!docLabelMap.has(doc)) {
-    doc.nodesBetween(0, doc.content.size, (node, pos) => {
-      const found = nodeLabelMap.get(node);
-      if (!found) {
-        return;
-      }
-      const resolvedLabels = objectMapValues(found, (v) => {
-        return typeof v === 'function' ? v(pos, node.content.content) : pos + v;
-      });
-      updateMap(docLabelMap, doc, resolvedLabels);
-    });
-  }
-
-  return docLabelMap.get(doc);
-}
-
-function matchLabel(text) {
-  const matcher = (regex) => {
-    const ranges = matchAllPlus(regex, text);
-    const matches = ranges.filter((r) => r.match);
-
-    if (matches.length === 0) {
-      return {
-        text,
-        labels: undefined,
-      };
+export const getDocLabels = weakCache((doc) => {
+  let result = {};
+  doc.nodesBetween(0, doc.content.size, (node, pos) => {
+    const found = nodeLabelPosMap.get(node);
+    if (!found) {
+      return;
     }
-
-    return {
-      text: ranges
-        .filter((r) => !r.match)
-        .reduce((prev, cur) => prev + cur.subString, ''),
-      labels: matches.reduce(
-        (prev, r) => safeMergeObject(prev, { [r.subString]: r.start }),
-        {},
-      ),
-    };
-  };
-
-  let result = matcher(/(\[\])|\[(?!\])|(?<!\[)\]/g);
+    const resolvedLabels = objectMapValues(found, (v) => {
+      return typeof v === 'function' ? v(pos, node.content.content) : pos + v;
+    });
+    result = safeMergeObject(result, resolvedLabels);
+  });
   return result;
-}
+});
 
+/**
+ * A function used by babel to convert jsx (calling it psx, 'p' for prosemirror) syntax into
+ * something which we can use to build a prosemirror document.
+ * Read more about custom JSX pragma at https://www.gatsbyjs.com/blog/2019-08-02-what-is-jsx-pragma/
+ *
+ * For example:
+ *  '<doc><heading level="1">hello</heading></doc>' will be converted by babel to
+ *  'psx("doc", null, psx("heading", {level: "1"}))' which will then accept a
+ *   prosemirror `schema` to produce a Prosemirror Document.
+ *
+ * Here is the summary:
+ *
+ * ~Babel~
+ * <psx /> => psx(...)
+ *
+ * ~Tests~
+ * psx(...)(schema) => ProseMirror Document
+ *
+ */
 export function psx(name, attrs, ...childrenRaw) {
   return (schema) => {
     const children = []
@@ -125,26 +106,25 @@ export function psx(name, attrs, ...childrenRaw) {
       }
 
       const pmText = schema.text(text);
-      updateMap(nodeLabelMap, pmText, labels);
+      updateMap(nodeLabelPosMap, pmText, labels);
 
       return pmText;
     });
 
-    if (PMNodes[name]) {
-      const node = schema.nodes[PMNodes[name]]?.createChecked(
+    const nodeSpec = schema.nodes[name] || schema.nodes[nodeAlias[name]];
+
+    if (nodeSpec) {
+      const node = nodeSpec.createChecked(
         attrs || {},
         hydratedChildren.filter((r) => isNotValidLabel(r)),
       );
-      if (!node) {
-        throw new Error('Cant find schema for node:' + name);
-      }
 
       hydratedChildren.forEach((label, index) => {
         if (isNotValidLabel(label)) {
           return;
         }
 
-        updateMap(nodeLabelMap, node, {
+        updateMap(nodeLabelPosMap, node, {
           [label]: (pos) => {
             const validChildren = hydratedChildren
               .slice(0, index)
@@ -166,25 +146,55 @@ export function psx(name, attrs, ...childrenRaw) {
       return node;
     }
 
-    if (PMMarks[name]) {
-      const mark = schema.marks[PMMarks[name]].create(attrs || {});
+    const markSpec = schema.marks[name] || schema.marks[markAlias[name]];
 
-      if (!mark) {
-        throw new Error('Cant find schema for mark:' + name);
-      }
-
+    if (markSpec) {
+      const mark = markSpec.create(attrs || {});
       return hydratedChildren.map((node) => {
         if (mark.type.isInSet(node.marks)) {
           return node;
         }
         const newNode = node.mark(mark.addToSet(node.marks));
-        const labels = nodeLabelMap.get(node);
+        const labels = nodeLabelPosMap.get(node);
         // forward any labels as we are creating a new node
-        updateMap(nodeLabelMap, newNode, labels);
+        updateMap(nodeLabelPosMap, newNode, labels);
         return newNode;
       });
     }
 
-    throw new Error('unknown type name:' + name);
+    throw new Error('Cannot find schema for ' + name);
   };
+}
+
+function matchLabel(text) {
+  const matcher = (regex) => {
+    const ranges = matchAllPlus(regex, text);
+    const matches = ranges.filter((r) => r.match);
+
+    if (matches.length === 0) {
+      return {
+        text,
+        labels: undefined,
+      };
+    }
+
+    return {
+      text: ranges
+        .filter((r) => !r.match)
+        .reduce((prev, cur) => prev + cur.subString, ''),
+      labels: matches.reduce(
+        (prev, r) => safeMergeObject(prev, { [r.subString]: r.start }),
+        {},
+      ),
+    };
+  };
+
+  return matcher(
+    new RegExp(
+      Object.values(labelTypes)
+        .map((r) => '(' + r.source + ')')
+        .join('|'),
+      'g',
+    ),
+  );
 }
