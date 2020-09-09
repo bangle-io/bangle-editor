@@ -1252,7 +1252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.3, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.3, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.8.4":
   version: 7.11.2
   resolution: "@babel/runtime@npm:7.11.2"
   dependencies:
@@ -1779,6 +1779,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/dom@npm:^7.23.0":
+  version: 7.24.1
+  resolution: "@testing-library/dom@npm:7.24.1"
+  dependencies:
+    "@babel/code-frame": ^7.10.4
+    "@babel/runtime": ^7.10.3
+    "@types/aria-query": ^4.2.0
+    aria-query: ^4.2.2
+    chalk: ^4.1.0
+    dom-accessibility-api: ^0.5.1
+    pretty-format: ^26.4.2
+  checksum: e5ebd9a27e48f48012b77888e6c2bb16b6e36c2fe4db299ea17fb25d427491afea28cb3bf33379a4ea8d1f4fc76ef294964027747f58c102c69086ed1a1dbe50
+  languageName: node
+  linkType: hard
+
 "@testing-library/react@npm:^10.4.7":
   version: 10.4.8
   resolution: "@testing-library/react@npm:10.4.8"
@@ -1789,6 +1804,19 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: 8e725f094be47651b852a356e7fff9bcde2ab665c8ba7b0d9ef8e2140dd1158c8b58d4fcbebd4f5d03e32cff34c4c035a4d5a761903f1c908bebc2fe6abc8ec2
+  languageName: node
+  linkType: hard
+
+"@testing-library/react@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "@testing-library/react@npm:11.0.2"
+  dependencies:
+    "@babel/runtime": ^7.11.2
+    "@testing-library/dom": ^7.23.0
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  checksum: 664dfbafb36dcad0fb232a48824e63d58db4594f6ada073bea9fe322c4a9fc717aa95a0d2f196fbaa40b0cc3c78683967b8571405a6ceb755f7eb9c3dd916cd6
   languageName: node
   linkType: hard
 
@@ -2999,6 +3027,193 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bangle-core@workspace:*, bangle-core@workspace:bangle-core":
+  version: 0.0.0-use.local
+  resolution: "bangle-core@workspace:bangle-core"
+  dependencies:
+    "@babel/core": ^7.11.1
+    "@testing-library/react": ^11.0.2
+    classnames: ^2.2.6
+    core-js: ^3.6.4
+    date-fns: ^2.10.0
+    emojis-keywords: ^2.0.0
+    emojis-list: ^3.0.0
+    localforage: ^1.7.3
+    lodash.debounce: ^4.0.8
+    popper.js: ^1.16.1
+    prettier: ^2.1.1
+    prop-types: ^15.7.2
+    prosemirror-collab: ^1.2.2
+    prosemirror-commands: ^1.1.4
+    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
+    prosemirror-dropcursor: ^1.1.1
+    prosemirror-gapcursor: ^1.1.5
+    prosemirror-history: ^1.0.4
+    prosemirror-inputrules: ^1.0.4
+    prosemirror-keymap: ^1.1.4
+    prosemirror-menu: ^1.1.4
+    prosemirror-model: ^1.11.0
+    prosemirror-schema-list: ^1.1.3
+    prosemirror-state: ^1.3.3
+    prosemirror-tables: ^1.1.0
+    prosemirror-transform: ^1.2.7
+    prosemirror-utils: latest
+    prosemirror-view: ^1.15.2
+    react: ^16.13.0
+    react-dom: ^16.13.0
+    tailwindcss: ^1.6.0
+    throttle-debounce: ^2.1.0
+    tiptap-commands: ^1.14.3
+    tiptap-utils: ^1.10.4
+  languageName: unknown
+  linkType: soft
+
+"bangle-play@workspace:bangle-play":
+  version: 0.0.0-use.local
+  resolution: "bangle-play@workspace:bangle-play"
+  dependencies:
+    "@babel/core": ^7.11.1
+    "@testing-library/react": ^10.4.7
+    "@typescript-eslint/eslint-plugin": 2.x
+    "@typescript-eslint/parser": 2.x
+    autoprefixer: ^9.8.6
+    babel-eslint: 10.x
+    babel-jest: ^26.1.0
+    babel-loader: ^8.1.0
+    bangle-core: "workspace:*"
+    classnames: ^2.2.6
+    core-js: ^3.6.4
+    css-loader: ^4.2.1
+    date-fns: ^2.10.0
+    emojis-keywords: ^2.0.0
+    emojis-list: ^3.0.0
+    file-loader: ^6.0.0
+    html-webpack-plugin: ^4.4.1
+    localforage: ^1.7.3
+    lodash.debounce: ^4.0.8
+    mini-css-extract-plugin: ^0.9.0
+    pnp-webpack-plugin: ^1.6.4
+    popper.js: ^1.16.1
+    postcss-cli: ^7.1.1
+    postcss-custom-properties: ^9.1.1
+    postcss-import: ^12.0.1
+    postcss-loader: ^3.0.0
+    postcss-nested: ^4.2.3
+    prettier: ^2.0.5
+    prop-types: ^15.7.2
+    prosemirror-collab: ^1.2.2
+    prosemirror-commands: ^1.1.4
+    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
+    prosemirror-dropcursor: ^1.1.1
+    prosemirror-gapcursor: ^1.1.5
+    prosemirror-history: ^1.0.4
+    prosemirror-inputrules: ^1.0.4
+    prosemirror-keymap: ^1.1.4
+    prosemirror-menu: ^1.1.4
+    prosemirror-model: ^1.11.0
+    prosemirror-schema-list: ^1.1.3
+    prosemirror-state: ^1.3.3
+    prosemirror-tables: ^1.1.0
+    prosemirror-transform: ^1.2.7
+    prosemirror-utils: latest
+    prosemirror-view: ^1.15.2
+    react: ^16.13.0
+    react-dom: ^16.13.0
+    style-loader: ^1.2.1
+    surge: ^0.21.3
+    tailwindcss: ^1.6.0
+    throttle-debounce: ^2.1.0
+    tiptap-commands: ^1.14.3
+    tiptap-utils: ^1.10.4
+    webpack: ^4.44.1
+    webpack-cli: ^3.3.12
+    webpack-dev-server: ^3.11.0
+  languageName: unknown
+  linkType: soft
+
+"bangle@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "bangle@workspace:."
+  dependencies:
+    "@babel/core": ^7.11.1
+    "@babel/plugin-proposal-class-properties": ^7.10.4
+    "@babel/plugin-proposal-optional-chaining": ^7.11.0
+    "@babel/preset-env": ^7.10.4
+    "@babel/preset-react": ^7.10.4
+    "@testing-library/react": ^10.4.7
+    "@typescript-eslint/eslint-plugin": 2.x
+    "@typescript-eslint/parser": 2.x
+    autoprefixer: ^9.8.6
+    babel-eslint: 10.x
+    babel-jest: ^26.1.0
+    babel-loader: ^8.1.0
+    classnames: ^2.2.6
+    core-js: ^3.6.4
+    css-loader: ^4.2.1
+    date-fns: ^2.10.0
+    emojis-keywords: ^2.0.0
+    emojis-list: ^3.0.0
+    eslint: 6.x
+    eslint-config-react-app: ^5.2.1
+    eslint-plugin-flowtype: 4.x
+    eslint-plugin-import: ^2.22.0
+    eslint-plugin-jsx-a11y: 6.x
+    eslint-plugin-react: 7.x
+    eslint-plugin-react-hooks: 2.x
+    expect-puppeteer: ^4.4.0
+    file-loader: ^6.0.0
+    html-webpack-plugin: ^4.3.0
+    husky: ^4.3.0
+    jest: ^26.4.0
+    jest-circus: ^26.1.0
+    jest-diff: ^26.1.0
+    jest-environment-node: ^26.2.0
+    jest-environment-puppeteer: ^4.4.0
+    jest-puppeteer: ^4.4.0
+    lint-staged: ^10.3.0
+    localforage: ^1.7.3
+    lodash.debounce: ^4.0.8
+    mini-css-extract-plugin: ^0.9.0
+    pnp-webpack-plugin: ^1.6.4
+    popper.js: ^1.16.1
+    postcss-cli: ^7.1.1
+    postcss-custom-properties: ^9.1.1
+    postcss-import: ^12.0.1
+    postcss-loader: ^3.0.0
+    postcss-nested: ^4.2.3
+    prettier: ^2.0.5
+    prop-types: ^15.7.2
+    prosemirror-collab: ^1.2.2
+    prosemirror-commands: ^1.1.4
+    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
+    prosemirror-dropcursor: ^1.1.1
+    prosemirror-gapcursor: ^1.1.5
+    prosemirror-history: ^1.0.4
+    prosemirror-inputrules: ^1.0.4
+    prosemirror-keymap: ^1.1.4
+    prosemirror-menu: ^1.1.4
+    prosemirror-model: ^1.11.0
+    prosemirror-schema-list: ^1.1.3
+    prosemirror-state: ^1.3.3
+    prosemirror-tables: ^1.1.0
+    prosemirror-transform: ^1.2.7
+    prosemirror-utils: latest
+    prosemirror-view: ^1.15.2
+    puppeteer: ^5.2.1
+    react: ^16.13.0
+    react-dom: ^16.13.0
+    style-loader: ^1.2.1
+    surge: ^0.21.3
+    tailwindcss: ^1.6.0
+    throttle-debounce: ^2.1.0
+    tiptap-commands: ^1.14.3
+    tiptap-utils: ^1.10.4
+    webpack: ^4.44.1
+    webpack-cli: ^3.3.12
+    webpack-dev-server: ^3.11.0
+  languageName: unknown
+  linkType: soft
+
 "base64-js@npm:^1.0.2":
   version: 1.3.1
   resolution: "base64-js@npm:1.3.1"
@@ -3684,7 +3899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-truncate@npm:2.1.0, cli-truncate@npm:^2.1.0":
+"cli-truncate@npm:^2.1.0":
   version: 2.1.0
   resolution: "cli-truncate@npm:2.1.0"
   dependencies:
@@ -3877,10 +4092,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^5.0.0, commander@npm:^5.1.0":
+"commander@npm:^5.0.0":
   version: 5.1.0
   resolution: "commander@npm:5.1.0"
   checksum: d16141ea7f580945156fb8a06de2834c4647c7d9d3732ebd4534ab8e0b7c64747db301e18f2b840f28ea8fef51f7a8d6178e674b45a21931f0b65ff1c7f476b3
+  languageName: node
+  linkType: hard
+
+"commander@npm:^6.0.0":
+  version: 6.1.0
+  resolution: "commander@npm:6.1.0"
+  checksum: ef1e310c3f430b84f8818ec9c6e5ce1b84909616eb2c1b1a79f646bc25fbca156eccf2ecf19f07e77a08dc519728d53d1300f94f3b2ad93de65add66044dfce6
   languageName: node
   linkType: hard
 
@@ -4100,16 +4322,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "cosmiconfig@npm:6.0.0"
+"cosmiconfig@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "cosmiconfig@npm:7.0.0"
   dependencies:
     "@types/parse-json": ^4.0.0
-    import-fresh: ^3.1.0
+    import-fresh: ^3.2.1
     parse-json: ^5.0.0
     path-type: ^4.0.0
-    yaml: ^1.7.2
-  checksum: bbd6bbaefe15938107da21f2b5f2d5ede75c7ed4bca5af904d91987c59b050ac95f5e786d9021e16959e0119b36174b190f6040a1daf6fddc75361ab123c0d45
+    yaml: ^1.10.0
+  checksum: 151fcb91773c0ae826fc801eab86f8f818605dbf63c8e5515adf0ff0fec5ede8e614f387f93c088d65527a2ea9021f0cd8c6b6e5c7fef2b77480b5e2c33700dc
   languageName: node
   linkType: hard
 
@@ -4677,6 +4899,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dom-accessibility-api@npm:^0.5.1":
+  version: 0.5.2
+  resolution: "dom-accessibility-api@npm:0.5.2"
+  checksum: 247b9183d20a659890b9d7dd5b92a341c8a9ba8b0232ec6f3f34859b025de6fd05da8011f65b019fdfa19d0f7ff1bf3e610a13c3c38cd2649e20b3980ed834ba
+  languageName: node
+  linkType: hard
+
 "dom-converter@npm:^0.2":
   version: 0.2.0
   resolution: "dom-converter@npm:0.2.0"
@@ -4885,7 +5114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enquirer@npm:^2.3.5":
+"enquirer@npm:^2.3.6":
   version: 2.3.6
   resolution: "enquirer@npm:2.3.6"
   dependencies:
@@ -5351,7 +5580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^4.0.0, execa@npm:^4.0.1":
+"execa@npm:^4.0.0, execa@npm:^4.0.3":
   version: 4.0.3
   resolution: "execa@npm:4.0.3"
   dependencies:
@@ -6514,9 +6743,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "html-webpack-plugin@npm:4.3.0"
+"html-webpack-plugin@npm:^4.3.0, html-webpack-plugin@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "html-webpack-plugin@npm:4.4.1"
   dependencies:
     "@types/html-minifier-terser": ^5.0.0
     "@types/tapable": ^1.0.5
@@ -6529,7 +6758,7 @@ fsevents@^1.2.7:
     util.promisify: 1.0.0
   peerDependencies:
     webpack: ">=4.0.0 < 6.0.0"
-  checksum: 13c23547ac83142f2e23a993a82e6fa6beb21291848a856c09d27e0dae12f5781699ed9c1fe798fb03cf317a6a4dce164d224fd6023640abc167f222b59a0fa0
+  checksum: 5bf56a8c24ddea93468f028de2b9aacbb5686fdf226e911616aec6bb7fe26aa6e3ed63096faabc10eb0bbef659e422be47056d2eb7d186e5f603261ea5db0eb5
   languageName: node
   linkType: hard
 
@@ -6650,14 +6879,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:^4.2.5":
-  version: 4.2.5
-  resolution: "husky@npm:4.2.5"
+"husky@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "husky@npm:4.3.0"
   dependencies:
     chalk: ^4.0.0
     ci-info: ^2.0.0
     compare-versions: ^3.6.0
-    cosmiconfig: ^6.0.0
+    cosmiconfig: ^7.0.0
     find-versions: ^3.2.0
     opencollective-postinstall: ^2.0.2
     pkg-dir: ^4.2.0
@@ -6667,7 +6896,7 @@ fsevents@^1.2.7:
   bin:
     husky-run: bin/run.js
     husky-upgrade: lib/upgrader/bin.js
-  checksum: 9d03d38c66688ab61166b425aa70229665c93a2a6fbd0d7388923205622fe34c6cc4c251777337b0813a40891750a18d603eff8451a58d06953807535a8908ed
+  checksum: c212d9732de84cbd7c25d907b874f7844503f85e28c0512518cddbac9854c54f1c569e81c5b70387f1e3c27d35c2b43256c811cf06fdad066565c5fc178f33f7
   languageName: node
   linkType: hard
 
@@ -6750,7 +6979,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"import-fresh@npm:^3.0.0, import-fresh@npm:^3.1.0":
+"import-fresh@npm:^3.0.0, import-fresh@npm:^3.2.1":
   version: 3.2.1
   resolution: "import-fresh@npm:3.2.1"
   dependencies:
@@ -8612,19 +8841,19 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^10.2.11":
-  version: 10.2.11
-  resolution: "lint-staged@npm:10.2.11"
+"lint-staged@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "lint-staged@npm:10.3.0"
   dependencies:
-    chalk: ^4.0.0
-    cli-truncate: 2.1.0
-    commander: ^5.1.0
-    cosmiconfig: ^6.0.0
+    chalk: ^4.1.0
+    cli-truncate: ^2.1.0
+    commander: ^6.0.0
+    cosmiconfig: ^7.0.0
     debug: ^4.1.1
     dedent: ^0.7.0
-    enquirer: ^2.3.5
-    execa: ^4.0.1
-    listr2: ^2.1.0
+    enquirer: ^2.3.6
+    execa: ^4.0.3
+    listr2: ^2.6.0
     log-symbols: ^4.0.0
     micromatch: ^4.0.2
     normalize-path: ^3.0.0
@@ -8633,13 +8862,13 @@ fsevents@^1.2.7:
     stringify-object: ^3.3.0
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 0d1c408dfea1173b6a691b223228db5a617365bd3ee6b7151fc3cd0b69ecbc1a48ced6675163baa67851c1492ab9025490932d9bf0597dc496638c5a1b4b68ab
+  checksum: 1e8bfa56f4aa817892032fd42cd47dd554121c4f22643a1f11e1879c638784664d83600f2f2304123b89354e8a3365f28435cbe654f92aaa0b6186df99355a00
   languageName: node
   linkType: hard
 
-"listr2@npm:^2.1.0":
-  version: 2.4.1
-  resolution: "listr2@npm:2.4.1"
+"listr2@npm:^2.6.0":
+  version: 2.6.2
+  resolution: "listr2@npm:2.6.2"
   dependencies:
     chalk: ^4.1.0
     cli-truncate: ^2.1.0
@@ -8647,11 +8876,11 @@ fsevents@^1.2.7:
     indent-string: ^4.0.0
     log-update: ^4.0.0
     p-map: ^4.0.0
-    rxjs: ^6.6.0
+    rxjs: ^6.6.2
     through: ^2.3.8
   peerDependencies:
     enquirer: ">= 2.3.0 < 3"
-  checksum: 0deb2f6174551c54080aa2e6f3b5d5eecc316ef52cde1075e3b872c20de0ee01bacc9777e21a7ec294e621e2c7462943de67f55574e287688bfee0e64e9fbe22
+  checksum: 4d5fd1bc8f5ad63a38950bac0462cb35e7b51c8988bb263e63d181eab1572493d0f3d384fbeab69171efa0746bb8ea07038d11097216519c3117d935ce723b38
   languageName: node
   linkType: hard
 
@@ -10231,89 +10460,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"playground@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "playground@workspace:."
-  dependencies:
-    "@babel/core": ^7.11.1
-    "@babel/plugin-proposal-class-properties": ^7.10.4
-    "@babel/plugin-proposal-optional-chaining": ^7.11.0
-    "@babel/preset-env": ^7.10.4
-    "@babel/preset-react": ^7.10.4
-    "@testing-library/react": ^10.4.7
-    "@typescript-eslint/eslint-plugin": 2.x
-    "@typescript-eslint/parser": 2.x
-    autoprefixer: ^9.8.6
-    babel-eslint: 10.x
-    babel-jest: ^26.1.0
-    babel-loader: ^8.1.0
-    classnames: ^2.2.6
-    core-js: ^3.6.4
-    css-loader: ^4.2.1
-    date-fns: ^2.10.0
-    emojis-keywords: ^2.0.0
-    emojis-list: ^3.0.0
-    eslint: 6.x
-    eslint-config-react-app: ^5.2.1
-    eslint-plugin-flowtype: 4.x
-    eslint-plugin-import: ^2.22.0
-    eslint-plugin-jsx-a11y: 6.x
-    eslint-plugin-react: 7.x
-    eslint-plugin-react-hooks: 2.x
-    expect-puppeteer: ^4.4.0
-    file-loader: ^6.0.0
-    html-webpack-plugin: ^4.3.0
-    husky: ^4.2.5
-    jest: ^26.4.0
-    jest-circus: ^26.1.0
-    jest-diff: ^26.1.0
-    jest-environment-node: ^26.2.0
-    jest-environment-puppeteer: ^4.4.0
-    jest-puppeteer: ^4.4.0
-    lint-staged: ^10.2.11
-    localforage: ^1.7.3
-    lodash.debounce: ^4.0.8
-    mini-css-extract-plugin: ^0.9.0
-    pnp-webpack-plugin: ^1.6.4
-    popper.js: ^1.16.1
-    postcss-cli: ^7.1.1
-    postcss-custom-properties: ^9.1.1
-    postcss-import: ^12.0.1
-    postcss-loader: ^3.0.0
-    postcss-nested: ^4.2.3
-    prettier: ^2.0.5
-    prop-types: ^15.7.2
-    prosemirror-collab: ^1.2.2
-    prosemirror-commands: ^1.1.4
-    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
-    prosemirror-dropcursor: ^1.1.1
-    prosemirror-gapcursor: ^1.1.5
-    prosemirror-history: ^1.0.4
-    prosemirror-inputrules: ^1.0.4
-    prosemirror-keymap: ^1.1.4
-    prosemirror-menu: ^1.1.4
-    prosemirror-model: ^1.11.0
-    prosemirror-schema-list: ^1.1.3
-    prosemirror-state: ^1.3.3
-    prosemirror-tables: ^1.1.0
-    prosemirror-transform: ^1.2.7
-    prosemirror-utils: latest
-    prosemirror-view: ^1.15.2
-    puppeteer: ^5.2.1
-    react: ^16.13.0
-    react-dom: ^16.13.0
-    style-loader: ^1.2.1
-    surge: ^0.21.3
-    tailwindcss: ^1.6.0
-    throttle-debounce: ^2.1.0
-    tiptap-commands: ^1.14.3
-    tiptap-utils: ^1.10.4
-    webpack: ^4.44.1
-    webpack-cli: ^3.3.12
-    webpack-dev-server: ^3.11.0
-  languageName: unknown
-  linkType: soft
-
 "please-upgrade-node@npm:^3.2.0":
   version: 3.2.0
   resolution: "please-upgrade-node@npm:3.2.0"
@@ -10590,6 +10736,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"prettier@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "prettier@npm:2.1.1"
+  bin:
+    prettier: bin-prettier.js
+  checksum: 420a807cda2d482388daa42379a7aaa1be629cb71f5792362a971a5ed1c6ff377d2e311818d24e9390a4a8a6eac3fda9ebe6975f2168efec893790c0497d8a93
+  languageName: node
+  linkType: hard
+
 "pretty-error@npm:^2.1.1":
   version: 2.1.1
   resolution: "pretty-error@npm:2.1.1"
@@ -10633,6 +10788,18 @@ fsevents@^1.2.7:
     ansi-styles: ^4.0.0
     react-is: ^16.12.0
   checksum: 44b83648af1de867c5b568a69ad45d28d8e00f83c0798918ebab206e06035c7323ba76b86b7803746c8f33263f1455aae7450e634bfb855b2d1c580222f91e74
+  languageName: node
+  linkType: hard
+
+"pretty-format@npm:^26.4.2":
+  version: 26.4.2
+  resolution: "pretty-format@npm:26.4.2"
+  dependencies:
+    "@jest/types": ^26.3.0
+    ansi-regex: ^5.0.0
+    ansi-styles: ^4.0.0
+    react-is: ^16.12.0
+  checksum: 06cdf6684cce00fd7df63bac8f29e47bcfaab1a68d41c6e7905c9fa78bfe31c52726b36891b2a3991a1cadab710de8818661464128367332183e3f0c1f86e640
   languageName: node
   linkType: hard
 
@@ -11685,6 +11852,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"rxjs@npm:^6.6.2":
+  version: 6.6.3
+  resolution: "rxjs@npm:6.6.3"
+  dependencies:
+    tslib: ^1.9.0
+  checksum: 61a3da6db947f69b7d805df3a619d8f60678b7372c4d571dd63e45ef3532be984a88307ea0aa2cd8d2578b62c3c022186e8da9dca47c9c1b8c9ecba6f5581deb
+  languageName: node
+  linkType: hard
+
 "safe-buffer@npm:5.1.2, safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.2, safe-buffer@npm:~5.1.0, safe-buffer@npm:~5.1.1":
   version: 5.1.2
   resolution: "safe-buffer@npm:5.1.2"
@@ -11729,7 +11905,7 @@ fsevents@^1.2.7:
     minimist: ^1.1.1
     walker: ~1.0.5
   bin:
-    sane: ./src/cli.js
+    sane: ./bangle-play/cli.js
   checksum: e384e252021b1afef7459e994fe3ea79d114a0e7d23a03e660444abf15a2b4c50ce7eac2810b2c289e857c618d96fb35ee66356ebd4d6cb97cb11b54b2b29600
   languageName: node
   linkType: hard
@@ -14001,7 +14177,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"yaml@npm:^1.7.2":
+"yaml@npm:^1.10.0":
   version: 1.10.0
   resolution: "yaml@npm:1.10.0"
   checksum: d4cc9f9724f8d0aebc2cf52e4e6aa7059f12d50deb54b5225d103462fb2af36e5c0bb419101ca4b1f0cd3b4db9e4139cf2c690e863ac6227648d39d6f4e2522c

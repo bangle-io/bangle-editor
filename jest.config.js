@@ -3,5 +3,5 @@
 module.exports = {
   testRunner: 'jest-circus/runner',
   modulePaths: ['<rootDir>/src'],
-  testPathIgnorePatterns: ['<rootDir>/tests-integration/'],
+  testPathIgnorePatterns: ['<rootDir>/bangle-play/tests-integration/'],
 };

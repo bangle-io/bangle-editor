@@ -4,5 +4,5 @@ module.exports = {
   },
   variants: {},
   plugins: [],
-  purge: ['./src/**/*.js'],
+  purge: ['./bangle-play/**/*.js'],
 };

@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
-      "app/*": ["./app/*"],
-      "utils/*": ["./utils/*"],
-      "plugins/*": ["./plugins/*"],
-      "test-helpers/*": ["./test-helpers/*"]
+      "bangle-core/*": [
+        "./bangle-core/*"
+      ],
+      "bangle-play/*": [
+        "./bangle-play/*"
+      ],
     }
   },
   "exclude": [
