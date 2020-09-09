@@ -1,14 +1,10 @@
 /**
  * @jest-environment jsdom
  */
-import '../../../../test-helpers/jest-helpers';
-import { fireEvent, wait, screen } from '@testing-library/react';
-
+import { getVersion } from 'prosemirror-collab';
 import { renderTestEditor, sleep, typeText } from '../../../../test-helpers';
-
 import { EditorConnection } from '../client';
 import { CollabExtension } from '../collab-extension';
-import { getVersion } from 'prosemirror-collab';
 import { CollabError } from '../../collab-error';
 
 function promiseNever() {

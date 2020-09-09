@@ -3,10 +3,11 @@
  */
 /** @jsx psx */
 import { toggleMark } from 'tiptap-commands';
-import '../../../../test-helpers/jest-helpers';
-import { psx } from '../../../../test-helpers/schema-builders';
-import { dispatchPasteEvent } from '../../../../test-helpers/dispatch-paste-event';
-import { renderTestEditor } from '../../../../test-helpers/render-helper';
+import {
+  psx,
+  renderTestEditor,
+  dispatchPasteEvent,
+} from '../../../../test-helpers';
 import { Link } from '../link';
 import {
   BulletList,
