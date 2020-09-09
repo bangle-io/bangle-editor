@@ -40,10 +40,11 @@ export function copyEmptyCommand(type) {
 
     // restore the selection
     const tr2 = view.state.tr;
-    if (dispatch)
+    if (dispatch) {
       dispatch(
         tr2.setSelection(Selection.near(tr2.doc.resolve(selection.$from.pos))),
       );
+    }
     return true;
   };
 }

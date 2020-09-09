@@ -19,6 +19,7 @@ module.exports = {
     Plugin: 'off',
   },
   rules: {
+    curly: 'error',
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
   settings: {},

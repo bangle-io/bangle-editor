@@ -95,7 +95,9 @@ export class Manager {
       let oldest = null;
       for (let id in instances) {
         let inst = instances[id];
-        if (!oldest || inst.lastActive < oldest.lastActive) oldest = inst;
+        if (!oldest || inst.lastActive < oldest.lastActive) {
+          oldest = inst;
+        }
       }
       this._stopInstance(oldest.docName);
     }
@@ -136,7 +138,9 @@ export class Manager {
     }
     return this.getDocumentQueue.add(async () => {
       let inst = this.instances[docName] || (await this._newInstance(docName));
-      if (userId) inst.registerUser(userId);
+      if (userId) {
+        inst.registerUser(userId);
+      }
       inst.lastActive = Date.now();
       return inst;
     });
@@ -145,7 +149,9 @@ export class Manager {
 
 function nonNegInteger(str) {
   let num = Number(str);
-  if (!isNaN(num) && Math.floor(num) === num && num >= 0) return num;
+  if (!isNaN(num) && Math.floor(num) === num && num >= 0) {
+    return num;
+  }
 
   throw new CollabError(400, 'Not a non-negative integer: ' + str);
 }
@@ -205,7 +211,9 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       }
       // If the server version is greater than the given version,
       // return the data immediately.
-      if (data.steps.length) return Output.outputEvents(inst, data);
+      if (data.steps.length) {
+        return Output.outputEvents(inst, data);
+      }
       // If the server version matches the given version,
       // wait until a new version is published to return the event data.
 
@@ -230,7 +238,9 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
           let found = inst.waiting.indexOf(waiter);
           log('in abort waiting =', inst.waiting.length);
 
-          if (found > -1) inst.waiting.splice(found, 1);
+          if (found > -1) {
+            inst.waiting.splice(found, 1);
+          }
           abort = null;
         };
       });
@@ -242,7 +252,9 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       } catch (err) {
         if (err.timeout === true) {
           log('timeout aborting');
-          if (abort) abort();
+          if (abort) {
+            abort();
+          }
           return Output.json({});
         }
         throw err;
@@ -259,7 +271,9 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       );
       if (!result) {
         throw new CollabError(409, 'Version not current');
-      } else return Output.json(result);
+      } else {
+        return Output.json(result);
+      }
     },
   };
 

@@ -288,7 +288,9 @@ export class EditorConnection {
 
   sendable(editState) {
     let steps = sendableSteps(editState);
-    if (steps) return { steps };
+    if (steps) {
+      return { steps };
+    }
   }
 
   closeRequest() {
@@ -319,6 +321,8 @@ function badVersion(err) {
 
 function repeat(val, n) {
   let result = [];
-  for (let i = 0; i < n; i++) result.push(val);
+  for (let i = 0; i < n; i++) {
+    result.push(val);
+  }
   return result;
 }

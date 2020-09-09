@@ -22,7 +22,9 @@ import { findChangedNodesFromTransaction } from './utils/pm-utils';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('editor.js', ...args);
+  if (LOG) {
+    console.log('editor.js', ...args);
+  }
 }
 
 const EVENTS = [

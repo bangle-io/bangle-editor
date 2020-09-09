@@ -883,7 +883,9 @@ export function moveEdgeListItem(type, dir = 'UP') {
     if (newTr === tr) {
       return false;
     }
-    if (dispatch) dispatch(newTr);
+    if (dispatch) {
+      dispatch(newTr);
+    }
     return true;
   };
 
@@ -967,7 +969,9 @@ export function moveNode(type, dir = 'UP') {
         ),
       ),
     );
-    if (dispatch) dispatch(tr);
+    if (dispatch) {
+      dispatch(tr);
+    }
     return true;
   };
 }

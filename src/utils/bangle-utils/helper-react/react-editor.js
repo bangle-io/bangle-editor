@@ -11,7 +11,9 @@ import { CollabEditor } from '../../../plugins/collab/CollabClient';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('react-editor.js', ...args);
+  if (LOG) {
+    console.log('react-editor.js', ...args);
+  }
 }
 
 export class ReactEditor extends React.PureComponent {

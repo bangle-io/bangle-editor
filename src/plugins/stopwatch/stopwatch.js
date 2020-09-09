@@ -8,7 +8,9 @@ import { getIdleCallback } from '../../utils/bangle-utils/utils/js-utils';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('stopwatch/index.js:', ...args);
+  if (LOG) {
+    console.log('stopwatch/index.js:', ...args);
+  }
 }
 
 export default class StopwatchExtension extends Node {
@@ -86,8 +88,9 @@ export default class StopwatchExtension extends Node {
     return function (state, dispatch) {
       let { $from } = state.selection,
         index = $from.index();
-      if (!$from.parent.canReplaceWith(index, index, stopwatchType))
+      if (!$from.parent.canReplaceWith(index, index, stopwatchType)) {
         return false;
+      }
       if (dispatch) {
         dispatch(state.tr.replaceSelectionWith(stopwatchType.create()));
       }

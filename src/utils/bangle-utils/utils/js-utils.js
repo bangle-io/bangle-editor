@@ -2,7 +2,9 @@ import debounce from 'lodash.debounce';
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('js-utils.js', ...args);
+  if (LOG) {
+    console.log('js-utils.js', ...args);
+  }
 }
 
 export class CachedMap extends Map {

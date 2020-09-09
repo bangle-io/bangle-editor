@@ -5,7 +5,9 @@ const MAX_STEP_HISTORY = 1000;
 const LOG = false;
 
 function log(...args) {
-  if (LOG) console.log('collab/server/instance', ...args);
+  if (LOG) {
+    console.log('collab/server/instance', ...args);
+  }
 }
 
 export class Instance {
@@ -62,8 +64,9 @@ export class Instance {
     this.doc = doc;
     this.version += steps.length;
     this.steps = this.steps.concat(steps);
-    if (this.steps.length > MAX_STEP_HISTORY)
+    if (this.steps.length > MAX_STEP_HISTORY) {
       this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
+    }
 
     this.sendUpdates();
     this.scheduleSave();
@@ -96,7 +99,9 @@ export class Instance {
   getEvents(version) {
     this.checkVersion(version);
     let startIndex = this.steps.length - (this.version - version);
-    if (startIndex < 0) return false;
+    if (startIndex < 0) {
+      return false;
+    }
 
     return {
       steps: this.steps.slice(startIndex),
@@ -111,9 +116,12 @@ export class Instance {
     this.collecting = null;
     log('collectUsers', [...Object.entries(this.users || {})]);
     log('waiting', [...this.waiting.map((r) => r.userId)]);
-    for (let i = 0; i < this.waiting.length; i++)
+    for (let i = 0; i < this.waiting.length; i++) {
       this._registerUser(this.waiting[i].userId);
-    if (this.userCount !== oldUserCount) this.sendUpdates();
+    }
+    if (this.userCount !== oldUserCount) {
+      this.sendUpdates();
+    }
   }
 
   registerUser(userId) {
@@ -128,11 +136,12 @@ export class Instance {
     if (!(userId in this.users)) {
       this.users[userId] = true;
       this.userCount++;
-      if (this.collecting == null)
+      if (this.collecting == null) {
         this.collecting = setTimeout(
           () => this.collectUsers(),
           this.collectUsersTimeout,
         );
+      }
     }
     log('_registerUser', [...Object.entries(this.users || {})]);
   }
