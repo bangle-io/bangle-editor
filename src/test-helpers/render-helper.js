@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { TextSelection, NodeSelection } from 'prosemirror-state';
+import { TextSelection } from 'prosemirror-state';
 import {
   EditorContextProvider,
   EditorContext,

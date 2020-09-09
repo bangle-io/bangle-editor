@@ -5,10 +5,9 @@
 import '../../../test-helpers/jest-helpers';
 import { psx } from '../../../test-helpers/schema-builders';
 import { fireEvent, wait } from '@testing-library/react';
-import { renderTestEditor } from '../../../test-helpers/render-helper';
 import '../../../../src/test-helpers/jest-helpers';
 
-import { sendKeyToPm } from '../../../../src/test-helpers';
+import { sendKeyToPm, renderTestEditor } from '../../../../src/test-helpers';
 import { Underline } from '../../../../src/utils/bangle-utils/marks';
 import {
   OrderedList,
