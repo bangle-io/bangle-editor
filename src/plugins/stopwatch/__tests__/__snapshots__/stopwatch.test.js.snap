@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders clicking correctly 1`] = `
+<span
+  class="stopwatch-NodeView-Wrap"
+  data-stopwatch="{\\"stopTime\\":null,\\"startTime\\":1}"
+  data-type="stopwatch"
+  draggable="true"
+>
+  <span
+    contenteditable="false"
+    style="background-color: rgb(0, 206, 209); border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
+  >
+    ⏲
+    00:00:00
+  </span>
+</span>
+`;
+
+exports[`Renders react component correctly 1`] = `
+<span
+  class="stopwatch-NodeView-Wrap"
+  data-stopwatch="{\\"startTime\\":0,\\"stopTime\\":0}"
+  data-type="stopwatch"
+  draggable="true"
+>
+  <span
+    contenteditable="false"
+    style="background-color: pink; border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
+  >
+    ⏲
+    00:00:00
+  </span>
+</span>
+`;

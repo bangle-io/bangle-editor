@@ -1,8 +1,6 @@
-import { fireEvent, wait, screen } from '@testing-library/react';
-import { getVersion } from 'prosemirror-collab';
-import { renderTestEditor, sendKeyToPm, sleep, typeText, typeChar } from '.';
+import { sendKeyToPm, sleep, typeChar } from '.';
+import { renderTestEditor } from './render-helper';
 import { Editor as PMEditor } from '../utils/bangle-utils/editor';
-import { Underline } from '../utils/bangle-utils/marks';
 import {
   OrderedList,
   BulletList,
@@ -21,7 +19,10 @@ const START = '💚';
 const END = '🖤';
 const PAUSE_FOR_ASSERTIONS = '🍌';
 const NOOP = '_';
-const EMOJI_NOOP = '🐑'; // usefull for balancing lengths of seq, as emojis are large and take space
+// useful for balancing lengths of seq, as all sequences should be equal and a presence of
+// emoji in one sequence can mess up the alignment as emojis are large and take more space than a
+// regular string
+const EMOJI_NOOP = '🐑';
 const ENTER = '↵';
 
 export function setupDb(doc) {
