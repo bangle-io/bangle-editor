@@ -2,9 +2,8 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import 'bangle-core/bangle-test-helpers';
+import { psx } from 'bangle-core/bangle-test-helpers';
 import { TextSelection } from 'prosemirror-state';
-import { psx } from '../../../test-helpers';
 import {
   setupDb,
   spinEditors,

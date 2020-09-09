@@ -7,7 +7,7 @@ import {
   renderTestEditor,
   typeText,
   sendKeyToPm,
-} from 'bangle-core/bangle-test-helpers/test-builders';
+} from 'bangle-core/bangle-test-helpers';
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';
