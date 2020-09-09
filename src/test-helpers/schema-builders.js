@@ -4,28 +4,18 @@ import {
   safeMergeObject,
 } from '../utils/bangle-utils/utils/js-utils';
 
-const PMNodes = {
-  doc: 'doc',
-  paragraph: 'paragraph',
+const PMNodesAlias = {
   para: 'paragraph',
   ul: 'bullet_list',
   ol: 'ordered_list',
   li: 'list_item',
-  blockquote: 'blockquote',
   codeBlock: 'code_block',
   br: 'hard_break',
   hr: 'horizontal_rule',
   todoList: 'todo_list',
   todoItem: 'todo_item',
-  heading: 'heading',
 };
-const PMMarks = {
-  link: 'link',
-  underline: 'underline',
-  italic: 'italic',
-  bold: 'bold',
-  code: 'code',
-};
+const PMMarksAlias = {};
 
 const labelTypes = {
   // Empty Selection
@@ -130,8 +120,10 @@ export function psx(name, attrs, ...childrenRaw) {
       return pmText;
     });
 
-    if (PMNodes[name]) {
-      const node = schema.nodes[PMNodes[name]]?.createChecked(
+    const nodeName = PMNodesAlias[name] || name;
+
+    if (nodeName) {
+      const node = schema.nodes[nodeName]?.createChecked(
         attrs || {},
         hydratedChildren.filter((r) => isNotValidLabel(r)),
       );
@@ -166,8 +158,10 @@ export function psx(name, attrs, ...childrenRaw) {
       return node;
     }
 
-    if (PMMarks[name]) {
-      const mark = schema.marks[PMMarks[name]].create(attrs || {});
+    const markName = PMMarksAlias[name] || name;
+
+    if (markName) {
+      const mark = schema.marks[markName].create(attrs || {});
 
       if (!mark) {
         throw new Error('Cant find schema for mark:' + name);
