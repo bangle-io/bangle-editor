@@ -1,5 +1,5 @@
 import { sendKeyToPm, sleep, typeChar } from '.';
-import { renderTestEditor } from './render-helper';
+import { renderTestEditor } from './render-test-editor';
 import { Editor as PMEditor } from '../utils/bangle-utils/editor';
 import {
   OrderedList,

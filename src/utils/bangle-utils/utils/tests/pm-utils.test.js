@@ -2,17 +2,17 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx } from '../../../../test-helpers/schema-builders';
-import { renderTestEditor } from '../../../../../src/test-helpers/render-helper';
-
+import { psx, renderTestEditor } from '../../../../test-helpers';
 import { BulletList, ListItem, OrderedList, HardBreak } from '../../nodes';
 import { isFirstChildOfParent, findCutBefore } from '../pm-utils';
+
 const extensions = [
   new BulletList(),
   new ListItem(),
   new OrderedList(),
   new HardBreak(),
 ];
+
 const testEditor = renderTestEditor({ extensions });
 
 describe('isFirstChildOfParent', () => {

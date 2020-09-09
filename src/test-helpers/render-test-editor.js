@@ -1,15 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { TextSelection, NodeSelection } from 'prosemirror-state';
+import { TextSelection } from 'prosemirror-state';
 import {
   EditorContextProvider,
   EditorContext,
-} from '../../src/utils/bangle-utils/helper-react/editor-context';
-import { ReactEditor } from '../../src/utils/bangle-utils/helper-react/react-editor';
-import {
-  GapCursorSelection,
-  GapCursorSide,
-} from '../../src/utils/bangle-utils/gap-cursor';
+} from '../utils/bangle-utils/helper-react/editor-context';
+import { ReactEditor } from '../utils/bangle-utils/helper-react/react-editor';
+
+import { getDocLabels } from './schema-builders';
 
 export function renderTestEditor(options = {}, testId = 'test-editor') {
   return async (testDoc) => {
@@ -40,10 +38,10 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
 
     await result.findByTestId(testId);
 
-    let refs;
+    let posLabels;
 
     if (testDoc) {
-      refs = updateDoc(testDoc);
+      posLabels = updateDoc(testDoc);
     }
 
     function updateDoc(doc) {
@@ -62,83 +60,36 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
       dispatch(tr);
 
       const positionExists = (position) => typeof position === 'number';
-      const refs = defaultDoc.refs;
-
-      if (refs) {
-        const { doc, tr } = editorView.state;
-        // Collapsed selection.
-        if (positionExists(refs['<>'])) {
-          setTextSelection(editorView, refs['<>']);
-          // Expanded selection
-        } else if (positionExists(refs['<']) || positionExists(refs['>'])) {
-          if (!positionExists(refs['<'])) {
-            throw new Error('A `<` ref must complement a `>` ref.');
-          }
-          if (!positionExists(refs['>'])) {
-            throw new Error('A `>` ref must complement a `<` ref.');
-          }
-          setTextSelection(editorView, refs['<'], refs['>']);
-        }
-        // CellSelection
-        else if (
-          positionExists(refs['<cell']) &&
-          positionExists(refs['cell>'])
+      const posLabels = getDocLabels(defaultDoc);
+      if (posLabels) {
+        if (positionExists(posLabels['[]'])) {
+          setTextSelection(editorView, posLabels['[]']);
+        } else if (
+          positionExists(posLabels['[']) ||
+          positionExists(posLabels[']'])
         ) {
-          // const anchorCell = findCellClosestToPos(doc.resolve(refs['<cell']));
-          // const headCell = findCellClosestToPos(doc.resolve(refs['cell>']));
-          // if (anchorCell && headCell) {
-          //   dispatch(
-          //     tr.setSelection(
-          //       new CellSelection(
-          //         doc.resolve(anchorCell.pos),
-          //         doc.resolve(headCell.pos),
-          //       ) ,
-          //     ),
-          //   );
-          // }
-        }
-        // NodeSelection
-        else if (positionExists(refs['<node>'])) {
-          dispatch(tr.setSelection(NodeSelection.create(doc, refs['<node>'])));
-        }
-        // GapCursor right
-        // This may look the wrong way around here, but looks correct in the tests. Eg:
-        // doc(hr(), '{<|gap>}') = Horizontal rule with a gap cursor on its right
-        // The | denotes the gap cursor's side, based on the node on the side of the |.
-        else if (positionExists(refs['<|gap>'])) {
-          dispatch(
-            tr.setSelection(
-              new GapCursorSelection(
-                doc.resolve(refs['<|gap>']),
-                GapCursorSide.RIGHT,
-              ),
-            ),
-          );
-        }
-        // GapCursor left
-        else if (positionExists(refs['<gap|>'])) {
-          dispatch(
-            tr.setSelection(
-              new GapCursorSelection(
-                doc.resolve(refs['<gap|>']),
-                GapCursorSide.LEFT,
-              ),
-            ),
-          );
+          if (
+            !positionExists(posLabels['[']) ||
+            !positionExists(posLabels[']'])
+          ) {
+            throw new Error('`[``]` must come in pair.');
+          }
+
+          setTextSelection(editorView, posLabels['['], posLabels[']']);
         }
       }
 
-      return refs;
+      return posLabels;
     }
 
     return {
       ...result,
       editor: _editor,
-      editorState: _editor.state,
-      schema: _editor.schema,
+      editorState: _editor.view.state,
+      schema: _editor.view.state.schema,
       editorView: _editor.view,
-      sel: refs ? refs['<>'] : 0,
-      refs,
+      selection: _editor.view.state.selection,
+      posLabels,
       updateDoc,
     };
   };

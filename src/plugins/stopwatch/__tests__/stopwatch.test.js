@@ -2,13 +2,12 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import '../../../test-helpers/jest-helpers';
-import { psx } from '../../../test-helpers/schema-builders';
 import { fireEvent, wait } from '@testing-library/react';
-import '../../../../src/test-helpers/jest-helpers';
-
-import { sendKeyToPm, renderTestEditor } from '../../../../src/test-helpers';
-import { Underline } from '../../../../src/utils/bangle-utils/marks';
+import {
+  psx,
+  sendKeyToPm,
+  renderTestEditor,
+} from '../../../../src/test-helpers';
 import {
   OrderedList,
   BulletList,
@@ -28,7 +27,6 @@ const extensions = [
   new TodoItem(),
   new HardBreak(),
   new Heading(),
-  new Underline(),
   new StopwatchExtension(),
 ];
 const testEditor = renderTestEditor({ extensions });
