@@ -2,18 +2,17 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx } from '../../../../test-helpers/schema-builders';
-import '../../../../../src/test-helpers/jest-helpers';
-import { renderTestEditor } from '../../../../test-helpers/render-helper';
-import { applyCommand } from '../../../../../src/test-helpers/commands-helpers';
+import {
+  applyCommand,
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+  typeText,
+} from '../../../../test-helpers';
 
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';
-import {
-  sendKeyToPm,
-  typeText,
-} from '../../../../../src/test-helpers/keyboard';
 import { GapCursorSelection } from '../../../../../src/utils/bangle-utils/gap-cursor';
 import { Underline } from '../../../../../src/utils/bangle-utils/marks';
 import { CodeBlock } from '../code-block';

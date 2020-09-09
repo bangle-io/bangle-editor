@@ -2,10 +2,8 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import '../../../test-helpers/jest-helpers';
-import { psx } from '../../../test-helpers/schema-builders';
-
 import { TextSelection } from 'prosemirror-state';
+import { psx } from '../../../test-helpers';
 import {
   setupDb,
   spinEditors,

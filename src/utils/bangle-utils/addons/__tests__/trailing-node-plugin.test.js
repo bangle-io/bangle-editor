@@ -3,11 +3,12 @@
  */
 
 /** @jsx psx */
-import '../../../../test-helpers/jest-helpers';
-import { psx } from '../../../../test-helpers/schema-builders';
-import { sendKeyToPm, typeText } from '../../../../test-helpers';
-import { renderTestEditor } from '../../../../test-helpers/render-helper';
-
+import {
+  psx,
+  typeText,
+  sendKeyToPm,
+  renderTestEditor,
+} from '../../../../test-helpers';
 import { Heading } from '../../nodes';
 
 import { TrailingNode } from '../trailing-node';

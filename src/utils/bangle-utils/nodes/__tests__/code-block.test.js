@@ -2,13 +2,10 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx } from '../../../../test-helpers/schema-builders';
-import '../../../../../src/test-helpers/jest-helpers';
-import { renderTestEditor } from '../../../../test-helpers/render-helper';
+import { psx, renderTestEditor, sendKeyToPm } from '../../../../test-helpers';
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';
 import { ListItem } from '../list-item/list-item';
-import { sendKeyToPm } from '../../../../../src/test-helpers/keyboard';
 import { Underline } from '../../../../../src/utils/bangle-utils/marks';
 
 import { CodeBlock } from '../code-block';
