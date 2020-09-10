@@ -1,6 +1,5 @@
 import { PluginKey, Plugin } from 'prosemirror-state';
 import { Addon } from './addon';
-import { getIdleCallback } from '../utils/js-utils';
 
 export class TrailingNode extends Addon {
   get name() {

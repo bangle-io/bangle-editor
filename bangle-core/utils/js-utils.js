@@ -7,6 +7,13 @@ function log(...args) {
   }
 }
 
+export function classNames(obj) {
+  return Object.entries(obj)
+    .filter((r) => Boolean(r[1]))
+    .map((r) => r[0])
+    .join(' ');
+}
+
 /**
  * @param {Function} fn - A unary function whose paramater is non-primitive,
  *                        so that it can be cached using WeakMap

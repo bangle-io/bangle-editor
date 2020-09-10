@@ -2,8 +2,7 @@ import React from 'react';
 import { chainCommands } from 'prosemirror-commands';
 
 import browser from '../utils/browser';
-import { uuid } from '../utils/js-utils';
-import cx from 'classnames';
+import { uuid, classNames as cx } from '../utils/js-utils';
 import { Node } from './node';
 import { objUid } from '../utils/object-uid';
 import {

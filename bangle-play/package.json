@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "bangle-core": "workspace:*",
-    "classnames": "^2.2.6",
     "core-js": "^3.6.4",
     "date-fns": "^2.10.0",
     "emojis-keywords": "^2.0.0",
@@ -67,9 +66,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.3",
-    "prettier": "^2.0.5",
     "style-loader": "^1.2.1",
-    "surge": "^0.21.3",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
