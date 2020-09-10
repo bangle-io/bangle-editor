@@ -9,9 +9,10 @@
   ],
   "scripts": {
     "test": "yarn lint && yarn unit-tests && yarn integration-tests",
-    "unit-tests": "yarn jest",
+    "unit-tests": "yarn lint && yarn jest",
     "integration-tests": "yarn jest --config=jest-integration.config.js",
-    "root:lint": "yarn prettier --check \"bangle-*/**/*.js\" && yarn eslint ."
+    "lint": "yarn prettier --check \"bangle-*/**/*.js\" && yarn eslint .",
+    "root:lint": "yarn lint"
   },
   "prettier": {
     "singleQuote": true,

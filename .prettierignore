@@ -1,8 +1,8 @@
 archive
 .cache
-dist
 node_modules
-build
+bangle-play/dist
+bangle-play/build
 .yarn
 .pnp.js
 coverage

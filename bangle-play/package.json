@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "yarn webpack-dev-server --mode development --port 4000 --host 0.0.0.0",
-    "build": "yarn lint && NODE_ENV=production yarn webpack --env.production",
+    "build": "yarn root:lint && NODE_ENV=production yarn webpack --env.production",
     "build-serve": "yarn build && yarn run serve build",
     "snapshot": "yarn build && yarn node ./scripts/snapshot"
   },
