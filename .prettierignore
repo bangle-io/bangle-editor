@@ -6,3 +6,6 @@ bangle-play/build
 .yarn
 .pnp.js
 coverage
+.vscode
+.yarnrc.yml
+jsconfig.json

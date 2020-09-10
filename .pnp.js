@@ -4005,7 +4005,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./bangle-core/",
           "packageDependencies": [
             ["bangle-core", "workspace:bangle-core"],
-            ["@babel/core", "npm:7.11.1"],
             ["@testing-library/react", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:11.0.2"],
             ["bangle-plugins", "workspace:bangle-plugins"],
             ["lodash.debounce", "npm:4.0.8"],
@@ -4018,7 +4017,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-history", "npm:1.1.3"],
             ["prosemirror-inputrules", "npm:1.1.2"],
             ["prosemirror-keymap", "npm:1.1.4"],
-            ["prosemirror-menu", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-schema-list", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],

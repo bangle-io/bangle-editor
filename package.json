@@ -8,10 +8,11 @@
     "bangle-plugins"
   ],
   "scripts": {
+    "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn unit-tests && yarn integration-tests",
     "unit-tests": "yarn lint && yarn jest",
     "integration-tests": "yarn jest --config=jest-integration.config.js",
-    "lint": "yarn prettier --check \"bangle-*/**/*.js\" && yarn eslint .",
+    "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint"
   },
   "prettier": {
