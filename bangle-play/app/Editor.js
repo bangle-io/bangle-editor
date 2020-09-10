@@ -18,13 +18,13 @@ import {
   TodoList,
 } from 'bangle-core/nodes';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
-import { TrailingNode } from 'bangle-core/addons';
 import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Manager } from 'bangle-plugins/collab/server/manager';
 import { Editor as PMEditor } from 'bangle-core/editor';
 import { Disk } from 'bangle-plugins/persistence/disk';
 import { defaultContent } from './components/constants';
 import { Timestamp } from 'bangle-plugins/timestamp';
+import { TrailingNode } from 'bangle-plugins/trailing-node';
 
 const DEBUG = true;
 

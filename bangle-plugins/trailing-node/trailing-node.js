@@ -1,7 +1,7 @@
 import { PluginKey, Plugin } from 'prosemirror-state';
-import { Addon } from './addon';
+import { Extension } from 'bangle-core/extensions/index';
 
-export class TrailingNode extends Addon {
+export class TrailingNode extends Extension {
   get name() {
     return 'trailing_node_addon';
   }

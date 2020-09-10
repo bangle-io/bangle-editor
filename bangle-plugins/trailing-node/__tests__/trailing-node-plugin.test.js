@@ -3,16 +3,15 @@
  */
 
 /** @jsx psx */
-import 'bangle-core/bangle-test-helpers/jest-helpers';
 import {
   psx,
   typeText,
   sendKeyToPm,
   renderTestEditor,
 } from 'bangle-core/bangle-test-helpers';
-import { Heading } from '../../nodes';
 
 import { TrailingNode } from '../trailing-node';
+import { Heading } from 'bangle-core/index';
 
 const extensions = [new Heading(), new TrailingNode()];
 
