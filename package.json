@@ -8,15 +8,10 @@
     "bangle-plugins"
   ],
   "scripts": {
-    "start": "yarn webpack-dev-server --mode development --port 4000 --host 0.0.0.0",
-    "build": "yarn lint && NODE_ENV=production yarn webpack --env.production",
-    "deploy": "yarn build && yarn surge build bangle-test.surge.sh",
-    "snapshot": "yarn build && yarn node ./scripts/snapshot",
-    "pretest": "yarn lint",
     "test": "yarn lint && yarn unit-tests && yarn integration-tests",
     "unit-tests": "yarn jest",
     "integration-tests": "yarn jest --config=jest-integration.config.js",
-    "lint": "yarn prettier --check \"src/**/*.js\" && yarn eslint ."
+    "root:lint": "yarn prettier --check \"bangle-*/**/*.js\" && yarn eslint ."
   },
   "prettier": {
     "singleQuote": true,
@@ -67,8 +62,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.3",
     "prettier": "^2.0.5",
-    "puppeteer": "^5.2.1",
-    "surge": "^0.21.3"
+    "puppeteer": "^5.2.1"
   },
   "resolutions": {
     "prosemirror-commands": "1.1.4",

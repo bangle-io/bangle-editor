@@ -4,12 +4,11 @@
   "scripts": {
     "start": "yarn webpack-dev-server --mode development --port 4000 --host 0.0.0.0",
     "build": "yarn lint && NODE_ENV=production yarn webpack --env.production",
-    "deploy": "yarn build && yarn surge build bangle-test.surge.sh",
     "snapshot": "yarn build && yarn node ./scripts/snapshot",
     "pretest": "yarn lint",
     "test": "yarn lint && yarn unit-tests && yarn integration-tests",
-    "unit-tests": "yarn jest",
-    "lint": "yarn prettier --check \"src/**/*.js\" && yarn eslint ."
+    "unit-tests": "yarn run root:unit-tests bangle-play",
+    "lint": "yarn run root:lint"
   },
   "browserslist": [
     "last 3 chrome version"
@@ -64,7 +63,10 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.3",
+    "prettier": "^2.1.1",
+    "serve": "^11.3.2",
     "style-loader": "^1.2.1",
+    "surge": "^0.21.6",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
