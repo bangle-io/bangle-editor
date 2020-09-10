@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "bangle-plugins": "workspace:*",
-    "localforage": "^1.7.3",
     "lodash.debounce": "^4.0.8",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.1.4",

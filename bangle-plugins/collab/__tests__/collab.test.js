@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx } from 'bangle-core/bangle-test-helpers';
 import { TextSelection } from 'prosemirror-state';
+import { psx } from 'bangle-core/bangle-test-helpers';
+import { sleep } from 'bangle-core/utils/js-utils';
 import {
   setupDb,
   spinEditors,
   expectToHaveIdenticalElements,
-} from 'bangle-core/bangle-test-helpers/collab-test-helpers';
-import { sleep } from 'bangle-core/utils/js-utils';
+} from '../collab-test-helpers';
 import { EditorConnection } from '../client/client';
 
 jest.mock('localforage', () => ({
