@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
-      "app/*": ["./app/*"],
-      "utils/*": ["./utils/*"],
-      "plugins/*": ["./plugins/*"],
-      "test-helpers/*": ["./test-helpers/*"]
-    }
+      "bangle-core/*": [
+        "./bangle-core/*"
+      ],
+      "bangle-play/*": [
+        "./bangle-play/*"
+      ],
+      "bangle-plugins/*": [
+        "./bangle-plugins/*"
+      ],
+    },
+    "module": "es2020",
+    "target": "esnext"
   },
   "exclude": [
     "node_modules",
@@ -16,6 +23,7 @@
     "public",
     ".cache",
     ".yarn",
-    "coverage"
+    "coverage",
+    ".pnp.js"
   ]
 }

@@ -24,7 +24,7 @@ jobs:
       - run: npm install -g yarn@latest
       - run: yarn install --immutable --immutable-cache
       - run: yarn ${{ matrix.test-kind }}
-  build:
+  build-bangle-play:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
           node-version: 14.x
       - run: npm install -g yarn@latest
       - run: yarn install --immutable --immutable-cache
-      - run: yarn build
+      - run: yarn workspace bangle-play build
   check-cache:
     runs-on: ubuntu-latest
     steps:
