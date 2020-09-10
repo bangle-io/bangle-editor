@@ -3033,11 +3033,11 @@ __metadata:
   dependencies:
     "@babel/core": ^7.11.1
     "@testing-library/react": ^11.0.2
+    bangle-plugins: "workspace:*"
     localforage: ^1.7.3
     lodash.debounce: ^4.0.8
     prettier: ^2.1.1
     prop-types: ^15.7.2
-    prosemirror-collab: ^1.2.2
     prosemirror-commands: ^1.1.4
     prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     prosemirror-dropcursor: ^1.1.1
@@ -3073,12 +3073,10 @@ __metadata:
     babel-jest: ^26.1.0
     babel-loader: ^8.1.0
     bangle-core: "workspace:*"
-    classnames: ^2.2.6
+    bangle-plugins: "workspace:*"
     core-js: ^3.6.4
     css-loader: ^4.2.1
     date-fns: ^2.10.0
-    emojis-keywords: ^2.0.0
-    emojis-list: ^3.0.0
     file-loader: ^6.0.0
     html-webpack-plugin: ^4.4.1
     localforage: ^1.7.3
@@ -3091,9 +3089,7 @@ __metadata:
     postcss-import: ^12.0.1
     postcss-loader: ^3.0.0
     postcss-nested: ^4.2.3
-    prettier: ^2.0.5
     prop-types: ^15.7.2
-    prosemirror-collab: ^1.2.2
     prosemirror-commands: ^1.1.4
     prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     prosemirror-dropcursor: ^1.1.1
@@ -3112,7 +3108,6 @@ __metadata:
     react: ^16.13.0
     react-dom: ^16.13.0
     style-loader: ^1.2.1
-    surge: ^0.21.3
     tailwindcss: ^1.6.0
     throttle-debounce: ^2.1.0
     tiptap-commands: ^1.14.3
@@ -3120,6 +3115,19 @@ __metadata:
     webpack: ^4.44.1
     webpack-cli: ^3.3.12
     webpack-dev-server: ^3.11.0
+  languageName: unknown
+  linkType: soft
+
+"bangle-plugins@workspace:*, bangle-plugins@workspace:bangle-plugins":
+  version: 0.0.0-use.local
+  resolution: "bangle-plugins@workspace:bangle-plugins"
+  dependencies:
+    bangle-core: "workspace:*"
+    emojis-keywords: ^2.0.0
+    emojis-list: ^3.0.0
+    prosemirror-collab: ^1.2.2
+    prosemirror-transform: ^1.2.7
+    react: ^16.13.0
   languageName: unknown
   linkType: soft
 
@@ -3790,13 +3798,6 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: 6411679ad4d2bde81b62ad721d4771d108d5d8ef32805d10ebfa6f1d6bdcfd5cb6dfea5232b85221f079e42691c36cf2db05a5e76b87ba8f6deb37a2c23a4a41
-  languageName: node
-  linkType: hard
-
-"classnames@npm:^2.2.6":
-  version: 2.2.6
-  resolution: "classnames@npm:2.2.6"
-  checksum: 490eaeca5931846737ffd33e472a701d268d5b8bc5717dd4cf108a127b06e86e05350e06799abbbe763a0e4c945b4217f6700b7ae00ddc703505682c370e5cf2
   languageName: node
   linkType: hard
 

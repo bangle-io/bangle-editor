@@ -6,7 +6,7 @@ import { EditorOnReadyContext } from './editor-context';
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
 import { Editor } from 'bangle-core/editor';
-import { CollabEditor } from 'bangle-core/collab/CollabClient';
+import { CollabEditor } from 'bangle-plugins/collab/CollabClient';
 
 const LOG = false;
 

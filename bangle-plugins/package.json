@@ -1,0 +1,14 @@
+{
+  "name": "bangle-plugins",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "bangle-core": "workspace:*",
+    "emojis-keywords": "^2.0.0",
+    "emojis-list": "^3.0.0",
+    "prosemirror-collab": "^1.2.2",
+    "prosemirror-transform": "^1.2.7",
+    "react": "^16.13.0"
+  }
+}

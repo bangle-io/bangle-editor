@@ -6,7 +6,6 @@ import React from 'react';
 import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import browser from 'bangle-core/utils/browser';
 import localforage from 'localforage';
-
 import { Editor } from './Editor';
 import { Aside } from './components/Aside';
 import { uuid, getIdleCallback } from 'bangle-core/utils/js-utils';

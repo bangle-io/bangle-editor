@@ -1,8 +1,8 @@
-import { findTypeAheadQuery, getTypeaheadQueryString } from './helpers/query';
-import { SELECT_ITEM } from './action';
 import { Fragment, Node } from 'prosemirror-model';
 import { PluginKey, Selection, NodeSelection } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
+import { findTypeAheadQuery, getTypeaheadQueryString } from './helpers/query';
+import { SELECT_ITEM } from './action';
 import { isChromeWithSelectionBug } from 'bangle-core';
 
 export const typeAheadStatePluginKey = new PluginKey('typeahead-state-plugin');

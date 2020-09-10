@@ -1,4 +1,4 @@
-import { Extension } from 'bangle-core/index';
+import { Extension } from 'bangle-core';
 
 export class Timestamp extends Extension {
   get name() {

@@ -1,3 +1,4 @@
+import { chainCommands } from 'prosemirror-commands';
 import { Node } from '../node';
 import {
   indentList,
@@ -7,15 +8,12 @@ import {
   moveNode,
   moveEdgeListItem,
 } from './commands';
-import { filter, insertEmpty } from '../../utils/pm-utils';
-import { chainCommands } from 'prosemirror-commands';
 import {
   cutEmptyCommand,
   copyEmptyCommand,
   parentHasDirectParentOfType,
 } from '../../core-commands';
-import { safeInsert } from 'prosemirror-utils';
-import { Selection } from 'prosemirror-state';
+import { filter, insertEmpty } from '../../utils/pm-utils';
 
 export class ListItem extends Node {
   get name() {

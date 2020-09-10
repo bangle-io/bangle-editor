@@ -29,6 +29,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "bangle-play",
         "reference": "workspace:bangle-play"
+      },
+      {
+        "name": "bangle-plugins",
+        "reference": "workspace:bangle-plugins"
       }
     ],
     "enableTopLevelFallback": true,
@@ -36,7 +40,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "fallbackExclusionList": [
       ["bangle", ["workspace:."]],
       ["bangle-core", ["workspace:bangle-core"]],
-      ["bangle-play", ["workspace:bangle-play"]]
+      ["bangle-play", ["workspace:bangle-play"]],
+      ["bangle-plugins", ["workspace:bangle-plugins"]]
     ],
     "fallbackPool": [
     ],
@@ -3956,11 +3961,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bangle-core", "workspace:bangle-core"],
             ["@babel/core", "npm:7.11.1"],
             ["@testing-library/react", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:11.0.2"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
             ["localforage", "npm:1.9.0"],
             ["lodash.debounce", "npm:4.0.8"],
             ["prettier", "npm:2.1.1"],
             ["prop-types", "npm:15.7.2"],
-            ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-dev-tools", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
@@ -3998,12 +4003,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-jest", "virtual:3a4d1369f3b4e454736247ad15b9ec8d0ca358a1adbfacd4f6ee1b71ea868281c7cc6abe14573afc62674d685f44143ff9537be0d07726afb4d1b7c7244c76ac#npm:26.2.2"],
             ["babel-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:8.1.0"],
             ["bangle-core", "workspace:bangle-core"],
-            ["classnames", "npm:2.2.6"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
             ["core-js", "npm:3.6.5"],
             ["css-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:4.2.1"],
             ["date-fns", "npm:2.15.0"],
-            ["emojis-keywords", "npm:2.0.0"],
-            ["emojis-list", "npm:3.0.0"],
             ["file-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:6.0.0"],
             ["html-webpack-plugin", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:4.4.1"],
             ["localforage", "npm:1.9.0"],
@@ -4016,9 +4019,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss-import", "npm:12.0.1"],
             ["postcss-loader", "npm:3.0.0"],
             ["postcss-nested", "npm:4.2.3"],
-            ["prettier", "npm:2.0.5"],
             ["prop-types", "npm:15.7.2"],
-            ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-dev-tools", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
@@ -4037,7 +4038,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:16.13.1"],
             ["style-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:1.2.1"],
-            ["surge", "npm:0.21.6"],
             ["tailwindcss", "npm:1.6.2"],
             ["throttle-debounce", "npm:2.2.1"],
             ["tiptap-commands", "npm:1.14.4"],
@@ -4045,6 +4045,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webpack", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:4.44.1"],
             ["webpack-cli", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:3.3.12"],
             ["webpack-dev-server", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:3.11.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["bangle-plugins", [
+        ["workspace:bangle-plugins", {
+          "packageLocation": "./bangle-plugins/",
+          "packageDependencies": [
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["bangle-core", "workspace:bangle-core"],
+            ["emojis-keywords", "npm:2.0.0"],
+            ["emojis-list", "npm:3.0.0"],
+            ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-transform", "npm:1.2.7"],
+            ["react", "npm:16.13.1"]
           ],
           "linkType": "SOFT",
         }]
@@ -4739,15 +4754,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["define-property", "npm:0.2.5"],
             ["isobject", "npm:3.0.1"],
             ["static-extend", "npm:0.1.2"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["classnames", [
-        ["npm:2.2.6", {
-          "packageLocation": "./.yarn/cache/classnames-npm-2.2.6-98e9901cf4-490eaeca59.zip/node_modules/classnames/",
-          "packageDependencies": [
-            ["classnames", "npm:2.2.6"]
           ],
           "linkType": "HARD",
         }]

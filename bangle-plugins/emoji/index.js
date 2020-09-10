@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Node } from 'bangle-core/nodes/index';
+import { Node } from 'bangle-core/nodes';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 
 const LOG = false;

@@ -1,4 +1,3 @@
-import { renderTestEditor, sendKeyToPm, sleep, typeChar } from './index';
 import { Editor as PMEditor } from 'bangle-core/editor';
 import {
   OrderedList,
@@ -9,10 +8,15 @@ import {
   TodoList,
   TodoItem,
 } from 'bangle-core/nodes';
-
-import { Manager } from '../collab/server/manager';
+import { Manager } from './server/manager';
 import { uuid } from 'bangle-core/utils/js-utils';
-import { Disk } from '../../bangle-play/plugins/persistence/disk';
+import { Disk } from '../persistence/disk';
+import {
+  renderTestEditor,
+  sendKeyToPm,
+  sleep,
+  typeChar,
+} from 'bangle-core/bangle-test-helpers';
 
 const START = '💚';
 const END = '🖤';

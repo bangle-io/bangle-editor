@@ -2,11 +2,13 @@ import {
   findParentNode,
   safeInsert,
   findSelectedNodeOfType,
+  findParentNodeOfType as _findParentNodeOfType,
 } from 'prosemirror-utils';
-import { GapCursorSelection } from '../gap-cursor';
 import { Fragment, Slice } from 'prosemirror-model';
+import { GapCursorSelection } from '../gap-cursor';
 
-export { findParentNodeOfType } from 'prosemirror-utils';
+export const findParentNodeOfType = _findParentNodeOfType;
+
 /**
  * whether the mark of type is active
  * @returns {Boolean}

@@ -1,10 +1,4 @@
-import {
-  findParentNodeOfType,
-  safeInsert,
-  hasParentNodeOfType,
-  findPositionOfNodeBefore,
-  findParentNode,
-} from 'prosemirror-utils';
+import { findParentNodeOfType } from 'prosemirror-utils';
 import { NodeSelection, Selection, TextSelection } from 'prosemirror-state';
 import { arrayify } from './utils/js-utils';
 

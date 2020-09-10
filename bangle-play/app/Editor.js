@@ -1,17 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dinos from '../../bangle-play/plugins/dinos/index';
-import Emoji from '../../bangle-play/plugins/emoji/index';
-import { History } from 'bangle-core/extensions/index';
-import {
-  Bold,
-  Code,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-} from 'bangle-core/marks/index';
+import Dinos from 'bangle-plugins/dinos';
+import Emoji from 'bangle-plugins/emoji';
+import { History } from 'bangle-core/extensions';
+import { Bold, Code, Italic, Link, Strike, Underline } from 'bangle-core/marks';
 import {
   Blockquote,
   BulletList,
@@ -23,15 +16,15 @@ import {
   OrderedList,
   TodoItem,
   TodoList,
-} from 'bangle-core/nodes/index';
+} from 'bangle-core/nodes';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { TrailingNode } from 'bangle-core/addons';
-import StopwatchExtension from '../plugins/stopwatch/stopwatch';
-import { Manager } from 'bangle-core/collab/server/manager';
+import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
+import { Manager } from 'bangle-plugins/collab/server/manager';
 import { Editor as PMEditor } from 'bangle-core/editor';
-import { Disk } from '../plugins/persistence/disk';
+import { Disk } from 'bangle-plugins/persistence/disk';
 import { defaultContent } from './components/constants';
-import { Timestamp } from '../plugins/timestamp';
+import { Timestamp } from 'bangle-plugins/timestamp';
 
 const DEBUG = true;
 

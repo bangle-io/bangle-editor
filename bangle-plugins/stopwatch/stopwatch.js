@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Node } from 'bangle-core/nodes/index';
+import { Node } from 'bangle-core/nodes';
 
 const LOG = false;
 

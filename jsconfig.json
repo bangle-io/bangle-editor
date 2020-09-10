@@ -8,7 +8,12 @@
       "bangle-play/*": [
         "./bangle-play/*"
       ],
-    }
+      "bangle-plugins/*": [
+        "./bangle-plugins/*"
+      ],
+    },
+    "module": "es2020",
+    "target": "esnext"
   },
   "exclude": [
     "node_modules",
@@ -18,6 +23,7 @@
     "public",
     ".cache",
     ".yarn",
-    "coverage"
+    "coverage",
+    ".pnp.js"
   ]
 }
