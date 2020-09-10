@@ -1,10 +1,10 @@
 node_modules
 .DS_Store
-build
 .cache
-dist
 .DS_Store
 coverage
+bangle-play/dist
+bangle-play/build
 
 .yarn/*
 !.yarn/cache
