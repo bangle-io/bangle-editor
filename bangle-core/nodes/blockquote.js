@@ -1,4 +1,6 @@
-import { wrappingInputRule, toggleWrap } from 'tiptap-commands';
+import { wrappingInputRule } from 'prosemirror-inputrules';
+
+import { toggleWrap } from 'tiptap-commands';
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';

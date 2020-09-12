@@ -351,7 +351,7 @@ describe('cancelable sleep', () => {
 
   it('timer wins if promise rejects late', async () => {
     let c = raceTimeout(
-      backupSleep(6).then((r) => {
+      backupSleep(9).then((r) => {
         throw new Error('whoops');
       }),
       5,

@@ -1,10 +1,9 @@
 import { Plugin } from 'prosemirror-state';
 import { updateMark, removeMark } from 'tiptap-commands';
-import { getMarkAttrs } from 'tiptap-utils';
 
 import { Mark } from './mark';
 import { matchAllPlus } from '../utils/js-utils';
-import { mapSlice } from '../utils/pm-utils';
+import { getMarkAttrs, mapSlice } from '../utils/pm-utils';
 
 const LOG = true;
 

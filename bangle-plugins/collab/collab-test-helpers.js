@@ -16,7 +16,8 @@ import {
   sendKeyToPm,
   sleep,
   typeChar,
-} from 'bangle-core/bangle-test-helpers';
+} from 'bangle-core/bangle-test-helpers/index';
+import { CollabEditor } from './CollabClient';
 
 const START = '💚';
 const END = '🖤';
@@ -85,8 +86,6 @@ export function setup(db = setupDb(), { managerOpts }) {
       this.editors = this.editors.filter((e) => e[0] !== id);
     },
     createEditor: async function (id, docName) {
-      // remove any unmounted
-
       const editor = await renderTestEditor(
         {
           manager: this.manager,
@@ -95,6 +94,7 @@ export function setup(db = setupDb(), { managerOpts }) {
           collabClientId: id,
         },
         'data-test-' + id,
+        CollabEditor,
       )();
       this.editors.push([id, editor]);
       return editor;

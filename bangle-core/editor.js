@@ -11,13 +11,17 @@ import { gapCursor } from 'prosemirror-gapcursor';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { inputRules, undoInputRule } from 'prosemirror-inputrules';
-import { markIsActive, nodeIsActive, getMarkAttrs } from 'tiptap-utils';
 
 import { ExtensionManager } from './utils/extension-manager';
 import { Emitter } from './utils/emitter';
 import { Text, Paragraph, Doc } from './nodes/index';
 import { CustomNodeView } from './helper-react/custom-node-view';
-import { findChangedNodesFromTransaction } from './utils/pm-utils';
+import {
+  getMarkAttrs,
+  findChangedNodesFromTransaction,
+  isMarkActive,
+  nodeIsActive,
+} from './utils/pm-utils';
 
 const LOG = false;
 
@@ -457,7 +461,7 @@ export class Editor extends Emitter {
     this.activeMarks = Object.fromEntries(
       Object.entries(this.schema.marks).map(([name, mark]) => [
         name,
-        (attrs = {}) => markIsActive(this.state, mark, attrs),
+        (attrs = {}) => isMarkActive(this.state, mark),
       ]),
     );
 
