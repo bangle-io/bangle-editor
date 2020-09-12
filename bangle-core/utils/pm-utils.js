@@ -32,20 +32,9 @@ export const validListParent = (type, schemaNodes) => {
   } = schemaNodes;
   return [bulletList, orderedList, todoList].includes(type);
 };
-// export function isMarkActive(mark, doc, from, to) {
-//   let active = false;
-// // TIP on how to iterate between all nodes
-//   doc.nodesBetween(from, to, (node) => {
-//     if (!active && mark.isInSet(node.marks)) {
-//       active = true;
-//     }
-//   });
-
-//   return active;
-// }
 
 // TODO document this, probably gets the attributes of the mark of the current selection
-export default function getMarkAttrs(editorState, type) {
+export function getMarkAttrs(editorState, type) {
   const { from, to } = editorState.selection;
   let marks = [];
 
@@ -58,17 +47,17 @@ export default function getMarkAttrs(editorState, type) {
   return mark ? mark.attrs : {};
 }
 
-export function nodeIsActive(editorState, type, attrs = {}) {
+export function nodeIsActive(state, type, attrs = {}) {
   const predicate = (node) => node.type === type;
   const node =
-    findSelectedNodeOfType(type)(editorState.selection) ||
-    findParentNode(predicate)(editorState.selection);
+    findSelectedNodeOfType(type)(state.selection) ||
+    findParentNode(predicate)(state.selection);
 
   if (!Object.keys(attrs).length || !node) {
     return !!node;
   }
 
-  return node.node.hasMarkup(type, attrs);
+  return node.node.hasMarkup(type, { ...node.node.attrs, ...attrs });
 }
 
 export function findChangedNodesFromTransaction(tr) {

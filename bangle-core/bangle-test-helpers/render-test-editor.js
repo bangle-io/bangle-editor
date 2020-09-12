@@ -7,8 +7,13 @@ import {
 } from 'bangle-core/helper-react/editor-context';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { getDocLabels } from './schema-builders';
+import { Editor as DefaultEditor } from 'bangle-core/editor';
 
-export function renderTestEditor(options = {}, testId = 'test-editor') {
+export function renderTestEditor(
+  options = {},
+  testId = 'test-editor',
+  Editor = DefaultEditor,
+) {
   return async (testDoc) => {
     const _options = {
       id: 'test-editor',
@@ -23,7 +28,11 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
 
     const result = render(
       <EditorContextProvider>
-        <ReactEditor options={_options} content={_options.content || ''} />
+        <ReactEditor
+          options={_options}
+          content={_options.content || ''}
+          Editor={Editor}
+        />
         <EditorContext.Consumer>
           {(context) => {
             if (context.getEditor() && !_editor) {
