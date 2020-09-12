@@ -2965,7 +2965,6 @@ __metadata:
     react: ^16.13.0
     react-dom: ^16.13.0
     tiptap-commands: ^1.14.3
-    tiptap-utils: ^1.10.4
   languageName: unknown
   linkType: soft
 
@@ -2973,6 +2972,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
+    "@babel/core": ^7.11.6
     autoprefixer: ^9.8.6
     babel-loader: ^8.1.0
     bangle-core: "workspace:*"
@@ -3015,7 +3015,6 @@ __metadata:
     tailwindcss: ^1.6.0
     throttle-debounce: ^2.1.0
     tiptap-commands: ^1.14.3
-    tiptap-utils: ^1.10.4
     webpack: ^4.44.1
     webpack-cli: ^3.3.12
     webpack-dev-server: ^3.11.0
@@ -3048,7 +3047,6 @@ __metadata:
     "@babel/plugin-proposal-optional-chaining": ^7.11.0
     "@babel/preset-env": ^7.11.5
     "@babel/preset-react": ^7.10.4
-    "@testing-library/react": ^11.0.2
     "@typescript-eslint/eslint-plugin": 2.x
     "@typescript-eslint/parser": 2.x
     babel-eslint: 10.x
@@ -12459,7 +12457,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"tiptap-utils@npm:1.10.4":
+"tiptap-utils@npm:^1.10.4":
   version: 1.10.4
   resolution: "tiptap-utils@npm:1.10.4"
   dependencies:

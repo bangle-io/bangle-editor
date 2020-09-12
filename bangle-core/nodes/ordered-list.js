@@ -1,7 +1,6 @@
-import { wrappingInputRule } from 'tiptap-commands';
-
 import { Node } from './node';
 import { toggleList } from './list-item/commands';
+import { wrappingInputRule } from 'prosemirror-inputrules';
 
 export class OrderedList extends Node {
   get name() {

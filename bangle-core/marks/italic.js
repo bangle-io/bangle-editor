@@ -1,4 +1,5 @@
-import { toggleMark, markInputRule, markPasteRule } from 'tiptap-commands';
+import { markInputRule, markPasteRule } from 'tiptap-commands';
+import { toggleMark } from 'prosemirror-commands';
 
 import { Mark } from './mark';
 
