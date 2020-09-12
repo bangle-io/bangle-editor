@@ -4041,9 +4041,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-schema-list", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],
-            ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.2.7"],
-            ["prosemirror-utils", "virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6"],
+            ["prosemirror-utils", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:0.9.6"],
             ["prosemirror-view", "npm:1.15.2"],
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"],
@@ -4077,9 +4076,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-schema-list", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],
-            ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.2.7"],
-            ["prosemirror-utils", "virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6"],
+            ["prosemirror-utils", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:0.9.6"],
             ["prosemirror-view", "npm:1.15.2"],
             ["tiptap-commands", "npm:1.14.4"],
             ["tiptap-utils", "npm:1.10.4"]
@@ -12978,6 +12976,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-utils", [
+        ["virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:0.9.6", {
+          "packageLocation": "./.yarn/$$virtual/prosemirror-utils-virtual-07c1b6d0d4/0/cache/prosemirror-utils-npm-0.9.6-5911c8beb1-b0a1274aa3.zip/node_modules/prosemirror-utils/",
+          "packageDependencies": [
+            ["prosemirror-utils", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:0.9.6"],
+            ["@types/prosemirror-model", null],
+            ["@types/prosemirror-state", null],
+            ["@types/prosemirror-tables", null],
+            ["prosemirror-model", "npm:1.11.0"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-tables", null]
+          ],
+          "packagePeers": [
+            "@types/prosemirror-model",
+            "@types/prosemirror-state",
+            "@types/prosemirror-tables",
+            "prosemirror-model",
+            "prosemirror-state",
+            "prosemirror-tables"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6", {
           "packageLocation": "./.yarn/$$virtual/prosemirror-utils-virtual-909129000a/0/cache/prosemirror-utils-npm-0.9.6-5911c8beb1-b0a1274aa3.zip/node_modules/prosemirror-utils/",
           "packageDependencies": [
