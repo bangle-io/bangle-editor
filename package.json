@@ -58,10 +58,14 @@
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "2.x",
+    "expect-puppeteer": "^4.4.0",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
     "jest-circus": "^26.4.2",
+    "jest-environment-puppeteer": "^4.4.0",
+    "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.3.0",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.1",
+    "puppeteer": "^5.3.0"
   }
 }
