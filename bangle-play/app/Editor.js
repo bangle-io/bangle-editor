@@ -25,6 +25,7 @@ import { Disk } from 'bangle-plugins/persistence/disk';
 import { defaultContent } from './components/constants';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
+import { CollabEditor } from 'bangle-plugins/collab/CollabClient';
 
 const DEBUG = true;
 
@@ -119,6 +120,7 @@ export class Editor extends React.PureComponent {
                 'bangle-play-react-editor' + obj.key,
               )}
               content={obj.docName}
+              Editor={CollabEditor}
             />
             {/* adds white space at bottoms */}
             <div

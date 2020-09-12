@@ -1,6 +1,3 @@
-import React from 'react';
-import { getVersion } from 'prosemirror-collab';
-
 import { EditorConnection } from './client/client';
 import { Editor } from 'bangle-core';
 import { CollabExtension } from './client/collab-extension';
@@ -45,12 +42,44 @@ function localReq(manager) {
     return req({ ...argObj, reqId });
   };
 }
+
 export class CollabEditor {
   editor;
 
   constructor(domElement, options) {
-    const { content: docName, collabClientId = 'test-' + uuid() } = options;
-    const req = localReq(options.manager);
+    const {
+      manager,
+      content: docName,
+      collabClientId = 'test-' + uuid(),
+      ...editorOptions
+    } = options;
+
+    if (!manager || !docName) {
+      throw new Error('Missing options in CollabEditor');
+    }
+
+    this._setupConnection({
+      domElement,
+      manager,
+      docName,
+      collabClientId,
+      editorOptions,
+    });
+  }
+
+  destroy() {
+    this.connection.close();
+    this.editor && this.editor.destroy();
+  }
+
+  _setupConnection({
+    domElement,
+    manager,
+    docName,
+    collabClientId,
+    editorOptions,
+  }) {
+    const req = localReq(manager);
     const userId = 'user-' + collabClientId;
 
     const handlersLocal = {
@@ -83,10 +112,10 @@ export class CollabEditor {
       },
       createEditorState: async (document, version) => {
         this.editor = new Editor(domElement, {
-          ...options,
+          ...editorOptions,
           content: document,
           extensions: [
-            ...options.extensions,
+            ...editorOptions.extensions,
             new CollabExtension({
               version,
               clientID: collabClientId,
@@ -99,8 +128,7 @@ export class CollabEditor {
         this.editor.view.updateState(state);
       },
       onDispatchTransaction: (cb) => {
-        // todo need to make this sync as it is causing problems
-        // especially with trailing node
+        // todo this is repeating transaction state update. fix it
         this.editor.on('transaction', ({ transaction }) => {
           cb(transaction);
         });
@@ -111,9 +139,5 @@ export class CollabEditor {
     };
 
     this.connection = new EditorConnection(docName, handlersLocal, userId);
-  }
-  destroy() {
-    this.connection.close();
-    this.editor && this.editor.destroy();
   }
 }

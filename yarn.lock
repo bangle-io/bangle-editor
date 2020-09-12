@@ -2945,7 +2945,6 @@ __metadata:
   resolution: "bangle-core@workspace:bangle-core"
   dependencies:
     "@testing-library/react": ^11.0.2
-    bangle-plugins: "workspace:*"
     lodash.debounce: ^4.0.8
     prettier: ^2.1.1
     prop-types: ^15.7.2
