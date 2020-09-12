@@ -13,7 +13,6 @@
   "dependencies": {
     "bangle-core": "workspace:*",
     "bangle-plugins": "workspace:*",
-    "core-js": "^3.6.4",
     "date-fns": "^2.10.0",
     "localforage": "^1.7.3",
     "lodash.debounce": "^4.0.8",

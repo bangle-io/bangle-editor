@@ -39,7 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
       ["bangle", ["workspace:."]],
-      ["bangle-core", ["workspace:bangle-core"]],
+      ["bangle-core", ["virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#workspace:bangle-core", "workspace:bangle-core"]],
       ["bangle-play", ["workspace:bangle-play"]],
       ["bangle-plugins", ["workspace:bangle-plugins"]]
     ],
@@ -2454,6 +2454,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
+        ["virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:11.0.2", {
+          "packageLocation": "./.yarn/$$virtual/@testing-library-react-virtual-f7b3c42c2f/0/cache/@testing-library-react-npm-11.0.2-3f710d1c12-664dfbafb3.zip/node_modules/@testing-library/react/",
+          "packageDependencies": [
+            ["@testing-library/react", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:11.0.2"],
+            ["@babel/runtime", "npm:7.11.2"],
+            ["@testing-library/dom", "npm:7.24.1"],
+            ["@types/react", null],
+            ["@types/react-dom", null],
+            ["react", "npm:16.13.1"],
+            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:11.0.2", {
           "packageLocation": "./.yarn/$$virtual/@testing-library-react-virtual-bd25629496/0/cache/@testing-library-react-npm-11.0.2-3f710d1c12-664dfbafb3.zip/node_modules/@testing-library/react/",
           "packageDependencies": [
@@ -2462,8 +2481,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/dom", "npm:7.24.1"],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["react", "npm:16.13.1"],
-            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"]
+            ["react", null],
+            ["react-dom", null]
           ],
           "packagePeers": [
             "@types/react-dom",
@@ -4001,6 +4020,44 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["bangle-core", [
+        ["virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#workspace:bangle-core", {
+          "packageLocation": "./.yarn/$$virtual/bangle-core-virtual-4c1d826ef6/1/bangle-core/",
+          "packageDependencies": [
+            ["bangle-core", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#workspace:bangle-core"],
+            ["@testing-library/react", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#npm:11.0.2"],
+            ["@types/react", null],
+            ["@types/react-dom", null],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["lodash.debounce", "npm:4.0.8"],
+            ["prettier", "npm:2.1.1"],
+            ["prop-types", "npm:15.7.2"],
+            ["prosemirror-commands", "npm:1.1.4"],
+            ["prosemirror-dev-tools", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
+            ["prosemirror-dropcursor", "npm:1.3.2"],
+            ["prosemirror-gapcursor", "npm:1.1.5"],
+            ["prosemirror-history", "npm:1.1.3"],
+            ["prosemirror-inputrules", "npm:1.1.2"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.11.0"],
+            ["prosemirror-schema-list", "npm:1.1.3"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-tables", "npm:1.1.1"],
+            ["prosemirror-transform", "npm:1.2.7"],
+            ["prosemirror-utils", "virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6"],
+            ["prosemirror-view", "npm:1.15.2"],
+            ["react", "npm:16.13.1"],
+            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"],
+            ["tiptap-commands", "npm:1.14.4"],
+            ["tiptap-utils", "npm:1.10.4"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "SOFT",
+        }],
         ["workspace:bangle-core", {
           "packageLocation": "./bangle-core/",
           "packageDependencies": [
@@ -4024,8 +4081,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-transform", "npm:1.2.7"],
             ["prosemirror-utils", "virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6"],
             ["prosemirror-view", "npm:1.15.2"],
-            ["react", "npm:16.13.1"],
-            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"],
             ["tiptap-commands", "npm:1.14.4"],
             ["tiptap-utils", "npm:1.10.4"]
           ],
@@ -4045,9 +4100,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-eslint", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:10.1.0"],
             ["babel-jest", "virtual:3a4d1369f3b4e454736247ad15b9ec8d0ca358a1adbfacd4f6ee1b71ea868281c7cc6abe14573afc62674d685f44143ff9537be0d07726afb4d1b7c7244c76ac#npm:26.2.2"],
             ["babel-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:8.1.0"],
-            ["bangle-core", "workspace:bangle-core"],
+            ["bangle-core", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#workspace:bangle-core"],
             ["bangle-plugins", "workspace:bangle-plugins"],
-            ["core-js", "npm:3.6.5"],
             ["css-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:4.2.1"],
             ["date-fns", "npm:2.15.0"],
             ["file-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:6.0.0"],
@@ -4065,7 +4119,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.1.1"],
             ["prop-types", "npm:15.7.2"],
             ["prosemirror-commands", "npm:1.1.4"],
-            ["prosemirror-dev-tools", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
+            ["prosemirror-dev-tools", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["prosemirror-dropcursor", "npm:1.3.2"],
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-history", "npm:1.1.3"],
@@ -4101,7 +4155,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["bangle-plugins", "workspace:bangle-plugins"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
-            ["bangle-core", "workspace:bangle-core"],
+            ["bangle-core", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#workspace:bangle-core"],
             ["emojis-keywords", "npm:2.0.0"],
             ["emojis-list", "npm:3.0.0"],
             ["localforage", "npm:1.9.0"],
@@ -5365,13 +5419,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/unplugged/core-js-npm-2.6.11-15178ded27/node_modules/core-js/",
           "packageDependencies": [
             ["core-js", "npm:2.6.11"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:3.6.5", {
-          "packageLocation": "./.yarn/unplugged/core-js-npm-3.6.5-5941340066/node_modules/core-js/",
-          "packageDependencies": [
-            ["core-js", "npm:3.6.5"]
           ],
           "linkType": "HARD",
         }]
@@ -12767,14 +12814,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-dev-tools", [
+        ["virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020", {
+          "packageLocation": "./.yarn/$$virtual/prosemirror-dev-tools-virtual-53f247b501/0/cache/prosemirror-dev-tools-https-9f499403da-4368c6c42c.zip/node_modules/prosemirror-dev-tools/",
+          "packageDependencies": [
+            ["prosemirror-dev-tools", "virtual:4c1d826ef695b9d3d961739f94ad23d6a18efe4ceba5f84d076483214e8e1f9b6e042e395e1e0a473e4fbcd10ebcf3f0150987799040b1781bff86dc40560b7d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
+            ["@types/react", null],
+            ["@types/react-dom", null],
+            ["react", "npm:16.13.1"],
+            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020", {
           "packageLocation": "./.yarn/$$virtual/prosemirror-dev-tools-virtual-ef6762e307/0/cache/prosemirror-dev-tools-https-9f499403da-4368c6c42c.zip/node_modules/prosemirror-dev-tools/",
           "packageDependencies": [
             ["prosemirror-dev-tools", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["react", "npm:16.13.1"],
-            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"]
+            ["react", null],
+            ["react-dom", null]
           ],
           "packagePeers": [
             "@types/react-dom",
