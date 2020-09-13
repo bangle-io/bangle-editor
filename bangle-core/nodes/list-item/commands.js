@@ -970,7 +970,7 @@ export function moveNode(type, dir = 'UP') {
       ),
     );
     if (dispatch) {
-      dispatch(tr);
+      dispatch(tr.scrollIntoView());
     }
     return true;
   };
