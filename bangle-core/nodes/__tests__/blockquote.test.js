@@ -17,6 +17,7 @@ import { HardBreak } from '../hard-break';
 import { Blockquote } from '../blockquote';
 import { TodoList } from '../todo-list';
 import { TodoItem } from '../todo-item';
+import { typeText } from 'bangle-core/test-helpers/index';
 
 const extensions = [
   new BulletList(),
@@ -32,6 +33,103 @@ const extensions = [
 ];
 
 const testEditor = renderTestEditor({ extensions });
+
+describe('Markdown shorthand works', () => {
+  it('pressing > on empty paragraph works', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editor.view, '> kj');
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <blockquote>
+          <para>kj[]</para>
+        </blockquote>
+      </doc>,
+    );
+  });
+
+  it('pressing > on empty heading works', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <heading>[]</heading>
+      </doc>,
+    );
+
+    typeText(editor.view, '> kj');
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <blockquote>
+          <heading>kj[]</heading>
+        </blockquote>
+      </doc>,
+    );
+  });
+
+  it('pressing > on empty bullet list doesnt not work', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>[]</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    typeText(editor.view, '> kj');
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <ul>
+          <li>
+            <para>{'> kj'}[]</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+});
+
+describe('Keyboard shortcut', () => {
+  it('works on empty para', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <para>[]</para>
+      </doc>,
+    );
+
+    sendKeyToPm(editor.view, 'Ctrl-ArrowRight');
+
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <blockquote>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+    );
+  });
+
+  it('works with content in the para', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <para>kj[]</para>
+      </doc>,
+    );
+
+    sendKeyToPm(editor.view, 'Ctrl-ArrowRight');
+
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <blockquote>
+          <para>kj[]</para>
+        </blockquote>
+      </doc>,
+    );
+  });
+});
 
 describe('Insert empty paragraph above and below', () => {
   test.each([
