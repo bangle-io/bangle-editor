@@ -29,7 +29,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "./scripts/pre-push.sh $HUSKY_GIT_PARAMS"
     }
   },
   "resolutions": {
