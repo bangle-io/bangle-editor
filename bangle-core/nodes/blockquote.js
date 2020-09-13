@@ -1,6 +1,5 @@
 import { wrappingInputRule } from 'prosemirror-inputrules';
-
-import { toggleWrap } from 'tiptap-commands';
+import { wrapIn } from 'prosemirror-commands';
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
@@ -24,15 +23,23 @@ export class Blockquote extends Node {
   }
 
   commands({ type, schema }) {
-    return () => toggleWrap(type, schema.nodes.paragraph);
+    const isInBlockquote = (state) =>
+      Boolean(findParentNodeOfType(type)(state.selection));
+
+    return filter((state) => !isInBlockquote(state), wrapIn(type));
   }
 
   keys({ type, schema }) {
     const isInBlockquote = (state) =>
-      findParentNodeOfType(type)(state.selection);
+      Boolean(findParentNodeOfType(type)(state.selection));
 
     return {
-      'Ctrl-ArrowRight': toggleWrap(type),
+      'Ctrl-ArrowRight': filter(
+        (state) => !isInBlockquote(state),
+        (state, dispatch, view) => {
+          return wrapIn(type)(state, dispatch, view);
+        },
+      ),
       'Alt-ArrowUp': moveNode(type, 'UP'),
       'Alt-ArrowDown': moveNode(type, 'DOWN'),
 
