@@ -3,11 +3,7 @@
  */
 
 /** @jsx psx */
-import {
-  psx,
-  renderTestEditor,
-  sendKeyToPm,
-} from 'bangle-core/bangle-test-helpers';
+import { psx, renderTestEditor, sendKeyToPm } from 'bangle-core/test-helpers';
 
 import { OrderedList } from '../ordered-list';
 import { BulletList } from '../bullet-list';

@@ -3,11 +3,7 @@
  */
 /** @jsx psx */
 import { fireEvent, wait } from '@testing-library/react';
-import {
-  psx,
-  sendKeyToPm,
-  renderTestEditor,
-} from 'bangle-core/bangle-test-helpers/';
+import { psx, sendKeyToPm, renderTestEditor } from 'bangle-core/test-helpers/';
 import {
   OrderedList,
   BulletList,

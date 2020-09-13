@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor } from 'bangle-core/bangle-test-helpers';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers';
 
 import { BulletList, ListItem, OrderedList, HardBreak } from '../../nodes';
 import { isFirstChildOfParent, findCutBefore } from '../pm-utils';

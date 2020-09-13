@@ -7,7 +7,7 @@ import {
   dispatchPasteEvent,
   psx,
   renderTestEditor,
-} from 'bangle-core/bangle-test-helpers';
+} from 'bangle-core/test-helpers';
 import { toggleMark } from 'tiptap-commands';
 
 import { Link } from '../link';
