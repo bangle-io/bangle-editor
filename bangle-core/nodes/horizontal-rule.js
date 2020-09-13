@@ -1,4 +1,4 @@
-import { nodeInputRule } from 'tiptap-commands';
+import { InputRule } from 'prosemirror-inputrules';
 
 import { Node } from './node';
 
@@ -21,6 +21,14 @@ export class HorizontalRule extends Node {
   }
 
   inputRules({ type }) {
-    return [nodeInputRule(/^(?:---|___\s|\*\*\*\s)$/, type)];
+    return new InputRule(
+      /^(?:---|___\s|\*\*\*\s)$/,
+      (state, match, start, end) => {
+        if (!match[0]) {
+          return false;
+        }
+        return state.tr.replaceWith(start - 1, end, type.create({}));
+      },
+    );
   }
 }

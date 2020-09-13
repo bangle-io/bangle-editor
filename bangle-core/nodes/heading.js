@@ -1,8 +1,6 @@
-import {
-  setBlockType,
-  textblockTypeInputRule,
-  toggleBlockType,
-} from 'tiptap-commands';
+import { toggleBlockType } from 'tiptap-commands';
+import { setBlockType } from 'prosemirror-commands';
+import { textblockTypeInputRule } from 'prosemirror-inputrules';
 
 import { Node } from './node';
 import { moveNode } from './list-item/commands';
