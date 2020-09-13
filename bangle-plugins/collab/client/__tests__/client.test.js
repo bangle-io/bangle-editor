@@ -8,7 +8,7 @@ import {
   sleep,
   typeText,
   renderTestEditor,
-} from 'bangle-core/bangle-test-helpers';
+} from 'bangle-core/test-helpers';
 
 import { EditorConnection } from '../client';
 import { CollabExtension } from '../collab-extension';

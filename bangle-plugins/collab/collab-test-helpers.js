@@ -16,8 +16,7 @@ import {
   sendKeyToPm,
   sleep,
   typeChar,
-} from 'bangle-core/bangle-test-helpers/index';
-import { CollabEditor } from './CollabClient';
+} from 'bangle-core/test-helpers';
 
 const START = '💚';
 const END = '🖤';
