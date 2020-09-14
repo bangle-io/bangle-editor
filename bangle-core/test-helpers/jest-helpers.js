@@ -127,40 +127,42 @@ function toEqualDocument(equals, utils, expand) {
         singleQuote: true,
       });
 
-    const pass = equals(actual.toJSON(), expected.toJSON());
+    const actualJSON = actual.toJSON();
+    const expectedJSON = expected.toJSON();
+    const actualFormatted = frmt(actual);
+    const expectedFormatted = frmt(expected);
+    const pass = equals(actualJSON, expectedJSON);
     const message = pass
       ? () =>
           `${utils.matcherHint('.not.toEqualDocument')}\n\n` +
           `Expected JSON value of document to not equal:\n  ${utils.printExpected(
-            expected,
+            expectedJSON,
           )}\n` +
-          `Actual JSON:\n  ${utils.printReceived(actual)}`
+          `Actual JSON:\n  ${utils.printReceived(actualJSON)}`
       : () => {
-          const [expectedFrmt, actualFrmt] = [frmt(expected), frmt(actual)];
-
           let diffString;
-          if (expectedFrmt === actualFrmt) {
-            diffString = utils.diff(expected, actual, {
+          if (expectedFormatted === actualFormatted) {
+            diffString = utils.diff(expectedJSON, actualJSON, {
               expand: expand,
             });
           } else {
-            diffString = utils.diff(expectedFrmt, actualFrmt, {
+            diffString = utils.diff(expectedFormatted, actualFormatted, {
               expand: expand,
             });
           }
 
           return (
             `${utils.matcherHint('.toEqualDocument')}\n\n` +
-            `Expected Tree value of document to equal:\n${frmt(expected)}\n` +
-            `Actual Tree:\n  ${frmt(actual)}` +
+            `Expected Tree value of document to equal:\n${expectedFormatted}\n` +
+            `Actual Tree:\n  ${actualFormatted}` +
             `${diffString ? `\n\nDifference:\n\n${diffString}` : ''}`
           );
         };
 
     return {
       pass,
-      actual,
-      expected,
+      actual: actualJSON,
+      expected: expectedJSON,
       message,
       name: 'toEqualDocument',
     };
@@ -170,9 +172,6 @@ function toEqualDocument(equals, utils, expand) {
 function stubMissingDOMAPIs() {
   const warnOnce = (() => {
     return () => {
-      if (window.hasWarnedAboutJsdomFixtures) {
-        return;
-      }
       // eslint-disable-next-line no-console
       // console.warn(
       //   'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',

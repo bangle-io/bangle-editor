@@ -16,7 +16,8 @@ import {
   OrderedList,
   TodoItem,
   TodoList,
-} from 'bangle-core/nodes';
+  Image,
+} from 'bangle-core/nodes/index';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Manager } from 'bangle-plugins/collab/server/manager';
@@ -93,6 +94,7 @@ export class Editor extends React.PureComponent {
       new TodoItem(),
       new TodoList(),
       new OrderedList(),
+      new Image(),
       new Dinos(),
       new Emoji(),
       new History(),

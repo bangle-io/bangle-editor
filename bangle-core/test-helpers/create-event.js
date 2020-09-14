@@ -18,7 +18,7 @@ const supportsEvent = ((event) => {
  * Usage:
  *    const event = createEvent('paste', options);
  */
-export default (name, options = {}) => {
+export const createEvent = (name, options = {}) => {
   let event;
   if (options.bubbles === undefined) {
     options.bubbles = true;

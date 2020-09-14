@@ -12,3 +12,4 @@ export { ListItem } from './list-item/list-item';
 export { OrderedList } from './ordered-list';
 export { TodoItem } from './todo-item';
 export { TodoList } from './todo-list';
+export { Image } from './image';

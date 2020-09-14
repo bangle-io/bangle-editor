@@ -1,4 +1,4 @@
-import { chainCommands, exitCode } from 'tiptap-commands';
+import { chainCommands, exitCode } from 'prosemirror-commands';
 
 import { Node } from './node';
 
