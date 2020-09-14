@@ -1,4 +1,4 @@
-import { setBlockType } from 'tiptap-commands';
+import { setBlockType } from 'prosemirror-commands';
 import { TextSelection } from 'prosemirror-state';
 
 import { Node } from './node';

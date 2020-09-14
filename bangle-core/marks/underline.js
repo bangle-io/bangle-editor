@@ -1,4 +1,4 @@
-import { toggleMark } from 'tiptap-commands';
+import { toggleMark } from 'prosemirror-commands';
 
 import { Mark } from './mark';
 

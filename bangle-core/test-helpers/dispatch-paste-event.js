@@ -1,5 +1,5 @@
 import browser from 'bangle-core/utils/browser';
-import createEvent from './create-event';
+import { createEvent } from './create-event';
 
 /**
  *
@@ -28,13 +28,12 @@ export function dispatchPasteEvent(editorView, content) {
     },
     types: content.types || [],
     files: content.files || [],
+    items: content.items || null,
   };
-  // Skiping IE < 15
   // Reason: https://github.com/ProseMirror/prosemirror-view/blob/9d2295d03c2d17357213371e4d083f0213441a7e/bangle-play/input.js#L379-L384
   if ((browser.ie && browser.ie_version < 15) || browser.ios) {
     return false;
   }
-
   Object.defineProperty(event, 'clipboardData', { value: clipboardData });
 
   editorView.dispatchEvent(event);
