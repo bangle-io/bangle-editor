@@ -57,7 +57,7 @@ export class Image extends Node {
           title = alt;
         }
         return state.tr.replaceWith(
-          start - 1,
+          start,
           end,
           type.create({
             src,
@@ -114,7 +114,7 @@ export class Image extends Node {
             view,
             view.state.selection.from,
             files.map((file) => readFile(file)),
-          );
+          ).catch((err) => console.error(err));
           return true;
         },
       },
@@ -168,7 +168,6 @@ function getFileData(data, accept, multiple) {
   const dragDataItems = getMatchingItems(data.items, accept, multiple);
   const files = [];
 
-  // This is because Map doesn't like the null type returned by getAsFile
   dragDataItems.forEach((item) => {
     const file = item?.getAsFile();
     if (file == null) {

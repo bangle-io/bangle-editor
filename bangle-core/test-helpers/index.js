@@ -4,3 +4,4 @@ export * from './keyboard';
 export * from './render-test-editor';
 export * from './schema-builders';
 export * from './dispatch-paste-event';
+export * from './create-event';
