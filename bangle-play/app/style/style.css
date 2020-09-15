@@ -1,3 +1,20 @@
+:root {
+  --light-primary-color: #302ae6;
+  --light-font-color: black;
+  --light-bg-color: #fff;
+  --light-bg-stronger-color: rgb(142, 142, 147);
+
+  --dark-primary-color: #302ae6;
+  --dark-font-color: white;
+  --dark-bg-color: #1a1a1a;
+  --dark-bg-stronger-color: rgb(142, 142, 147);
+}
+
+#root {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+
 @media screen and (max-width: 640px) {
   .main-wrapper {
     display: grid;
@@ -51,4 +68,8 @@ button:focus {
 ul[data-type='todo_list'] div[data-done='true'] > div > p:first-of-type {
   color: grey;
   text-decoration: line-through;
+}
+
+.bg-stronger {
+  background-color: var(--bg-stronger-color);
 }
