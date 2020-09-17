@@ -29,6 +29,11 @@ export class SelectionTooltipManager {
       return;
     }
 
+    if (!view.hasFocus()) {
+      this._hide();
+      return;
+    }
+
     if (state.selection.empty) {
       this._hide();
       return;

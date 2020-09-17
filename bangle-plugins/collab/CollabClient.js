@@ -3,6 +3,7 @@ import { Editor } from 'bangle-core';
 import { CollabExtension } from './client/collab-extension';
 import { uuid, handleAsyncError, simpleLRU } from 'bangle-core/utils/js-utils';
 import { CollabError } from './collab-error';
+import { selectionTooltipKey } from 'bangle-plugins/selection-tooltip/index';
 
 const LOG = false;
 let lru = LOG ? simpleLRU(30) : null;
@@ -130,6 +131,11 @@ export class CollabEditor {
       onDispatchTransaction: (cb) => {
         // todo this is repeating transaction state update. fix it
         this.editor.on('transaction', ({ transaction }) => {
+          // TODO hotfixing txns for now
+          if (transaction.getMeta(selectionTooltipKey)) {
+            console.log('fix me ignoring');
+            return;
+          }
           cb(transaction);
         });
       },
