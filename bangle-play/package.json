@@ -16,7 +16,6 @@
     "date-fns": "^2.10.0",
     "localforage": "^1.7.3",
     "lodash.debounce": "^4.0.8",
-    "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.1.4",
     "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools#v3.3.4",

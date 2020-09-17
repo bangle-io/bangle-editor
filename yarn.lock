@@ -1695,6 +1695,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:^2.4.4":
+  version: 2.4.4
+  resolution: "@popperjs/core@npm:2.4.4"
+  checksum: 49a1e6cfa2ec5004c541b0a1bd7d523c8aa7d728aa26e05df10f0af8c1e6c0db7fb9ebc8bee6dbfcdc7ad422999d9bf7d8a1c2b07dff3292b7dfa61a63af8b49
+  languageName: node
+  linkType: hard
+
 "@sinonjs/commons@npm:^1.7.0":
   version: 1.8.1
   resolution: "@sinonjs/commons@npm:1.8.1"
@@ -3043,7 +3050,6 @@ __metadata:
     lodash.debounce: ^4.0.8
     mini-css-extract-plugin: ^0.9.0
     pnp-webpack-plugin: ^1.6.4
-    popper.js: ^1.16.1
     postcss-cli: ^7.1.1
     postcss-custom-properties: ^9.1.1
     postcss-import: ^12.0.1
@@ -3084,6 +3090,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-plugins@workspace:bangle-plugins"
   dependencies:
+    "@popperjs/core": ^2.4.4
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"
     emojis-keywords: ^2.0.0
@@ -10227,13 +10234,6 @@ fsevents@^1.2.7:
   dependencies:
     ts-pnp: ^1.1.6
   checksum: 39a484182f8fc08cb1420d4a5ccf16457c6498a4546bfbad9e00df7238ba7d98796e9aa6f82a4e803a627860409ffed491a55c5a1384e09bed60cefeb618586d
-  languageName: node
-  linkType: hard
-
-"popper.js@npm:^1.16.1":
-  version: 1.16.1
-  resolution: "popper.js@npm:1.16.1"
-  checksum: eb53806fb7680e31c7d1db096f95438a40a7cb869f7ee0e27100c0860f11583a0d322606c6073618e7fe8865f834ec36482901b547256d9a0cf2b22434bca75d
   languageName: node
   linkType: hard
 
