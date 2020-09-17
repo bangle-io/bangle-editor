@@ -84,8 +84,24 @@ export class Aside extends React.PureComponent {
           {this.props.children}
         </div>
         {this.props.showSidebar ? (
-          <div className="aside-content bg-gray-200  flex flex-col z-20 shadow-2xl px-3 pt-5 overflow-auto ">
+          <div className="aside-content bg-stronger  flex flex-col z-20 shadow-2xl px-3 pt-5 overflow-auto ">
             <div className="text-2xl pb-1 ml-3">Files</div>
+            <div
+              className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
+              onClick={async () => {
+                this.props.toggleTheme();
+              }}
+            >
+              Theme Toggle
+            </div>
+            <div
+              className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
+              onClick={async () => {
+                this.props.dumpData();
+              }}
+            >
+              Dump data
+            </div>
             {this.renderSidebar()}
             <div
               className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
