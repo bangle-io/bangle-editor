@@ -15,6 +15,7 @@ import {
   putDbData,
   activeDB,
 } from './store/local/database-helpers';
+import { applyTheme } from './style/apply-theme';
 
 window.localforage = localforage;
 window.backupDb = backupDb;
@@ -133,6 +134,24 @@ export default class App extends React.PureComponent {
     }
   };
 
+  toggleTheme = async () => {
+    const { theme } = this.state;
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+
+    this.setState(
+      {
+        theme: newTheme,
+      },
+      () => {
+        applyTheme(newTheme);
+      },
+    );
+  };
+
+  dumpData = () => {
+    backupDb(DATABASE);
+  };
+
   toggleSidebar = async () => {
     if (this.state.showSidebar) {
       this.setState({
@@ -165,8 +184,10 @@ export default class App extends React.PureComponent {
             handleClick={this.handleClick}
             handleRemoveEntry={this.handleRemoveEntry}
             handleNewEntry={this.handleNewEntry}
+            dumpData={this.dumpData}
             toggleSidebar={this.toggleSidebar}
             showSidebar={this.state.showSidebar}
+            toggleTheme={this.toggleTheme}
           >
             {/* {isMobile && <Header entry={this.state.entry} />} */}
           </Aside>
