@@ -59,7 +59,7 @@ test('Handles a custom tooltip', async () => {
   const extensions = [
     new Heading(),
     new SelectionTooltip({
-      tooltip: () => tooltip,
+      tooltipDom: () => tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
@@ -78,7 +78,7 @@ test('No tooltip if no selection', async () => {
   const extensions = [
     new Heading(),
     new SelectionTooltip({
-      tooltip: () => tooltip,
+      tooltipDom: () => tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
@@ -97,7 +97,7 @@ test('On typing hide tooltip', async () => {
   const extensions = [
     new Heading(),
     new SelectionTooltip({
-      tooltip: () => tooltip,
+      tooltipDom: () => tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
@@ -120,7 +120,7 @@ test.skip('Keyboard based selection expand should show tooltip', async () => {
   const extensions = [
     new Heading(),
     new SelectionTooltip({
-      tooltip: () => tooltip,
+      tooltipDom: () => tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });

@@ -106,7 +106,7 @@ export class Editor extends React.PureComponent {
       new SelectionTooltip({
         tooltipContent: (view) => {
           const tooltipContent = document.createElement('div');
-          tooltipContent.textContent = 'hello world' + Math.random();
+          tooltipContent.textContent = 'hello world';
           return tooltipContent;
         },
       }),

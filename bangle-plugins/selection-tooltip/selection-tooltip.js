@@ -3,8 +3,8 @@ import { createPopper } from '@popperjs/core/lib/popper-lite';
 import offset from '@popperjs/core/lib/modifiers/offset';
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
 
-import { domEventListener } from 'bangle-core/utils/js-utils';
 import { Extension } from 'bangle-core/extensions/index';
+import { SelectionTooltipManager } from './selection-tooltip-manager';
 
 export function createTooltip() {
   const tooltip = document.createElement('div');
@@ -16,6 +16,7 @@ export function createTooltip() {
   tooltip.appendChild(tooltipArrow);
   return tooltip;
 }
+export const selectionTooltipKey = new PluginKey('selection_tooltip_key');
 
 export class SelectionTooltip extends Extension {
   get name() {
@@ -26,7 +27,14 @@ export class SelectionTooltip extends Extension {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
     return {
-      offset: (view, placement) => {
+      tooltipDom: undefined,
+      defaultTooltipManager: true,
+      tooltipContent: (view) => {
+        const tooltipContent = document.createElement('div');
+        tooltipContent.textContent = 'hello world';
+        return tooltipContent;
+      },
+      tooltipOffset: (view, placement) => {
         let skidding = 0;
         if (placement === 'top') {
           skidding = 1 * rem;
@@ -36,29 +44,41 @@ export class SelectionTooltip extends Extension {
         }
         return [2 * rem, skidding];
       },
-      tooltip: undefined,
-      tooltipContent: (view) => {
-        const tooltipContent = document.createElement('div');
-        tooltipContent.textContent = 'hello world';
-        return tooltipContent;
-      },
     };
   }
 
   get plugins() {
-    const plugin = new PluginKey(this.name);
     return [
       new Plugin({
-        key: plugin,
+        key: selectionTooltipKey,
         view: (editorView) => {
           return new TooltipPlugin(editorView, {
-            offset: this.options.offset,
-            tooltip: this.options.tooltip,
+            tooltipOffset: this.options.tooltipOffset,
+            tooltipDom: this.options.tooltipDom,
             tooltipContent: this.options.tooltipContent,
           });
         },
+        state: {
+          init: (_, state) => {
+            return {
+              show: state.selection.empty,
+            };
+          },
+          apply: (tr, value) => {
+            if (tr.getMeta(selectionTooltipKey)) {
+              return tr.getMeta(selectionTooltipKey);
+            }
+            return value;
+          },
+        },
       }),
-    ];
+      this.options.defaultTooltipManager &&
+        new Plugin({
+          view: (editorView) => {
+            return new SelectionTooltipManager(editorView);
+          },
+        }),
+    ].filter(Boolean);
   }
 }
 
@@ -66,30 +86,25 @@ class TooltipPlugin {
   constructor(view, options) {
     this._options = options;
     this._view = view;
-    if (this._options.tooltip) {
-      this._tooltip = this._options.tooltip(view);
+    if (this._options.tooltipDom) {
+      this._tooltip = this._options.tooltipDom(view);
     } else {
       this._tooltip = createTooltip();
       this._tooltip.appendChild(this._options.tooltipContent());
     }
     view.dom.parentNode.appendChild(this._tooltip);
-
-    this._showHideTooltip = new ShowHideTooltip(view, {
-      show: this._showTooltip,
-      hide: this._hideTooltip,
-      destroy: this._destroyPopperInstance,
-    });
-
-    this.update(view, null);
   }
 
-  update(view, lastState) {
-    if (view.state.selection.empty) {
-      this._destroyPopperInstance();
+  update(view, prevState) {
+    const pluginState = selectionTooltipKey.getState(view.state);
+    if (pluginState === selectionTooltipKey.getState(prevState)) {
       return;
     }
-    this._createPopperInstance(view);
-    this._showHideTooltip.update(view, lastState);
+    if (pluginState.show) {
+      this._showTooltip();
+    } else {
+      this._hideTooltip();
+    }
   }
 
   destroy() {
@@ -104,6 +119,21 @@ class TooltipPlugin {
 
     this._view.dom.parentNode.removeChild(this._tooltip);
   }
+
+  _hideTooltip = () => {
+    this._tooltip.removeAttribute('data-show');
+    if (this._popperInstance) {
+      this._popperInstance.destroy();
+      this._popperInstance = null;
+    }
+  };
+
+  _showTooltip = () => {
+    this._tooltip.setAttribute('data-show', '');
+    this._createPopperInstance(this._view);
+    this._figurePlacement(this._view);
+    this._popperInstance.update();
+  };
 
   _createVirtualElement(view) {
     return {
@@ -150,120 +180,12 @@ class TooltipPlugin {
             name: 'offset',
             options: {
               offset: ({ placement }) => {
-                return this._options.offset(view, placement);
+                return this._options.tooltipOffset(view, placement);
               },
             },
           },
         ],
       },
     );
-  }
-
-  _destroyPopperInstance = () => {
-    this._hideTooltip();
-    if (this._popperInstance) {
-      this._popperInstance.destroy();
-      this._popperInstance = null;
-    }
-  };
-
-  _showTooltip = () => {
-    this._tooltip.setAttribute('data-show', '');
-    if (this._popperInstance) {
-      this._figurePlacement(this._view);
-      this._popperInstance.update();
-    }
-  };
-
-  _hideTooltip = () => {
-    this._tooltip.removeAttribute('data-show');
-  };
-}
-
-class ShowHideTooltip {
-  constructor(view, options) {
-    this._options = options;
-    this._mouseDownState = new MouseDownState(view.dom, () => {
-      this.update(view);
-    });
-
-    this._blurHandler = domEventListener(
-      view.dom,
-      'blur',
-      () => {
-        this._options.destroy();
-      },
-      {
-        passive: true,
-      },
-    );
-  }
-
-  update(view, lastState) {
-    let state = view.state;
-    // Don't do anything if the document/selection didn't change
-    if (
-      lastState &&
-      lastState.doc.eq(state.doc) &&
-      lastState.selection.eq(state.selection)
-    ) {
-      return;
-    }
-
-    if (state.selection.empty) {
-      this._options.destroy();
-      return;
-    }
-
-    if (this._mouseDownState.isDown) {
-      this._options.hide();
-    } else {
-      this._options.show();
-    }
-  }
-
-  destroy() {
-    this._mouseDownState.destroy();
-    this._blurHandler();
-  }
-}
-
-class MouseDownState {
-  constructor(element, onChange) {
-    this._mouseDownListener = domEventListener(
-      element,
-      'mousedown',
-      () => {
-        const prev = this.isDown;
-        this.isDown = true;
-        if (onChange && prev !== this.isDown) {
-          onChange(this.isDown);
-        }
-      },
-      {
-        passive: true,
-      },
-    );
-    this._mouseUpListener = domEventListener(
-      document,
-      'mouseup',
-      () => {
-        const prev = this.isDown;
-        this.isDown = false;
-        if (onChange && prev !== this.isDown) {
-          onChange(this.isDown);
-        }
-      },
-      {
-        passive: true,
-      },
-    );
-  }
-
-  destroy() {
-    this._mouseDownListener();
-    this._mouseDownListener = null;
-    this._mouseUpListener();
-    this._mouseUpListener = null;
   }
 }
