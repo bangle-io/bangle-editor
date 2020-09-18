@@ -8,4 +8,5 @@ module.exports = {
   testPathIgnorePatterns: workspaces.map(
     (w) => `<rootDir>/${w}/tests-integration/`,
   ),
+  transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
 };

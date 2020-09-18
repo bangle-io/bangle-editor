@@ -342,3 +342,10 @@ export async function raceTimeout(promise, ts) {
     );
   });
 }
+
+export function domEventListener(element, type, listener, options) {
+  element.addEventListener(type, listener, options);
+  return () => {
+    element.removeEventListener(type, listener, options);
+  };
+}
