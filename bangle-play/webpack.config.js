@@ -28,8 +28,8 @@ module.exports = (env, argv) => {
       contentBase: './build',
     },
     output: {
-      filename: 'main.js',
-      chunkFilename: '[name].bundle.js',
+      filename: 'main.[contenthash].js',
+      chunkFilename: '[name].bundle.[contenthash].js',
       path: path.resolve(__dirname, 'build'),
     },
     plugins: [
@@ -38,8 +38,8 @@ module.exports = (env, argv) => {
         template: 'public/index.html',
       }),
       new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].css',
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[id].[contenthash].css',
         ignoreOrder: false,
       }),
       new webpack.EnvironmentPlugin({
