@@ -27,6 +27,8 @@ import { defaultContent } from './components/constants';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
 import { CollabEditor } from 'bangle-plugins/collab/CollabClient';
+import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
+import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
 
 const DEBUG = true;
 
@@ -101,6 +103,13 @@ export class Editor extends React.PureComponent {
       new TrailingNode(),
       new StopwatchExtension(),
       new Timestamp(),
+      new SelectionTooltip({
+        tooltipContent: (view) => {
+          const tooltipContent = document.createElement('div');
+          tooltipContent.textContent = 'hello world';
+          return tooltipContent;
+        },
+      }),
     ],
     editorProps: {
       attributes: { class: 'bangle-editor content' },

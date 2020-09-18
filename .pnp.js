@@ -2464,6 +2464,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@popperjs/core", [
+        ["npm:2.4.4", {
+          "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.4.4-02cf65f71c-49a1e6cfa2.zip/node_modules/@popperjs/core/",
+          "packageDependencies": [
+            ["@popperjs/core", "npm:2.4.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@sinonjs/commons", [
         ["npm:1.8.1", {
           "packageLocation": "./.yarn/cache/@sinonjs-commons-npm-1.8.1-5b909def60-adbf84a27b.zip/node_modules/@sinonjs/commons/",
@@ -4135,7 +4144,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash.debounce", "npm:4.0.8"],
             ["mini-css-extract-plugin", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:0.9.0"],
             ["pnp-webpack-plugin", "npm:1.6.4"],
-            ["popper.js", "npm:1.16.1"],
             ["postcss-cli", "npm:7.1.1"],
             ["postcss-custom-properties", "npm:9.1.1"],
             ["postcss-import", "npm:12.0.1"],
@@ -4178,6 +4186,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./bangle-plugins/",
           "packageDependencies": [
             ["bangle-plugins", "workspace:bangle-plugins"],
+            ["@popperjs/core", "npm:2.4.4"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["bangle-core", "workspace:bangle-core"],
             ["emojis-keywords", "npm:2.0.0"],
@@ -12062,15 +12071,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["pnp-webpack-plugin", "npm:1.6.4"],
             ["ts-pnp", "virtual:c497046afcbefb679e3fe12575088ec12205b913a36c3d158b27e7cd646d448426540ab27ba98e54ddb75b1ed97de7e3ce5dc0158c9ba4e76ce942c87e5d02d8#npm:1.2.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["popper.js", [
-        ["npm:1.16.1", {
-          "packageLocation": "./.yarn/cache/popper.js-npm-1.16.1-a99192bd83-eb53806fb7.zip/node_modules/popper.js/",
-          "packageDependencies": [
-            ["popper.js", "npm:1.16.1"]
           ],
           "linkType": "HARD",
         }]

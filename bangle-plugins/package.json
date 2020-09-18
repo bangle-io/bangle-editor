@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
+    "@popperjs/core": "^2.4.4",
     "bangle-core": "workspace:*",
     "emojis-keywords": "^2.0.0",
     "emojis-list": "^3.0.0",

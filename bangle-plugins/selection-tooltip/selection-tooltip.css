@@ -1,0 +1,47 @@
+#bangle-selection-tooltip {
+  background: #333;
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  display: none;
+}
+
+#bangle-selection-tooltip[data-show] {
+  display: block;
+}
+
+#bangle-tooltip-arrow,
+#bangle-tooltip-arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  z-index: -1;
+}
+
+#bangle-tooltip-arrow::before {
+  content: '';
+  transform: rotate(45deg);
+  background: #333;
+}
+
+#bangle-selection-tooltip[data-popper-placement^='top']
+  > #bangle-tooltip-arrow {
+  bottom: -4px;
+}
+
+#bangle-selection-tooltip[data-popper-placement^='bottom']
+  > #bangle-tooltip-arrow {
+  top: -4px;
+}
+
+#bangle-selection-tooltip[data-popper-placement^='left']
+  > #bangle-tooltip-arrow {
+  right: -4px;
+}
+
+#bangle-selection-tooltip[data-popper-placement^='right']
+  > #bangle-tooltip-arrow {
+  left: -4px;
+}

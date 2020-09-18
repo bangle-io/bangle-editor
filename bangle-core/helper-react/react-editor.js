@@ -146,7 +146,7 @@ class PMEditorWrapper extends React.Component {
             import(
               /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
             ).then((args) => {
-              this.devtools = args.applyDevTools(view);
+              // this.devtools = args.applyDevTools(view);
             });
           });
         }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import PopperJs from 'popper.js';
+// import PopperJs from 'popper.js';
 
 export default class Tooltip extends React.PureComponent {
   constructor(props) {
@@ -24,13 +24,13 @@ export default class Tooltip extends React.PureComponent {
 
   _setupPopper() {
     if (!this.popperInstance) {
-      this.popperInstance = new PopperJs(
-        this.props.nodeDOM.parentNode,
-        this.tooltip,
-        {
-          placement: 'bottom',
-        },
-      );
+      // this.popperInstance = new  (
+      //   this.props.nodeDOM.parentNode,
+      //   this.tooltip,
+      //   {
+      //     placement: 'bottom',
+      //   },
+      // );
     } else {
       this.popperInstance.scheduleUpdate();
     }

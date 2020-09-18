@@ -2,6 +2,7 @@ import './style/tailwind.src.css';
 import './style/style.css';
 import './style/prosemirror.css';
 import 'prosemirror-gapcursor/style/gapcursor.css';
+
 import React from 'react';
 import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import browser from 'bangle-core/utils/browser';
@@ -28,12 +29,12 @@ console.log('using db', DATABASE);
 const isMobile = browser.ios || browser.android;
 
 const MAX_WINDOWS = isMobile ? 1 : 2;
-
 export default class App extends React.PureComponent {
   state = {
     dbItems: [],
     docNames: [],
     showSidebar: false,
+    theme: localStorage.getItem('theme'),
   };
 
   database = localforage.createInstance({
@@ -100,6 +101,8 @@ export default class App extends React.PureComponent {
     const dbItems = await this.getDbItemsWithoutDoc();
     let docName = this.getLastModifiedDocName(dbItems);
 
+    applyTheme(this.state.theme);
+
     if (!docName) {
       this.handleNewEntry();
     } else {
@@ -143,6 +146,7 @@ export default class App extends React.PureComponent {
         theme: newTheme,
       },
       () => {
+        localStorage.setItem('theme', newTheme);
         applyTheme(newTheme);
       },
     );
