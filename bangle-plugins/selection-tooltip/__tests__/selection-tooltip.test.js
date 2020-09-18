@@ -3,6 +3,7 @@
  */
 
 /** @jsx psx */
+
 import {
   psx,
   typeText,
@@ -12,6 +13,13 @@ import {
 
 import { SelectionTooltip } from '../selection-tooltip';
 import { Heading } from 'bangle-core/index';
+// due to some unknown issue, the view doesn't have focus
+// when running test which causes tests to fail
+jest.mock('bangle-plugins/helpers/index', () => {
+  return {
+    viewHasFocus: () => true,
+  };
+});
 
 test('Correctly adds tooltip', async () => {
   const extensions = [new Heading(), new SelectionTooltip()];
@@ -21,6 +29,7 @@ test('Correctly adds tooltip', async () => {
       <para>[foo]bar</para>
     </doc>,
   );
+  editor.view.hasFocus = () => true;
 
   expect(editor.view.dom.parentNode).toMatchInlineSnapshot(`
     <div

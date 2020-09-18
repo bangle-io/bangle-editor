@@ -1,4 +1,5 @@
 import { domEventListener } from 'bangle-core/utils/js-utils';
+import { viewHasFocus } from 'bangle-plugins/helpers/index';
 import { selectionTooltipKey } from './selection-tooltip';
 
 export class SelectionTooltipManager {
@@ -28,8 +29,7 @@ export class SelectionTooltipManager {
     ) {
       return;
     }
-
-    if (!view.hasFocus()) {
+    if (!viewHasFocus(view)) {
       this._hide();
       return;
     }

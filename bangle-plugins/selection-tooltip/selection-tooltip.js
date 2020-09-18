@@ -2,7 +2,6 @@ import { PluginKey, Plugin } from 'prosemirror-state';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import offset from '@popperjs/core/lib/modifiers/offset';
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
-
 import { Extension } from 'bangle-core/extensions/index';
 import { SelectionTooltipManager } from './selection-tooltip-manager';
 
@@ -16,6 +15,7 @@ export function createTooltip() {
   tooltip.appendChild(tooltipArrow);
   return tooltip;
 }
+
 export const selectionTooltipKey = new PluginKey('selection_tooltip_key');
 
 export class SelectionTooltip extends Extension {
@@ -25,7 +25,6 @@ export class SelectionTooltip extends Extension {
 
   get defaultOptions() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
     return {
       tooltipDom: undefined,
       defaultTooltipManager: true,
