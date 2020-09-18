@@ -2,22 +2,27 @@ import { domEventListener } from 'bangle-core/utils/js-utils';
 import { viewHasFocus } from 'bangle-plugins/helpers/index';
 import { selectionTooltipKey } from './selection-tooltip';
 
+const LOG = true;
+let log = LOG
+  ? console.log.bind(console, 'plugins/selection-tooltip-manager')
+  : () => {};
+
 export class SelectionTooltipManager {
   constructor(view, options) {
     this._view = view;
     this._mouseDownState = new MouseDownState(view.dom, () => {
       this.update(view);
     });
-    this._blurHandler = domEventListener(
-      view.dom,
-      'blur',
-      () => {
-        this._hide();
-      },
-      {
-        passive: true,
-      },
-    );
+    // this._blurHandler = domEventListener(
+    //   view.dom,
+    //   'blur',
+    //   () => {
+    //     this._hide();
+    //   },
+    //   {
+    //     passive: true,
+    //   },
+    // );
   }
 
   update(view, lastState) {
@@ -29,26 +34,33 @@ export class SelectionTooltipManager {
     ) {
       return;
     }
+    log('updating');
     if (!viewHasFocus(view)) {
       this._hide();
+      log('hiding lost focus');
+
       return;
     }
 
     if (state.selection.empty) {
+      log('hiding selection empty');
+
       this._hide();
       return;
     }
 
     if (this._mouseDownState.isDown) {
+      log('hiding mouse down');
       this._hide();
     } else {
+      log('showing mouse up');
       this._show();
     }
   }
 
   destroy() {
     this._mouseDownState.destroy();
-    this._blurHandler();
+    // this._blurHandler();
   }
 
   _dispatchState(state) {

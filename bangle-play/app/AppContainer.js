@@ -8,6 +8,10 @@ import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import { OpenDocumentManager } from './components/OpenDocumentManager';
 import { Editor } from './components/Editor';
 import { Aside } from './components/Aside';
+import { Header } from './components/Header';
+import browser from 'bangle-core/utils/browser';
+import { Editor as OriginalEditor } from 'bangle-core';
+const isMobile = browser.ios || browser.android;
 
 export class AppContainer extends React.PureComponent {
   static propTypes = {

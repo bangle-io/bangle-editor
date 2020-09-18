@@ -50,13 +50,13 @@ export function extensions({ collabOpts } = {}) {
     new TrailingNode(),
     new StopwatchExtension(),
     new Timestamp(),
-    new SelectionTooltip({
-      tooltipContent: (view) => {
-        const tooltipContent = document.createElement('div');
-        tooltipContent.textContent = 'hello world';
-        return tooltipContent;
-      },
-    }),
+    // new SelectionTooltip({
+    //   tooltipContent: (view) => {
+    //     const tooltipContent = document.createElement('div');
+    //     tooltipContent.textContent = 'hello world';
+    //     return tooltipContent;
+    //   },
+    // }),
     collabOpts &&
       new CollabExtension({
         docName: collabOpts.docName,

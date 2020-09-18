@@ -1,0 +1,42 @@
+#bangle-inline-menu {
+  color: white;
+  display: none;
+}
+
+#bangle-inline-menu[data-show] {
+  display: block;
+}
+
+#bangle-inline-menu-tooltip-arrow,
+#bangle-inline-menu-tooltip-arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  z-index: -1;
+}
+
+#bangle-inline-menu-tooltip-arrow::before {
+  content: '';
+  transform: rotate(45deg);
+  background: #333;
+}
+
+#bangle-inline-menu[data-popper-placement^='top']
+  > #bangle-inline-menu-tooltip-arrow {
+  bottom: -4px;
+}
+
+#bangle-inline-menu[data-popper-placement^='bottom']
+  > #bangle-inline-menu-tooltip-arrow {
+  top: -4px;
+}
+
+#bangle-inline-menu[data-popper-placement^='left']
+  > #bangle-inline-menu-tooltip-arrow {
+  right: -4px;
+}
+
+#bangle-inline-menu[data-popper-placement^='right']
+  > #bangle-inline-menu-tooltip-arrow {
+  left: -4px;
+}
