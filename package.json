@@ -10,7 +10,7 @@
   "scripts": {
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn unit-tests && yarn integration-tests",
-    "unit-tests": "yarn lint && yarn jest",
+    "unit-tests": "yarn jest",
     "integration-tests": "yarn jest --config=jest-integration.config.js",
     "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint"
