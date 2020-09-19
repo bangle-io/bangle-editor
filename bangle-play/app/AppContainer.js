@@ -64,13 +64,13 @@ export class AppContainer extends React.PureComponent {
               </div>
             </div>
             <Aside
-              openedDocuments={openedDocuments}
-              documentsInDisk={documentsInDisk}
-              openDocument={openDocument}
-              deleteDocumentFromDisk={deleteDocumentFromDisk}
               createBlankDocument={createBlankDocument}
-              toggleSidebar={toggleSidebar}
+              deleteDocumentFromDisk={deleteDocumentFromDisk}
+              documentsInDisk={documentsInDisk}
               isSidebarOpen={isSidebarOpen}
+              openDocument={openDocument}
+              openedDocuments={openedDocuments}
+              toggleSidebar={toggleSidebar}
               toggleTheme={toggleTheme}
             >
               {/* {isMobile && <Header entry={this.state.entry} />} */}

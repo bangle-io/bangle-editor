@@ -8,18 +8,20 @@ const isSerious = ['production', 'staging'].includes(activeDatabaseName);
 
 export class Aside extends React.PureComponent {
   static propTypes = {
-    openedDocuments: PropTypes.arrayOf(
-      PropTypes.shape({ key: PropTypes.string, docName: PropTypes.string })
-        .isRequired,
-    ).isRequired,
-    openDocument: PropTypes.func.isRequired,
-    documentsInDisk: PropTypes.array.isRequired,
-    deleteDocumentFromDisk: PropTypes.func.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
-    isSidebarOpen: PropTypes.bool.isRequired,
-    toggleTheme: PropTypes.func.isRequired,
-    createBlankDocument: PropTypes.func.isRequired,
     children: PropTypes.element,
+    createBlankDocument: PropTypes.func.isRequired,
+    deleteDocumentFromDisk: PropTypes.func.isRequired,
+    documentsInDisk: PropTypes.array.isRequired,
+    isSidebarOpen: PropTypes.bool.isRequired,
+    openDocument: PropTypes.func.isRequired,
+    openedDocuments: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string,
+        docName: PropTypes.string,
+      }).isRequired,
+    ).isRequired,
+    toggleSidebar: PropTypes.func.isRequired,
+    toggleTheme: PropTypes.func.isRequired,
   };
 
   downloadAllDocuments = () => {

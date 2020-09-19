@@ -17,8 +17,7 @@ export class Editor extends React.PureComponent {
 
   devtools = this.props.isFirst && (process.env.JEST_INTEGRATION || DEBUG);
 
-  options = (docName, id) => ({
-    docName,
+  options = (id) => ({
     manager: this.props.manager,
     id,
     devtools: this.devtools,
@@ -38,7 +37,6 @@ export class Editor extends React.PureComponent {
     return (
       <ReactEditor
         options={this.options(
-          docName,
           'bangle-play-react-editor-' + docName + '-' + uuid(4),
         )}
         content={docName}
