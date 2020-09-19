@@ -1,26 +1,18 @@
 import React from 'react';
 import browser from 'bangle-core/utils/browser';
 import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
-import {
-  activeDatabaseName,
-  activeDatabaseInstance,
-} from '../store/local/database-helpers';
-
-const DATABASE = activeDatabaseName;
-
-console.log('using db', DATABASE);
+import { activeDatabaseInstance } from '../store/local/database-helpers';
 
 const isMobile = browser.ios || browser.android;
 const MAX_WINDOWS = isMobile ? 1 : 2;
 
-export class DocumentManager extends React.Component {
+export class OpenDocumentManager extends React.Component {
   state = {
     openedDocuments: [],
     documentsInDisk: [],
   };
 
   openDocument = (docName) => {
-    console.log(docName);
     this.setState({
       openedDocuments: this.updateOpenedDocuments(docName),
     });
@@ -36,10 +28,11 @@ export class DocumentManager extends React.Component {
       return;
     }
 
+    let openedDocuments = this.state.openedDocuments.filter(
+      (r) => r.docName !== docName,
+    );
     this.setState({
-      openedDocuments: this.state.openedDocuments.filter(
-        (r) => r.docName !== docName,
-      ),
+      openedDocuments,
       documentsInDisk,
     });
   };

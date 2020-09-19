@@ -1,7 +1,6 @@
 import React from 'react';
 import { MenuBar } from './menu';
 import { EditorContext } from 'bangle-core/helper-react/editor-context';
-import { localManager } from '../../app/store/local';
 import debounce from 'lodash.debounce';
 
 export class Header extends React.PureComponent {

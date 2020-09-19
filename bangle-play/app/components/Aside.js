@@ -108,7 +108,7 @@ export class Aside extends React.PureComponent {
             <div
               className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
               onClick={async () => {
-                this.props.downloadAllDocuments();
+                this.downloadAllDocuments();
               }}
             >
               Dump data

@@ -8,6 +8,8 @@ export const activeDatabaseInstance = localforage.createInstance({
   name: activeDatabaseName,
 });
 
+console.log('Using db', activeDatabaseName);
+
 export async function getAllDbData(id) {
   let source = localforage.createInstance({
     name: id,
