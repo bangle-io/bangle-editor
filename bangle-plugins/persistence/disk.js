@@ -34,6 +34,7 @@ class LocalDisk {
   }
 
   async flushAll() {
+    console.log('Flushing data');
     const promises = Object.values(this._pendingTimers).map((r) => r());
     await Promise.all(promises);
   }
