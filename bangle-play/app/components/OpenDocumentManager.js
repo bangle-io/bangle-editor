@@ -38,7 +38,7 @@ export class OpenDocumentManager extends React.Component {
   };
 
   createBlankDocument = async () => {
-    const newDocName = uuid(4);
+    const newDocName = uuid(8);
     const newDocs = this.updateOpenedDocuments(newDocName);
 
     this.setState(

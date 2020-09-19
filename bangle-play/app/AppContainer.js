@@ -48,6 +48,17 @@ export class AppContainer extends React.PureComponent {
                         editor={CollabEditor}
                       />
                     </EditorContextProvider>
+                    {/* adds white space at bottoms */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexGrow: 1,
+                        height: '20vh',
+                        backgroundColor: 'transparent',
+                      }}
+                    >
+                      &nbsp;
+                    </div>
                   </div>
                 ))}
               </div>

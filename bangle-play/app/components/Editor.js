@@ -36,27 +36,14 @@ export class Editor extends React.PureComponent {
     const docName = this.props.docName;
     const editor = this.props.editor;
     return (
-      <>
-        <ReactEditor
-          options={this.options(
-            docName,
-            'bangle-play-react-editor-' + docName + '-' + uuid(4),
-          )}
-          content={docName}
-          Editor={editor}
-        />
-        {/* adds white space at bottoms */}
-        <div
-          style={{
-            display: 'flex',
-            flexGrow: 1,
-            height: '20vh',
-            backgroundColor: 'transparent',
-          }}
-        >
-          &nbsp;
-        </div>
-      </>
+      <ReactEditor
+        options={this.options(
+          docName,
+          'bangle-play-react-editor-' + docName + '-' + uuid(4),
+        )}
+        content={docName}
+        Editor={editor}
+      />
     );
   }
 }
