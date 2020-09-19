@@ -1,5 +1,13 @@
 import localforage from 'localforage';
 
+export const activeDatabaseName =
+  new URLSearchParams(window.location.search).get('database') ||
+  'bangle-play/v1';
+
+export const activeDatabaseInstance = localforage.createInstance({
+  name: activeDatabaseName,
+});
+
 export async function getAllDbData(id) {
   let source = localforage.createInstance({
     name: id,
@@ -34,16 +42,15 @@ export async function putDbData(id, items, mapping = (a) => a) {
     );
   }
 }
-export async function backupDb(id, backUpId = 'backup/' + id) {
+export async function backupDb(
+  id = activeDatabaseName,
+  backUpId = 'backup/' + id,
+) {
   const items = await getAllDbData(id);
 
   await putDbData(backUpId, items);
   console.save(items, backUpId + new Date().getTime() + '.json');
 }
-
-export const activeDB =
-  new URLSearchParams(window.location.search).get('database') ||
-  'bangle-play/v1';
 
 (function (console) {
   console.save = function (data, filename) {

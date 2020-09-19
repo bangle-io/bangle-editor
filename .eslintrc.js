@@ -20,6 +20,7 @@ module.exports = {
   },
   rules: {
     curly: 'error',
+    // 'react/prop-types': ['error'],
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
   settings: {},

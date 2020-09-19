@@ -3,36 +3,47 @@ import format from 'date-fns/format';
 import PropTypes from 'prop-types';
 
 import { BaseButton, StackButton } from './Button';
-import { activeDB } from '../store/local/database-helpers';
-const isSerious = ['production', 'staging'].includes(activeDB);
+import { activeDatabaseName, backupDb } from '../store/local/database-helpers';
+const isSerious = ['production', 'staging'].includes(activeDatabaseName);
 
 export class Aside extends React.PureComponent {
-  state = {
-    showSidebar: null,
-  };
   static propTypes = {
-    docNames: PropTypes.arrayOf(
+    openedDocuments: PropTypes.arrayOf(
       PropTypes.shape({ key: PropTypes.string, docName: PropTypes.string })
         .isRequired,
     ).isRequired,
+    openDocument: PropTypes.func.isRequired,
+    documentsInDisk: PropTypes.array.isRequired,
+    deleteDocumentFromDisk: PropTypes.func.isRequired,
+    toggleSidebar: PropTypes.func.isRequired,
+    isSidebarOpen: PropTypes.bool.isRequired,
+    toggleTheme: PropTypes.func.isRequired,
+    createBlankDocument: PropTypes.func.isRequired,
+    children: PropTypes.element,
   };
+
+  downloadAllDocuments = () => {
+    backupDb();
+  };
+
   renderSidebar = () => {
-    const newResults = this.props.dbItems
+    const newResults = this.props.documentsInDisk
       .filter((r) => r)
       .sort((a, b) => b.created - a.created)
       .map((r) => ({
         ...r,
         title: r.title,
       }));
-
     return newResults.map((entry, i) => {
       let docName = entry.docName;
-      const isActive = this.props.docNames.find((r) => r.docName === docName);
+      const isActive = this.props.openedDocuments.find(
+        (r) => r.docName === docName,
+      );
       return (
         <div
           key={docName + i}
           onClick={() => {
-            this.props.handleClick(docName);
+            this.props.openDocument(docName);
           }}
           className={`flex flex-row cursor-pointer my-1 py-2 px-3 ${
             isActive ? `bg-gray-300` : ''
@@ -51,7 +62,7 @@ export class Aside extends React.PureComponent {
             faType="fas fa-times-circle "
             onClick={async (e) => {
               e.stopPropagation();
-              await this.props.handleRemoveEntry(docName);
+              await this.props.deleteDocumentFromDisk(docName);
             }}
           />
         </div>
@@ -64,7 +75,7 @@ export class Aside extends React.PureComponent {
       <div className="flex align-center justify-center">
         <StackButton
           onClick={() => this.props.toggleSidebar()}
-          isActive={this.props.showSidebar}
+          isActive={this.props.isSidebarOpen}
           faType="fas fa-folder"
           stack={true}
         />
@@ -83,7 +94,7 @@ export class Aside extends React.PureComponent {
           {this.sideBarMenu()}
           {this.props.children}
         </div>
-        {this.props.showSidebar ? (
+        {this.props.isSidebarOpen ? (
           <div className="aside-content bg-stronger  flex flex-col z-20 shadow-2xl px-3 pt-5 overflow-auto ">
             <div className="text-2xl pb-1 ml-3">Files</div>
             <div
@@ -97,7 +108,7 @@ export class Aside extends React.PureComponent {
             <div
               className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
               onClick={async () => {
-                this.props.dumpData();
+                this.props.downloadAllDocuments();
               }}
             >
               Dump data
@@ -106,7 +117,7 @@ export class Aside extends React.PureComponent {
             <div
               className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
               onClick={async () => {
-                await this.props.handleNewEntry();
+                await this.props.createBlankDocument();
                 this.props.toggleSidebar();
               }}
             >

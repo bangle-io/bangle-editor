@@ -4,138 +4,30 @@ import './style/prosemirror.css';
 import 'prosemirror-gapcursor/style/gapcursor.css';
 
 import React from 'react';
-import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
-import browser from 'bangle-core/utils/browser';
 import localforage from 'localforage';
-import { Editor } from './Editor';
+import { EditingArea } from './components/EditingArea';
 import { Aside } from './components/Aside';
-import { uuid, getIdleCallback } from 'bangle-core/utils/js-utils';
 import {
   getAllDbData,
   backupDb,
   putDbData,
-  activeDB,
 } from './store/local/database-helpers';
 import { applyTheme } from './style/apply-theme';
-
+import { DocumentManager } from './components/DocumentManager';
 window.localforage = localforage;
 window.backupDb = backupDb;
 window.getAllDbData = getAllDbData;
 window.putDbData = putDbData;
 
-const DATABASE = activeDB;
-console.log('using db', DATABASE);
-
-const isMobile = browser.ios || browser.android;
-
-const MAX_WINDOWS = isMobile ? 1 : 2;
-export default class App extends React.PureComponent {
+export default class Index extends React.PureComponent {
   state = {
-    dbItems: [],
-    docNames: [],
-    showSidebar: false,
+    isSidebarOpen: false,
     theme: localStorage.getItem('theme'),
   };
 
-  database = localforage.createInstance({
-    name: DATABASE,
-  });
-
-  updateDocName(docName, otherState) {
-    // treating left as a staging area i.e. new things will show up there
-    // while right tries to stay static as much as possible
-    const makeNew = (docName) => ({ docName, key: docName + '-' + uuid(4) });
-    const existingDocNames = this.state.docNames;
-    if (existingDocNames.length < MAX_WINDOWS) {
-      this.setState({
-        docNames: [makeNew(docName), ...existingDocNames], // we put new things on the left
-        ...otherState,
-      });
-
-      return;
-    }
-    // replace the first non matching from left
-    let match = existingDocNames.findIndex((r) => r.docName !== docName);
-    // if no match replace the first item
-    if (match === -1) {
-      match = 0;
-    }
-    const newDocNames = existingDocNames.map((item, index) =>
-      index === match ? makeNew(docName) : item,
-    );
-
-    this.setState({
-      docNames: newDocNames,
-      ...otherState,
-    });
-  }
-
-  getDbItemsWithoutDoc = () => {
-    return new Promise((res) => {
-      let result = [];
-      this.database
-        .iterate((value, key, iterationNumber) => {
-          const { doc, ...obj } = value;
-          result.push(obj);
-        })
-        .then(() => {
-          res(result);
-        });
-    });
-  };
-
-  getLastModifiedDocName = (items) => {
-    let lastModified = 0;
-    let lastModifiedKey;
-    for (const value of items) {
-      if (value.docName && value.modified > lastModified) {
-        lastModified = value.modified;
-        lastModifiedKey = value.docName;
-      }
-    }
-
-    return lastModifiedKey;
-  };
-
   async componentDidMount() {
-    const dbItems = await this.getDbItemsWithoutDoc();
-    let docName = this.getLastModifiedDocName(dbItems);
-
     applyTheme(this.state.theme);
-
-    if (!docName) {
-      this.handleNewEntry();
-    } else {
-      this.updateDocName(docName, { dbItems });
-    }
   }
-
-  handleClick = (docName) => {
-    this.updateDocName(docName);
-  };
-
-  handleNewEntry = async () => {
-    this.updateDocName(uuid(6));
-
-    getIdleCallback(async () => {
-      this.setState({ dbItems: await this.getDbItemsWithoutDoc() });
-    });
-  };
-
-  handleRemoveEntry = async (docName) => {
-    console.log('requesting delete');
-    await this.database.removeItem(docName);
-    const dbItems = await this.getDbItemsWithoutDoc();
-
-    if (dbItems.length === 0) {
-      this.updateDocName(uuid(6), { dbItems: [] });
-    } else {
-      this.setState({
-        docNames: this.state.docNames.filter((r) => r.docName !== docName),
-        dbItems,
-      });
-    }
-  };
 
   toggleTheme = async () => {
     const { theme } = this.state;
@@ -152,51 +44,52 @@ export default class App extends React.PureComponent {
     );
   };
 
-  dumpData = () => {
-    backupDb(DATABASE);
-  };
-
   toggleSidebar = async () => {
-    if (this.state.showSidebar) {
+    if (this.state.isSidebarOpen) {
       this.setState({
-        showSidebar: false,
+        isSidebarOpen: false,
       });
       return;
     }
 
     this.setState({
-      showSidebar: true,
-      dbItems: await this.getDbItemsWithoutDoc(),
+      isSidebarOpen: true,
     });
   };
 
   render() {
-    const docNames = this.state.docNames;
     return (
-      <EditorContextProvider>
-        <div className="h-screen main-wrapper">
-          {/* {!isMobile && <Header entry={this.state.entry} />} */}
-          <div className="editor-wrapper overflow-auto">
-            {docNames.length > 0 && (
-              <Editor docNames={docNames} database={this.database} />
-            )}
+      <DocumentManager>
+        {({
+          documentsInDisk,
+          deleteDocumentFromDisk,
+          createBlankDocument,
+          openDocument,
+          openedDocuments,
+        }) => (
+          <div className="h-screen main-wrapper">
+            {/* {!isMobile && <Header entry={this.state.entry} />} */}
+            <div className="editor-wrapper overflow-auto">
+              {openedDocuments.length > 0 && (
+                <EditingArea openedDocuments={openedDocuments} />
+              )}
+            </div>
+            <Aside
+              openedDocuments={openedDocuments}
+              documentsInDisk={documentsInDisk}
+              openDocument={openDocument}
+              deleteDocumentFromDisk={deleteDocumentFromDisk}
+              createBlankDocument={createBlankDocument}
+              downloadAllDocuments={this.downloadAllDocuments}
+              toggleSidebar={this.toggleSidebar}
+              isSidebarOpen={this.state.isSidebarOpen}
+              toggleTheme={this.toggleTheme}
+            >
+              {/* {isMobile && <Header entry={this.state.entry} />} */}
+            </Aside>
           </div>
-          <Aside
-            docNames={docNames}
-            database={this.database}
-            dbItems={this.state.dbItems}
-            handleClick={this.handleClick}
-            handleRemoveEntry={this.handleRemoveEntry}
-            handleNewEntry={this.handleNewEntry}
-            dumpData={this.dumpData}
-            toggleSidebar={this.toggleSidebar}
-            showSidebar={this.state.showSidebar}
-            toggleTheme={this.toggleTheme}
-          >
-            {/* {isMobile && <Header entry={this.state.entry} />} */}
-          </Aside>
-        </div>
-      </EditorContextProvider>
+        )}
+      </DocumentManager>
     );
   }
 }
