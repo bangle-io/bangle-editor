@@ -1,9 +1,9 @@
 import { EditorConnection } from './client/client';
-import { Editor } from 'bangle-core';
 import { CollabExtension } from './client/collab-extension';
 import { uuid, handleAsyncError, simpleLRU } from 'bangle-core/utils/js-utils';
 import { CollabError } from './collab-error';
 import { selectionTooltipKey } from 'bangle-plugins/selection-tooltip/index';
+import { ClientPlug, Editor2 } from './client/client2';
 
 const LOG = false;
 let lru = LOG ? simpleLRU(30) : null;
@@ -44,7 +44,7 @@ function localReq(manager) {
   };
 }
 
-export class CollabEditor {
+export class CollabEditorOld {
   editor;
 
   constructor(domElement, options) {
@@ -112,7 +112,7 @@ export class CollabEditor {
         return body;
       },
       createEditorState: async (document, version) => {
-        this.editor = new Editor(domElement, {
+        this.editor = new Editor2(domElement, {
           ...editorOptions,
           content: document,
           extensions: [
@@ -145,5 +145,116 @@ export class CollabEditor {
     };
 
     this.connection = new EditorConnection(docName, handlersLocal, userId);
+  }
+}
+
+export class CollabEditor {
+  constructor(domElement, options) {
+    const {
+      manager,
+      content: docName,
+      collabClientId = 'test-' + uuid(),
+      ...editorOptions
+    } = options;
+
+    if (!manager || !docName) {
+      throw new Error('Missing options in CollabEditor');
+    }
+
+    this.editor = new Editor2(domElement, {
+      ...editorOptions,
+      content: '',
+      extensions: [
+        ...editorOptions.extensions,
+        new CollabExtension({
+          // version,
+          clientID: collabClientId,
+        }),
+      ],
+    });
+
+    this._setup({
+      domElement,
+      manager,
+      docName,
+      collabClientId,
+      editorOptions,
+    });
+  }
+  destroy() {
+    this.editor && this.editor.destroy();
+  }
+
+  _setup({ domElement, manager, docName, collabClientId, editorOptions }) {
+    const req = localReq(manager);
+    const userId = 'user-' + collabClientId;
+
+    const handlersLocal = {
+      getDocument: async ({ docName }) => {
+        const body = await req({
+          path: 'get_document',
+          payload: { docName, userId },
+        });
+        return body;
+      },
+      pullEvents: async ({ version, docName }) => {
+        const body = await req({
+          path: 'get_events',
+          payload: { docName, version, userId },
+        });
+        return body;
+      },
+      pushEvents: async ({ version, steps, clientID }, docName) => {
+        const body = await req({
+          path: 'push_events',
+          payload: {
+            clientID,
+            version,
+            steps,
+            docName,
+            userId,
+          },
+        });
+        return body;
+      },
+      // createEditorState: async (document, version) => {
+      //   this.editor = new Editor2(domElement, {
+      //     ...editorOptions,
+      //     content: document,
+      //     extensions: [
+      //       ...editorOptions.extensions,
+      //       new CollabExtension({
+      //         version,
+      //         clientID: collabClientId,
+      //       }),
+      //     ],
+      //   });
+      //   return this.editor.state;
+      // },
+      // updateState: (state) => {
+      //   this.editor.view.updateState(state);
+      // },
+      // onDispatchTransaction: (cb) => {
+      //   // todo this is repeating transaction state update. fix it
+      //   this.editor.on('transaction', ({ transaction }) => {
+      //     // TODO hotfixing txns for now
+      //     if (transaction.getMeta(selectionTooltipKey)) {
+      //       console.log('fix me ignoring');
+      //       return;
+      //     }
+      //     cb(transaction);
+      //   });
+      // },
+      destroyView: () => {
+        this.editor && this.editor.destroy();
+      },
+    };
+
+    this.client = new ClientPlug(
+      docName,
+      handlersLocal,
+      this.editor,
+      'user-' + collabClientId,
+    );
   }
 }

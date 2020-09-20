@@ -8,9 +8,9 @@ import {
 import { cancelablePromise } from 'bangle-core/utils/js-utils';
 import { CollabError } from '../collab-error';
 
-const LOG = false;
+const LOG = true;
 
-let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+let log = LOG ? console.log.bind(console, 'collab/client') : () => {};
 
 class State {
   edit;
@@ -231,13 +231,13 @@ export class EditorConnection {
       steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
       clientID: steps ? steps.clientID : 0,
     };
-
     this.run(this.handlers.pushEvents(payload, this.docName)).promise.then(
       (data) => {
         this.log('send:success', this.state.comm);
         this.backOff = 0;
         let tr;
         try {
+          debugger;
           tr = steps
             ? receiveTransaction(
                 this.state.edit,
