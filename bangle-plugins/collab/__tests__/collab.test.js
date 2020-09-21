@@ -10,7 +10,6 @@ import {
   spinEditors,
   expectToHaveIdenticalElements,
 } from '../collab-test-helpers';
-import { EditorConnection } from '../client/client';
 import { CollabError } from '../collab-error';
 import { RECOVERY_BACK_OFF } from '../client/client2';
 
