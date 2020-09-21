@@ -1,7 +1,7 @@
 import { collab } from 'prosemirror-collab';
 import { Extension } from 'bangle-core/extensions';
 import { Plugin, PluginKey } from 'prosemirror-state';
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
 
 export const collabReadyKey = new PluginKey('collab-ready');

@@ -1,4 +1,7 @@
 import { Selection } from 'prosemirror-state';
+const LOG = false;
+
+let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
 
 export function replaceDocument(state, doc, version) {
   const { schema, tr } = state;
@@ -30,27 +33,44 @@ export function strictCheckObject(obj, assert) {
   const keys = (o) => Object.keys(o);
 
   if (keys(obj).length !== keys(assert).length) {
-    console.log({
+    log({
       obj,
       assert,
     });
     throw new Error('Size miss match');
   }
+  if (!keys(obj).every((r) => keys(assert).includes(r))) {
+    log({
+      obj,
+      assert,
+    });
+    throw new Error('missing keys match');
+  }
   for (const [key, value] of entries) {
     const type = assert[key];
     if (!type) {
-      console.log(value);
+      log(value);
       throw new Error('Unkown key:' + key);
     } else if (type === 'string') {
       if (typeof value !== 'string') {
-        console.log(value);
-        throw new Error(`${key} expected string got ${value}`);
+        log(value);
+        throw new Error(`${key} expected ${type} got ${value}`);
+      }
+    } else if (type === 'number') {
+      if (typeof value !== 'number') {
+        log(value);
+        throw new Error(`${key} expected ${type} got ${value}`);
+      }
+    } else if (type === 'object') {
+      const check = typeof value === 'object' && !Array.isArray(value);
+      if (!check) {
+        throw new Error(`${key} expected ${type} got ${value}`);
       }
     } else if (type === 'array-of-strings') {
       const check =
         Array.isArray(value) && value.every((v) => typeof v === 'string');
       if (!check) {
-        console.log(value);
+        log(value);
         throw new Error(`${key} expected ${type} got ${value}`);
       }
     } else if (type === 'array-of-objects') {
@@ -58,7 +78,7 @@ export function strictCheckObject(obj, assert) {
         Array.isArray(value) &&
         value.every((v) => typeof v === 'object' && !Array.isArray(v));
       if (!check) {
-        console.log(value);
+        log(value);
         throw new Error(`${key} expected ${type} got ${value}`);
       }
     } else {

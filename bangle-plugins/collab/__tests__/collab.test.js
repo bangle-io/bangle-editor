@@ -11,6 +11,8 @@ import {
   expectToHaveIdenticalElements,
 } from '../collab-test-helpers';
 import { EditorConnection } from '../client/client';
+import { CollabError } from '../collab-error';
+import { RECOVERY_BACK_OFF } from '../client/client2';
 
 jest.mock('localforage', () => ({
   config: jest.fn(),
@@ -272,7 +274,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   let interceptRequests = (path, payload) => {
     if (payload.userId === 'user-seq1' && path === 'get_events') {
       if (requestCounter++ === 1) {
-        throw new Error('A weird error');
+        throw new CollabError('A weird error');
       }
     }
   };
@@ -289,7 +291,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   view1.dispatch(setSelectionAtStart(view1));
 
   // second 🍌
-  await sleep(EditorConnection.defaultOpts.recoveryBackOffInterval); // wait for the server to retry after backoff
+  await sleep(RECOVERY_BACK_OFF * 2); // wait for the server to retry after backoff
 
   ({ seq1: view1, seq2: view2 } = await nextViews());
   // prettier-ignore
@@ -305,17 +307,10 @@ it('throw an error for seq1 client and expect it to recover', async () => {
     [MockFunction] {
       "calls": Array [
         Array [
-          "CRITICAL ERROR THROWN",
-        ],
-        Array [
-          [Error: A weird error],
+          [CollabError],
         ],
       ],
       "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
         Object {
           "type": "return",
           "value": undefined,
@@ -357,71 +352,71 @@ it.each([
     },
   ],
 
-  [
-    {
-      seq1: '💚_____🍌__AA___🍌_BB__🍌',
-      seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
-    },
-    {
-      seq1: (
-        <doc>
-          <para>AAhello world!</para>
-        </doc>
-      ),
-      seq2: (
-        <doc>
-          <para>hello world!ZZZ</para>
-        </doc>
-      ),
-    },
-    {
-      seq1: (
-        <doc>
-          <para>AABBhello world!ZZZYY</para>
-        </doc>
-      ),
-      seq2: (
-        <doc>
-          <para>AABBhello world!ZZZYY</para>
-        </doc>
-      ),
-    },
-  ],
+  // [
+  //   {
+  //     seq1: '💚_____🍌__AA___🍌_BC__🍌',
+  //     seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
+  //   },
+  //   {
+  //     seq1: (
+  //       <doc>
+  //         <para>AAhello world!</para>
+  //       </doc>
+  //     ),
+  //     seq2: (
+  //       <doc>
+  //         <para>hello world!ZZZ</para>
+  //       </doc>
+  //     ),
+  //   },
+  //   {
+  //     seq1: (
+  //       <doc>
+  //         <para>AABChello world!ZZZYY</para>
+  //       </doc>
+  //     ),
+  //     seq2: (
+  //       <doc>
+  //         <para>AABChello world!ZZZYY</para>
+  //       </doc>
+  //     ),
+  //   },
+  // ],
 
-  [
-    {
-      seq1: '💚_____🍌__AA___🍌_↵B↵__🍌',
-      seq2: '💚_____🍌__ZZZ__🍌_YYY__🍌',
-    },
-    {
-      seq1: (
-        <doc>
-          <para>AAhello world!</para>
-        </doc>
-      ),
-      seq2: (
-        <doc>
-          <para>hello world!ZZZ</para>
-        </doc>
-      ),
-    },
-    {
-      seq1: (
-        <doc>
-          <para>AA</para>
-          <para>B</para>
-          <para>hello world!ZZZYYY</para>
-        </doc>
-      ),
-      seq2: (
-        <doc>
-          <para>AA</para>
-          <para>B</para>
-          <para>hello world!ZZZYYY</para>
-        </doc>
-      ),
-    },
-  ],
+  // [
+  //   {
+  //     seq1: '💚_____🍌__AA___🍌_↵B↵__🍌',
+  //     seq2: '💚_____🍌__ZZZ__🍌_YYY__🍌',
+  //   },
+  //   {
+  //     seq1: (
+  //       <doc>
+  //         <para>AAhello world!</para>
+  //       </doc>
+  //     ),
+  //     seq2: (
+  //       <doc>
+  //         <para>hello world!ZZZ</para>
+  //       </doc>
+  //     ),
+  //   },
+  //   {
+  //     seq1: (
+  //       <doc>
+  //         <para>AA</para>
+  //         <para>B</para>
+  //         <para>hello world!ZZZYYY</para>
+  //       </doc>
+  //     ),
+  //     seq2: (
+  //       <doc>
+  //         <para>AA</para>
+  //         <para>B</para>
+  //         <para>hello world!ZZZYYY</para>
+  //       </doc>
+  //     ),
+  //   },
+  // ],
 ])('%# more sync cases', async (seq, secondBananaResult, thirdBananaResult) => {
   const store = setupDb();
   let seq1GetResume = null;
@@ -467,6 +462,8 @@ it.each([
 
   // third 🍌 : views should sync up
   ({ seq1: view1, seq2: view2 } = await nextViews());
+  console.log('view1', view1.state.collab$);
+  console.log('view2', view1.state.collab$);
   expect(view1.state.doc).toEqualDocument(thirdBananaResult.seq1);
   expect(view2.state.doc).toEqualDocument(thirdBananaResult.seq2);
 });

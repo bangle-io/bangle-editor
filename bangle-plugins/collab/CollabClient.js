@@ -1,15 +1,22 @@
 import { EditorConnection } from './client/client';
 import { CollabExtension } from './client/collab-extension';
-import { uuid, handleAsyncError, simpleLRU } from 'bangle-core/utils/js-utils';
+import {
+  uuid,
+  handleAsyncError,
+  simpleLRU,
+  sleep,
+} from 'bangle-core/utils/js-utils';
 import { CollabError } from './collab-error';
 import { selectionTooltipKey } from 'bangle-plugins/selection-tooltip/index';
-import { ClientPlug, Editor2 } from './client/client2';
+import { ClientPlug, Editor2, ParentPlug } from './client/client2';
 
 const LOG = false;
 let lru = LOG ? simpleLRU(30) : null;
 window.lru = lru; // TODO remove lru
 
-let log = LOG ? console.log.bind(console, 'collab/CollabClient') : () => {};
+let log = LOG
+  ? console.log.bind(console, 'collab/CollabClient', performance.now())
+  : () => {};
 let lruSet = (reqId, obj) => {
   lru &&
     lru.set(reqId, {
@@ -21,10 +28,28 @@ let lruSet = (reqId, obj) => {
 function localReq(manager) {
   const req = handleAsyncError(
     async ({ path, payload, reqId }) => {
-      log(reqId, 'send request', payload.userId, 'path=', path);
+      log(
+        reqId,
+        'send request',
+        payload.userId,
+        'path=',
+        path,
+        'version',
+        payload.version,
+      );
       lruSet(reqId, { path, payload });
       const { body } = await manager.handleRequest(path, payload);
       lruSet(reqId, { response: body });
+      log(
+        'success',
+        reqId,
+        'send request',
+        payload.userId,
+        'path=',
+        path,
+        'version',
+        payload.version,
+      );
       return body;
     },
     (err) => {
@@ -40,7 +65,18 @@ function localReq(manager) {
   return async (argObj) => {
     let reqId = uuid();
     lruSet(reqId, { sent: true });
-    return req({ ...argObj, reqId });
+    return req({ ...argObj, reqId }).catch((err) => {
+      log(
+        reqId,
+        argObj.path,
+        'error',
+        'version',
+        argObj?.payload?.version,
+        'code',
+        err.errorCode,
+      );
+      throw err;
+    });
   };
 }
 
@@ -182,6 +218,7 @@ export class CollabEditor {
     });
   }
   destroy() {
+    this.client.destroy();
     this.editor && this.editor.destroy();
   }
 
@@ -246,11 +283,12 @@ export class CollabEditor {
       //   });
       // },
       destroyView: () => {
+        log('destroy edtior');
         this.editor && this.editor.destroy();
       },
     };
 
-    this.client = new ClientPlug(
+    this.client = new ParentPlug(
       docName,
       handlersLocal,
       this.editor,

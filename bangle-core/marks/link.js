@@ -5,7 +5,7 @@ import { Mark } from './mark';
 import { matchAllPlus } from '../utils/js-utils';
 import { getMarkAttrs, mapSlice } from '../utils/pm-utils';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'marks/link') : () => {};
 

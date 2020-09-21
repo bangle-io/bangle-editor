@@ -8,7 +8,7 @@ import {
 import { cancelablePromise } from 'bangle-core/utils/js-utils';
 import { CollabError } from '../collab-error';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/client') : () => {};
 
@@ -168,7 +168,7 @@ export class EditorConnection {
         }
 
         if (!(err instanceof CollabError)) {
-          console.log('Not a collab error');
+          log('Not a collab error');
         }
 
         if (err.errorCode === 410 || badVersion(err)) {

@@ -1,15 +1,22 @@
-import { Step } from 'prosemirror-transform';
 import { Editor } from 'bangle-core/index';
-
+import { Emitter } from 'bangle-core/utils/emitter';
 import {
+  cancelablePromise,
+  getIdleCallback,
+  serialExecuteQueue,
+  sleep,
+} from 'bangle-core/utils/js-utils';
+import {
+  getVersion,
   receiveTransaction,
   sendableSteps,
-  getVersion,
 } from 'prosemirror-collab';
-import { repeatValue, replaceDocument, strictCheckObject } from './helpers';
-import { serialExecuteQueue } from 'bangle-core/utils/js-utils';
-const LOG = true;
+import { Step } from 'prosemirror-transform';
+import { CollabError } from '../collab-error';
+import { replaceDocument, strictCheckObject } from './helpers';
 
+const LOG = false;
+export const RECOVERY_BACK_OFF = 50;
 let log = LOG ? console.log.bind(console, 'collab/client2') : () => {};
 
 export class Editor2 extends Editor {
@@ -38,157 +45,264 @@ export class Editor2 extends Editor {
   }
 }
 
-export class ClientPlug {
+export class ParentPlug {
   destroy() {
-    this._editor.off('transaction', this._sendUpdate);
+    this._connection();
   }
 
   constructor(docName, handlers, editor, clientID) {
     this._docName = docName;
-    this._clientID = clientID;
+    this._handlers = handlers;
     this._editor = editor;
     this._view = editor.view;
-    this._handlers = {
-      pushEvents: handlers.pushEvents,
-      pullEvents: handlers.pullEvents,
-      getDocument: handlers.getDocument,
-    };
-
-    this._setup();
-    this._editor.on('transaction', this._sendUpdate);
-    this._sendUpdateQueue = serialExecuteQueue();
+    this._clientID = clientID;
+    this._init();
   }
 
-  _sendUpdate = async ({ transaction }) => {
-    if (transaction.getMeta('isRemote')) {
-      log('skipping a remote txn', transaction);
-      return;
+  _init() {
+    this._connection = connectionManager({
+      docName: this._docName,
+      handlers: this._handlers,
+      editor: this._editor,
+      onReceiveSteps: this._onReceiveSteps,
+      restart: this._restart,
+    });
+  }
+
+  _restart = () => {
+    this._connection();
+    setTimeout(() => this._init(), 0);
+  };
+
+  _onReceiveSteps = (payload) => {
+    strictCheckObject(payload, {
+      steps: 'array-of-objects',
+      clientIDs: 'array-of-strings',
+    });
+
+    const { clientIDs, steps } = payload;
+    if (steps.length === 0) {
+      log('no steps', payload);
+      return false;
     }
 
-    this._sendUpdateQueue.add(async () => {
-      await sendSteps(
-        this._view,
-        this._docName,
-        this._handlers.pushEvents,
-      ).catch((error) => {
-        return this._handleCollabError(error);
-      });
-    });
-  };
-
-  async _setup() {
-    const { doc, version } = await this._handlers.getDocument({
-      docName: this._docName,
-    });
-
-    const tr = replaceDocument(this._view.state, doc, version);
-
-    tr.setMeta('isRemote', true);
-    tr.setMeta('collabClientSetup', true);
+    const tr = receiveTransaction(this._view.state, steps, clientIDs)
+      .setMeta('addToHistory', false)
+      .setMeta('isRemote', true);
     const newState = this._view.state.apply(tr);
-    log('setup', newState);
     this._view.updateState(newState);
-    const newTr = this._view.state.tr;
-    this._view.dispatch(newTr.setMeta('collabStateReady', true));
-    this._poll();
-  }
-
-  async _reset() {
-    this._setup();
-  }
-
-  _poll = () => {
-    this._handlers
-      .pullEvents({
-        version: getVersion(this._view.state),
-        docName: this._docName,
-      })
-      .then((data) => {
-        log('poll success', data);
-        if (data.steps?.length > 0) {
-          return receiveUpdate(this._view, {
-            steps: data.steps.map((j) =>
-              Step.fromJSON(this._view.state.schema, j),
-            ),
-            clientIDs: data.clientIDs,
-          });
-        }
-      })
-      .then(() => {
-        this._poll();
-        window.poll = this._poll;
-      });
+    return;
   };
+}
 
-  _handleCollabError(error) {
-    log('Handling error', error);
+function connectionManager({
+  docName,
+  handlers,
+  editor,
+  onReceiveSteps,
+  restart,
+}) {
+  const view = editor.view;
+  let recoveryBackOff = 0;
+
+  const _initializeEmitter = initializeCollab(
+    view,
+    docName,
+    handlers.getDocument,
+  ).emit('initialize');
+
+  const pullEmitter = pullEvents(view, docName, handlers.pullEvents)
+    .on('steps', (payload) => {
+      recoveryBackOff = 0;
+      onReceiveSteps(payload);
+      // Push any steps that might still be hanging around
+      // this is a no-op if there are no sendable steps
+      pushEmitter.emit('push');
+      getIdleCallback(() => {
+        pullEmitter.emit('pull');
+      });
+    })
+    .on('error', (error) => {
+      onError(error);
+    });
+
+  const pushEmitter = pushEvents(view, docName, handlers.pushEvents).on(
+    'error',
+    (error) => {
+      onError(error);
+    },
+  );
+
+  let _destroyOnTransaction;
+
+  _initializeEmitter.on('ready', () => {
+    pullEmitter.emit('pull');
+
+    const onTransaction = ({ transaction }) => {
+      if (transaction.getMeta('isRemote')) {
+        log('skipping a remote txn', transaction);
+        return;
+      }
+      pushEmitter.emit('push');
+    };
+
+    editor.on('transaction', onTransaction);
+    _destroyOnTransaction = () => {
+      editor.off('transaction', onTransaction);
+    };
+  });
+
+  const onError = (error) => {
     const { errorCode } = error;
+    console.error(error);
+    if (!(error instanceof CollabError)) {
+      throw error;
+    }
 
     switch (errorCode) {
-      case 400: // invalid version
+      // invalid version
+      case 400:
       case 410: {
         // bad version
-        this._reset();
+        console.log('restarting');
+        restart();
+        return;
+      }
+      case 409: {
+        log('received 409 pulling');
+        pullEmitter.emit('pull');
         return;
       }
       default: {
-        console.log({ errorCode });
-        console.error(error);
-        throw new Error('Unknown error');
+        // recover
+        recoveryBackOff = recoveryBackOff
+          ? Math.min(recoveryBackOff * 2, 6e4)
+          : RECOVERY_BACK_OFF;
+        log('attempting recover', recoveryBackOff);
+        sleep(recoveryBackOff).then(() => {
+          pullEmitter.emit('pull');
+        });
       }
     }
-  }
-}
-
-function receiveUpdate(view, payload) {
-  log('receiving update', payload);
-  const { steps } = payload;
-  strictCheckObject(payload, {
-    steps: 'array-of-objects',
-    clientIDs: 'array-of-strings',
-  });
-
-  if (!steps || steps.length === 0) {
-    return false;
-  }
-
-  let tr = receiveTransaction(view.state, steps, payload.clientIDs);
-
-  const { selection } = view.state;
-  const { from, to } = selection;
-  const [firstStep] = steps;
-
-  // preserve the selection if it happens to be right on the first step
-  if (from === firstStep.from && to === firstStep.to) {
-    tr.setSelection(selection);
-  }
-
-  tr.setMeta('addToHistory', false);
-  tr.setMeta('isRemote', true);
-
-  // TODO: should I dispatch the TR or directly apply it.
-  //   const newState = view.state.apply(tr);
-  //   view.updateState(newState);
-  view.dispatch(tr);
-}
-
-async function sendSteps(view, docName, pushEvents) {
-  const steps = sendableSteps(view.state);
-  if (!steps) {
-    console.log('no steps');
-    return;
-  }
-
-  // add some condition to only send when needed
-  const payload = {
-    version: getVersion(view.state),
-    steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
-    clientID: steps ? steps.clientID : 0,
   };
 
-  console.log('sending', payload.version, payload);
+  return () => {
+    pullEmitter.destroy();
+    pushEmitter.destroy();
+    _initializeEmitter.destroy();
+    _destroyOnTransaction && _destroyOnTransaction();
+  };
+}
 
-  // If successful When pushing our own changes expect server to send an update to
-  // make our changes from unconfirmed to confirmed (i.e. a version change).
-  return pushEvents(payload, docName);
+/**
+ *
+ * A helper function to constantly poll the Authority and emit newly received steps.
+ * @returns {Emitter} An emitter emits steps or error and listens for pull events
+ */
+export function pullEvents(view, docName, pullEvents) {
+  const emitter = new Emitter();
+
+  let cProm;
+
+  const pull = () => {
+    // Only opt for the latest pull and cancel others
+    if (cProm) {
+      cProm.cancel();
+    }
+
+    cProm = cancelablePromise(
+      pullEvents({
+        version: getVersion(view.state),
+        docName: docName,
+      }),
+    );
+
+    cProm.promise
+      .then((data) => {
+        log('pullEvents received', data);
+        // TODO make sure the server responds with empty arrays
+        // instead of us hotfixing it here
+        const steps = data.steps ? data.steps : [];
+        const clientIDs = data.clientIDs ? data.clientIDs : [];
+        emitter.emit('steps', {
+          steps: steps.map((j) => Step.fromJSON(view.state.schema, j)),
+          clientIDs: clientIDs,
+        });
+      })
+      .catch((err) => {
+        if (err.isCanceled) {
+          return;
+        }
+        emitter.emit('error', err);
+      });
+  };
+  emitter.on('pull', pull);
+  return emitter;
+}
+
+export function pushEvents(view, docName, pushEvents) {
+  const emitter = new Emitter();
+  const queue = serialExecuteQueue();
+
+  const push = async () => {
+    await queue.add(async () => {
+      const steps = sendableSteps(view.state);
+      if (!steps) {
+        log('no steps');
+        return;
+      }
+      // todo add some condition to only send when needed
+      // If successful When pushing our own changes expect server to send an update to
+      // make our changes from unconfirmed to confirmed (i.e. a version change).
+      return pushEvents(
+        {
+          version: getVersion(view.state),
+          steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
+          clientID: steps ? steps.clientID : 0,
+        },
+        docName,
+      ).catch((error) => {
+        emitter.emit('error', error);
+      });
+    });
+  };
+
+  emitter.on('push', push);
+  return emitter;
+}
+
+export function initializeCollab(view, docName, getDocument) {
+  const emitter = new Emitter();
+
+  emitter
+    .on('initialize', async () => {
+      getDocument({
+        docName: docName,
+      }).then(
+        (payload) => {
+          const { doc, version } = payload;
+          // broken into two steps
+          // in case the view was destroyed init state will
+          // never be called
+          emitter.emit('initialize_state', { doc, version });
+        },
+        (error) => {
+          emitter.emit('error', error);
+        },
+      );
+    })
+    .on('initialize_state', (payload) => {
+      strictCheckObject(payload, { doc: 'object', version: 'number' });
+      const { doc, version } = payload;
+      const tr = replaceDocument(view.state, doc, version);
+      const newState = view.state.apply(
+        tr.setMeta('isRemote', true).setMeta('collabClientSetup', true),
+      );
+      view.updateState(newState);
+      view.dispatch(view.state.tr.setMeta('collabStateReady', true));
+      emitter.emit('ready');
+      return;
+    });
+
+  return emitter;
 }
