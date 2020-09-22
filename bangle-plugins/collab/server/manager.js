@@ -3,6 +3,7 @@ import {
   objectMapValues,
   serialExecuteQueue,
   raceTimeout,
+  sleep,
 } from 'bangle-core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';

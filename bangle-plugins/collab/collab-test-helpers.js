@@ -17,7 +17,7 @@ import {
   sleep,
   typeChar,
 } from 'bangle-core/test-helpers';
-import { CollabEditor } from './CollabClient';
+import { CollabEditor } from './client/collab-editor';
 
 const START = '💚';
 const END = '🖤';

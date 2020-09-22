@@ -327,7 +327,6 @@ export class Editor extends Emitter {
   }
 
   dispatchTransaction(transaction) {
-    console.log('old');
     const nodes = findChangedNodesFromTransaction(transaction);
     // if (nodes.length > 0) {
     // }

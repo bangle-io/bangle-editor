@@ -302,21 +302,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   expect(view2.state.doc).toEqualDocument(match);
   expect(view1.state.doc).toEqualDocument(match); // <-- view1 should have recovered
 
-  expect(console.error).toMatchInlineSnapshot(`
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          [CollabError],
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  `);
+  expect(console.error).toMatchInlineSnapshot(`[MockFunction]`);
 });
 
 it.each([
@@ -351,71 +337,71 @@ it.each([
     },
   ],
 
-  // [
-  //   {
-  //     seq1: '💚_____🍌__AA___🍌_BC__🍌',
-  //     seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
-  //   },
-  //   {
-  //     seq1: (
-  //       <doc>
-  //         <para>AAhello world!</para>
-  //       </doc>
-  //     ),
-  //     seq2: (
-  //       <doc>
-  //         <para>hello world!ZZZ</para>
-  //       </doc>
-  //     ),
-  //   },
-  //   {
-  //     seq1: (
-  //       <doc>
-  //         <para>AABChello world!ZZZYY</para>
-  //       </doc>
-  //     ),
-  //     seq2: (
-  //       <doc>
-  //         <para>AABChello world!ZZZYY</para>
-  //       </doc>
-  //     ),
-  //   },
-  // ],
+  [
+    {
+      seq1: '💚_____🍌__AA___🍌_BC__🍌',
+      seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
+    },
+    {
+      seq1: (
+        <doc>
+          <para>AAhello world!</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>hello world!ZZZ</para>
+        </doc>
+      ),
+    },
+    {
+      seq1: (
+        <doc>
+          <para>AABChello world!ZZZYY</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>AABChello world!ZZZYY</para>
+        </doc>
+      ),
+    },
+  ],
 
-  // [
-  //   {
-  //     seq1: '💚_____🍌__AA___🍌_↵B↵__🍌',
-  //     seq2: '💚_____🍌__ZZZ__🍌_YYY__🍌',
-  //   },
-  //   {
-  //     seq1: (
-  //       <doc>
-  //         <para>AAhello world!</para>
-  //       </doc>
-  //     ),
-  //     seq2: (
-  //       <doc>
-  //         <para>hello world!ZZZ</para>
-  //       </doc>
-  //     ),
-  //   },
-  //   {
-  //     seq1: (
-  //       <doc>
-  //         <para>AA</para>
-  //         <para>B</para>
-  //         <para>hello world!ZZZYYY</para>
-  //       </doc>
-  //     ),
-  //     seq2: (
-  //       <doc>
-  //         <para>AA</para>
-  //         <para>B</para>
-  //         <para>hello world!ZZZYYY</para>
-  //       </doc>
-  //     ),
-  //   },
-  // ],
+  [
+    {
+      seq1: '💚_____🍌__AA___🍌_↵B↵__🍌',
+      seq2: '💚_____🍌__ZZZ__🍌_YYY__🍌',
+    },
+    {
+      seq1: (
+        <doc>
+          <para>AAhello world!</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>hello world!ZZZ</para>
+        </doc>
+      ),
+    },
+    {
+      seq1: (
+        <doc>
+          <para>AA</para>
+          <para>B</para>
+          <para>hello world!ZZZYYY</para>
+        </doc>
+      ),
+      seq2: (
+        <doc>
+          <para>AA</para>
+          <para>B</para>
+          <para>hello world!ZZZYYY</para>
+        </doc>
+      ),
+    },
+  ],
 ])('%# more sync cases', async (seq, secondBananaResult, thirdBananaResult) => {
   const store = setupDb();
   let seq1GetResume = null;
@@ -461,8 +447,6 @@ it.each([
 
   // third 🍌 : views should sync up
   ({ seq1: view1, seq2: view2 } = await nextViews());
-  console.log('view1', view1.state.collab$);
-  console.log('view2', view1.state.collab$);
   expect(view1.state.doc).toEqualDocument(thirdBananaResult.seq1);
   expect(view2.state.doc).toEqualDocument(thirdBananaResult.seq2);
 });

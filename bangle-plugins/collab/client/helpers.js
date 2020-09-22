@@ -86,7 +86,3 @@ export function strictCheckObject(obj, assert) {
     }
   }
 }
-
-export function repeatValue(val, n) {
-  return Array.from({ length: n }, () => val);
-}
