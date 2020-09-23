@@ -40,9 +40,7 @@ export class Editor extends React.PureComponent {
     const docName = this.props.docName;
     return (
       <ReactEditor
-        options={this.options(
-          'bangle-play-doc-' + docName + '-rand-' + uuid(4),
-        )}
+        options={this.options('bangle-play-' + docName + '-' + uuid(4))}
         docName={docName}
       />
     );

@@ -1,4 +1,3 @@
-const URL = `http://localhost:4444`;
 // const PM_ID = '#bangle-play-react-editor1';
 
 const {
@@ -6,13 +5,14 @@ const {
   getEditorState,
   ctrlKey,
   EDITOR_SELECTOR,
+  uniqDatabaseUrl,
 } = require('./helpers');
 
 jest.setTimeout(25 * 1000);
 
 describe('Title load test', () => {
   beforeAll(async () => {
-    await page.goto(URL);
+    await page.goto(uniqDatabaseUrl());
   });
 
   it('should be titled correctly', async () => {
@@ -25,7 +25,7 @@ describe('Basic typing', () => {
   beforeEach(async () => {
     page = await browser.newPage();
     // page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
-    await page.goto(URL);
+    await page.goto(uniqDatabaseUrl());
     await mountEditor(page);
     await page.keyboard.down(ctrlKey);
     await page.keyboard.press('a', { delay: 70 });

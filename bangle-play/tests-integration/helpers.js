@@ -1,8 +1,10 @@
+const { uuid } = require('bangle-core/utils/js-utils');
 const prettier = require('prettier');
 
 const ctrlKey = process.env.CI ? 'Control' : 'Meta';
-const EDITOR_ID = `bangle-play-react-editor`;
+const EDITOR_ID = `bangle-play`;
 const EDITOR_SELECTOR = `[id^='${EDITOR_ID}']`;
+
 module.exports = {
   mountEditor,
   getEditorState,
@@ -10,7 +12,12 @@ module.exports = {
   getDoc,
   sleep,
   EDITOR_SELECTOR,
+  uniqDatabaseUrl,
 };
+
+function uniqDatabaseUrl() {
+  return `http://localhost:4444?database=databse-${uuid(2)}`;
+}
 
 function frmt(doc) {
   return prettier.format(doc.toString(), {
@@ -24,6 +31,8 @@ async function mountEditor(page, props) {
   await page.waitForSelector(EDITOR_SELECTOR);
   await page.waitForSelector('.ProseMirror', { timeout: 500 });
   await page.click(EDITOR_SELECTOR);
+  // let the collab extension settle down
+  await sleep(50);
 }
 
 async function getEditorState(page) {
