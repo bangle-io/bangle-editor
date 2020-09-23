@@ -87,7 +87,7 @@ export function sendKeyToPm(editorView, keys) {
 }
 
 export async function typeText(view, text) {
-  text.split('').forEach((character, index) => {
+  [...text].forEach((character, index) => {
     typeChar(view, character);
   });
 }

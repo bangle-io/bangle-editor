@@ -10,8 +10,8 @@ import {
   spinEditors,
   expectToHaveIdenticalElements,
 } from '../collab-test-helpers';
-import { EditorConnection } from '../client/client';
-
+import { CollabError } from '../collab-error';
+import { RECOVERY_BACK_OFF } from '../client/collab-extension';
 jest.mock('localforage', () => ({
   config: jest.fn(),
   createInstance: jest.fn(),
@@ -272,7 +272,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   let interceptRequests = (path, payload) => {
     if (payload.userId === 'user-seq1' && path === 'get_events') {
       if (requestCounter++ === 1) {
-        throw new Error('A weird error');
+        throw new CollabError('A weird error');
       }
     }
   };
@@ -289,7 +289,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   view1.dispatch(setSelectionAtStart(view1));
 
   // second 🍌
-  await sleep(EditorConnection.defaultOpts.recoveryBackOffInterval); // wait for the server to retry after backoff
+  await sleep(RECOVERY_BACK_OFF * 2); // wait for the server to retry after backoff
 
   ({ seq1: view1, seq2: view2 } = await nextViews());
   // prettier-ignore
@@ -301,28 +301,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   expect(view2.state.doc).toEqualDocument(match);
   expect(view1.state.doc).toEqualDocument(match); // <-- view1 should have recovered
 
-  expect(console.error).toMatchInlineSnapshot(`
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          "CRITICAL ERROR THROWN",
-        ],
-        Array [
-          [Error: A weird error],
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  `);
+  expect(console.error).toMatchInlineSnapshot(`[MockFunction]`);
 });
 
 it.each([
@@ -359,7 +338,7 @@ it.each([
 
   [
     {
-      seq1: '💚_____🍌__AA___🍌_BB__🍌',
+      seq1: '💚_____🍌__AA___🍌_BC__🍌',
       seq2: '💚_____🍌__ZZZ__🍌_YY__🍌',
     },
     {
@@ -377,12 +356,12 @@ it.each([
     {
       seq1: (
         <doc>
-          <para>AABBhello world!ZZZYY</para>
+          <para>AABChello world!ZZZYY</para>
         </doc>
       ),
       seq2: (
         <doc>
-          <para>AABBhello world!ZZZYY</para>
+          <para>AABChello world!ZZZYY</para>
         </doc>
       ),
     },

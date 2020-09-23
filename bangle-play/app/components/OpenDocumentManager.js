@@ -4,7 +4,10 @@ import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
 import { activeDatabaseInstance } from '../store/local/database-helpers';
 
 const isMobile = browser.ios || browser.android;
-const MAX_WINDOWS = isMobile ? 1 : 2;
+const MAX_WINDOWS =
+  new URLSearchParams(window.location.search).get('single-pane') || isMobile
+    ? 1
+    : 2;
 
 export class OpenDocumentManager extends React.Component {
   state = {

@@ -1,4 +1,3 @@
-const URL = `http://localhost:4444`;
 const PM_ID = '.ProseMirror';
 
 const {
@@ -7,6 +6,7 @@ const {
   getEditorState,
   ctrlKey,
   sleep,
+  uniqDatabaseUrl,
 } = require('./helpers');
 
 jest.setTimeout(25 * 1000);
@@ -15,7 +15,7 @@ describe('Todo test', () => {
   let page;
   beforeEach(async () => {
     page = await browser.newPage();
-    await page.goto(URL);
+    await page.goto(uniqDatabaseUrl());
     await mountEditor(page);
     await page.keyboard.down(ctrlKey);
     await page.keyboard.press('a');

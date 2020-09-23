@@ -10,7 +10,6 @@ const DEBUG = true;
 export class Editor extends React.PureComponent {
   static propTypes = {
     isFirst: PropTypes.bool.isRequired,
-    editor: PropTypes.func.isRequired,
     manager: PropTypes.object.isRequired,
     docName: PropTypes.string.isRequired,
   };
@@ -18,10 +17,16 @@ export class Editor extends React.PureComponent {
   devtools = this.props.isFirst && (process.env.JEST_INTEGRATION || DEBUG);
 
   options = (id) => ({
-    manager: this.props.manager,
     id,
+    content: 'Loading document',
     devtools: this.devtools,
-    extensions: extensions(),
+    extensions: extensions({
+      collabOpts: {
+        docName: this.props.docName,
+        manager: this.props.manager,
+        clientId: 'client-' + uuid(4),
+      },
+    }),
     editorProps: {
       attributes: { class: 'bangle-editor content' },
     },
@@ -33,14 +38,10 @@ export class Editor extends React.PureComponent {
 
   render() {
     const docName = this.props.docName;
-    const editor = this.props.editor;
     return (
       <ReactEditor
-        options={this.options(
-          'bangle-play-react-editor-' + docName + '-' + uuid(4),
-        )}
-        content={docName}
-        Editor={editor}
+        options={this.options('bangle-play-' + docName + '-' + uuid(4))}
+        docName={docName}
       />
     );
   }

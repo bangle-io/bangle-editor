@@ -5,6 +5,7 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
+import { Editor } from 'bangle-core/editor';
 
 const LOG = false;
 
@@ -19,15 +20,13 @@ export class ReactEditor extends React.PureComponent {
     editorKey: 0,
   };
   static propTypes = {
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-      .isRequired,
+    docName: PropTypes.string.isRequired,
     options: PropTypes.object.isRequired,
-    Editor: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.content !== prevProps.content) {
-      log('Content not same, creating a new Editor');
+    if (this.props.docName !== prevProps.docName) {
+      log('Docname not same, creating a new Editor');
       this.setState((state) => ({
         editorKey: state.editorKey + 1,
       }));
@@ -42,7 +41,7 @@ export class ReactEditor extends React.PureComponent {
             // This allows us to let react handle creating destroying Editor
             key={this.state.editorKey}
             options={this.props.options}
-            content={this.props.content}
+            docName={this.props.docName}
             Editor={this.props.Editor}
             renderNodeView={renderNodeView}
             destroyNodeView={destroyNodeView}
@@ -111,29 +110,20 @@ class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
     options: PropTypes.object.isRequired,
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    docName: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
       .isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
-    Editor: PropTypes.func.isRequired,
   };
   editorRenderTarget = React.createRef();
   devtools;
-  editorCleanupCb;
   shouldComponentUpdate() {
     return false;
   }
   async componentDidMount() {
-    const {
-      options,
-      content,
-      renderNodeView,
-      destroyNodeView,
-      Editor,
-    } = this.props;
+    const { options, renderNodeView, destroyNodeView } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
-      let editor;
       const onInit = ({ view, state, editor }) => {
         this.context.onEditorReady(editor);
         editor.focus();
@@ -152,23 +142,19 @@ class PMEditorWrapper extends React.Component {
         }
       };
       // TODO fix this mess
-      editor = new Editor(node, {
+      this.editor = new Editor(node, {
         ...options,
-        content, // TODO for now calling docName content , fix this this mess
         renderNodeView,
         destroyNodeView,
         onInit,
       });
-      this.editorCleanupCb = () => {
-        editor.destroy();
-      };
     }
   }
 
   componentWillUnmount() {
     log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
-    this.editorCleanupCb && this.editorCleanupCb();
+    this.editor && this.editor.destroy();
     if (this.props.options.devtools && this.devtools) {
       this.devtools();
     }
