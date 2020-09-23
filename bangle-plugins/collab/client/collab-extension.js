@@ -6,24 +6,24 @@ import {
 } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
 import { Extension } from 'bangle-core/extensions';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey, Selection } from 'prosemirror-state';
 import { getIdleCallback, sleep } from 'bangle-core/utils/js-utils';
 import { Emitter } from 'bangle-core/utils/emitter';
 import {
   cancelablePromise,
   serialExecuteQueue,
 } from 'bangle-core/utils/js-utils';
-import { strictCheckObject, replaceDocument } from './helpers';
+import { replaceDocument } from './helpers';
 import { CollabError } from '../collab-error';
 
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
-const RECOVERY_BACK_OFF = 50;
-
-export const bangleCollabSettingsKey = new PluginKey('bangleCollabSettingsKey');
+export const RECOVERY_BACK_OFF = 50;
+export const collabSettingsKey = new PluginKey('bangle/collabSettingsKey');
+export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
 
 export const getCollabSettings = (state) => {
-  return bangleCollabSettingsKey.getState(state);
+  return collabSettingsKey.getState(state);
 };
 
 export class CollabExtension extends Extension {
@@ -38,7 +38,7 @@ export class CollabExtension extends Extension {
       }),
 
       new Plugin({
-        key: bangleCollabSettingsKey,
+        key: collabSettingsKey,
         state: {
           init: (_, state) => {
             return {
@@ -49,10 +49,10 @@ export class CollabExtension extends Extension {
             };
           },
           apply: (tr, value) => {
-            if (tr.getMeta('collabClientStateReady')) {
+            if (tr.getMeta(collabSettingsKey)) {
               return {
                 ...value,
-                ready: true,
+                ...tr.getMeta(collabSettingsKey),
               };
             }
             return value;
@@ -62,12 +62,12 @@ export class CollabExtension extends Extension {
           // Don't allow transactions that modifies the document before
           // collab is ready.
           if (tr.docChanged) {
-            // Let collab client's setup transaction go through
-            if (tr.getMeta('collabClientStateSetup') === true) {
+            // Let collab client's setup trs go through
+            if (tr.getMeta('bangle/allowUpdatingEditorState') === true) {
               return true;
             }
-
-            if (!bangleCollabSettingsKey.getState(state).ready) {
+            // prevent any other tr until state is ready
+            if (!collabSettingsKey.getState(state).ready) {
               log('skipping transaction');
               return false;
             }
@@ -81,19 +81,29 @@ export class CollabExtension extends Extension {
         getDocument: this.options.getDocument,
         pullEvents: this.options.pullEvents,
         pushEvents: this.options.pushEvents,
+        editor: this.editor,
       }),
     ];
   }
 }
 
-export function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
+export function bangleCollabPlugin({
+  getDocument,
+  pullEvents,
+  pushEvents,
+  editor,
+}) {
   let connection;
-  const bangleCollabPluginKey = new PluginKey('bangleCollabPluginKey');
   const restart = (view) => {
     log('restarting connection');
-    connection.destroy();
+    const oldSelection = view.state.selection;
+    if (connection) {
+      connection.destroy();
+    }
     connection = newConnection(view);
+    connection.init(oldSelection);
   };
+  window.restart = restart;
 
   const newConnection = (view) => {
     return connectionManager({
@@ -106,15 +116,15 @@ export function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
   };
 
   return new Plugin({
-    key: bangleCollabPluginKey,
+    key: collabPluginKey,
     state: {
       init() {
         return null;
       },
       apply(tr, pluginState, prevState, newState) {
         if (
-          !tr.getMeta('isRemote') &&
-          bangleCollabSettingsKey.getState(newState).ready
+          !tr.getMeta('bangle/isRemote') &&
+          collabSettingsKey.getState(newState).ready
         ) {
           if (connection) {
             connection.pushNewEvents();
@@ -125,10 +135,19 @@ export function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
     },
     view(view) {
       connection = newConnection(view);
+      const init = () => {
+        if (connection) {
+          connection.init();
+        }
+      };
+      editor.on('init', init);
       return {
         destroy() {
-          connection.destroy();
-          connection = null;
+          if (connection) {
+            connection.destroy();
+            connection = null;
+          }
+          editor.off('init', init);
         },
       };
     },
@@ -144,11 +163,6 @@ export function connectionManager({
 }) {
   let recoveryBackOff = 0;
   const onReceiveSteps = (payload) => {
-    strictCheckObject(payload, {
-      steps: 'array-of-objects',
-      clientIDs: 'array-of-strings',
-    });
-
     const { clientIDs, steps } = payload;
     if (steps.length === 0) {
       log('no steps', payload);
@@ -157,7 +171,7 @@ export function connectionManager({
 
     const tr = receiveTransaction(view.state, steps, clientIDs)
       .setMeta('addToHistory', false)
-      .setMeta('isRemote', true);
+      .setMeta('bangle/isRemote', true);
     const newState = view.state.apply(tr);
     view.updateState(newState);
     return;
@@ -185,8 +199,7 @@ export function connectionManager({
     },
   );
 
-  const initializeEmitter = collabInitializeEmitter(view, getDocument)
-    .emit('initialize')
+  const initEmitter = collabInitEmitter(view, getDocument)
     .on('stateIsReady', () => {
       pullEmitter.emit('pull');
     })
@@ -195,16 +208,16 @@ export function connectionManager({
     });
 
   const onError = (error) => {
-    const { errorCode, errorFrom } = error;
+    const { errorCode, from } = error;
     if (!(error instanceof CollabError)) {
       console.error(error);
       throw error;
     }
-    log('received error', errorCode, error.message);
+    log('received error', errorCode, error.message, error.from);
 
     // If initialization failed, regardless of error code
     // we will need to restart setting up the initial state
-    if (errorFrom === 'initialize') {
+    if (from === 'init') {
       restart(view);
       return;
     }
@@ -228,6 +241,7 @@ export function connectionManager({
           ? Math.min(recoveryBackOff * 2, 6e4)
           : RECOVERY_BACK_OFF;
         log('attempting recover', recoveryBackOff);
+        // TODO add somee helpful api here for user to react to this
         sleep(recoveryBackOff).then(() => {
           pullEmitter.emit('pull');
         });
@@ -236,6 +250,9 @@ export function connectionManager({
   };
 
   return {
+    init: (oldSelection) => {
+      initEmitter.emit('init', oldSelection);
+    },
     pushNewEvents: () => {
       pushEmitter.emit('push');
     },
@@ -243,7 +260,7 @@ export function connectionManager({
       log('destroying');
       pullEmitter.destroy();
       pushEmitter.destroy();
-      initializeEmitter.destroy();
+      initEmitter.destroy();
     },
   };
 }
@@ -260,6 +277,8 @@ export function pullEventsEmitter(view, pullEvents) {
 
   const pull = () => {
     // Only opt for the latest pull and cancel others
+    // Canceling a pull request is safe, as it doesn't
+    // introduce any side-effects on the server side.
     if (cProm) {
       cProm.cancel();
     }
@@ -328,12 +347,15 @@ export function pushEventsEmitter(view, pushEvents) {
   return emitter;
 }
 
-export function collabInitializeEmitter(view, getDocument) {
+export function collabInitEmitter(view, getDocument) {
   const emitter = new Emitter();
   const collabSettings = getCollabSettings(view.state);
-
   emitter
-    .on('initialize', async () => {
+    .on('init', async (oldSelection) => {
+      // init can be called any time when we want to
+      // restart the collab setup, so we first mark state as not ready
+      // to prevent any unnecessary changes
+      view.dispatch(view.state.tr.setMeta(collabSettingsKey, { ready: false }));
       getDocument({
         docName: collabSettings.docName,
         userId: collabSettings.userId,
@@ -341,24 +363,31 @@ export function collabInitializeEmitter(view, getDocument) {
         (payload) => {
           const { doc, version } = payload;
           // We are breaking into two steps, so that in case the view was destroyed
-          // or there was a networking error, 'initializeState' will not be invoked.
-          emitter.emit('initializeState', { doc, version });
+          // or there was a networking error, 'initCollabState' will not be invoked.
+          emitter.emit('initCollabState', { doc, version }, oldSelection);
         },
         (error) => {
-          error.from = 'initialize';
+          error.from = 'init';
           emitter.emit('error', error);
         },
       );
     })
-    .on('initializeState', (payload) => {
-      strictCheckObject(payload, { doc: 'object', version: 'number' });
+    .on('initCollabState', (payload, oldSelection) => {
       const { doc, version } = payload;
-      const tr = replaceDocument(view.state, doc, version);
+      let tr = replaceDocument(view.state, doc, version);
+
+      if (oldSelection) {
+        tr = tr.setSelection(Selection.near(tr.doc.resolve(oldSelection.from)));
+      }
+
       const newState = view.state.apply(
-        tr.setMeta('isRemote', true).setMeta('collabClientStateSetup', true),
+        tr
+          .setMeta('bangle/isRemote', true)
+          .setMeta('bangle/allowUpdatingEditorState', true),
       );
       view.updateState(newState);
-      view.dispatch(view.state.tr.setMeta('collabClientStateReady', true));
+
+      view.dispatch(view.state.tr.setMeta(collabSettingsKey, { ready: true }));
       emitter.emit('stateIsReady');
       return;
     });

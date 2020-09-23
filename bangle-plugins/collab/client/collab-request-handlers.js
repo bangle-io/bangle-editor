@@ -1,12 +1,19 @@
+const LOG = false;
+let log = LOG
+  ? console.log.bind(console, 'collab/collab-request-handlers')
+  : () => {};
+
 export const collabRequestHandlers = (sendRequest) => ({
-  getDocument: async ({ docName, userId }) => {
+  async getDocument({ docName, userId }) {
+    log({ docName, userId });
     return sendRequest('get_document', {
       docName,
       userId,
     });
   },
 
-  pullEvents: async ({ version, docName, userId }) => {
+  async pullEvents({ version, docName, userId }) {
+    log({ version, docName, userId });
     return sendRequest('get_events', {
       docName,
       version,
@@ -14,7 +21,8 @@ export const collabRequestHandlers = (sendRequest) => ({
     });
   },
 
-  pushEvents: async ({ version, steps, clientID, docName, userId }) => {
+  async pushEvents({ version, steps, clientID, docName, userId }) {
+    log({ version, steps, clientID, docName, userId });
     return sendRequest('push_events', {
       clientID,
       version,

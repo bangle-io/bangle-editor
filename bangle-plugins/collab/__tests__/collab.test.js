@@ -11,8 +11,7 @@ import {
   expectToHaveIdenticalElements,
 } from '../collab-test-helpers';
 import { CollabError } from '../collab-error';
-import { RECOVERY_BACK_OFF } from '../client/client2';
-
+import { RECOVERY_BACK_OFF } from '../client/collab-extension';
 jest.mock('localforage', () => ({
   config: jest.fn(),
   createInstance: jest.fn(),

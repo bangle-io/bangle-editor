@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Editor as PMEditor } from 'bangle-core/editor';
 import {
   OrderedList,
