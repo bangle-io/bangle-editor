@@ -20,8 +20,10 @@ import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
 import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
 import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
+import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
+import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 
-export function extensions() {
+export function extensions({ collabOpts } = {}) {
   return [
     new Bold(),
     new Code(),
@@ -55,5 +57,14 @@ export function extensions() {
         return tooltipContent;
       },
     }),
-  ];
+    collabOpts &&
+      new CollabExtension({
+        docName: collabOpts.docName,
+        clientId: collabOpts.clientId,
+        ...collabRequestHandlers((...args) =>
+          // TODO fix this resp.body
+          collabOpts.manager.handleRequest(...args).then((resp) => resp.body),
+        ),
+      }),
+  ].filter(Boolean);
 }

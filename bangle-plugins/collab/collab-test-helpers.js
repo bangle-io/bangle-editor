@@ -10,7 +10,6 @@ import {
   TodoItem,
 } from 'bangle-core/nodes';
 import { Manager } from './server/manager';
-import { uuid } from 'bangle-core/utils/js-utils';
 import { Disk } from '../persistence/disk';
 import {
   renderTestEditor,
@@ -18,7 +17,8 @@ import {
   sleep,
   typeChar,
 } from 'bangle-core/test-helpers';
-import { CollabEditor } from './client/collab-editor';
+import { CollabExtension } from './client/collab-extension';
+import { collabRequestHandlers } from './client/collab-request-handlers';
 
 const START = '💚';
 const END = '🖤';
@@ -57,7 +57,7 @@ export function setupDb(doc) {
 }
 
 export function setup(db = setupDb(), { managerOpts }) {
-  const extensions = (uid = uuid()) => [
+  const extensions = () => [
     new OrderedList(),
     new BulletList(),
     new ListItem(),
@@ -68,12 +68,12 @@ export function setup(db = setupDb(), { managerOpts }) {
   ];
 
   let disk = new Disk({ db, saveEvery: 50 });
-
+  const manager = new Manager(createOneOffSchema(extensions()), {
+    disk,
+    ...managerOpts,
+  });
   return {
-    manager: new Manager(createOneOffSchema(extensions()), {
-      disk,
-      ...managerOpts,
-    }),
+    manager,
     editors: [],
     getEditor: function (id) {
       return this.editors.find((e) => e[0] === id)?.[1];
@@ -90,12 +90,19 @@ export function setup(db = setupDb(), { managerOpts }) {
       const editor = await renderTestEditor(
         {
           manager: this.manager,
-          extensions: extensions(id),
+          extensions: [
+            ...extensions(),
+            new CollabExtension({
+              docName,
+              clientID: id,
+              ...collabRequestHandlers((...args) =>
+                manager.handleRequest(...args).then((resp) => resp.body),
+              ),
+            }),
+          ],
           content: docName,
-          collabClientId: id,
         },
         'data-test-' + id,
-        CollabEditor,
       )();
       this.editors.push([id, editor]);
       return editor;

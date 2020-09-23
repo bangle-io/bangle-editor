@@ -7,7 +7,7 @@ import {
 import { Step } from 'prosemirror-transform';
 import { Extension } from 'bangle-core/extensions';
 import { Plugin, PluginKey, Selection } from 'prosemirror-state';
-import { getIdleCallback, sleep } from 'bangle-core/utils/js-utils';
+import { getIdleCallback, sleep, uuid } from 'bangle-core/utils/js-utils';
 import { Emitter } from 'bangle-core/utils/emitter';
 import {
   cancelablePromise,
@@ -31,6 +31,11 @@ export class CollabExtension extends Extension {
     return 'collab_extension';
   }
 
+  get defaultOptions() {
+    return {
+      clientID: 'client-' + uuid(),
+    };
+  }
   get plugins() {
     return [
       collab({
@@ -62,7 +67,7 @@ export class CollabExtension extends Extension {
           // Don't allow transactions that modifies the document before
           // collab is ready.
           if (tr.docChanged) {
-            // Let collab client's setup trs go through
+            // Let collab client's setup tr's go through
             if (tr.getMeta('bangle/allowUpdatingEditorState') === true) {
               return true;
             }
@@ -103,7 +108,6 @@ export function bangleCollabPlugin({
     connection = newConnection(view);
     connection.init(oldSelection);
   };
-  window.restart = restart;
 
   const newConnection = (view) => {
     return connectionManager({
@@ -276,7 +280,7 @@ export function pullEventsEmitter(view, pullEvents) {
   let cProm;
 
   const pull = () => {
-    // Only opt for the latest pull and cancel others
+    // Only opt for the latest pull and cancel others.
     // Canceling a pull request is safe, as it doesn't
     // introduce any side-effects on the server side.
     if (cProm) {
@@ -320,6 +324,7 @@ export function pushEventsEmitter(view, pushEvents) {
   const queue = serialExecuteQueue();
 
   const push = async () => {
+    // TODO add debounce
     await queue.add(async () => {
       const steps = sendableSteps(view.state);
       if (!steps) {
