@@ -7,7 +7,6 @@ import React from 'react';
 import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import { OpenDocumentManager } from './components/OpenDocumentManager';
 import { Editor } from './components/Editor';
-import { CollabEditor } from 'bangle-plugins/collab/CollabClient';
 import { Aside } from './components/Aside';
 
 export class AppContainer extends React.PureComponent {
@@ -45,7 +44,6 @@ export class AppContainer extends React.PureComponent {
                         isFirst={i === 0}
                         docName={openedDocument.docName}
                         manager={manager}
-                        editor={CollabEditor}
                       />
                     </EditorContextProvider>
                     {/* adds white space at bottoms */}

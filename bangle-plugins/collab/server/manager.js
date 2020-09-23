@@ -3,13 +3,13 @@ import {
   objectMapValues,
   serialExecuteQueue,
   raceTimeout,
+  sleep,
 } from 'bangle-core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
-
 export class Manager {
   instanceCount = 0;
   maxCount = 20;
@@ -106,9 +106,10 @@ export class Manager {
       doc,
       schema: this.schema,
       scheduleSave: (final) => {
+        const instance = instances[docName];
         final
-          ? this.disk.flushDoc(docName, instances[docName].doc)
-          : this.disk.updateDoc(docName, () => instances[docName].doc);
+          ? this.disk.flushDoc(docName, instance.doc)
+          : this.disk.updateDoc(docName, () => instance.doc);
       },
       created,
       collectUsersTimeout: this.opts.collectUsersTimeout,
@@ -264,13 +265,15 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
     push_events: async ({ clientID, version, steps, docName, userId }) => {
       version = nonNegInteger(version);
       steps = steps.map((s) => Step.fromJSON(schema, s));
-      let result = (await getInstance(docName, userId)).addEvents(
-        version,
-        steps,
-        clientID,
-      );
+      const instance = await getInstance(docName, userId);
+      log('recevied version =', version, 'server version', instance.version);
+      let result = instance.addEvents(version, steps, clientID);
+
       if (!result) {
-        throw new CollabError(409, 'Version not current');
+        throw new CollabError(
+          409,
+          `Version ${version} not current. Currently on ${instance.version}`,
+        );
       } else {
         return Output.json(result);
       }
