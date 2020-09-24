@@ -16,22 +16,9 @@ function log(...args) {
 }
 
 export class ReactEditor extends React.PureComponent {
-  state = {
-    editorKey: 0,
-  };
   static propTypes = {
-    docName: PropTypes.string.isRequired,
     options: PropTypes.object.isRequired,
   };
-
-  componentDidUpdate(prevProps) {
-    if (this.props.docName !== prevProps.docName) {
-      log('Docname not same, creating a new Editor');
-      this.setState((state) => ({
-        editorKey: state.editorKey + 1,
-      }));
-    }
-  }
 
   render() {
     return (
@@ -39,10 +26,7 @@ export class ReactEditor extends React.PureComponent {
         {(renderNodeView, destroyNodeView) => (
           <PMEditorWrapper
             // This allows us to let react handle creating destroying Editor
-            key={this.state.editorKey}
             options={this.props.options}
-            docName={this.props.docName}
-            Editor={this.props.Editor}
             renderNodeView={renderNodeView}
             destroyNodeView={destroyNodeView}
           />
@@ -110,8 +94,6 @@ class PMEditorWrapper extends React.Component {
   static contextType = EditorOnReadyContext;
   static propTypes = {
     options: PropTypes.object.isRequired,
-    docName: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-      .isRequired,
     renderNodeView: PropTypes.func.isRequired,
     destroyNodeView: PropTypes.func.isRequired,
   };
