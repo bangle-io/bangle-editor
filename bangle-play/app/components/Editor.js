@@ -41,7 +41,6 @@ export class Editor extends React.PureComponent {
     return (
       <ReactEditor
         options={this.options('bangle-play-' + docName + '-' + uuid(4))}
-        docName={docName}
       />
     );
   }
