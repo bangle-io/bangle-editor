@@ -41,7 +41,7 @@ export class AppContainer extends React.PureComponent {
                   <div
                     key={openedDocument.key}
                     className="flex-1 max-w-screen-md ml-6 mr-6"
-                    style={{ overflow: 'scroll', height: '90vh' }}
+                    style={{ height: '100vh', overflow: 'scroll' }}
                   >
                     <EditorContextProvider>
                       <Editor
