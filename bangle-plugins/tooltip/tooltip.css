@@ -1,4 +1,4 @@
-#bangle-selection-tooltip {
+#bangle-tooltip {
   background: #333;
   color: white;
   font-weight: bold;
@@ -8,7 +8,7 @@
   display: none;
 }
 
-#bangle-selection-tooltip[data-show] {
+#bangle-tooltip[data-show] {
   display: block;
 }
 
@@ -26,22 +26,18 @@
   background: #333;
 }
 
-#bangle-selection-tooltip[data-popper-placement^='top']
-  > #bangle-tooltip-arrow {
+#bangle-tooltip[data-popper-placement^='top'] > #bangle-tooltip-arrow {
   bottom: -4px;
 }
 
-#bangle-selection-tooltip[data-popper-placement^='bottom']
-  > #bangle-tooltip-arrow {
+#bangle-tooltip[data-popper-placement^='bottom'] > #bangle-tooltip-arrow {
   top: -4px;
 }
 
-#bangle-selection-tooltip[data-popper-placement^='left']
-  > #bangle-tooltip-arrow {
+#bangle-tooltip[data-popper-placement^='left'] > #bangle-tooltip-arrow {
   right: -4px;
 }
 
-#bangle-selection-tooltip[data-popper-placement^='right']
-  > #bangle-tooltip-arrow {
+#bangle-tooltip[data-popper-placement^='right'] > #bangle-tooltip-arrow {
   left: -4px;
 }

@@ -18,12 +18,13 @@ import {
 import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
-import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
-import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
+import { Tooltip } from 'bangle-plugins/tooltip/index';
+import 'bangle-plugins/tooltip/tooltip.css';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
+import { inlineMenu } from './inline-menu/inline-menu';
 
-export function extensions({ collabOpts } = {}) {
+export function extensions({ collabOpts, inlineMenuDOM } = {}) {
   return [
     new Bold(),
     new Code(),
@@ -50,13 +51,6 @@ export function extensions({ collabOpts } = {}) {
     new TrailingNode(),
     new StopwatchExtension(),
     new Timestamp(),
-    new SelectionTooltip({
-      tooltipContent: (view) => {
-        const tooltipContent = document.createElement('div');
-        tooltipContent.textContent = 'hello world';
-        return tooltipContent;
-      },
-    }),
     collabOpts &&
       new CollabExtension({
         docName: collabOpts.docName,
@@ -66,5 +60,14 @@ export function extensions({ collabOpts } = {}) {
           collabOpts.manager.handleRequest(...args).then((resp) => resp.body),
         ),
       }),
+    inlineMenuDOM
+      ? inlineMenu(inlineMenuDOM)
+      : new Tooltip({
+          tooltipContent: (view) => {
+            const tooltipContent = document.createElement('div');
+            tooltipContent.textContent = 'hello world';
+            return tooltipContent;
+          },
+        }),
   ].filter(Boolean);
 }
