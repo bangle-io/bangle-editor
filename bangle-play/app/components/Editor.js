@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { extensions } from '../editor/extensions';
 import { uuid } from 'bangle-core/utils/js-utils';
-import { InlineMenu } from 'bangle-play/extensions/inline-menu';
 import { Header } from './Header';
 
 const DEBUG = true;
@@ -18,20 +17,20 @@ export class Editor extends React.PureComponent {
   };
 
   devtools = this.props.isFirst && (process.env.JEST_INTEGRATION || DEBUG);
-  inlineMenu = new InlineMenu();
+  inlineMenuDOM = document.createElement('div');
   options = {
     id: 'bangle-play-' + this.props.docName + '-' + uuid(4),
     content: 'Loading document',
     devtools: this.devtools,
     extensions: [
       ...extensions({
+        inlineMenuDOM: this.inlineMenuDOM,
         collabOpts: {
           docName: this.props.docName,
           manager: this.props.manager,
           clientId: 'client-' + uuid(4),
         },
       }),
-      ...this.inlineMenu.extensions(),
     ],
     editorProps: {
       attributes: { class: 'bangle-editor content' },
@@ -46,7 +45,8 @@ export class Editor extends React.PureComponent {
     return (
       <>
         <ReactEditor options={this.options} />
-        {ReactDOM.createPortal(<Header />, this.inlineMenu.tooltipContent)}
+        {this.inlineMenuDOM &&
+          ReactDOM.createPortal(<Header />, this.inlineMenuDOM)}
       </>
     );
   }

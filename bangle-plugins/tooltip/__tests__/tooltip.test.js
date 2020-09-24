@@ -11,8 +11,8 @@ import {
   renderTestEditor,
 } from 'bangle-core/test-helpers';
 
-import { SelectionTooltip } from '../selection-tooltip';
-import { Heading } from 'bangle-core/index';
+import { Tooltip } from '../tooltip';
+import { Heading } from 'bangle-core/nodes/index';
 // due to some unknown issue, the view doesn't have focus
 // when running test which causes tests to fail
 jest.mock('bangle-plugins/helpers/index', () => {
@@ -22,7 +22,7 @@ jest.mock('bangle-plugins/helpers/index', () => {
 });
 
 test('Correctly adds tooltip', async () => {
-  const extensions = [new Heading(), new SelectionTooltip()];
+  const extensions = [new Heading(), new Tooltip()];
   const testEditor = renderTestEditor({ extensions });
   const { editor } = await testEditor(
     <doc>
@@ -47,7 +47,7 @@ test('Correctly adds tooltip', async () => {
       <div
         data-popper-placement="bottom"
         data-show=""
-        id="bangle-selection-tooltip"
+        id="bangle-tooltip"
         role="tooltip"
         style="position: absolute; left: 0px; top: 0px; margin: 0px; transform: translate(0px, 0px);"
       >
@@ -67,8 +67,8 @@ test('Handles a custom tooltip', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new SelectionTooltip({
-      tooltipDom: () => tooltip,
+    new Tooltip({
+      tooltipDOM: tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
@@ -86,8 +86,8 @@ test('No tooltip if no selection', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new SelectionTooltip({
-      tooltipDom: () => tooltip,
+    new Tooltip({
+      tooltipDOM: tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
@@ -105,8 +105,8 @@ test('On typing hide tooltip', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new SelectionTooltip({
-      tooltipDom: () => tooltip,
+    new Tooltip({
+      tooltipDOM: tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
@@ -128,8 +128,8 @@ test.skip('Keyboard based selection expand should show tooltip', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new SelectionTooltip({
-      tooltipDom: () => tooltip,
+    new Tooltip({
+      tooltipDOM: tooltip,
     }),
   ];
   const testEditor = renderTestEditor({ extensions });
