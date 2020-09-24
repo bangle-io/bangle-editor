@@ -103,7 +103,7 @@ export function MenuItemButton({ active, enabled, onClick, label, iconType }) {
   );
 }
 MenuItemButton.propTypes = {
-  active: PropTypes.bool.isRequired,
+  active: PropTypes.bool,
   enabled: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
