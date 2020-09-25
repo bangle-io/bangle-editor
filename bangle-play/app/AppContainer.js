@@ -35,13 +35,13 @@ export class AppContainer extends React.PureComponent {
         }) => (
           <div className="h-screen main-wrapper">
             {/* {!isMobile && <Header entry={this.state.entry} />} */}
-            <div className="editor-wrapper overflow-auto">
+            <div className="editor-wrapper">
               <div className="flex justify-center flex-row">
                 {openedDocuments.map((openedDocument, i) => (
                   <div
                     key={openedDocument.key}
                     className="flex-1 max-w-screen-md ml-6 mr-6"
-                    style={{ height: '100vh', overflow: 'scroll' }}
+                    style={{ height: '100vh', overflowY: 'scroll' }}
                   >
                     <EditorContextProvider>
                       <Editor
