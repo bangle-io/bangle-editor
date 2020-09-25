@@ -1,5 +1,5 @@
 import './inline-menu.css';
-import { Tooltip } from 'bangle-plugins/tooltip/index';
+import { Tooltip } from 'bangle-plugins/selection-tooltip/index';
 
 export function inlineMenu(tooltipDOM) {
   const tooltipContent = document.createElement('div');
