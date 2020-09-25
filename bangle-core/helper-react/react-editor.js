@@ -68,7 +68,9 @@ class PortalWrapper extends React.PureComponent {
   rerender = smartDebounce(
     () => {
       log('rerendering by state change');
-      this.setState((state) => ({ counter: state.counter + 1 }));
+      // Since this can be called after editor is unmounted
+      this.portalProviderAPI &&
+        this.setState((state) => ({ counter: state.counter + 1 }));
     },
     100,
     20,

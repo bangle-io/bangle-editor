@@ -18,8 +18,8 @@ import {
 import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
-import { Tooltip } from 'bangle-plugins/tooltip/index';
-import 'bangle-plugins/tooltip/tooltip.css';
+import { Tooltip } from 'bangle-plugins/selection-tooltip/index';
+import 'bangle-plugins/selection-tooltip/tooltip.css';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import { inlineMenu } from './inline-menu/inline-menu';
