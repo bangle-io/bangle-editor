@@ -35,6 +35,11 @@ export class Paragraph extends Node {
         },
       ],
       toDOM: () => ['p', 0],
+
+      toMarkdown: (state, node) => {
+        state.renderInline(node);
+        state.closeBlock(node);
+      },
     };
   }
 

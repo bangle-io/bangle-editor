@@ -17,6 +17,7 @@ module.exports = {
     Node: 'off',
     Selection: 'off',
     Plugin: 'off',
+    Image: 'off',
   },
   rules: {
     curly: 'error',

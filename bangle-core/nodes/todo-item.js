@@ -86,6 +86,10 @@ export class TodoItem extends Node {
           }),
         },
       ],
+
+      toMarkdown: (state, node) => {
+        state.renderContent(node);
+      },
     };
   }
 
