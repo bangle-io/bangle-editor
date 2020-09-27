@@ -4193,6 +4193,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["emojis-list", "npm:3.0.0"],
             ["localforage", "npm:1.9.0"],
             ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-transform", "npm:1.2.7"],
             ["react", "npm:16.13.1"],
@@ -10220,6 +10221,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["linkify-it", [
+        ["npm:2.2.0", {
+          "packageLocation": "./.yarn/cache/linkify-it-npm-2.2.0-3eb4775d11-7905b34078.zip/node_modules/linkify-it/",
+          "packageDependencies": [
+            ["linkify-it", "npm:2.2.0"],
+            ["uc.micro", "npm:1.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["lint-staged", [
         ["npm:10.3.0", {
           "packageLocation": "./.yarn/cache/lint-staged-npm-10.3.0-1c3340e6c7-1e8bfa56f4.zip/node_modules/lint-staged/",
@@ -10512,6 +10523,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["markdown-it", [
+        ["npm:10.0.0", {
+          "packageLocation": "./.yarn/cache/markdown-it-npm-10.0.0-5f034e780e-f052906744.zip/node_modules/markdown-it/",
+          "packageDependencies": [
+            ["markdown-it", "npm:10.0.0"],
+            ["argparse", "npm:1.0.10"],
+            ["entities", "npm:2.0.3"],
+            ["linkify-it", "npm:2.2.0"],
+            ["mdurl", "npm:1.0.1"],
+            ["uc.micro", "npm:1.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["md5.js", [
         ["npm:1.3.5", {
           "packageLocation": "./.yarn/cache/md5.js-npm-1.3.5-130901125a-ca0b260ea2.zip/node_modules/md5.js/",
@@ -10520,6 +10545,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["hash-base", "npm:3.1.0"],
             ["inherits", "npm:2.0.4"],
             ["safe-buffer", "npm:5.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["mdurl", [
+        ["npm:1.0.1", {
+          "packageLocation": "./.yarn/cache/mdurl-npm-1.0.1-054d974269-ed5e81efed.zip/node_modules/mdurl/",
+          "packageDependencies": [
+            ["mdurl", "npm:1.0.1"]
           ],
           "linkType": "HARD",
         }]
@@ -12572,6 +12606,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-state", "npm:1.3.3"],
             ["w3c-keyname", "npm:2.2.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["prosemirror-markdown", [
+        ["npm:1.5.0", {
+          "packageLocation": "./.yarn/cache/prosemirror-markdown-npm-1.5.0-207853176b-084723d6f3.zip/node_modules/prosemirror-markdown/",
+          "packageDependencies": [
+            ["prosemirror-markdown", "npm:1.5.0"],
+            ["markdown-it", "npm:10.0.0"],
+            ["prosemirror-model", "npm:1.11.0"]
           ],
           "linkType": "HARD",
         }]
@@ -15337,6 +15382,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["typedarray-to-buffer", "npm:3.1.5"],
             ["is-typedarray", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["uc.micro", [
+        ["npm:1.0.6", {
+          "packageLocation": "./.yarn/cache/uc.micro-npm-1.0.6-36f3dc2fc4-9dfe5ad0a0.zip/node_modules/uc.micro/",
+          "packageDependencies": [
+            ["uc.micro", "npm:1.0.6"]
           ],
           "linkType": "HARD",
         }]
