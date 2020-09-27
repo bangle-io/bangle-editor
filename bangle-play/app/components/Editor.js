@@ -44,9 +44,9 @@ export class Editor extends React.PureComponent {
   render() {
     return (
       <>
-        <ReactEditor options={this.options} />
         {this.inlineMenuDOM &&
           ReactDOM.createPortal(<Header />, this.inlineMenuDOM)}
+        <ReactEditor options={this.options} />
       </>
     );
   }

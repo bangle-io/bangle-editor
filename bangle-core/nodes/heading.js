@@ -49,6 +49,12 @@ export class Heading extends Node {
           0,
         ];
       },
+
+      toMarkdown: (state, node) => {
+        state.write(state.repeat('#', node.attrs.level) + ' ');
+        state.renderInline(node);
+        state.closeBlock(node);
+      },
     };
   }
 

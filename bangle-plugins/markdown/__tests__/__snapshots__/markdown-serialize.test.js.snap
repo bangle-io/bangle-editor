@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`paragraphs Case 0 misc char \` 1`] = `"hello world\\\\\`s"`;
+
+exports[`paragraphs Case 1 misc char \\ 1`] = `"hello world\\\\\\\\s"`;
+
+exports[`paragraphs Case 2 misc char ' 1`] = `"hello world's"`;
+
+exports[`paragraphs Case 3 misc char " 1`] = `"hello world\\"s"`;
+
+exports[`paragraphs Case 4 misc char ~ 1`] = `"hello world\\\\~s"`;
+
+exports[`paragraphs Case 5 misc char ! 1`] = `"hello world!s"`;
+
+exports[`paragraphs Case 6 misc char @ 1`] = `"hello world@s"`;
+
+exports[`paragraphs Case 7 misc char # 1`] = `"hello world#s"`;
+
+exports[`paragraphs Case 8 misc char $ 1`] = `"hello world$s"`;
+
+exports[`paragraphs Case 9 misc char % 1`] = `"hello world%s"`;
+
+exports[`paragraphs Case 10 misc char ^ 1`] = `"hello world^s"`;
+
+exports[`paragraphs Case 11 misc char & 1`] = `"hello world&s"`;
+
+exports[`paragraphs Case 12 misc char * 1`] = `"hello world\\\\*s"`;
+
+exports[`paragraphs Case 13 misc char ( 1`] = `"hello world(s"`;
+
+exports[`paragraphs Case 14 misc char ) 1`] = `"hello world)s"`;
+
+exports[`paragraphs Case 15 misc char { 1`] = `"hello world{s"`;
+
+exports[`paragraphs Case 16 misc char } 1`] = `"hello world}s"`;
+
+exports[`paragraphs Case 17 misc char - 1`] = `"hello world-s"`;
+
+exports[`paragraphs Case 18 misc char + 1`] = `"hello world+s"`;
+
+exports[`paragraphs Case 19 misc char = 1`] = `"hello world=s"`;
+
+exports[`paragraphs Case 20 misc char _ 1`] = `"hello world_s"`;
+
+exports[`paragraphs Case 21 misc char : 1`] = `"hello world:s"`;
+
+exports[`paragraphs Case 22 misc char ; 1`] = `"hello world;s"`;
+
+exports[`paragraphs Case 23 misc char , 1`] = `"hello world,s"`;
+
+exports[`paragraphs Case 24 misc char < 1`] = `"hello world<s"`;
+
+exports[`paragraphs Case 25 misc char . 1`] = `"hello world.s"`;
+
+exports[`paragraphs Case 26 misc char > 1`] = `"hello world>s"`;
+
+exports[`paragraphs Case 27 misc char / 1`] = `"hello world/s"`;
+
+exports[`paragraphs Case 28 misc char ? 1`] = `"hello world?s"`;

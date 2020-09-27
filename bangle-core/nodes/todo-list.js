@@ -20,6 +20,13 @@ export class TodoList extends Node {
           tag: `[data-type="${this.name}"]`,
         },
       ],
+      toMarkdown: (state, node) => {
+        state.renderList(
+          node,
+          '  ',
+          () => `- [${node.attrs.bullet ? 'x' : ' '}] `,
+        );
+      },
     };
   }
 

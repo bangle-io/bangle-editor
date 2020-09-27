@@ -12,6 +12,15 @@ export class Italic extends Mark {
     return {
       parseDOM: [{ tag: 'i' }, { tag: 'em' }, { style: 'font-style=italic' }],
       toDOM: () => ['em', 0],
+
+      toMarkdown: () => {
+        return {
+          open: '_',
+          close: '_',
+          mixable: true,
+          expelEnclosingWhitespace: true,
+        };
+      },
     };
   }
 

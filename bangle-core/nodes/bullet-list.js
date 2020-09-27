@@ -14,6 +14,10 @@ export class BulletList extends Node {
       group: 'block',
       parseDOM: [{ tag: 'ul' }],
       toDOM: () => ['ul', 0],
+
+      toMarkdown: (state, node) => {
+        state.renderList(node, '  ', () => (node.attrs.bullet || '-') + ' ');
+      },
     };
   }
 

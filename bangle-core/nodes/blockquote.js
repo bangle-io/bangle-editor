@@ -19,6 +19,10 @@ export class Blockquote extends Node {
       draggable: false,
       parseDOM: [{ tag: 'blockquote' }],
       toDOM: () => ['blockquote', 0],
+
+      toMarkdown: (state, node) => {
+        state.wrapBlock('> ', null, node, () => state.renderContent(node));
+      },
     };
   }
 
