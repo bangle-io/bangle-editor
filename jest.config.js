@@ -9,4 +9,6 @@ module.exports = {
     (w) => `<rootDir>/${w}/tests-integration/`,
   ),
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
+  coverageReporters: ['json', 'lcov', 'text-summary'],
+  collectCoverage: true,
 };
