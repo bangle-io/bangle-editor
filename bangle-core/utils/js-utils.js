@@ -220,6 +220,11 @@ export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));
 }
 
+/**
+ * @typedef {(value: any, key: string) => any} Mapper
+ * @param {Object} obj
+ * @param {Mapper} map
+ */
 export function objectMapValues(obj, map) {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
@@ -228,6 +233,11 @@ export function objectMapValues(obj, map) {
   );
 }
 
+/**
+ * @typedef {(value: any, key: string) => boolean} objectFilterCb
+ * @param {Object} obj
+ * @param {objectFilterCb} cb
+ */
 export function objectFilter(obj, cb) {
   return Object.fromEntries(
     Object.entries(obj).filter(([key, value]) => {

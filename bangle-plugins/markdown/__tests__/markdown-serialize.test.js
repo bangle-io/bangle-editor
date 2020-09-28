@@ -18,7 +18,7 @@ import {
   Image,
 } from 'bangle-core/nodes';
 import { Underline } from 'bangle-core/marks';
-import { markdownSerializer } from '../serialize';
+import { markdownSerializer } from '../markdown-serializer';
 import {
   Bold,
   Code,
@@ -739,7 +739,6 @@ describe('todo list', () => {
         </todoList>
       </doc>,
     );
-    writeToFile(md);
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
 

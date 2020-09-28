@@ -6,6 +6,7 @@ import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { extensions } from '../editor/extensions';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
+import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 
 const DEBUG = true;
 
@@ -34,6 +35,9 @@ export class Editor extends React.PureComponent {
     ],
     editorProps: {
       attributes: { class: 'bangle-editor content' },
+    },
+    onInit: ({ view, state }) => {
+      window.serializer = markdownSerializer(state.schema);
     },
   };
 

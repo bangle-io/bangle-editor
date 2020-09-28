@@ -14,7 +14,7 @@ export class Heading extends Node {
 
   get defaultOptions() {
     return {
-      levels: [1, 2, 3, 4, 5, 6],
+      levels: ['1', '2', '3', '4', '5', '6'],
       classNames: {},
     };
   }
@@ -23,7 +23,7 @@ export class Heading extends Node {
     return {
       attrs: {
         level: {
-          default: 1,
+          default: '1',
         },
       },
       content: 'inline*',

@@ -9,6 +9,7 @@ import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
+import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 
 export const DINO_IMAGES = {
   brontosaurus: brontosaurusImg,
@@ -69,6 +70,11 @@ export default class Dino extends Node {
           },
         },
       ],
+
+      toMarkdown: (state, node) => {
+        const string = serializeAtomNodeToMdLink(this.name, node.attrs);
+        state.write(string);
+      },
     };
   }
 
