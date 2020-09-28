@@ -27,6 +27,7 @@ import {
   Link,
   Strike,
 } from 'bangle-core/index';
+import { markdownParser } from '../markdown-parser';
 
 const extensions = [
   new BulletList(),
@@ -60,109 +61,166 @@ const writeToFile = (md) => {
   require('fs').writeFileSync('./my.md', md, 'utf8');
 };
 
+const parse = async (md) => markdownParser(await schemaPromise).parse(md);
+
 describe('paragraphs', () => {
   test('paragraph', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>hello world</para>
-      </doc>,
+      </doc>
     );
+
+    const md = await serialize(doc);
     expect(md).toMatchInlineSnapshot(`"hello world"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('paragraph', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>hello world</para>
         <para>bye world</para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
+
     expect(md).toMatchInlineSnapshot(`
       "hello world
 
       bye world"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('paragraph multiple spaces', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>{'hello        world'}</para>
         <para>bye world</para>
-      </doc>,
+      </doc>
     );
+
+    const md = await serialize(doc);
     expect(md).toMatchInlineSnapshot(`
       "hello        world
 
       bye world"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('paragraph spaces start and end', async () => {
-    const md = await serialize(
+  test('when parsing paragraph with spaces at start and end, they are removed', async () => {
+    const doc = (
       <doc>
         <para>{' hello world '}</para>
         <para>bye world</para>
+      </doc>
+    );
+
+    const md = await serialize(doc);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>hello world</para>
+        <para>bye world</para>
       </doc>,
     );
-    expect(md).toMatchInlineSnapshot(`
-      " hello world 
-
-      bye world"
-    `);
   });
 
   test.each(['`', '\\', ...`'"~!@#$%^&*(){}-+=_:;,<.>/?`])(
     'Case %# misc char %s',
     async (str) => {
-      let md = await serialize(
+      const doc = (
         <doc>
           <para>hello world{str}s</para>
-        </doc>,
+        </doc>
       );
+
+      let md = await serialize(doc);
       expect(md).toMatchSnapshot();
+      expect(await parse(md)).toEqualDocument(doc);
     },
   );
 
   test('new line', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>hello {'\n'}world</para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toEqual('hello \nworld');
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>hello{'\n'}world</para>
       </doc>,
     );
-    expect(md).toEqual('hello \nworld');
   });
 
-  test('new line', async () => {
-    const md = await serialize(
+  test('multiple new line', async () => {
+    const doc = (
       <doc>
         <para>hello {'\n\n\n'}world</para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toEqual('hello \n\n\nworld');
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>hello</para>
+        <para>world</para>
       </doc>,
     );
-    expect(md).toEqual('hello \n\n\nworld');
   });
-  // decide what we wanna do with empty
+  // TODO decide what we wanna do with empty
   // paragraph: introduce a br or just ignore them
-  test.todo('empty paragraph');
+  test('multiple empty paragraph are omitted', async () => {
+    const doc = (
+      <doc>
+        <para>hello</para>
+        <para></para>
+        <para></para>
+        <para></para>
+        <para>world</para>
+      </doc>
+    );
+
+    const md = await serialize(doc);
+    expect(md).toEqual('hello\n\nworld');
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>hello</para>
+        <para>world</para>
+      </doc>,
+    );
+  });
 });
 
 describe('ordered list', () => {
   test('renders ordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ol>
           <li>
             <para>hello</para>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
 
+    const md = await serialize(doc);
+
     expect(md).toMatchInlineSnapshot(`"1. hello"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders ordered list with 2 items', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ol>
           <li>
@@ -172,18 +230,23 @@ describe('ordered list', () => {
             <para>hello</para>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
+
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "1. hello
 
       2. hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders 2  ordered list', async () => {
-    const md = await serialize(
+  // TODO do we want this behaviour
+  test('when parsing 2 adjacent ordered list, it fuses them into 1', async () => {
+    const doc = (
       <doc>
         <ol>
           <li>
@@ -195,8 +258,9 @@ describe('ordered list', () => {
             <para>hello</para>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "1. hello
@@ -204,10 +268,23 @@ describe('ordered list', () => {
 
       1. hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <ol>
+          <li>
+            <para>hello</para>
+          </li>
+          <li>
+            <para>hello</para>
+          </li>
+        </ol>
+      </doc>,
+    );
   });
 
   test('renders paragraph between 2 ordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ol>
           <li>
@@ -220,8 +297,10 @@ describe('ordered list', () => {
             <para>hello</para>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
+
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "1. hello
@@ -230,10 +309,42 @@ describe('ordered list', () => {
 
       1. hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders hr between 2 ordered list', async () => {
+    const doc = (
+      <doc>
+        <ol>
+          <li>
+            <para>hello</para>
+          </li>
+        </ol>
+        <hr />
+        <ol>
+          <li>
+            <para>hello</para>
+          </li>
+        </ol>
+      </doc>
+    );
+
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "1. hello
+
+      ---
+
+      1. hello"
+    `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders paragraph followed by 2 ordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>world</para>
         <ol>
@@ -246,8 +357,9 @@ describe('ordered list', () => {
             <para>hello</para>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "world
@@ -257,10 +369,24 @@ describe('ordered list', () => {
 
       1. hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>world</para>
+        <ol>
+          <li>
+            <para>hello</para>
+          </li>
+          <li>
+            <para>hello</para>
+          </li>
+        </ol>
+      </doc>,
+    );
   });
 
   test('renders list with multiple paragraph', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ol>
           <li>
@@ -272,8 +398,9 @@ describe('ordered list', () => {
             <para>other</para>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "1. text
@@ -284,26 +411,31 @@ describe('ordered list', () => {
 
          other"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 });
 
 describe('unordered list', () => {
   test('renders unordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ul>
           <li>
             <para>hello</para>
           </li>
         </ul>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`"- hello"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders unordered list with 2 children', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ul>
           <li>
@@ -313,18 +445,20 @@ describe('unordered list', () => {
             <para>hello</para>
           </li>
         </ul>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "- hello
 
       - hello"
     `);
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders unordered list nested inside ordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ol>
           <li>
@@ -339,8 +473,9 @@ describe('unordered list', () => {
             </ul>
           </li>
         </ol>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "1. parent
@@ -349,66 +484,89 @@ describe('unordered list', () => {
 
          - hello"
     `);
+    expect(await parse(md)).toEqualDocument(doc);
   });
 });
 
 describe('blockquote', () => {
   test('renders blockquote', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <blockquote>
           <para>kj</para>
         </blockquote>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`"> kj"`);
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders blockquote with empty para above', async () => {
-    const md = await serialize(
+  test('when blockquote with empty para above, parsing removes it', async () => {
+    const doc = (
       <doc>
-        <para>[]</para>
+        <para></para>
         <blockquote>
           <para>foobar</para>
         </blockquote>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "
       > foobar"
     `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+      </doc>,
+    );
   });
 
   test('renders blockquote with empty para inside', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>other paragraph</para>
         <blockquote>
           <para>hello</para>
           <para></para>
         </blockquote>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "other paragraph
 
       > hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>other paragraph</para>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+      </doc>,
+    );
   });
 
   test('renders blockquote with two para inside', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>other paragraph</para>
         <blockquote>
           <para>hello</para>
           <para>check</para>
         </blockquote>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "other paragraph
@@ -417,10 +575,13 @@ describe('blockquote', () => {
       >
       > check"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
+  // TODO is this behaviour desired
   test('renders blockquote with two para and one empty para inside', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>other paragraph</para>
         <blockquote>
@@ -428,8 +589,9 @@ describe('blockquote', () => {
           <para></para>
           <para>check</para>
         </blockquote>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "other paragraph
@@ -438,28 +600,48 @@ describe('blockquote', () => {
       >
       > check"
     `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>other paragraph</para>
+        <blockquote>
+          <para>hello</para>
+          <para>check</para>
+        </blockquote>
+      </doc>,
+    );
   });
 
   test('renders blockquote with para below', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <blockquote>
           <para>hello</para>
           <para></para>
         </blockquote>
         <para>other paragraph</para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "> hello
 
       other paragraph"
     `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+        <para>other paragraph</para>
+      </doc>,
+    );
   });
 
   test('renders blockquote with hardbreak below', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <blockquote>
           <para>
@@ -469,8 +651,9 @@ describe('blockquote', () => {
           </para>
         </blockquote>
         <para>other paragraph</para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "> hello\\\\
@@ -478,10 +661,12 @@ describe('blockquote', () => {
 
       other paragraph"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders blockquote with list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <ul>
           <li>
@@ -492,107 +677,160 @@ describe('blockquote', () => {
           <para>hello</para>
         </blockquote>
         <para>[]</para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "- top
 
       > hello"
     `);
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>top</para>
+          </li>
+        </ul>
+        <blockquote>
+          <para>hello</para>
+        </blockquote>
+      </doc>,
+    );
   });
 });
 
 describe('codeBlock list', () => {
   test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <para></para>
-        <codeBlock>foobar</codeBlock>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`
-      "
-      \`\`\`
-      foobar
-      \`\`\`"
-    `);
-  });
-
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <para></para>
-        <codeBlock>foobar`something`</codeBlock>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`
-      "
-      \`\`\`
-      foobar\`something\`
-      \`\`\`"
-    `);
-  });
-
-  test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <codeBlock>foobar</codeBlock>
-        <para></para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "\`\`\`
       foobar
       \`\`\`"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <codeBlock>foobar`something`</codeBlock>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "\`\`\`
+      foobar\`something\`
+      \`\`\`"
+    `);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <codeBlock>foobar</codeBlock>
+        <para></para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "\`\`\`
+      foobar
+      \`\`\`"
+    `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <codeBlock>foobar</codeBlock>
+      </doc>,
+    );
+  });
+
+  test('renders with lang identifier', async () => {
+    const doc = (
+      <doc>
+        <codeBlock language="js">foobar</codeBlock>
+        <para></para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "\`\`\`js
+      foobar
+      \`\`\`"
+    `);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <codeBlock language="js">foobar</codeBlock>
+      </doc>,
+    );
   });
 });
 
 describe('doc empty', () => {
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para></para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`""`);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 });
 
 describe('heading', () => {
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>top</para>
         <heading level="1">hello[]</heading>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "top
 
       # hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>top</para>
         <heading level="3">hello[]</heading>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "top
 
       ### hello"
     `);
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 });
 
@@ -601,68 +839,443 @@ describe('image', () => {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==';
 
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>
           hello[]
           <image src={image} />
         </para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(
       `"hello![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==)"`,
     );
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>
           hello[]
           <image alt="image" src={image} />
         </para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(
       `"hello![image](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==)"`,
     );
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>
           hello[]
           <image label="dot" alt="image" src={image} />
         </para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(
       `"hello![image](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==)"`,
     );
+
+    expect(await parse(md)).toEqualDocument(doc);
   });
 
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <para>
           hello
           <image src="image.jpg" title="image" alt="image" />
           []
         </para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`"hello![image](image.jpg \\"image\\")"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+});
+
+describe('horizontal rule', () => {
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <hr />
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"---"`);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <hr />
+        <para>hello</para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "---
+
+      hello"
+    `);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <para>hello</para>
+        <hr />
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "hello
+
+      ---"
+    `);
+  });
+});
+
+describe('horizontal rule', () => {
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <hr />
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"---"`);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <hr />
+        <para>hello</para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "---
+
+      hello"
+    `);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <para>hello</para>
+        <hr />
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "hello
+
+      ---"
+    `);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+});
+
+describe('marks', () => {
+  test('link ', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello world
+          <link href="https://example.com">https://example.com</link>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"hello world<https://example.com>"`);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('link with content', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello world
+          <link href="https://example.com">example</link>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(
+      `"hello world[example](https://example.com)"`,
+    );
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('link with relative url', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello world
+          <link href="./example.png">example</link>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"hello world[example](./example.png)"`);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('link with relative url and asterisk', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello world <link href="./example*.png">example</link>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toEqual('hello world [example](./example\\*.png)');
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  // todo fix me
+  test('strike link', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello{' '}
+          <strike>
+            world
+            <link href="./example.png">example</link>
+          </strike>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(
+      `"hello ~~world~~[~~example~~](./example.png)"`,
+    );
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('strike link italic', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello{' '}
+          <strike>
+            world
+            <link href="./example.png">example</link>
+            <italic>again</italic>
+          </strike>{' '}
+          !
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(
+      `"hello ~~world~~[~~example~~](./example.png)_~~again~~_ !"`,
+    );
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('strike', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello <strike>world</strike>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toMatchInlineSnapshot(`"hello ~~world~~"`);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('test asterix', async () => {
+    const doc = (
+      <doc>
+        <para>*hello* world</para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toMatchInlineSnapshot(`"\\\\*hello\\\\* world"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('bold', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello
+          <bold>world</bold>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"hello**world**"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('bold', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello
+          <bold>world </bold>
+          <italic>say hello</italic>
+          <strike> bye world </strike>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(
+      `"hello**world** _say hello_ ~~bye world~~ "`,
+    );
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>
+          hello
+          <bold>world</bold> <italic>say hello</italic>{' '}
+          <strike>bye world</strike>
+        </para>
+      </doc>,
+    );
+  });
+
+  test('italic', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello <italic>world</italic>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"hello _world_"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('italic and bold', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello{' '}
+          <bold>
+            <italic>world</italic>
+          </bold>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`"hello **_world_**"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('underline', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello <underline>world</underline>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toMatchInlineSnapshot(`"hello _world_"`);
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>
+          hello <italic>world</italic>
+        </para>
+      </doc>,
+    );
+  });
+
+  test('code', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello <code>world</code>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toMatchInlineSnapshot(`"hello \`world\`"`);
+
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('code escaping', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello <code>worl`d</code>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toEqual('hello `` worl`d ``');
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('code escaping', async () => {
+    const doc = (
+      <doc>
+        <para>
+          hello <code>_world_</code>
+        </para>
+      </doc>
+    );
+    const md = await serialize(doc);
+    expect(md).toEqual('hello `_world_`');
+    expect(await parse(md)).toEqualDocument(doc);
   });
 });
 
 describe('todo list', () => {
   test('renders', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <todoList>
           <todoItem>
@@ -672,8 +1285,75 @@ describe('todo list', () => {
             <para>[]second</para>
           </todoItem>
         </todoList>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "- [ ] first
+
+      - [ ] second"
+    `);
+  });
+
+  test('renders done check list', async () => {
+    const doc = (
+      <doc>
+        <todoList>
+          <todoItem>
+            <para>first</para>
+          </todoItem>
+          <todoItem data-done="true">
+            <para>[]second</para>
+          </todoItem>
+        </todoList>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "- [ ] first
+
+      - [x] second"
+    `);
+  });
+
+  test('renders not done check list', async () => {
+    const doc = (
+      <doc>
+        <todoList>
+          <todoItem>
+            <para>first</para>
+          </todoItem>
+          <todoItem data-done={false}>
+            <para>[]second</para>
+          </todoItem>
+        </todoList>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "- [ ] first
+
+      - [ ] second"
+    `);
+  });
+
+  test('renders', async () => {
+    const doc = (
+      <doc>
+        <todoList>
+          <todoItem>
+            <para>first</para>
+          </todoItem>
+          <todoItem>
+            <para>[]second</para>
+          </todoItem>
+        </todoList>
+      </doc>
+    );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
@@ -683,7 +1363,7 @@ describe('todo list', () => {
   });
 
   test('renders with nested ordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <todoList>
           <todoItem>
@@ -695,8 +1375,9 @@ describe('todo list', () => {
             </ol>
           </todoItem>
         </todoList>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
@@ -706,7 +1387,7 @@ describe('todo list', () => {
   });
 
   test('renders with nested ordered list', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <todoList>
           <todoItem>
@@ -718,8 +1399,9 @@ describe('todo list', () => {
             </todoList>
           </todoItem>
         </todoList>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
@@ -729,7 +1411,7 @@ describe('todo list', () => {
   });
 
   test('renders with multiple para', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <todoList>
           <todoItem>
@@ -737,8 +1419,9 @@ describe('todo list', () => {
             <para>second</para>
           </todoItem>
         </todoList>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
 
@@ -747,7 +1430,7 @@ describe('todo list', () => {
   });
 
   test('br follows', async () => {
-    const md = await serialize(
+    const doc = (
       <doc>
         <todoList>
           <todoItem>
@@ -758,311 +1441,13 @@ describe('todo list', () => {
         <para>
           <br />
         </para>
-      </doc>,
+      </doc>
     );
+    const md = await serialize(doc);
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
 
         second"
     `);
-  });
-});
-
-describe('horizontal rule', () => {
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <hr />
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"---"`);
-  });
-
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <hr />
-        <para>hello</para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`
-      "---
-
-      hello"
-    `);
-  });
-
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <para>hello</para>
-        <hr />
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`
-      "hello
-
-      ---"
-    `);
-  });
-});
-
-describe('horizontal rule', () => {
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <hr />
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"---"`);
-  });
-
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <hr />
-        <para>hello</para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`
-      "---
-
-      hello"
-    `);
-  });
-
-  test('renders', async () => {
-    const md = await serialize(
-      <doc>
-        <para>hello</para>
-        <hr />
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`
-      "hello
-
-      ---"
-    `);
-  });
-});
-
-describe('marks', () => {
-  test('link ', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello world
-          <link href="https://example.com">https://example.com</link>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"hello world<https://example.com>"`);
-  });
-
-  test('link with content', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello world
-          <link href="https://example.com">example</link>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(
-      `"hello world[example](https://example.com)"`,
-    );
-  });
-
-  test('link with relative url', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello world
-          <link href="./example.png">example</link>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"hello world[example](./example.png)"`);
-  });
-
-  test('link with relative url and asterisk', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello world
-          <link href="./example*.png">example</link>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toEqual('hello world[example](./example\\*.png)');
-  });
-
-  test('strike link', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello{' '}
-          <strike>
-            world
-            <link href="./example.png">example</link>
-          </strike>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(
-      `"hello ~~world~~[~~example~~](./example.png)"`,
-    );
-  });
-
-  test('strike link italic', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello{' '}
-          <strike>
-            world
-            <link href="./example.png">example</link>
-            <italic>again</italic>
-          </strike>{' '}
-          !
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(
-      `"hello ~~world~~[~~example~~](./example.png)_~~again~~_ !"`,
-    );
-  });
-
-  test('bold', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello
-          <bold>world</bold>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"hello**world**"`);
-  });
-
-  test('bold', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello
-          <bold>world </bold>
-          <italic>say hello</italic>
-          <strike> bye world </strike>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(
-      `"hello**world** _say hello_ ~~bye world~~ "`,
-    );
-  });
-
-  test('italic', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello <italic>world</italic>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"hello _world_"`);
-  });
-
-  test('italic and bold', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello{' '}
-          <bold>
-            <italic>world</italic>
-          </bold>
-        </para>
-      </doc>,
-    );
-
-    expect(md).toMatchInlineSnapshot(`"hello **_world_**"`);
-  });
-
-  test('strike', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello <strike>world</strike>
-        </para>
-      </doc>,
-    );
-    expect(md).toMatchInlineSnapshot(`"hello ~~world~~"`);
-  });
-
-  test('strike', async () => {
-    const md = await serialize(
-      <doc>
-        <para>*hello* world</para>
-      </doc>,
-    );
-    expect(md).toMatchInlineSnapshot(`"\\\\*hello\\\\* world"`);
-  });
-
-  test('underline', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello <underline>world</underline>
-        </para>
-      </doc>,
-    );
-    expect(md).toMatchInlineSnapshot(`"hello <ins>world</ins>"`);
-  });
-
-  test('code', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello <code>world</code>
-        </para>
-      </doc>,
-    );
-    expect(md).toMatchInlineSnapshot(`"hello \`world\`"`);
-  });
-
-  test('code escaping', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello <code>worl`d</code>
-        </para>
-      </doc>,
-    );
-    expect(md).toEqual('hello `` worl`d ``');
-  });
-
-  test('code escaping', async () => {
-    const md = await serialize(
-      <doc>
-        <para>
-          hello <code>_world_</code>
-        </para>
-      </doc>,
-    );
-    expect(md).toEqual('hello `_world_`');
   });
 });

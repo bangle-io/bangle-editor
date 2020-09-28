@@ -88,6 +88,7 @@ export class TodoItem extends Node {
       ],
 
       toMarkdown: (state, node) => {
+        state.write(node.attrs['data-done'] ? '[x] ' : '[ ] ');
         state.renderContent(node);
       },
     };

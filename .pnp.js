@@ -4192,6 +4192,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["emojis-keywords", "npm:2.0.0"],
             ["emojis-list", "npm:3.0.0"],
             ["localforage", "npm:1.9.0"],
+            ["markdown-it", "npm:10.0.0"],
             ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-state", "npm:1.3.3"],
