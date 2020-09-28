@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Node } from 'bangle-core/nodes';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
+import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 
 const LOG = false;
 
@@ -33,10 +34,6 @@ function insertEmoji(schema, name) {
 }
 
 export default class EmojiExtension extends Node {
-  constructor(...args) {
-    super(...args);
-    this.chache = Math.random();
-  }
   get defaultOptions() {
     return {
       selectionStyle: { outline: '2px solid blue' },
@@ -92,6 +89,11 @@ export default class EmojiExtension extends Node {
           },
         },
       ],
+
+      toMarkdown: (state, node) => {
+        const string = serializeAtomNodeToMdLink(this.name, node.attrs);
+        state.write(string);
+      },
     };
   }
 

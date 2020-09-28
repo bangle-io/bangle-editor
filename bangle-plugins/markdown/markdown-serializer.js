@@ -1,3 +1,4 @@
+import { objectFilter, objectMapValues } from 'bangle-core/utils/js-utils';
 import { MarkdownSerializer } from 'prosemirror-markdown';
 
 // A markdown serializer which uses a node/mark schema's
@@ -15,7 +16,7 @@ export const markdownSerializer = (
 };
 
 function proxyNodesToMarkdown(obj, schema) {
-  let handler = {
+  const handler = {
     get(target, propKey, receiver) {
       const override = Reflect.get(target, propKey, receiver);
       if (override) {
@@ -35,7 +36,7 @@ function proxyNodesToMarkdown(obj, schema) {
 }
 
 function proxyMarksToMarkdown(obj, schema) {
-  let handler = {
+  const handler = {
     get(target, propKey, receiver) {
       const override = Reflect.get(target, propKey, receiver);
       if (override) {
@@ -52,4 +53,19 @@ function proxyMarksToMarkdown(obj, schema) {
     },
   };
   return new Proxy(obj, handler);
+}
+
+export function serializeAtomNodeToMdLink(name, attrs) {
+  const data = objectFilter(attrs, (val, key) => {
+    return key.startsWith('data-');
+  });
+
+  const string = new URLSearchParams(
+    objectMapValues(data, (val) => {
+      // convert it to string for predictability when parsing different types
+      return JSON.stringify(val);
+    }),
+  );
+
+  return `[$${name}](bangle://${string})`;
 }

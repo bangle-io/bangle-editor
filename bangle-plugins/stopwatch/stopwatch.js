@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Node } from 'bangle-core/nodes';
+import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 
 const LOG = false;
 
@@ -61,6 +62,11 @@ export default class StopwatchExtension extends Node {
           },
         },
       ],
+
+      toMarkdown: (state, node) => {
+        const string = serializeAtomNodeToMdLink(this.name, node.attrs);
+        state.write(string);
+      },
     };
   }
 

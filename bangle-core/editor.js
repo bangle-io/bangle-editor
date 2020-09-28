@@ -22,6 +22,7 @@ import {
   isMarkActive,
   nodeIsActive,
 } from './utils/pm-utils';
+import { hasOwnProperty } from './utils/js-utils';
 
 const LOG = false;
 
@@ -208,6 +209,33 @@ export class Editor extends Emitter {
   }
 
   createSchema() {
+    // TODO Was thinking of making attributes of only string or null type
+    // Object.entries({ ...this.nodes, ...this.marks }).forEach(
+    //   ([name, { attrs }]) => {
+    //     if (!attrs) {
+    //       return;
+    //     }
+    //     Object.entries(attrs).forEach(([attr, val]) => {
+    //       if (!hasOwnProperty(val, 'default')) {
+    //         throw new Error(`${name}'s attribute ${attr} need a default value`);
+    //       }
+    //       const defaultVal = val.default;
+    //       console.log(defaultVal);
+    //       if (
+    //         defaultVal === undefined ||
+    //         defaultVal === null ||
+    //         typeof defaultVal === 'string'
+    //       ) {
+    //         return;
+    //       }
+
+    //       throw new Error(
+    //         `${name}'s attribute ${attr} must be of 'null', 'undefined', or a string`,
+    //       );
+    //     });
+    //     // debugger;
+    //   },
+    // );
     return new Schema({
       topNode: this.options.topNode,
       nodes: this.nodes,
