@@ -15,6 +15,9 @@ export class CodeBlock extends Node {
 
   get schema() {
     return {
+      attrs: {
+        language: { default: '' },
+      },
       content: 'text*',
       marks: '',
       group: 'block',
@@ -25,7 +28,7 @@ export class CodeBlock extends Node {
       toDOM: () => ['pre', ['code', 0]],
 
       toMarkdown: (state, node) => {
-        state.write('```' + (node.attrs.params || '') + '\n');
+        state.write('```' + (node.attrs.language || '') + '\n');
         state.text(node.textContent, false);
         state.ensureNewLine();
         state.write('```');

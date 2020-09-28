@@ -21,11 +21,7 @@ export class TodoList extends Node {
         },
       ],
       toMarkdown: (state, node) => {
-        state.renderList(
-          node,
-          '  ',
-          () => `- [${node.attrs.bullet ? 'x' : ' '}] `,
-        );
+        state.renderList(node, '  ', () => `- `);
       },
     };
   }
