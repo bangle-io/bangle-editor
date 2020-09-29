@@ -4281,6 +4281,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-transform", "npm:1.2.7"],
+            ["prosemirror-view", "npm:1.15.2"],
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:16.13.1"]
           ],
