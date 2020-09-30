@@ -1695,10 +1695,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.4.4":
-  version: 2.4.4
-  resolution: "@popperjs/core@npm:2.4.4"
-  checksum: 49a1e6cfa2ec5004c541b0a1bd7d523c8aa7d728aa26e05df10f0af8c1e6c0db7fb9ebc8bee6dbfcdc7ad422999d9bf7d8a1c2b07dff3292b7dfa61a63af8b49
+"@popperjs/core@npm:latest":
+  version: 2.5.2
+  resolution: "@popperjs/core@npm:2.5.2"
+  checksum: 90cdcb7ee9450f7a0247085ffdeb4b351efba3745f788a424f8c8e2bc544b16d08d11647926ab81ce57f9f893cbb51323e6ff299921331b9a961b1b543c3d18a
   languageName: node
   linkType: hard
 
@@ -3167,7 +3167,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-plugins@workspace:bangle-plugins"
   dependencies:
-    "@popperjs/core": ^2.4.4
+    "@popperjs/core": latest
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"
     localforage: ^1.7.3

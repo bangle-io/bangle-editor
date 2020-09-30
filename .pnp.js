@@ -2465,10 +2465,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@popperjs/core", [
-        ["npm:2.4.4", {
-          "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.4.4-02cf65f71c-49a1e6cfa2.zip/node_modules/@popperjs/core/",
+        ["npm:2.5.2", {
+          "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.5.2-cf6ffbb3a6-90cdcb7ee9.zip/node_modules/@popperjs/core/",
           "packageDependencies": [
-            ["@popperjs/core", "npm:2.4.4"]
+            ["@popperjs/core", "npm:2.5.2"]
           ],
           "linkType": "HARD",
         }],
@@ -4271,7 +4271,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./bangle-plugins/",
           "packageDependencies": [
             ["bangle-plugins", "workspace:bangle-plugins"],
-            ["@popperjs/core", "npm:2.4.4"],
+            ["@popperjs/core", "npm:2.5.2"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["bangle-core", "workspace:bangle-core"],
             ["localforage", "npm:1.9.0"],

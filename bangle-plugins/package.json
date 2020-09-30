@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
-    "@popperjs/core": "^2.4.4",
+    "@popperjs/core": "^2.5.2",
     "bangle-core": "workspace:*",
     "markdown-it": "^10.0.0",
     "markdown-it-emoji": "^2.0.0",
