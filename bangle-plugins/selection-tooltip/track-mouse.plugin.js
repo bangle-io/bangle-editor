@@ -7,7 +7,7 @@ let log = LOG
   ? console.log.bind(console, 'plugins/tooltip-show-hide')
   : () => {};
 
-export function tooltipShowHidePlugin({ tooltipPlacementKey, tooltipDOM }) {
+export function trackMousePlugin({ tooltipPlacementKey, tooltipDOM }) {
   const plugin = new Plugin({
     view: (view) => {
       return new TooltipView(view);
@@ -61,6 +61,7 @@ export function tooltipShowHidePlugin({ tooltipPlacementKey, tooltipDOM }) {
     _show() {
       // in case of show we want to trigger it everytime
       // so that the placement plugin can update the placement
+      log('show');
       this._watchClickOutside();
       this._dispatchState({
         show: true,

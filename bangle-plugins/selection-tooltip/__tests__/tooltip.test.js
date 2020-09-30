@@ -11,7 +11,7 @@ import {
   renderTestEditor,
 } from 'bangle-core/test-helpers';
 
-import { Tooltip } from '../tooltip';
+import { SelectionTooltip } from '../selection-tooltip';
 import { Heading } from 'bangle-core/nodes/index';
 // due to some unknown issue, the view doesn't have focus
 // when running test which causes tests to fail
@@ -22,7 +22,7 @@ jest.mock('bangle-plugins/helpers/index', () => {
 });
 
 test('Correctly adds tooltip', async () => {
-  const extensions = [new Heading(), new Tooltip()];
+  const extensions = [new Heading(), new SelectionTooltip()];
   const testEditor = renderTestEditor({ extensions });
   const { editor } = await testEditor(
     <doc>
@@ -67,7 +67,7 @@ test('Handles a custom tooltip', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new Tooltip({
+    new SelectionTooltip({
       tooltipDOM: tooltip,
     }),
   ];
@@ -86,7 +86,7 @@ test('No tooltip if no selection', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new Tooltip({
+    new SelectionTooltip({
       tooltipDOM: tooltip,
     }),
   ];
@@ -105,7 +105,7 @@ test('On typing hide tooltip', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new Tooltip({
+    new SelectionTooltip({
       tooltipDOM: tooltip,
     }),
   ];
@@ -128,7 +128,7 @@ test.skip('Keyboard based selection expand should show tooltip', async () => {
   const tooltip = document.createElement('div');
   const extensions = [
     new Heading(),
-    new Tooltip({
+    new SelectionTooltip({
       tooltipDOM: tooltip,
     }),
   ];

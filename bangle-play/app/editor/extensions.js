@@ -18,7 +18,7 @@ import {
 import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
-import { Tooltip } from 'bangle-plugins/selection-tooltip/index';
+import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
 import 'bangle-plugins/selection-tooltip/tooltip.css';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
@@ -64,7 +64,7 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
       }),
     inlineMenuDOM
       ? inlineMenu(inlineMenuDOM)
-      : new Tooltip({
+      : new SelectionTooltip({
           tooltipContent: (view) => {
             const tooltipContent = document.createElement('div');
             tooltipContent.textContent = 'hello world';
