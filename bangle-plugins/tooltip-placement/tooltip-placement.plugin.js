@@ -2,6 +2,7 @@ import { createPopper } from '@popperjs/core/lib/popper-lite';
 import offset from '@popperjs/core/lib/modifiers/offset';
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
 import flip from '@popperjs/core/lib/modifiers/flip';
+import arrow from '@popperjs/core/lib/modifiers/arrow';
 import { Plugin, PluginKey } from 'prosemirror-state';
 
 const LOG = true;
@@ -10,32 +11,35 @@ let log = LOG
   : () => {};
 
 /**
+ * Dispatching show: true to the plugin will also update the tooltip position
  *
  * @param {Object} options - The shape is the same as SpecialType above
  * @param {string} options.pluginName
  * @param {Element} options.tooltipDOM
  * @param {(view: any) => Element} options.getScrollContainerDOM
- * @param {(view: any, tooltipDOM: Element, scrollContainerDOM: Element) => {getBoundingClientRect: Function}} options.virtualElement
+ * @param {(view: any, tooltipDOM: Element, scrollContainerDOM: Element) => {getBoundingClientRect: Function}} options.getReferenceElement
  * @param {string} options.placement
  * @param {(view: any, popperState: any) => [number, number]} options.tooltipOffset
  * @param {(view: any, popperInstance: any) => void} options.onShowTooltip
  * @param {(view: any) => void} options.onHideTooltip
  * @param {(view: any) => Array} options.customModifiers
- * @param {(state: any) => Boolean} options.showInitially
+ * @param {(state: any) => Boolean} options.getInitialShowState
  * @param {Array} options.fallbackPlacement
+ * @param {Boolean} options.showTooltipArrow
  */
 export function tooltipPlacementPlugin({
   pluginName = 'tooltipPlacementPlugin',
   tooltipDOM,
   getScrollContainerDOM,
-  virtualElement,
+  getReferenceElement,
   placement = 'top',
   tooltipOffset,
   onShowTooltip = (view, popperInstance) => {},
   onHideTooltip = (view) => {},
   customModifiers,
   fallbackPlacements = ['bottom'],
-  showInitially = (state) => false,
+  getInitialShowState = (state) => false,
+  showTooltipArrow = false,
 }) {
   const key = new PluginKey(pluginName);
 
@@ -47,7 +51,7 @@ export function tooltipPlacementPlugin({
     state: {
       init: (_, state) => {
         return {
-          show: showInitially(state),
+          show: getInitialShowState(state),
         };
       },
       apply: (tr, value) => {
@@ -123,7 +127,7 @@ export function tooltipPlacementPlugin({
       }
 
       this._popperInstance = createPopper(
-        virtualElement(view, this._tooltip, this._scrollContainerDOM),
+        getReferenceElement(view, this._tooltip, this._scrollContainerDOM),
         this._tooltip,
         {
           placement,
@@ -133,6 +137,7 @@ export function tooltipPlacementPlugin({
                 offset,
                 preventOverflow,
                 flip,
+                showTooltipArrow && arrow,
                 {
                   name: 'offset',
                   options: {
@@ -154,7 +159,7 @@ export function tooltipPlacementPlugin({
                     boundary: this._scrollContainerDOM,
                   },
                 },
-              ],
+              ].filter(Boolean),
         },
       );
 
