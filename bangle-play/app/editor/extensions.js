@@ -1,3 +1,5 @@
+import 'bangle-plugins/tooltip-placement/tooltip.css';
+
 import Dinos from 'bangle-plugins/dinos';
 import Emoji from 'bangle-plugins/emoji';
 import { History } from 'bangle-core/extensions';
@@ -19,7 +21,6 @@ import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
 import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
-import 'bangle-plugins/selection-tooltip/tooltip.css';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import { inlineMenu } from './inline-menu/inline-menu';

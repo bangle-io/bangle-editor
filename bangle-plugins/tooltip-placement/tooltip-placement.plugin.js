@@ -21,6 +21,7 @@ let log = LOG
  * @param {(view: any, popperInstance: any) => void} options.onShowTooltip
  * @param {(view: any) => void} options.onHideTooltip
  * @param {(view: any) => Array} options.customModifiers
+ * @param {(state: any) => Boolean} options.showInitially
  * @param {Array} options.fallbackPlacement
  */
 export function tooltipPlacementPlugin({
@@ -34,6 +35,7 @@ export function tooltipPlacementPlugin({
   onHideTooltip = (view) => {},
   customModifiers,
   fallbackPlacements = ['bottom'],
+  showInitially = (state) => false,
 }) {
   const key = new PluginKey(pluginName);
 
@@ -45,7 +47,7 @@ export function tooltipPlacementPlugin({
     state: {
       init: (_, state) => {
         return {
-          show: state.selection.empty,
+          show: showInitially(state),
         };
       },
       apply: (tr, value) => {
@@ -62,9 +64,15 @@ export function tooltipPlacementPlugin({
       this._view = view;
       this._tooltip = tooltipDOM;
       this._scrollContainerDOM = getScrollContainerDOM(view);
-
       // TODO should this be this plugins responsibility
       this._view.dom.parentNode.appendChild(this._tooltip);
+
+      const pluginState = key.getState(view.state);
+      // if the initial state is to show, setup the tooltip
+      if (pluginState.show) {
+        this._showTooltip();
+        return;
+      }
     }
 
     update(view, prevState) {
