@@ -3,7 +3,7 @@
 @import 'tailwindcss/utilities';
 
 .bangle-editor p {
-  @apply text-base whitespace-pre-wrap break-words leading-relaxed text-lg;
+  @apply text-base leading-relaxed text-lg;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
