@@ -16,7 +16,7 @@ export function selectionTooltipPlacementPlugin({
     tooltipOffset,
     tooltipDOM,
     getScrollContainerDOM,
-    virtualElement: selectionVirtualElement,
+    getReferenceElement: selectionVirtualElement,
     onShowTooltip: (view, popperInstance) => {
       let { head, from } = view.state.selection;
       if (head === from) {
@@ -25,7 +25,7 @@ export function selectionTooltipPlacementPlugin({
         popperInstance.setOptions({ placement: 'bottom' });
       }
     },
-    showInitially: (state) => state.selection.empty,
+    getInitialShowState: (state) => state.selection.empty,
   });
   return { plugin, key };
 }
