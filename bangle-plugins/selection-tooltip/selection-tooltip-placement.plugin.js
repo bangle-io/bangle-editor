@@ -25,6 +25,7 @@ export function selectionTooltipPlacementPlugin({
         popperInstance.setOptions({ placement: 'bottom' });
       }
     },
+    showInitially: (state) => state.selection.empty,
   });
   return { plugin, key };
 }
