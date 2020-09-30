@@ -1,10 +1,10 @@
 import { Extension } from 'bangle-core/extensions/index';
-import { tooltipShowHidePlugin } from './tooltip-show-hide.plugin';
-import { tooltipPlacementPlugin } from './tooltip-placement.plugin';
+import { trackMousePlugin } from './track-mouse.plugin';
+import { selectionTooltipPlacementPlugin } from './selection-tooltip-placement.plugin';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
 
-export class Tooltip extends Extension {
+export class SelectionTooltip extends Extension {
   get name() {
     return 'tooltip';
   }
@@ -14,30 +14,24 @@ export class Tooltip extends Extension {
     return {
       tooltipDOM: createTooltipDOM(),
       defaultTooltipStatePmPlugin: true,
-      tooltipOffset: (view, placement) => {
-        let skidding = 0;
-        if (placement === 'top') {
-          skidding = 1 * rem;
-        }
-        if (placement === 'bottom') {
-          skidding = 2.5 * rem;
-        }
-        return [2 * rem, skidding];
+      getScrollContainerDOM: (view) => {
+        return view.dom.parentElement;
+      },
+      tooltipOffset: (view) => {
+        return [0, 0.5 * rem];
       },
     };
   }
 
   get plugins() {
-    const {
-      plugin: tooltipPlacementPluginInstance,
-      key,
-    } = tooltipPlacementPlugin({
+    const { plugin, key } = selectionTooltipPlacementPlugin({
       tooltipOffset: this.options.tooltipOffset,
       tooltipDOM: this.options.tooltipDOM,
+      getScrollContainerDOM: this.options.getScrollContainerDOM,
     });
     return [
-      tooltipPlacementPluginInstance,
-      tooltipShowHidePlugin({
+      plugin,
+      trackMousePlugin({
         tooltipPlacementKey: key,
         tooltipDOM: this.options.tooltipDOM,
       }).plugin,

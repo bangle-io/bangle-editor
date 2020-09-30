@@ -1,1 +1,1 @@
-export * from './tooltip';
+export * from './selection-tooltip';
