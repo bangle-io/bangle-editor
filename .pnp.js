@@ -2465,13 +2465,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@popperjs/core", [
-        ["npm:2.5.2", {
-          "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.5.2-cf6ffbb3a6-90cdcb7ee9.zip/node_modules/@popperjs/core/",
-          "packageDependencies": [
-            ["@popperjs/core", "npm:2.5.2"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:2.5.3", {
           "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.5.3-afbfea9585-53a693e058.zip/node_modules/@popperjs/core/",
           "packageDependencies": [
@@ -4271,13 +4264,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./bangle-plugins/",
           "packageDependencies": [
             ["bangle-plugins", "workspace:bangle-plugins"],
-            ["@popperjs/core", "npm:2.5.2"],
+            ["@popperjs/core", "npm:2.5.3"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["bangle-core", "workspace:bangle-core"],
             ["localforage", "npm:1.9.0"],
             ["markdown-it", "npm:10.0.0"],
             ["markdown-it-emoji", "npm:2.0.0"],
             ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-transform", "npm:1.2.7"],
@@ -12759,6 +12753,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.1.2-041d7c0ebf-e9c5ac2e9b.zip/node_modules/prosemirror-inputrules/",
           "packageDependencies": [
             ["prosemirror-inputrules", "npm:1.1.2"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-transform", "npm:1.2.7"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:1.1.3", {
+          "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.1.3-1006d2d553-fddaf86ae4.zip/node_modules/prosemirror-inputrules/",
+          "packageDependencies": [
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-transform", "npm:1.2.7"]
           ],
