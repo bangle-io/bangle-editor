@@ -37,7 +37,7 @@ export function tooltipPlacementPlugin({
   onShowTooltip = (view, popperInstance) => {},
   onHideTooltip = (view) => {},
   customModifiers,
-  fallbackPlacements = ['bottom'],
+  fallbackPlacements = ['bottom', 'top'],
   getInitialShowState = (state) => false,
   showTooltipArrow = false,
 }) {
@@ -150,7 +150,7 @@ export function tooltipPlacementPlugin({
                   name: 'flip',
                   options: {
                     fallbackPlacements,
-                    padding: 5,
+                    padding: 10,
                   },
                 },
                 {

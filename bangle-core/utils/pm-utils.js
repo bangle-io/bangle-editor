@@ -10,10 +10,10 @@ import { GapCursorSelection } from '../gap-cursor';
 export const findParentNodeOfType = _findParentNodeOfType;
 
 /**
- * whether the mark of type is active
+ * whether the mark of type is active in selection
  * @returns {Boolean}
  */
-export function isMarkActive(editorState, type) {
+export function isMarkActiveInSelection(editorState, type) {
   const { from, $from, to, empty } = editorState.selection;
   if (empty) {
     return Boolean(type.isInSet(editorState.storedMarks || $from.marks()));
@@ -457,4 +457,22 @@ export function insertEmpty(type, placement = 'above', nested = false) {
 
     return true;
   };
+}
+
+export function findFirstMarkPosition(mark, doc, from, to) {
+  let markPos = { start: -1, end: -1 };
+  doc.nodesBetween(from, to, (node, pos) => {
+    // stop recursing if result is found
+    if (markPos.start > -1) {
+      return false;
+    }
+    if (markPos.start === -1 && mark.isInSet(node.marks)) {
+      markPos = {
+        start: pos,
+        end: pos + Math.max(node.textContent.length, 1),
+      };
+    }
+  });
+
+  return markPos;
 }
