@@ -40,14 +40,14 @@ export function selectionVirtualElement(view, tooltipDOM, scrollContainerDOM) {
       const start = view.coordsAtPos(head);
       let { top, bottom, left, right } = start;
       const scrollContainersRect = scrollContainerDOM.getBoundingClientRect();
-      const tooltipRect = tooltipDOM.getBoundingClientRect();
-      // added 1 rem to offset the fact that it will be dealt tooltipOffset
-      // which adds an offset pushing the tooltip to go out of viewport
-      let height = tooltipRect.height + 1 * rem;
 
       // if we bleed outside the scroll container, pull it back
       // so its inside
-      if (scrollContainersRect.bottom - bottom < height) {
+      if (scrollContainersRect.bottom - bottom < 0) {
+        const tooltipRect = tooltipDOM.getBoundingClientRect();
+        // added 1 rem to offset the fact that it will be dealt tooltipOffset
+        // which adds an offset pushing the tooltip to go out of viewport
+        let height = tooltipRect.height + 1 * rem;
         top = scrollContainersRect.bottom - 2 * height;
         bottom = scrollContainersRect.bottom - 1 * height;
         right = left;
@@ -57,7 +57,7 @@ export function selectionVirtualElement(view, tooltipDOM, scrollContainerDOM) {
         width: right - left,
         height: bottom - top,
         top: top,
-        right: left,
+        right: right,
         bottom: bottom,
         left: left,
       };
