@@ -23,8 +23,7 @@ import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import { inlineMenu } from './inline-menu/inline-menu';
-import { MarkTooltip } from 'bangle-plugins/mark-tooltip/index';
-import { InlineCommand } from 'bangle-plugins/inline-command/index';
+import { InlineSuggest } from 'bangle-plugins/inline-suggest/index';
 
 // TODO Taking inputs liek this is not ideal, the extension
 // list should be static, so that anyone can import them and get static values
@@ -73,13 +72,16 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
             return tooltipContent;
           },
         }),
-    new MarkTooltip({
+
+    new InlineSuggest({
+      trigger: '/',
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement.parentElement;
       },
     }),
 
-    new InlineCommand({
+    new InlineSuggest({
+      trigger: '@',
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement.parentElement;
       },
