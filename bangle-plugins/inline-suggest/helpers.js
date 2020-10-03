@@ -85,9 +85,3 @@ export function getQueryText(editorState, markType, trigger) {
       .replace(trigger, '')
   );
 }
-
-export function isTriggerActive(tooltipPluginKey) {
-  return (state) => {
-    return tooltipPluginKey && tooltipPluginKey.getState(state).show;
-  };
-}

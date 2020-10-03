@@ -62,7 +62,6 @@ export function tooltipActivatePlugin({ trigger, tooltipPluginKey, markName }) {
           }
 
           showTooltipCommand(tooltipPluginKey)(state, view.dispatch);
-
           return;
         },
       };

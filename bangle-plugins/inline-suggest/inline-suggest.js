@@ -14,7 +14,7 @@ let log = LOG ? console.log.bind(console, 'plugins/inline-command') : () => {};
 // TODO make it throw error if there exists another one with the same trigger
 export class InlineSuggest extends Mark {
   get name() {
-    return 'inline_suggest=' + this.options.trigger;
+    return 'inline_suggest_c' + this.options.trigger.charCodeAt(0);
   }
   get schema() {
     return {
