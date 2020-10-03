@@ -1,4 +1,4 @@
-import { isMarkActive } from 'bangle-core/utils/pm-utils';
+import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 export function findQueryMark(mark, doc, from, to) {
   let queryMark = { start: -1, end: -1 };
@@ -31,7 +31,7 @@ export function isTypeAheadQueryActive(editorState) {
     return false;
   }
 
-  return isMarkActive(editorState, typeAheadQuery);
+  return isMarkActiveInSelection(editorState, typeAheadQuery);
 }
 
 export function getTypeaheadQueryString(editorState) {

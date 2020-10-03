@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
     target: 'web',
     mode,
     entry: './index.js',
-    devtool: isProduction ? 'source-map' : 'eval-source-map',
+    devtool: true ? 'source-map' : 'eval-source-map',
     stats: { maxModules: 50, modulesSort: 'size' },
     resolve: {
       plugins: [PnpWebpackPlugin],

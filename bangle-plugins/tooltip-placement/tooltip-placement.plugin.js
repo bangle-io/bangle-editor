@@ -5,13 +5,16 @@ import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
 import { Plugin, PluginKey } from 'prosemirror-state';
 
-const LOG = true;
+const LOG = false;
 let log = LOG
   ? console.log.bind(console, 'tooltip/tooltip-placement')
   : () => {};
 
 /**
  * Dispatching show: true to the plugin will also update the tooltip position
+ * Note: the state is interesting as it maintains the reference to the same state object if state is and was false
+ * however any {show:true} dispatches will generate a new state object for easier reference checks. In a way
+ * the state ref can be used to see if the position of tooltip has updated.
  *
  * @param {Object} options - The shape is the same as SpecialType above
  * @param {string} options.pluginName
@@ -54,11 +57,18 @@ export function tooltipPlacementPlugin({
           show: getInitialShowState(state),
         };
       },
-      apply: (tr, value) => {
-        if (tr.getMeta(key)) {
-          return tr.getMeta(key);
+      apply: (tr, pluginState) => {
+        if (!tr.getMeta(key)) {
+          return pluginState;
         }
-        return value;
+
+        const newState = tr.getMeta(key);
+        // Do not change object reference if 'show' was and is false
+        if (newState.show === false && newState.show === pluginState.show) {
+          return pluginState;
+        }
+
+        return newState;
       },
     },
   });

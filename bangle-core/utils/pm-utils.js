@@ -162,9 +162,6 @@ export function isEmptyParagraph(node) {
   );
 }
 
-/**
- * from atlaskit
- */
 export function filter(predicates, cmd) {
   return function (state, dispatch, view) {
     if (!Array.isArray(predicates)) {
