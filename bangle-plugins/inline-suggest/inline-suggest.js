@@ -8,7 +8,7 @@ import { Plugin } from 'prosemirror-state';
 import { getQueryText } from './helpers';
 import { removeTypeAheadMarkCmd } from './commands';
 
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/inline-command') : () => {};
 
 // TODO make it throw error if there exists another one with the same trigger
