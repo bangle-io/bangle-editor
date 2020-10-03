@@ -355,7 +355,6 @@ export class Editor extends Emitter {
   }
 
   dispatchTransaction(transaction) {
-    console.log('dispatching ternc');
     const nodes = findChangedNodesFromTransaction(transaction);
     // if (nodes.length > 0) {
     // }

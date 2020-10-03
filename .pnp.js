@@ -4271,6 +4271,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["markdown-it", "npm:10.0.0"],
             ["markdown-it-emoji", "npm:2.0.0"],
             ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-state", "npm:1.3.3"],

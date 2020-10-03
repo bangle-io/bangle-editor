@@ -3,10 +3,8 @@ import { findFirstMarkPosition } from 'bangle-core/utils/pm-utils';
 export const hideTooltipCommand = (tooltipKey) => {
   return (state, dispatch) => {
     const tooltipState = tooltipKey.getState(state);
-    console.log('called hide');
     if (tooltipState.show) {
       if (dispatch) {
-        console.log('dispatching');
         dispatch(
           state.tr
             .setMeta(tooltipKey, { show: false })
