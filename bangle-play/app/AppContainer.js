@@ -7,7 +7,7 @@ import React from 'react';
 import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import { OpenDocumentManager } from './components/OpenDocumentManager';
 import { Editor } from './components/Editor';
-import { Aside } from './components/Aside';
+import { Aside } from './components/Aside/Aside';
 import { Header } from './components/Header';
 import browser from 'bangle-core/utils/browser';
 import { Editor as OriginalEditor } from 'bangle-core';
@@ -19,10 +19,17 @@ export class AppContainer extends React.PureComponent {
     isSidebarOpen: PropTypes.bool.isRequired,
     toggleTheme: PropTypes.func.isRequired,
     toggleSidebar: PropTypes.func.isRequired,
+    theme: PropTypes.string.isRequired,
   };
 
   render() {
-    const { manager, isSidebarOpen, toggleTheme, toggleSidebar } = this.props;
+    const {
+      manager,
+      isSidebarOpen,
+      toggleTheme,
+      toggleSidebar,
+      theme,
+    } = this.props;
 
     return (
       <OpenDocumentManager>
@@ -74,6 +81,7 @@ export class AppContainer extends React.PureComponent {
               openedDocuments={openedDocuments}
               toggleSidebar={toggleSidebar}
               toggleTheme={toggleTheme}
+              theme={theme}
             >
               {/* {isMobile && <Header entry={this.state.entry} />} */}
             </Aside>

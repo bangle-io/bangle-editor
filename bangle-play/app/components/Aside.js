@@ -14,6 +14,7 @@ export class Aside extends React.PureComponent {
     documentsInDisk: PropTypes.array.isRequired,
     isSidebarOpen: PropTypes.bool.isRequired,
     openDocument: PropTypes.func.isRequired,
+    workspaces: PropTypes.array.isRequired,
     openedDocuments: PropTypes.arrayOf(
       PropTypes.shape({
         key: PropTypes.string,
@@ -28,7 +29,7 @@ export class Aside extends React.PureComponent {
     backupDb();
   };
 
-  renderSidebar = () => {
+  renderWorkspace = (workspace) => {
     const newResults = this.props.documentsInDisk
       .filter((r) => r)
       .sort((a, b) => b.created - a.created)
@@ -89,9 +90,9 @@ export class Aside extends React.PureComponent {
     return (
       <>
         <div
-          className={`aside-menu flex flex-row ${
+          className={`grid-activity-bar flex flex-row ${
             isSerious ? 'bg-pink-900' : 'bg-gray-900'
-          } py-3 flex flex-col z-30 shadow-outline`}
+          } py-3 flex flex-col z-30`}
         >
           {this.sideBarMenu()}
           {this.props.children}
@@ -115,7 +116,7 @@ export class Aside extends React.PureComponent {
             >
               Dump data
             </div>
-            {this.renderSidebar()}
+            {this.props.workspaces.map((w) => this.renderWorkspace())}
             <div
               className="text-xl cursor-pointer my-1 py-2 px-3 hover:bg-gray-300 rounded-lg"
               onClick={async () => {
