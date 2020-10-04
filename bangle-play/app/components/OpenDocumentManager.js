@@ -1,7 +1,9 @@
 import React from 'react';
 import browser from 'bangle-core/utils/browser';
 import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
-import { activeDatabaseInstance } from '../store/local/database-helpers';
+import PropTypes from 'prop-types';
+import { WorkspaceFile } from '../workspace/workspace-file';
+import { WorkspaceContext } from '../store/WorkspaceContext';
 
 const isMobile = browser.ios || browser.android;
 const MAX_WINDOWS =
@@ -9,119 +11,89 @@ const MAX_WINDOWS =
     ? 1
     : 2;
 
-export class OpenDocumentManager extends React.Component {
-  state = {
-    openedDocuments: [],
-    documentsInDisk: [],
-  };
+export class OpenWorkspaceFilesManager extends React.Component {
+  static contextType = WorkspaceContext;
+  // static propTypes = {
+  //   workspaceFiles: PropTypes.arrayOf(PropTypes.instanceOf(WorkspaceFile)),
+  //   newWorkspaceFile: PropTypes.func.isRequired,
+  // };
+  // state = {
+  //   openedDocuments: [],
+  // };
 
-  openDocument = (docName) => {
-    this.setState({
-      openedDocuments: this.updateOpenedDocuments(docName),
-    });
-  };
+  // openWorkspaceFile = (docName) => {
+  //   if (this.props.workspaceFiles.find((w) => w.docName === docName)) {
+  //     this.setState({
+  //       openedDocuments: this.updateOpenedDocuments(docName),
+  //     });
+  //   } else {
+  //     throw new Error('Docname not found ' + docName);
+  //   }
+  // };
 
-  deleteDocumentFromDisk = async (docName) => {
-    console.log('deleting', docName);
-    await activeDatabaseInstance.removeItem(docName);
-    const documentsInDisk = await readDatabase(activeDatabaseInstance);
+  // openBlankWorkspaceFile = async () => {
+  //   const newDocName = uuid(8);
+  //   // TODO lets move all this redux :'9
+  //   await this.props.newWorkspaceFile(newDocName, null);
 
-    if (documentsInDisk.length === 0) {
-      this.createBlankDocument();
-      return;
-    }
+  //   getIdleCallback(async () => {
+  //     this.openWorkspaceFile(newDocName);
+  //   });
+  // };
 
-    let openedDocuments = this.state.openedDocuments.filter(
-      (r) => r.docName !== docName,
-    );
-    this.setState({
-      openedDocuments,
-      documentsInDisk,
-    });
-  };
+  // updateOpenedDocuments(docName) {
+  //   const openedDoc = this.state.openedDocuments;
+  //   const newDoc = createOpenedDocument(docName);
 
-  createBlankDocument = async () => {
-    const newDocName = uuid(8);
-    const newDocs = this.updateOpenedDocuments(newDocName);
+  //   if (openedDoc.length < MAX_WINDOWS) {
+  //     return [newDoc, ...openedDoc]; // we put new things on the left
+  //   }
+  //   // replace the first non matching from left
+  //   let match = openedDoc.findIndex((r) => r.docName !== docName);
+  //   // if no match replace the first item
+  //   if (match === -1) {
+  //     match = 0;
+  //   }
+  //   const newState = openedDoc.map((doc, index) =>
+  //     // replace the matched item with docName
+  //     index === match ? newDoc : doc,
+  //   );
+  //   return newState;
+  // }
 
-    this.setState(
-      {
-        openedDocuments: newDocs,
-      },
-      () => {
-        getIdleCallback(async () => {
-          const items = await readDatabase(activeDatabaseInstance);
-          this.setState({ documentsInDisk: items });
-        });
-      },
-    );
-  };
+  // async componentDidMount() {
+  //   // If nothing in workspace create a blank document
+  //   const workspaceFiles = this.props.workspaceFiles;
+  //   let openedDocName =
+  //     workspaceFiles.length === 0 ? uuid(4) : workspaceFiles[0].docName;
 
-  updateOpenedDocuments(docName) {
-    const openedDoc = this.state.openedDocuments;
-    const newDoc = createOpenedDocument(docName);
+  //   this.setState({
+  //     openedDocuments: [createOpenedDocument(openedDocName)],
+  //   });
+  // }
 
-    if (openedDoc.length < MAX_WINDOWS) {
-      return [newDoc, ...openedDoc]; // we put new things on the left
-    }
-    // replace the first non matching from left
-    let match = openedDoc.findIndex((r) => r.docName !== docName);
-    // if no match replace the first item
-    if (match === -1) {
-      match = 0;
-    }
-    const newState = openedDoc.map((doc, index) =>
-      // replace the matched item with docName
-      index === match ? newDoc : doc,
-    );
-    return newState;
-  }
+  // async componentDidUpdate() {
+  //   const workspaceFiles = this.props.workspaceFiles;
+  //   const newFiles = this.state.openedDocuments.filter(({ docName }) =>
+  //     workspaceFiles.find((w) => w.docName === docName),
+  //   );
 
-  async componentDidMount() {
-    const getLastModifiedDoc = (docsInDisk) => {
-      let lastModified = 0;
-      let lastModifiedDocName;
-      for (const value of docsInDisk) {
-        if (value.docName && value.modified > lastModified) {
-          lastModified = value.modified;
-          lastModifiedDocName = value.docName;
-        }
-      }
-      return lastModifiedDocName;
-    };
-
-    const documentsInDisk = await readDatabase(activeDatabaseInstance);
-    let openedDocName =
-      documentsInDisk.length === 0
-        ? uuid(4)
-        : getLastModifiedDoc(documentsInDisk);
-
-    this.setState({
-      openedDocuments: [createOpenedDocument(openedDocName)],
-      documentsInDisk: documentsInDisk,
-    });
-  }
+  //   if (newFiles.length !== this.state.openedDocuments.length) {
+  //     this.setState({
+  //       openedDocuments: newFiles,
+  //     });
+  //   }
+  // }
 
   render() {
+    const { openedDocuments, actions, update } = this.context;
     return this.props.children({
-      openDocument: this.openDocument,
-      deleteDocumentFromDisk: this.deleteDocumentFromDisk,
-      createBlankDocument: this.createBlankDocument,
-      openedDocuments: this.state.openedDocuments,
-      documentsInDisk: this.state.documentsInDisk,
+      openWorkspaceFile: (...payload) =>
+        update(actions.openWorkspaceFile(...payload)),
+      openedDocuments: openedDocuments,
+      openBlankWorkspaceFile: this.openBlankWorkspaceFile,
     });
   }
-}
-
-function readDatabase(databaseInstance) {
-  const result = [];
-  return databaseInstance
-    .iterate((value, key, iterationNumber) => {
-      result.push(value);
-    })
-    .then(() => {
-      return result;
-    });
 }
 
 function createOpenedDocument(docName) {
