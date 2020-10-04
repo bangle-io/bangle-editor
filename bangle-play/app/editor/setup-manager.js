@@ -1,21 +1,15 @@
 import { Manager } from 'bangle-plugins/collab/server/manager';
-import { Disk } from 'bangle-plugins/persistence/disk';
-import { getSchema } from '../editor/utils';
-import { extensions } from '../editor/extensions';
-import {
-  activeDatabaseName,
-  activeDatabaseInstance,
-} from '../store/local/database-helpers';
+import { activeDatabaseName } from '../store/local/database-helpers';
 import { defaultContent } from '../components/constants';
+import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 
 const DEBUG = true;
 
-export function setUpManager() {
-  const schema = getSchema(extensions());
-  const disk = new Disk({
-    db: activeDatabaseInstance,
+export function setUpManager(db, schema) {
+  const disk = new LocalDisk(db, {
     defaultDoc: defaultContent,
   });
+
   const manager = new Manager(schema, {
     disk,
   });

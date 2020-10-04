@@ -1,11 +1,12 @@
 import React from 'react';
 import { StackButton } from '../Button';
 import PropTypes from 'prop-types';
+import { UIActions, UIContext } from 'bangle-play/app/store/UIContext';
 
 export class ActivityBar extends React.PureComponent {
   static propTypes = {
     isSidebarOpen: PropTypes.bool.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
+    updateUIContext: PropTypes.func.isRequired,
   };
 
   render() {
@@ -17,7 +18,9 @@ export class ActivityBar extends React.PureComponent {
       >
         <div className="flex align-center justify-center">
           <StackButton
-            onClick={() => this.props.toggleSidebar()}
+            onClick={() => {
+              this.props.updateUIContext(UIActions.toggleSidebar());
+            }}
             isActive={this.props.isSidebarOpen}
             faType="fas fa-folder"
             stack={true}

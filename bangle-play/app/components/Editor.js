@@ -9,7 +9,9 @@ import { Header } from './Header';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
 
+const LOG = true;
 const DEBUG = true;
+let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
 
 export class Editor extends React.PureComponent {
   static propTypes = {
@@ -48,6 +50,7 @@ export class Editor extends React.PureComponent {
   }
 
   render() {
+    log('updateding', this.props.isFirst);
     return (
       <>
         {this.inlineMenuDOM &&

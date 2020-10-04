@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index db workspace Adds files correctly 1`] = `
+Array [
+  Object {
+    "_schema": "schema",
+    "created": 0,
+    "deleted": undefined,
+    "doc": null,
+    "docName": "0",
+    "modified": 0,
+    "version": 1,
+  },
+  Object {
+    "_schema": "schema",
+    "created": 0,
+    "deleted": undefined,
+    "doc": null,
+    "docName": "1",
+    "modified": 0,
+    "version": 1,
+  },
+  Object {
+    "_schema": "schema",
+    "created": 0,
+    "deleted": undefined,
+    "doc": null,
+    "docName": "2",
+    "modified": 0,
+    "version": 1,
+  },
+  Object {
+    "_schema": "schema",
+    "created": 0,
+    "deleted": undefined,
+    "doc": null,
+    "docName": "3",
+    "modified": 0,
+    "version": 1,
+  },
+  Object {
+    "_schema": "schema",
+    "created": 0,
+    "deleted": undefined,
+    "doc": null,
+    "docName": "4",
+    "modified": 0,
+    "version": 1,
+  },
+]
+`;
