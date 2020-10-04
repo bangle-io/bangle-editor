@@ -16,7 +16,7 @@ window.putDbData = putDbData;
 
 export default class App extends React.PureComponent {
   state = {
-    isSidebarOpen: false,
+    isSidebarOpen: true,
     theme: localStorage.getItem('theme'),
   };
 
@@ -54,6 +54,7 @@ export default class App extends React.PureComponent {
         isSidebarOpen={this.state.isSidebarOpen}
         toggleTheme={this.toggleTheme}
         toggleSidebar={this.toggleSidebar}
+        theme={this.state.theme}
       />
     );
   }
