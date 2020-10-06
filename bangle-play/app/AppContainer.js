@@ -1,15 +1,11 @@
 import './style/tailwind.src.css';
 import './style/style.css';
 import './style/prosemirror.css';
-import 'prosemirror-gapcursor/style/gapcursor.css';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import { Editor } from './components/Editor';
-import { FileBrowser } from './components/Aside/FileBrowser';
-import { WorkspaceContext } from './store/WorkspaceContext';
 import { EditorManager } from './components/EditorManager';
-import { UIContext, UIContextProvider } from './store/UIContext';
+import { UIContextProvider } from './store/UIContext';
 import { Aside } from './components/Aside/Aside';
 
 export class AppContainer extends React.PureComponent {

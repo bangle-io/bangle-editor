@@ -1,3 +1,5 @@
+import localforage from 'localforage';
+
 import { IndexDbWorkspaceFile } from './workspace-file';
 const LOG = false;
 
@@ -11,23 +13,52 @@ export class Workspace {
    */
   files;
 
-  /**
-   * @returns {Promise<WorkspaceFile[]>>}
-   */
-
-  constructor(name, files, opts) {
+  constructor(name, files, type, opts) {
     this.name = name;
+    this.type = type;
     this._opts = opts;
     if (!opts.schema) {
       throw new Error('Schema needed');
     }
-
     this.files = files.sort((a, b) => a.docName.localeCompare(b.docName));
   }
 
-  /**
-   * @returns {Promise<WorkspaceFile>} docName
-   */
+  async persistWorkspace() {
+    const instance = localforage.createInstance({
+      name: 'workspaces/1',
+    });
+    let existing = await instance.getItem('workspaces');
+    if (!existing) {
+      existing = [];
+    }
+    const { name, type } = this;
+
+    if (existing.find((w) => w.name === name && w.type === type)) {
+      return;
+    }
+
+    existing.push({
+      name: name,
+      type: type,
+    });
+
+    await instance.setItem('workspaces', existing);
+  }
+
+  async deleteWorkspace() {
+    const instance = localforage.createInstance({
+      name: 'workspaces/1',
+    });
+    let existing = await instance.getItem('workspaces');
+    if (!existing) {
+      return;
+    }
+    const { name, type } = this;
+
+    existing = existing.filter((w) => !(w.name === name && w.type === type));
+    await instance.setItem('workspaces', existing);
+  }
+
   getFile(docName) {
     return this.files.find((file) => file.docName === docName);
   }
@@ -50,9 +81,11 @@ export class Workspace {
 }
 
 export class IndexDbWorkspace extends Workspace {
-  static async create(name, opts) {
+  static async createWorkspace(name, opts) {
     let files = await IndexDbWorkspaceFile.getAllFilesInDb(opts);
-    return new IndexDbWorkspace(name, files, opts);
+    const instance = new IndexDbWorkspace(name, files, 'indexdb', opts);
+    await instance.persistWorkspace();
+    return instance;
   }
 
   /**

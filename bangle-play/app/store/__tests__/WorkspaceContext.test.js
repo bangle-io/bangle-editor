@@ -49,7 +49,7 @@ describe('index db workspace', () => {
     });
   });
   test('Creates workspace correctly', async () => {
-    await IndexDbWorkspace.create('test_db', {
+    await IndexDbWorkspace.createWorkspace('test_db', {
       schema: schema,
       dbInstance: localforage.createInstance({
         name: 'test_db',
@@ -58,7 +58,7 @@ describe('index db workspace', () => {
   });
 
   test('Adds files correctly', async () => {
-    const workspace = await IndexDbWorkspace.create('test_db', {
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
       schema: schema,
       dbInstance: localforage.createInstance({
         name: 'test_db',
@@ -69,7 +69,7 @@ describe('index db workspace', () => {
   });
 
   test('getFile ', async () => {
-    const workspace = await IndexDbWorkspace.create('test_db', {
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
       schema: schema,
       dbInstance: localforage.createInstance({
         name: 'test_db',
@@ -90,7 +90,7 @@ describe('index db workspace', () => {
   });
 
   test('hasFile ', async () => {
-    const workspace = await IndexDbWorkspace.create('test_db', {
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
       schema: schema,
       dbInstance: localforage.createInstance({
         name: 'test_db',
@@ -101,7 +101,7 @@ describe('index db workspace', () => {
   });
 
   test('link file', async () => {
-    const workspace = await IndexDbWorkspace.create('test_db', {
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
       schema: schema,
       dbInstance: localforage.createInstance({
         name: 'test_db',
@@ -121,7 +121,7 @@ describe('index db workspace', () => {
   });
 
   test('unlink file', async () => {
-    const workspace = await IndexDbWorkspace.create('test_db', {
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
       schema: schema,
       dbInstance: localforage.createInstance({
         name: 'test_db',

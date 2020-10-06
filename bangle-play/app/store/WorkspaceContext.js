@@ -3,9 +3,12 @@ import { extensions } from '../editor/extensions';
 import { getSchema } from '../editor/utils';
 import localforage from 'localforage';
 import { IndexDbWorkspace } from '../workspace/workspace';
-import { activeDatabaseName } from './local/database-helpers';
 import { uuid } from 'bangle-core/utils/js-utils';
 import browser from 'bangle-core/utils/browser';
+
+const activeDatabaseName =
+  new URLSearchParams(window.location.search).get('database') ||
+  'bangle-play/v1';
 
 const isMobile = browser.ios || browser.android;
 
@@ -47,7 +50,7 @@ export const workspaceActions = {
   },
 
   deleteWorkspaceFile: (docName) => async (value) => {
-    const workspaceFile = await value.workspace.getFile(docName);
+    const workspaceFile = value.workspace.getFile(docName);
     if (workspaceFile) {
       await workspaceFile.delete();
       return {
@@ -158,12 +161,15 @@ export class WorkspaceContextProvider extends React.PureComponent {
   }
 
   async componentDidMount() {
-    const workspace = await IndexDbWorkspace.create(activeDatabaseName, {
-      schema: this.schema,
-      dbInstance: localforage.createInstance({
-        name: activeDatabaseName,
-      }),
-    });
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      activeDatabaseName,
+      {
+        schema: this.schema,
+        dbInstance: localforage.createInstance({
+          name: activeDatabaseName,
+        }),
+      },
+    );
     await this.updateContext(workspaceActions.replaceWorkspace(workspace));
   }
 
