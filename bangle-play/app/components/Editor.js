@@ -1,3 +1,5 @@
+import 'prosemirror-gapcursor/style/gapcursor.css';
+
 import ReactDOM from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
