@@ -4257,6 +4257,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwindcss", "npm:1.6.2"],
             ["throttle-debounce", "npm:2.2.1"],
             ["tiptap-commands", "npm:1.14.4"],
+            ["w3c-keyname", "npm:2.2.4"],
             ["webpack", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:4.44.1"],
             ["webpack-cli", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:3.3.12"],
             ["webpack-dev-server", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:3.11.0"]
