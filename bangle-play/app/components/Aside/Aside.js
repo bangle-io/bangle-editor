@@ -8,14 +8,15 @@ export class Aside extends React.PureComponent {
   render() {
     return (
       <UIContext.Consumer>
-        {({ isSidebarOpen, updateContext }) => (
+        {({ isSidebarOpen, paletteType, updateUIContext }) => (
           <>
             <ActivityBar
               isSidebarOpen={isSidebarOpen}
-              updateUIContext={updateContext}
+              updateUIContext={updateUIContext}
+              paletteType={paletteType}
             />
             {isSidebarOpen ? (
-              <FileBrowser updateUIContext={updateContext} />
+              <FileBrowser updateUIContext={updateUIContext} />
             ) : null}
           </>
         )}

@@ -26,6 +26,16 @@ export class ActivityBar extends React.PureComponent {
             stack={true}
           />
         </div>
+        <div className="flex align-center justify-center">
+          <StackButton
+            onClick={() => {
+              this.props.updateUIContext(UIActions.openPalette());
+            }}
+            isActive={!!this.props.paletteType}
+            faType="fas fa-terminal"
+            stack={true}
+          />
+        </div>
       </div>
     );
   }

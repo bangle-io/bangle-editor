@@ -1,9 +1,25 @@
 import React from 'react';
-import browser from 'bangle-core/utils/browser';
 import { applyTheme } from '../style/apply-theme';
-const isMobile = browser.ios || browser.android;
+import { keybindingHelper } from '../misc/keybinding-helper';
+import { WorkspaceContext } from './WorkspaceContext';
+
+const LOG = true;
+
+let log = LOG ? console.log.bind(console, 'play/ui-context') : () => {};
+
+const DEFAULT_PALETTE = 'file';
 
 export const UIContext = React.createContext();
+
+const UIKeyBindings = {
+  toggleSidebar: {
+    key: 'Mod-e',
+    onExecute: ({ updateUIContext }) => {
+      updateUIContext(UIActions.toggleSidebar());
+      return true;
+    },
+  },
+};
 
 export const UIActions = {
   toggleSidebar: () => async (value) => {
@@ -11,9 +27,37 @@ export const UIActions = {
       type: 'TOGGLE_SIDEBAR',
     };
   },
+
   toggleTheme: () => async (value) => {
     return {
       type: 'TOGGLE_THEME',
+    };
+  },
+
+  openPalette: (paletteType = DEFAULT_PALETTE) => async (value) => {
+    return {
+      type: 'OPEN_PALETTE',
+      payload: {
+        paletteType,
+      },
+    };
+  },
+
+  closePalette: () => async (value) => {
+    return {
+      type: 'CLOSE_PALETTE',
+      payload: {
+        paletteType: null,
+      },
+    };
+  },
+
+  openCommandPalette: () => async (value) => {
+    return {
+      type: 'OPEN_PALETTE',
+      payload: {
+        paletteType: 'command',
+      },
     };
   },
 };
@@ -32,20 +76,33 @@ const reducers = (value, { type, payload }) => {
     };
     localStorage.setItem('theme', newValue.theme);
     applyTheme(newValue.theme);
+  } else if (type === 'OPEN_PALETTE') {
+    newValue = {
+      ...value,
+      paletteType: payload.paletteType,
+    };
+  } else if (type === 'CLOSE_PALETTE') {
+    newValue = {
+      ...value,
+      paletteType: null,
+    };
   } else {
     throw new Error('Unknown type ' + type);
   }
-
+  log(newValue);
   return newValue;
 };
 
 export class UIContextProvider extends React.PureComponent {
+  static contextType = WorkspaceContext;
+
   get value() {
     return this.state.value;
   }
 
-  updateContext = async (action) => {
+  updateUIContext = async (action) => {
     const resolvedResult = await action(this.value);
+
     this.setState((state) => ({
       value: reducers(state.value, resolvedResult),
     }));
@@ -53,7 +110,8 @@ export class UIContextProvider extends React.PureComponent {
 
   initialValue = {
     isSidebarOpen: false,
-    theme: localStorage.getItem('theme'),
+    theme: localStorage.getItem('theme') || 'light',
+    paletteType: null,
   };
 
   constructor(props) {
@@ -62,16 +120,44 @@ export class UIContextProvider extends React.PureComponent {
       value: this.initialValue,
     };
     applyTheme(this.value.theme);
+
+    const callback = keybindingHelper(
+      Object.fromEntries([
+        ...Object.entries(UIKeyBindings).map(([key, value]) => {
+          return [
+            value.key,
+            () => {
+              return value.onExecute({
+                uiContext: this.value,
+                updateUIContext: this.updateUIContext,
+                updateWorkspaceContext: this.context.updateWorkspaceContext,
+              });
+            },
+          ];
+        }),
+      ]),
+    );
+    document.addEventListener('keydown', (...args) => {
+      callback(...args);
+    });
+    this.removeKeybindingHelper = () => {
+      document.removeEventListener('keydown', callback);
+    };
   }
 
-  _injectUpdateContext(value) {
-    value.updateContext = this.updateContext;
+  componentWillUnmount() {
+    this.removeKeybindingHelper();
+  }
+
+  _injectHelpers(value) {
+    value.updateUIContext = this.updateUIContext;
+    value.updateWorkspaceContext = this.context.updateWorkspaceContext;
     return value;
   }
 
   render() {
     return (
-      <UIContext.Provider value={this._injectUpdateContext(this.value)}>
+      <UIContext.Provider value={this._injectHelpers(this.value)}>
         {this.props.children}
       </UIContext.Provider>
     );

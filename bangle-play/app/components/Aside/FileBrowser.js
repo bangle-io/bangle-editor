@@ -60,7 +60,7 @@ export class FileBrowser extends React.PureComponent {
 
     return (
       <CollapsibleSideBarRow
-        title="master"
+        title={this.context.workspace.name}
         isSticky={true}
         leftIcon={<ChevronDown style={{ width: 16, height: 16 }} />}
         activeLeftIcon={<ChevronRight style={{ width: 16, height: 16 }} />}
