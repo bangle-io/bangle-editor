@@ -21,18 +21,28 @@ jest.mock('localforage', () => {
     removeItem: jest.fn(async () => {}),
     getItem: jest.fn(async () => {}),
   };
+
   return {
     config: jest.fn(),
-    createInstance: jest.fn(() => {
+    createInstance: jest.fn(({ name } = {}) => {
+      if (name === 'workspaces/1') {
+        return {
+          iterate: jest.fn(async () => {}),
+          setItem: jest.fn(async () => {}),
+          removeItem: jest.fn(async () => {}),
+          getItem: jest.fn(async () => {}),
+        };
+      }
       return instance;
     }),
   };
 });
-
+const DateNowBackup = jest.fn();
 describe('index db workspace', () => {
   let dbInstance;
   const schema = getSchema(extensions());
   beforeEach(async () => {
+    Date.now = jest.fn(() => 1);
     dbInstance = localforage.createInstance();
     dbInstance.getItem = jest.fn(async (docName) => ({ docName, doc: null }));
     dbInstance.iterate.mockImplementationOnce(async (cb) => {
@@ -48,65 +58,43 @@ describe('index db workspace', () => {
       );
     });
   });
+  afterEach(() => {
+    Date.now = DateNowBackup;
+  });
   test('Creates workspace correctly', async () => {
-    await IndexDbWorkspace.createWorkspace('test_db', {
-      schema: schema,
-      dbInstance: localforage.createInstance({
-        name: 'test_db',
-      }),
-    });
+    await IndexDbWorkspace.createWorkspace('test_db', schema);
   });
 
   test('Adds files correctly', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
-      schema: schema,
-      dbInstance: localforage.createInstance({
-        name: 'test_db',
-      }),
-    });
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
 
     expect(workspace.files).toMatchSnapshot();
   });
 
   test('getFile ', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
-      schema: schema,
-      dbInstance: localforage.createInstance({
-        name: 'test_db',
-      }),
-    });
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
 
     expect(workspace.getFile('1')).toMatchInlineSnapshot(`
       Object {
-        "_schema": "schema",
-        "created": 0,
-        "deleted": undefined,
         "doc": null,
         "docName": "1",
-        "modified": 0,
-        "version": 1,
+        "metadata": Object {
+          "created": 1,
+          "docName": "1",
+          "modified": 1,
+        },
       }
     `);
   });
 
   test('hasFile ', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
-      schema: schema,
-      dbInstance: localforage.createInstance({
-        name: 'test_db',
-      }),
-    });
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
 
     expect(workspace.hasFile('2')).toBe(true);
   });
 
   test('link file', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
-      schema: schema,
-      dbInstance: localforage.createInstance({
-        name: 'test_db',
-      }),
-    });
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
 
     const newFile = new IndexDbWorkspaceFile(
       'test_doc',
@@ -121,12 +109,7 @@ describe('index db workspace', () => {
   });
 
   test('unlink file', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', {
-      schema: schema,
-      dbInstance: localforage.createInstance({
-        name: 'test_db',
-      }),
-    });
+    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
 
     let newWorkspace = workspace.unlinkFile(workspace.getFile('2'));
 
@@ -135,7 +118,7 @@ describe('index db workspace', () => {
   });
 });
 
-describe.only('indexdb workspaceContext', () => {
+describe('indexdb workspaceContext', () => {
   let dbInstance;
   const customRender = (child, { ...renderOptions } = {}) => {
     return render(
@@ -143,6 +126,13 @@ describe.only('indexdb workspaceContext', () => {
       renderOptions,
     );
   };
+
+  beforeEach(async () => {
+    Date.now = jest.fn(() => 1);
+  });
+  afterEach(() => {
+    Date.now = DateNowBackup;
+  });
 
   beforeEach(async () => {
     dbInstance = localforage.createInstance();

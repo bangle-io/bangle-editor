@@ -1,19 +1,19 @@
-.grid-side-bar .side-bar-row {
+.side-bar-row {
   background-color: var(--bg-stronger-color);
 }
 
-.grid-side-bar .side-bar-row:hover {
+.side-bar-row:hover {
   background-color: var(--accent-color);
 }
 
-.grid-side-bar .side-bar-row.active {
+.side-bar-row.active {
   background-color: var(--accent-2-color);
 }
 
-.grid-side-bar .side-bar-row.sticky {
+.side-bar-row.sticky {
   border: 0;
   border-top: 2px solid var(--border-color);
 }
-.grid-side-bar .side-bar-row.sticky.collapsed {
+.side-bar-row.sticky.collapsed {
   border: 2px solid var(--border-color);
 }

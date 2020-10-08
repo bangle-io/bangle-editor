@@ -1,14 +1,9 @@
 import React from 'react';
 import { extensions } from '../editor/extensions';
 import { getSchema } from '../editor/utils';
-import localforage from 'localforage';
-import { IndexDbWorkspace } from '../workspace/workspace';
+import { IndexDbWorkspace, Workspace } from '../workspace/workspace';
 import { uuid } from 'bangle-core/utils/js-utils';
 import browser from 'bangle-core/utils/browser';
-
-const activeDatabaseName =
-  new URLSearchParams(window.location.search).get('database') ||
-  'bangle-play/v1';
 
 const isMobile = browser.ios || browser.android;
 
@@ -16,13 +11,14 @@ const MAX_WINDOWS =
   new URLSearchParams(window.location.search).get('single-pane') || isMobile
     ? 1
     : 2;
+
 export const WorkspaceContext = React.createContext(undefined);
 
 export const workspaceActions = {
   createWorkspaceFile: (docName, docJson) => async (value) => {
     const newFile = await value.workspace.createFile(docName, docJson);
     return {
-      type: 'NEW_FILE',
+      type: 'CREATE_NEW_FILE',
       payload: {
         file: newFile,
       },
@@ -62,6 +58,56 @@ export const workspaceActions = {
     }
   },
 
+  openWorkspaceByUid: (uid) => async (value) => {
+    const workspace = await IndexDbWorkspace.openExistingWorkspace(
+      uid,
+      value.schema,
+    );
+    return workspaceActions.replaceWorkspace(workspace)(value);
+  },
+
+  createNewIndexDbWorkspace: (
+    name = 'bangle-' + Math.floor(100 * Math.random()),
+  ) => async (value) => {
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      name,
+      value.schema,
+    );
+    return workspaceActions.replaceWorkspace(workspace)(value);
+  },
+
+  openLastOpenedWorkspace: () => async (value) => {
+    const availableWorkspaces = await Workspace.listWorkspaces();
+    if (availableWorkspaces.length > 0) {
+      const toOpen = availableWorkspaces[0];
+
+      return workspaceActions.replaceWorkspace(
+        await IndexDbWorkspace.openExistingWorkspace(toOpen.uid, value.schema),
+      )(value);
+    }
+
+    return workspaceActions.createNewIndexDbWorkspace()(value);
+  },
+
+  deleteCurrentWorkspace: () => async (value) => {
+    let confirm = window.confirm(
+      `Are you sure you want to delete ${value.workspace.name}?`,
+    );
+
+    if (confirm) {
+      await value.workspace.deleteWorkspace();
+      return workspaceActions.openLastOpenedWorkspace()(value);
+    } else {
+      return workspaceActions.noop()(value);
+    }
+  },
+
+  renameCurrentWorkspace: (newName) => async (value) => {
+    const workspace = await value.workspace.rename(newName);
+
+    return workspaceActions.replaceWorkspace(workspace)(value);
+  },
+
   replaceWorkspace: (workspace) => async (value) => {
     return {
       type: 'REPLACE_WORKSPACE',
@@ -70,11 +116,31 @@ export const workspaceActions = {
       },
     };
   },
+
+  newWorkspaceFromBackup: (data) => async (value) => {
+    const workspace = await IndexDbWorkspace.restoreWorkspaceFromBackupFile(
+      data,
+      value.schema,
+    );
+    return workspaceActions.replaceWorkspace(workspace)(value);
+  },
+
+  takeWorkspaceBackup: () => async (value) => {
+    value.workspace.downloadBackup();
+    return { type: 'NO_OP' };
+  },
+
+  noop: () => async (value) => {
+    return { type: 'NO_OP' };
+  },
 };
 
 const reducers = (value, { type, payload }) => {
   let newValue = value;
-  if (type === 'NEW_FILE') {
+  if (type === 'NO_OP') {
+  } else if (type === 'ERROR') {
+    console.error(payload.error);
+  } else if (type === 'CREATE_NEW_FILE') {
     const { file } = payload;
     newValue = {
       ...value,
@@ -106,6 +172,11 @@ const reducers = (value, { type, payload }) => {
     let openedDocName =
       workspace.files.length === 0 ? uuid(4) : workspace.files[0].docName;
 
+    // TODO this is sort of a surprise we shouldnt do this
+    // as it assumes we want to persist the older workspace
+    if (value.workspace) {
+      value.workspace.persistWorkspace();
+    }
     newValue = {
       ...value,
       workspace,
@@ -130,20 +201,35 @@ const reducers = (value, { type, payload }) => {
 };
 
 export const updateWorkspaceContext = async (action, value) => {
-  const resolvedResult = await action(value);
+  let resolvedResult;
+  try {
+    resolvedResult = await action(value);
+  } catch (err) {
+    console.error(err);
+    resolvedResult = {
+      type: 'ERROR',
+      payload: {
+        error: err,
+      },
+    };
+    return (state) => ({
+      value: reducers(state.value, resolvedResult),
+    });
+  }
+  if (resolvedResult === undefined) {
+    return (state) => state;
+  }
   return (state) => ({
     value: reducers(state.value, resolvedResult),
   });
 };
 
 export class WorkspaceContextProvider extends React.PureComponent {
-  schema = getSchema(extensions());
-
   get value() {
     return this.state.value;
   }
 
-  updateContext = async (action) => {
+  updateWorkspaceContext = async (action) => {
     this.setState(await updateWorkspaceContext(action, this.value));
   };
 
@@ -151,6 +237,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
     /**@type {Workspace | undefined} */
     workspace: null,
     openedDocuments: [],
+    schema: getSchema(extensions()),
   };
 
   constructor(props) {
@@ -161,20 +248,15 @@ export class WorkspaceContextProvider extends React.PureComponent {
   }
 
   async componentDidMount() {
-    const workspace = await IndexDbWorkspace.createWorkspace(
-      activeDatabaseName,
-      {
-        schema: this.schema,
-        dbInstance: localforage.createInstance({
-          name: activeDatabaseName,
-        }),
-      },
+    await this.updateWorkspaceContext(
+      workspaceActions.openLastOpenedWorkspace(),
     );
-    await this.updateContext(workspaceActions.replaceWorkspace(workspace));
   }
 
   _injectUpdateContext(value) {
-    value.updateContext = this.updateContext;
+    // todo deprecate this style
+    value.updateContext = this.updateWorkspaceContext;
+    value.updateWorkspaceContext = this.updateWorkspaceContext;
     return value;
   }
 

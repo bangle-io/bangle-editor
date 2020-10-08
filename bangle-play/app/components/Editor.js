@@ -12,7 +12,7 @@ import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer'
 import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
 
 const LOG = true;
-const DEBUG = true;
+const DEBUG = false;
 let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
 
 export class Editor extends React.PureComponent {

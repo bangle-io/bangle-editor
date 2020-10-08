@@ -7,6 +7,7 @@ import { Editor } from './components/Editor';
 import { EditorManager } from './components/EditorManager';
 import { UIContextProvider } from './store/UIContext';
 import { Aside } from './components/Aside/Aside';
+import { PaletteContainer } from './components/PaletteContainer';
 
 export class AppContainer extends React.PureComponent {
   static propTypes = {};
@@ -49,6 +50,7 @@ export class AppContainer extends React.PureComponent {
           </div>
         </div>
         <UIContextProvider>
+          <PaletteContainer />
           <Aside />
         </UIContextProvider>
       </div>
