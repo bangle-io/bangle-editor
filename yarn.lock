@@ -3155,6 +3155,7 @@ __metadata:
     tailwindcss: ^1.6.0
     throttle-debounce: ^2.1.0
     tiptap-commands: ^1.14.3
+    w3c-keyname: ^2.2.4
     webpack: ^4.44.1
     webpack-cli: ^3.3.12
     webpack-dev-server: ^3.11.0
@@ -13760,7 +13761,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"w3c-keyname@npm:^2.2.0":
+"w3c-keyname@npm:^2.2.0, w3c-keyname@npm:^2.2.4":
   version: 2.2.4
   resolution: "w3c-keyname@npm:2.2.4"
   checksum: b711eaa9867030e5702131dfd434620125f1a337b98a473a4d60254fd4912559b16f2b8642975b881d6ec9387bf378b9bf838873151fd036b9ba8c356b4e42aa
