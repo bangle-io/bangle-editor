@@ -1,54 +1,7 @@
 import { uuid } from 'bangle-core/utils/js-utils';
+import { WorkspaceFile } from './workspace-file';
 
-export class WorkspaceFile {
-  static fromJSON() {}
-
-  constructor(docName, doc, metadata = {}, opts) {
-    if (!docName) {
-      throw new Error('Docname needed');
-    }
-
-    if (doc === undefined) {
-      throw new Error('Doc needed, though it can be null');
-    }
-
-    if (!opts.schema) {
-      throw new Error('No schema');
-    }
-
-    this._schema = opts.schema;
-    this.metadata = metadata;
-    this.docName = docName;
-    this.doc = doc;
-    this.deleted = false;
-  }
-
-  toJSON() {
-    return {
-      metadata: this.metadata,
-      docName: this.docName,
-      doc: this.doc,
-    };
-  }
-
-  /**
-   * @returns {String}
-   */
-  get title() {
-    // TODO handle the case from schema nodeFromJSON
-    const letHydratedDoc =
-      this.doc?.content && this._schema.nodeFromJSON(this.doc);
-    return letHydratedDoc?.firstChild?.textContent || this.docName;
-  }
-
-  async updateDoc(doc) {}
-
-  delete() {
-    this.deleted = true;
-  }
-}
-
-export class IndexDbWorkspaceFile extends WorkspaceFile {
+export class NativeWorkspaceFile extends WorkspaceFile {
   static validateOpts(opts) {
     if (!opts.dbInstance) {
       throw new Error('Db Instance not found');
@@ -59,49 +12,48 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
   }
 
   static async fromJSON(data, opts) {
-    IndexDbWorkspaceFile.validateOpts(opts);
+    NativeWorkspaceFile.validateOpts(opts);
     const { doc, docName, metadata } = data;
     if (!data.doc || !data.docName) {
       throw new Error('Doc and docName are necessary');
     }
-    return IndexDbWorkspaceFile.createFile(docName, doc, metadata, opts);
+    return NativeWorkspaceFile.createFile(docName, doc, metadata, opts);
   }
 
   static async openFile(docName, opts) {
-    IndexDbWorkspaceFile.validateOpts(opts);
+    NativeWorkspaceFile.validateOpts(opts);
 
     const data = await opts.dbInstance.getItem(docName);
     if (data) {
       const { doc, ...metadata } = data;
-      return new IndexDbWorkspaceFile(docName, doc, metadata, opts);
+      return new NativeWorkspaceFile(docName, doc, metadata, opts);
     }
 
     throw new Error('File not found');
   }
 
   static async getAllFilesInDb(opts) {
-    IndexDbWorkspaceFile.validateOpts(opts);
+    NativeWorkspaceFile.validateOpts(opts);
 
     const dbInstance = opts.dbInstance;
     return iterateIndexDb(dbInstance).then((docNames) => {
       return Promise.all(
-        docNames.map((docName) => IndexDbWorkspaceFile.openFile(docName, opts)),
+        docNames.map((docName) => NativeWorkspaceFile.openFile(docName, opts)),
       );
     });
   }
 
-  static async createFile(docName, doc, metadata, opts) {
-    IndexDbWorkspaceFile.validateOpts(opts);
-    if (!docName) {
-      docName = uuid(6);
-    }
+  static async createFile(suggestedDocName, doc, metadata, opts) {
+    NativeWorkspaceFile.validateOpts(opts);
+
+    const docName = opts.dbInstance.createNewItemKey(suggestedDocName);
 
     const data = await opts.dbInstance.getItem(docName);
     if (data) {
       throw new Error('File already exists');
     }
 
-    const file = new IndexDbWorkspaceFile(docName, doc, metadata, opts);
+    const file = new NativeWorkspaceFile(docName, doc, metadata, opts);
     await file.updateDoc();
     return file;
   }
@@ -109,6 +61,9 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
   _dbInstance = null;
 
   constructor(docName, doc, metadata, opts) {
+    if (!docName.endsWith('.md')) {
+      throw new Error('Only md files');
+    }
     metadata = {
       created: Date.now(),
       ...metadata,
@@ -116,7 +71,7 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
     };
 
     super(docName, doc, metadata, opts);
-    IndexDbWorkspaceFile.validateOpts(opts);
+    NativeWorkspaceFile.validateOpts(opts);
     this._dbInstance = opts.dbInstance;
   }
 

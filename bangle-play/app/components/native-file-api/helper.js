@@ -17,8 +17,7 @@ export async function recurseDirHandle(
   let result = [];
   for await (const entry of dirHandle.values()) {
     if (entry.kind === 'file' && allowedFile(entry)) {
-      let file = await entry.getFile();
-      result.push([dirHandle, file]);
+      result.push([dirHandle, entry]);
     }
     if (entry.kind === 'directory' && allowedDir(entry)) {
       let children = await recurseDirHandle(entry, { allowedDir, allowedFile });

@@ -48,7 +48,7 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
     new Dinos(),
     new Emoji(),
     new History(),
-    new TrailingNode(),
+    // new TrailingNode(),
     new StopwatchExtension(),
     new Timestamp(),
     collabOpts &&
