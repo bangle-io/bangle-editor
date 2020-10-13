@@ -20,8 +20,8 @@ module.exports = {
     Image: 'off',
   },
   rules: {
-    'curly': 'error',
-    'react/prop-types': ['error'],
+    curly: 'error',
+    // 'react/prop-types': ['error'],
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
   settings: {},
