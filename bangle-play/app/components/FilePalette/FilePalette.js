@@ -1,7 +1,7 @@
 // import './FilePalette.css';
 import React from 'react';
 import { UIContext } from 'bangle-play/app/store/UIContext';
-import { Palette } from 'bangle-play/app/ui/palette';
+import { Palette } from 'bangle-play/app/ui/Palette';
 import { SideBarRow } from '../Aside/SideBarRow';
 import {
   workspaceActions,

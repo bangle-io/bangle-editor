@@ -4217,6 +4217,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:8.1.0"],
             ["bangle-core", "workspace:bangle-core"],
             ["bangle-plugins", "workspace:bangle-plugins"],
+            ["case-sensitive-paths-webpack-plugin", "npm:2.3.0"],
             ["css-loader", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:4.2.1"],
             ["css.gg", "npm:2.0.0"],
             ["date-fns", "npm:2.15.0"],
@@ -4848,6 +4849,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["capture-exit", "npm:2.0.0"],
             ["rsvp", "npm:4.8.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["case-sensitive-paths-webpack-plugin", [
+        ["npm:2.3.0", {
+          "packageLocation": "./.yarn/cache/case-sensitive-paths-webpack-plugin-npm-2.3.0-dd08c71b55-45d85caef4.zip/node_modules/case-sensitive-paths-webpack-plugin/",
+          "packageDependencies": [
+            ["case-sensitive-paths-webpack-plugin", "npm:2.3.0"]
           ],
           "linkType": "HARD",
         }]

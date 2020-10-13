@@ -3115,6 +3115,7 @@ __metadata:
     babel-loader: ^8.1.0
     bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
+    case-sensitive-paths-webpack-plugin: ^2.3.0
     css-loader: ^4.2.1
     css.gg: ^2.0.0
     date-fns: ^2.10.0
@@ -3717,6 +3718,13 @@ __metadata:
   dependencies:
     rsvp: ^4.8.4
   checksum: 9dd81108a087a90430e5abbad45a195123647718cf19faa58b76db519a1d79975ab13685e55de16dbdee1da3f8e4c522e7b6dc7aa7614c65dc58ad27588f7887
+  languageName: node
+  linkType: hard
+
+"case-sensitive-paths-webpack-plugin@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "case-sensitive-paths-webpack-plugin@npm:2.3.0"
+  checksum: 45d85caef4dfc3cacb1461912dee18cfcae74f35cdbeaf564484ed3c82266a5d9305883b86d9537bd57d07ba2a64fb716c2ff98a88a4bf97619ab7b130cbb68e
   languageName: node
   linkType: hard
 

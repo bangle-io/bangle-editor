@@ -1,6 +1,6 @@
 // import './WorkspacePalette.css';
 import React from 'react';
-import { Palette } from 'bangle-play/app/ui/palette';
+import { Palette } from 'bangle-play/app/ui/Palette';
 
 import { SideBarRow } from '../Aside/SideBarRow';
 import {
