@@ -1,13 +1,40 @@
 import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
 import localforage from 'localforage';
+import { FSStorage } from './native-fs-driver';
 import { Workspace } from './workspace';
 import { IndexDbWorkspaceFile } from './workspace-file';
 const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'play/idb-workspace') : () => {};
 
-export const TYPE_INDEXDB = 'indexdb';
-const createIndexdbUid = () => TYPE_INDEXDB + '_' + uuid(6);
+export const INDEXDB_TYPE = 'indexdb';
+export const NATIVE_FS_TYPE = 'native';
+const createIndexdbUid = () => {
+  return INDEXDB_TYPE + '_' + uuid(6);
+};
+const createNativeUid = () => {
+  return NATIVE_FS_TYPE + '_' + uuid(6);
+};
+const createUid = (type) => {
+  switch (type) {
+    case NATIVE_FS_TYPE:
+      return createNativeUid();
+    case INDEXDB_TYPE:
+      return createIndexdbUid();
+    default:
+      throw new Error('Unknown type ' + type);
+  }
+};
+
+const getType = (uid) => {
+  if (uid.startsWith(INDEXDB_TYPE + '_')) {
+    return INDEXDB_TYPE;
+  }
+  if (uid.startsWith(NATIVE_FS_TYPE + '_')) {
+    return NATIVE_FS_TYPE;
+  }
+  throw new Error('Unknown type ' + uid);
+};
 
 export class IndexDbWorkspace extends Workspace {
   static getDbInstance = async (uid, metadata, schema) => {
@@ -18,18 +45,20 @@ export class IndexDbWorkspace extends Workspace {
       throw new Error('schema needed');
     }
 
+    if (uid.startsWith(NATIVE_FS_TYPE)) {
+      return FSStorage.createInstance(metadata.dirHandle, schema);
+    }
+
     return localforage.createInstance({
       name: uid,
     });
   };
 
-  static async restoreWorkspaceFromBackupFile(data, schema) {
-    const uid = createIndexdbUid();
+  static async restoreWorkspaceFromBackupFile(data, schema, type) {
+    const uid = createUid(type);
     const dbInstance = await IndexDbWorkspace.getDbInstance(uid, {}, schema);
 
     let { name, files, metadata } = data;
-
-    const type = TYPE_INDEXDB;
 
     // old style backup
     if (Array.isArray(data)) {
@@ -73,7 +102,7 @@ export class IndexDbWorkspace extends Workspace {
       metadata,
     };
     let files = await IndexDbWorkspaceFile.getAllFilesInDb(opts);
-    const instance = new IndexDbWorkspace(uid, files, TYPE_INDEXDB, opts);
+    const instance = new IndexDbWorkspace(uid, files, getType(uid), opts);
     await instance.persistWorkspaceInfo();
     return instance;
   }
@@ -84,8 +113,8 @@ export class IndexDbWorkspace extends Workspace {
     return IndexDbWorkspace.openWorkspace(uid, name, schema, metadata);
   }
 
-  static async createWorkspace(name, schema) {
-    const uid = createIndexdbUid();
+  static async createWorkspace(name, schema, type) {
+    const uid = createUid(type);
     return IndexDbWorkspace.openWorkspace(uid, name, schema);
   }
 
@@ -110,6 +139,7 @@ export class IndexDbWorkspace extends Workspace {
     files.forEach((value) => {
       value.delete();
     });
+    // TODO implement this for nativefs
     getIdleCallback(() => {
       localforage.dropInstance({ name: this.uid });
     });
