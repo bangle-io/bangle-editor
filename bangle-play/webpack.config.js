@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+
 module.exports = (env, argv) => {
   const isProduction = env && env.production;
   const mode = isProduction ? 'production' : 'development';
@@ -33,6 +35,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'build'),
     },
     plugins: [
+      new CaseSensitivePathsPlugin(),
       new HtmlWebpackPlugin({
         title: 'Bangle',
         template: 'public/index.html',

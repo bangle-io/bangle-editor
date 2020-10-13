@@ -2,7 +2,7 @@ import React from 'react';
 import { CommandPalette } from './CommandPalette/CommandPalette';
 import { FilePalette } from './FilePalette/FilePalette';
 import { UIActions, UIContext } from 'bangle-play/app/store/UIContext';
-import { Palette } from '../ui/palette';
+import { Palette } from '../ui/Palette';
 import { WorkspacePalette } from './Palettes/WorkspacePalette';
 import { keybindingHelper } from '../misc/keybinding-helper';
 
