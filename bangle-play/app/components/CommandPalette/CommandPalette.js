@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { commands } from './commands';
 import { Palette } from 'bangle-play/app/ui/palette';
 import { getIdleCallback } from 'bangle-core/utils/js-utils';
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/command-palette') : () => {};
 

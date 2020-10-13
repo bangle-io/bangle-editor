@@ -1,10 +1,11 @@
-import { uuid } from 'bangle-core/utils/js-utils';
+import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
 import browser from 'bangle-core/utils/browser';
 import React from 'react';
 import { extensions } from '../editor/extensions';
 import { getSchema } from '../editor/utils';
-import { Workspace } from '../workspace/workspace';
-import { IndexDbWorkspace, INDEXDB_TYPE } from '../workspace/indexdb-workspace';
+import { IndexDbWorkspace } from '../workspace/workspace';
+import { INDEXDB_TYPE } from '../workspace/type-helpers';
+import { WorkspacesInfo } from '../workspace/workspaces-info';
 
 const LOG = false;
 
@@ -147,13 +148,13 @@ export const workspaceActions = {
     return {
       type: 'UPDATE_WORKSPACES_INFO',
       payload: {
-        availableWorkspacesInfo: await Workspace.listWorkspacesInfo(),
+        availableWorkspacesInfo: await WorkspacesInfo.list(),
       },
     };
   },
 
   refreshWorkspace: () => async (value) => {
-    const availableWorkspacesInfo = await Workspace.listWorkspacesInfo();
+    const availableWorkspacesInfo = await WorkspacesInfo.list();
     let workspace;
     if (availableWorkspacesInfo.length > 0) {
       const toOpen = availableWorkspacesInfo[0];
@@ -163,7 +164,11 @@ export const workspaceActions = {
       );
     } else {
       const name = 'bangle-' + Math.floor(100 * Math.random());
-      workspace = await IndexDbWorkspace.createWorkspace(name, value.schema);
+      workspace = await IndexDbWorkspace.createWorkspace(
+        name,
+        value.schema,
+        INDEXDB_TYPE,
+      );
     }
 
     return {
@@ -180,7 +185,10 @@ const reducers = (value, { type, payload }) => {
   let newValue = value;
   if (type === 'NO_OP') {
   } else if (type === 'ERROR') {
-    console.error(payload.error);
+    getIdleCallback(() => {
+      throw payload.error;
+    });
+    // TODO implement me
   } else if (type === 'NEW_WORKSPACE_FILE') {
     const { file } = payload;
     newValue = {
@@ -216,7 +224,7 @@ const reducers = (value, { type, payload }) => {
     // TODO this is sort of a surprise we shouldnt do this
     // as it assumes we want to persist the older workspace
     if (value.workspace) {
-      value.workspace.persistWorkspaceInfo();
+      value.workspace.persistWorkspace();
     }
     newValue = {
       ...value,
@@ -257,7 +265,6 @@ export const updateWorkspaceContext = async (action, value) => {
   try {
     resolvedResult = await action(value);
   } catch (err) {
-    console.error(err);
     resolvedResult = {
       type: 'ERROR',
       payload: {

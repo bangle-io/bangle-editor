@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { extensions } from 'bangle-play/app/editor/extensions';
 import { getSchema } from 'bangle-play/app/editor/utils';
-import { IndexDbWorkspace } from 'bangle-play/app/workspace/indexdb-workspace';
+import { IndexDbWorkspace } from 'bangle-play/app/workspace/workspace';
 import { IndexDbWorkspaceFile } from 'bangle-play/app/workspace/workspace-file';
 
 import localforage from 'localforage';
@@ -14,6 +14,7 @@ import {
   WorkspaceContextProvider,
 } from '../WorkspaceContext';
 import { sleep } from 'bangle-core/utils/js-utils';
+import { INDEXDB_TYPE } from 'bangle-play/app/workspace/type-helpers';
 
 jest.mock('localforage', () => {
   const instance = {
@@ -64,17 +65,25 @@ describe('index db workspace', () => {
     Date.now = DateNowBackup;
   });
   test('Creates workspace correctly', async () => {
-    await IndexDbWorkspace.createWorkspace('test_db', schema);
+    await IndexDbWorkspace.createWorkspace('test_db', schema, INDEXDB_TYPE);
   });
 
   test('Adds files correctly', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      'test_db',
+      schema,
+      INDEXDB_TYPE,
+    );
 
     expect(workspace.files).toMatchSnapshot();
   });
 
   test('getFile ', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      'test_db',
+      schema,
+      INDEXDB_TYPE,
+    );
 
     expect(workspace.getFile('1')).toMatchInlineSnapshot(`
       Object {
@@ -90,13 +99,21 @@ describe('index db workspace', () => {
   });
 
   test('hasFile ', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      'test_db',
+      schema,
+      INDEXDB_TYPE,
+    );
 
     expect(workspace.hasFile('2')).toBe(true);
   });
 
   test('link file', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      'test_db',
+      schema,
+      INDEXDB_TYPE,
+    );
 
     const newFile = new IndexDbWorkspaceFile(
       'test_doc',
@@ -111,7 +128,11 @@ describe('index db workspace', () => {
   });
 
   test('unlink file', async () => {
-    const workspace = await IndexDbWorkspace.createWorkspace('test_db', schema);
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      'test_db',
+      schema,
+      INDEXDB_TYPE,
+    );
 
     let newWorkspace = workspace.unlinkFile(workspace.getFile('2'));
 
@@ -178,9 +199,13 @@ describe('workspaceContext actions', () => {
 
   test('refreshWorkspace when there is existing workspaceInfo', async () => {
     const name = 'test1';
-    workspaceInstance.getItem.mockImplementation(() => [
-      { metadata: {}, uid: 'indexdb_abc1', type: 'indexdb', name },
-    ]);
+    workspaceInstance.getItem.mockImplementation(async () => ({
+      indexdb_abc1: {
+        metadata: {},
+        uid: 'indexdb_abc1',
+        name,
+      },
+    }));
     customRender(
       <WorkspaceContext.Consumer>
         {({ workspace }) =>

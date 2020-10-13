@@ -1,12 +1,16 @@
 import { uuid } from 'bangle-core/utils/js-utils';
 import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import { readFile } from '../misc/index';
 
 export class FSStorage {
   // TODO check if the new directory is something we already have
   // in our database
   static async createInstance(dirHandle, schema) {
-    await pickADirectory(dirHandle);
+    dirHandle = await pickADirectory(dirHandle);
+    if (!(await verifyPermission(dirHandle))) {
+      throw new NoPermissionError('Permission denied by user');
+    }
     return new FSStorage(dirHandle, schema);
   }
 
@@ -159,6 +163,7 @@ export class NoPermissionError extends Error {
 async function pickADirectory(dirHandle) {
   if (dirHandle) {
     let permission = await verifyPermission(dirHandle);
+    console.log('got permissions');
     if (!permission) {
       throw new NoPermissionError(
         'The permission to edit directory was denied',
@@ -193,33 +198,6 @@ async function verifyPermission(fileHandle, withWrite = true) {
   }
   // The user did nt grant permission, return false.
   return false;
-}
-
-function readFile(file) {
-  // If the new .text() reader is available, use it.
-  if (file.text) {
-    return file.text();
-  }
-  // Otherwise use the traditional file reading technique.
-  return _readFileLegacy(file);
-}
-
-/**
- * Reads the raw text from a file.
- *
- * @private
- * @param {File} file
- * @return {Promise<string>} A promise that resolves to the parsed string.
- */
-function _readFileLegacy(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.addEventListener('loadend', (e) => {
-      const text = e.srcElement.result;
-      resolve(text);
-    });
-    reader.readAsText(file);
-  });
 }
 
 /**

@@ -1,8 +1,6 @@
 // import './WorkspacePalette.css';
 import React from 'react';
-import { UIContext } from 'bangle-play/app/store/UIContext';
 import { Palette } from 'bangle-play/app/ui/palette';
-import localforage from 'localforage';
 
 import { SideBarRow } from '../Aside/SideBarRow';
 import {
@@ -10,10 +8,8 @@ import {
   WorkspaceContext,
 } from 'bangle-play/app/store/WorkspaceContext';
 import PropTypes from 'prop-types';
-import { Workspace } from '../../workspace/workspace';
-import { sleep } from 'bangle-core/utils/js-utils';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/file-palette') : () => {};
 

@@ -1,13 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { UIActions } from '../../store/UIContext';
 import { workspaceActions } from '../../store/WorkspaceContext';
 import { SideBarRow } from '../Aside/SideBarRow';
-import { readFile } from '../native-file-api/helper';
-import PropTypes from 'prop-types';
-import {
-  INDEXDB_TYPE,
-  NATIVE_FS_TYPE,
-} from 'bangle-play/app/workspace/indexdb-workspace';
+import { INDEXDB_TYPE, NATIVE_FS_TYPE } from '../../workspace/type-helpers';
+import { readFile } from 'bangle-play/app/misc/index';
 
 export const commands = Object.entries(Commands());
 

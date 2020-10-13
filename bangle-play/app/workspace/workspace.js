@@ -1,5 +1,14 @@
 import localforage from 'localforage';
 import { downloadJSON } from '../misc/index';
+import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
+import { FSStorage } from './native-fs-driver';
+import { IndexDbWorkspaceFile } from './workspace-file';
+import { WorkspacesInfo } from './workspaces-info';
+import {
+  createUidFromType,
+  NATIVE_FS_TYPE,
+  getTypeFromUID,
+} from './type-helpers';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/workspace') : () => {};
@@ -7,17 +16,6 @@ let log = LOG ? console.log.bind(console, 'play/workspace') : () => {};
 // TODO if a file fails to open for whatever reason donot fail
 // allow user to open another file
 export class Workspace {
-  static async listWorkspacesInfo() {
-    const instance = localforage.createInstance({
-      name: 'workspaces/1',
-    });
-    let existing = await instance.getItem('workspaces');
-    if (!existing || !existing[0]) {
-      return [];
-    }
-
-    return existing.sort((a, b) => a.type.localeCompare(b.type));
-  }
   /**
    * @type {WorkspaceFile[]}
    */
@@ -39,8 +37,10 @@ export class Workspace {
     if (!uid.startsWith('indexdb_') && !uid.startsWith('native_')) {
       throw new Error('malformed uid');
     }
+
     Workspace.validateOpts(opts);
 
+    this.workspacesInfo = new WorkspacesInfo();
     this.uid = uid;
     this.type = type;
     this._opts = opts;
@@ -65,64 +65,32 @@ export class Workspace {
     };
   }
 
-  async persistWorkspaceInfo() {
+  async persistWorkspace() {
     if (this.deleted) {
       return;
     }
-
-    const instance = localforage.createInstance({
-      name: 'workspaces/1',
+    await this.workspacesInfo.update({
+      uid: this.uid,
+      name: this.name,
+      metadata: this.metadata,
     });
-    let existing = await instance.getItem('workspaces');
-    if (!existing) {
-      existing = [];
-    }
-    const { name, type, uid, metadata } = this;
-    log({ name, type, uid });
-    let entry = existing.find((w) => w.uid === this.uid);
-
-    if (entry) {
-      entry.metadata = this.metadata;
-      entry.name = name;
-    } else {
-      existing.push({
-        uid,
-        name: name,
-        type: type,
-        metadata: metadata,
-      });
-    }
-    log(existing);
-    await instance.setItem('workspaces', existing);
   }
 
   async deleteWorkspace() {
     if (this.deleted) {
       return;
     }
-
-    const instance = localforage.createInstance({
-      name: 'workspaces/1',
-    });
-
-    let existing = await instance.getItem('workspaces');
-
-    if (!existing) {
-      return;
-    }
-
-    existing = existing.filter((w) => !(w.uid === this.uid));
-    await instance.setItem('workspaces', existing);
+    await this.workspacesInfo.delete(this.uid);
     this.deleted = true;
   }
 
   async rename(newName) {
     if (!newName || typeof newName !== 'string') {
-      return this;
+      throw new Error('Invalid name');
     }
 
     this.name = newName;
-    await this.persistWorkspaceInfo();
+    await this.persistWorkspace();
     return this;
   }
 
@@ -147,5 +115,120 @@ export class Workspace {
   downloadBackup() {
     const data = this.toJSON();
     downloadJSON(data, `${this.name}_${this.uid}.json`);
+  }
+}
+
+export class IndexDbWorkspace extends Workspace {
+  static getDbInstance = async (uid, metadata, schema) => {
+    if (!metadata) {
+      throw new Error('metadata needed');
+    }
+    if (!schema) {
+      throw new Error('schema needed');
+    }
+
+    if (uid.startsWith(NATIVE_FS_TYPE)) {
+      return FSStorage.createInstance(metadata.dirHandle, schema);
+    }
+
+    return localforage.createInstance({
+      name: uid,
+    });
+  };
+
+  static async restoreWorkspaceFromBackupFile(data, schema, type) {
+    const uid = createUidFromType(type);
+    const dbInstance = await IndexDbWorkspace.getDbInstance(uid, {}, schema);
+
+    let { name, files, metadata } = data;
+
+    // old style backup
+    if (Array.isArray(data)) {
+      name = 'pyare-mohan' + Math.floor(100 * Math.random());
+      files = await Promise.all(
+        data.map((item) =>
+          IndexDbWorkspaceFile.fromJSON(item, { schema, dbInstance }),
+        ),
+      );
+      metadata = {};
+    } else {
+      files = await Promise.all(
+        files.map((item) =>
+          IndexDbWorkspaceFile.fromJSON(item, { schema, dbInstance }),
+        ),
+      );
+    }
+
+    const opts = {
+      dbInstance,
+      schema,
+      metadata,
+      name,
+    };
+
+    const instance = new IndexDbWorkspace(uid, files, type, opts);
+    await instance.persistWorkspace();
+    return instance;
+  }
+
+  static async openWorkspace(uid, name, schema, metadata = {}) {
+    const dbInstance = await IndexDbWorkspace.getDbInstance(
+      uid,
+      metadata,
+      schema,
+    );
+    const opts = {
+      name,
+      dbInstance,
+      schema,
+      metadata,
+    };
+    let files = await IndexDbWorkspaceFile.getAllFilesInDb(opts);
+    const instance = new IndexDbWorkspace(
+      uid,
+      files,
+      getTypeFromUID(uid),
+      opts,
+    );
+    await instance.persistWorkspace();
+    return instance;
+  }
+
+  static openExistingWorkspace(workspaceInfo, schema) {
+    const { uid, name, metadata } = workspaceInfo;
+
+    return IndexDbWorkspace.openWorkspace(uid, name, schema, metadata);
+  }
+
+  static async createWorkspace(name, schema, type) {
+    const uid = createUidFromType(type);
+    return IndexDbWorkspace.openWorkspace(uid, name, schema);
+  }
+
+  updateFiles(files) {
+    return new IndexDbWorkspace(this.uid, files, this.type, this._opts);
+  }
+
+  /**
+   * TODO remove this, no need to put it in here
+   */
+  async createFile(docName, doc) {
+    return IndexDbWorkspaceFile.createFile(docName, doc, undefined, this._opts);
+  }
+
+  async deleteWorkspace() {
+    if (this.deleted) {
+      return;
+    }
+
+    super.deleteWorkspace();
+    let files = await IndexDbWorkspaceFile.getAllFilesInDb(this._opts);
+    files.forEach((value) => {
+      value.delete();
+    });
+    // TODO implement this for nativefs
+    getIdleCallback(() => {
+      localforage.dropInstance({ name: this.uid });
+    });
   }
 }
