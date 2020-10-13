@@ -99,3 +99,30 @@ export function downloadJSON(data, filename) {
   );
   a.dispatchEvent(e);
 }
+
+export function readFile(file) {
+  // If the new .text() reader is available, use it.
+  if (file.text) {
+    return file.text();
+  }
+  // Otherwise use the traditional file reading technique.
+  return _readFileLegacy(file);
+}
+
+/**
+ * Reads the raw text from a file.
+ *
+ * @private
+ * @param {File} file
+ * @return {Promise<string>} A promise that resolves to the parsed string.
+ */
+function _readFileLegacy(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', (e) => {
+      const text = e.srcElement.result;
+      resolve(text);
+    });
+    reader.readAsText(file);
+  });
+}

@@ -9,7 +9,7 @@ import {
 } from 'bangle-play/app/store/WorkspaceContext';
 import PropTypes from 'prop-types';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/file-palette') : () => {};
 
