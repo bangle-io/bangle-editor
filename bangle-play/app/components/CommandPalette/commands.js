@@ -4,6 +4,8 @@ import { workspaceActions } from '../../store/WorkspaceContext';
 import { SideBarRow } from '../Aside/SideBarRow';
 import { readFile } from '../native-file-api/helper';
 import PropTypes from 'prop-types';
+import { TYPE_INDEXDB } from 'bangle-play/app/workspace/indexdb-workspace';
+import { TYPE_NATIVE } from 'bangle-play/app/workspace/native-workspace';
 
 export const commands = Object.entries(Commands());
 
@@ -80,6 +82,38 @@ function Commands() {
         onDismiss();
       },
     }),
+    'WorkspaceContext.newNativeWorkspace': commandRenderHOC({
+      hint: '',
+      title: 'Workspace: Create new workspace saved in your filesystem',
+      keywords: '',
+      keyboardShortcut: '',
+      priority: 10,
+
+      onExecute: ({ updateUIContext, updateWorkspaceContext, onDismiss }) => {
+        // dismiss to reset the execute prop on the parent component
+        onDismiss();
+        updateUIContext(
+          UIActions.openPalette(
+            'command/input/WorkspaceContext.newNativeWorkspaceInput',
+          ),
+        );
+      },
+    }),
+
+    'WorkspaceContext.newNativeWorkspaceInput': commandRenderHOC({
+      hint: '',
+      hidden: true,
+      title: 'Please give this workspace a name and press enter to finish',
+      keywords: '',
+      keyboardShortcut: '',
+      priority: 10,
+      onExecute: ({ updateWorkspaceContext, onDismiss, query }) => {
+        updateWorkspaceContext(
+          workspaceActions.createNewNativeWorkspace(query),
+        );
+        onDismiss();
+      },
+    }),
 
     'WorkspaceContext.openExistingWorkspace': commandRenderHOC({
       hint: '',
@@ -92,13 +126,27 @@ function Commands() {
         updateUIContext(UIActions.openPalette('workspace'));
       },
     }),
-    'WorkspaceContext.restoreWorkspaceFromBackup': restoreWorkspaceFromBackup({
-      hint: '',
-      title: 'Workspace: Restore from a backup',
-      keywords: '',
-      keyboardShortcut: '',
-      priority: 10,
-    }),
+    'WorkspaceContext.restoreIndexdbWorkspaceFromBackup': restoreWorkspaceFromBackup(
+      {
+        hint: '',
+        title: 'Workspace: Restore workspace from a backup (browser storage)',
+        keywords: '',
+        keyboardShortcut: '',
+        priority: 10,
+      },
+      TYPE_INDEXDB,
+    ),
+
+    'WorkspaceContext.restoreNativeWorkspaceFromBackup': restoreWorkspaceFromBackup(
+      {
+        hint: '',
+        title: 'Workspace: Restore workspace from a backup (filesystem)',
+        keywords: '',
+        keyboardShortcut: '',
+        priority: 10,
+      },
+      TYPE_NATIVE,
+    ),
 
     'WorkspaceContext.takeWorkspaceBackup': commandRenderHOC({
       hint: '',
@@ -232,7 +280,7 @@ function commandRenderHOC(command) {
   return component;
 }
 
-function restoreWorkspaceFromBackup(command) {
+function restoreWorkspaceFromBackup(command, type) {
   return class RestoreWorkspaceFromBackup extends React.Component {
     inputEl = React.createRef();
 
@@ -290,7 +338,7 @@ function restoreWorkspaceFromBackup(command) {
               try {
                 const file = JSON.parse(await readFile(fileList[0]));
                 this.props.updateWorkspaceContext(
-                  workspaceActions.newWorkspaceFromBackup(file),
+                  workspaceActions.newWorkspaceFromBackup(file, type),
                 );
               } catch (error) {
                 console.error(error);

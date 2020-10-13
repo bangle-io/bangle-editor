@@ -1,9 +1,19 @@
 import React from 'react';
 import { extensions } from '../editor/extensions';
 import { getSchema } from '../editor/utils';
-import { IndexDbWorkspace, Workspace } from '../workspace/workspace';
+import { Workspace } from '../workspace/workspace';
 import { uuid } from 'bangle-core/utils/js-utils';
 import browser from 'bangle-core/utils/browser';
+import { NativeWorkspace } from '../workspace/native-workspace';
+import { IndexDbWorkspace } from '../workspace/indexdb-workspace';
+import {
+  openExistingWorkspace,
+  restoreWorkspaceFromBackupFile,
+} from '../workspace/helpers';
+
+const LOG = false;
+
+let log = LOG ? console.log.bind(console, 'play/ws-context') : () => {};
 
 const isMobile = browser.ios || browser.android;
 
@@ -18,7 +28,7 @@ export const workspaceActions = {
   createWorkspaceFile: (docName, docJson) => async (value) => {
     const newFile = await value.workspace.createFile(docName, docJson);
     return {
-      type: 'CREATE_NEW_FILE',
+      type: 'NEW_WORKSPACE_FILE',
       payload: {
         file: newFile,
       },
@@ -27,18 +37,17 @@ export const workspaceActions = {
 
   openWorkspaceFile: (docName) => async (value) => {
     return {
-      type: 'OPEN_FILE',
+      type: 'OPEN_WORKSPACE_FILE',
       payload: {
         docName: docName,
       },
     };
   },
 
-  openBlankWorkspaceFile: () => async (value) => {
-    const newDocName = uuid(8);
-    const newFile = await value.workspace.createFile(newDocName, null);
+  openBlankWorkspaceFile: (suggestedDocName) => async (value) => {
+    const newFile = await value.workspace.createFile(suggestedDocName, null);
     return {
-      type: 'OPEN_NEW_FILE',
+      type: 'OPEN_BLANK_WORKSPACE_FILE',
       payload: {
         file: newFile,
       },
@@ -50,7 +59,7 @@ export const workspaceActions = {
     if (workspaceFile) {
       await workspaceFile.delete();
       return {
-        type: 'DELETE_FILE',
+        type: 'DELETE_WORKSPACE_FILE',
         payload: {
           file: workspaceFile,
         },
@@ -58,11 +67,8 @@ export const workspaceActions = {
     }
   },
 
-  openWorkspaceByUid: (uid) => async (value) => {
-    const workspace = await IndexDbWorkspace.openExistingWorkspace(
-      uid,
-      value.schema,
-    );
+  openWorkspaceByWorkspaceInfo: (workspaceInfo) => async (value) => {
+    const workspace = await openExistingWorkspace(workspaceInfo, value.schema);
     return workspaceActions.replaceWorkspace(workspace)(value);
   },
 
@@ -76,13 +82,20 @@ export const workspaceActions = {
     return workspaceActions.replaceWorkspace(workspace)(value);
   },
 
+  createNewNativeWorkspace: (
+    name = 'bangle-' + Math.floor(100 * Math.random()),
+  ) => async (value) => {
+    const workspace = await NativeWorkspace.createWorkspace(name, value.schema);
+    return workspaceActions.replaceWorkspace(workspace)(value);
+  },
+
   openLastOpenedWorkspace: () => async (value) => {
-    const availableWorkspaces = await Workspace.listWorkspaces();
-    if (availableWorkspaces.length > 0) {
-      const toOpen = availableWorkspaces[0];
+    const availableWorkspacesInfo = value.availableWorkspacesInfo;
+    if (availableWorkspacesInfo.length > 0) {
+      const toOpen = availableWorkspacesInfo[0];
 
       return workspaceActions.replaceWorkspace(
-        await IndexDbWorkspace.openExistingWorkspace(toOpen.uid, value.schema),
+        await openExistingWorkspace(toOpen, value.schema),
       )(value);
     }
 
@@ -96,7 +109,8 @@ export const workspaceActions = {
 
     if (confirm) {
       await value.workspace.deleteWorkspace();
-      return workspaceActions.openLastOpenedWorkspace()(value);
+
+      return workspaceActions.refreshWorkspace()(value);
     } else {
       return workspaceActions.noop()(value);
     }
@@ -117,21 +131,52 @@ export const workspaceActions = {
     };
   },
 
-  newWorkspaceFromBackup: (data) => async (value) => {
-    const workspace = await IndexDbWorkspace.restoreWorkspaceFromBackupFile(
-      data,
+  newWorkspaceFromBackup: (data, type) => async (value) => {
+    let workspace = await restoreWorkspaceFromBackupFile(
       value.schema,
+      data,
+      type,
     );
+
     return workspaceActions.replaceWorkspace(workspace)(value);
   },
 
   takeWorkspaceBackup: () => async (value) => {
     value.workspace.downloadBackup();
-    return { type: 'NO_OP' };
+    return workspaceActions.noop()(value);
   },
 
   noop: () => async (value) => {
     return { type: 'NO_OP' };
+  },
+
+  updateWorkspacesInfo: () => async (value) => {
+    return {
+      type: 'UPDATE_WORKSPACES_INFO',
+      payload: {
+        availableWorkspacesInfo: await Workspace.listWorkspacesInfo(),
+      },
+    };
+  },
+
+  refreshWorkspace: () => async (value) => {
+    const availableWorkspacesInfo = await Workspace.listWorkspacesInfo();
+    let workspace;
+    if (availableWorkspacesInfo.length > 0) {
+      const toOpen = availableWorkspacesInfo[0];
+      workspace = await openExistingWorkspace(toOpen, value.schema);
+    } else {
+      const name = 'bangle-' + Math.floor(100 * Math.random());
+      workspace = await IndexDbWorkspace.createWorkspace(name, value.schema);
+    }
+
+    return {
+      type: 'REPLACE_WORKSPACE',
+      payload: {
+        availableWorkspacesInfo,
+        workspace,
+      },
+    };
   },
 };
 
@@ -140,13 +185,13 @@ const reducers = (value, { type, payload }) => {
   if (type === 'NO_OP') {
   } else if (type === 'ERROR') {
     console.error(payload.error);
-  } else if (type === 'CREATE_NEW_FILE') {
+  } else if (type === 'NEW_WORKSPACE_FILE') {
     const { file } = payload;
     newValue = {
       ...value,
       workspace: value.workspace.linkFile(file),
     };
-  } else if (type === 'OPEN_NEW_FILE') {
+  } else if (type === 'OPEN_BLANK_WORKSPACE_FILE') {
     const { file } = payload;
     newValue = {
       ...value,
@@ -156,7 +201,7 @@ const reducers = (value, { type, payload }) => {
         value.openedDocuments,
       ),
     };
-  } else if (type === 'OPEN_FILE') {
+  } else if (type === 'OPEN_WORKSPACE_FILE') {
     const { docName } = payload;
     if (value.workspace.files.find((w) => w.docName === docName)) {
       newValue = {
@@ -168,21 +213,24 @@ const reducers = (value, { type, payload }) => {
       };
     }
   } else if (type === 'REPLACE_WORKSPACE') {
-    const { workspace } = payload;
+    const { workspace, availableWorkspacesInfo } = payload;
     let openedDocName =
       workspace.files.length === 0 ? uuid(4) : workspace.files[0].docName;
 
     // TODO this is sort of a surprise we shouldnt do this
     // as it assumes we want to persist the older workspace
     if (value.workspace) {
-      value.workspace.persistWorkspace();
+      value.workspace.persistWorkspaceInfo();
     }
     newValue = {
       ...value,
       workspace,
       openedDocuments: calculateOpenedDocuments(openedDocName, []),
     };
-  } else if (type === 'DELETE_FILE') {
+    if (availableWorkspacesInfo) {
+      newValue.availableWorkspacesInfo = availableWorkspacesInfo;
+    }
+  } else if (type === 'DELETE_WORKSPACE_FILE') {
     const { file } = payload;
     const workspace = value.workspace.unlinkFile(file);
     const newFiles = value.openedDocuments.filter(({ docName }) =>
@@ -193,9 +241,17 @@ const reducers = (value, { type, payload }) => {
       workspace,
       openedDocuments: newFiles,
     };
+  } else if (type === 'UPDATE_WORKSPACES_INFO') {
+    const { availableWorkspacesInfo } = payload;
+    newValue = {
+      ...value,
+      availableWorkspacesInfo,
+    };
   } else {
     throw new Error('Unknown type');
   }
+
+  log({ type, newValue });
 
   return newValue;
 };
@@ -238,6 +294,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
     workspace: null,
     openedDocuments: [],
     schema: getSchema(extensions()),
+    availableWorkspacesInfo: null,
   };
 
   constructor(props) {
@@ -248,9 +305,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await this.updateWorkspaceContext(
-      workspaceActions.openLastOpenedWorkspace(),
-    );
+    await this.updateWorkspaceContext(workspaceActions.refreshWorkspace());
   }
 
   _injectUpdateContext(value) {

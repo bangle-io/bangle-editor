@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { extensions } from 'bangle-play/app/editor/extensions';
 import { getSchema } from 'bangle-play/app/editor/utils';
-import { IndexDbWorkspace } from 'bangle-play/app/workspace/workspace';
+import { IndexDbWorkspace } from 'bangle-play/app/workspace/indexdb-workspace';
 import { IndexDbWorkspaceFile } from 'bangle-play/app/workspace/workspace-file';
 
 import localforage from 'localforage';
@@ -13,6 +13,7 @@ import {
   WorkspaceContext,
   WorkspaceContextProvider,
 } from '../WorkspaceContext';
+import { sleep } from 'bangle-core/utils/js-utils';
 
 jest.mock('localforage', () => {
   const instance = {
@@ -21,23 +22,24 @@ jest.mock('localforage', () => {
     removeItem: jest.fn(async () => {}),
     getItem: jest.fn(async () => {}),
   };
-
+  const workspacesInstance = {
+    iterate: jest.fn(async () => {}),
+    setItem: jest.fn(async () => {}),
+    removeItem: jest.fn(async () => {}),
+    getItem: jest.fn(async () => {}),
+  };
   return {
     config: jest.fn(),
     createInstance: jest.fn(({ name } = {}) => {
       if (name === 'workspaces/1') {
-        return {
-          iterate: jest.fn(async () => {}),
-          setItem: jest.fn(async () => {}),
-          removeItem: jest.fn(async () => {}),
-          getItem: jest.fn(async () => {}),
-        };
+        return workspacesInstance;
       }
       return instance;
     }),
   };
 });
 const DateNowBackup = jest.fn();
+
 describe('index db workspace', () => {
   let dbInstance;
   const schema = getSchema(extensions());
@@ -118,8 +120,9 @@ describe('index db workspace', () => {
   });
 });
 
-describe('indexdb workspaceContext', () => {
+describe('workspaceContext actions', () => {
   let dbInstance;
+  let workspaceInstance;
   const customRender = (child, { ...renderOptions } = {}) => {
     return render(
       <WorkspaceContextProvider>{child}</WorkspaceContextProvider>,
@@ -127,15 +130,15 @@ describe('indexdb workspaceContext', () => {
     );
   };
 
-  beforeEach(async () => {
-    Date.now = jest.fn(() => 1);
-  });
+  beforeEach(async () => {});
   afterEach(() => {
     Date.now = DateNowBackup;
   });
 
   beforeEach(async () => {
+    Date.now = jest.fn(() => 1);
     dbInstance = localforage.createInstance();
+    workspaceInstance = localforage.createInstance({ name: 'workspaces/1' });
     dbInstance.getItem = jest.fn(async (docName) => ({ docName, doc: null }));
     dbInstance.iterate.mockImplementation(async (cb) => {
       Array.from({ length: 5 }, (_, k) =>
@@ -151,7 +154,8 @@ describe('indexdb workspaceContext', () => {
     });
   });
 
-  test('sets up workspace', async () => {
+  test('refreshWorkspace no existing workspaceInfo', async () => {
+    workspaceInstance.getItem.mockImplementation(() => undefined);
     customRender(
       <WorkspaceContext.Consumer>
         {({ workspace }) =>
@@ -170,6 +174,84 @@ describe('indexdb workspaceContext', () => {
       `"Result: 01234"`,
     );
     expect(dbInstance.getItem).toBeCalledTimes(5);
+  });
+
+  test('refreshWorkspace when there is existing workspaceInfo', async () => {
+    const name = 'test1';
+    workspaceInstance.getItem.mockImplementation(() => [
+      { metadata: {}, uid: 'indexdb_abc1', type: 'indexdb', name },
+    ]);
+    customRender(
+      <WorkspaceContext.Consumer>
+        {({ workspace }) =>
+          workspace && (
+            <span data-testid="result">
+              Result: {workspace.name} {workspace.files.map((f) => f.docName)}
+            </span>
+          )
+        }
+      </WorkspaceContext.Consumer>,
+    );
+
+    await waitFor(() => screen.getByTestId('result'));
+
+    expect(screen.getByTestId('result').textContent).toEqual(
+      `Result: ${name} 01234`,
+    );
+    expect(dbInstance.getItem).toBeCalledTimes(5);
+  });
+
+  test('takeWorkspaceBackup', async () => {
+    const fixture = await import('./backup-fixture.json');
+    let _updateContext;
+    customRender(
+      <WorkspaceContext.Consumer>
+        {({ workspace, openedDocuments, updateContext } = {}) => {
+          if (!workspace) {
+            return;
+          }
+          _updateContext = updateContext;
+          return (
+            <>
+              <span data-testid="result">
+                Result: {workspace.name} {workspace.files.map((f) => f.docName)}
+              </span>
+              <span data-testid="result2">
+                {workspace.files.map((f, key) => (
+                  <span key={key}>{f.title}</span>
+                ))}
+              </span>
+            </>
+          );
+        }}
+      </WorkspaceContext.Consumer>,
+    );
+
+    await waitFor(() => screen.getByTestId('result'));
+
+    dbInstance.getItem.mockImplementation(() => undefined);
+
+    await _updateContext(
+      workspaceActions.newWorkspaceFromBackup(fixture, 'indexdb'),
+    );
+
+    await sleep(500);
+
+    expect(screen.getByTestId('result').textContent).toEqual(
+      `Result: backup-fixture fixture_doc_1fixture_doc_2`,
+    );
+    expect(screen.getByTestId('result2')).toMatchInlineSnapshot(`
+      <span
+        data-testid="result2"
+      >
+        <span>
+          I am second document
+        </span>
+        <span>
+          Hello
+        </span>
+      </span>
+    `);
   });
 
   test('has updateContext', async () => {

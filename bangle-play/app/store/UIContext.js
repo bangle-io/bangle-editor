@@ -3,7 +3,7 @@ import { applyTheme } from '../style/apply-theme';
 import { keybindingHelper } from '../misc/keybinding-helper';
 import { WorkspaceContext } from './WorkspaceContext';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/ui-context') : () => {};
 

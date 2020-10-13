@@ -11,6 +11,7 @@ import {
 } from 'bangle-play/app/store/WorkspaceContext';
 import PropTypes from 'prop-types';
 import { Workspace } from '../../workspace/workspace';
+import { sleep } from 'bangle-core/utils/js-utils';
 
 const LOG = true;
 
@@ -26,12 +27,16 @@ export class WorkspacePalette extends React.PureComponent {
     onDismiss: PropTypes.func.isRequired,
   };
   state = {
-    workspaceList: null,
+    loaded: false,
   };
 
-  componentDidMount() {
-    Workspace.listWorkspaces().then((ws) => {
-      this.setState({ workspaceList: ws });
+  async componentDidMount() {
+    // Refresh the workspaces before showing them
+    await this.context.updateWorkspaceContext(
+      workspaceActions.updateWorkspacesInfo(),
+    );
+    this.setState({
+      loaded: true,
     });
   }
 
@@ -46,12 +51,11 @@ export class WorkspacePalette extends React.PureComponent {
   }
 
   getItems() {
-    if (!this.state.workspaceList) {
+    if (!this.state.loaded || !this.context.availableWorkspacesInfo) {
       return [];
     }
-
     const query = this.props.query;
-    return this.state.workspaceList.filter((ws) => {
+    return this.context.availableWorkspacesInfo.filter((ws) => {
       return strMatch(ws.name, query);
     });
   }
@@ -65,10 +69,10 @@ export class WorkspacePalette extends React.PureComponent {
         ? Palette.getActiveIndex(counter, items.length)
         : activeItemIndex;
 
-    const activeItem = items[activeItemIndex];
+    const workspaceInfo = items[activeItemIndex];
 
     this.context.updateWorkspaceContext(
-      workspaceActions.openWorkspaceByUid(activeItem.uid),
+      workspaceActions.openWorkspaceByWorkspaceInfo(workspaceInfo),
     );
     this.props.onDismiss();
   };
@@ -81,7 +85,7 @@ export class WorkspacePalette extends React.PureComponent {
       <SideBarRow
         key={item.uid}
         isActive={Palette.getActiveIndex(counter, items.length) === i}
-        title={item.name}
+        title={item.name + ' (' + item.type + ')'}
         onClick={() => this.onExecuteItem(i)}
       />
     ));
