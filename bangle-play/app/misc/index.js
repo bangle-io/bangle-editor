@@ -59,3 +59,70 @@ export function strictCheckObject(obj, assert) {
     }
   }
 }
+
+export function downloadJSON(data, filename) {
+  if (!data) {
+    throw new Error('No data ');
+  }
+
+  if (!filename) {
+    throw new Error('Filename needed');
+  }
+
+  if (typeof data === 'object') {
+    data = JSON.stringify(data, undefined, 2);
+  }
+
+  var blob = new Blob([data], { type: 'text/json' }),
+    e = document.createEvent('MouseEvents'),
+    a = document.createElement('a');
+
+  a.download = filename;
+  a.href = window.URL.createObjectURL(blob);
+  a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+  e.initMouseEvent(
+    'click',
+    true,
+    false,
+    window,
+    0,
+    0,
+    0,
+    0,
+    0,
+    false,
+    false,
+    false,
+    false,
+    0,
+    null,
+  );
+  a.dispatchEvent(e);
+}
+
+export function readFile(file) {
+  // If the new .text() reader is available, use it.
+  if (file.text) {
+    return file.text();
+  }
+  // Otherwise use the traditional file reading technique.
+  return _readFileLegacy(file);
+}
+
+/**
+ * Reads the raw text from a file.
+ *
+ * @private
+ * @param {File} file
+ * @return {Promise<string>} A promise that resolves to the parsed string.
+ */
+function _readFileLegacy(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', (e) => {
+      const text = e.srcElement.result;
+      resolve(text);
+    });
+    reader.readAsText(file);
+  });
+}

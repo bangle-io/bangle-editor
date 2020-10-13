@@ -1,43 +1,25 @@
 import './style/tailwind.src.css';
 import './style/style.css';
 import './style/prosemirror.css';
-import 'prosemirror-gapcursor/style/gapcursor.css';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
-import { OpenDocumentManager } from './components/OpenDocumentManager';
 import { Editor } from './components/Editor';
-import { Aside } from './components/Aside';
-import { Header } from './components/Header';
-import browser from 'bangle-core/utils/browser';
-import { Editor as OriginalEditor } from 'bangle-core';
-const isMobile = browser.ios || browser.android;
+import { EditorManager } from './components/EditorManager';
+import { UIContextProvider } from './store/UIContext';
+import { Aside } from './components/Aside/Aside';
+import { PaletteContainer } from './components/PaletteContainer';
 
 export class AppContainer extends React.PureComponent {
-  static propTypes = {
-    manager: PropTypes.object.isRequired,
-    isSidebarOpen: PropTypes.bool.isRequired,
-    toggleTheme: PropTypes.func.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
-  };
+  static propTypes = {};
 
   render() {
-    const { manager, isSidebarOpen, toggleTheme, toggleSidebar } = this.props;
-
     return (
-      <OpenDocumentManager>
-        {({
-          documentsInDisk,
-          deleteDocumentFromDisk,
-          createBlankDocument,
-          openDocument,
-          openedDocuments,
-        }) => (
-          <div className="h-screen main-wrapper">
-            {/* {!isMobile && <Header entry={this.state.entry} />} */}
-            <div className="editor-wrapper">
-              <div className="flex justify-center flex-row">
-                {openedDocuments.map((openedDocument, i) => (
+      <div className="h-screen main-wrapper">
+        <div className="editor-wrapper">
+          <div className="flex justify-center flex-row">
+            <EditorManager>
+              {(manager, openedDocuments) =>
+                openedDocuments.map((openedDocument, i) => (
                   <div
                     key={openedDocument.key}
                     className="flex-1 max-w-screen-md ml-6 mr-6"
@@ -62,24 +44,16 @@ export class AppContainer extends React.PureComponent {
                       &nbsp;
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            <Aside
-              createBlankDocument={createBlankDocument}
-              deleteDocumentFromDisk={deleteDocumentFromDisk}
-              documentsInDisk={documentsInDisk}
-              isSidebarOpen={isSidebarOpen}
-              openDocument={openDocument}
-              openedDocuments={openedDocuments}
-              toggleSidebar={toggleSidebar}
-              toggleTheme={toggleTheme}
-            >
-              {/* {isMobile && <Header entry={this.state.entry} />} */}
-            </Aside>
+                ))
+              }
+            </EditorManager>
           </div>
-        )}
-      </OpenDocumentManager>
+        </div>
+        <UIContextProvider>
+          <PaletteContainer />
+          <Aside />
+        </UIContextProvider>
+      </div>
     );
   }
 }
