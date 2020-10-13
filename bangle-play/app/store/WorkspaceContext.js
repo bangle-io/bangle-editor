@@ -1,15 +1,10 @@
+import { uuid } from 'bangle-core/utils/js-utils';
+import browser from 'bangle-core/utils/browser';
 import React from 'react';
 import { extensions } from '../editor/extensions';
 import { getSchema } from '../editor/utils';
 import { Workspace } from '../workspace/workspace';
-import { uuid } from 'bangle-core/utils/js-utils';
-import browser from 'bangle-core/utils/browser';
-import { NativeWorkspace } from '../workspace/native-workspace';
-import { IndexDbWorkspace } from '../workspace/indexdb-workspace';
-import {
-  openExistingWorkspace,
-  restoreWorkspaceFromBackupFile,
-} from '../workspace/helpers';
+import { IndexDbWorkspace, INDEXDB_TYPE } from '../workspace/indexdb-workspace';
 
 const LOG = false;
 
@@ -68,24 +63,22 @@ export const workspaceActions = {
   },
 
   openWorkspaceByWorkspaceInfo: (workspaceInfo) => async (value) => {
-    const workspace = await openExistingWorkspace(workspaceInfo, value.schema);
-    return workspaceActions.replaceWorkspace(workspace)(value);
-  },
-
-  createNewIndexDbWorkspace: (
-    name = 'bangle-' + Math.floor(100 * Math.random()),
-  ) => async (value) => {
-    const workspace = await IndexDbWorkspace.createWorkspace(
-      name,
+    const workspace = await IndexDbWorkspace.openExistingWorkspace(
+      workspaceInfo,
       value.schema,
     );
     return workspaceActions.replaceWorkspace(workspace)(value);
   },
 
-  createNewNativeWorkspace: (
+  createNewIndexDbWorkspace: (
     name = 'bangle-' + Math.floor(100 * Math.random()),
+    type = INDEXDB_TYPE,
   ) => async (value) => {
-    const workspace = await NativeWorkspace.createWorkspace(name, value.schema);
+    const workspace = await IndexDbWorkspace.createWorkspace(
+      name,
+      value.schema,
+      type,
+    );
     return workspaceActions.replaceWorkspace(workspace)(value);
   },
 
@@ -95,7 +88,7 @@ export const workspaceActions = {
       const toOpen = availableWorkspacesInfo[0];
 
       return workspaceActions.replaceWorkspace(
-        await openExistingWorkspace(toOpen, value.schema),
+        await IndexDbWorkspace.openExistingWorkspace(toOpen, value.schema),
       )(value);
     }
 
@@ -132,9 +125,9 @@ export const workspaceActions = {
   },
 
   newWorkspaceFromBackup: (data, type) => async (value) => {
-    let workspace = await restoreWorkspaceFromBackupFile(
-      value.schema,
+    let workspace = await IndexDbWorkspace.restoreWorkspaceFromBackupFile(
       data,
+      value.schema,
       type,
     );
 
@@ -164,7 +157,10 @@ export const workspaceActions = {
     let workspace;
     if (availableWorkspacesInfo.length > 0) {
       const toOpen = availableWorkspacesInfo[0];
-      workspace = await openExistingWorkspace(toOpen, value.schema);
+      workspace = await IndexDbWorkspace.openExistingWorkspace(
+        toOpen,
+        value.schema,
+      );
     } else {
       const name = 'bangle-' + Math.floor(100 * Math.random());
       workspace = await IndexDbWorkspace.createWorkspace(name, value.schema);

@@ -90,10 +90,18 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
     });
   }
 
-  static async createFile(docName, doc, metadata, opts) {
+  static async createFile(suggestedDocName, doc, metadata, opts) {
     IndexDbWorkspaceFile.validateOpts(opts);
-    if (!docName) {
-      docName = uuid(6);
+    let docName;
+    // TODO streamline this
+    // This option is used when using native fs
+    if (opts.dbInstance.createNewItemKey) {
+      docName = opts.dbInstance.createNewItemKey(suggestedDocName);
+    } else {
+      docName = suggestedDocName;
+      if (!suggestedDocName) {
+        docName = uuid(6);
+      }
     }
 
     const data = await opts.dbInstance.getItem(docName);

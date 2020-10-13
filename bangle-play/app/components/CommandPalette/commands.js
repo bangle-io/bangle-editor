@@ -4,8 +4,10 @@ import { workspaceActions } from '../../store/WorkspaceContext';
 import { SideBarRow } from '../Aside/SideBarRow';
 import { readFile } from '../native-file-api/helper';
 import PropTypes from 'prop-types';
-import { TYPE_INDEXDB } from 'bangle-play/app/workspace/indexdb-workspace';
-import { TYPE_NATIVE } from 'bangle-play/app/workspace/native-workspace';
+import {
+  INDEXDB_TYPE,
+  NATIVE_FS_TYPE,
+} from 'bangle-play/app/workspace/indexdb-workspace';
 
 export const commands = Object.entries(Commands());
 
@@ -77,7 +79,7 @@ function Commands() {
       priority: 10,
       onExecute: ({ updateWorkspaceContext, onDismiss, query }) => {
         updateWorkspaceContext(
-          workspaceActions.createNewIndexDbWorkspace(query),
+          workspaceActions.createNewIndexDbWorkspace(query, INDEXDB_TYPE),
         );
         onDismiss();
       },
@@ -109,7 +111,7 @@ function Commands() {
       priority: 10,
       onExecute: ({ updateWorkspaceContext, onDismiss, query }) => {
         updateWorkspaceContext(
-          workspaceActions.createNewNativeWorkspace(query),
+          workspaceActions.createNewIndexDbWorkspace(query, NATIVE_FS_TYPE),
         );
         onDismiss();
       },
@@ -134,7 +136,7 @@ function Commands() {
         keyboardShortcut: '',
         priority: 10,
       },
-      TYPE_INDEXDB,
+      INDEXDB_TYPE,
     ),
 
     'WorkspaceContext.restoreNativeWorkspaceFromBackup': restoreWorkspaceFromBackup(
@@ -145,7 +147,7 @@ function Commands() {
         keyboardShortcut: '',
         priority: 10,
       },
-      TYPE_NATIVE,
+      NATIVE_FS_TYPE,
     ),
 
     'WorkspaceContext.takeWorkspaceBackup': commandRenderHOC({
