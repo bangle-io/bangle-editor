@@ -3,9 +3,9 @@ import browser from 'bangle-core/utils/browser';
 import React from 'react';
 import { extensions } from '../editor/extensions';
 import { getSchema } from '../editor/utils';
-import { IndexDbWorkspace } from '../workspace/workspace';
-import { INDEXDB_TYPE } from '../workspace/type-helpers';
-import { WorkspacesInfo } from '../workspace/workspaces-info';
+import { IndexDbWorkspace } from './workspace';
+import { INDEXDB_TYPE } from './type-helpers';
+import { WorkspacesInfo } from './workspaces-info';
 
 const LOG = false;
 

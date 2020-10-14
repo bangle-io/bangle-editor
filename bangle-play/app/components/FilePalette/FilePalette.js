@@ -1,12 +1,12 @@
 // import './FilePalette.css';
 import React from 'react';
-import { UIContext } from 'bangle-play/app/store/UIContext';
-import { Palette } from 'bangle-play/app/ui/Palette';
+import { UIContext } from '../../store/UIContext';
+import { Palette } from '../../ui/Palette';
 import { SideBarRow } from '../Aside/SideBarRow';
 import {
   workspaceActions,
   WorkspaceContext,
-} from 'bangle-play/app/store/WorkspaceContext';
+} from '../../workspace/WorkspaceContext';
 import PropTypes from 'prop-types';
 
 const LOG = false;

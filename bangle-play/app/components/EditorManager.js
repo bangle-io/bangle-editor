@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { extensions } from '../editor/extensions';
-import { workspaceActions, WorkspaceContext } from '../store/WorkspaceContext';
+import {
+  workspaceActions,
+  WorkspaceContext,
+} from '../workspace/WorkspaceContext';
 import { getSchema } from '../editor/utils';
 import { defaultContent } from './constants';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';

@@ -1,13 +1,14 @@
 // import './WorkspacePalette.css';
 import React from 'react';
-import { Palette } from 'bangle-play/app/ui/Palette';
+import { Palette } from '../../ui/Palette';
 
 import { SideBarRow } from '../Aside/SideBarRow';
 import {
   workspaceActions,
   WorkspaceContext,
-} from 'bangle-play/app/store/WorkspaceContext';
+} from '../../workspace/WorkspaceContext';
 import PropTypes from 'prop-types';
+import { getTypeFromUID } from '../../workspace/type-helpers';
 
 const LOG = false;
 
@@ -81,7 +82,7 @@ export class WorkspacePalette extends React.PureComponent {
       <SideBarRow
         key={item.uid}
         isActive={Palette.getActiveIndex(counter, items.length) === i}
-        title={item.name + ' (' + item.type + ')'}
+        title={item.name + ' (' + getTypeFromUID(item.uid) + ')'}
         onClick={() => this.onExecuteItem(i)}
       />
     ));

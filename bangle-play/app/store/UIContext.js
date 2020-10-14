@@ -1,7 +1,7 @@
 import React from 'react';
 import { applyTheme } from '../style/apply-theme';
 import { keybindingHelper } from '../misc/keybinding-helper';
-import { WorkspaceContext } from './WorkspaceContext';
+import { WorkspaceContext } from '../workspace/WorkspaceContext';
 
 const LOG = false;
 
