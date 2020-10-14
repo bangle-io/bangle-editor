@@ -9,8 +9,8 @@ import { ChevronDown, ChevronRight } from '../Icons/index';
 import {
   workspaceActions,
   WorkspaceContext,
-} from 'bangle-play/app/store/WorkspaceContext';
-import { UIActions } from 'bangle-play/app/store/UIContext';
+} from '../../workspace/WorkspaceContext';
+import { UIActions } from '../../store/UIContext';
 
 export class FileBrowser extends React.PureComponent {
   static contextType = WorkspaceContext;

@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 import { downloadJSON } from '../misc/index';
-import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
+import { getIdleCallback } from 'bangle-core/utils/js-utils';
 import { FSStorage } from './native-fs-driver';
 import { IndexDbWorkspaceFile } from './workspace-file';
 import { WorkspacesInfo } from './workspaces-info';
@@ -37,6 +37,9 @@ export class Workspace {
     if (!uid.startsWith('indexdb_') && !uid.startsWith('native_')) {
       throw new Error('malformed uid');
     }
+    if (getTypeFromUID(uid) === 'native' && !opts.metadata.dirHandle) {
+      throw new Error('Need dirHandle');
+    }
 
     Workspace.validateOpts(opts);
 
@@ -47,7 +50,6 @@ export class Workspace {
     this.deleted = false;
     this.files = files.sort((a, b) => a.docName.localeCompare(b.docName));
     const { name, metadata } = opts;
-
     this.name = name;
     this.metadata = metadata;
     this.metadata.modified = Date.now();
@@ -159,6 +161,10 @@ export class IndexDbWorkspace extends Workspace {
       );
     }
 
+    if (getTypeFromUID(uid) === 'native') {
+      metadata.dirHandle = dbInstance.dirHandle;
+    }
+
     const opts = {
       dbInstance,
       schema,
@@ -177,6 +183,11 @@ export class IndexDbWorkspace extends Workspace {
       metadata,
       schema,
     );
+
+    if (getTypeFromUID(uid) === 'native') {
+      metadata.dirHandle = dbInstance.dirHandle;
+    }
+
     const opts = {
       name,
       dbInstance,
@@ -184,6 +195,7 @@ export class IndexDbWorkspace extends Workspace {
       metadata,
     };
     let files = await IndexDbWorkspaceFile.getAllFilesInDb(opts);
+
     const instance = new IndexDbWorkspace(
       uid,
       files,

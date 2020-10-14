@@ -26,9 +26,15 @@ export class WorkspacesInfo {
     const instance = localforage.createInstance({
       name: 'workspaces/1',
     });
-    let existing = (await instance.getItem('workspaces')) || {};
 
-    return Object.values(existing).sort((a, b) => a.type.localeCompare(b.type));
+    const existing = await instance.getItem('workspaces');
+
+    return Object.values(existing || {}).sort((a, b) => {
+      if (a.metadata.modified || b.metadata.modified) {
+        return (b.metadata.modified || 0) - (a.metadata.modified || 0);
+      }
+      return getTypeFromUID(a.uid).localeCompare(getTypeFromUID(b.uid));
+    });
   }
 
   instance = localforage.createInstance({

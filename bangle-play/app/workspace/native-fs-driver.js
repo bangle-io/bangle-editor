@@ -3,6 +3,8 @@ import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import { readFile } from '../misc/index';
 
+const DIR_IGNORE_LIST = ['node_modules', '.git'];
+
 export class FSStorage {
   // TODO check if the new directory is something we already have
   // in our database
@@ -14,10 +16,19 @@ export class FSStorage {
     return new FSStorage(dirHandle, schema);
   }
 
-  static getFilePathKey = (filePathHandles) =>
-    filePathHandles.map((r) => r.name).join('/');
+  static getFilePathKey = (filePathHandles) => {
+    return filePathHandles.map((r) => r.name).join('/');
+  };
 
-  _transformer = async (filePathHandles) => {
+  constructor(dirHandle, schema) {
+    this.dirHandle = dirHandle;
+    this._schema = schema;
+
+    this._parser = markdownParser(schema);
+    this._serializer = markdownSerializer(schema);
+  }
+
+  _toKeyValuePair = async (filePathHandles) => {
     const textContent = await readFile(
       await getLast(filePathHandles).getFile(),
     );
@@ -30,8 +41,9 @@ export class FSStorage {
   };
 
   _updateFilePathHandles = async () => {
-    this._filePathHandles = await recurseDirHandle(this._rootDirHandle, {
+    this._filePathHandles = await recurseDirHandle(this.dirHandle, {
       allowedFile: (entry) => entry.name.endsWith('.md'),
+      allowedDir: (entry) => !DIR_IGNORE_LIST.includes(entry.name),
     });
     return this._filePathHandles;
   };
@@ -41,14 +53,6 @@ export class FSStorage {
       (paths) => FSStorage.getFilePathKey(paths) === key,
     );
   };
-
-  constructor(dirHandle, schema) {
-    this._rootDirHandle = dirHandle;
-    this._schema = schema;
-
-    this._parser = markdownParser(schema);
-    this._serializer = markdownSerializer(schema);
-  }
 
   async iterate(cb) {
     await this._updateFilePathHandles();
@@ -66,7 +70,7 @@ export class FSStorage {
   createNewItemKey(fileName = uuid(6), parent) {
     // root
     if (!parent) {
-      return [this._rootDirHandle.name, fileName + '.md'].join('/');
+      return [this.dirHandle.name, fileName + '.md'].join('/');
     }
 
     throw new Error('Not implemented');
@@ -76,7 +80,7 @@ export class FSStorage {
     const match = this._findPathHandlersByKey(key);
 
     if (match) {
-      const { value } = await this._transformer(match);
+      const { value } = await this._toKeyValuePair(match);
       return { doc: value };
     }
   }
@@ -116,7 +120,7 @@ export class FSStorage {
     // TODO currently this only creates rootlevel files
     // if not found attempt to create it
     const name = getLast(key.split('/'));
-    await this._rootDirHandle.getFileHandle(name, { create: true });
+    await this.dirHandle.getFileHandle(name, { create: true });
     await this._updateFilePathHandles();
     match = this._filePathHandles.find(
       (paths) => FSStorage.getFilePathKey(paths) === key,
