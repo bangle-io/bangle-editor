@@ -41,10 +41,7 @@ export class Editor extends React.PureComponent {
     editorProps: {
       attributes: { class: 'bangle-editor content' },
     },
-    onInit: ({ view, state }) => {
-      window.serializer = markdownSerializer(state.schema);
-      window.parser = markdownParser(state.schema);
-    },
+    onInit: ({ view, state }) => {},
   };
 
   componentWillUnmount() {
