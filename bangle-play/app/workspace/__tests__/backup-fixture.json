@@ -4,7 +4,7 @@
     {
       "metadata": {
         "created": 2,
-        "modified": 2
+        "lastModified": 2
       },
       "docName": "fixture_doc_1",
       "doc": {
@@ -25,7 +25,7 @@
     {
       "metadata": {
         "created": 3,
-        "modified": 3
+        "lastModified": 3
       },
       "docName": "fixture_doc_2",
       "doc": {
@@ -106,6 +106,6 @@
     }
   ],
   "metadata": {
-    "modified": 1
+    "lastModified": 1
   }
 }

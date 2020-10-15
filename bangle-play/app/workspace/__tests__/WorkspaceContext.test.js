@@ -90,9 +90,7 @@ describe('index db workspace', () => {
         "doc": null,
         "docName": "1",
         "metadata": Object {
-          "created": 1,
-          "docName": "1",
-          "modified": 1,
+          "lastModified": 1,
         },
       }
     `);
@@ -263,17 +261,17 @@ describe('workspaceContext actions', () => {
     await sleep(500);
 
     expect(screen.getByTestId('result').textContent).toEqual(
-      `Result: backup-fixture fixture_doc_1fixture_doc_2`,
+      `Result: backup-fixture fixture_doc_2fixture_doc_1`,
     );
     expect(screen.getByTestId('result2')).toMatchInlineSnapshot(`
       <span
         data-testid="result2"
       >
         <span>
-          I am second document
+          Hello
         </span>
         <span>
-          Hello
+          I am second document
         </span>
       </span>
     `);
@@ -463,3 +461,5 @@ describe('workspaceContext actions', () => {
     expect(dbInstance.removeItem).toHaveBeenNthCalledWith(1, '2');
   });
 });
+
+test.todo('Be able to delete a pending workspace');
