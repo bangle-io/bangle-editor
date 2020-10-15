@@ -38,11 +38,21 @@ export class WorkspacesInfo {
     const existing = await instance.getItem('workspaces');
 
     return Object.values(existing || {}).sort((a, b) => {
-      if (a.metadata.modified || b.metadata.modified) {
-        return (b.metadata.modified || 0) - (a.metadata.modified || 0);
+      if (a.metadata.lastModified || b.metadata.lastModified) {
+        return (b.metadata.lastModified || 0) - (a.metadata.lastModified || 0);
       }
       return getTypeFromUID(a.uid).localeCompare(getTypeFromUID(b.uid));
     });
+  }
+
+  static async delete(uid) {
+    const instance = localforage.createInstance({
+      name: 'workspaces/1',
+    });
+    const existing = await instance.getItem('workspaces');
+
+    delete existing[uid];
+    await instance.setItem('workspaces', existing);
   }
 
   instance = localforage.createInstance({
@@ -73,12 +83,6 @@ export class WorkspacesInfo {
     }
 
     log(existing);
-    await this.instance.setItem('workspaces', existing);
-  }
-
-  async delete(uid) {
-    const existing = await this._getWorkspaces();
-    delete existing[uid];
     await this.instance.setItem('workspaces', existing);
   }
 }

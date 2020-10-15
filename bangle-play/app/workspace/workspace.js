@@ -52,7 +52,7 @@ export class Workspace {
     const { name, metadata } = opts;
     this.name = name;
     this.metadata = metadata;
-    this.metadata.modified = Date.now();
+    this.metadata.lastModified = Date.now();
   }
 
   createNew(...args) {
@@ -82,7 +82,7 @@ export class Workspace {
     if (this.deleted) {
       return;
     }
-    await this.workspacesInfo.delete(this.uid);
+    await WorkspacesInfo.delete(this.uid);
     this.deleted = true;
   }
 
@@ -221,6 +221,11 @@ export class IndexDbWorkspace extends Workspace {
     return new IndexDbWorkspace(this.uid, files, this.type, this._opts);
   }
 
+  getLastModifiedFile() {
+    return this.files.sort((a, b) => {
+      return b.lastModified - a.lastModified;
+    })[0];
+  }
   /**
    * TODO remove this, no need to put it in here
    */

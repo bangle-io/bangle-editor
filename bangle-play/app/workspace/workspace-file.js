@@ -23,6 +23,10 @@ export class WorkspaceFile {
     this.deleted = false;
   }
 
+  get lastModified() {
+    return this.metadata.lastModified || Date.now();
+  }
+
   toJSON() {
     return {
       metadata: this.metadata,
@@ -72,7 +76,7 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
 
     const data = await opts.dbInstance.getItem(docName);
     if (data) {
-      const { doc, ...metadata } = data;
+      const { doc, metadata } = data;
       return new IndexDbWorkspaceFile(docName, doc, metadata, opts);
     }
 
@@ -118,9 +122,8 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
 
   constructor(docName, doc, metadata, opts) {
     metadata = {
-      created: Date.now(),
+      lastModified: Date.now(),
       ...metadata,
-      modified: Date.now(),
     };
 
     super(docName, doc, metadata, opts);

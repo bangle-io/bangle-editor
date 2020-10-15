@@ -84,13 +84,20 @@ export const workspaceActions = {
   },
 
   deleteCurrentWorkspace: () => async (value) => {
+    const workspaceName = value.workspaceInfoThatNeedsPermission
+      ? value.workspaceInfoThatNeedsPermission.name
+      : value.workspace.name;
+
     let confirm = window.confirm(
-      `Are you sure you want to delete ${value.workspace.name}?`,
+      `Are you sure you want to delete ${workspaceName}?`,
     );
 
     if (confirm) {
-      await value.workspace.deleteWorkspace();
-
+      if (value.workspaceInfoThatNeedsPermission) {
+        await WorkspacesInfo.delete(value.workspaceInfoThatNeedsPermission.uid);
+      } else {
+        await value.workspace.deleteWorkspace();
+      }
       return workspaceActions.onMountWorkspaceLoad()(value);
     } else {
       return workspaceActions.noop()(value);
@@ -183,9 +190,7 @@ const reducers = (value, { type, payload }) => {
   if (type === 'NO_OP') {
   } else if (type === 'ERROR') {
     // TODO implement me ? reset state?
-    getIdleCallback(() => {
-      throw payload.error;
-    });
+    throw payload.error;
   } else if (type === 'WORKSPACE_NEEDS_PERMISSION') {
     const {
       workspaceInfoThatNeedsPermission,
@@ -226,7 +231,9 @@ const reducers = (value, { type, payload }) => {
   } else if (type === 'REPLACE_WORKSPACE') {
     const { workspace, availableWorkspacesInfo } = payload;
     let openedDocName =
-      workspace.files.length === 0 ? uuid(4) : workspace.files[0].docName;
+      workspace.files.length === 0
+        ? uuid(4)
+        : workspace.getLastModifiedFile().docName;
 
     // TODO this is sort of a surprise we shouldn't do this
     // as it assumes we want to persist the older workspace

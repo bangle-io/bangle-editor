@@ -30,15 +30,15 @@ export class FSStorage {
     this._serializer = markdownSerializer(schema);
   }
 
-  _toKeyValuePair = async (filePathHandles) => {
-    const textContent = await readFile(
-      await getLast(filePathHandles).getFile(),
-    );
+  _getData = async (filePathHandles) => {
+    const file = await getLast(filePathHandles).getFile();
+    const textContent = await readFile(file);
     const key = FSStorage.getFilePathKey(filePathHandles);
     const doc = await this._parser.parse(textContent);
     return {
       key,
-      value: doc.toJSON(),
+      doc: doc.toJSON(),
+      metadata: { lastModified: file.lastModified },
     };
   };
 
@@ -82,8 +82,8 @@ export class FSStorage {
     const match = this._findPathHandlersByKey(key);
 
     if (match) {
-      const { value } = await this._toKeyValuePair(match);
-      return { doc: value };
+      const { doc, metadata } = await this._getData(match);
+      return { doc, metadata };
     }
   }
 
