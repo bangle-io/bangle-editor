@@ -23,15 +23,15 @@ export class Bold extends Mark {
         },
       ],
       toDOM: () => ['strong', 0],
-
-      toMarkdown: () => ({
-        open: '**',
-        close: '**',
-        mixable: true,
-        expelEnclosingWhitespace: true,
-      }),
     };
   }
+
+  toMarkdown = () => ({
+    open: '**',
+    close: '**',
+    mixable: true,
+    expelEnclosingWhitespace: true,
+  });
 
   keys({ type }) {
     return {

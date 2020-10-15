@@ -19,19 +19,19 @@ export class Underline extends Mark {
         },
       ],
       toDOM: () => ['u', 0],
-
-      toMarkdown: () => {
-        // I know this is cheating, but underlines are confusing
-        // this moves to italic
-        return {
-          open: '_',
-          close: '_',
-          mixable: true,
-          expelEnclosingWhitespace: true,
-        };
-      },
     };
   }
+
+  toMarkdown = () => {
+    // I know this is cheating, but underlines are confusing
+    // this moves to italic
+    return {
+      open: '_',
+      close: '_',
+      mixable: true,
+      expelEnclosingWhitespace: true,
+    };
+  };
 
   keys({ type }) {
     return {

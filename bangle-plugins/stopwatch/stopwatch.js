@@ -62,12 +62,12 @@ export default class StopwatchExtension extends Node {
           },
         },
       ],
-
-      toMarkdown: (state, node) => {
-        const string = serializeAtomNodeToMdLink(this.name, node.attrs);
-        state.write(string);
-      },
     };
+  }
+
+  toMarkdown(state, node) {
+    const string = serializeAtomNodeToMdLink(this.name, node.attrs);
+    state.write(string);
   }
 
   render = (props) => {

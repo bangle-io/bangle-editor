@@ -12,12 +12,12 @@ export class HorizontalRule extends Node {
       group: 'block',
       parseDOM: [{ tag: 'hr' }],
       toDOM: () => ['hr'],
-
-      toMarkdown: (state, node) => {
-        state.write(node.attrs.markup || '---');
-        state.closeBlock(node);
-      },
     };
+  }
+
+  toMarkdown(state, node) {
+    state.write(node.attrs.markup || '---');
+    state.closeBlock(node);
   }
 
   commands({ type }) {

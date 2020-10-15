@@ -27,11 +27,11 @@ export class ListItem extends Node {
       draggable: true,
       parseDOM: [{ tag: 'li' }],
       toDOM: () => ['li', 0],
-
-      toMarkdown: (state, node) => {
-        state.renderContent(node);
-      },
     };
+  }
+
+  toMarkdown(state, node) {
+    state.renderContent(node);
   }
 
   commands({ type }) {
