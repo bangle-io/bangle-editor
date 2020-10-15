@@ -1,3 +1,4 @@
+import { Mark, Node } from 'bangle-core/index';
 import { objectFilter, objectMapValues } from 'bangle-core/utils/js-utils';
 import { MarkdownSerializer } from 'prosemirror-markdown';
 
@@ -5,14 +6,13 @@ import { MarkdownSerializer } from 'prosemirror-markdown';
 // toMarkdown property to generate a markdown string
 export const markdownSerializer = (
   schema,
+  extensions,
   nodeOverrides = {}, // Object<string, function>
   markdownOverrides = {}, // Object<string, function>
 ) => {
-  return new MarkdownSerializer(
-    proxyNodesToMarkdown(nodeOverrides, schema),
-    proxyMarksToMarkdown(markdownOverrides, schema),
-    schema,
-  );
+  const { node, mark } = getMarkdownSerializers(extensions);
+  debugger;
+  return new MarkdownSerializer(node, mark, schema);
 };
 
 function proxyNodesToMarkdown(obj, schema) {
@@ -68,4 +68,24 @@ export function serializeAtomNodeToMdLink(name, attrs) {
   );
 
   return `[$${name}](bangle://${string})`;
+}
+
+function getMarkdownSerializers(extensions) {
+  const nodeExtensions = Object.fromEntries(
+    extensions
+      .filter((e) => e instanceof Node)
+      .filter((r) => r.toMarkdown)
+      .map((r) => [r.name, r.toMarkdown]),
+  );
+  const markExtensions = Object.fromEntries(
+    extensions
+      .filter((e) => e instanceof Mark)
+      .filter((r) => r.toMarkdown)
+      .map((r) => [r.name, r.toMarkdown()]),
+  );
+
+  return {
+    node: nodeExtensions,
+    mark: markExtensions,
+  };
 }

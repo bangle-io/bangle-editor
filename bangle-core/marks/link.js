@@ -44,26 +44,24 @@ export class Link extends Mark {
         },
         0,
       ],
-
-      toMarkdown: () => {
-        return {
-          open(_state, mark, parent, index) {
-            return isPlainURL(mark, parent, index, 1) ? '<' : '[';
-          },
-          close(state, mark, parent, index) {
-            return isPlainURL(mark, parent, index, -1)
-              ? '>'
-              : '](' +
-                  state.esc(mark.attrs.href) +
-                  (mark.attrs.title
-                    ? ' ' + state.quote(mark.attrs.title)
-                    : '') +
-                  ')';
-          },
-        };
-      },
     };
   }
+
+  toMarkdown = () => {
+    return {
+      open(_state, mark, parent, index) {
+        return isPlainURL(mark, parent, index, 1) ? '<' : '[';
+      },
+      close(state, mark, parent, index) {
+        return isPlainURL(mark, parent, index, -1)
+          ? '>'
+          : '](' +
+              state.esc(mark.attrs.href) +
+              (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
+              ')';
+      },
+    };
+  };
 
   commands({ type }) {
     return (attrs) => {

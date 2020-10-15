@@ -33,16 +33,16 @@ export class Image extends Node {
         },
       ],
       toDOM: (node) => ['img', node.attrs],
-
-      toMarkdown: (state, node) => {
-        const text = state.esc(node.attrs.alt || '');
-        const url =
-          state.esc(node.attrs.src) +
-          (node.attrs.title ? ' ' + state.quote(node.attrs.title) : '');
-
-        state.write(`![${text}](${url})`);
-      },
     };
+  }
+
+  toMarkdown(state, node) {
+    const text = state.esc(node.attrs.alt || '');
+    const url =
+      state.esc(node.attrs.src) +
+      (node.attrs.title ? ' ' + state.quote(node.attrs.title) : '');
+
+    state.write(`![${text}](${url})`);
   }
 
   inputRules({ type }) {

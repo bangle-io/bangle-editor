@@ -2,6 +2,7 @@ import markdownit from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
 
 export function markdownParser(schema) {
+  debugger;
   return new MarkdownParser(
     schema,
     markdownit(),

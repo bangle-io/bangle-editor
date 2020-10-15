@@ -26,17 +26,17 @@ export class Strike extends Mark {
         },
       ],
       toDOM: () => ['s', 0],
-
-      toMarkdown: () => {
-        return {
-          open: '~~',
-          close: '~~',
-          mixable: true,
-          expelEnclosingWhitespace: true,
-        };
-      },
     };
   }
+
+  toMarkdown = () => {
+    return {
+      open: '~~',
+      close: '~~',
+      mixable: true,
+      expelEnclosingWhitespace: true,
+    };
+  };
 
   keys({ type }) {
     return {

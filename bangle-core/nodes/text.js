@@ -8,10 +8,10 @@ export class Text extends Node {
   get schema() {
     return {
       group: 'inline',
-
-      toMarkdown: (state, node) => {
-        state.text(node.text);
-      },
     };
+  }
+
+  toMarkdown(state, node) {
+    state.text(node.text);
   }
 }

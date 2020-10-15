@@ -13,20 +13,20 @@ export class Code extends Mark {
       excludes: '_',
       parseDOM: [{ tag: 'code' }],
       toDOM: () => ['code', 0],
-
-      toMarkdown: () => {
-        return {
-          open(_state, _mark, parent, index) {
-            return backticksFor(parent.child(index), -1);
-          },
-          close(_state, _mark, parent, index) {
-            return backticksFor(parent.child(index - 1), 1);
-          },
-          escape: false,
-        };
-      },
     };
   }
+
+  toMarkdown = () => {
+    return {
+      open(_state, _mark, parent, index) {
+        return backticksFor(parent.child(index), -1);
+      },
+      close(_state, _mark, parent, index) {
+        return backticksFor(parent.child(index - 1), 1);
+      },
+      escape: false,
+    };
+  };
 
   keys({ type }) {
     return {
