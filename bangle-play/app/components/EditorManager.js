@@ -17,30 +17,25 @@ export class EditorManager extends React.PureComponent {
 
   schema = getSchema(extensions());
 
-  disk = new LocalDisk(
-    {
-      getItem: async (docName) => {
-        const file = this.context.workspace.getFile(docName);
-        if (!file || file.doc === null) {
-          return defaultContent;
-        }
-        return file.doc;
-      },
-      setItem: async (docName, docJson) => {
-        const workspaceFile = this.context.workspace.getFile(docName);
-        if (workspaceFile) {
-          await workspaceFile.updateDoc(docJson);
-          return;
-        }
-        await this.context.updateContext(
-          workspaceActions.createWorkspaceFile(docName, docJson),
-        );
-      },
+  disk = new LocalDisk({
+    getItem: async (docName) => {
+      const file = this.context.workspace.getFile(docName);
+      if (!file || file.doc === null) {
+        return defaultContent;
+      }
+      return file.doc;
     },
-    {
-      defaultDoc: defaultContent,
+    setItem: async (docName, docJson) => {
+      const workspaceFile = this.context.workspace.getFile(docName);
+      if (workspaceFile) {
+        await workspaceFile.updateDoc(docJson);
+        return;
+      }
+      await this.context.updateContext(
+        workspaceActions.createWorkspaceFile(docName, docJson),
+      );
     },
-  );
+  });
 
   manager = new Manager(this.schema, {
     disk: this.disk,
@@ -87,6 +82,14 @@ export class EditorManager extends React.PureComponent {
   }
 
   render() {
+    if (this.context.pendingWorkspaceInfo) {
+      return (
+        <div>
+          Press enter twice or click here to open{' '}
+          {this.context.pendingWorkspaceInfo.name}
+        </div>
+      );
+    }
     return this.props.children(this.manager, this.context.openedDocuments);
   }
 }

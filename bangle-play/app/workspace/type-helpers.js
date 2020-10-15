@@ -29,3 +29,11 @@ export const getTypeFromUID = (uid) => {
   }
   throw new Error('Unknown type ' + uid);
 };
+
+export const isUidNative = (uid) => {
+  return uid.startsWith(NATIVE_FS_TYPE + '_');
+};
+
+export const isUidIndexdb = (uid) => {
+  return uid.startsWith(INDEXDB_TYPE + '_');
+};

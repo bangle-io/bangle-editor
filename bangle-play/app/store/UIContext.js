@@ -1,6 +1,6 @@
 import React from 'react';
 import { applyTheme } from '../style/apply-theme';
-import { keybindingHelper } from '../misc/keybinding-helper';
+import { keybindingsHelper } from '../misc/keybinding-helper';
 import { WorkspaceContext } from '../workspace/WorkspaceContext';
 
 const LOG = false;
@@ -121,7 +121,7 @@ export class UIContextProvider extends React.PureComponent {
     };
     applyTheme(this.value.theme);
 
-    const callback = keybindingHelper(
+    const callback = keybindingsHelper(
       Object.fromEntries([
         ...Object.entries(UIKeyBindings).map(([key, value]) => {
           return [
@@ -137,9 +137,7 @@ export class UIContextProvider extends React.PureComponent {
         }),
       ]),
     );
-    document.addEventListener('keydown', (...args) => {
-      callback(...args);
-    });
+    document.addEventListener('keydown', callback);
     this.removeKeybindingHelper = () => {
       document.removeEventListener('keydown', callback);
     };

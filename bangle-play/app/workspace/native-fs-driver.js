@@ -232,3 +232,19 @@ async function recurseDirHandle(
   }
   return result.filter((r) => r.length > 0);
 }
+
+export async function hasPermissions(dirHandle) {
+  const opts = {};
+  opts.writable = true;
+  // For Chrome 86 and later...
+  opts.mode = 'readwrite';
+  return (await dirHandle.queryPermission(opts)) === 'granted';
+}
+
+export async function requestPermission(dirHandle) {
+  const opts = {};
+  opts.writable = true;
+  // For Chrome 86 and later...
+  opts.mode = 'readwrite';
+  return (await dirHandle.requestPermission(opts)) === 'granted';
+}

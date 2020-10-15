@@ -8,6 +8,7 @@ import { EditorManager } from './components/EditorManager';
 import { UIContextProvider } from './store/UIContext';
 import { Aside } from './components/Aside/Aside';
 import { PaletteContainer } from './components/PaletteContainer';
+import { WorkspacePermissionModal } from './workspace/WorkspacePermissionModal';
 
 export class AppContainer extends React.PureComponent {
   static propTypes = {};
@@ -16,38 +17,40 @@ export class AppContainer extends React.PureComponent {
     return (
       <div className="h-screen main-wrapper">
         <div className="editor-wrapper">
-          <div className="flex justify-center flex-row">
-            <EditorManager>
-              {(manager, openedDocuments) =>
-                openedDocuments.map((openedDocument, i) => (
-                  <div
-                    key={openedDocument.key}
-                    className="flex-1 max-w-screen-md ml-6 mr-6"
-                    style={{ height: '100vh', overflowY: 'scroll' }}
-                  >
-                    <EditorContextProvider>
-                      <Editor
-                        isFirst={i === 0}
-                        docName={openedDocument.docName}
-                        manager={manager}
-                      />
-                    </EditorContextProvider>
-                    {/* adds white space at bottoms */}
+          <WorkspacePermissionModal>
+            <div className="flex justify-center flex-row">
+              <EditorManager>
+                {(manager, openedDocuments) =>
+                  openedDocuments.map((openedDocument, i) => (
                     <div
-                      style={{
-                        display: 'flex',
-                        flexGrow: 1,
-                        height: '20vh',
-                        backgroundColor: 'transparent',
-                      }}
+                      key={openedDocument.key}
+                      className="flex-1 max-w-screen-md ml-6 mr-6"
+                      style={{ height: '100vh', overflowY: 'scroll' }}
                     >
-                      &nbsp;
+                      <EditorContextProvider>
+                        <Editor
+                          isFirst={i === 0}
+                          docName={openedDocument.docName}
+                          manager={manager}
+                        />
+                      </EditorContextProvider>
+                      {/* adds white space at bottoms */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexGrow: 1,
+                          height: '20vh',
+                          backgroundColor: 'transparent',
+                        }}
+                      >
+                        &nbsp;
+                      </div>
                     </div>
-                  </div>
-                ))
-              }
-            </EditorManager>
-          </div>
+                  ))
+                }
+              </EditorManager>
+            </div>
+          </WorkspacePermissionModal>
         </div>
         <UIContextProvider>
           <PaletteContainer />
