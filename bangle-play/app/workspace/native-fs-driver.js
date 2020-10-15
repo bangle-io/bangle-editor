@@ -13,7 +13,9 @@ export class FSStorage {
     if (!(await verifyPermission(dirHandle))) {
       throw new NoPermissionError('Permission denied by user');
     }
-    return new FSStorage(dirHandle, schema);
+    const instance = new FSStorage(dirHandle, schema);
+    await instance._updateFilePathHandles();
+    return instance;
   }
 
   static getFilePathKey = (filePathHandles) => {
@@ -49,7 +51,7 @@ export class FSStorage {
   };
 
   _findPathHandlersByKey = (key) => {
-    return this._filePathHandles.find(
+    return this._filePathHandles?.find(
       (paths) => FSStorage.getFilePathKey(paths) === key,
     );
   };

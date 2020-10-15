@@ -19,6 +19,7 @@ export class TrailingNode extends Extension {
       .map(([, value]) => value)
       .filter((node) => this.options.notAfter.includes(node.name));
 
+    const map = new WeakMap();
     return [
       new Plugin({
         key: plugin,
@@ -26,19 +27,23 @@ export class TrailingNode extends Extension {
           update: (view) => {
             const { state } = view;
 
-            // getIdleCallback(() => {
             const { incorrectNodeAtEnd } = plugin.getState(state);
             if (!incorrectNodeAtEnd) {
               return;
             }
+
+            // TODO For some reason (unknown bug) this keeps getting called
+            // with the same state, to prevent that, I have added this quick hack
+            // And I have only seen it happen when loading md files
+            if (map.has(view.state)) {
+              return;
+            }
+
             const { doc, schema, tr } = view.state;
             const type = schema.nodes[this.options.node];
-            const transaction = tr.insert(
-              doc.content.size,
-              type.create('last'),
-            );
+            const transaction = tr.insert(doc.content.size, type.create(''));
+            map.set(view.state, true);
             view.dispatch(transaction);
-            // });
           },
         }),
         state: {
