@@ -83,19 +83,6 @@ export const workspaceActions = {
     return workspaceActions.replaceWorkspace(workspace)(value);
   },
 
-  openLastOpenedWorkspace: () => async (value) => {
-    const availableWorkspacesInfo = value.availableWorkspacesInfo;
-    if (availableWorkspacesInfo.length > 0) {
-      const toOpen = availableWorkspacesInfo[0];
-
-      return workspaceActions.replaceWorkspace(
-        await IndexDbWorkspace.openExistingWorkspace(toOpen, value.schema),
-      )(value);
-    }
-
-    return workspaceActions.createNewIndexDbWorkspace()(value);
-  },
-
   deleteCurrentWorkspace: () => async (value) => {
     let confirm = window.confirm(
       `Are you sure you want to delete ${value.workspace.name}?`,
@@ -104,7 +91,7 @@ export const workspaceActions = {
     if (confirm) {
       await value.workspace.deleteWorkspace();
 
-      return workspaceActions.refreshWorkspace()(value);
+      return workspaceActions.onMountWorkspaceLoad()(value);
     } else {
       return workspaceActions.noop()(value);
     }
@@ -153,11 +140,21 @@ export const workspaceActions = {
     };
   },
 
-  refreshWorkspace: () => async (value) => {
+  onMountWorkspaceLoad: () => async (value) => {
     const availableWorkspacesInfo = await WorkspacesInfo.list();
     let workspace;
     if (availableWorkspacesInfo.length > 0) {
       const toOpen = availableWorkspacesInfo[0];
+      if (await WorkspacesInfo.needsPermission(toOpen)) {
+        return {
+          type: 'WORKSPACE_NEEDS_PERMISSION',
+          payload: {
+            availableWorkspacesInfo,
+            workspaceInfoThatNeedsPermission: toOpen,
+          },
+        };
+      }
+
       workspace = await IndexDbWorkspace.openExistingWorkspace(
         toOpen,
         value.schema,
@@ -185,10 +182,20 @@ const reducers = (value, { type, payload }) => {
   let newValue = value;
   if (type === 'NO_OP') {
   } else if (type === 'ERROR') {
+    // TODO implement me ? reset state?
     getIdleCallback(() => {
       throw payload.error;
     });
-    // TODO implement me
+  } else if (type === 'WORKSPACE_NEEDS_PERMISSION') {
+    const {
+      workspaceInfoThatNeedsPermission,
+      availableWorkspacesInfo,
+    } = payload;
+    newValue = {
+      ...value,
+      availableWorkspacesInfo,
+      workspaceInfoThatNeedsPermission,
+    };
   } else if (type === 'NEW_WORKSPACE_FILE') {
     const { file } = payload;
     newValue = {
@@ -221,7 +228,7 @@ const reducers = (value, { type, payload }) => {
     let openedDocName =
       workspace.files.length === 0 ? uuid(4) : workspace.files[0].docName;
 
-    // TODO this is sort of a surprise we shouldnt do this
+    // TODO this is sort of a surprise we shouldn't do this
     // as it assumes we want to persist the older workspace
     if (value.workspace) {
       value.workspace.persistWorkspace();
@@ -229,6 +236,7 @@ const reducers = (value, { type, payload }) => {
     newValue = {
       ...value,
       workspace,
+      workspaceInfoThatNeedsPermission: null,
       openedDocuments: calculateOpenedDocuments(openedDocName, []),
     };
     if (availableWorkspacesInfo) {
@@ -298,6 +306,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
     openedDocuments: [],
     schema: getSchema(extensions()),
     availableWorkspacesInfo: null,
+    pendingWorkspaceInfo: null,
   };
 
   constructor(props) {
@@ -308,7 +317,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await this.updateWorkspaceContext(workspaceActions.refreshWorkspace());
+    await this.updateWorkspaceContext(workspaceActions.onMountWorkspaceLoad());
   }
 
   _injectUpdateContext(value) {
@@ -319,6 +328,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
   }
 
   render() {
+    window.workspaceValue = this.value;
     return (
       <WorkspaceContext.Provider value={this._injectUpdateContext(this.value)}>
         {this.props.children}

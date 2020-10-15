@@ -4,7 +4,7 @@ import { FilePalette } from './FilePalette/FilePalette';
 import { UIActions, UIContext } from 'bangle-play/app/store/UIContext';
 import { Palette } from '../ui/Palette';
 import { WorkspacePalette } from './Palettes/WorkspacePalette';
-import { keybindingHelper } from '../misc/keybinding-helper';
+import { keybindingsHelper } from '../misc/keybinding-helper';
 
 const parseRawQuery = (query, paletteType) => {
   // Some of the types depend on the current active query
@@ -132,7 +132,7 @@ export class PaletteContainer extends React.PureComponent {
         },
       },
     };
-    const callback = keybindingHelper(
+    const callback = keybindingsHelper(
       Object.fromEntries([
         ...Object.entries(keyBindings).map(([key, value]) => {
           return [
@@ -148,9 +148,7 @@ export class PaletteContainer extends React.PureComponent {
         }),
       ]),
     );
-    document.addEventListener('keydown', (...args) => {
-      callback(...args);
-    });
+    document.addEventListener('keydown', callback);
     this.removeKeybindingHelper = () => {
       document.removeEventListener('keydown', callback);
     };

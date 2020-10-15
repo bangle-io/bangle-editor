@@ -75,7 +75,7 @@ function modifiers(name, event, shift) {
 // Given a set of bindings (using the same format as
 // [`keymap`](#keymap.keymap), return a [keydown
 // handler](#view.EditorProps.handleKeyDown) that handles them.
-export function keybindingHelper(bindings) {
+export function keybindingsHelper(bindings) {
   let map = normalize(bindings);
   return function (event) {
     let name = keyName(event),

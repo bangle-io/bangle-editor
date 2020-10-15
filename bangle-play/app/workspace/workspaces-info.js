@@ -1,6 +1,6 @@
 import localforage from 'localforage';
-import { getTypeFromUID } from './type-helpers';
-
+import { getTypeFromUID, isUidIndexdb } from './type-helpers';
+import { hasPermissions } from './native-fs-driver';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/workspaces-info') : () => {};
@@ -20,6 +20,14 @@ export class WorkspacesInfo {
       throw new Error('Extra fields in entry');
     }
     getTypeFromUID(uid);
+  }
+
+  static async needsPermission(entry) {
+    if (isUidIndexdb(entry.uid)) {
+      return false;
+    }
+    const { dirHandle } = entry.metadata;
+    return !(await hasPermissions(dirHandle));
   }
 
   static async list() {

@@ -22,11 +22,10 @@ export class LocalDisk extends Disk {
    * @param {{getItem: (key) => Promise<Object>, setItem: (key, doc) => Promise<void>}} - Callback methods to make a call to save the data.
    * @param {Object} options
    */
-  constructor({ getItem, setItem }, { defaultDoc, saveDebounce = 2000 }) {
+  constructor({ getItem, setItem }, { saveDebounce = 2000 } = {}) {
     super();
     this._getItem = getItem;
     this._setItem = setItem;
-    this._defaultDoc = defaultDoc;
     this._saveTimeout = null;
     this._saveDebounce = saveDebounce;
     this._pendingTimers = {};

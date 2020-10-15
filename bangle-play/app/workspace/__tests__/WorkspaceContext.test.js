@@ -175,7 +175,7 @@ describe('workspaceContext actions', () => {
     });
   });
 
-  test('refreshWorkspace no existing workspaceInfo', async () => {
+  test('onMountWorkspaceLoad no existing workspaceInfo', async () => {
     workspaceInstance.getItem.mockImplementation(() => undefined);
     customRender(
       <WorkspaceContext.Consumer>
@@ -197,7 +197,7 @@ describe('workspaceContext actions', () => {
     expect(dbInstance.getItem).toBeCalledTimes(5);
   });
 
-  test('refreshWorkspace when there is existing workspaceInfo', async () => {
+  test('onMountWorkspaceLoad when there is existing workspaceInfo', async () => {
     const name = 'test1';
     workspaceInstance.getItem.mockImplementation(async () => ({
       indexdb_abc1: {
