@@ -6,7 +6,7 @@
 import { psx } from 'bangle-core/test-helpers/index';
 import { serialize, parse } from './setup';
 
-describe.skip('todo list', () => {
+describe('todo list', () => {
   test('renders', async () => {
     const doc = (
       <doc>
@@ -23,10 +23,10 @@ describe.skip('todo list', () => {
     const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-        - [ ] second"
-      `);
+      "- [ ] first
+
+      - [ ] second"
+    `);
   });
 
   test('renders done check list', async () => {
@@ -45,10 +45,10 @@ describe.skip('todo list', () => {
     const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-        - [x] second"
-      `);
+      "- [ ] first
+
+      - [x] second"
+    `);
   });
 
   test('renders not done check list', async () => {
@@ -67,10 +67,10 @@ describe.skip('todo list', () => {
     const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-        - [ ] second"
-      `);
+      "- [ ] first
+
+      - [ ] second"
+    `);
   });
 
   test('renders', async () => {
@@ -89,10 +89,10 @@ describe.skip('todo list', () => {
     const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-        - [ ] second"
-      `);
+      "- [ ] first
+
+      - [ ] second"
+    `);
   });
 
   test('renders with nested ordered list', async () => {
@@ -113,10 +113,10 @@ describe.skip('todo list', () => {
     const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-          1. second"
-      `);
+      "- [ ] first
+
+        1. second"
+    `);
   });
 
   test('renders with nested ordered list', async () => {
@@ -137,10 +137,10 @@ describe.skip('todo list', () => {
     const md = await serialize(doc);
 
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-          - [ ] second"
-      `);
+      "- [ ] first
+
+        - [ ] second"
+    `);
   });
 
   test('renders with multiple para', async () => {
@@ -156,10 +156,10 @@ describe.skip('todo list', () => {
     );
     const md = await serialize(doc);
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-          second"
-      `);
+      "- [ ] first
+
+        second"
+    `);
   });
 
   test('br follows', async () => {
@@ -178,9 +178,9 @@ describe.skip('todo list', () => {
     );
     const md = await serialize(doc);
     expect(md).toMatchInlineSnapshot(`
-        "- [ ] first
-  
-          second"
-      `);
+      "- [ ] first
+
+        second"
+    `);
   });
 });
