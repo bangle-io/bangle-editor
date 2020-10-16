@@ -1,59 +1,12 @@
 import { Mark, Node } from 'bangle-core/index';
 import { objectFilter, objectMapValues } from 'bangle-core/utils/js-utils';
 import { MarkdownSerializer } from 'prosemirror-markdown';
-
+import { Paragraph, Text, Doc } from 'bangle-core/nodes/index';
 // A markdown serializer which uses a node/mark schema's
 // toMarkdown property to generate a markdown string
-export const markdownSerializer = (
-  schema,
-  extensions,
-  nodeOverrides = {}, // Object<string, function>
-  markdownOverrides = {}, // Object<string, function>
-) => {
-  const { node, mark } = getMarkdownSerializers(extensions);
-  debugger;
-  return new MarkdownSerializer(node, mark, schema);
+export const markdownSerializer = (node, mark) => {
+  return new MarkdownSerializer(node, mark);
 };
-
-function proxyNodesToMarkdown(obj, schema) {
-  const handler = {
-    get(target, propKey, receiver) {
-      const override = Reflect.get(target, propKey, receiver);
-      if (override) {
-        return override;
-      }
-
-      if (schema.nodes[propKey]) {
-        if (schema.nodes[propKey].spec?.toMarkdown) {
-          return schema.nodes[propKey].spec?.toMarkdown;
-        }
-      }
-
-      return undefined;
-    },
-  };
-  return new Proxy(obj, handler);
-}
-
-function proxyMarksToMarkdown(obj, schema) {
-  const handler = {
-    get(target, propKey, receiver) {
-      const override = Reflect.get(target, propKey, receiver);
-      if (override) {
-        return override();
-      }
-
-      if (schema.marks[propKey]) {
-        if (schema.marks[propKey].spec?.toMarkdown) {
-          return schema.marks[propKey].spec?.toMarkdown();
-        }
-      }
-
-      return undefined;
-    },
-  };
-  return new Proxy(obj, handler);
-}
 
 export function serializeAtomNodeToMdLink(name, attrs) {
   const data = objectFilter(attrs, (val, key) => {
@@ -70,7 +23,10 @@ export function serializeAtomNodeToMdLink(name, attrs) {
   return `[$${name}](bangle://${string})`;
 }
 
-function getMarkdownSerializers(extensions) {
+export function getMarkdownSerializer(extensions, { useDefaults = true } = {}) {
+  if (useDefaults) {
+    extensions = [new Doc(), new Text(), new Paragraph(), ...extensions];
+  }
   const nodeExtensions = Object.fromEntries(
     extensions
       .filter((e) => e instanceof Node)
@@ -85,7 +41,7 @@ function getMarkdownSerializers(extensions) {
   );
 
   return {
-    node: nodeExtensions,
-    mark: markExtensions,
+    nodeSerializer: nodeExtensions,
+    markSerializer: markExtensions,
   };
 }
