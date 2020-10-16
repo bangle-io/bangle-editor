@@ -15,13 +15,13 @@ import {
   OrderedList,
   TodoItem,
   TodoList,
-  Paragraph,
-  Text,
-  Doc,
   Image,
 } from 'bangle-core/nodes/index';
 import { Underline } from 'bangle-core/marks';
-import { markdownSerializer } from '../markdown-serializer';
+import {
+  getMarkdownSerializer,
+  markdownSerializer,
+} from '../markdown-serializer';
 import {
   Bold,
   Code,
@@ -33,9 +33,6 @@ import {
 import { markdownParser } from '../markdown-parser';
 
 const extensions = [
-  new Doc(),
-  new Text(),
-  new Paragraph(),
   new BulletList(),
   new ListItem(),
   new OrderedList(),
@@ -60,15 +57,12 @@ const extensions = [
 
 const schemaPromise = renderTestEditor({
   extensions,
-  // since we are loading text para manually here
-  // for easier extraction of to markdown
-  useBuiltInExtensions: false,
 })().then((r) => r.schema);
+
+const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions);
 export const serialize = async (doc) => {
   const content = doc(await schemaPromise);
-  return markdownSerializer(await schemaPromise, [...extensions]).serialize(
-    content,
-  );
+  return markdownSerializer(nodeSerializer, markSerializer).serialize(content);
 };
 
 export const parse = async (md) =>

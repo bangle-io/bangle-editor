@@ -1,7 +1,14 @@
 import { uuid } from 'bangle-core/utils/js-utils';
 import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
-import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import {
+  getMarkdownSerializer,
+  markdownSerializer,
+} from 'bangle-plugins/markdown/markdown-serializer';
+import { extensions } from '../editor/extensions';
 import { readFile } from '../misc/index';
+
+// TODO this is ugly read up about the static extensions though piece
+const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions());
 
 const DIR_IGNORE_LIST = ['node_modules', '.git'];
 
@@ -27,7 +34,7 @@ export class FSStorage {
     this._schema = schema;
 
     this._parser = markdownParser(schema);
-    this._serializer = markdownSerializer(schema);
+    this._serializer = markdownSerializer(nodeSerializer, markSerializer);
   }
 
   _getData = async (filePathHandles) => {

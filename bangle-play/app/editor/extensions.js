@@ -24,6 +24,8 @@ import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import { inlineMenu } from './inline-menu/inline-menu';
 
+// TODO Taking inputs liek this is not ideal, the extension
+// list should be static, so that anyone can import them and get static values
 export function extensions({ collabOpts, inlineMenuDOM } = {}) {
   return [
     new Bold(),
