@@ -10,8 +10,6 @@ exports[`Rendering works 1`] = `
 >
   <span
     contenteditable="false"
-  >
-    🐰
-  </span>
+  />
 </span>
 `;

@@ -1,13 +1,7 @@
-import emojiList from 'emojis-list';
-import emojisKeywords from 'emojis-keywords';
+import { emojis } from './data';
 
 export const EMOJI_NODE_NAME = 'emoji';
 
-export const emojiLookup = Object.fromEntries(
-  Array.from({ length: emojiList.length }, (v, i) => [
-    emojisKeywords[i],
-    emojiList[i],
-  ]).map(([name, emoji]) => [name, emoji]),
-);
+export const emojiLookup = emojis;
 
-export const validEmojis = Object.keys(emojiLookup);
+export const validEmojis = Object.keys(emojis);

@@ -1,8 +1,13 @@
 import markdownit from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
+import emojiParser from 'markdown-it-emoji';
 
 export function markdownParser(schema) {
-  return new MarkdownParser(schema, markdownit().use(todoListPlugin), tokens);
+  return new MarkdownParser(
+    schema,
+    markdownit().use(emojiParser).use(todoListPlugin),
+    tokens,
+  );
 }
 
 const tokens = {
@@ -54,12 +59,17 @@ const tokens = {
     }),
   },
   code_inline: { mark: 'code', noCloseToken: true },
+  emoji: {
+    node: 'emoji',
+    getAttrs: (tok) => {
+      return {
+        'data-emojikind': tok.markup,
+      };
+    },
+  },
 };
 
 function todoListPlugin(md, options) {
-  if (options) {
-  }
-
   md.core.ruler.after('inline', 'gfm-todo-list', function (state) {
     var tokens = state.tokens;
     for (var i = 0; i < tokens.length; i++) {
@@ -174,41 +184,6 @@ function getChildren(tokens, position) {
   }
 
   return result;
-}
-
-function findParentOpenClose(tokens, position) {
-  const openIndex = findParentOpenToken(tokens, position);
-  const closeIndex = findParentCloseToken(tokens, position);
-  if (openIndex === -1 || closeIndex === -1) {
-    return;
-  }
-
-  return {
-    open: tokens[openIndex],
-    close: tokens[closeIndex],
-    openIndex: openIndex,
-    closeIndex: closeIndex,
-  };
-}
-
-function findParentOpenToken(tokens, position) {
-  var targetLevel = tokens[position].level - 1;
-  for (var i = position - 1; i >= 0; i--) {
-    if (tokens[i].level === targetLevel && tokens[i].type.endsWith('_open')) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-function findParentCloseToken(tokens, position) {
-  var targetLevel = tokens[position].level - 1;
-  for (var i = position + 1; i < tokens.length; i++) {
-    if (tokens[i].level === targetLevel && tokens[i].type.endsWith('_close')) {
-      return i;
-    }
-  }
-  return -1;
 }
 
 function trimTodoSquare(str) {
