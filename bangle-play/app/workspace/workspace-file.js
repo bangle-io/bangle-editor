@@ -110,7 +110,7 @@ export class IndexDbWorkspaceFile extends WorkspaceFile {
 
     const data = await opts.dbInstance.getItem(docName);
     if (data) {
-      throw new Error('File already exists');
+      console.warn('File already exists');
     }
 
     const file = new IndexDbWorkspaceFile(docName, doc, metadata, opts);

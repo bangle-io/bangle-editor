@@ -64,13 +64,18 @@ export class FSStorage {
   }
 
   // TODO support created nested keys
-  createNewItemKey(fileName = uuid(6), parent) {
+  createNewItemKey(fileName = uuid(6)) {
     // root
-    if (!parent) {
-      return [this.dirHandle.name, fileName + '.md'].join('/');
+
+    fileName = fileName.endsWith('.md') ? fileName : fileName + '.md';
+
+    if (fileName.includes('/')) {
+      return fileName;
     }
 
-    throw new Error('Not implemented');
+    return [this.dirHandle.name, fileName].join('/');
+
+    // throw new Error('Not implemented');
   }
 
   async getItem(key) {

@@ -463,3 +463,11 @@ describe('workspaceContext actions', () => {
 });
 
 test.todo('Be able to delete a pending workspace');
+
+describe('restore native-fs', () => {
+  test.todo('take a backup');
+  test.todo('Be able to restore to a folder with already existing files');
+  test.todo(
+    'Be able to restore to a folder with already existing files and has a name conflict',
+  );
+});
