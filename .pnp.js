@@ -4274,10 +4274,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@popperjs/core", "npm:2.4.4"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["bangle-core", "workspace:bangle-core"],
-            ["emojis-keywords", "npm:2.0.0"],
-            ["emojis-list", "npm:3.0.0"],
             ["localforage", "npm:1.9.0"],
             ["markdown-it", "npm:10.0.0"],
+            ["markdown-it-emoji", "npm:2.0.0"],
             ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-state", "npm:1.3.3"],
@@ -6505,15 +6504,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/emoji-regex-npm-9.0.0-41a2919770-d089be1902.zip/node_modules/emoji-regex/",
           "packageDependencies": [
             ["emoji-regex", "npm:9.0.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["emojis-keywords", [
-        ["npm:2.0.0", {
-          "packageLocation": "./.yarn/cache/emojis-keywords-npm-2.0.0-ae36f9d5e8-b594976136.zip/node_modules/emojis-keywords/",
-          "packageDependencies": [
-            ["emojis-keywords", "npm:2.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -10683,6 +10673,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["linkify-it", "npm:2.2.0"],
             ["mdurl", "npm:1.0.1"],
             ["uc.micro", "npm:1.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["markdown-it-emoji", [
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/markdown-it-emoji-npm-2.0.0-f7e2c75804-e277818e14.zip/node_modules/markdown-it-emoji/",
+          "packageDependencies": [
+            ["markdown-it-emoji", "npm:2.0.0"]
           ],
           "linkType": "HARD",
         }]

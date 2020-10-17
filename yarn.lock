@@ -3170,10 +3170,9 @@ __metadata:
     "@popperjs/core": ^2.4.4
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"
-    emojis-keywords: ^2.0.0
-    emojis-list: ^3.0.0
     localforage: ^1.7.3
     markdown-it: ^10.0.0
+    markdown-it-emoji: ^2.0.0
     prosemirror-collab: ^1.2.2
     prosemirror-markdown: ^1.5.0
     prosemirror-state: 1.3.3
@@ -5179,13 +5178,6 @@ __metadata:
   version: 9.0.0
   resolution: "emoji-regex@npm:9.0.0"
   checksum: d089be1902c6f82e9e45f8496dd2bef89ead8489fca75486ad3aa085c84b2c6cbfbf79baba7eb30d6cacc70bea948a6eeca9a9ba32d594cd4434a60df475352b
-  languageName: node
-  linkType: hard
-
-"emojis-keywords@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "emojis-keywords@npm:2.0.0"
-  checksum: b5949761369ce38694e8e3ee490d321ed5328c74078c7a0869fc131197264084a9a754ee5935f83020abc49ab82c54169575fef444ba664021f610b1475bc058
   languageName: node
   linkType: hard
 
@@ -8980,6 +8972,13 @@ fsevents@^1.2.7:
   dependencies:
     object-visit: ^1.0.0
   checksum: 9e85e6d802183927229d9ad04d70a0e0c7225451994605674d3ed4e4a21f817b4d9aba42a775e98078ffe47cf67df44a50eb07f965f14afead5015c8692503bd
+  languageName: node
+  linkType: hard
+
+"markdown-it-emoji@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "markdown-it-emoji@npm:2.0.0"
+  checksum: e277818e1434ccbd26485993200dbf6ceed6ffe1927b2573f99c5c7490a497d4b644140648d1f0c3de082e9bc1f482438ca4641fbbe7ef0dc85ed1d5f1b81bb0
   languageName: node
   linkType: hard
 
