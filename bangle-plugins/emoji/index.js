@@ -4,7 +4,6 @@ import React from 'react';
 
 import { Node } from 'bangle-core/nodes';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
-import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 
 const LOG = false;
 
@@ -53,7 +52,7 @@ export default class EmojiExtension extends Node {
           default: 'display: inline-block;',
         },
         'data-emojikind': {
-          default: ':couple::tone4:',
+          default: 'performing_arts',
         },
         'data-type': {
           default: this.name,
@@ -93,8 +92,7 @@ export default class EmojiExtension extends Node {
   }
 
   toMarkdown(state, node) {
-    const string = serializeAtomNodeToMdLink(this.name, node.attrs);
-    state.write(string);
+    state.write(`:${node.attrs['data-emojikind']}:`);
   }
 
   render = ({ node, selected }) => {
@@ -124,7 +122,7 @@ export default class EmojiExtension extends Node {
 
   keys({ schema, type }) {
     return {
-      'Shift-Ctrl-e': insertEmoji(schema, 'sad'),
+      'Shift-Ctrl-e': insertEmoji(schema, 'confused'),
     };
   }
 }
@@ -135,7 +133,7 @@ class EmojiComponent extends React.Component {
   }
   render() {
     const { emojikind, selectionStyle, selected } = this.props;
-
+    console.log(emojikind, emojiLookup[emojikind]);
     return (
       <span contentEditable={false} style={selected ? selectionStyle : {}}>
         {emojiLookup[emojikind]}
