@@ -91,8 +91,22 @@ export default class EmojiExtension extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.write(`:${node.attrs['data-emojikind']}:`);
+  get markdown() {
+    return {
+      toMarkdown: (state, node) => {
+        state.write(`:${node.attrs['data-emojikind']}:`);
+      },
+      parseMarkdown: {
+        emoji: {
+          node: 'emoji',
+          getAttrs: (tok) => {
+            return {
+              'data-emojikind': tok.markup,
+            };
+          },
+        },
+      },
+    };
   }
 
   render = ({ node, selected }) => {
@@ -133,7 +147,6 @@ class EmojiComponent extends React.Component {
   }
   render() {
     const { emojikind, selectionStyle, selected } = this.props;
-    console.log(emojikind, emojiLookup[emojikind]);
     return (
       <span contentEditable={false} style={selected ? selectionStyle : {}}>
         {emojiLookup[emojikind]}

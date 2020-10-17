@@ -30,8 +30,15 @@ export class ListItem extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.renderContent(node);
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.renderContent(node);
+      },
+      parseMarkdown: {
+        list_item: { block: this.name },
+      },
+    };
   }
 
   commands({ type }) {

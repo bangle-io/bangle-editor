@@ -70,14 +70,17 @@ export default class Dino extends Node {
           },
         },
       ],
+    };
+  }
 
+  get markdown() {
+    return {
       toMarkdown: (state, node) => {
         const string = serializeAtomNodeToMdLink(this.name, node.attrs);
         state.write(string);
       },
     };
   }
-
   commands({ type, schema }) {
     return {
       dino: (dinoName) => insertDino(schema, dinoName),

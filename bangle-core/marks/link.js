@@ -47,21 +47,32 @@ export class Link extends Mark {
     };
   }
 
-  toMarkdown = () => {
+  get markdown() {
     return {
-      open(_state, mark, parent, index) {
-        return isPlainURL(mark, parent, index, 1) ? '<' : '[';
+      toMarkdown: {
+        open(_state, mark, parent, index) {
+          return isPlainURL(mark, parent, index, 1) ? '<' : '[';
+        },
+        close(state, mark, parent, index) {
+          return isPlainURL(mark, parent, index, -1)
+            ? '>'
+            : '](' +
+                state.esc(mark.attrs.href) +
+                (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
+                ')';
+        },
       },
-      close(state, mark, parent, index) {
-        return isPlainURL(mark, parent, index, -1)
-          ? '>'
-          : '](' +
-              state.esc(mark.attrs.href) +
-              (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
-              ')';
+      parseMarkdown: {
+        link: {
+          mark: 'link',
+          getAttrs: (tok) => ({
+            href: tok.attrGet('href'),
+            title: tok.attrGet('title') || null,
+          }),
+        },
       },
     };
-  };
+  }
 
   commands({ type }) {
     return (attrs) => {

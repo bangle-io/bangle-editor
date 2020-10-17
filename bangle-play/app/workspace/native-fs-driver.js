@@ -1,15 +1,6 @@
 import { uuid } from 'bangle-core/utils/js-utils';
-import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
-import {
-  getMarkdownSerializer,
-  markdownSerializer,
-} from 'bangle-plugins/markdown/markdown-serializer';
-import { extensions } from '../editor/extensions';
+import { markdownParser, markdownSerializer } from 'bangle-play/markdown/index';
 import { readFile } from '../misc/index';
-
-// TODO this is ugly read up about the static extensions though piece
-const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions());
-
 const DIR_IGNORE_LIST = ['node_modules', '.git'];
 
 export class FSStorage {
@@ -32,16 +23,13 @@ export class FSStorage {
   constructor(dirHandle, schema) {
     this.dirHandle = dirHandle;
     this._schema = schema;
-
-    this._parser = markdownParser(schema);
-    this._serializer = markdownSerializer(nodeSerializer, markSerializer);
   }
 
   _getData = async (filePathHandles) => {
     const file = await getLast(filePathHandles).getFile();
     const textContent = await readFile(file);
     const key = FSStorage.getFilePathKey(filePathHandles);
-    const doc = await this._parser.parse(textContent);
+    const doc = markdownParser(textContent);
     return {
       key,
       doc: doc.toJSON(),
@@ -111,7 +99,7 @@ export class FSStorage {
       // When a new file is created initially the value.doc is null
       if (value.doc) {
         const doc = this._schema.nodeFromJSON(value.doc);
-        data = this._serializer.serialize(doc);
+        data = markdownSerializer(doc);
       }
       await writeFile(handler, data);
       return;

@@ -11,7 +11,11 @@ export class Text extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.text(node.text);
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.text(node.text);
+      },
+    };
   }
 }
