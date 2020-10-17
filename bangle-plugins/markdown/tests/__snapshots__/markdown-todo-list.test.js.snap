@@ -1,0 +1,1735 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown todo parsing todo1.md: an incorrectly indented doc results in empyt list 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo2.md: correct indentation of todo1 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "top",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "parent",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                    Object {
+                      "content": Array [
+                        Object {
+                          "attrs": Object {
+                            "data-done": false,
+                            "data-type": "todo_item",
+                          },
+                          "content": Array [
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "text": "top",
+                                  "type": "text",
+                                },
+                              ],
+                              "type": "paragraph",
+                            },
+                          ],
+                          "type": "todo_item",
+                        },
+                        Object {
+                          "attrs": Object {
+                            "data-done": false,
+                            "data-type": "todo_item",
+                          },
+                          "content": Array [
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "text": "parent",
+                                  "type": "text",
+                                },
+                              ],
+                              "type": "paragraph",
+                            },
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "content": Array [
+                                    Object {
+                                      "content": Array [
+                                        Object {
+                                          "text": "first",
+                                          "type": "text",
+                                        },
+                                      ],
+                                      "type": "paragraph",
+                                    },
+                                  ],
+                                  "type": "list_item",
+                                },
+                                Object {
+                                  "content": Array [
+                                    Object {
+                                      "content": Array [
+                                        Object {
+                                          "text": "second",
+                                          "type": "text",
+                                        },
+                                      ],
+                                      "type": "paragraph",
+                                    },
+                                  ],
+                                  "type": "list_item",
+                                },
+                              ],
+                              "type": "bullet_list",
+                            },
+                          ],
+                          "type": "todo_item",
+                        },
+                      ],
+                      "type": "todo_list",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "bottom",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo3.md: malformed with multiple confused square braces 1`] = `
+"- [ ] unchecked todo item 1
+
+- [ ] \\\\[ \\\\]
+
+- [ ] \\\\[  \\\\] not a todo item 2
+
+- [ ] \\\\[ x\\\\] not a todo item 3
+
+- [ ] \\\\[x \\\\] not a todo item 4
+
+- [ ] \\\\[ x \\\\] not a todo item 5
+
+- [x] todo item 6"
+`;
+
+exports[`Markdown todo parsing todo3.md: malformed with multiple confused square braces 2`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "unchecked todo item 1",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "[ ]",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "[  ] not a todo item 2",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "[ x] not a todo item 3",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "[x ] not a todo item 4",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "[ x ] not a todo item 5",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": true,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "todo item 6",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo4.md multiple nesting 1`] = `
+"- [ ] top
+
+  - [ ] Zono
+
+  - [ ] Banshe
+
+  - [ ] parent
+
+    - [ ] top
+
+    - [ ] parent
+
+      - first
+
+      - second
+
+  - [ ] bottom"
+`;
+
+exports[`Markdown todo parsing todo4.md multiple nesting 2`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "top",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "Zono",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "Banshe",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "parent",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                    Object {
+                      "content": Array [
+                        Object {
+                          "attrs": Object {
+                            "data-done": false,
+                            "data-type": "todo_item",
+                          },
+                          "content": Array [
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "text": "top",
+                                  "type": "text",
+                                },
+                              ],
+                              "type": "paragraph",
+                            },
+                          ],
+                          "type": "todo_item",
+                        },
+                        Object {
+                          "attrs": Object {
+                            "data-done": false,
+                            "data-type": "todo_item",
+                          },
+                          "content": Array [
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "text": "parent",
+                                  "type": "text",
+                                },
+                              ],
+                              "type": "paragraph",
+                            },
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "content": Array [
+                                    Object {
+                                      "content": Array [
+                                        Object {
+                                          "text": "first",
+                                          "type": "text",
+                                        },
+                                      ],
+                                      "type": "paragraph",
+                                    },
+                                  ],
+                                  "type": "list_item",
+                                },
+                                Object {
+                                  "content": Array [
+                                    Object {
+                                      "content": Array [
+                                        Object {
+                                          "text": "second",
+                                          "type": "text",
+                                        },
+                                      ],
+                                      "type": "paragraph",
+                                    },
+                                  ],
+                                  "type": "list_item",
+                                },
+                              ],
+                              "type": "bullet_list",
+                            },
+                          ],
+                          "type": "todo_item",
+                        },
+                      ],
+                      "type": "todo_list",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "bottom",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo5.md no nesting 1`] = `
+"- [ ] unchecked item 1
+
+- [ ] unchecked item 2
+
+- [x] checked item 3
+
+- [ ] unchecked item 4"
+`;
+
+exports[`Markdown todo parsing todo5.md no nesting 2`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "unchecked item 1",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "unchecked item 2",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": true,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "checked item 3",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "unchecked item 4",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 2`] = `
+"# Test 1
+
+1. bar
+
+2. spam
+
+# Test 2
+
+-"
+`;
+
+exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 3`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 1",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "attrs": Object {
+        "order": 1,
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "bar",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "list_item",
+        },
+        Object {
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "spam",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "list_item",
+        },
+      ],
+      "type": "ordered_list",
+    },
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 2",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "type": "paragraph",
+            },
+          ],
+          "type": "list_item",
+        },
+      ],
+      "type": "bullet_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 1",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "bar",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "spam",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 2",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 3",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "bar",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "spam",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "regular list 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "list_item",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "regular list 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "list_item",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "regular list 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                    Object {
+                      "content": Array [
+                        Object {
+                          "content": Array [
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "text": "a child of list 3",
+                                  "type": "text",
+                                },
+                              ],
+                              "type": "paragraph",
+                            },
+                          ],
+                          "type": "list_item",
+                        },
+                      ],
+                      "type": "bullet_list",
+                    },
+                  ],
+                  "type": "list_item",
+                },
+              ],
+              "type": "bullet_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 2`] = `
+"# Test 1
+
+- [ ] foo
+
+  - [ ] nested unchecked item 1
+
+  - [ ] not a todo item 2
+
+  - [ ] not a todo item 3
+
+  - [x] nested checked item 4
+
+- [ ] bar
+
+- [ ] spam
+
+# Test 2
+
+- [ ] foo
+
+  - [ ] nested unchecked item 1
+
+  - [ ] nested unchecked item 2
+
+  - [x] nested checked item 3
+
+  - [x] nested checked item 4
+
+# Test 3
+
+- [ ] foo
+
+  - [ ] nested unchecked item 1
+
+  - [ ] not a todo item 2
+
+  - [ ] not a todo item 3
+
+  - [x] nested checked item 4
+
+- [ ] bar
+
+- [ ] spam
+
+  - regular list 1
+
+  - regular list 2
+
+  - regular list 3
+
+    - a child of list 3"
+`;
+
+exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 3`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 1",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "bar",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "spam",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 2",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+    Object {
+      "attrs": Object {
+        "level": "1",
+      },
+      "content": Array [
+        Object {
+          "text": "Test 3",
+          "type": "text",
+        },
+      ],
+      "type": "heading",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": false,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+                Object {
+                  "attrs": Object {
+                    "data-done": true,
+                    "data-type": "todo_item",
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "todo_item",
+                },
+              ],
+              "type": "todo_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "bar",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "todo_item",
+        },
+        Object {
+          "attrs": Object {
+            "data-done": false,
+            "data-type": "todo_item",
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "spam",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "regular list 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "list_item",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "regular list 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "list_item",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "regular list 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                    Object {
+                      "content": Array [
+                        Object {
+                          "content": Array [
+                            Object {
+                              "content": Array [
+                                Object {
+                                  "text": "a child of list 3",
+                                  "type": "text",
+                                },
+                              ],
+                              "type": "paragraph",
+                            },
+                          ],
+                          "type": "list_item",
+                        },
+                      ],
+                      "type": "bullet_list",
+                    },
+                  ],
+                  "type": "list_item",
+                },
+              ],
+              "type": "bullet_list",
+            },
+          ],
+          "type": "todo_item",
+        },
+      ],
+      "type": "todo_list",
+    },
+  ],
+  "type": "doc",
+}
+`;
