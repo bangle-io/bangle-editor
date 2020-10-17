@@ -23,8 +23,17 @@ export class TodoList extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.renderList(node, '  ', () => `- `);
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.renderList(node, '  ', () => `- `);
+      },
+      parseMarkdown: {
+        todo_list: {
+          block: 'todo_list',
+        },
+      },
+    };
   }
 
   commands({ type, schema }) {

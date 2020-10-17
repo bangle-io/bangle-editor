@@ -52,10 +52,20 @@ export class Heading extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.write(state.repeat('#', node.attrs.level) + ' ');
-    state.renderInline(node);
-    state.closeBlock(node);
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.write(state.repeat('#', node.attrs.level) + ' ');
+        state.renderInline(node);
+        state.closeBlock(node);
+      },
+      parseMarkdown: {
+        heading: {
+          block: 'heading',
+          getAttrs: (tok) => ({ level: tok.tag.slice(1) }),
+        },
+      },
+    };
   }
 
   commands({ type, schema }) {

@@ -17,8 +17,17 @@ export class BulletList extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.renderList(node, '  ', () => (node.attrs.bullet || '-') + ' ');
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.renderList(node, '  ', () => (node.attrs.bullet || '-') + ' ');
+      },
+      parseMarkdown: {
+        bullet_list: {
+          block: this.name,
+        },
+      },
+    };
   }
 
   commands({ type, schema }) {

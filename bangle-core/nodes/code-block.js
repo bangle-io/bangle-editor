@@ -29,12 +29,24 @@ export class CodeBlock extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.write('```' + (node.attrs.language || '') + '\n');
-    state.text(node.textContent, false);
-    state.ensureNewLine();
-    state.write('```');
-    state.closeBlock(node);
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.write('```' + (node.attrs.language || '') + '\n');
+        state.text(node.textContent, false);
+        state.ensureNewLine();
+        state.write('```');
+        state.closeBlock(node);
+      },
+      parseMarkdown: {
+        code_block: { block: 'code_block', noCloseToken: true },
+        fence: {
+          block: 'code_block',
+          getAttrs: (tok) => ({ language: tok.info || '' }),
+          noCloseToken: true,
+        },
+      },
+    };
   }
 
   commands({ type, schema }) {

@@ -18,10 +18,7 @@ import {
   Image,
 } from 'bangle-core/nodes/index';
 import { Underline } from 'bangle-core/marks';
-import {
-  getMarkdownSerializer,
-  markdownSerializer,
-} from '../markdown-serializer';
+import { markdownSerializer } from '../markdown-serializer';
 import {
   Bold,
   Code,
@@ -59,14 +56,13 @@ const schemaPromise = renderTestEditor({
   extensions,
 })().then((r) => r.schema);
 
-const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions);
 export const serialize = async (doc) => {
   let content = doc;
   if (typeof doc === 'function') {
     content = doc(await schemaPromise);
   }
-  return markdownSerializer(nodeSerializer, markSerializer).serialize(content);
+  return markdownSerializer(extensions).serialize(content);
 };
 
 export const parse = async (md) =>
-  markdownParser(await schemaPromise).parse(md);
+  markdownParser(extensions, await schemaPromise).parse(md);

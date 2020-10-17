@@ -16,13 +16,14 @@ import {
   CodeBlock,
   HorizontalRule,
 } from 'bangle-core/nodes';
-import {
-  getMarkdownSerializer,
-  markdownSerializer,
-} from 'bangle-plugins/markdown/markdown-serializer';
+import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import EmojiExtension from '../index';
-import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
+import {
+  defaultMarkdownItTokenizer,
+  markdownParser,
+} from 'bangle-plugins/markdown/markdown-parser';
 import { Bold, Code, Italic, Link, Strike, Underline } from 'bangle-core/index';
+import emojiParser from 'markdown-it-emoji';
 
 const extensions = [
   new BulletList(),
@@ -73,18 +74,19 @@ test('Rendering works', async () => {
 
 describe('markdown', () => {
   let schemaPromise;
-
-  const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions);
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
       content = doc(await schemaPromise);
     }
-    return markdownSerializer(nodeSerializer, markSerializer).serialize(
-      content,
-    );
+    return markdownSerializer(extensions).serialize(content);
   };
-  const parse = async (md) => markdownParser(await schemaPromise).parse(md);
+  const parse = async (md) =>
+    markdownParser(
+      extensions,
+      await schemaPromise,
+      defaultMarkdownItTokenizer.use(emojiParser),
+    ).parse(md);
 
   beforeAll(async () => {
     schemaPromise = renderTestEditor({ extensions })().then((r) => r.schema);

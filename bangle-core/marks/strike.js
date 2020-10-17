@@ -29,14 +29,19 @@ export class Strike extends Mark {
     };
   }
 
-  toMarkdown = () => {
+  get markdown() {
     return {
-      open: '~~',
-      close: '~~',
-      mixable: true,
-      expelEnclosingWhitespace: true,
+      toMarkdown: {
+        open: '~~',
+        close: '~~',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
+      parseMarkdown: {
+        s: { mark: 'strike' },
+      },
     };
-  };
+  }
 
   keys({ type }) {
     return {

@@ -15,14 +15,19 @@ export class Italic extends Mark {
     };
   }
 
-  toMarkdown = () => {
+  get markdown() {
     return {
-      open: '_',
-      close: '_',
-      mixable: true,
-      expelEnclosingWhitespace: true,
+      toMarkdown: {
+        open: '_',
+        close: '_',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
+      parseMarkdown: {
+        em: { mark: 'italic' },
+      },
     };
-  };
+  }
 
   keys({ type }) {
     return {

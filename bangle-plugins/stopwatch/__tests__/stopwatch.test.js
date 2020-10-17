@@ -15,6 +15,7 @@ import {
 } from 'bangle-core/nodes';
 import StopwatchExtension from '../stopwatch';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import { markdownParser } from 'bangle-plugins/markdown/index';
 
 const extensions = [
   new BulletList(),
@@ -108,9 +109,16 @@ test('Renders clicking correctly', async () => {
 describe('markdown', () => {
   let schemaPromise;
   const serialize = async (doc) => {
-    const content = doc(await schemaPromise);
-    return markdownSerializer(await schemaPromise).serialize(content);
+    let content = doc;
+    if (typeof doc === 'function') {
+      content = doc(await schemaPromise);
+    }
+    return markdownSerializer(extensions).serialize(content);
   };
+
+  const parse = async (md) =>
+    markdownParser(extensions, await schemaPromise).parse(md);
+
   beforeAll(async () => {
     schemaPromise = renderTestEditor({ extensions })().then((r) => r.schema);
   });

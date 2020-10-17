@@ -8,8 +8,6 @@ import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { extensions } from '../editor/extensions';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
-import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
-import { markdownParser } from 'bangle-plugins/markdown/markdown-parser';
 
 const LOG = false;
 const DEBUG = true;

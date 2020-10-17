@@ -26,12 +26,19 @@ export class Bold extends Mark {
     };
   }
 
-  toMarkdown = () => ({
-    open: '**',
-    close: '**',
-    mixable: true,
-    expelEnclosingWhitespace: true,
-  });
+  get markdown() {
+    return {
+      toMarkdown: {
+        open: '**',
+        close: '**',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
+      parseMarkdown: {
+        strong: { mark: 'bold' },
+      },
+    };
+  }
 
   keys({ type }) {
     return {

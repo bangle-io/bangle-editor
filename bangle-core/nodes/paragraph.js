@@ -38,9 +38,18 @@ export class Paragraph extends Node {
     };
   }
 
-  toMarkdown(state, node) {
-    state.renderInline(node);
-    state.closeBlock(node);
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.renderInline(node);
+        state.closeBlock(node);
+      },
+      parseMarkdown: {
+        paragraph: {
+          block: 'paragraph',
+        },
+      },
+    };
   }
 
   commands({ type }) {

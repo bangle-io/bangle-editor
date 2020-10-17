@@ -16,17 +16,22 @@ export class Code extends Mark {
     };
   }
 
-  toMarkdown = () => {
+  get markdown() {
     return {
-      open(_state, _mark, parent, index) {
-        return backticksFor(parent.child(index), -1);
+      toMarkdown: {
+        open(_state, _mark, parent, index) {
+          return backticksFor(parent.child(index), -1);
+        },
+        close(_state, _mark, parent, index) {
+          return backticksFor(parent.child(index - 1), 1);
+        },
+        escape: false,
       },
-      close(_state, _mark, parent, index) {
-        return backticksFor(parent.child(index - 1), 1);
+      parseMarkdown: {
+        code_inline: { mark: 'code', noCloseToken: true },
       },
-      escape: false,
     };
-  };
+  }
 
   keys({ type }) {
     return {
