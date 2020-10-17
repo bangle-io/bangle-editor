@@ -89,12 +89,12 @@ export default class EmojiExtension extends Node {
           },
         },
       ],
-
-      toMarkdown: (state, node) => {
-        const string = serializeAtomNodeToMdLink(this.name, node.attrs);
-        state.write(string);
-      },
     };
+  }
+
+  toMarkdown(state, node) {
+    const string = serializeAtomNodeToMdLink(this.name, node.attrs);
+    state.write(string);
   }
 
   render = ({ node, selected }) => {

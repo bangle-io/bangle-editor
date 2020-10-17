@@ -61,7 +61,10 @@ const schemaPromise = renderTestEditor({
 
 const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions);
 export const serialize = async (doc) => {
-  const content = doc(await schemaPromise);
+  let content = doc;
+  if (typeof doc === 'function') {
+    content = doc(await schemaPromise);
+  }
   return markdownSerializer(nodeSerializer, markSerializer).serialize(content);
 };
 
