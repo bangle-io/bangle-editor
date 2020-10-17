@@ -73,7 +73,7 @@ export class TodoItem extends Node {
             'data-type': this.name,
             'data-done': done.toString(),
           },
-          ['span', { class: 'todo-checkbox mr-2', contenteditable: 'false' }],
+          ['span', { contenteditable: 'false' }],
           ['div', { class: 'todo-content' }, 0],
         ];
       },
@@ -161,7 +161,10 @@ function TodoItemComp(props) {
   return (
     <>
       <span
-        className="todo-checkbox mr-2 self-start flex-none"
+        className="todo-checkbox self-start flex-none"
+        style={{
+          marginRight: '0.5rem',
+        }}
         contentEditable={false}
       >
         <input
