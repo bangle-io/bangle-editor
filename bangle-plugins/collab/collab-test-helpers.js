@@ -10,7 +10,6 @@ import {
   TodoItem,
 } from 'bangle-core/nodes';
 import { Manager } from './server/manager';
-import { Disk } from '../persistence/disk';
 import {
   renderTestEditor,
   sendKeyToPm,
@@ -19,6 +18,7 @@ import {
 } from 'bangle-core/test-helpers';
 import { CollabExtension } from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
+import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 
 const START = '💚';
 const END = '🖤';
@@ -33,9 +33,8 @@ const ENTER = '↵';
 export function setupDb(doc) {
   return {
     getItem: jest.fn(async () => {
-      return {
-        uid: 'ole',
-        doc: doc || {
+      return (
+        doc || {
           type: 'doc',
           content: [
             {
@@ -48,10 +47,10 @@ export function setupDb(doc) {
               ],
             },
           ],
-        },
-        created: 0,
-      };
+        }
+      );
     }),
+
     setItem: jest.fn(async () => {}),
   };
 }
@@ -67,7 +66,7 @@ export function setup(db = setupDb(), { managerOpts }) {
     new TodoItem(),
   ];
 
-  let disk = new Disk({ db, saveEvery: 50 });
+  let disk = new LocalDisk(db, { saveDebounce: 50 });
   const manager = new Manager(createOneOffSchema(extensions()), {
     disk,
     ...managerOpts,

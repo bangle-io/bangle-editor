@@ -22,6 +22,19 @@ export class Blockquote extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown: (state, node) => {
+        state.wrapBlock('> ', null, node, () => state.renderContent(node));
+      },
+      parseMarkdown: {
+        blockquote: {
+          block: this.name,
+        },
+      },
+    };
+  }
+
   commands({ type, schema }) {
     const isInBlockquote = (state) =>
       Boolean(findParentNodeOfType(type)(state.selection));

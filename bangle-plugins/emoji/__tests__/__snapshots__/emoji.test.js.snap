@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rendering works 1`] = `
+<span
+  class="emoji-NodeView-Wrap"
+  data-emojikind=":horse:"
+  data-type="emoji"
+  draggable="true"
+  style="display: inline-block;"
+>
+  <span
+    contenteditable="false"
+  />
+</span>
+`;

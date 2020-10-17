@@ -14,6 +14,8 @@ import {
   TodoItem,
 } from 'bangle-core/nodes';
 import StopwatchExtension from '../stopwatch';
+import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import { markdownParser } from 'bangle-plugins/markdown/index';
 
 const extensions = [
   new BulletList(),
@@ -101,5 +103,37 @@ test('Renders clicking correctly', async () => {
     expect(
       container.querySelector(`[data-type="stopwatch"]`),
     ).toMatchSnapshot();
+  });
+});
+
+describe('markdown', () => {
+  let schemaPromise;
+  const serialize = async (doc) => {
+    let content = doc;
+    if (typeof doc === 'function') {
+      content = doc(await schemaPromise);
+    }
+    return markdownSerializer(extensions).serialize(content);
+  };
+
+  const parse = async (md) =>
+    markdownParser(extensions, await schemaPromise).parse(md);
+
+  beforeAll(async () => {
+    schemaPromise = renderTestEditor({ extensions })().then((r) => r.schema);
+  });
+
+  test('markdown serialization', async () => {
+    const md = await serialize(
+      <doc>
+        <para>
+          hello world
+          <stopwatch data-stopwatch-time="10" />
+        </para>
+      </doc>,
+    );
+    expect(md).toMatchInlineSnapshot(
+      `"hello world[$stopwatch](bangle://data-stopwatch=%22%7B%5C%22startTime%5C%22%3A0%2C%5C%22stopTime%5C%22%3A0%7D%22&data-type=%22stopwatch%22)"`,
+    );
   });
 });

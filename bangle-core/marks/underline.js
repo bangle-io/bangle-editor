@@ -22,6 +22,17 @@ export class Underline extends Mark {
     };
   }
 
+  toMarkdown = () => {
+    // I know this is cheating, but underlines are confusing
+    // this moves to italic
+    return {
+      open: '_',
+      close: '_',
+      mixable: true,
+      expelEnclosingWhitespace: true,
+    };
+  };
+
   keys({ type }) {
     return {
       'Mod-u': toggleMark(type),

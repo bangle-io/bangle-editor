@@ -3,7 +3,6 @@ import {
   objectMapValues,
   serialExecuteQueue,
   raceTimeout,
-  sleep,
 } from 'bangle-core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
@@ -17,9 +16,9 @@ export class Manager {
   getDocumentQueue = serialExecuteQueue();
   defaultOpts = {
     disk: {
-      getDoc: async () => {},
-      updateDoc: async () => {},
-      flushDoc: async () => {},
+      load: async () => {},
+      update: async () => {},
+      flush: async () => {},
     },
     // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
     userWaitTimeout: 7 * 1000,
@@ -85,10 +84,10 @@ export class Manager {
     const { instances } = this;
     let created;
     if (!doc) {
-      let rawDoc = await this.disk.getDoc(docName);
+      let rawDoc = await this.disk.load(docName);
       doc = this.schema.nodeFromJSON(rawDoc);
       // in case the doc was newly created save it
-      this.disk.flushDoc(docName, doc);
+      this.disk.flush(docName, doc);
     }
 
     if (++this.instanceCount > this.maxCount) {
@@ -108,8 +107,8 @@ export class Manager {
       scheduleSave: (final) => {
         const instance = instances[docName];
         final
-          ? this.disk.flushDoc(docName, instance.doc)
-          : this.disk.updateDoc(docName, () => instance.doc);
+          ? this.disk.flush(docName, instance.doc)
+          : this.disk.update(docName, () => instance.doc);
       },
       created,
       collectUsersTimeout: this.opts.collectUsersTimeout,

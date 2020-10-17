@@ -89,6 +89,24 @@ export class TodoItem extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.write(node.attrs['data-done'] ? '[x] ' : '[ ] ');
+        state.renderContent(node);
+      },
+      parseMarkdown: {
+        todo_item: {
+          block: 'todo_item',
+          getAttrs: (tok) => ({
+            'data-name': 'todo_item',
+            'data-done': tok.attrGet('isDone') || false,
+          }),
+        },
+      },
+    };
+  }
+
   keys({ type, schema }) {
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));

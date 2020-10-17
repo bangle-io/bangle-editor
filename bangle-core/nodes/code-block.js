@@ -15,6 +15,9 @@ export class CodeBlock extends Node {
 
   get schema() {
     return {
+      attrs: {
+        language: { default: '' },
+      },
       content: 'text*',
       marks: '',
       group: 'block',
@@ -23,6 +26,26 @@ export class CodeBlock extends Node {
       draggable: false,
       parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
       toDOM: () => ['pre', ['code', 0]],
+    };
+  }
+
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.write('```' + (node.attrs.language || '') + '\n');
+        state.text(node.textContent, false);
+        state.ensureNewLine();
+        state.write('```');
+        state.closeBlock(node);
+      },
+      parseMarkdown: {
+        code_block: { block: 'code_block', noCloseToken: true },
+        fence: {
+          block: 'code_block',
+          getAttrs: (tok) => ({ language: tok.info || '' }),
+          noCloseToken: true,
+        },
+      },
     };
   }
 

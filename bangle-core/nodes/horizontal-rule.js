@@ -15,6 +15,16 @@ export class HorizontalRule extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.write(node.attrs.markup || '---');
+        state.closeBlock(node);
+      },
+      parseMarkdown: { hr: { node: 'horizontal_rule' } },
+    };
+  }
+
   commands({ type }) {
     return () => (state, dispatch) =>
       dispatch(state.tr.replaceSelectionWith(type.create()));

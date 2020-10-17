@@ -36,6 +36,29 @@ export class Image extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        const text = state.esc(node.attrs.alt || '');
+        const url =
+          state.esc(node.attrs.src) +
+          (node.attrs.title ? ' ' + state.quote(node.attrs.title) : '');
+
+        state.write(`![${text}](${url})`);
+      },
+      parseMarkdown: {
+        image: {
+          node: 'image',
+          getAttrs: (tok) => ({
+            src: tok.attrGet('src'),
+            title: tok.attrGet('title') || null,
+            alt: (tok.children[0] && tok.children[0].content) || null,
+          }),
+        },
+      },
+    };
+  }
+
   inputRules({ type }) {
     return new InputRule(
       /**

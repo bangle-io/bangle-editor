@@ -23,6 +23,19 @@ export class TodoList extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.renderList(node, '  ', () => `- `);
+      },
+      parseMarkdown: {
+        todo_list: {
+          block: 'todo_list',
+        },
+      },
+    };
+  }
+
   commands({ type, schema }) {
     return {
       // I am not sure why raf fixes the problem,

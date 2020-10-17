@@ -26,6 +26,20 @@ export class Bold extends Mark {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown: {
+        open: '**',
+        close: '**',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
+      parseMarkdown: {
+        strong: { mark: 'bold' },
+      },
+    };
+  }
+
   keys({ type }) {
     return {
       'Mod-b': toggleMark(type),

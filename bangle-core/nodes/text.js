@@ -10,4 +10,12 @@ export class Text extends Node {
       group: 'inline',
     };
   }
+
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.text(node.text);
+      },
+    };
+  }
 }

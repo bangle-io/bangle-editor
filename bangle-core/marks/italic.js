@@ -15,6 +15,20 @@ export class Italic extends Mark {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown: {
+        open: '_',
+        close: '_',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
+      parseMarkdown: {
+        em: { mark: 'italic' },
+      },
+    };
+  }
+
   keys({ type }) {
     return {
       'Mod-i': toggleMark(type),

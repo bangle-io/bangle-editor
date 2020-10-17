@@ -47,6 +47,33 @@ export class Link extends Mark {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown: {
+        open(_state, mark, parent, index) {
+          return isPlainURL(mark, parent, index, 1) ? '<' : '[';
+        },
+        close(state, mark, parent, index) {
+          return isPlainURL(mark, parent, index, -1)
+            ? '>'
+            : '](' +
+                state.esc(mark.attrs.href) +
+                (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
+                ')';
+        },
+      },
+      parseMarkdown: {
+        link: {
+          mark: 'link',
+          getAttrs: (tok) => ({
+            href: tok.attrGet('href'),
+            title: tok.attrGet('title') || null,
+          }),
+        },
+      },
+    };
+  }
+
   commands({ type }) {
     return (attrs) => {
       if (attrs.href) {
@@ -155,4 +182,23 @@ function markPasteRule(regexp, type, getAttrs) {
       },
     },
   });
+}
+
+function isPlainURL(link, parent, index, side) {
+  if (link.attrs.title || !/^\w+:/.test(link.attrs.href)) {
+    return false;
+  }
+  let content = parent.child(index + (side < 0 ? -1 : 0));
+  if (
+    !content.isText ||
+    content.text !== link.attrs.href ||
+    content.marks[content.marks.length - 1] !== link
+  ) {
+    return false;
+  }
+  if (index === (side < 0 ? 1 : parent.childCount - 1)) {
+    return true;
+  }
+  let next = parent.child(index + (side < 0 ? -2 : 1));
+  return !link.isInSet(next.marks);
 }

@@ -14,7 +14,7 @@ export class Heading extends Node {
 
   get defaultOptions() {
     return {
-      levels: [1, 2, 3, 4, 5, 6],
+      levels: ['1', '2', '3', '4', '5', '6'],
       classNames: {},
     };
   }
@@ -23,7 +23,7 @@ export class Heading extends Node {
     return {
       attrs: {
         level: {
-          default: 1,
+          default: '1',
         },
       },
       content: 'inline*',
@@ -48,6 +48,22 @@ export class Heading extends Node {
           },
           0,
         ];
+      },
+    };
+  }
+
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.write(state.repeat('#', node.attrs.level) + ' ');
+        state.renderInline(node);
+        state.closeBlock(node);
+      },
+      parseMarkdown: {
+        heading: {
+          block: 'heading',
+          getAttrs: (tok) => ({ level: tok.tag.slice(1) }),
+        },
       },
     };
   }

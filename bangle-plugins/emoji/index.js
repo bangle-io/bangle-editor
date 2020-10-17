@@ -33,10 +33,6 @@ function insertEmoji(schema, name) {
 }
 
 export default class EmojiExtension extends Node {
-  constructor(...args) {
-    super(...args);
-    this.chache = Math.random();
-  }
   get defaultOptions() {
     return {
       selectionStyle: { outline: '2px solid blue' },
@@ -56,7 +52,7 @@ export default class EmojiExtension extends Node {
           default: 'display: inline-block;',
         },
         'data-emojikind': {
-          default: ':couple::tone4:',
+          default: 'performing_arts',
         },
         'data-type': {
           default: this.name,
@@ -95,6 +91,24 @@ export default class EmojiExtension extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown: (state, node) => {
+        state.write(`:${node.attrs['data-emojikind']}:`);
+      },
+      parseMarkdown: {
+        emoji: {
+          node: 'emoji',
+          getAttrs: (tok) => {
+            return {
+              'data-emojikind': tok.markup,
+            };
+          },
+        },
+      },
+    };
+  }
+
   render = ({ node, selected }) => {
     const { 'data-emojikind': emojikind } = node.attrs;
 
@@ -122,7 +136,7 @@ export default class EmojiExtension extends Node {
 
   keys({ schema, type }) {
     return {
-      'Shift-Ctrl-e': insertEmoji(schema, 'sad'),
+      'Shift-Ctrl-e': insertEmoji(schema, 'confused'),
     };
   }
 }
@@ -133,7 +147,6 @@ class EmojiComponent extends React.Component {
   }
   render() {
     const { emojikind, selectionStyle, selected } = this.props;
-
     return (
       <span contentEditable={false} style={selected ? selectionStyle : {}}>
         {emojiLookup[emojikind]}

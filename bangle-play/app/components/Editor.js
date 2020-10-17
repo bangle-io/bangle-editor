@@ -1,3 +1,5 @@
+import 'prosemirror-gapcursor/style/gapcursor.css';
+
 import ReactDOM from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +9,9 @@ import { extensions } from '../editor/extensions';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
 
+const LOG = false;
 const DEBUG = true;
+let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
 
 export class Editor extends React.PureComponent {
   static propTypes = {
@@ -35,6 +39,7 @@ export class Editor extends React.PureComponent {
     editorProps: {
       attributes: { class: 'bangle-editor content' },
     },
+    onInit: ({ view, state }) => {},
   };
 
   componentWillUnmount() {
@@ -42,11 +47,12 @@ export class Editor extends React.PureComponent {
   }
 
   render() {
+    log('updateding', this.props.isFirst);
     return (
       <>
-        <ReactEditor options={this.options} />
         {this.inlineMenuDOM &&
           ReactDOM.createPortal(<Header />, this.inlineMenuDOM)}
+        <ReactEditor options={this.options} />
       </>
     );
   }

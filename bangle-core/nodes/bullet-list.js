@@ -17,6 +17,19 @@ export class BulletList extends Node {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown(state, node) {
+        state.renderList(node, '  ', () => (node.attrs.bullet || '-') + ' ');
+      },
+      parseMarkdown: {
+        bullet_list: {
+          block: this.name,
+        },
+      },
+    };
+  }
+
   commands({ type, schema }) {
     return { bullet_list: () => toggleList(type, schema.nodes.list_item) };
   }

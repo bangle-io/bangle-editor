@@ -29,6 +29,20 @@ export class Strike extends Mark {
     };
   }
 
+  get markdown() {
+    return {
+      toMarkdown: {
+        open: '~~',
+        close: '~~',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
+      parseMarkdown: {
+        s: { mark: 'strike' },
+      },
+    };
+  }
+
   keys({ type }) {
     return {
       'Mod-d': toggleMark(type),
