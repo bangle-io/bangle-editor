@@ -68,6 +68,9 @@ export class WorkspacePalette extends React.PureComponent {
 
     const workspaceInfo = items[activeItemIndex];
 
+    if (!workspaceInfo) {
+      return;
+    }
     this.context.updateWorkspaceContext(
       workspaceActions.openWorkspaceByWorkspaceInfo(workspaceInfo),
     );

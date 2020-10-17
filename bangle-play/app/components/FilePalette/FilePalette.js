@@ -59,7 +59,10 @@ class FilePaletteContainer extends React.PureComponent {
         : activeItemIndex;
 
     const activeItem = items[activeItemIndex];
-
+    // TODO i found that it can undefined, why/
+    if (!activeItem) {
+      return;
+    }
     this.props.workspaceContext.updateWorkspaceContext(
       workspaceActions.openWorkspaceFile(activeItem.docName),
     );
