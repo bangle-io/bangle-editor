@@ -37,6 +37,18 @@ export class InlineSuggest extends Mark {
       },
     };
   }
+
+  get markdown() {
+    // This essentially removes the mark
+    return {
+      toMarkdown: {
+        open: '',
+        close: '',
+        mixable: true,
+      },
+    };
+  }
+
   // we need to expose this for folks to programatically control this
   get tooltipPluginKey() {
     return this._tooltipPluginKey;
