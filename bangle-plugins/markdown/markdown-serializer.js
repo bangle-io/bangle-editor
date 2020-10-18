@@ -19,32 +19,18 @@ function getMarkdownSerializer(extensions, { useDefaults }) {
 
   const nodeExtensions = Object.fromEntries(
     extensions
-      .filter((e) => e instanceof Node)
+      .filter((e) => e instanceof Node && e.markdown)
       .map((r) => {
-        if (r.toMarkdown) {
-          return [r.name, r.toMarkdown];
-        }
-        if (r.markdown) {
-          return [r.name, r.markdown.toMarkdown];
-        }
-        return null;
-      })
-      .filter(Boolean),
+        return [r.name, r.markdown.toMarkdown];
+      }),
   );
 
   const markExtensions = Object.fromEntries(
     extensions
-      .filter((e) => e instanceof Mark)
+      .filter((e) => e instanceof Mark && e.markdown)
       .map((r) => {
-        if (r.toMarkdown) {
-          return [r.name, r.toMarkdown()];
-        }
-        if (r.markdown) {
-          return [r.name, r.markdown.toMarkdown];
-        }
-        return null;
-      })
-      .filter(Boolean),
+        return [r.name, r.markdown.toMarkdown];
+      }),
   );
 
   return {

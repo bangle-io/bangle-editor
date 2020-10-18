@@ -22,16 +22,19 @@ export class Underline extends Mark {
     };
   }
 
-  toMarkdown = () => {
+  get markdown() {
+    // TODO underline is not a real thing in markdown, what is the best option here?
     // I know this is cheating, but underlines are confusing
-    // this moves to italic
+    // this moves them italic
     return {
-      open: '_',
-      close: '_',
-      mixable: true,
-      expelEnclosingWhitespace: true,
+      toMarkdown: {
+        open: '_',
+        close: '_',
+        mixable: true,
+        expelEnclosingWhitespace: true,
+      },
     };
-  };
+  }
 
   keys({ type }) {
     return {
