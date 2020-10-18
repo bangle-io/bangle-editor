@@ -13,7 +13,10 @@ function log(...args) {
   }
 }
 
-function insertEmoji(schema, name) {
+function insertEmoji(
+  schema,
+  name = validEmojis[Math.floor(Math.random() * validEmojis.length)],
+) {
   let emojiType = schema.nodes[EMOJI_NODE_NAME];
   return function (state, dispatch) {
     let { $from } = state.selection,
@@ -126,17 +129,14 @@ export default class EmojiExtension extends Node {
   commands({ type, schema }) {
     return {
       randomEmoji: () => {
-        return insertEmoji(
-          schema,
-          validEmojis[Math.floor(Math.random() * validEmojis.length)],
-        );
+        return insertEmoji(schema);
       },
     };
   }
 
   keys({ schema, type }) {
     return {
-      'Shift-Ctrl-e': insertEmoji(schema, 'confused'),
+      'Shift-Ctrl-e': insertEmoji(schema),
     };
   }
 }
