@@ -48,6 +48,7 @@ export function trackMousePlugin({ tooltipPlacementKey, tooltipDOM }) {
         }
       };
 
+      // TODO move these to use {once: true} option of addEventListener
       document.addEventListener('click', onClickOutside);
 
       this._destroyWatchClickOutside = () => {
