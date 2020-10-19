@@ -77,7 +77,6 @@ export class WorkspacePalette extends React.PureComponent {
   render() {
     const { counter } = this.props;
     const items = this.getItems();
-
     return items.map((item, i) => (
       <SideBarRow
         key={item.uid}
