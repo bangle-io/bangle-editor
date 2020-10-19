@@ -23,7 +23,7 @@ export function triggerInputRule(schema, markName, trigger) {
     }
     const mark = schema.mark(markName, { trigger });
     const { tr, selection } = editorState;
-    const marks = selection.$from.marks(); // selection would tell the cursor position, in this case from== to as no selection
+    const marks = selection.$from.marks(); // selection would tell the cursor position, in this case from == to as no selection
     return tr.replaceSelectionWith(
       schema.text(trigger, [mark, ...marks]),
       false,
