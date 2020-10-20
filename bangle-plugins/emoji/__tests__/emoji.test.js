@@ -17,7 +17,7 @@ import {
   HorizontalRule,
 } from 'bangle-core/nodes';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
-import EmojiExtension from '../index';
+import { Emoji } from '../index';
 import {
   defaultMarkdownItTokenizer,
   markdownParser,
@@ -46,7 +46,7 @@ const extensions = [
   new Strike(),
   new Code(),
   new Underline(),
-  new EmojiExtension(),
+  new Emoji(),
 ];
 const testEditor = renderTestEditor({ extensions });
 

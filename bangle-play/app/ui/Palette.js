@@ -133,7 +133,7 @@ class PaletteElement extends React.PureComponent {
         className="bangle-palette z-30 p-2 shadow-md border flex flex-col"
         ref={this.domRef}
       >
-        <div className="flex mb-2">
+        <div className="flex mb-2 sticky top-0">
           <input
             type="text"
             ref={this.textInput}

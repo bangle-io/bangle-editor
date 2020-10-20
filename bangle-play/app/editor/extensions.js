@@ -1,6 +1,4 @@
-import 'bangle-plugins/tooltip-placement/tooltip.css';
 import Dinos from 'bangle-plugins/dinos';
-import Emoji from 'bangle-plugins/emoji';
 import { History } from 'bangle-core/extensions';
 import { Bold, Code, Italic, Link, Strike, Underline } from 'bangle-core/marks';
 import {
@@ -24,11 +22,20 @@ import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import { inlineMenu } from './inline-menu/inline-menu';
 import { InlineSuggest } from 'bangle-plugins/inline-suggest/index';
+import { Emoji, EmojiInlineSuggest } from 'bangle-plugins/emoji/index';
+import 'bangle-plugins/emoji/emoji.css';
+
+import './extensions-override.css';
 
 // TODO Taking inputs liek this is not ideal, the extension
 // list should be static, so that anyone can import them and get static values
 export function extensions({ collabOpts, inlineMenuDOM } = {}) {
   return [
+    new EmojiInlineSuggest({
+      getScrollContainerDOM: (view) => {
+        return view.dom.parentElement.parentElement;
+      },
+    }),
     new Bold(),
     new Code(),
     new Italic(),
@@ -75,13 +82,6 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
 
     new InlineSuggest({
       trigger: '/',
-      getScrollContainerDOM: (view) => {
-        return view.dom.parentElement.parentElement;
-      },
-    }),
-
-    new InlineSuggest({
-      trigger: '@',
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement.parentElement;
       },
