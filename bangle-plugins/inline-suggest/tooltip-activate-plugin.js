@@ -16,15 +16,15 @@ let log = LOG
 /**
  * This plugin syncs the state between tooltip's show and trigger mark.
  * For example,
- * if trigger mark is no longer active, it hides the tooltip.
- * if it becomes active, it brings back the tooltip.
- * if already active and mark position changed, it updates the tooltips position.
- * Because of this plugin, other plugins can derive their on state just based on tooltip's show state
+ * - if trigger mark is no longer active, it hides the tooltip.
+ * - if it becomes active, it brings back the tooltip.
+ * - if already active and mark position changed, it updates the tooltips position.
+ * Because of this plugin, other plugins can derive their state just based on the tooltip's show state
  * @param {*} param0
  */
 export function tooltipActivatePlugin({ trigger, tooltipPluginKey, markName }) {
   return new Plugin({
-    view(view) {
+    view() {
       return {
         update: (view, lastState) => {
           const { state } = view;
@@ -50,7 +50,7 @@ export function tooltipActivatePlugin({ trigger, tooltipPluginKey, markName }) {
           );
 
           // remove the mark if the user delete the trigger but remaining query
-          // stayed. example `<mark>/hello</mark>` --(user deletes)-> `<mark>hello</mark>`
+          // stayed. example `<mark>/hello</mark>` --(user deletes the /)-> `<mark>hello</mark>`
           if (isMarkActive && !doesQueryHaveTrigger(state, markType, trigger)) {
             removeTypeAheadMarkCmd(markName)(state, view.dispatch);
             return;

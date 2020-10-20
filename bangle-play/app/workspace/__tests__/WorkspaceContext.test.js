@@ -470,4 +470,11 @@ describe('restore native-fs', () => {
   test.todo(
     'Be able to restore to a folder with already existing files and has a name conflict',
   );
+
+  test.todo('Have multiple workspaces pointing to same directory');
+  test.todo(
+    'Have multiple workspaces  of which one directory is a child or the other workspace ',
+  );
+
+  test.todo('Handle the case when the directory backing workspace is deleted');
 });

@@ -38,8 +38,10 @@ export class WorkspacesInfo {
     const existing = await instance.getItem('workspaces');
 
     return Object.values(existing || {}).sort((a, b) => {
-      if (a.metadata.lastModified || b.metadata.lastModified) {
-        return (b.metadata.lastModified || 0) - (a.metadata.lastModified || 0);
+      if (a.metadata?.lastModified || b.metadata?.lastModified) {
+        return (
+          (b.metadata?.lastModified || 0) - (a.metadata?.lastModified || 0)
+        );
       }
       return getTypeFromUID(a.uid).localeCompare(getTypeFromUID(b.uid));
     });

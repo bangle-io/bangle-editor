@@ -1,43 +1,37 @@
-#bangle-tooltip {
-  background: #333;
-  color: white;
-  font-weight: bold;
-  padding: 4px 8px;
-  font-size: 13px;
-  border-radius: 4px;
+.bangle-tooltip {
   display: none;
 }
 
-#bangle-tooltip[data-show] {
+.bangle-tooltip[data-show] {
   display: block;
 }
 
-#bangle-tooltip-arrow,
-#bangle-tooltip-arrow::before {
+.bangle-tooltip-arrow,
+.bangle-tooltip-arrow::before {
   position: absolute;
   width: 8px;
   height: 8px;
   z-index: -1;
 }
 
-#bangle-tooltip-arrow::before {
+.bangle-tooltip-arrow::before {
   content: '';
   transform: rotate(45deg);
   background: #333;
 }
 
-#bangle-tooltip[data-popper-placement^='top'] > #bangle-tooltip-arrow {
+.bangle-tooltip[data-popper-placement^='top'] > .bangle-tooltip-arrow {
   bottom: -4px;
 }
 
-#bangle-tooltip[data-popper-placement^='bottom'] > #bangle-tooltip-arrow {
+.bangle-tooltip[data-popper-placement^='bottom'] > .bangle-tooltip-arrow {
   top: -4px;
 }
 
-#bangle-tooltip[data-popper-placement^='left'] > #bangle-tooltip-arrow {
+.bangle-tooltip[data-popper-placement^='left'] > .bangle-tooltip-arrow {
   right: -4px;
 }
 
-#bangle-tooltip[data-popper-placement^='right'] > #bangle-tooltip-arrow {
+.bangle-tooltip[data-popper-placement^='right'] > .bangle-tooltip-arrow {
   left: -4px;
 }
