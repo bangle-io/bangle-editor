@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
-    "@popperjs/core": "^2.5.2",
+    "@popperjs/core": "^2.5.3",
     "bangle-core": "workspace:*",
     "markdown-it": "^10.0.0",
     "markdown-it-emoji": "^2.0.0",
@@ -18,11 +18,11 @@
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "^0.9.6",
     "prosemirror-view": "^1.15.7",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "devDependencies": {
-    "@testing-library/react": "^10.4.7",
-    "localforage": "^1.7.3"
+    "@testing-library/react": "^10.4.9",
+    "localforage": "^1.9.0"
   }
 }

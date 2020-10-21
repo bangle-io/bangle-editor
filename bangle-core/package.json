@@ -24,12 +24,12 @@
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "^0.9.6",
     "prosemirror-view": "^1.15.2",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "tiptap-commands": "^1.14.3"
   },
   "devDependencies": {
-    "@testing-library/react": "^11.0.2",
+    "@testing-library/react": "^11.1.0",
     "prettier": "^2.1.1"
   }
 }
