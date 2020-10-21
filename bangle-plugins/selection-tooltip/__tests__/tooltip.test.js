@@ -11,7 +11,7 @@ import {
   renderTestEditor,
 } from 'bangle-core/test-helpers';
 
-import { SelectionTooltip } from '../selection-tooltip';
+import { createTooltipDOM, SelectionTooltip } from '../selection-tooltip';
 import { Heading } from 'bangle-core/nodes/index';
 // due to some unknown issue, the view doesn't have focus
 // when running test which causes tests to fail
@@ -22,7 +22,9 @@ jest.mock('bangle-plugins/helpers/index', () => {
 });
 
 test('Correctly adds tooltip', async () => {
-  const extensions = [new Heading(), new SelectionTooltip()];
+  const { tooltipDOM, tooltipContent } = createTooltipDOM();
+  tooltipContent.textContent = 'hello world';
+  const extensions = [new Heading(), new SelectionTooltip({ tooltipDOM })];
   const testEditor = renderTestEditor({ extensions });
   const { editor } = await testEditor(
     <doc>
@@ -45,17 +47,15 @@ test('Correctly adds tooltip', async () => {
         </p>
       </div>
       <div
+        class="bangle-tooltip"
         data-popper-placement="bottom"
         data-show=""
-        id="bangle-tooltip"
         role="tooltip"
         style="position: absolute; left: 0px; top: 0px; margin: 0px; transform: translate(0px, 0px);"
       >
         <div
-          data-popper-arrow="true"
-          id="bangle-tooltip-arrow"
-        />
-        <div>
+          class="bangle-tooltip-content"
+        >
           hello world
         </div>
       </div>

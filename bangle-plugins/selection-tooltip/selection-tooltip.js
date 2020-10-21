@@ -4,6 +4,9 @@ import { selectionTooltipPlacementPlugin } from './selection-tooltip-placement.p
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
 
+/**
+ * Shows a tooltip when there is a selection
+ */
 export class SelectionTooltip extends Extension {
   get name() {
     return 'tooltip';
@@ -11,8 +14,9 @@ export class SelectionTooltip extends Extension {
 
   get defaultOptions() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const { tooltipDOM, tooltipContent } = createTooltipDOM();
     return {
-      tooltipDOM: createTooltipDOM(),
+      tooltipDOM: tooltipDOM,
       defaultTooltipStatePmPlugin: true,
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement;
@@ -39,16 +43,12 @@ export class SelectionTooltip extends Extension {
   }
 }
 
-export function createTooltipDOM() {
-  const tooltip = document.createElement('div');
-  tooltip.id = 'bangle-tooltip';
-  tooltip.setAttribute('role', 'tooltip');
-  const tooltipArrow = document.createElement('div');
-  tooltipArrow.id = 'bangle-tooltip-arrow';
-  tooltipArrow.setAttribute('data-popper-arrow', true);
-  tooltip.appendChild(tooltipArrow);
+export function createTooltipDOM(className = 'bangle-tooltip') {
+  const tooltipDOM = document.createElement('div');
+  tooltipDOM.className = className;
+  tooltipDOM.setAttribute('role', 'tooltip');
   const tooltipContent = document.createElement('div');
-  tooltipContent.textContent = 'hello world';
-  tooltip.appendChild(tooltipContent);
-  return tooltip;
+  tooltipContent.className = className + '-content';
+  tooltipDOM.appendChild(tooltipContent);
+  return { tooltipDOM, tooltipContent };
 }
