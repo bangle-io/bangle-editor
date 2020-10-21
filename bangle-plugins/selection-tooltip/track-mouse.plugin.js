@@ -7,7 +7,11 @@ let log = LOG
   ? console.log.bind(console, 'plugins/tooltip-show-hide')
   : () => {};
 
-export function trackMousePlugin({ tooltipPlacementKey, tooltipDOM }) {
+export function trackMousePlugin({
+  tooltipPlacementKey,
+  tooltipDOM,
+  shouldShow = (state) => !state.selection.empty,
+}) {
   const plugin = new Plugin({
     view: (view) => {
       return new TooltipView(view);
@@ -85,18 +89,16 @@ export function trackMousePlugin({ tooltipPlacementKey, tooltipDOM }) {
         return;
       }
 
-      if (state.selection.empty) {
-        log('hiding selection empty');
-        this._hide();
-        return;
-      }
-
       if (this._mouseDownState.isDown) {
         log('hiding mouse down');
         this._hide();
       } else {
         log('showing mouse up');
-        this._show();
+        if (shouldShow(state)) {
+          this._show();
+        } else {
+          this._hide();
+        }
       }
     }
 

@@ -3,6 +3,7 @@ import offset from '@popperjs/core/lib/modifiers/offset';
 import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
 import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
+import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
 import { Plugin, PluginKey } from 'prosemirror-state';
 
 const LOG = false;
@@ -16,6 +17,8 @@ let log = LOG
  * however any {show:true} dispatches will generate a new state object for easier reference checks. In a way
  * the state ref can be used to see if the position of tooltip has updated.
  *
+ * To show a tooltip appendChild a div element to tooltipDOM with [data-popper-arrow] attribute
+ *
  * @param {Object} options - The shape is the same as SpecialType above
  * @param {string} options.pluginName
  * @param {Element} options.tooltipDOM
@@ -28,7 +31,6 @@ let log = LOG
  * @param {(view: any) => Array} options.customModifiers
  * @param {(state: any) => Boolean} options.getInitialShowState
  * @param {Array} options.fallbackPlacement
- * @param {Boolean} options.showTooltipArrow
  */
 export function tooltipPlacementPlugin({
   pluginName = 'tooltipPlacementPlugin',
@@ -42,7 +44,6 @@ export function tooltipPlacementPlugin({
   customModifiers,
   fallbackPlacements = ['bottom', 'top'],
   getInitialShowState = (state) => false,
-  showTooltipArrow = false,
 }) {
   const key = new PluginKey(pluginName);
 
@@ -136,40 +137,59 @@ export function tooltipPlacementPlugin({
         return;
       }
 
+      const showTooltipArrow = this._tooltip.querySelector(
+        '[data-popper-arrow]',
+      );
+      const defaultModifiers = [
+        offset,
+        preventOverflow,
+        flip,
+        {
+          name: 'offset',
+          options: {
+            offset: (popperState) => {
+              return tooltipOffset(view, popperState);
+            },
+          },
+        },
+        {
+          name: 'flip',
+          options: {
+            fallbackPlacements,
+            padding: 10,
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            boundary: this._scrollContainerDOM,
+          },
+        },
+        popperOffsets,
+        showTooltipArrow ? arrow : undefined,
+        showTooltipArrow
+          ? {
+              name: 'arrow',
+              options: {
+                element: showTooltipArrow,
+              },
+            }
+          : undefined,
+      ].filter(Boolean);
+
       this._popperInstance = createPopper(
         getReferenceElement(view, this._tooltip, this._scrollContainerDOM),
         this._tooltip,
         {
           placement,
           modifiers: customModifiers
-            ? customModifiers(view, this._tooltip, this._scrollContainerDOM)
-            : [
-                offset,
-                preventOverflow,
-                flip,
-                showTooltipArrow && arrow,
-                {
-                  name: 'offset',
-                  options: {
-                    offset: (popperState) => {
-                      return tooltipOffset(view, popperState);
-                    },
-                  },
-                },
-                {
-                  name: 'flip',
-                  options: {
-                    fallbackPlacements,
-                    padding: 10,
-                  },
-                },
-                {
-                  name: 'preventOverflow',
-                  options: {
-                    boundary: this._scrollContainerDOM,
-                  },
-                },
-              ].filter(Boolean),
+            ? customModifiers(
+                view,
+                this._tooltip,
+                this._scrollContainerDOM,
+                defaultModifiers,
+              )
+            : defaultModifiers,
         },
       );
 

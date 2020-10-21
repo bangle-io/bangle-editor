@@ -2,6 +2,11 @@
   display: none;
 }
 
+.bangle-tooltip .bangle-tooltip-content {
+  color: white;
+  padding: 2px 4px;
+}
+
 .bangle-tooltip[data-show] {
   display: block;
 }

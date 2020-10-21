@@ -10,8 +10,10 @@ export function selectionTooltipPlacementPlugin({
   tooltipDOM,
   getScrollContainerDOM,
   pluginName = 'selectionTooltipPlacementPlugin',
+  ...opts
 }) {
   const { plugin, key } = tooltipPlacementPlugin({
+    ...opts,
     pluginName,
     tooltipOffset,
     tooltipDOM,

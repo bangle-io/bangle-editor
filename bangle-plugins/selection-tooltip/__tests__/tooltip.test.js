@@ -47,7 +47,7 @@ test('Correctly adds tooltip', async () => {
         </p>
       </div>
       <div
-        class="bangle-tooltip"
+        class="bangle-tooltip bangle-selection-tooltip"
         data-popper-placement="bottom"
         data-show=""
         role="tooltip"

@@ -24,6 +24,7 @@ import { inlineMenu } from './inline-menu/inline-menu';
 import { InlineSuggest } from 'bangle-plugins/inline-suggest/index';
 import { Emoji, EmojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
+import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
 
 import './extensions-override.css';
 
@@ -79,7 +80,6 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
             return tooltipContent;
           },
         }),
-
     new InlineSuggest({
       trigger: '/',
       getScrollContainerDOM: (view) => {
