@@ -1,4 +1,4 @@
-#bangle-inline-menu {
+/* #bangle-inline-menu {
   color: white;
   display: none;
 }
@@ -39,4 +39,4 @@
 #bangle-inline-menu[data-popper-placement^='right']
   > #bangle-inline-menu-tooltip-arrow {
   left: -4px;
-}
+} */

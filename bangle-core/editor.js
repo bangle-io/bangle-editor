@@ -19,7 +19,7 @@ import { CustomNodeView } from './helper-react/custom-node-view';
 import {
   getMarkAttrs,
   findChangedNodesFromTransaction,
-  isMarkActive,
+  isMarkActiveInSelection,
   nodeIsActive,
 } from './utils/pm-utils';
 import { hasOwnProperty } from './utils/js-utils';
@@ -489,7 +489,7 @@ export class Editor extends Emitter {
     this.activeMarks = Object.fromEntries(
       Object.entries(this.schema.marks).map(([name, mark]) => [
         name,
-        (attrs = {}) => isMarkActive(this.state, mark),
+        (attrs = {}) => isMarkActiveInSelection(this.state, mark),
       ]),
     );
 

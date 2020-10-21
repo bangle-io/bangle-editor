@@ -1,0 +1,12 @@
+.bangle-inline-suggest-emoji {
+  background-color: var(--bg-stronger-color);
+  color: var(--font-color);
+}
+
+.bangle-inline-suggest-emoji > div[data-is-selected='true'] {
+  background-color: var(--accent-color);
+}
+
+.bangle-inline-suggest-emoji > div:hover {
+  background-color: var(--accent-color);
+}

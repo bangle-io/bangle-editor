@@ -2,7 +2,7 @@ import { extensions } from '../app/editor/extensions';
 import * as markdown from 'bangle-plugins/markdown/index';
 import { getSchema } from 'bangle-play/app/editor/utils';
 import { defaultMarkdownItTokenizer } from 'bangle-plugins/markdown/index';
-import { emojiMarkdownItPlugin } from 'bangle-plugins/emoji/emoji-markdown-it-plugin';
+import { emojiMarkdownItPlugin } from 'bangle-plugins/emoji/index';
 
 // TODO this is ugly read up about the static extensions though piece
 const exts = extensions();

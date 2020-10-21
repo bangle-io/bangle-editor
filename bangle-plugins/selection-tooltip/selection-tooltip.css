@@ -1,0 +1,6 @@
+@import '../tooltip-placement/tooltip.css';
+
+.bangle-selection-tooltip {
+  background-color: #333;
+  border-radius: 4px;
+}

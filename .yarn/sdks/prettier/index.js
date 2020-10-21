@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const { existsSync } = require(`fs`);
-const { createRequire, createRequireFromPath } = require(`module`);
-const { resolve } = require(`path`);
+const {existsSync} = require(`fs`);
+const {createRequire, createRequireFromPath} = require(`module`);
+const {resolve, dirname} = require(`path`);
 
-const relPnpApiPath = '../../../.pnp.js';
+const relPnpApiPath = "../../../.pnp.js";
 
 const absPnpApiPath = resolve(__dirname, relPnpApiPath);
 const absRequire = (createRequire || createRequireFromPath)(absPnpApiPath);

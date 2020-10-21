@@ -15,8 +15,14 @@
 }
 
 #root {
-  background-color: var(--bg-color);
   color: var(--font-color);
+}
+
+.editor-wrapper {
+  /** Keeping element relative allows for hiding of absolutely position children*/
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-color);
 }
 
 @media screen and (max-width: 640px) {

@@ -7,7 +7,11 @@ let log = LOG
   ? console.log.bind(console, 'plugins/tooltip-show-hide')
   : () => {};
 
-export function tooltipShowHidePlugin({ tooltipPlacementKey, tooltipDOM }) {
+export function trackMousePlugin({
+  tooltipPlacementKey,
+  tooltipDOM,
+  shouldShow = (state) => !state.selection.empty,
+}) {
   const plugin = new Plugin({
     view: (view) => {
       return new TooltipView(view);
@@ -48,6 +52,7 @@ export function tooltipShowHidePlugin({ tooltipPlacementKey, tooltipDOM }) {
         }
       };
 
+      // TODO move these to use {once: true} option of addEventListener
       document.addEventListener('click', onClickOutside);
 
       this._destroyWatchClickOutside = () => {
@@ -61,6 +66,7 @@ export function tooltipShowHidePlugin({ tooltipPlacementKey, tooltipDOM }) {
     _show() {
       // in case of show we want to trigger it everytime
       // so that the placement plugin can update the placement
+      log('show');
       this._watchClickOutside();
       this._dispatchState({
         show: true,
@@ -83,18 +89,16 @@ export function tooltipShowHidePlugin({ tooltipPlacementKey, tooltipDOM }) {
         return;
       }
 
-      if (state.selection.empty) {
-        log('hiding selection empty');
-        this._hide();
-        return;
-      }
-
       if (this._mouseDownState.isDown) {
         log('hiding mouse down');
         this._hide();
       } else {
         log('showing mouse up');
-        this._show();
+        if (shouldShow(state)) {
+          this._show();
+        } else {
+          this._hide();
+        }
       }
     }
 

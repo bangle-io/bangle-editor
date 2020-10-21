@@ -12,12 +12,25 @@ export function SideBarRow({
   paddingLeft = BASE_PADDING,
   children,
   className,
+  scrollIntoViewIfNeeded = true,
   style = {},
 }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (scrollIntoViewIfNeeded && isActive) {
+      if ('scrollIntoViewIfNeeded' in document.body) {
+        ref.current.scrollIntoViewIfNeeded(false);
+      } else {
+        ref.current.scrollIntoView(false);
+      }
+    }
+  }, [scrollIntoViewIfNeeded, isActive]);
   return (
     <>
       <div
         onClick={onClick}
+        ref={ref}
         className={`flex side-bar-row flex-row items-center cursor-pointer ${className} ${
           isActive ? `active` : ''
         }`}

@@ -2465,13 +2465,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@popperjs/core", [
-        ["npm:2.4.4", {
-          "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.4.4-02cf65f71c-49a1e6cfa2.zip/node_modules/@popperjs/core/",
-          "packageDependencies": [
-            ["@popperjs/core", "npm:2.4.4"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:2.5.3", {
           "packageLocation": "./.yarn/cache/@popperjs-core-npm-2.5.3-afbfea9585-53a693e058.zip/node_modules/@popperjs/core/",
           "packageDependencies": [
@@ -4271,16 +4264,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./bangle-plugins/",
           "packageDependencies": [
             ["bangle-plugins", "workspace:bangle-plugins"],
-            ["@popperjs/core", "npm:2.4.4"],
+            ["@popperjs/core", "npm:2.5.3"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["bangle-core", "workspace:bangle-core"],
             ["localforage", "npm:1.9.0"],
             ["markdown-it", "npm:10.0.0"],
             ["markdown-it-emoji", "npm:2.0.0"],
             ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-commands", "npm:1.1.4"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-markdown", "npm:1.5.0"],
+            ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.2.7"],
+            ["prosemirror-utils", "virtual:96ab9f315276b2095a7f4758fa4cbc386aa507a5076290c7e480ef8352778a8bda6091eeda739fd1a78969893e46737dc8780f290c044b4f7e3adb65e8506f0e#npm:0.9.6"],
+            ["prosemirror-view", "npm:1.15.2"],
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:16.13.1"]
           ],
@@ -12758,6 +12757,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.1.2-041d7c0ebf-e9c5ac2e9b.zip/node_modules/prosemirror-inputrules/",
           "packageDependencies": [
             ["prosemirror-inputrules", "npm:1.1.2"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-transform", "npm:1.2.7"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:1.1.3", {
+          "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.1.3-1006d2d553-fddaf86ae4.zip/node_modules/prosemirror-inputrules/",
+          "packageDependencies": [
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-transform", "npm:1.2.7"]
           ],
