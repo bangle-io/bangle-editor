@@ -14,7 +14,9 @@ export class SelectionTooltip extends Extension {
 
   get defaultOptions() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    const { tooltipDOM, tooltipContent } = createTooltipDOM();
+    const showTooltipArrow = true;
+    const { tooltipDOM, tooltipContent } = createTooltipDOM(showTooltipArrow);
+    tooltipContent.innerText = 'Hello I am a beautiful tooltip';
     return {
       tooltipDOM: tooltipDOM,
       defaultTooltipStatePmPlugin: true,
@@ -24,6 +26,7 @@ export class SelectionTooltip extends Extension {
       tooltipOffset: (view) => {
         return [0, 0.5 * rem];
       },
+      showTooltipArrow: showTooltipArrow,
     };
   }
 
@@ -32,6 +35,7 @@ export class SelectionTooltip extends Extension {
       tooltipOffset: this.options.tooltipOffset,
       tooltipDOM: this.options.tooltipDOM,
       getScrollContainerDOM: this.options.getScrollContainerDOM,
+      showTooltipArrow: this.options.showTooltipArrow,
     });
     return [
       plugin,
@@ -43,12 +47,19 @@ export class SelectionTooltip extends Extension {
   }
 }
 
-export function createTooltipDOM(className = 'bangle-tooltip') {
+export function createTooltipDOM(arrow = false) {
   const tooltipDOM = document.createElement('div');
-  tooltipDOM.className = className;
+  tooltipDOM.className = 'bangle-tooltip bangle-selection-tooltip';
   tooltipDOM.setAttribute('role', 'tooltip');
+
   const tooltipContent = document.createElement('div');
-  tooltipContent.className = className + '-content';
+  tooltipContent.className = 'bangle-tooltip-content';
   tooltipDOM.appendChild(tooltipContent);
+  if (arrow) {
+    const arrowDOM = document.createElement('div');
+    arrowDOM.className = 'bangle-tooltip-arrow';
+    arrowDOM.setAttribute('data-popper-arrow', '');
+    tooltipDOM.appendChild(arrowDOM);
+  }
   return { tooltipDOM, tooltipContent };
 }
