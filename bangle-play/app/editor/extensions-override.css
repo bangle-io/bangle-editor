@@ -8,5 +8,5 @@
 }
 
 .bangle-inline-suggest-emoji > div:hover {
-  background-color: var(--accent-2-color);
+  background-color: var(--accent-color);
 }

@@ -30,28 +30,13 @@ export function selectionTooltipPlacementPlugin({
   return { plugin, key };
 }
 
-export function selectionVirtualElement(view, tooltipDOM, scrollContainerDOM) {
-  const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
+export function selectionVirtualElement(view) {
   return {
     getBoundingClientRect: () => {
       let { head } = view.state.selection;
 
       const start = view.coordsAtPos(head);
       let { top, bottom, left, right } = start;
-      const scrollContainersRect = scrollContainerDOM.getBoundingClientRect();
-
-      // if we bleed outside the scroll container, pull it back
-      // so its inside
-      if (scrollContainersRect.bottom - bottom < 0) {
-        const tooltipRect = tooltipDOM.getBoundingClientRect();
-        // added 1 rem to offset the fact that it will be dealt tooltipOffset
-        // which adds an offset pushing the tooltip to go out of viewport
-        let height = tooltipRect.height + 1 * rem;
-        top = scrollContainersRect.bottom - 2 * height;
-        bottom = scrollContainersRect.bottom - 1 * height;
-        right = left;
-      }
 
       return {
         width: right - left,
