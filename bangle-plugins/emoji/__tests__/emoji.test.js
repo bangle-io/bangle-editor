@@ -128,3 +128,5 @@ describe('markdown', () => {
     );
   });
 });
+
+test.todo('Emoji inline suggestion');

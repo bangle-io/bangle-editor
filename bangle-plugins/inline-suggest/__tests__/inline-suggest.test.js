@@ -36,7 +36,7 @@ const triggerMarkSlash = (content) => (
 describe('inline suggest basic show and hide', () => {
   let suggestionExtension, testEditor;
   const getTooltipState = (state) => {
-    return suggestionExtension.getTooltipPluginKey().getState(state);
+    return suggestionExtension.getTooltipPlugin().getState(state);
   };
 
   beforeEach(async () => {
@@ -118,10 +118,10 @@ describe('inline suggest basic show and hide', () => {
   ])('Case %# different parent block', async (input) => {
     const { editor } = await testEditor(input);
 
-    expect(suggestionExtension.isActive(editor.state)).toBe(false);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(false);
     typeChar(editor.view, '/');
     typeText(editor.view, 'check');
-    expect(suggestionExtension.isActive(editor.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(true);
     expect(suggestionExtension.getQueryText(editor.state)).toBe('check');
     expect(editor.state.doc.toString()).toMatchSnapshot();
 
@@ -168,11 +168,11 @@ describe('inline suggest basic show and hide', () => {
       </doc>,
     );
 
-    expect(suggestionExtension.isActive(editor.state)).toBe(false);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(false);
 
     typeChar(editor.view, '/');
     typeText(editor.view, 'check');
-    expect(suggestionExtension.isActive(editor.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(true);
     expect(suggestionExtension.getQueryText(editor.state)).toBe('check');
 
     expect(editor.state).toEqualDocAndSelection(
@@ -235,7 +235,7 @@ describe('inline suggest basic show and hide', () => {
     expect(getTooltipState(editor.state)).toEqual({
       show: true,
     });
-    expect(suggestionExtension.isActive(editor.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(true);
   });
 
   test('Selection going to other location hides the tooltip', async () => {
@@ -263,7 +263,7 @@ describe('inline suggest basic show and hide', () => {
     expect(getTooltipState(editor.state)).toEqual({
       show: true,
     });
-    expect(suggestionExtension.isActive(editor.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(true);
   });
 
   test('Query at end of document', async () => {
@@ -286,14 +286,14 @@ describe('inline suggest basic show and hide', () => {
     typeChar(editor.view, '/');
     typeText(editor.view, 'second');
 
-    expect(suggestionExtension.isActive(view.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
     expect(suggestionExtension.getQueryText(view.state)).toBe('second');
 
     let tr = view.state.tr;
 
     // Inside the mark
     editor.view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(7))));
-    expect(suggestionExtension.isActive(view.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
     expect(suggestionExtension.getQueryText(view.state)).toBe('first');
   });
 
@@ -310,8 +310,57 @@ describe('inline suggest basic show and hide', () => {
     typeText(editor.view, longText);
 
     const view = editor.view;
-    expect(suggestionExtension.isActive(view.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
     expect(suggestionExtension.getQueryText(view.state)).toBe(longText);
+  });
+
+  test('Typing query slowly', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <para>[] hello</para>
+      </doc>,
+    );
+
+    typeChar(editor.view, '/');
+    typeText(editor.view, 'c');
+    typeText(editor.view, 'h');
+    typeText(editor.view, 'e');
+    typeText(editor.view, 'c');
+    typeText(editor.view, 'k');
+
+    const view = editor.view;
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
+    expect(suggestionExtension.getQueryText(view.state)).toBe('check');
+  });
+
+  test.skip('When forward deleting the mark the tooltip hides', async () => {
+    const { editor } = await testEditor(
+      <doc>
+        <para>hello[]</para>
+      </doc>,
+    );
+
+    const { view } = editor;
+    // typeChar(view, '/');
+    // typeText(view, 'check');
+    // expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
+
+    // view.dispatch(view.state.tr.delete(1, 2));
+
+    // editor.view.dispatch(
+    //   view.state.tr.setSelection(Selection.atStart(view.state.doc)),
+    // );
+
+    sendKeyToPm(view, 'Z');
+    // sendKeyToPm(view, 'Backspace');
+    // sendKeyToPm(view, 'Backspace');
+
+    expect(editor.state).toEqualDocAndSelection(
+      <doc>
+        <para>hello</para>
+      </doc>,
+    );
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
   });
 });
 
@@ -328,8 +377,8 @@ describe('keybindings test', () => {
     // Use another key to mimic enter behaviour for example, Tab for entering
     alternateEnterKeyName: undefined,
 
-    onUpdate: jest.fn(() => true),
-    onDestroy: jest.fn(() => true),
+    onUpdateTooltip: jest.fn(() => true),
+    onHideTooltip: jest.fn(() => true),
     onEnter: jest.fn(() => true),
     onArrowDown: jest.fn(() => true),
     onArrowUp: jest.fn(() => true),
@@ -363,7 +412,7 @@ describe('keybindings test', () => {
     const view = editor.view;
     typeChar(view, '/');
     typeText(view, 'check');
-    expect(suggestionExtension.isActive(view.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
     expect(suggestionExtension.getQueryText(editor.state)).toBe('check');
 
     expect(editor.state).toEqualDocAndSelection(
@@ -372,9 +421,9 @@ describe('keybindings test', () => {
       </doc>,
     );
     // since it is called many times
-    expect(opts.onUpdate).toBeCalled();
-    expect(opts.onDestroy).toBeCalledTimes(0);
-    expect(suggestionExtension.isActive(editor.state)).toBe(true);
+    expect(opts.onUpdateTooltip).toBeCalled();
+    expect(opts.onHideTooltip).toBeCalledTimes(0);
+    expect(suggestionExtension.isTooltipActive(editor.state)).toBe(true);
 
     sendKeyToPm(view, 'Escape');
     expect(opts.onEscape).toBeCalledTimes(1);
@@ -385,12 +434,16 @@ describe('keybindings test', () => {
     sendKeyToPm(view, 'ArrowDown');
     expect(opts.onArrowDown).toBeCalledTimes(1);
 
-    expect(suggestionExtension.isActive(view.state)).toBe(true);
+    expect(suggestionExtension.isTooltipActive(view.state)).toBe(true);
     expect(suggestionExtension.getQueryText(editor.state)).toBe('check');
 
     // Outside the mark
     view.dispatch(view.state.tr.setSelection(Selection.atEnd(view.state.doc)));
     // TODO for some mysterious reason this is called twice with the same state
-    expect(opts.onDestroy).toBeCalledTimes(2);
+    expect(opts.onHideTooltip).toBeCalledTimes(1);
   });
 });
+
+test.todo(
+  'Check with differen trigger inline-suggest and that they dont interfere with each other',
+);

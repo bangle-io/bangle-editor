@@ -19,16 +19,16 @@ let log = LOG
  *
  * To show a tooltip appendChild a div element to tooltipDOM with [data-popper-arrow] attribute
  *
- * @param {Object} options - The shape is the same as SpecialType above
+ * @param {Object} options
  * @param {string} options.pluginName
  * @param {Element} options.tooltipDOM
  * @param {(view: any) => Element} options.getScrollContainerDOM
  * @param {(view: any, tooltipDOM: Element, scrollContainerDOM: Element) => {getBoundingClientRect: Function}} options.getReferenceElement
  * @param {string} options.placement
- * @param {(view: any, popperState: any) => [number, number]} options.tooltipOffset
- * @param {(view: any, popperInstance: any) => void} options.onShowTooltip
- * @param {(view: any) => void} options.onHideTooltip
- * @param {(view: any) => Array} options.customModifiers
+ * @param {(state: any, dispatch: any, view) => [number, number]} options.tooltipOffset
+ * @param {(state: any, dispatch: any, view) => void} options.onUpdateTooltip - Called whenever tooltip is updated, will also be called when tooltip mounts for the first time
+ * @param {(state: any, dispatch: any, view)  => void} options.onHideTooltip
+ * @param {(view: any) => Array} options.customPopperModifiers
  * @param {(state: any) => Boolean} options.getInitialShowState
  * @param {Array} options.fallbackPlacement
  */
@@ -39,13 +39,14 @@ export function tooltipPlacementPlugin({
   getReferenceElement,
   placement = 'top',
   tooltipOffset,
-  onShowTooltip = (view, popperInstance) => {},
-  onHideTooltip = (view) => {},
-  customModifiers,
+  onUpdateTooltip = (state, dispatch, view) => {},
+  onHideTooltip = (state, dispatch, view) => {},
+  customPopperModifiers,
   fallbackPlacements = ['bottom', 'top'],
   getInitialShowState = (state) => false,
 }) {
   const key = new PluginKey(pluginName);
+  tooltipDOM.setAttribute('data-tooltip-name', pluginName);
 
   const plugin = new Plugin({
     key: key,
@@ -75,6 +76,8 @@ export function tooltipPlacementPlugin({
   });
 
   class TooltipPlacementView {
+    popperInstance = null;
+
     constructor(view) {
       this._view = view;
       this._tooltip = tooltipDOM;
@@ -95,22 +98,21 @@ export function tooltipPlacementPlugin({
       if (pluginState === key.getState(prevState)) {
         return;
       }
-      log('received ', pluginState.show);
       if (pluginState.show) {
+        log('calling updatetoolip ');
+
+        onUpdateTooltip.call(this, view.state, view.dispatch, view);
         this._showTooltip();
       } else {
+        log('calling hidetooltip');
         this._hideTooltip();
       }
     }
 
     destroy() {
-      if (this._showHideTooltip) {
-        this._showHideTooltip.destroy();
-        this._showHideTooltip = null;
-      }
-      if (this._popperInstance) {
-        this._popperInstance.destroy();
-        this._popperInstance = null;
+      if (this.popperInstance) {
+        this.popperInstance.destroy();
+        this.popperInstance = null;
       }
 
       this._view.dom.parentNode.removeChild(this._tooltip);
@@ -118,22 +120,27 @@ export function tooltipPlacementPlugin({
 
     _hideTooltip = () => {
       log('hiding');
-      if (this._popperInstance) {
+      if (this.popperInstance) {
         this._tooltip.removeAttribute('data-show');
-        this._popperInstance.destroy();
-        this._popperInstance = null;
-        onHideTooltip(this._view);
+        this.popperInstance.destroy();
+        this.popperInstance = null;
+        onHideTooltip.call(
+          this,
+          this._view.state,
+          this._view.dispatch,
+          this._view,
+        );
       }
     };
 
     _showTooltip = () => {
       this._tooltip.setAttribute('data-show', '');
       this._createPopperInstance(this._view);
-      this._popperInstance.update();
+      this.popperInstance.update();
     };
 
     _createPopperInstance(view) {
-      if (this._popperInstance) {
+      if (this.popperInstance) {
         return;
       }
 
@@ -148,7 +155,7 @@ export function tooltipPlacementPlugin({
           name: 'offset',
           options: {
             offset: (popperState) => {
-              return tooltipOffset(view, popperState);
+              return tooltipOffset(popperState);
             },
           },
         },
@@ -177,13 +184,13 @@ export function tooltipPlacementPlugin({
           : undefined,
       ].filter(Boolean);
 
-      this._popperInstance = createPopper(
+      this.popperInstance = createPopper(
         getReferenceElement(view, this._tooltip, this._scrollContainerDOM),
         this._tooltip,
         {
           placement,
-          modifiers: customModifiers
-            ? customModifiers(
+          modifiers: customPopperModifiers
+            ? customPopperModifiers(
                 view,
                 this._tooltip,
                 this._scrollContainerDOM,
@@ -193,9 +200,9 @@ export function tooltipPlacementPlugin({
         },
       );
 
-      onShowTooltip(view, this._popperInstance);
+      onUpdateTooltip.call(this, view.state, view.dispatch, view);
     }
   }
 
-  return { plugin, key: key };
+  return plugin;
 }

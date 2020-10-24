@@ -1,6 +1,6 @@
 import { Extension } from 'bangle-core/extensions/index';
-import { trackMousePlugin } from './track-mouse.plugin';
-import { selectionTooltipPlacementPlugin } from './selection-tooltip-placement.plugin';
+import { trackMousePlugin } from './track-mouse-plugin';
+import { tooltipPlacementPlugin } from 'bangle-plugins/tooltip-placement/index';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
 
@@ -9,7 +9,7 @@ let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
  */
 export class SelectionTooltip extends Extension {
   get name() {
-    return 'tooltip';
+    return 'selection_tooltip';
   }
 
   get defaultOptions() {
@@ -18,30 +18,44 @@ export class SelectionTooltip extends Extension {
     const { tooltipDOM, tooltipContent } = createTooltipDOM(showTooltipArrow);
     tooltipContent.innerText = 'Hello I am a beautiful tooltip';
     return {
+      tooltipName: 'selection',
       tooltipDOM: tooltipDOM,
-      defaultTooltipStatePmPlugin: true,
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement;
       },
-      tooltipOffset: (view) => {
+      tooltipOffset: () => {
         return [0, 0.5 * rem];
       },
       showTooltipArrow: showTooltipArrow,
+      getReferenceElement: getSelectionReferenceElement,
+      shouldShowTooltip: (state) => !state.selection.empty,
+      getInitialShowState: (state) => false,
+      onHideTooltip: () => {},
+      onUpdateTooltip: () => {},
+      placement: undefined,
     };
   }
 
   get plugins() {
-    const { plugin, key } = selectionTooltipPlacementPlugin({
-      tooltipOffset: this.options.tooltipOffset,
-      tooltipDOM: this.options.tooltipDOM,
-      getScrollContainerDOM: this.options.getScrollContainerDOM,
-      showTooltipArrow: this.options.showTooltipArrow,
+    const options = this.options;
+    const plugin = tooltipPlacementPlugin({
+      pluginName: this.options.tooltipName,
+      tooltipOffset: options.tooltipOffset,
+      tooltipDOM: options.tooltipDOM,
+      getScrollContainerDOM: options.getScrollContainerDOM,
+      getReferenceElement: options.getReferenceElement,
+      onUpdateTooltip: options.onUpdateTooltip,
+      getInitialShowState: options.getInitialShowState,
+      onHideTooltip: options.onHideTooltip,
+      placement: options.placement,
     });
+
     return [
       plugin,
       trackMousePlugin({
-        tooltipPlacementKey: key,
         tooltipDOM: this.options.tooltipDOM,
+        tooltipPlugin: plugin,
+        shouldShowTooltip: this.options.shouldShowTooltip,
       }).plugin,
     ];
   }
@@ -62,4 +76,24 @@ export function createTooltipDOM(arrow = false) {
     tooltipDOM.appendChild(arrowDOM);
   }
   return { tooltipDOM, tooltipContent };
+}
+
+function getSelectionReferenceElement(view) {
+  return {
+    getBoundingClientRect: () => {
+      let { head } = view.state.selection;
+
+      const start = view.coordsAtPos(head);
+      let { top, bottom, left, right } = start;
+
+      return {
+        width: right - left,
+        height: bottom - top,
+        top: top,
+        right: right,
+        bottom: bottom,
+        left: left,
+      };
+    },
+  };
 }

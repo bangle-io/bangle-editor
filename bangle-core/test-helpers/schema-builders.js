@@ -21,13 +21,15 @@ const nodeAlias = {
 };
 const markAlias = {};
 
+const SELECT_END = ']';
+const SELECT_START = '[';
 const labelTypes = {
   // Empty Selection
   '[]': /\[\]/,
   // Selection anchor
-  '[': /\[(?!\])/,
+  [SELECT_START]: /\[(?!\])/,
   // Selection head
-  ']': /(?<!\[)\]/,
+  [SELECT_END]: /(?<!\[)\]/,
 };
 
 const nodeLabelPosMap = new WeakMap();
@@ -182,10 +184,19 @@ function matchLabel(text) {
       text: ranges
         .filter((r) => !r.match)
         .reduce((prev, cur) => prev + cur.subString, ''),
-      labels: matches.reduce(
-        (prev, r) => safeMergeObject(prev, { [r.subString]: r.start }),
-        {},
-      ),
+      labels: matches.reduce((prev, r) => {
+        let pos = r.start;
+        // Reduce selection end position by 1
+        // since all of the positions after SELECT_START are off by 1
+        // as `[` takes 1 space.
+        if (
+          r.subString === SELECT_END &&
+          matches.some((m) => m.subString === SELECT_START)
+        ) {
+          pos = pos - 1;
+        }
+        return safeMergeObject(prev, { [r.subString]: pos });
+      }, {}),
     };
   };
 
