@@ -1,16 +1,9 @@
 import './inline-menu.css';
-import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
+import { InlineMenu } from 'bangle-plugins/inline-menu/index';
 
-export function inlineMenu(tooltipDOM) {
-  const tooltipContent = document.createElement('div');
-  tooltipDOM.className = 'bangle-inline-menu bangle-tooltip';
-  tooltipDOM.setAttribute('role', 'tooltip');
-  const tooltipArrow = document.createElement('div');
-  tooltipDOM.appendChild(tooltipArrow);
-  tooltipDOM.appendChild(tooltipContent);
-
-  return new SelectionTooltip({
-    tooltipDOM,
+export function inlineMenu(menuDOM) {
+  return InlineMenu({
+    menuDOM,
     getScrollContainerDOM: (view) => {
       return view.dom.parentElement.parentElement;
     },

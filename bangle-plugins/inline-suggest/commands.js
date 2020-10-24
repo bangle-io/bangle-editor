@@ -4,42 +4,9 @@ import { Fragment, Node } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
 
-export const hideTooltipCommand = (tooltipKey) => {
+export function removeTypeAheadMarkCmd(markType) {
   return (state, dispatch) => {
-    const tooltipState = tooltipKey.getState(state);
-    if (tooltipState.show) {
-      if (dispatch) {
-        dispatch(
-          state.tr
-            .setMeta(tooltipKey, { show: false })
-            .setMeta('addToHistory', false),
-        );
-      }
-      return true;
-    }
-    return false;
-  };
-};
-
-export const showTooltipCommand = (tooltipKey) => {
-  return (state, dispatch) => {
-    if (dispatch) {
-      dispatch(
-        state.tr
-          .setMeta(tooltipKey, { show: true })
-          .setMeta('addToHistory', false),
-      );
-    }
-    return true;
-  };
-};
-
-export function removeTypeAheadMarkCmd(markName) {
-  return (state, dispatch) => {
-    const { schema } = state;
     const { from, to } = state.selection;
-
-    const markType = schema.marks[markName];
 
     const queryMark = findFirstMarkPosition(markType, state.doc, from - 1, to);
 

@@ -28,7 +28,7 @@ export class Editor extends React.PureComponent {
     devtools: this.devtools,
     extensions: [
       ...extensions({
-        inlineMenuDOM: this.inlineMenuDOM,
+        inlineMenuComponent: this.inlineMenuDOM,
         collabOpts: {
           docName: this.props.docName,
           manager: this.props.manager,

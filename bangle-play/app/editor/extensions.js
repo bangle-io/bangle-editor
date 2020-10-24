@@ -1,6 +1,13 @@
 import Dinos from 'bangle-plugins/dinos';
 import { History } from 'bangle-core/extensions';
-import { Bold, Code, Italic, Link, Strike, Underline } from 'bangle-core/marks';
+import {
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+} from 'bangle-core/marks/index';
 import {
   Blockquote,
   BulletList,
@@ -27,11 +34,13 @@ import 'bangle-plugins/emoji/emoji.css';
 import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
 
 import './extensions-override.css';
+import { InlineMarkMenu } from 'bangle-plugins/inline-menu/index';
 
 // TODO Taking inputs liek this is not ideal, the extension
 // list should be static, so that anyone can import them and get static values
-export function extensions({ collabOpts, inlineMenuDOM } = {}) {
+export function extensions({ collabOpts, inlineMenuComponent } = {}) {
   return [
+    new Link(),
     new EmojiInlineSuggest({
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement.parentElement;
@@ -40,7 +49,6 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
     new Bold(),
     new Code(),
     new Italic(),
-    new Link(),
     new Strike(),
     new Underline(),
     new Blockquote(),
@@ -62,6 +70,12 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
     new TrailingNode(),
     new StopwatchExtension(),
     new Timestamp(),
+    inlineMenuComponent &&
+      new InlineMarkMenu({
+        getScrollContainerDOM: (view) => {
+          return view.dom.parentElement.parentElement;
+        },
+      }),
     collabOpts &&
       new CollabExtension({
         docName: collabOpts.docName,
@@ -71,15 +85,6 @@ export function extensions({ collabOpts, inlineMenuDOM } = {}) {
           collabOpts.manager.handleRequest(...args).then((resp) => resp.body),
         ),
       }),
-    inlineMenuDOM
-      ? inlineMenu(inlineMenuDOM)
-      : new SelectionTooltip({
-          tooltipContent: (view) => {
-            const tooltipContent = document.createElement('div');
-            tooltipContent.textContent = 'hello world';
-            return tooltipContent;
-          },
-        }),
     new InlineSuggest({
       trigger: '/',
       getScrollContainerDOM: (view) => {

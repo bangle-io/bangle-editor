@@ -56,13 +56,13 @@ export function EmojiInlineSuggest({ getScrollContainerDOM } = {}) {
     tooltipDOM,
     getScrollContainerDOM,
 
-    onDestroy: () => {
+    onHideTooltip: () => {
       reactDOM.unmountComponentAtNode(tooltipContent);
       resetCounter();
       return true;
     },
 
-    onUpdate: (state, dispatch, view) => {
+    onUpdateTooltip: (state, dispatch, view) => {
       return render(state, dispatch, view);
     },
 

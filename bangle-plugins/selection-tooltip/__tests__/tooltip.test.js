@@ -48,10 +48,11 @@ test('Correctly adds tooltip', async () => {
       </div>
       <div
         class="bangle-tooltip bangle-selection-tooltip"
-        data-popper-placement="bottom"
+        data-popper-placement="top"
         data-show=""
+        data-tooltip-name="selection"
         role="tooltip"
-        style="position: absolute; left: 0px; top: 0px; margin: 0px; transform: translate(0px, 0px);"
+        style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 0px);"
       >
         <div
           class="bangle-tooltip-content"

@@ -9,8 +9,13 @@
 }
 
 .bangle-editor h1 {
-  @apply text-4xl my-2 mt-5;
+  @apply text-5xl my-2 mt-5;
 }
+
+.bangle-editor h1:first-of-type {
+  @apply text-6xl my-3 mt-6;
+}
+
 .bangle-editor h2 {
   @apply text-3xl mb-1 mt-4;
 }
