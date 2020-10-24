@@ -1,10 +1,13 @@
 import { Mark } from 'bangle-core/marks/index';
 import { findFirstMarkPosition, filter } from 'bangle-core/utils/pm-utils';
 
-import { tooltipPlacementPlugin } from '../tooltip-placement/index';
-import { tooltipActivatePlugin } from './tooltip-activate-plugin';
+import {
+  hideTooltip,
+  showTooltip,
+  tooltipPlacementPlugin,
+} from '../tooltip-placement/index';
+import { tooltipController } from './tooltip-controller';
 import { triggerInputRule } from './trigger-input-rule';
-import { Plugin } from 'prosemirror-state';
 import { getQueryText } from './helpers';
 import { removeTypeAheadMarkCmd } from './commands';
 
@@ -67,14 +70,18 @@ export class InlineSuggest extends Mark {
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement;
       },
-      tooltipOffset: (view) => {
+      tooltipOffset: () => {
         return [0, 0.4 * rem];
       },
-      onUpdate: (state, dispatch, view) => {},
+      onUpdateTooltip: (state, dispatch, view) => {},
       // No need to call removeTypeAheadMarkCmd on destroy
-      onDestroy: (state, dispatch, view) => {},
+      onHideTooltip: (state, dispatch, view) => {},
       onEnter: (state, dispatch, view) => {
-        return removeTypeAheadMarkCmd(this.name)(state, dispatch, view);
+        return removeTypeAheadMarkCmd(this.getMarkType(state))(
+          state,
+          dispatch,
+          view,
+        );
       },
       onArrowDown: (state, dispatch, view) => {
         return true;
@@ -83,7 +90,11 @@ export class InlineSuggest extends Mark {
         return true;
       },
       onEscape: (state, dispatch, view) => {
-        return removeTypeAheadMarkCmd(this.name)(state, dispatch, view);
+        return removeTypeAheadMarkCmd(this.getMarkType(state))(
+          state,
+          dispatch,
+          view,
+        );
       },
     };
   }
@@ -99,7 +110,7 @@ export class InlineSuggest extends Mark {
    */
 
   get plugins() {
-    const { plugin, key: tooltipPluginKey } = tooltipPlacementPlugin({
+    const plugin = tooltipPlacementPlugin({
       pluginName: this.name + 'Tooltip',
       placement: this.options.placement,
       fallbackPlacements: this.options.fallbackPlacements,
@@ -107,7 +118,7 @@ export class InlineSuggest extends Mark {
       tooltipDOM: this.options.tooltipDOM,
       getScrollContainerDOM: this.options.getScrollContainerDOM,
       getReferenceElement: triggerReferenceElement(
-        (schema) => schema.marks[this.name],
+        (state) => this.getMarkType(state),
         (state, markType) => {
           const { selection } = state;
           return findFirstMarkPosition(
@@ -119,57 +130,28 @@ export class InlineSuggest extends Mark {
         },
       ),
       showTooltipArrow: false,
+      onUpdateTooltip: this.options.onUpdateTooltip,
+      onHideTooltip: this.options.onHideTooltip,
     });
 
-    this._tooltipPluginKey = tooltipPluginKey;
+    this._tooltipPlugin = plugin;
 
-    const { trigger, tooltipDOM, onUpdate, onDestroy } = this.options;
+    const { trigger } = this.options;
     const markName = this.name;
+
     return [
       plugin,
-      tooltipActivatePlugin({
+      tooltipController({
         trigger,
-        tooltipDOM: tooltipDOM,
-        tooltipPluginKey,
         markName,
-      }),
-      new Plugin({
-        view: () => {
-          return {
-            update: (view, lastState) => {
-              const { state } = view;
-              if (lastState === state || !state.selection.empty) {
-                return;
-              }
-              const tooltipState = tooltipPluginKey.getState(state);
-              const lastTooltipState = tooltipPluginKey.getState(lastState);
-
-              if (tooltipState === lastTooltipState) {
-                return;
-              }
-
-              if (tooltipState.show) {
-                onUpdate(state, view.dispatch, view);
-                return;
-              }
-
-              if (
-                tooltipState.show === false &&
-                lastTooltipState.show !== false
-              ) {
-                // TODO why is destroy called twice
-                onDestroy(state, view.dispatch, view);
-                return;
-              }
-            },
-          };
-        },
+        showTooltip: showTooltip(plugin),
+        hideTooltip: hideTooltip(plugin),
       }),
     ];
   }
 
   keys() {
-    const isActiveCheck = (state) => this.isActive(state);
+    const isActiveCheck = (state) => this.isTooltipActive(state);
 
     const result = {
       [this.options.enterKeyName]: filter(isActiveCheck, this.options.onEnter),
@@ -197,27 +179,25 @@ export class InlineSuggest extends Mark {
    * Public API
    */
 
-  getTooltipPluginKey() {
-    return this._tooltipPluginKey;
-  }
-
   getMarkName() {
     return this.name;
   }
 
-  getMarkType() {
-    return this.editor.schema.marks[this.name];
+  getMarkType(state) {
+    return state.schema.marks[this.name];
   }
 
   getQueryText(state) {
-    const markType = this.getMarkType();
+    const markType = this.getMarkType(state);
     return getQueryText(state, markType, this.options.trigger);
   }
 
-  isActive(state) {
-    return (
-      this._tooltipPluginKey && this._tooltipPluginKey.getState(state)?.show
-    );
+  isTooltipActive(state) {
+    return this._tooltipPlugin && this._tooltipPlugin.getState(state)?.show;
+  }
+
+  getTooltipPlugin() {
+    return this._tooltipPlugin;
   }
 }
 
@@ -233,7 +213,7 @@ export function createTooltipDOM(className = 'bangle-tooltip') {
 
 export function triggerReferenceElement(getMarkType, getActiveMarkPos) {
   return (view, tooltipDOM, scrollContainerDOM) => {
-    const markType = getMarkType(view.state.schema);
+    const markType = getMarkType(view.state);
     return {
       getBoundingClientRect: () => {
         let state = view.state;

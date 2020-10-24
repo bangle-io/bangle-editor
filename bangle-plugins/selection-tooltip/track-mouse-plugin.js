@@ -1,6 +1,10 @@
 import { domEventListener } from 'bangle-core/utils/js-utils';
 import { viewHasFocus } from '../helpers/index';
 import { Plugin } from 'prosemirror-state';
+import {
+  hideTooltip,
+  showTooltip,
+} from 'bangle-plugins/tooltip-placement/index';
 
 const LOG = false;
 let log = LOG
@@ -8,9 +12,9 @@ let log = LOG
   : () => {};
 
 export function trackMousePlugin({
-  tooltipPlacementKey,
   tooltipDOM,
-  shouldShow = (state) => !state.selection.empty,
+  tooltipPlugin,
+  shouldShowTooltip,
 }) {
   const plugin = new Plugin({
     view: (view) => {
@@ -64,13 +68,15 @@ export function trackMousePlugin({
     };
 
     _show() {
-      // in case of show we want to trigger it everytime
-      // so that the placement plugin can update the placement
+      // in case of show we want to trigger it every time
+      // so that the we can update the position
       log('show');
       this._watchClickOutside();
-      this._dispatchState({
-        show: true,
-      });
+      showTooltip(tooltipPlugin)(
+        this._view.state,
+        this._view.dispatch,
+        this._view,
+      );
     }
 
     update(view, lastState) {
@@ -94,7 +100,7 @@ export function trackMousePlugin({
         this._hide();
       } else {
         log('showing mouse up');
-        if (shouldShow(state)) {
+        if (shouldShowTooltip(state)) {
           this._show();
         } else {
           this._hide();
@@ -109,24 +115,15 @@ export function trackMousePlugin({
       }
     }
 
-    _dispatchState(state) {
-      this._view.dispatch(
-        this._view.state.tr
-          .setMeta(tooltipPlacementKey, state)
-          .setMeta('addToHistory', false),
-      );
-    }
-
     _hide() {
-      const { show } = tooltipPlacementKey.getState(this._view.state);
-      if (show) {
-        if (this._destroyWatchClickOutside) {
-          this._destroyWatchClickOutside();
-        }
-        this._dispatchState({
-          show: false,
-        });
+      if (this._destroyWatchClickOutside) {
+        this._destroyWatchClickOutside();
       }
+      hideTooltip(tooltipPlugin)(
+        this._view.state,
+        this._view.dispatch,
+        this._view,
+      );
     }
   }
 

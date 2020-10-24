@@ -2,13 +2,13 @@ import { Plugin } from 'prosemirror-state';
 import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 import { doesQueryHaveTrigger } from './helpers';
+import { removeTypeAheadMarkCmd } from './commands';
 import {
-  hideTooltipCommand,
-  showTooltipCommand,
-  removeTypeAheadMarkCmd,
-} from './commands';
+  hideTooltip,
+  showTooltip,
+} from 'bangle-plugins/tooltip-placement/index';
 
-const LOG = false;
+const LOG = true;
 let log = LOG
   ? console.log.bind(console, 'plugins/inline-tooltipActivatePlugin')
   : () => {};
@@ -22,7 +22,12 @@ let log = LOG
  * Because of this plugin, other plugins can derive their state just based on the tooltip's show state
  * @param {*} param0
  */
-export function tooltipActivatePlugin({ trigger, tooltipPluginKey, markName }) {
+export function tooltipController({
+  trigger,
+  showTooltip,
+  hideTooltip,
+  markName,
+}) {
   return new Plugin({
     view() {
       return {
@@ -44,24 +49,21 @@ export function tooltipActivatePlugin({ trigger, tooltipPluginKey, markName }) {
             return;
           }
 
-          const isMarkActive = isMarkActiveInSelection(
-            state,
-            state.schema.marks[markName],
-          );
+          const isMarkActive = isMarkActiveInSelection(state, markType);
 
           // remove the mark if the user delete the trigger but remaining query
           // stayed. example `<mark>/hello</mark>` --(user deletes the /)-> `<mark>hello</mark>`
           if (isMarkActive && !doesQueryHaveTrigger(state, markType, trigger)) {
-            removeTypeAheadMarkCmd(markName)(state, view.dispatch);
+            removeTypeAheadMarkCmd(markType)(state, view.dispatch, view);
             return;
           }
 
           if (!isMarkActive) {
-            hideTooltipCommand(tooltipPluginKey)(state, view.dispatch);
+            hideTooltip(state, view.dispatch, view);
             return;
           }
 
-          showTooltipCommand(tooltipPluginKey)(state, view.dispatch);
+          showTooltip(state, view.dispatch, view);
           return;
         },
       };

@@ -22,7 +22,6 @@ import {
   isMarkActiveInSelection,
   nodeIsActive,
 } from './utils/pm-utils';
-import { hasOwnProperty } from './utils/js-utils';
 
 const LOG = false;
 
@@ -356,8 +355,6 @@ export class Editor extends Emitter {
 
   dispatchTransaction(transaction) {
     const nodes = findChangedNodesFromTransaction(transaction);
-    // if (nodes.length > 0) {
-    // }
     const newState = this.state.apply(transaction);
     this.view.updateState(newState);
     this.selection = {
