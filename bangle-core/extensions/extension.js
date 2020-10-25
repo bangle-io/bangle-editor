@@ -1,8 +1,11 @@
+import { objectFilter } from 'bangle-core/utils/js-utils';
+
 export class Extension {
   constructor(options = {}) {
     this.options = {
       ...this.defaultOptions,
-      ...options,
+      // prevent undefined from overwriting default values
+      ...objectFilter(options, (value) => value !== undefined),
     };
   }
 
@@ -10,6 +13,7 @@ export class Extension {
     return null;
   }
 
+  // TODO remove this extension instance should not be stateful
   bindEditor(editor = null) {
     this.editor = editor;
   }
