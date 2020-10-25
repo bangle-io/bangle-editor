@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link menu when link but not in selection 2`] = `
+<div
+  id="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+    tabindex="0"
+  >
+    <p>
+      foo
+      <a
+        href="https://example.com"
+        rel="noopener noreferrer nofollow"
+      >
+        hello world
+      </a>
+      bar
+    </p>
+  </div>
+  <div
+    class="bangle-tooltip bangle-selection-tooltip"
+    data-tooltip-name="inline_mark_tooltip"
+    role="tooltip"
+  >
+    <div
+      class="bangle-tooltip-content"
+    />
+  </div>
+</div>
+`;
+
+exports[`Link menu when no link 1`] = `
+<div
+  id="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+    tabindex="0"
+  >
+    <p>
+      foobar
+    </p>
+  </div>
+  <div
+    class="bangle-tooltip bangle-selection-tooltip"
+    data-tooltip-name="inline_mark_tooltip"
+    role="tooltip"
+  >
+    <div
+      class="bangle-tooltip-content"
+    />
+  </div>
+</div>
+`;
