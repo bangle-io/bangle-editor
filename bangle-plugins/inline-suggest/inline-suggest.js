@@ -63,8 +63,8 @@ export class InlineSuggest extends Mark {
       enterKeyName: 'Enter',
       arrowUpKeyName: 'ArrowUp',
       arrowDownKeyName: 'ArrowDown',
-      fallbackPlacements: undefined,
       escapeKeyName: 'Escape',
+      fallbackPlacements: undefined,
       // Use another key to mimic enter behaviour for example, Tab for entering
       alternateEnterKeyName: undefined,
       getScrollContainerDOM: (view) => {

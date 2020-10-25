@@ -24,23 +24,23 @@ import {
 import StopwatchExtension from 'bangle-plugins/stopwatch/stopwatch';
 import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
-import { SelectionTooltip } from 'bangle-plugins/selection-tooltip/index';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
-import { inlineMenu } from './inline-menu/inline-menu';
 import { InlineSuggest } from 'bangle-plugins/inline-suggest/index';
 import { Emoji, EmojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
 import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
 
 import './extensions-override.css';
-import { InlineMarkMenu } from 'bangle-plugins/inline-menu/index';
+import { LinkMenu } from 'bangle-plugins/inline-menu/index';
 
 // TODO Taking inputs liek this is not ideal, the extension
 // list should be static, so that anyone can import them and get static values
 export function extensions({ collabOpts, inlineMenuComponent } = {}) {
   return [
-    new Link(),
+    new Link({
+      openOnClick: true,
+    }),
     new EmojiInlineSuggest({
       getScrollContainerDOM: (view) => {
         return view.dom.parentElement.parentElement;
@@ -71,7 +71,7 @@ export function extensions({ collabOpts, inlineMenuComponent } = {}) {
     new StopwatchExtension(),
     new Timestamp(),
     inlineMenuComponent &&
-      new InlineMarkMenu({
+      new LinkMenu({
         getScrollContainerDOM: (view) => {
           return view.dom.parentElement.parentElement;
         },

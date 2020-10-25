@@ -10,11 +10,13 @@ import {
 } from 'bangle-core/test-helpers';
 import { toggleMark } from 'tiptap-commands';
 
-import { Link } from '../link';
+import { setLinkAtSelection, Link, getLinkMarkDetails } from '../link';
 import { BulletList, ListItem, OrderedList } from '../../nodes';
+import { Bold } from '../bold';
 
 const extensions = [
   new Link(),
+  new Bold(),
   new BulletList(),
   new ListItem(),
   new OrderedList(),
@@ -145,4 +147,448 @@ test('Paste a link in a list works', async () => {
       </ul>
     </doc>,
   );
+});
+
+describe('remove link', () => {
+  test.each([
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">w[]orld</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>hello w[]orld</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          h[]ello <link href="https://example.com">world</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          h[]ello <link href="https://example.com">world</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">[]world</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>hello []world</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">world[]</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://example.com">world[]</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://other.com">o[]ther</link>
+          <link href="https://example.com">world</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello o[]ther<link href="https://example.com">world</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">world</link>
+          <link href="https://other.com">o[]ther</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://example.com">world</link>o[]ther
+        </para>
+      </doc>,
+    ],
+  ])('%# Clears link at selection', async (input, expected) => {
+    const { editorView } = await testEditor(input);
+
+    setLinkAtSelection()(editorView.state, editorView.dispatch);
+
+    expect(editorView.state).toEqualDocAndSelection(expected);
+  });
+
+  test.each([
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">w[or]ld</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://example.com">w</link>or
+          <link href="https://example.com">ld</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">[worl]d</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello worl
+          <link href="https://example.com">d</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">[world]</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>hello world</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          h[ello <link href="https://example.com">world]</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>hello world</para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          h[ello <link href="https://example.com">world</link>
+        </para>
+        <para>
+          hello <link href="https://example.com">world]</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>hello world</para>
+        <para>hello world</para>
+      </doc>,
+    ],
+  ])('%# Clears link non empty selection', async (input, expected) => {
+    const { editorView } = await testEditor(input);
+
+    setLinkAtSelection()(editorView.state, editorView.dispatch);
+
+    expect(editorView.state).toEqualDocAndSelection(expected);
+  });
+
+  test.each([
+    [
+      <doc>
+        <para>
+          hello{' '}
+          <link href="https://example.com">
+            world<bold>stro[]ng</bold>
+          </link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://example.com">world</link>
+          <bold>stro[]ng</bold>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello{' '}
+          <link href="https://example.com">
+            world<bold>stro[]ng</bold> with link
+          </link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://example.com">world</link>
+          <bold>stro[]ng</bold>
+          <link href="https://example.com"> with link</link>
+        </para>
+      </doc>,
+    ],
+  ])(
+    '%# When partitioned by other marks clears only the nearest mark',
+    async (input, expected) => {
+      const { editorView } = await testEditor(input);
+
+      setLinkAtSelection()(editorView.state, editorView.dispatch);
+
+      expect(editorView.state).toEqualDocAndSelection(expected);
+    },
+  );
+});
+
+describe('Sets link', () => {
+  test.each([
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">w[]orld</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://happy.com">w[]orld</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">[]world</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://happy.com">[]world</link>
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          hello <link href="https://example.com">world[]</link>
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://example.com">world[]</link>
+        </para>
+      </doc>,
+    ],
+  ])('%# sets link at selection', async (input, expected) => {
+    const { editorView } = await testEditor(input);
+
+    setLinkAtSelection('https://happy.com')(
+      editorView.state,
+      editorView.dispatch,
+    );
+
+    expect(editorView.state).toEqualDocAndSelection(expected);
+  });
+});
+
+describe('getLinkMarkDetails', () => {
+  test.each([
+    [
+      0,
+      <doc>
+        <para>
+          <link href="https://example.com">hello world[]</link>
+        </para>
+      </doc>,
+      undefined,
+    ],
+    [
+      1,
+      <doc>
+        <para>
+          <link href="https://example.com">[]hello world</link>
+        </para>
+      </doc>,
+      {
+        href: 'https://example.com',
+        text: 'hello world',
+      },
+    ],
+    [
+      2,
+      <doc>
+        <para>
+          hello <link href="https://example.com">world</link>
+          <link href="https://other.com">o[]ther</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+    [
+      'Link is after the position',
+      <doc>
+        <para>
+          before[]<link href="https://example.com">hello world</link>
+        </para>
+      </doc>,
+      { href: 'https://example.com', text: 'hello world' },
+    ],
+    [
+      'Link is before the position',
+      <doc>
+        <para>
+          <link href="https://example.com">hello</link>[]world
+        </para>
+      </doc>,
+      undefined,
+    ],
+    [
+      'Empty selection in between',
+      <doc>
+        <para>
+          hello <link href="https://example.com">w[]orld</link>
+        </para>
+      </doc>,
+      { href: 'https://example.com', text: 'world' },
+    ],
+    [
+      'No link',
+      <doc>
+        <para>
+          h[]ello <link href="https://example.com">world</link>
+        </para>
+      </doc>,
+      undefined,
+    ],
+    [
+      'Multiple links',
+      <doc>
+        <para>
+          hello <link href="https://other.com">o[]ther</link>
+          <link href="https://example.com">world</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+    [
+      'Multiple links 2',
+      <doc>
+        <para>
+          hello <link href="https://other.com">other</link>
+          <link href="https://example.com">w[]orld</link>
+        </para>
+      </doc>,
+      { href: 'https://example.com', text: 'world' },
+    ],
+    [
+      'When selection spans multiple link, returns the one in from ',
+      <doc>
+        <para>
+          hello <link href="https://other.com">oth[er</link>
+          <link href="https://example.com">wor]ld</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+    [
+      'When selection spans multiple link, returns the one in from 2',
+      <doc>
+        <para>
+          hello <link href="https://other.com">oth[er</link>
+        </para>
+        <para>
+          <link href="https://example.com">wor]ld</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+    [
+      'No result when from does not have link',
+      <doc>
+        <para>
+          hell[o <link href="https://other.com">other</link>
+        </para>
+        <para>
+          <link href="https://example.com">wor]ld</link>
+        </para>
+      </doc>,
+      undefined,
+    ],
+
+    [
+      'Correct result when selection spans the link completely',
+      <doc>
+        <para>
+          hello <link href="https://other.com">[other]</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+
+    [
+      'Correct result when selection is inside but spans the link partially',
+      <doc>
+        <para>
+          hello <link href="https://other.com">o[ther]</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+
+    [
+      'Correct result when selection is inside but spans the link partially 2',
+      <doc>
+        <para>
+          hello <link href="https://other.com">[othe]r</link>
+        </para>
+      </doc>,
+      { href: 'https://other.com', text: 'other' },
+    ],
+
+    [
+      'When multiple marks returns the nearest mark 1',
+      <doc>
+        <para>
+          hello{' '}
+          <link href="https://example.com">
+            world<bold>stro[]ng</bold>
+          </link>
+        </para>
+      </doc>,
+      { href: 'https://example.com', text: 'strong' },
+    ],
+
+    [
+      'When multiple marks returns the nearest mark 2',
+      <doc>
+        <para>
+          hello{' '}
+          <link href="https://example.com">
+            wor[]ld<bold>strong</bold>
+          </link>
+        </para>
+      </doc>,
+      { href: 'https://example.com', text: 'world' },
+    ],
+
+    [
+      'When multiple marks returns the nearest from mark 3',
+      <doc>
+        <para>
+          hello{' '}
+          <link href="https://example.com">
+            [world<bold>strong]</bold>
+          </link>
+        </para>
+      </doc>,
+      { href: 'https://example.com', text: 'world' },
+    ],
+  ])('%#  %s case', async (testId, input, expected) => {
+    const { editorView } = await testEditor(input);
+
+    expect(getLinkMarkDetails(editorView.state)).toEqual(expected);
+  });
 });
