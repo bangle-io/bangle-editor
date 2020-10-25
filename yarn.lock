@@ -3166,6 +3166,7 @@ __metadata:
     localforage: ^1.7.3
     markdown-it: ^10.0.0
     markdown-it-emoji: ^2.0.0
+    prettier: ^2.1.2
     prosemirror-collab: ^1.2.2
     prosemirror-commands: ^1.1.4
     prosemirror-inputrules: ^1.1.3

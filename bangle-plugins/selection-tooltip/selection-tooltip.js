@@ -1,6 +1,10 @@
 import { Extension } from 'bangle-core/extensions/index';
 import { trackMousePlugin } from './track-mouse-plugin';
-import { tooltipPlacementPlugin } from 'bangle-plugins/tooltip-placement/index';
+import {
+  hideTooltip,
+  tooltipPlacementPlugin,
+} from 'bangle-plugins/tooltip-placement/index';
+import { filter } from 'bangle-core/utils/pm-utils';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
 
@@ -8,6 +12,8 @@ let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
  * Shows a tooltip when there is a selection
  */
 export class SelectionTooltip extends Extension {
+  _tooltipPlugin = null;
+
   get name() {
     return 'selection_tooltip';
   }
@@ -28,11 +34,32 @@ export class SelectionTooltip extends Extension {
       },
       showTooltipArrow: showTooltipArrow,
       getReferenceElement: getSelectionReferenceElement,
-      shouldShowTooltip: (state) => !state.selection.empty,
+      shouldShowTooltip: (state) => {
+        return !state.selection.empty;
+      },
       getInitialShowState: (state) => false,
       onHideTooltip: () => {},
       onUpdateTooltip: () => {},
       placement: undefined,
+
+      // key bindings
+      enterKeyName: 'Enter',
+      arrowUpKeyName: 'ArrowUp',
+      arrowDownKeyName: 'ArrowDown',
+      escapeKeyName: 'Escape',
+
+      onEnter: (state, dispatch, view) => {
+        return false;
+      },
+      onArrowDown: (state, dispatch, view) => {
+        return false;
+      },
+      onArrowUp: (state, dispatch, view) => {
+        return false;
+      },
+      onEscape: (state, dispatch, view) => {
+        return hideTooltip(this._tooltipPlugin)(state, dispatch, view);
+      },
     };
   }
 
@@ -50,6 +77,8 @@ export class SelectionTooltip extends Extension {
       placement: options.placement,
     });
 
+    this._tooltipPlugin = plugin;
+
     return [
       plugin,
       trackMousePlugin({
@@ -58,6 +87,35 @@ export class SelectionTooltip extends Extension {
         shouldShowTooltip: this.options.shouldShowTooltip,
       }).plugin,
     ];
+  }
+
+  keys() {
+    const isActiveCheck = (state) => this.isTooltipActive(state);
+
+    const result = {
+      [this.options.enterKeyName]: filter(isActiveCheck, this.options.onEnter),
+      [this.options.arrowUpKeyName]: filter(
+        isActiveCheck,
+        this.options.onArrowUp,
+      ),
+      [this.options.arrowDownKeyName]: filter(
+        isActiveCheck,
+        this.options.onArrowDown,
+      ),
+      [this.options.escapeKeyName]: filter(
+        isActiveCheck,
+        this.options.onEscape,
+      ),
+    };
+    if (this.options.alternateEnterKeyName) {
+      result[this.options.alternateEnterKeyName] =
+        result[this.options.enterKeyName];
+    }
+    return result;
+  }
+
+  isTooltipActive(state) {
+    return this._tooltipPlugin && this._tooltipPlugin.getState(state)?.show;
   }
 }
 
