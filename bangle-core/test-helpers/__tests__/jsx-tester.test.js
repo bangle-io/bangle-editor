@@ -3,18 +3,18 @@
  */
 /** @jsx psx */
 import { psx, renderTestEditor, typeText } from '../../test-helpers';
-import { OrderedList } from '../ordered-list';
-import { BulletList } from '../bullet-list';
-import { ListItem } from '../list-item/list-item';
+import {
+  Blockquote,
+  BulletList,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  ListItem,
+  OrderedList,
+  TodoItem,
+  TodoList,
+} from '../../nodes/index';
 import { Underline, Link } from '../../marks';
-
-import { CodeBlock } from '../code-block';
-import { Heading } from '../heading';
-import { HardBreak } from '../hard-break';
-
-import { Blockquote } from '../blockquote';
-import { TodoList } from '../todo-list';
-import { TodoItem } from '../todo-item';
 
 const extensions = [
   new BulletList(),
@@ -516,7 +516,7 @@ test('Selection range paragraph', async () => {
   expect(selection).toMatchInlineSnapshot(`
     Object {
       "anchor": 1,
-      "head": 5,
+      "head": 4,
       "type": "text",
     }
   `);
@@ -536,7 +536,7 @@ test('Selection range paragraph 2', async () => {
   expect(selection).toMatchInlineSnapshot(`
     Object {
       "anchor": 1,
-      "head": 4,
+      "head": 3,
       "type": "text",
     }
   `);

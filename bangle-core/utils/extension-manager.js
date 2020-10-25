@@ -54,7 +54,7 @@ export class ExtensionManager {
   get plugins() {
     return this.extensions
       .filter((extension) => extension.plugins)
-      .flatMap(({ plugins }) => plugins);
+      .flatMap(({ plugins }) => [].concat(plugins).filter(Boolean));
   }
 
   keymaps({ schema }) {
