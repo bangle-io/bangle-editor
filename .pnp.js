@@ -4270,6 +4270,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["localforage", "npm:1.9.0"],
             ["markdown-it", "npm:10.0.0"],
             ["markdown-it-emoji", "npm:2.0.0"],
+            ["prettier", "npm:2.1.2"],
             ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-inputrules", "npm:1.1.3"],
