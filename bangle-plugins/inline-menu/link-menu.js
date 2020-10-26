@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   SelectionTooltip,
@@ -13,6 +13,7 @@ import {
   getLinkMarkDetails,
 } from 'bangle-core/marks/link';
 import { uuid } from 'bangle-core/utils/js-utils';
+import { showTooltip } from 'bangle-plugins/tooltip-placement/index';
 
 export function LinkMenu({
   getScrollContainerDOM = (view) => {
@@ -36,21 +37,44 @@ export function LinkMenu({
   const render = (state, dispatch, view) => {
     const result = getLinkMarkDetails(state);
     reactDOM.render(
-      result && (
-        <Component
-          result={result}
-          view={view}
-          inputId={inputId}
-          getIsTop={getIsTop}
-        />
-      ),
+      <Component
+        result={result}
+        view={view}
+        inputId={inputId}
+        getIsTop={getIsTop}
+      />,
       tooltipContent,
     );
 
     return true;
   };
 
-  const inlineSuggest = new SelectionTooltip({
+  class LinkMenuExt extends SelectionTooltip {
+    keys(...args) {
+      const parentKeys = super.keys(...args);
+
+      const newKeys = {
+        'Meta-k': (state, dispatch, view) => {
+          const isActive = this.isTooltipActive(state);
+          if (isActive) {
+            setFocus();
+            return true;
+          }
+
+          let result = showTooltip(this.tooltipPlugin)(state, dispatch, view);
+          if (result) {
+            setFocus();
+            return true;
+          }
+          return false;
+        },
+      };
+
+      return Object.assign({}, parentKeys, newKeys);
+    }
+  }
+
+  const inlineSuggest = new LinkMenuExt({
     tooltipName: 'inline_mark_tooltip',
     tooltipDOM,
     getScrollContainerDOM,
@@ -99,7 +123,6 @@ export function LinkMenu({
 }
 
 function Component({ result, view, inputId, getIsTop }) {
-  const inputRef = useRef(null);
   const originalHref = result?.href || '';
   const [href, setHref] = useState(originalHref);
   const handleSubmit = (e) => {
@@ -122,7 +145,6 @@ function Component({ result, view, inputId, getIsTop }) {
           id={inputId}
           style={{ backgroundColor: 'transparent' }}
           value={href}
-          ref={inputRef}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleSubmit(e);

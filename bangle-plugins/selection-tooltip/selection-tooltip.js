@@ -12,7 +12,7 @@ let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
  * Shows a tooltip when there is a selection
  */
 export class SelectionTooltip extends Extension {
-  _tooltipPlugin = null;
+  tooltipPlugin = null;
 
   get name() {
     return 'selection_tooltip';
@@ -58,7 +58,7 @@ export class SelectionTooltip extends Extension {
         return false;
       },
       onEscape: (state, dispatch, view) => {
-        return hideTooltip(this._tooltipPlugin)(state, dispatch, view);
+        return hideTooltip(this.tooltipPlugin)(state, dispatch, view);
       },
     };
   }
@@ -77,7 +77,7 @@ export class SelectionTooltip extends Extension {
       placement: options.placement,
     });
 
-    this._tooltipPlugin = plugin;
+    this.tooltipPlugin = plugin;
 
     return [
       plugin,
@@ -111,11 +111,12 @@ export class SelectionTooltip extends Extension {
       result[this.options.alternateEnterKeyName] =
         result[this.options.enterKeyName];
     }
+
     return result;
   }
 
   isTooltipActive(state) {
-    return this._tooltipPlugin && this._tooltipPlugin.getState(state)?.show;
+    return this.tooltipPlugin && this.tooltipPlugin.getState(state)?.show;
   }
 }
 
