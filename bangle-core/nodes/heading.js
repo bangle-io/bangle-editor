@@ -109,3 +109,23 @@ export class Heading extends Node {
     );
   }
 }
+
+export const toggleHeading = ({ level = 3 } = {}) => {
+  return (state, dispatch, view) =>
+    toggleBlockType(state.schema.nodes.heading, state.schema.nodes.paragraph, {
+      level,
+    })(state, dispatch, view);
+};
+
+export const isSelectionInHeading = ({ level = 3 }) => {
+  return (state) => {
+    const match = findParentNodeOfType(state.schema.nodes.heading)(
+      state.selection,
+    );
+    if (!match) {
+      return false;
+    }
+    const { node } = match;
+    return node.attrs.level === level;
+  };
+};

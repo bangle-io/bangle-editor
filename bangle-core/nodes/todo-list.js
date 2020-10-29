@@ -3,6 +3,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 import { Node } from './node';
 import { toggleList } from './list-item/commands';
 import { rafWrap } from '../utils/js-utils';
+import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
 
 export class TodoList extends Node {
   get name() {
@@ -38,7 +39,7 @@ export class TodoList extends Node {
 
   commands({ type, schema }) {
     return {
-      // I am not sure why raf fixes the problem,
+      // TODO I am not sure why raf fixes the problem,
       // but wrapping it inside an raf seems to avoid the
       // problem of losing focus and getting the selection in wrong place
       todo_list: () => rafWrap(toggleList(type, schema.nodes.todo_item)),
@@ -55,3 +56,23 @@ export class TodoList extends Node {
     return [wrappingInputRule(/^\s*(\[ \])\s$/, type)];
   }
 }
+
+const toggleTodoList = (state, dispatch, view) => {
+  const { schema } = state;
+  return toggleList(schema.nodes.todo_list, schema.nodes.todo_item)(
+    state,
+    dispatch,
+    view,
+  );
+};
+
+export const todoListCommands = {
+  toggleTodoList,
+  isSelectionInsideTodoList: (state) => {
+    const { schema } = state;
+    return parentHasDirectParentOfType(
+      schema.nodes['todo_item'],
+      schema.nodes['todo_list'],
+    )(state);
+  },
+};

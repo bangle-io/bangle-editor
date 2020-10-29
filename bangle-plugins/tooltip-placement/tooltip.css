@@ -1,10 +1,10 @@
 .bangle-tooltip {
   display: none;
+  z-index: 30;
 }
 
 .bangle-tooltip .bangle-tooltip-content {
   color: white;
-  padding: 2px 4px;
 }
 
 .bangle-tooltip[data-show] {

@@ -1,6 +1,7 @@
 import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 import { Mark } from './mark';
+import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 export class Bold extends Mark {
   get name() {
@@ -58,3 +59,11 @@ export class Bold extends Mark {
     return [markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type)];
   }
 }
+
+export const toggleBold = (state, dispatch, view) => {
+  return toggleMark(state.schema.marks.bold)(state, dispatch, view);
+};
+
+export const isBoldActiveInSelection = (state) => {
+  return isMarkActiveInSelection(state.schema.marks.bold)(state);
+};

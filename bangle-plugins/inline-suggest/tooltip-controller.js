@@ -49,7 +49,7 @@ export function tooltipController({
             return;
           }
 
-          const isMarkActive = isMarkActiveInSelection(state, markType);
+          const isMarkActive = isMarkActiveInSelection(markType)(state);
 
           // remove the mark if the user delete the trigger but remaining query
           // stayed. example `<mark>/hello</mark>` --(user deletes the /)-> `<mark>hello</mark>`

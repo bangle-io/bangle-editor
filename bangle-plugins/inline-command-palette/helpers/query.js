@@ -31,7 +31,7 @@ export function isTypeAheadQueryActive(editorState) {
     return false;
   }
 
-  return isMarkActiveInSelection(editorState, typeAheadQuery);
+  return isMarkActiveInSelection(typeAheadQuery)(editorState);
 }
 
 export function getTypeaheadQueryString(editorState) {

@@ -57,6 +57,8 @@ export function trackMousePlugin({
       };
 
       // TODO move these to use {once: true} option of addEventListener
+      // TODO explore better options like on blur  and on focus events see
+      // https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
       document.addEventListener('click', onClickOutside);
 
       this._destroyWatchClickOutside = () => {
@@ -89,11 +91,12 @@ export function trackMousePlugin({
         return;
       }
       log('updating');
-      if (!viewHasFocus(view)) {
-        this._hide();
-        log('hiding lost focus');
-        return;
-      }
+      // TODO do we need this
+      // if (!viewHasFocus(view)) {
+      //   this._hide();
+      //   log('hiding lost focus');
+      //   return;
+      // }
 
       if (this._mouseDownState.isDown) {
         log('hiding mouse down');
