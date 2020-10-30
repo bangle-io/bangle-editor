@@ -29,22 +29,27 @@ import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-reque
 import { InlineSuggest } from 'bangle-plugins/inline-suggest/index';
 import { Emoji, EmojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
-import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
 
 import './extensions-override.css';
 import { LinkMenu } from 'bangle-plugins/inline-menu/index';
+import { FloatingMenu } from 'bangle-plugins/inline-menu/floating-menu';
+import 'bangle-plugins/inline-menu/inline-menu.css';
 
+const getScrollContainerDOM = (view) => {
+  return view.dom.parentElement.parentElement;
+};
 // TODO Taking inputs liek this is not ideal, the extension
 // list should be static, so that anyone can import them and get static values
 export function extensions({ collabOpts, inlineMenuComponent } = {}) {
+  const linkMenu = new LinkMenu({
+    getScrollContainerDOM,
+  });
   return [
     new Link({
       openOnClick: true,
     }),
     new EmojiInlineSuggest({
-      getScrollContainerDOM: (view) => {
-        return view.dom.parentElement.parentElement;
-      },
+      getScrollContainerDOM,
     }),
     new Bold(),
     new Code(),
@@ -70,12 +75,9 @@ export function extensions({ collabOpts, inlineMenuComponent } = {}) {
     new TrailingNode(),
     new StopwatchExtension(),
     new Timestamp(),
-    inlineMenuComponent &&
-      new LinkMenu({
-        getScrollContainerDOM: (view) => {
-          return view.dom.parentElement.parentElement;
-        },
-      }),
+    linkMenu,
+    new FloatingMenu({ linkMenu }),
+
     collabOpts &&
       new CollabExtension({
         docName: collabOpts.docName,
@@ -85,11 +87,5 @@ export function extensions({ collabOpts, inlineMenuComponent } = {}) {
           collabOpts.manager.handleRequest(...args).then((resp) => resp.body),
         ),
       }),
-    new InlineSuggest({
-      trigger: '/',
-      getScrollContainerDOM: (view) => {
-        return view.dom.parentElement.parentElement;
-      },
-    }),
   ].filter(Boolean);
 }

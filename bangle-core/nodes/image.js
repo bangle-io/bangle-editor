@@ -1,5 +1,5 @@
 import { InputRule } from 'prosemirror-inputrules';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
 import { Node } from './node';
 
@@ -32,7 +32,9 @@ export class Image extends Node {
           }),
         },
       ],
-      toDOM: (node) => ['img', node.attrs],
+      toDOM: (node) => {
+        return ['img', node.attrs];
+      },
     };
   }
 
@@ -250,3 +252,31 @@ function getMatchingItems(list, accept, multiple) {
 
   return results;
 }
+
+export const updateImageNodeAttribute = (attr = {}) => (
+  state,
+  dispatch,
+  view,
+) => {
+  if (!state.selection instanceof NodeSelection || !state.selection.node) {
+    return false;
+  }
+  const { node } = state.selection;
+  if (node.type !== state.schema.nodes.image) {
+    return false;
+  }
+
+  if (dispatch) {
+    console.log('dispatching', {
+      ...node.attrs,
+      ...attr,
+    });
+    dispatch(
+      state.tr.setNodeMarkup(state.selection.$from.pos, undefined, {
+        ...node.attrs,
+        ...attr,
+      }),
+    );
+  }
+  return true;
+};

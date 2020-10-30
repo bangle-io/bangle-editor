@@ -27,6 +27,12 @@
   @apply list-disc list-outside  pl-6;
 }
 
+.bangle-editor img {
+  margin: 0 0.25rem;
+  border: 1px solid grey;
+  padding: 2px;
+}
+
 .bangle-editor ol {
   @apply list-decimal list-outside pl-6;
 }

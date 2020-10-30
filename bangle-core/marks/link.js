@@ -294,7 +294,7 @@ function setLink(from, to, href) {
   );
 }
 
-function canLinkBeCreatedInRange(from, to) {
+export function canLinkBeCreatedInRange(from, to) {
   return (state) => {
     const $from = state.doc.resolve(from);
     const $to = state.doc.resolve(to);

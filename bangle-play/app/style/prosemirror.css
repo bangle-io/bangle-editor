@@ -11,10 +11,7 @@
   white-space: pre-wrap;
 }
 
-.ProseMirror img {
-  border: 1px solid grey;
-  padding: 2px;
-}
 .ProseMirror-selectednode {
   outline: 4px solid #8cf;
+  border-radius: 2px;
 }

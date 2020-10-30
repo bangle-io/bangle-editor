@@ -2,6 +2,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { Node } from './node';
 import { toggleList } from './list-item/commands';
+import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
 
 export class BulletList extends Node {
   get name() {
@@ -44,3 +45,20 @@ export class BulletList extends Node {
     return [wrappingInputRule(/^\s*([-+*])\s$/, type)];
   }
 }
+
+const toggleBulletList = (state, dispatch, view) => {
+  return toggleList(
+    state.schema.nodes.bullet_list,
+    state.schema.nodes.list_item,
+  )(state, dispatch, view);
+};
+
+export const bulletListCommands = {
+  toggleBulletList,
+  isSelectionInsideBulletList: (state) => {
+    const { schema } = state;
+    return parentHasDirectParentOfType(schema.nodes['list_item'], [
+      schema.nodes['bullet_list'],
+    ])(state);
+  },
+};
