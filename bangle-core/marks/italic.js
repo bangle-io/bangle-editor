@@ -2,6 +2,7 @@ import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 
 import { Mark } from './mark';
+import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 export class Italic extends Mark {
   get name() {
@@ -53,3 +54,11 @@ export class Italic extends Mark {
     ];
   }
 }
+
+export const toggleItalic = (state, dispatch, view) => {
+  return toggleMark(state.schema.marks.italic)(state, dispatch, view);
+};
+
+export const isItalicActiveInSelection = (state) => {
+  return isMarkActiveInSelection(state.schema.marks.italic)(state);
+};

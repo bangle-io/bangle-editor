@@ -68,6 +68,9 @@ export function EmojiInlineSuggest({ getScrollContainerDOM } = {}) {
 
     onEnter: (state, dispatch, view) => {
       const emojis = getEmojis(inlineSuggest.getQueryText(state));
+      if (emojis.length === 0) {
+        return false;
+      }
       const emojiKind = emojis[getActiveIndex(counter, emojis.length)][0];
       return onSelection(emojiKind)(state, dispatch, view);
     },
@@ -118,6 +121,7 @@ function Palette({ emojis, activeIndex, onClick }) {
 
 function getActiveIndex(counter, size) {
   const r = counter % size;
+
   return r < 0 ? r + size : r;
 }
 

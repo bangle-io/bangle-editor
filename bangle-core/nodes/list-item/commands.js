@@ -225,7 +225,9 @@ export function toggleList(listType, itemType) {
         state.tr,
       );
       tr = liftSelectionList(listItem, state, tr);
-      dispatch(tr);
+      if (dispatch) {
+        dispatch(tr);
+      }
       return true;
     }
   };
@@ -240,6 +242,8 @@ function toggleListCommand(listType) {
         ),
       );
     }
+    // TODO this is unacceptable, a command should be able to return
+    // true or false without view
     if (!view) {
       return false;
     }

@@ -486,7 +486,7 @@ export class Editor extends Emitter {
     this.activeMarks = Object.fromEntries(
       Object.entries(this.schema.marks).map(([name, mark]) => [
         name,
-        (attrs = {}) => isMarkActiveInSelection(this.state, mark),
+        (attrs = {}) => isMarkActiveInSelection(mark)(this.state),
       ]),
     );
 

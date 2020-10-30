@@ -2,6 +2,7 @@ import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 
 import { Mark } from './mark';
+import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 export class Code extends Mark {
   get name() {
@@ -70,3 +71,11 @@ function backticksFor(node, side) {
   }
   return result;
 }
+
+export const toggleCode = (state, dispatch, view) => {
+  return toggleMark(state.schema.marks.code)(state, dispatch, view);
+};
+
+export const isCodeActiveInSelection = (state) => {
+  return isMarkActiveInSelection(state.schema.marks.code)(state);
+};

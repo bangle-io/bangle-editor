@@ -13,12 +13,14 @@ export const findParentNodeOfType = _findParentNodeOfType;
  * whether the mark of type is active in selection
  * @returns {Boolean}
  */
-export function isMarkActiveInSelection(editorState, type) {
-  const { from, $from, to, empty } = editorState.selection;
-  if (empty) {
-    return Boolean(type.isInSet(editorState.storedMarks || $from.marks()));
-  }
-  return Boolean(editorState.doc.rangeHasMark(from, to, type));
+export function isMarkActiveInSelection(type) {
+  return (state) => {
+    const { from, $from, to, empty } = state.selection;
+    if (empty) {
+      return Boolean(type.isInSet(state.storedMarks || $from.marks()));
+    }
+    return Boolean(state.doc.rangeHasMark(from, to, type));
+  };
 }
 
 export const validPos = (pos, doc) =>
