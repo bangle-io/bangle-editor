@@ -19,7 +19,6 @@ export class Editor extends React.PureComponent {
     manager: PropTypes.object.isRequired,
     docName: PropTypes.string.isRequired,
   };
-
   devtools = this.props.isFirst && (process.env.JEST_INTEGRATION || DEBUG);
   inlineMenuDOM = document.createElement('div');
   options = {
