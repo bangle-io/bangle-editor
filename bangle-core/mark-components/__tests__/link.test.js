@@ -7,12 +7,11 @@ import {
   dispatchPasteEvent,
   psx,
   renderTestEditor,
-} from 'bangle-core/test-helpers';
+} from '../../test-helpers/index';
 import { toggleMark } from 'tiptap-commands';
 
-import { setLinkAtSelection, Link, getLinkMarkDetails } from '../link';
 import { BulletList, ListItem, OrderedList } from '../../nodes';
-import { Bold } from '../bold';
+import { Bold } from '../../marks/bold';
 
 const extensions = [
   new Link(),

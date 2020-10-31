@@ -5,15 +5,7 @@ import {
   SelectionTooltip,
   createTooltipDOM,
 } from 'bangle-plugins/selection-tooltip/index';
-import {
-  isBoldActiveInSelection,
-  isItalicActiveInSelection,
-  isCodeActiveInSelection,
-  isSelectionInsideLink,
-  toggleBold,
-  toggleCode,
-  toggleItalic,
-} from 'bangle-core/marks/index';
+import { isSelectionInsideLink } from 'bangle-core/marks/index';
 
 import {
   bulletListCommands,
@@ -24,6 +16,18 @@ import {
 import { hideTooltip } from 'bangle-plugins/tooltip-placement/index';
 import { Icon } from './icon-helpers';
 import { rafWrap } from 'bangle-core/utils/js-utils';
+import {
+  isBoldActiveInSelection,
+  toggleBold,
+} from 'bangle-core/mark-components/bold';
+import {
+  isItalicActiveInSelection,
+  toggleItalic,
+} from 'bangle-core/mark-components/italic';
+import {
+  isCodeActiveInSelection,
+  toggleCode,
+} from 'bangle-core/mark-components/code';
 
 export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
   const { tooltipDOM, tooltipContent } = createTooltipDOM();

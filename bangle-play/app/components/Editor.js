@@ -8,7 +8,8 @@ import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { extensions } from '../editor/extensions';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
-
+import {} from 'bangle-core/marks/index';
+import { coreMarkPlugins } from 'bangle-core/mark-components/index';
 const LOG = false;
 const DEBUG = true;
 let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
@@ -25,8 +26,10 @@ export class Editor extends React.PureComponent {
     id: 'bangle-play-' + this.props.docName + '-' + uuid(4),
     content: 'Loading document',
     devtools: this.devtools,
+    xPlugins: [...coreMarkPlugins()],
     extensions: [
       ...extensions({
+        switchOffShit: false,
         inlineMenuComponent: this.inlineMenuDOM,
         collabOpts: {
           docName: this.props.docName,

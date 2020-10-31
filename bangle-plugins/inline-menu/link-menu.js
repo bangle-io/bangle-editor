@@ -12,7 +12,8 @@ import {
   setLinkAtSelection,
   getLinkMarkDetails,
   canLinkBeCreatedInRange,
-} from 'bangle-core/marks/link';
+} from 'bangle-core/mark-components/link';
+
 import { uuid } from 'bangle-core/utils/js-utils';
 import { showTooltip } from 'bangle-plugins/tooltip-placement/index';
 import { Icon } from './icon-helpers';
