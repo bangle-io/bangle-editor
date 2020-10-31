@@ -1,7 +1,4 @@
 import { Plugin } from 'prosemirror-state';
-import { updateMark, removeMark } from 'tiptap-commands';
-
-import { Mark } from './mark';
 import { matchAllPlus } from '../utils/js-utils';
 import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
 
@@ -9,113 +6,99 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'marks/link') : () => {};
 
-export class Link extends Mark {
-  get name() {
-    return 'link';
-  }
+const name = 'link';
 
-  // get defaultOptions() {
-  //   return {
-  //     openOnClick: true,
-  //   };
-  // }
+const getTypeFromSchema = (schema) => schema.marks[name];
 
-  // get schema() {
-  //   return {
-  //     attrs: {
-  //       href: {
-  //         default: null,
-  //       },
-  //     },
-  //     inclusive: false,
-  //     parseDOM: [
-  //       {
-  //         tag: 'a[href]',
-  //         getAttrs: (dom) => ({
-  //           href: dom.getAttribute('href'),
-  //         }),
-  //       },
-  //     ],
-  //     toDOM: (node) => [
-  //       'a',
-  //       {
-  //         ...node.attrs,
-  //         rel: 'noopener noreferrer nofollow',
-  //       },
-  //       0,
-  //     ],
-  //   };
-  // }
+export const spec = (opts = {}) => {
+  return {
+    type: 'mark',
+    name,
+    schema: {
+      attrs: {
+        href: {
+          default: null,
+        },
+      },
+      inclusive: false,
+      parseDOM: [
+        {
+          tag: 'a[href]',
+          getAttrs: (dom) => ({
+            href: dom.getAttribute('href'),
+          }),
+        },
+      ],
+      toDOM: (node) => [
+        'a',
+        {
+          ...node.attrs,
+          rel: 'noopener noreferrer nofollow',
+        },
+        0,
+      ],
+    },
+    markdown: {
+      toMarkdown: {
+        open(_state, mark, parent, index) {
+          return isPlainURL(mark, parent, index, 1) ? '<' : '[';
+        },
+        close(state, mark, parent, index) {
+          return isPlainURL(mark, parent, index, -1)
+            ? '>'
+            : '](' +
+                state.esc(mark.attrs.href) +
+                (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
+                ')';
+        },
+      },
+      parseMarkdown: {
+        link: {
+          mark: 'link',
+          getAttrs: (tok) => ({
+            href: tok.attrGet('href'),
+            title: tok.attrGet('title') || null,
+          }),
+        },
+      },
+    },
+  };
+};
 
-  // get markdown() {
-  //   return {
-  //     toMarkdown: {
-  //       open(_state, mark, parent, index) {
-  //         return isPlainURL(mark, parent, index, 1) ? '<' : '[';
-  //       },
-  //       close(state, mark, parent, index) {
-  //         return isPlainURL(mark, parent, index, -1)
-  //           ? '>'
-  //           : '](' +
-  //               state.esc(mark.attrs.href) +
-  //               (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
-  //               ')';
-  //       },
-  //     },
-  //     parseMarkdown: {
-  //       link: {
-  //         mark: 'link',
-  //         getAttrs: (tok) => ({
-  //           href: tok.attrGet('href'),
-  //           title: tok.attrGet('title') || null,
-  //         }),
-  //       },
-  //     },
-  //   };
-  // }
+export const plugins = ({ openOnClick = true, keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
 
-  // commands({ type }) {
-  //   return (attrs) => {
-  //     if (attrs.href) {
-  //       return updateMark(type, attrs);
-  //     }
+    return [
+      pasteLinkify(
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
+      ),
+      markPasteRule(
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
+        type,
+        (match) => ({ href: match }),
+      ),
+      !openOnClick &&
+        new Plugin({
+          props: {
+            handleClick: (view, pos, event) => {
+              const { schema } = view.state;
+              const attrs = getMarkAttrs(view.state, schema.marks.link);
 
-  //     return removeMark(type);
-  //   };
-  // }
+              if (attrs.href && event.target instanceof HTMLAnchorElement) {
+                event.stopPropagation();
+                window.open(attrs.href);
+              }
+            },
+          },
+        }),
+    ];
+  };
+};
 
-  // pasteRules({ type }) {
-  //   return [
-  //     markPasteRule(
-  //       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
-  //       type,
-  //       (match) => ({ href: match }),
-  //     ),
-  //   ];
-  // }
-
-  // get plugins() {
-  //   return [
-  //     pasteLinkify(
-  //       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
-  //     ),
-  //     !this.options.openOnClick &&
-  //       new Plugin({
-  //         props: {
-  //           handleClick: (view, pos, event) => {
-  //             const { schema } = view.state;
-  //             const attrs = getMarkAttrs(view.state, schema.marks.link);
-
-  //             if (attrs.href && event.target instanceof HTMLAnchorElement) {
-  //               event.stopPropagation();
-  //               window.open(attrs.href);
-  //             }
-  //           },
-  //         },
-  //       }),
-  //   ];
-  // }
-}
+/**
+ * Helpers
+ */
 
 function pasteLinkify(regexp) {
   return new Plugin({
@@ -191,6 +174,38 @@ function isPlainURL(link, parent, index, side) {
   return !link.isInSet(next.marks);
 }
 
+function isTextAtPos(pos) {
+  return (state) => {
+    const node = state.doc.nodeAt(pos);
+    return !!node && node.isText;
+  };
+}
+
+function setLink(from, to, href) {
+  href = href?.trim();
+  return filter(
+    (state) => isTextAtPos(from)(state),
+    (state, dispatch) => {
+      const linkMark = state.schema.marks.link;
+      let tr = state.tr.removeMark(from, to, linkMark);
+      if (href) {
+        const mark = state.schema.marks.link.create({
+          href: href,
+        });
+        tr.addMark(from, to, mark);
+      }
+      dispatch(tr);
+      return true;
+    },
+  );
+}
+
+/**
+ *
+ * Commands
+ *
+ */
+
 /**
  * Sets the selection to href
  * @param {*} href
@@ -218,13 +233,6 @@ export function createLink(href) {
       return true;
     },
   );
-}
-
-function isTextAtPos(pos) {
-  return (state) => {
-    const node = state.doc.nodeAt(pos);
-    return !!node && node.isText;
-  };
 }
 
 export function setLinkAtSelection(href) {
@@ -273,25 +281,6 @@ export function getLinkMarkDetails(state) {
       text: node.textContent,
     };
   }
-}
-
-function setLink(from, to, href) {
-  href = href?.trim();
-  return filter(
-    (state) => isTextAtPos(from)(state),
-    (state, dispatch) => {
-      const linkMark = state.schema.marks.link;
-      let tr = state.tr.removeMark(from, to, linkMark);
-      if (href) {
-        const mark = state.schema.marks.link.create({
-          href: href,
-        });
-        tr.addMark(from, to, mark);
-      }
-      dispatch(tr);
-      return true;
-    },
-  );
 }
 
 export function canLinkBeCreatedInRange(from, to) {

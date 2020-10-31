@@ -8,56 +8,56 @@ export class Strike extends Mark {
     return 'strike';
   }
 
-  get schema() {
-    return {
-      parseDOM: [
-        {
-          tag: 's',
-        },
-        {
-          tag: 'del',
-        },
-        {
-          tag: 'strike',
-        },
-        {
-          style: 'text-decoration',
-          getAttrs: (value) => value === 'line-through',
-        },
-      ],
-      toDOM: () => ['s', 0],
-    };
-  }
+  // get schema() {
+  //   return {
+  //     parseDOM: [
+  //       {
+  //         tag: 's',
+  //       },
+  //       {
+  //         tag: 'del',
+  //       },
+  //       {
+  //         tag: 'strike',
+  //       },
+  //       {
+  //         style: 'text-decoration',
+  //         getAttrs: (value) => value === 'line-through',
+  //       },
+  //     ],
+  //     toDOM: () => ['s', 0],
+  //   };
+  // }
 
-  get markdown() {
-    return {
-      toMarkdown: {
-        open: '~~',
-        close: '~~',
-        mixable: true,
-        expelEnclosingWhitespace: true,
-      },
-      parseMarkdown: {
-        s: { mark: 'strike' },
-      },
-    };
-  }
+  // get markdown() {
+  //   return {
+  //     toMarkdown: {
+  //       open: '~~',
+  //       close: '~~',
+  //       mixable: true,
+  //       expelEnclosingWhitespace: true,
+  //     },
+  //     parseMarkdown: {
+  //       s: { mark: 'strike' },
+  //     },
+  //   };
+  // }
 
-  keys({ type }) {
-    return {
-      'Mod-d': toggleMark(type),
-    };
-  }
+  // keys({ type }) {
+  //   return {
+  //     'Mod-d': toggleMark(type),
+  //   };
+  // }
 
-  commands({ type }) {
-    return () => toggleMark(type);
-  }
+  // commands({ type }) {
+  //   return () => toggleMark(type);
+  // }
 
-  inputRules({ type }) {
-    return [markInputRule(/~([^~]+)~$/, type)];
-  }
+  // inputRules({ type }) {
+  //   return [markInputRule(/~([^~]+)~$/, type)];
+  // }
 
-  pasteRules({ type }) {
-    return [markPasteRule(/~([^~]+)~/g, type)];
-  }
+  // pasteRules({ type }) {
+  //   return [markPasteRule(/~([^~]+)~/g, type)];
+  // }
 }

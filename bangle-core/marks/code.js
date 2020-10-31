@@ -9,48 +9,48 @@ export class Code extends Mark {
     return 'code';
   }
 
-  get schema() {
-    return {
-      excludes: '_',
-      parseDOM: [{ tag: 'code' }],
-      toDOM: () => ['code', 0],
-    };
-  }
+  // get schema() {
+  //   return {
+  //     excludes: '_',
+  //     parseDOM: [{ tag: 'code' }],
+  //     toDOM: () => ['code', 0],
+  //   };
+  // }
 
-  get markdown() {
-    return {
-      toMarkdown: {
-        open(_state, _mark, parent, index) {
-          return backticksFor(parent.child(index), -1);
-        },
-        close(_state, _mark, parent, index) {
-          return backticksFor(parent.child(index - 1), 1);
-        },
-        escape: false,
-      },
-      parseMarkdown: {
-        code_inline: { mark: 'code', noCloseToken: true },
-      },
-    };
-  }
+  // get markdown() {
+  //   return {
+  //     toMarkdown: {
+  //       open(_state, _mark, parent, index) {
+  //         return backticksFor(parent.child(index), -1);
+  //       },
+  //       close(_state, _mark, parent, index) {
+  //         return backticksFor(parent.child(index - 1), 1);
+  //       },
+  //       escape: false,
+  //     },
+  //     parseMarkdown: {
+  //       code_inline: { mark: 'code', noCloseToken: true },
+  //     },
+  //   };
+  // }
 
-  keys({ type }) {
-    return {
-      'Mod-`': toggleMark(type),
-    };
-  }
+  // keys({ type }) {
+  //   return {
+  //     'Mod-`': toggleMark(type),
+  //   };
+  // }
 
-  commands({ type }) {
-    return () => toggleMark(type);
-  }
+  // commands({ type }) {
+  //   return () => toggleMark(type);
+  // }
 
-  inputRules({ type }) {
-    return [markInputRule(/(?:`)([^`]+)(?:`)$/, type)];
-  }
+  // inputRules({ type }) {
+  //   return [markInputRule(/(?:`)([^`]+)(?:`)$/, type)];
+  // }
 
-  pasteRules({ type }) {
-    return [markPasteRule(/(?:`)([^`]+)(?:`)/g, type)];
-  }
+  // pasteRules({ type }) {
+  //   return [markPasteRule(/(?:`)([^`]+)(?:`)/g, type)];
+  // }
 }
 
 function backticksFor(node, side) {

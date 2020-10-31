@@ -22,6 +22,7 @@ import {
   isMarkActiveInSelection,
   nodeIsActive,
 } from './utils/pm-utils';
+import { loadInputRules, loadPlugins } from './element-loaders';
 window.PluginKey = PluginKey;
 const LOG = false;
 
@@ -90,10 +91,14 @@ export class Editor extends Emitter {
       ? { from: this.options.selection.from, to: this.options.selection.to }
       : { from: 0, to: 0 };
     this.element = domElement; //document.createElement('div');
+
     this.extensions = this.createExtensions();
     this.nodes = this.createNodes();
     this.marks = this.createMarks();
     this.schema = this.createSchema();
+
+    this.xPlugins = this.createXPlugins();
+
     this.plugins = this.createPlugins();
     this.keymaps = this.createKeymaps();
     this.inputRules = this.createInputRules();
@@ -136,6 +141,15 @@ export class Editor extends Emitter {
     } else {
       viewSetup();
     }
+  }
+
+  createXPlugins() {
+    if (!this.options.xPlugins) {
+      return [];
+    }
+    const plugins = loadPlugins(this.schema, this.options.xPlugins);
+
+    return loadInputRules(plugins);
   }
 
   setOptions(options) {
@@ -243,11 +257,13 @@ export class Editor extends Emitter {
   }
 
   createState() {
+    debugger;
     const settings = {
       schema: this.schema,
       doc: this.options.doc || this.createDocument(this.options.content),
       plugins: [
         ...this.plugins,
+        ...this.xPlugins,
         inputRules({
           rules: this.inputRules,
         }),

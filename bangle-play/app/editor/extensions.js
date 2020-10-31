@@ -40,22 +40,27 @@ const getScrollContainerDOM = (view) => {
 };
 // TODO Taking inputs liek this is not ideal, the extension
 // list should be static, so that anyone can import them and get static values
-export function extensions({ collabOpts, inlineMenuComponent } = {}) {
+export function extensions({
+  collabOpts,
+  inlineMenuComponent,
+  switchOffShit,
+} = {}) {
   const linkMenu = new LinkMenu({
     getScrollContainerDOM,
   });
   return [
-    new Link({
-      openOnClick: true,
-    }),
     new EmojiInlineSuggest({
       getScrollContainerDOM,
     }),
-    new Bold(),
-    new Code(),
-    new Italic(),
-    new Strike(),
-    new Underline(),
+    !switchOffShit &&
+      new Link({
+        openOnClick: true,
+      }),
+    !switchOffShit && new Bold(),
+    !switchOffShit && new Code(),
+    !switchOffShit && new Italic(),
+    !switchOffShit && new Strike(),
+    !switchOffShit && new Underline(),
     new Blockquote(),
     new BulletList(),
     new CodeBlock(),

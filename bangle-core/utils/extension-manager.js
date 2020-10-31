@@ -2,24 +2,42 @@ import { keymap } from 'prosemirror-keymap';
 
 import { Extension } from '../extensions';
 import { Editor } from '../editor';
+import * as nodeElements from '../node-components/index';
+import * as marks from 'bangle-core/mark-components/index';
+
+function replaceBro(name, nodes, replacement) {
+  return nodes.map(([n, node]) => {
+    if (n === name) {
+      const { name: rName, schema } = replacement.spec();
+      if (rName !== name) {
+        throw new Error('Not match name ' + rName + ' ' + name);
+      }
+      return [rName, schema];
+    }
+    return [n, node];
+  });
+}
 
 export class ExtensionManager {
   constructor(extensions = [new Extension()], editor = new Editor()) {
+    extensions = extensions.filter((r) => r);
     extensions.forEach((extension) => {
       extension.bindEditor(editor);
       extension.init();
     });
     this.extensions = extensions;
   }
-
   get nodes() {
-    return Object.fromEntries(
-      this.extensions
-        .filter((extension) => extension.type === 'node')
-        .map(({ name, schema }) => [name, schema]),
-    );
-  }
+    let result = this.extensions
+      .filter((extension) => extension.type === 'node')
+      .map(({ name, schema }) => [name, schema]);
 
+    result = replaceBro('doc', result, nodeElements.doc);
+    result = replaceBro('text', result, nodeElements.text);
+    result = replaceBro('paragraph', result, nodeElements.paragraph);
+    result = replaceBro('hard_break', result, nodeElements.hardBreak);
+    return Object.fromEntries(result);
+  }
   get options() {
     const { view } = this; // TODO is this bug?, I dont see any view
 
@@ -44,11 +62,17 @@ export class ExtensionManager {
   }
 
   get marks() {
-    return Object.fromEntries(
-      this.extensions
-        .filter((extension) => extension.type === 'mark')
-        .map(({ name, schema }) => [name, schema]),
-    );
+    let result = this.extensions
+      .filter((extension) => extension.type === 'mark')
+      .map(({ name, schema }) => [name, schema]);
+
+    result = replaceBro('bold', result, marks.bold);
+    result = replaceBro('code', result, marks.code);
+    result = replaceBro('italic', result, marks.italic);
+    result = replaceBro('link', result, marks.link);
+    result = replaceBro('strike', result, marks.strike);
+    result = replaceBro('underline', result, marks.underline);
+    return Object.fromEntries(result);
   }
 
   get plugins() {
@@ -58,20 +82,20 @@ export class ExtensionManager {
   }
 
   keymaps({ schema }) {
-    const extensionKeymaps = this.extensions
+    const ext = this.extensions.filter((r) => !r.spec);
+    const extensionKeymaps = ext
       .filter((extension) => ['extension'].includes(extension.type))
       .filter((extension) => extension.keys)
       .map((extension) => extension.keys({ schema }));
-
-    const nodeMarkKeymaps = this.extensions
+    const nodeMarkKeymaps = ext
       .filter((extension) => ['node', 'mark'].includes(extension.type))
       .filter((extension) => extension.keys)
-      .map((extension) =>
-        extension.keys({
+      .map((extension) => {
+        return extension.keys({
           type: schema[`${extension.type}s`][extension.name],
           schema,
-        }),
-      );
+        });
+      });
 
     return [...extensionKeymaps, ...nodeMarkKeymaps].map((keys) =>
       keymap(keys),

@@ -1,69 +1,60 @@
 import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 import { Mark } from './mark';
-import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 export class Bold extends Mark {
   get name() {
     return 'bold';
   }
 
-  get schema() {
-    return {
-      parseDOM: [
-        {
-          tag: 'strong',
-        },
-        {
-          tag: 'b',
-          getAttrs: (node) => node.style.fontWeight !== 'normal' && null,
-        },
-        {
-          style: 'font-weight',
-          getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
-        },
-      ],
-      toDOM: () => ['strong', 0],
-    };
-  }
+  // get schema() {
+  //   return {
+  //     parseDOM: [
+  //       {
+  //         tag: 'strong',
+  //       },
+  //       {
+  //         tag: 'b',
+  //         getAttrs: (node) => node.style.fontWeight !== 'normal' && null,
+  //       },
+  //       {
+  //         style: 'font-weight',
+  //         getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
+  //       },
+  //     ],
+  //     toDOM: () => ['strong', 0],
+  //   };
+  // }
 
-  get markdown() {
-    return {
-      toMarkdown: {
-        open: '**',
-        close: '**',
-        mixable: true,
-        expelEnclosingWhitespace: true,
-      },
-      parseMarkdown: {
-        strong: { mark: 'bold' },
-      },
-    };
-  }
+  // get markdown() {
+  //   return {
+  //     toMarkdown: {
+  //       open: '**',
+  //       close: '**',
+  //       mixable: true,
+  //       expelEnclosingWhitespace: true,
+  //     },
+  //     parseMarkdown: {
+  //       strong: { mark: 'bold' },
+  //     },
+  //   };
+  // }
 
-  keys({ type }) {
-    return {
-      'Mod-b': toggleMark(type),
-    };
-  }
+  // keys({ type }) {
+  //   return {
+  //     'Mod-b': toggleMark(type),
+  //   };
+  // }
 
-  commands({ type }) {
-    return () => toggleMark(type);
-  }
+  // commands({ type }) {
+  //   return () => toggleMark(type);
+  // }
 
-  inputRules({ type }) {
-    return [markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type)];
-  }
+  // inputRules({ type }) {
+  //   return [markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type)];
+  // }
 
-  pasteRules({ type }) {
-    return [markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type)];
-  }
+  // pasteRules({ type }) {
+  //   return [markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type)];
+  // }
 }
-
-export const toggleBold = (state, dispatch, view) => {
-  return toggleMark(state.schema.marks.bold)(state, dispatch, view);
-};
-
-export const isBoldActiveInSelection = (state) => {
-  return isMarkActiveInSelection(state.schema.marks.bold)(state);
-};
