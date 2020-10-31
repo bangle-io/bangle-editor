@@ -22,7 +22,7 @@ import {
   isMarkActiveInSelection,
   nodeIsActive,
 } from './utils/pm-utils';
-
+window.PluginKey = PluginKey;
 const LOG = false;
 
 function log(...args) {
