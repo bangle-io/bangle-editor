@@ -1,50 +1,48 @@
+import { keymap } from 'prosemirror-keymap';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
-import { Node } from './node';
-import { toggleList } from './list-item/commands';
+import { toggleList } from '../nodes/list-item/commands';
 import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
 
-export class BulletList extends Node {
-  get name() {
-    return 'bullet_list';
-  }
+const name = 'bullet_list';
 
-  get schema() {
-    return {
+const getTypeFromSchema = (schema) => schema.nodes[name];
+
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       content: 'list_item+',
       group: 'block',
       parseDOM: [{ tag: 'ul' }],
       toDOM: () => ['ul', 0],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.renderList(node, '  ', () => (node.attrs.bullet || '-') + ' ');
       },
       parseMarkdown: {
         bullet_list: {
-          block: this.name,
+          block: name,
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type, schema }) {
-    return { bullet_list: () => toggleList(type, schema.nodes.list_item) };
-  }
+export const plugins = ({ keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
 
-  keys({ type, schema }) {
-    return {
-      'Shift-Ctrl-8': toggleList(type, schema.nodes.list_item),
-    };
-  }
-
-  inputRules({ type }) {
-    return [wrappingInputRule(/^\s*([-+*])\s$/, type)];
-  }
-}
+    return [
+      keymap({
+        'Shift-Ctrl-8': toggleList(type, schema.nodes.list_item),
+      }),
+      wrappingInputRule(/^\s*([-+*])\s$/, type),
+    ];
+  };
+};
 
 const toggleBulletList = (state, dispatch, view) => {
   return toggleList(

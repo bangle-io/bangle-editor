@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor, typeText } from '../../test-helpers';
+import { psx, renderTestEditor2, typeText } from '../../test-helpers';
 import {
   Blockquote,
   BulletList,
@@ -16,21 +16,7 @@ import {
 } from '../../nodes/index';
 import { Underline, Link } from '../../marks';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
-  new TodoList(),
-  new TodoItem(),
-  new Blockquote(),
-  new CodeBlock(),
-  new Link(),
-];
-
-const testEditor = renderTestEditor({ extensions, type: 'new' });
+const testEditor = renderTestEditor2();
 
 test.each([
   [
@@ -182,9 +168,9 @@ test.each([
     </doc>,
   ],
 ])('Case %# %s schema is created correctly', async (type, input, expected) => {
-  const { editor } = await testEditor(input);
-  typeText(editor.view, 'hello');
-  expect(editor.state.doc).toEqualDocument(expected);
+  const { view } = await testEditor(input);
+  typeText(view, 'hello');
+  expect(view.state.doc).toEqualDocument(expected);
 });
 
 test.each([
@@ -501,14 +487,14 @@ test.each([
     </doc>,
   ],
 ])('Empty Selection Case %# %s ', async (type, input, expected) => {
-  const { editor } = await testEditor(input);
-  typeText(editor.view, 'hello');
+  const { view } = await testEditor(input);
+  typeText(view, 'hello');
 
-  expect(editor.state).toEqualDocAndSelection(expected);
+  expect(view.state).toEqualDocAndSelection(expected);
 });
 
 test('Selection range paragraph', async () => {
-  const { editor, selection } = await testEditor(
+  const { view, selection } = await testEditor(
     <doc>
       <para>[foo]</para>
     </doc>,
@@ -520,7 +506,7 @@ test('Selection range paragraph', async () => {
       "type": "text",
     }
   `);
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>[foo]</para>
     </doc>,
@@ -528,7 +514,7 @@ test('Selection range paragraph', async () => {
 });
 
 test('Selection range paragraph 2', async () => {
-  const { editor, selection } = await testEditor(
+  const { view, selection } = await testEditor(
     <doc>
       <para>[fo]o bar</para>
     </doc>,
@@ -540,7 +526,7 @@ test('Selection range paragraph 2', async () => {
       "type": "text",
     }
   `);
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>[fo]o bar</para>
     </doc>,

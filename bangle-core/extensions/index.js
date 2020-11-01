@@ -1,2 +1,1 @@
-export { History } from './history';
-export { Extension } from './extension';
+export * as history from './history';

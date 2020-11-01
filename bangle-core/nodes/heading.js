@@ -1,26 +1,22 @@
 import { toggleBlockType } from 'tiptap-commands';
 import { setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
-
-import { Node } from './node';
 import { moveNode } from './list-item/commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
 import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
+import { keymap } from 'prosemirror-keymap';
 
-export class Heading extends Node {
-  get name() {
-    return 'heading';
-  }
+const name = 'heading';
 
-  get defaultOptions() {
-    return {
-      levels: ['1', '2', '3', '4', '5', '6'],
-      classNames: {},
-    };
-  }
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
-  get schema() {
-    return {
+const defaultLevels = ['1', '2', '3', '4', '5', '6'];
+
+export const spec = ({ levels = defaultLevels, classNames } = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       attrs: {
         level: {
           default: '1',
@@ -30,7 +26,7 @@ export class Heading extends Node {
       group: 'block',
       defining: true,
       draggable: false,
-      parseDOM: this.options.levels.map((level) => {
+      parseDOM: levels.map((level) => {
         return {
           tag: `h${level}`,
           attrs: { level },
@@ -41,19 +37,15 @@ export class Heading extends Node {
           `h${node.attrs.level}`,
           {
             class:
-              this.options.classNames &&
-              this.options.classNames[`h${node.attrs.level}`]
-                ? this.options.classNames[`h${node.attrs.level}`]
+              classNames && classNames[`h${node.attrs.level}`]
+                ? classNames[`h${node.attrs.level}`]
                 : undefined,
           },
           0,
         ];
       },
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.write(state.repeat('#', node.attrs.level) + ' ');
         state.renderInline(node);
@@ -65,50 +57,54 @@ export class Heading extends Node {
           getAttrs: (tok) => ({ level: tok.tag.slice(1) }),
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type, schema }) {
-    return (attrs) => toggleBlockType(type, schema.nodes.paragraph, attrs);
-  }
-
-  keys({ type, schema }) {
+export const plugins = ({ levels = defaultLevels, keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
     const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
 
-    return this.options.levels.reduce(
-      (items, level) => ({
-        ...items,
-        ...{
-          [`Shift-Ctrl-${level}`]: setBlockType(type, { level }),
-        },
-      }),
-      {
-        'Alt-ArrowUp': moveNode(type, 'UP'),
-        'Alt-ArrowDown': moveNode(type, 'DOWN'),
+    return [
+      keymap(
+        levels.reduce(
+          (items, level) => ({
+            ...items,
+            ...{
+              [`Shift-Ctrl-${level}`]: setBlockType(type, { level }),
+            },
+          }),
+          {
+            'Alt-ArrowUp': moveNode(type, 'UP'),
+            'Alt-ArrowDown': moveNode(type, 'DOWN'),
 
-        'Meta-c': copyEmptyCommand(type),
-        'Meta-x': cutEmptyCommand(type),
+            'Meta-c': copyEmptyCommand(type),
+            'Meta-x': cutEmptyCommand(type),
 
-        'Meta-Shift-Enter': filter(
-          isInHeading,
-          insertEmpty(schema.nodes.paragraph, 'above', false),
+            'Meta-Shift-Enter': filter(
+              isInHeading,
+              insertEmpty(schema.nodes.paragraph, 'above', false),
+            ),
+            'Meta-Enter': filter(
+              isInHeading,
+              insertEmpty(schema.nodes.paragraph, 'below', false),
+            ),
+          },
         ),
-        'Meta-Enter': filter(
-          isInHeading,
-          insertEmpty(schema.nodes.paragraph, 'below', false),
+      ),
+      ...levels.map((level) =>
+        textblockTypeInputRule(
+          new RegExp(`^(#{1,${level}})\\s$`),
+          type,
+          () => ({
+            level,
+          }),
         ),
-      },
-    );
-  }
-
-  inputRules({ type }) {
-    return this.options.levels.map((level) =>
-      textblockTypeInputRule(new RegExp(`^(#{1,${level}})\\s$`), type, () => ({
-        level,
-      })),
-    );
-  }
-}
+      ),
+    ];
+  };
+};
 
 export const toggleHeading = ({ level = 3 } = {}) => {
   return (state, dispatch, view) =>

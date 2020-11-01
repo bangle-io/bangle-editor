@@ -1,15 +1,17 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
-import { Node } from './node';
+import { keymap } from 'prosemirror-keymap';
 
-export class Image extends Node {
-  get name() {
-    return 'image';
-  }
+const name = 'image';
 
-  get schema() {
-    return {
+const getTypeFromSchema = (schema) => schema.nodes[name];
+
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       inline: true,
       attrs: {
         src: {},
@@ -35,11 +37,8 @@ export class Image extends Node {
       toDOM: (node) => {
         return ['img', node.attrs];
       },
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         const text = state.esc(node.attrs.alt || '');
         const url =
@@ -58,94 +57,98 @@ export class Image extends Node {
           }),
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  inputRules({ type }) {
-    return new InputRule(
-      /**
-       * Matches following attributes in Markdown-typed image: [, alt, src, title]
-       *
-       * Example:
-       * ![Lorem](image.jpg) -> [, "Lorem", "image.jpg"]
-       * ![](image.jpg "Ipsum") -> [, "", "image.jpg", "Ipsum"]
-       * ![Lorem](image.jpg "Ipsum") -> [, "Lorem", "image.jpg", "Ipsum"]
-       */
-      /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/,
-      (state, match, start, end) => {
-        let [, alt, src, title] = match;
-        if (!src) {
-          return;
-        }
+export const plugins = ({ keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
 
-        if (!title) {
-          title = alt;
-        }
-        return state.tr.replaceWith(
-          start,
-          end,
-          type.create({
-            src,
-            alt,
-            title,
-          }),
-        );
-      },
-    );
-  }
+    return [
+      new InputRule(
+        /**
+         * Matches following attributes in Markdown-typed image: [, alt, src, title]
+         *
+         * Example:
+         * ![Lorem](image.jpg) -> [, "Lorem", "image.jpg"]
+         * ![](image.jpg "Ipsum") -> [, "", "image.jpg", "Ipsum"]
+         * ![Lorem](image.jpg "Ipsum") -> [, "Lorem", "image.jpg", "Ipsum"]
+         */
+        /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/,
+        (state, match, start, end) => {
+          let [, alt, src, title] = match;
+          if (!src) {
+            return;
+          }
 
-  get plugins() {
-    return new Plugin({
-      key: new PluginKey(this.name + '-drop-paste'),
-      props: {
-        handleDOMEvents: {
-          drop(view, event) {
-            if (event.dataTransfer == null) {
+          if (!title) {
+            title = alt;
+          }
+          return state.tr.replaceWith(
+            start,
+            end,
+            type.create({
+              src,
+              alt,
+              title,
+            }),
+          );
+        },
+      ),
+
+      new Plugin({
+        key: new PluginKey(name + '-drop-paste'),
+        props: {
+          handleDOMEvents: {
+            drop(view, event) {
+              if (event.dataTransfer == null) {
+                return false;
+              }
+              const files = getFileData(event.dataTransfer, 'image/*', true);
+              // TODO should we handle all drops but just show error?
+              // returning false here would just default to native behaviour
+              // But then any drop handler would fail to work.
+              if (!files || files.length === 0) {
+                return false;
+              }
+              event.preventDefault();
+              const coordinates = view.posAtCoords({
+                left: event.clientX,
+                top: event.clientY,
+              });
+
+              addImagesToView(
+                view,
+                coordinates == null ? undefined : coordinates.pos,
+                files.map((file) => readFile(file)),
+              );
+
+              return true;
+            },
+          },
+
+          handlePaste: (view, rawEvent, slice) => {
+            const event = rawEvent;
+            if (!event.clipboardData) {
               return false;
             }
-            const files = getFileData(event.dataTransfer, 'image/*', true);
-            // TODO should we handle all drops but just show error?
-            // returning false here would just default to native behaviour
-            // But then any drop handler would fail to work.
+            const files = getFileData(event.clipboardData, 'image/*', true);
             if (!files || files.length === 0) {
               return false;
             }
-            event.preventDefault();
-            const coordinates = view.posAtCoords({
-              left: event.clientX,
-              top: event.clientY,
-            });
-
             addImagesToView(
               view,
-              coordinates == null ? undefined : coordinates.pos,
+              view.state.selection.from,
               files.map((file) => readFile(file)),
-            );
-
+            ).catch((err) => console.error(err));
             return true;
           },
         },
-
-        handlePaste: (view, rawEvent, slice) => {
-          const event = rawEvent;
-          if (!event.clipboardData) {
-            return false;
-          }
-          const files = getFileData(event.clipboardData, 'image/*', true);
-          if (!files || files.length === 0) {
-            return false;
-          }
-          addImagesToView(
-            view,
-            view.state.selection.from,
-            files.map((file) => readFile(file)),
-          ).catch((err) => console.error(err));
-          return true;
-        },
-      },
-    });
-  }
-}
+      }),
+    ];
+  };
+};
 
 async function addImagesToView(view, pos, imagePromises) {
   for (const imagePromise of imagePromises) {

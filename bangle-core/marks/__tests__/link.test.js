@@ -6,22 +6,34 @@
 import {
   dispatchPasteEvent,
   psx,
-  renderTestEditor,
+  renderTestEditor2,
 } from '../../test-helpers/index';
 import { toggleMark } from 'tiptap-commands';
+import {
+  bulletList,
+  listItem,
+  orderedList,
+  bold,
+  link,
+} from '../../components';
+import { getLinkMarkDetails, setLinkAtSelection } from '../link';
 
-import { BulletList, ListItem, OrderedList } from '../../nodes';
-import { Bold } from '../../marks/bold';
-
-const extensions = [
-  new Link(),
-  new Bold(),
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
+const editorSpec = [
+  link.spec(),
+  bold.spec(),
+  bulletList.spec(),
+  listItem.spec(),
+  orderedList.spec(),
+];
+const plugins = [
+  link.plugins(),
+  bold.plugins(),
+  bulletList.plugins(),
+  listItem.plugins(),
+  orderedList.plugins(),
 ];
 
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor2({ editorSpec, plugins });
 
 test('Creates a link correctly', async () => {
   const { editorView } = await testEditor(

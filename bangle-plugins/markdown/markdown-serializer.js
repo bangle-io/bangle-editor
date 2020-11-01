@@ -1,43 +1,13 @@
-import { Mark, Node } from 'bangle-core/index';
 import { objectFilter, objectMapValues } from 'bangle-core/utils/js-utils';
 import { MarkdownSerializer } from 'prosemirror-markdown';
-import { Paragraph, Text, Doc } from 'bangle-core/nodes/index';
+import { markdownLoader } from './markdown-parser';
 // A markdown serializer which uses a node/mark schema's
 // toMarkdown property to generate a markdown string
-export const markdownSerializer = (extensions, { useDefaults = true } = {}) => {
-  const { nodeSerializer, markSerializer } = getMarkdownSerializer(extensions, {
-    useDefaults,
-  });
+export const markdownSerializer = (editorSpec, { useDefaults = true } = {}) => {
+  const { serializer } = markdownLoader(editorSpec, { useDefaults });
 
-  return new MarkdownSerializer(nodeSerializer, markSerializer);
+  return new MarkdownSerializer(serializer.node, serializer.mark);
 };
-
-function getMarkdownSerializer(extensions, { useDefaults }) {
-  if (useDefaults) {
-    extensions = [new Doc(), new Text(), new Paragraph(), ...extensions];
-  }
-
-  const nodeExtensions = Object.fromEntries(
-    extensions
-      .filter((e) => e instanceof Node && e.markdown)
-      .map((r) => {
-        return [r.name, r.markdown.toMarkdown];
-      }),
-  );
-
-  const markExtensions = Object.fromEntries(
-    extensions
-      .filter((e) => e instanceof Mark && e.markdown)
-      .map((r) => {
-        return [r.name, r.markdown.toMarkdown];
-      }),
-  );
-
-  return {
-    nodeSerializer: nodeExtensions,
-    markSerializer: markExtensions,
-  };
-}
 
 export function serializeAtomNodeToMdLink(name, attrs) {
   const data = objectFilter(attrs, (val, key) => {

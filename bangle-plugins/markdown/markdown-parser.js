@@ -1,29 +1,55 @@
 import markdownIt from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { todoListMarkdownItPlugin } from './todo-list-markdown-it-plugin';
-import { Paragraph, Text, Doc } from 'bangle-core/nodes/index';
+import { doc, paragraph, text } from 'bangle-core/nodes/index';
+import { schemaLoader } from 'bangle-core/element-loaders';
 
 export const defaultMarkdownItTokenizer = markdownIt().use(
   todoListMarkdownItPlugin,
 );
 
 export function markdownParser(
-  extensions,
-  schema,
+  spec,
   markdownItTokenizer = defaultMarkdownItTokenizer,
   { useDefaults = true } = {},
 ) {
-  if (useDefaults) {
-    extensions = [new Doc(), new Text(), new Paragraph(), ...extensions];
-  }
+  const { schema, tokens } = markdownLoader(spec, { useDefaults });
 
+  return new MarkdownParser(schema, markdownItTokenizer, tokens);
+}
+
+export function markdownLoader(editorSpec, { useDefaults }) {
   const tokens = Object.fromEntries(
-    extensions
+    editorSpec
       .filter((e) => e.markdown?.parseMarkdown)
       .flatMap((e) => {
         return Object.entries(e.markdown.parseMarkdown);
       }),
   );
+  const schema = schemaLoader(editorSpec);
 
-  return new MarkdownParser(schema, markdownItTokenizer, tokens);
+  const nodeSerializer = Object.fromEntries(
+    editorSpec
+      .filter((spec) => spec.type === 'node' && spec.markdown?.toMarkdown)
+      .map((spec) => {
+        return [spec.name, spec.markdown.toMarkdown];
+      }),
+  );
+
+  const markSerializer = Object.fromEntries(
+    editorSpec
+      .filter((spec) => spec.type === 'mark' && spec.markdown?.toMarkdown)
+      .map((spec) => {
+        return [spec.name, spec.markdown.toMarkdown];
+      }),
+  );
+
+  return {
+    tokens,
+    schema,
+    serializer: {
+      node: nodeSerializer,
+      mark: markSerializer,
+    },
+  };
 }

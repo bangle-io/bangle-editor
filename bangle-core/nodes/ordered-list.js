@@ -1,14 +1,17 @@
-import { Node } from './node';
 import { toggleList } from './list-item/commands';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
-export class OrderedList extends Node {
-  get name() {
-    return 'ordered_list';
-  }
+import { keymap } from 'prosemirror-keymap';
 
-  get schema() {
-    return {
+const name = 'ordered_list';
+
+const getTypeFromSchema = (schema) => schema.nodes[name];
+
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       attrs: {
         order: {
           default: 1,
@@ -28,11 +31,8 @@ export class OrderedList extends Node {
         node.attrs.order === 1
           ? ['ol', 0]
           : ['ol', { start: node.attrs.order }, 0],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         let start = node.attrs.order || 1;
         let maxW = String(start + node.childCount - 1).length;
@@ -44,23 +44,17 @@ export class OrderedList extends Node {
       },
       parseMarkdown: {
         ordered_list: {
-          block: 'ordered_list',
+          block: name,
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type, schema }) {
-    return () => toggleList(type);
-  }
+export const plugins = ({ keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
 
-  keys({ type, schema }) {
-    return {
-      'Shift-Ctrl-9': toggleList(type),
-    };
-  }
-
-  inputRules({ type }) {
     return [
       wrappingInputRule(
         /^(1)[\.\)] $/,
@@ -68,6 +62,9 @@ export class OrderedList extends Node {
         (match) => ({ order: +match[1] }),
         (match, node) => node.childCount + node.attrs.order === +match[1],
       ),
+      keymap({
+        'Shift-Ctrl-9': toggleList(type),
+      }),
     ];
-  }
-}
+  };
+};

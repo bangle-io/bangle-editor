@@ -1,21 +1,18 @@
-import { Node } from './node';
+const name = 'text';
 
-export class Text extends Node {
-  get name() {
-    return 'text';
-  }
-
-  get schema() {
-    return {
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       group: 'inline',
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.text(node.text);
       },
-    };
-  }
-}
+    },
+  };
+};
+
+export const plugins = (opts = {}) => {};

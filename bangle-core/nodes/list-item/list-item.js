@@ -1,5 +1,5 @@
 import { chainCommands } from 'prosemirror-commands';
-import { Node } from '../node';
+import { keymap } from 'prosemirror-keymap';
 import {
   indentList,
   backspaceKeyCommand,
@@ -15,39 +15,34 @@ import {
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
 
-export class ListItem extends Node {
-  get name() {
-    return 'list_item';
-  }
+const name = 'list_item';
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
-  get schema() {
-    return {
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       content: '(paragraph) (paragraph | bullet_list | ordered_list)*',
       defining: true,
       draggable: true,
       parseDOM: [{ tag: 'li' }],
       toDOM: () => ['li', 0],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.renderContent(node);
       },
       parseMarkdown: {
-        list_item: { block: this.name },
+        list_item: { block: name },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type }) {
-    return () => (state, dispatch) => {
-      dispatch(state.tr);
-    };
-  }
-
-  keys({ type, schema }) {
+export const plugins = (opts = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
     const parentCheck = parentHasDirectParentOfType(type, [
       schema.nodes['bullet_list'],
       schema.nodes['ordered_list'],
@@ -56,17 +51,22 @@ export class ListItem extends Node {
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
-    return {
-      'Backspace': backspaceKeyCommand(type),
-      'Tab': indentList(type),
-      'Enter': enterKeyCommand(type),
-      'Shift-Tab': outdentList(type),
-      'Alt-ArrowUp': filter(parentCheck, move('UP')),
-      'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
-      'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
-      'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
-      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, 'above', true)),
-      'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
-    };
-  }
-}
+    return [
+      keymap({
+        'Backspace': backspaceKeyCommand(type),
+        'Tab': indentList(type),
+        'Enter': enterKeyCommand(type),
+        'Shift-Tab': outdentList(type),
+        'Alt-ArrowUp': filter(parentCheck, move('UP')),
+        'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
+        'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
+        'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
+        'Meta-Shift-Enter': filter(
+          parentCheck,
+          insertEmpty(type, 'above', true),
+        ),
+        'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
+      }),
+    ];
+  };
+};

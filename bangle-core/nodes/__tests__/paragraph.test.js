@@ -4,52 +4,26 @@
 
 /** @jsx psx */
 import {
-  renderTestEditor,
+  renderTestEditor2,
   psx,
   typeText,
   sendKeyToPm,
 } from 'bangle-core/test-helpers';
+import { paragraph } from '../index';
 
-import { OrderedList } from '../ordered-list';
-import { BulletList } from '../bullet-list';
-import { ListItem } from '../list-item/list-item';
-import { Underline } from '../../marks';
-
-import { CodeBlock } from '../code-block';
-import { Heading } from '../heading';
-import { HardBreak } from '../hard-break';
-
-import { Blockquote } from '../blockquote';
-import { TodoList } from '../todo-list';
-import { TodoItem } from '../todo-item';
-import { Paragraph } from '../paragraph';
-
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
-  new TodoList(),
-  new TodoItem(),
-  new Blockquote(),
-  new CodeBlock(),
-];
-
-const testEditor = renderTestEditor({ extensions, type: 'new' });
+const testEditor = renderTestEditor2();
 
 describe('Basics', () => {
   test('is able to type paragraph', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>foo[]bar</para>
       </doc>,
     );
 
-    typeText(editor.view, 'hello');
+    typeText(view, 'hello');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>foohello[]bar</para>
       </doc>,
@@ -57,15 +31,15 @@ describe('Basics', () => {
   });
 
   test('is able to create a new paragraph', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>foo[]bar</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Enter');
+    sendKeyToPm(view, 'Enter');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>foo</para>
         <para>[]bar</para>
@@ -74,15 +48,15 @@ describe('Basics', () => {
   });
 
   test('is able to create a new paragraph', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>foobar[]</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Enter');
+    sendKeyToPm(view, 'Enter');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>foobar</para>
         <para>[]</para>
@@ -92,15 +66,15 @@ describe('Basics', () => {
 
   // TODO this is broken for some reason
   test.skip('is able to backspace', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>foobar[]</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Backspace');
+    sendKeyToPm(view, 'Backspace');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>fooba[]</para>
       </doc>,
@@ -109,17 +83,17 @@ describe('Basics', () => {
 });
 
 describe('Moving selection start and end', () => {
-  const { keys } = new Paragraph().options;
+  const keys = paragraph.defaultKeys;
   it('Moves selection to the start', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>foobar[]</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
+    sendKeyToPm(view, keys.jumpToStartOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]foobar</para>
       </doc>,
@@ -127,15 +101,15 @@ describe('Moving selection start and end', () => {
   });
 
   it('Moves selection to the start', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>f[]oobar</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
+    sendKeyToPm(view, keys.jumpToStartOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]foobar</para>
       </doc>,
@@ -143,15 +117,15 @@ describe('Moving selection start and end', () => {
   });
 
   it('Moves selection to the start', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>[]foobar</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
+    sendKeyToPm(view, keys.jumpToStartOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]foobar</para>
       </doc>,
@@ -159,7 +133,7 @@ describe('Moving selection start and end', () => {
   });
 
   it('Moves selection to start when inside a list', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <ul>
           <li>
@@ -169,9 +143,9 @@ describe('Moving selection start and end', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToStartOfLine);
+    sendKeyToPm(view, keys.jumpToStartOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
           <li>
@@ -183,15 +157,15 @@ describe('Moving selection start and end', () => {
   });
 
   it('Moves selection to the end', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>[]foobar</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToEndOfLine);
+    sendKeyToPm(view, keys.jumpToEndOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>foobar[]</para>
       </doc>,
@@ -199,15 +173,15 @@ describe('Moving selection start and end', () => {
   });
 
   it('Moves selection to the end', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>fooba[]r</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToEndOfLine);
+    sendKeyToPm(view, keys.jumpToEndOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>foobar[]</para>
       </doc>,
@@ -215,7 +189,7 @@ describe('Moving selection start and end', () => {
   });
 
   it('Moves selection to end when inside a list', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <ul>
           <li>
@@ -225,9 +199,9 @@ describe('Moving selection start and end', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, keys.jumpToEndOfLine);
+    sendKeyToPm(view, keys.jumpToEndOfLine);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
           <li>
@@ -519,11 +493,11 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert above', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, 'Cmd-Shift-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 
   test.each([
@@ -585,10 +559,10 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert below', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Enter');
+    sendKeyToPm(view, 'Cmd-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 });

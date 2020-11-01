@@ -1,31 +1,27 @@
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
-import { Node } from './node';
 import { toggleList } from './list-item/commands';
-import { rafWrap } from '../utils/js-utils';
-import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
+import { keymap } from 'prosemirror-keymap';
 
-export class TodoList extends Node {
-  get name() {
-    return 'todo_list';
-  }
+const name = 'todo_list';
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
-  get schema() {
-    return {
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       group: 'block',
       content: 'todo_item+',
-      toDOM: () => ['ul', { 'data-type': this.name }, 0],
+      toDOM: () => ['ul', { 'data-type': name }, 0],
       parseDOM: [
         {
           priority: 51,
-          tag: `[data-type="${this.name}"]`,
+          tag: `[data-type="${name}"]`,
         },
       ],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.renderList(node, '  ', () => `- `);
       },
@@ -34,28 +30,21 @@ export class TodoList extends Node {
           block: 'todo_list',
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type, schema }) {
-    return {
-      // TODO I am not sure why raf fixes the problem,
-      // but wrapping it inside an raf seems to avoid the
-      // problem of losing focus and getting the selection in wrong place
-      todo_list: () => rafWrap(toggleList(type, schema.nodes.todo_item)),
-    };
-  }
-
-  keys({ type, schema }) {
-    return {
-      'Shift-Ctrl-7': toggleList(type, schema.nodes.todo_item),
-    };
-  }
-
-  inputRules({ type }) {
-    return [wrappingInputRule(/^\s*(\[ \])\s$/, type)];
-  }
-}
+export const plugins = (opts = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
+    return [
+      wrappingInputRule(/^\s*(\[ \])\s$/, type),
+      keymap({
+        'Shift-Ctrl-7': toggleList(type, schema.nodes.todo_item),
+      }),
+    ];
+  };
+};
 
 const toggleTodoList = (state, dispatch, view) => {
   const { schema } = state;
