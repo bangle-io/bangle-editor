@@ -5,13 +5,13 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
-import { Editor } from 'bangle-core/editor';
+import { prosemirrorSetup, focusView } from '../editor';
 
 const LOG = false;
 
 function log(...args) {
   if (LOG) {
-    console.log('react-editor.js', ...args);
+    console.log('react-editor2.js', ...args);
   }
 }
 
@@ -48,8 +48,8 @@ class PortalWrapper extends React.PureComponent {
   }
 
   // called from custom-node-view.js#renderComp
-  renderNodeView = ({ dom, extension, renderingPayload }) => {
-    if (this.portalProviderAPI.render({ dom, extension, renderingPayload })) {
+  renderNodeView = ({ dom, spec, renderingPayload }) => {
+    if (this.portalProviderAPI.render({ dom, spec, renderingPayload })) {
       log('asking to rerender due to renderNodeView');
       this.rerender();
     }
@@ -101,6 +101,7 @@ class PMEditorWrapper extends React.Component {
   };
   editorRenderTarget = React.createRef();
   devtools;
+
   shouldComponentUpdate() {
     return false;
   }
@@ -108,47 +109,56 @@ class PMEditorWrapper extends React.Component {
     const { options, renderNodeView, destroyNodeView } = this.props;
     const node = this.editorRenderTarget.current;
     if (node) {
-      const onInit = ({ view, state, editor }) => {
-        this.context.onEditorReady(editor);
-        editor.focus();
-        if (options.onInit) {
-          options.onInit({ view, state, editor });
-        }
-        if (options.devtools) {
-          window.editor = editor;
-          getIdleCallback(() => {
-            import(
-              /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-            ).then((args) => {
-              this.devtools = args.applyDevTools(view);
-            });
-          });
-        }
-      };
       // TODO fix this mess
-      this.editor = new Editor(node, {
+      const view = prosemirrorSetup(node, {
         ...options,
         renderNodeView,
         destroyNodeView,
-        onInit,
       });
+      this.view = view;
+      //   this.context.onEditorReady({ view });
+      //   view.focus();
+      focusView(view);
+
+      if (options.onReady) {
+        options.onReady(view);
+      }
+
+      if (options.devtools) {
+        window.editorView = view;
+        getIdleCallback(() => {
+          import(
+            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+          ).then((args) => {
+            this.devtools = args.applyDevTools(view);
+          });
+        });
+      }
     }
   }
 
   componentWillUnmount() {
     log('EditorComp unmounting');
     // When editor is destroyed it takes care  of calling destroyNodeView
-    this.editor && this.editor.destroy();
+    this.view && this.view.destroy();
     if (this.props.options.devtools && this.devtools) {
       this.devtools();
     }
-    if (window.editor) {
-      window.editor = null;
+    if (window.editorView) {
+      window.editorView = null;
     }
   }
 
   render() {
     log('rendering PMEditorWrapper');
-    return <div ref={this.editorRenderTarget} id={this.props.options.id} />;
+    return (
+      <>
+        <div
+          ref={this.editorRenderTarget}
+          id={this.props.options.id}
+          data-testid={this.props.options.testId}
+        />
+      </>
+    );
   }
 }

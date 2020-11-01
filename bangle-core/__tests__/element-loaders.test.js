@@ -1,7 +1,7 @@
 import { schemaLoader } from 'bangle-core/element-loaders';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { hardBreak, doc, paragraph, text } from '../node-components/index';
-import { bold } from '../mark-components/index';
+import { hardBreak, doc, paragraph, text } from '../nodes/index';
+import { bold } from '../marks/index';
 
 test('Loads node and marks schema correctly', () => {
   const schema = schemaLoader([

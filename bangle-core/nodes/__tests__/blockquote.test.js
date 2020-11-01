@@ -3,47 +3,26 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from 'bangle-core/test-helpers';
+import {
+  psx,
+  renderTestEditor2,
+  sendKeyToPm,
+} from 'bangle-core/test-helpers/index';
 
-import { OrderedList } from '../ordered-list';
-import { BulletList } from '../bullet-list';
-import { ListItem } from '../list-item/list-item';
-
-import { Underline } from '../../marks';
-
-import { CodeBlock } from '../code-block';
-import { Heading } from '../heading';
-import { HardBreak } from '../hard-break';
-import { Blockquote } from '../blockquote';
-import { TodoList } from '../todo-list';
-import { TodoItem } from '../todo-item';
 import { typeText } from 'bangle-core/test-helpers/index';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
-  new TodoList(),
-  new TodoItem(),
-  new Blockquote(),
-  new CodeBlock(),
-];
-
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor2();
 
 describe('Markdown shorthand works', () => {
   it('pressing > on empty paragraph works', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>[]</para>
       </doc>,
     );
 
-    typeText(editor.view, '> kj');
-    expect(editor.state).toEqualDocAndSelection(
+    typeText(view, '> kj');
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <blockquote>
           <para>kj[]</para>
@@ -53,14 +32,14 @@ describe('Markdown shorthand works', () => {
   });
 
   it('pressing > on empty heading works', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <heading>[]</heading>
       </doc>,
     );
 
-    typeText(editor.view, '> kj');
-    expect(editor.state).toEqualDocAndSelection(
+    typeText(view, '> kj');
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <blockquote>
           <heading>kj[]</heading>
@@ -70,7 +49,7 @@ describe('Markdown shorthand works', () => {
   });
 
   it('pressing > on empty bullet list doesnt not work', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <ul>
           <li>
@@ -80,8 +59,8 @@ describe('Markdown shorthand works', () => {
       </doc>,
     );
 
-    typeText(editor.view, '> kj');
-    expect(editor.state).toEqualDocAndSelection(
+    typeText(view, '> kj');
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
           <li>
@@ -95,15 +74,15 @@ describe('Markdown shorthand works', () => {
 
 describe('Keyboard shortcut', () => {
   it('works on empty para', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>[]</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Ctrl-ArrowRight');
+    sendKeyToPm(view, 'Ctrl-ArrowRight');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <blockquote>
           <para>[]</para>
@@ -113,15 +92,15 @@ describe('Keyboard shortcut', () => {
   });
 
   it('works with content in the para', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>kj[]</para>
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Ctrl-ArrowRight');
+    sendKeyToPm(view, 'Ctrl-ArrowRight');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <blockquote>
           <para>kj[]</para>
@@ -247,11 +226,11 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert empty paragraph above', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, 'Cmd-Shift-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 
   test.each([
@@ -369,10 +348,10 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert empty paragraph below', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Enter');
+    sendKeyToPm(view, 'Cmd-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 });

@@ -4,33 +4,15 @@
 /** @jsx psx */
 import {
   psx,
-  renderTestEditor,
+  renderTestEditor2,
   typeText,
   sendKeyToPm,
 } from 'bangle-core/test-helpers';
-import { OrderedList } from '../ordered-list';
-import { BulletList } from '../bullet-list';
-import { ListItem } from '../list-item/list-item';
-import { Underline } from '../../marks';
-import { Heading } from '../heading';
-import { HardBreak } from '../hard-break';
-import { TodoList } from '../todo-list';
-import { TodoItem } from '../todo-item';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new TodoList(),
-  new TodoItem(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
-];
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor2();
 
 test('Typing works', async () => {
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <todoList>
         <todoItem>
@@ -40,9 +22,9 @@ test('Typing works', async () => {
     </doc>,
   );
 
-  typeText(editor.view, 'hello');
+  typeText(view, 'hello');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <todoList>
         <todoItem>
@@ -54,7 +36,7 @@ test('Typing works', async () => {
 });
 
 test('Pressing Enter', async () => {
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <todoList>
         <todoItem>
@@ -64,11 +46,11 @@ test('Pressing Enter', async () => {
     </doc>,
   );
 
-  typeText(editor.view, 'hello');
-  sendKeyToPm(editor.view, 'Enter');
-  typeText(editor.view, 'second');
+  typeText(view, 'hello');
+  sendKeyToPm(view, 'Enter');
+  typeText(view, 'second');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <todoList>
         <todoItem>
@@ -84,7 +66,7 @@ test('Pressing Enter', async () => {
 
 describe('Pressing Tab', () => {
   test('first list has no effect', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -94,9 +76,9 @@ describe('Pressing Tab', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Tab');
+    sendKeyToPm(view, 'Tab');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -107,7 +89,7 @@ describe('Pressing Tab', () => {
     );
   });
   test('second list nests', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -120,9 +102,9 @@ describe('Pressing Tab', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Tab');
+    sendKeyToPm(view, 'Tab');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -137,9 +119,9 @@ describe('Pressing Tab', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Shift-Tab');
+    sendKeyToPm(view, 'Shift-Tab');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -661,7 +643,7 @@ describe('Alt-up/down of nesting ol/ul list', () => {
 
 describe('Nesting heterogenous lists', () => {
   it('converts to ol', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -676,9 +658,9 @@ describe('Nesting heterogenous lists', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Ctrl-Shift-9');
+    sendKeyToPm(view, 'Ctrl-Shift-9');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -695,7 +677,7 @@ describe('Nesting heterogenous lists', () => {
   });
 
   it('converts to ul', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -710,9 +692,9 @@ describe('Nesting heterogenous lists', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Ctrl-Shift-8');
+    sendKeyToPm(view, 'Ctrl-Shift-8');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -729,7 +711,7 @@ describe('Nesting heterogenous lists', () => {
   });
 
   it('pressing enter on empty nested li should outdent and take the type of the parent', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -744,9 +726,9 @@ describe('Nesting heterogenous lists', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Enter');
+    sendKeyToPm(view, 'Enter');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -762,7 +744,7 @@ describe('Nesting heterogenous lists', () => {
 
   // TODO I think this blocked by the bug described by a test in list item https://github.com/kepta/bangle-play/blob/ee3305892fbe46e1217b28045b14955e94f24430/bangle-play/utilsnodes/__tests__/list-item.test.js#L553
   it.skip('pressing enter on empty nested li should outdent and take the type of the parent when their are other sibblings', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -780,9 +762,9 @@ describe('Nesting heterogenous lists', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Enter');
+    sendKeyToPm(view, 'Enter');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -802,7 +784,7 @@ describe('Nesting heterogenous lists', () => {
   });
 
   it('pressing enter on empty double nested li should outdent and take the type of the parent', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -822,9 +804,9 @@ describe('Nesting heterogenous lists', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Enter');
+    sendKeyToPm(view, 'Enter');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -846,7 +828,7 @@ describe('Nesting heterogenous lists', () => {
   // Do we want this ? A user can in theory select all the items and
   // convert them to whatever the want
   it.skip('converts every sibbling to ol', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <todoList>
           <todoItem>
@@ -864,9 +846,9 @@ describe('Nesting heterogenous lists', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Ctrl-Shift-9');
+    sendKeyToPm(view, 'Ctrl-Shift-9');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <todoList>
           <todoItem>
@@ -1073,11 +1055,11 @@ describe('Insert empty todo above and below', () => {
       </doc>,
     ],
   ])('Case %# insert above', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, 'Cmd-Shift-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 
   test.each([
@@ -1181,10 +1163,10 @@ describe('Insert empty todo above and below', () => {
       </doc>,
     ],
   ])('Case %# insert below', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Enter');
+    sendKeyToPm(view, 'Cmd-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 });

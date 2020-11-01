@@ -1,44 +1,32 @@
-import { history, undo, redo, undoDepth, redoDepth } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
+import * as pmHistory from 'prosemirror-history';
 
-import { Extension } from './extension';
+const name = 'history';
 
-export class History extends Extension {
-  get name() {
-    return 'history';
-  }
+export const spec = (opts = {}) => {
+  return {
+    name,
+    type: 'component',
+  };
+};
 
-  get defaultOptions() {
-    return {
-      depth: '',
-      newGroupDelay: '',
-    };
-  }
-
-  keys() {
-    const keymap = {
-      'Mod-z': undo,
-      'Mod-y': redo,
-      'Shift-Mod-z': redo,
-    };
-
-    return keymap;
-  }
-
-  get plugins() {
+export const plugins = ({ depth = '', newGroupDelay = '' } = {}) => {
+  return ({ schema }) => {
     return [
-      history({
-        depth: this.options.depth,
-        newGroupDelay: this.options.newGroupDelay,
+      pmHistory.history({
+        depth: depth,
+        newGroupDelay: newGroupDelay,
+      }),
+      keymap({
+        'Mod-z': undo,
+        'Mod-y': redo,
+        'Shift-Mod-z': redo,
       }),
     ];
-  }
+  };
+};
 
-  commands() {
-    return {
-      undo: () => undo,
-      redo: () => redo,
-      undoDepth: () => undoDepth,
-      redoDepth: () => redoDepth,
-    };
-  }
-}
+export const undo = () => pmHistory.undo;
+export const redo = () => pmHistory.redo;
+export const undoDepth = () => pmHistory.undoDepth;
+export const redoDepth = () => pmHistory.redoDepth;

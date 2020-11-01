@@ -1,23 +1,22 @@
 import { chainCommands, exitCode } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
 
-import { Node } from './node';
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export class HardBreak extends Node {
-  get name() {
-    return 'hard_break';
-  }
+const name = 'hard_break';
 
-  get schema() {
-    return {
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       inline: true,
       group: 'inline',
       selectable: false,
       parseDOM: [{ tag: 'br' }],
       toDOM: () => ['br'],
-    };
-  }
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node, parent, index) {
         for (let i = index + 1; i < parent.childCount; i++) {
           if (parent.child(i).type !== node.type) {
@@ -27,16 +26,21 @@ export class HardBreak extends Node {
         }
       },
       parseMarkdown: { hardbreak: { node: 'hard_break' } },
-    };
-  }
+    },
+  };
+};
 
-  keys({ type }) {
+export const plugins = (opts = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
     const command = chainCommands(exitCode, (state, dispatch) => {
       dispatch(state.tr.replaceSelectionWith(type.create()).scrollIntoView());
       return true;
     });
-    return {
-      'Shift-Enter': command,
-    };
-  }
-}
+    return [
+      keymap({
+        'Shift-Enter': command,
+      }),
+    ];
+  };
+};

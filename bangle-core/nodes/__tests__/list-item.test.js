@@ -5,18 +5,10 @@
 import {
   applyCommand,
   psx,
-  renderTestEditor,
+  renderTestEditor2,
   sendKeyToPm,
   typeText,
 } from 'bangle-core/test-helpers';
-
-import { OrderedList } from '../ordered-list';
-import { BulletList } from '../bullet-list';
-import { ListItem } from '../list-item/list-item';
-import { Underline } from '../../marks';
-import { CodeBlock } from '../code-block';
-import { Heading } from '../heading';
-import { HardBreak } from '../hard-break';
 
 import {
   enterKeyCommand,
@@ -24,15 +16,34 @@ import {
   backspaceKeyCommand,
 } from '../list-item/commands';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
+import {
+  bulletList,
+  listItem,
+  orderedList,
+  hardBreak,
+  heading,
+  underline,
+  codeBlock,
+} from '../../components';
+
+const editorSpec = [
+  bulletList.spec(),
+  listItem.spec(),
+  orderedList.spec(),
+  hardBreak.spec(),
+  heading.spec(),
+  underline.spec(),
 ];
-const testEditor = renderTestEditor({ extensions });
+const plugins = [
+  bulletList.plugins(),
+  listItem.plugins(),
+  orderedList.plugins(),
+  hardBreak.plugins(),
+  heading.plugins(),
+  underline.plugins(),
+];
+
+const testEditor = renderTestEditor2({ editorSpec, plugins });
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;
@@ -68,14 +79,7 @@ describe('Command: toggleList', () => {
 });
 
 describe('Command: backspaceKeyCommand', () => {
-  const extensions = [
-    new BulletList(),
-    new ListItem(),
-    new OrderedList(),
-    new HardBreak(),
-    new CodeBlock(),
-  ];
-  const testEditor = renderTestEditor({ extensions });
+  const testEditor = renderTestEditor2({});
   let updateDoc,
     editorView,
     cmd = applyCommand(backspaceKeyCommand());
@@ -422,14 +426,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 
   it('should be not be possible to convert a code to a list item', async () => {
-    const extensions = [
-      new BulletList(),
-      new ListItem(),
-      new OrderedList(),
-      new HardBreak(),
-      new CodeBlock(),
-    ];
-    const testEditor = renderTestEditor({ extensions });
+    const testEditor = renderTestEditor2({});
 
     const { editorView, sel } = await testEditor(
       <doc>
@@ -504,7 +501,7 @@ describe('Markdown shortcuts Input rules', () => {
 });
 
 test('Typing works', async () => {
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <ul>
         <li>
@@ -514,9 +511,9 @@ test('Typing works', async () => {
     </doc>,
   );
 
-  typeText(editor.view, 'hello');
+  typeText(view, 'hello');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <ul>
         <li>
@@ -528,7 +525,7 @@ test('Typing works', async () => {
 });
 
 test('Pressing Enter', async () => {
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <ul>
         <li>
@@ -538,9 +535,9 @@ test('Pressing Enter', async () => {
     </doc>,
   );
 
-  sendKeyToPm(editor.view, 'Enter');
+  sendKeyToPm(view, 'Enter');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <ul>
         <li>
@@ -556,7 +553,7 @@ test('Pressing Enter', async () => {
 
 describe('Pressing Tab', () => {
   test('first list has no effect', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <ul>
           <li>
@@ -566,9 +563,9 @@ describe('Pressing Tab', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Tab');
+    sendKeyToPm(view, 'Tab');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
           <li>
@@ -579,7 +576,7 @@ describe('Pressing Tab', () => {
     );
   });
   test('second list nests', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <ul>
           <li>
@@ -592,9 +589,9 @@ describe('Pressing Tab', () => {
       </doc>,
     );
 
-    sendKeyToPm(editor.view, 'Tab');
+    sendKeyToPm(view, 'Tab');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
           <li>
@@ -4566,11 +4563,11 @@ describe('Insert empty list above and below', () => {
       </doc>,
     ],
   ])('Case %# insert above', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, 'Cmd-Shift-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 
   test.each([
@@ -4674,10 +4671,10 @@ describe('Insert empty list above and below', () => {
       </doc>,
     ],
   ])('Case %# insert below', async (input, expected) => {
-    const { editor } = await testEditor(input);
+    const { view } = await testEditor(input);
 
-    sendKeyToPm(editor.view, 'Cmd-Enter');
+    sendKeyToPm(view, 'Cmd-Enter');
 
-    expect(editor.state).toEqualDocAndSelection(expected);
+    expect(view.state).toEqualDocAndSelection(expected);
   });
 });

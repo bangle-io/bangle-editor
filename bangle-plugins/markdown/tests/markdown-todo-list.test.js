@@ -395,7 +395,9 @@ describe('Markdown todo parsing', () => {
     );
     const doc = await parse(md);
     const md2 = await serialize(doc);
-    expect(doc).toEqual(await parse(md2));
+    const res = await parse(md2);
+
+    expect(doc.eq(res)).toBe(true);
     expect(md2.trim()).toEqual(md.trim());
     expect(doc).toMatchSnapshot();
   });

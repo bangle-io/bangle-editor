@@ -1,44 +1,39 @@
 import { InputRule } from 'prosemirror-inputrules';
 
-import { Node } from './node';
+const name = 'horizontal_rule';
 
-export class HorizontalRule extends Node {
-  get name() {
-    return 'horizontal_rule';
-  }
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
-  get schema() {
-    return {
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       group: 'block',
       parseDOM: [{ tag: 'hr' }],
       toDOM: () => ['hr'],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.write(node.attrs.markup || '---');
         state.closeBlock(node);
       },
       parseMarkdown: { hr: { node: 'horizontal_rule' } },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type }) {
-    return () => (state, dispatch) =>
-      dispatch(state.tr.replaceSelectionWith(type.create()));
-  }
+export const plugins = ({ keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
 
-  inputRules({ type }) {
-    return new InputRule(
-      /^(?:---|___\s|\*\*\*\s)$/,
-      (state, match, start, end) => {
+    return [
+      new InputRule(/^(?:---|___\s|\*\*\*\s)$/, (state, match, start, end) => {
         if (!match[0]) {
           return false;
         }
         return state.tr.replaceWith(start - 1, end, type.create({}));
-      },
-    );
-  }
-}
+      }),
+    ];
+  };
+};

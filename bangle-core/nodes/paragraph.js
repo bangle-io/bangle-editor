@@ -1,8 +1,7 @@
 import { setBlockType } from 'prosemirror-commands';
 import { TextSelection } from 'prosemirror-state';
-
-import { Node } from './node';
-import { moveNode } from './list-item/commands';
+import { moveNode } from '../nodes/list-item/commands';
+import { keymap } from 'prosemirror-keymap';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import {
   parentHasDirectParentOfType,
@@ -11,21 +10,21 @@ import {
 } from '../core-commands';
 import browser from '../utils/browser';
 
-export class Paragraph extends Node {
-  get defaultOptions() {
-    return {
-      keys: {
-        jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
-        jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
-      },
-    };
-  }
-  get name() {
-    return 'paragraph';
-  }
+const name = 'paragraph';
 
-  get schema() {
-    return {
+const getType = (state) => state.schema.nodes[name];
+const getTypeFromSchema = (schema) => schema.nodes[name];
+
+export const defaultKeys = {
+  jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
+  jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
+};
+
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       content: 'inline*',
       group: 'block',
       draggable: false,
@@ -35,11 +34,8 @@ export class Paragraph extends Node {
         },
       ],
       toDOM: () => ['p', 0],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.renderInline(node);
         state.closeBlock(node);
@@ -49,31 +45,35 @@ export class Paragraph extends Node {
           block: 'paragraph',
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type }) {
-    return () => setBlockType(type);
-  }
-
-  keys({ type, schema }) {
+export const plugins = ({ keys = defaultKeys } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
     // Enables certain command to only work if paragraph is direct child of the `doc` node
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
+    return [
+      keymap({
+        'Alt-ArrowUp': filter(isTopLevel, moveNode(type, 'UP')),
+        'Alt-ArrowDown': filter(isTopLevel, moveNode(type, 'DOWN')),
 
-    return {
-      'Alt-ArrowUp': filter(isTopLevel, moveNode(type, 'UP')),
-      'Alt-ArrowDown': filter(isTopLevel, moveNode(type, 'DOWN')),
+        [keys.jumpToStartOfLine]: jumpToStartOfLine(type),
+        [keys.jumpToEndOfLine]: jumpToEndOfLine(type),
 
-      [this.options.keys.jumpToStartOfLine]: jumpToStartOfLine(type),
-      [this.options.keys.jumpToEndOfLine]: jumpToEndOfLine(type),
+        'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
+        'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
 
-      'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
-      'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
+        'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, 'above')),
+        'Meta-Enter': filter(isTopLevel, insertEmpty(type, 'below')),
+      }),
+    ];
+  };
+};
 
-      'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, 'above')),
-      'Meta-Enter': filter(isTopLevel, insertEmpty(type, 'below')),
-    };
-  }
+export function setParagraph() {
+  return (state, dispatch) => setBlockType(getType(state))(state, dispatch);
 }
 
 function jumpToStartOfLine(type) {

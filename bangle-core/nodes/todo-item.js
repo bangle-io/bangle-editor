@@ -1,9 +1,9 @@
 import React from 'react';
 import { chainCommands } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
 
 import browser from '../utils/browser';
 import { uuid, classNames as cx } from '../utils/js-utils';
-import { Node } from './node';
 import { objUid } from '../utils/object-uid';
 import {
   enterKeyCommand,
@@ -29,40 +29,25 @@ function log(...args) {
   }
 }
 
-export class TodoItem extends Node {
-  get name() {
-    return 'todo_item';
-  }
+const name = 'todo_item';
 
-  get defaultOptions() {
-    return {
-      nested: true,
-      createContentDOM: () => {
-        const d = document.createElement('div');
-        d.setAttribute('data-uuid', 'todo-content-dom-' + uuid(4));
-        return { dom: d };
-      },
-      createDom: () => {
-        const d = document.createElement('li');
-        d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
-        return d;
-      },
-      domRefClasses: () => `flex flex-row`,
-    };
-  }
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
-  get schema() {
-    return {
+export const spec = ({ nested = true } = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       attrs: {
         'data-type': {
-          default: this.name,
+          default: name,
         },
         'data-done': {
           default: false,
         },
       },
       draggable: true,
-      content: this.options.nested
+      content: nested
         ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
         : '(paragraph) (paragraph | bullet_list | ordered_list)*',
       toDOM: (node) => {
@@ -70,7 +55,7 @@ export class TodoItem extends Node {
         return [
           'li',
           {
-            'data-type': this.name,
+            'data-type': name,
             'data-done': done.toString(),
           },
           ['span', { contenteditable: 'false' }],
@@ -80,17 +65,14 @@ export class TodoItem extends Node {
       parseDOM: [
         {
           priority: 51,
-          tag: `[data-type="${this.name}"]`,
+          tag: `[data-type="${name}"]`,
           getAttrs: (dom) => ({
             'data-done': dom.getAttribute('data-done') === 'true',
           }),
         },
       ],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.write(node.attrs['data-done'] ? '[x] ' : '[ ] ');
         state.renderContent(node);
@@ -104,10 +86,34 @@ export class TodoItem extends Node {
           }),
         },
       },
-    };
-  }
+    },
+    nodeView: {
+      createContentDOM: () => {
+        const d = document.createElement('div');
+        d.setAttribute('data-uuid', 'todo-content-dom-' + uuid(4));
+        return { dom: d };
+      },
+      createDom: () => {
+        const d = document.createElement('li');
+        d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
+        return d;
+      },
+      domRefClasses: () => `flex flex-row`,
+      render: (props) => {
+        const mobile = browser.ios || browser.android;
 
-  keys({ type, schema }) {
+        if (mobile) {
+          return <MobileTodo {...props} />;
+        }
+        return <TodoItemComp {...props} />;
+      },
+    },
+  };
+};
+
+export const plugins = ({ nested = true, keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
@@ -115,42 +121,38 @@ export class TodoItem extends Node {
       type,
       schema.nodes['todo_list'],
     );
-    return {
-      'Ctrl-Enter': filter(
-        parentCheck,
-        updateNodeAttrs(type, (attrs) => ({
-          ...attrs,
-          'data-done': !attrs['data-done'],
-        })),
-      ),
+    return [
+      keymap({
+        'Ctrl-Enter': filter(
+          parentCheck,
+          updateNodeAttrs(type, (attrs) => ({
+            ...attrs,
+            'data-done': !attrs['data-done'],
+          })),
+        ),
 
-      'Enter': enterKeyCommand(type),
+        'Enter': enterKeyCommand(type),
 
-      'Backspace': backspaceKeyCommand(type),
+        'Backspace': backspaceKeyCommand(type),
 
-      'Tab': this.options.nested ? indentList(type) : () => {},
-      'Shift-Tab': outdentList(type),
+        'Tab': nested ? indentList(type) : () => {},
+        'Shift-Tab': outdentList(type),
 
-      'Alt-ArrowUp': filter(parentCheck, move('UP')),
-      'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
+        'Alt-ArrowUp': filter(parentCheck, move('UP')),
+        'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
 
-      'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
-      'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
+        'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
+        'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
 
-      'Meta-Shift-Enter': filter(parentCheck, insertEmpty(type, 'above', true)),
-      'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
-    };
-  }
-
-  render = (props) => {
-    const mobile = browser.ios || browser.android;
-
-    if (mobile) {
-      return <MobileTodo {...props} />;
-    }
-    return <TodoItemComp {...props} />;
+        'Meta-Shift-Enter': filter(
+          parentCheck,
+          insertEmpty(type, 'above', true),
+        ),
+        'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
+      }),
+    ];
   };
-}
+};
 
 function TodoItemComp(props) {
   const { node, view, handleRef, updateAttrs } = props;

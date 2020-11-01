@@ -21,7 +21,7 @@ export class PortalProviderAPI extends Emitter {
 
   // Returns true if a new element was added
   // false if an element already existed
-  render({ dom, extension, renderingPayload }) {
+  render({ dom, spec, renderingPayload }) {
     const renderKey = objUid.get(dom);
     // If the element already exists communicate
     // to selectively update it, bypassing the entire array re-render in PortalRenderer
@@ -33,12 +33,12 @@ export class PortalProviderAPI extends Emitter {
 
     log('PortalProviderAPI: creating new', renderKey);
 
-    if (!extension.render.displayName) {
-      extension.render.displayName = `ParentNodeView[${extension.name}]`;
+    if (!spec.nodeView.render.displayName) {
+      spec.nodeView.render.displayName = `ParentNodeView[${spec.name}]`;
     }
 
     const portalElement = createPortal({
-      Element: extension.render,
+      Element: spec.nodeView.render,
       emitter: this,
       renderKey,
       childProps: renderingPayload,

@@ -1,20 +1,17 @@
-import {
-  toggleBlockType,
-  setBlockType,
-  textblockTypeInputRule,
-} from 'tiptap-commands';
-
-import { Node } from './node';
-import { moveNode } from './list-item/commands';
+import { moveNode } from 'bangle-core/nodes/list-item/commands';
+import { keymap } from 'prosemirror-keymap';
+import { setBlockType, textblockTypeInputRule } from 'tiptap-commands';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 
-export class CodeBlock extends Node {
-  get name() {
-    return 'code_block';
-  }
+const name = 'code_block';
 
-  get schema() {
-    return {
+const getTypeFromSchema = (schema) => schema.nodes[name];
+
+export const spec = (opts = {}) => {
+  return {
+    type: 'node',
+    name,
+    schema: {
       attrs: {
         language: { default: '' },
       },
@@ -26,11 +23,8 @@ export class CodeBlock extends Node {
       draggable: false,
       parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
       toDOM: () => ['pre', ['code', 0]],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown(state, node) {
         state.write('```' + (node.attrs.language || '') + '\n');
         state.text(node.textContent, false);
@@ -46,35 +40,33 @@ export class CodeBlock extends Node {
           noCloseToken: true,
         },
       },
-    };
-  }
+    },
+  };
+};
 
-  commands({ type, schema }) {
-    return () => toggleBlockType(type, schema.nodes.paragraph);
-  }
-
-  keys({ type, schema }) {
+export const plugins = ({ keys = {} } = {}) => {
+  return ({ schema }) => {
+    const type = getTypeFromSchema(schema);
     const isInCodeBlock = (state) =>
       findParentNodeOfType(type)(state.selection);
 
-    return {
-      'Shift-Ctrl-\\': setBlockType(type),
+    return [
+      textblockTypeInputRule(/^```$/, type),
+      keymap({
+        'Shift-Ctrl-\\': setBlockType(type),
 
-      'Alt-ArrowUp': moveNode(type, 'UP'),
-      'Alt-ArrowDown': moveNode(type, 'DOWN'),
+        'Alt-ArrowUp': moveNode(type, 'UP'),
+        'Alt-ArrowDown': moveNode(type, 'DOWN'),
 
-      'Meta-Shift-Enter': filter(
-        isInCodeBlock,
-        insertEmpty(schema.nodes.paragraph, 'above', false),
-      ),
-      'Meta-Enter': filter(
-        isInCodeBlock,
-        insertEmpty(schema.nodes.paragraph, 'below', false),
-      ),
-    };
-  }
-
-  inputRules({ type }) {
-    return [textblockTypeInputRule(/^```$/, type)];
-  }
-}
+        'Meta-Shift-Enter': filter(
+          isInCodeBlock,
+          insertEmpty(schema.nodes.paragraph, 'above', false),
+        ),
+        'Meta-Enter': filter(
+          isInCodeBlock,
+          insertEmpty(schema.nodes.paragraph, 'below', false),
+        ),
+      }),
+    ];
+  };
+};

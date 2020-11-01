@@ -5,56 +5,29 @@
 /** @jsx psx */
 import {
   psx,
-  renderTestEditor,
+  renderTestEditor2,
   dispatchPasteEvent,
   typeText,
   createEvent,
 } from '../../test-helpers/index';
 
-import { OrderedList } from '../ordered-list';
-import { BulletList } from '../bullet-list';
-import { ListItem } from '../list-item/list-item';
-
-import { Underline } from '../../marks';
-
-import { CodeBlock } from '../code-block';
-import { Heading } from '../heading';
-import { HardBreak } from '../hard-break';
-import { Blockquote } from '../blockquote';
-import { TodoList } from '../todo-list';
-import { TodoItem } from '../todo-item';
-import { Image } from '../image';
 import { sleep } from '../../utils/js-utils';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
-  new TodoList(),
-  new TodoItem(),
-  new Blockquote(),
-  new CodeBlock(),
-  new Image(),
-];
-
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor2({});
 const image =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==';
 
 describe('Markdown shorthand', () => {
   it('works', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
     );
 
-    typeText(editor.view, '![image](image.jpg)');
+    typeText(view, '![image](image.jpg)');
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>
           hello
@@ -68,7 +41,7 @@ describe('Markdown shorthand', () => {
 
 describe('Image pasting', () => {
   it('pasting single image', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -78,7 +51,7 @@ describe('Image pasting', () => {
       type: 'image/png',
     });
 
-    dispatchPasteEvent(editor.view, {
+    dispatchPasteEvent(view, {
       files: [file],
       items: [
         {
@@ -93,7 +66,7 @@ describe('Image pasting', () => {
     // wait for editor to add the node
     await sleep(40);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>
           hello[]
@@ -104,7 +77,7 @@ describe('Image pasting', () => {
   });
 
   it('pasting two images', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -114,7 +87,7 @@ describe('Image pasting', () => {
       type: 'image/png',
     });
 
-    dispatchPasteEvent(editor.view, {
+    dispatchPasteEvent(view, {
       files: [file],
       items: [
         {
@@ -134,7 +107,7 @@ describe('Image pasting', () => {
     // wait for editor to add the node
     await sleep(40);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>
           hello[]
@@ -146,7 +119,7 @@ describe('Image pasting', () => {
   });
 
   it('filters out non images', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -156,7 +129,7 @@ describe('Image pasting', () => {
       type: 'image/png',
     });
 
-    dispatchPasteEvent(editor.view, {
+    dispatchPasteEvent(view, {
       files: [file],
       items: [
         {
@@ -176,7 +149,7 @@ describe('Image pasting', () => {
     // wait for editor to add the node
     await sleep(40);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>
           hello[]
@@ -187,7 +160,7 @@ describe('Image pasting', () => {
   });
 
   it('when item.getAsFile returns null', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -197,7 +170,7 @@ describe('Image pasting', () => {
       type: 'image/png',
     });
 
-    dispatchPasteEvent(editor.view, {
+    dispatchPasteEvent(view, {
       files: [file],
       items: [
         {
@@ -212,7 +185,7 @@ describe('Image pasting', () => {
     // wait for editor to add the node
     await sleep(40);
 
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -222,7 +195,7 @@ describe('Image pasting', () => {
 
 describe('Image dropping', () => {
   it('dropping single image', async () => {
-    const { editor } = await testEditor(
+    const { view } = await testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -254,13 +227,13 @@ describe('Image dropping', () => {
 
     // the dom API `elementFromPoint` used by postAtCoords is not
     // available in jsdom, hence mocking it.
-    editor.view.posAtCoords = jest.fn(() => {});
-    editor.view.dispatchEvent(event);
+    view.posAtCoords = jest.fn(() => {});
+    view.dispatchEvent(event);
 
     // wait for editor to add the node
     await sleep(40);
-    expect(editor.view.posAtCoords).toBeCalledTimes(1);
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.posAtCoords).toBeCalledTimes(1);
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>
           hello

@@ -9,7 +9,7 @@ import { extensions } from '../editor/extensions';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
 import {} from 'bangle-core/marks/index';
-import { coreMarkPlugins } from 'bangle-core/mark-components/index';
+import { editorSpec } from '../editor/spec';
 const LOG = false;
 const DEBUG = true;
 let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
@@ -26,7 +26,7 @@ export class Editor extends React.PureComponent {
     id: 'bangle-play-' + this.props.docName + '-' + uuid(4),
     content: 'Loading document',
     devtools: this.devtools,
-    xPlugins: [...coreMarkPlugins()],
+    // spec: spec,
     extensions: [
       ...extensions({
         switchOffShit: false,
