@@ -399,3 +399,21 @@ export function rafSchedule(fn) {
 }
 
 export const bangleWarn = console.warn.bind(console, 'Warning in bangle.js:');
+
+export function recursiveFlat(data, callbackPayload) {
+  const recurse = (d) => {
+    if (Array.isArray(d)) {
+      return d.flatMap((i) => recurse(i)).filter(Boolean);
+    }
+    if (typeof d === 'function') {
+      if (!callbackPayload) {
+        throw new Error('Found a function but no payload');
+      }
+      return recurse(d(callbackPayload));
+    }
+
+    return d;
+  };
+
+  return recurse(data);
+}

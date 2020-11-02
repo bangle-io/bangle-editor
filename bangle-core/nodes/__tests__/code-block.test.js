@@ -5,11 +5,11 @@
 /** @jsx psx */
 import {
   psx,
-  renderTestEditor2,
+  renderTestEditor,
   sendKeyToPm,
 } from 'bangle-core/test-helpers/index';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 describe('Insert empty paragraph above and below', () => {
   test.each([

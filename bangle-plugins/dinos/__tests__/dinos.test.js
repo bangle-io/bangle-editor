@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor2 } from 'bangle-core/test-helpers/';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers/';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { dinos } from '../index';
@@ -10,7 +10,7 @@ import { dinos } from '../index';
 const editorSpec = [...coreSpec(), dinos.spec()];
 const plugins = [...corePlugins(), dinos.plugins()];
 
-const testEditor = renderTestEditor2({
+const testEditor = renderTestEditor({
   editorSpec,
   plugins,
 });
@@ -70,7 +70,7 @@ describe('markdown', () => {
   };
 
   beforeAll(async () => {
-    schemaPromise = renderTestEditor2({ editorSpec, plugins })().then(
+    schemaPromise = renderTestEditor({ editorSpec, plugins })().then(
       (r) => r.schema,
     );
   });

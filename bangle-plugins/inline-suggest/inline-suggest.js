@@ -4,11 +4,7 @@ import {
   valuePlugin,
 } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
-import {
-  hideTooltip,
-  showTooltip,
-  tooltipPlacementPlugin,
-} from '../tooltip-placement/index';
+import { tooltipPlacement } from '../tooltip-placement/index';
 import { tooltipController } from './tooltip-controller';
 import { triggerInputRule } from './trigger-input-rule';
 import * as helpers from './helpers';
@@ -36,36 +32,39 @@ export const getTooltipKey = (parentKey) => {
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 export function specFactory({ markName, trigger }) {
-  return {
-    name: markName,
-    type: 'mark',
-    schema: {
-      inclusive: true,
-      group: 'triggerMarks',
-      parseDOM: [{ tag: `span[data-${markName}]` }],
-      toDOM: (node) => {
-        return [
-          'span',
-          {
-            [`data-${markName}`]: 'true',
-            'data-trigger': node.attrs.trigger,
-            'style': `color: #0052CC`,
-          },
-        ];
+  return [
+    tooltipPlacement.spec(),
+    {
+      name: markName,
+      type: 'mark',
+      schema: {
+        inclusive: true,
+        group: 'triggerMarks',
+        parseDOM: [{ tag: `span[data-${markName}]` }],
+        toDOM: (node) => {
+          return [
+            'span',
+            {
+              [`data-${markName}`]: 'true',
+              'data-trigger': node.attrs.trigger,
+              'style': `color: #0052CC`,
+            },
+          ];
+        },
+        attrs: {
+          trigger: { default: trigger },
+        },
       },
-      attrs: {
-        trigger: { default: trigger },
-      },
-    },
 
-    markdown: {
-      toMarkdown: {
-        open: '',
-        close: '',
-        mixable: true,
+      markdown: {
+        toMarkdown: {
+          open: '',
+          close: '',
+          mixable: true,
+        },
       },
     },
-  };
+  ];
 }
 
 export function pluginsFactory({
@@ -134,7 +133,7 @@ export function pluginsFactory({
   }
 
   return ({ schema }) => {
-    const plugin = tooltipPlacementPlugin({
+    const plugin = tooltipPlacement.plugins({
       pluginName: 'inlineSuggest' + trigger + '__tooltipPlacementKey',
       key: tooltipPlacementKey,
       placement: placement,
@@ -164,8 +163,8 @@ export function pluginsFactory({
       tooltipController({
         trigger,
         markName,
-        showTooltip: showTooltip(plugin),
-        hideTooltip: hideTooltip(plugin),
+        showTooltip: tooltipPlacement.commands.showTooltip(plugin),
+        hideTooltip: tooltipPlacement.commands.hideTooltip(plugin),
       }),
     ];
   };

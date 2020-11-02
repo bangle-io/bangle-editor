@@ -9,7 +9,7 @@ import { corePlugins, coreSpec } from 'bangle-core/components';
 const defaultEditorSpec = coreSpec();
 const defaultPlugins = corePlugins();
 
-export function renderTestEditor2(
+export function renderTestEditor(
   { editorSpec = defaultEditorSpec, plugins = defaultPlugins } = {},
   testId = 'test-editor',
 ) {

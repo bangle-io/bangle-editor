@@ -7,7 +7,7 @@ import {
   psx,
   typeText,
   sendKeyToPm,
-  renderTestEditor2,
+  renderTestEditor,
 } from 'bangle-core/test-helpers';
 
 import { corePlugins, coreSpec } from 'bangle-core/components';
@@ -16,7 +16,7 @@ import { trailingNode } from '../index';
 const editorSpec = [...coreSpec(), trailingNode.spec({})];
 const plugins = [...corePlugins(), trailingNode.plugins({})];
 
-const testEditor = renderTestEditor2({
+const testEditor = renderTestEditor({
   editorSpec,
   plugins,
 });

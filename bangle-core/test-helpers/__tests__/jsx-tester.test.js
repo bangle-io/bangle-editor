@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor2, typeText } from '../../test-helpers';
+import { psx, renderTestEditor, typeText } from '../../test-helpers';
 import {
   Blockquote,
   BulletList,
@@ -16,7 +16,7 @@ import {
 } from '../../nodes/index';
 import { Underline, Link } from '../../marks';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 test.each([
   [

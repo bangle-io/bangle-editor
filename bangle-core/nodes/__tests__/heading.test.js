@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor2, sendKeyToPm } from 'bangle-core/test-helpers';
+import { psx, renderTestEditor, sendKeyToPm } from 'bangle-core/test-helpers';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 describe('Insert empty paragraph above and below', () => {
   test.each([

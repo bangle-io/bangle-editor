@@ -3,8 +3,8 @@ import { trackMousePlugin } from './track-mouse-plugin';
 import {
   showTooltip,
   hideTooltip,
-  tooltipPlacementPlugin,
   makeHideTooltipTr,
+  tooltipPlacement,
 } from 'bangle-plugins/tooltip-placement/index';
 import { filter } from 'bangle-core/utils/pm-utils';
 import { pluginKeyStore } from 'bangle-plugins/utils';
@@ -32,10 +32,13 @@ const createTooltipKey = (parentKey) => {
 };
 
 function specFactory(opts = {}) {
-  return {
-    type: 'component',
-    name,
-  };
+  return [
+    tooltipPlacement.spec(),
+    {
+      type: 'component',
+      name,
+    },
+  ];
 }
 
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -83,7 +86,7 @@ function pluginsFactory({
   onEscape = undefined,
 } = {}) {
   const tooltipKey = createTooltipKey(key);
-  const plugin = tooltipPlacementPlugin({
+  const plugin = tooltipPlacement.plugins({
     key: tooltipKey,
     pluginName: tooltipName,
     tooltipOffset: tooltipOffset,

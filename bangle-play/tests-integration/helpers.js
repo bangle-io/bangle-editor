@@ -37,14 +37,14 @@ async function mountEditor(page, props) {
 
 async function getEditorState(page) {
   return page.evaluate(() => {
-    return window.editor.state.toJSON();
+    return window.editorView.state.toJSON();
   });
 }
 
 async function getDoc(page) {
   return page
     .evaluate(() => {
-      return window.editor.state.doc.toString();
+      return window.editorView.state.doc.toString();
     })
     .then(frmt);
 }

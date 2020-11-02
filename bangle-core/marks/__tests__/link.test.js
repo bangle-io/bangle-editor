@@ -6,7 +6,7 @@
 import {
   dispatchPasteEvent,
   psx,
-  renderTestEditor2,
+  renderTestEditor,
 } from '../../test-helpers/index';
 import { toggleMark } from 'tiptap-commands';
 import {
@@ -33,7 +33,7 @@ const plugins = [
   orderedList.plugins(),
 ];
 
-const testEditor = renderTestEditor2({ editorSpec, plugins });
+const testEditor = renderTestEditor({ editorSpec, plugins });
 
 test('Creates a link correctly', async () => {
   const { editorView } = await testEditor(

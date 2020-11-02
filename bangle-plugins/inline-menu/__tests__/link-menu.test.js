@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { link, Link } from 'bangle-core/index';
-import { psx, renderTestEditor2 } from 'bangle-core/test-helpers';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers';
 import { TextSelection } from 'prosemirror-state';
 import { linkMenu } from '../index';
 jest.mock('bangle-plugins/helpers/index', () => {
@@ -18,7 +18,7 @@ const plugins = [link.plugins(), linkMenu.plugins()];
 
 describe('Link menu', () => {
   test('when no link', async () => {
-    const testEditor = renderTestEditor2({ editorSpec: editorSpec, plugins });
+    const testEditor = renderTestEditor({ editorSpec: editorSpec, plugins });
     const { view } = await testEditor(
       <doc>
         <para>foo[]bar</para>
@@ -29,7 +29,7 @@ describe('Link menu', () => {
   });
 
   test('when link but not in selection', async () => {
-    const testEditor = renderTestEditor2({ editorSpec: editorSpec, plugins });
+    const testEditor = renderTestEditor({ editorSpec: editorSpec, plugins });
     const { view } = await testEditor(
       <doc>
         <para>
@@ -61,7 +61,7 @@ describe('Link menu', () => {
   });
 
   test('when selection moves inside selection', async () => {
-    const testEditor = renderTestEditor2({ editorSpec: editorSpec, plugins });
+    const testEditor = renderTestEditor({ editorSpec: editorSpec, plugins });
 
     const { view } = await testEditor(
       <doc>

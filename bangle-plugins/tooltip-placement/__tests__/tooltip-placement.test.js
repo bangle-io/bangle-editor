@@ -5,14 +5,13 @@
 /** @jsx psx */
 import { psx } from 'bangle-core/test-helpers/index';
 
-import { EditorState } from 'prosemirror-state';
-import { tooltipPlacementPlugin } from '../tooltip-placement-plugin';
-import { Editor as PMEditor, editorStateSetup } from 'bangle-core/editor';
+import { editorStateSetup } from 'bangle-core/editor';
 import { hideTooltip, showTooltip } from '../tooltip-commands';
 import { EditorView } from 'prosemirror-view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { schemaLoader } from 'bangle-core/element-loaders';
+import { tooltipPlacement } from '../index';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {
@@ -24,7 +23,7 @@ jest.mock('@popperjs/core/lib/popper-lite', () => {
 });
 
 const setupPlugin = (opts = {}) => {
-  const plugin = tooltipPlacementPlugin({
+  const plugin = tooltipPlacement.plugins({
     tooltipDOM: document.createElement('div'),
     getScrollContainerDOM: () => {
       return document.createElement('div');
@@ -49,7 +48,7 @@ const setupPlugin = (opts = {}) => {
 };
 
 const setupEditorState = (plugin) => {
-  const editorSpec = [...coreSpec()];
+  const editorSpec = [...coreSpec(), tooltipPlacement.spec()];
   const plugins = [...corePlugins(), plugin];
 
   return editorStateSetup({

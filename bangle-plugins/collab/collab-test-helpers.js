@@ -2,7 +2,7 @@
 
 import { Manager } from './server/manager';
 import {
-  renderTestEditor2,
+  renderTestEditor,
   sendKeyToPm,
   sleep,
   typeChar,
@@ -72,7 +72,7 @@ export function setup(db = setupDb(), { managerOpts }) {
       this.editors = this.editors.filter((e) => e[0] !== id);
     },
     createEditor: async function (id, docName) {
-      const editor = await renderTestEditor2(
+      const editor = await renderTestEditor(
         {
           manager: this.manager,
           editorSpec,

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor2 } from 'bangle-core/test-helpers/';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers/';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import {
   defaultMarkdownItTokenizer,
@@ -15,7 +15,7 @@ import { emoji } from '../index';
 const editorSpec = [...coreSpec(), emoji.spec()];
 const plugins = [...corePlugins(), emoji.plugins()];
 
-const testEditor = renderTestEditor2({
+const testEditor = renderTestEditor({
   editorSpec,
   plugins,
 });
@@ -58,7 +58,7 @@ describe('markdown', () => {
     ).parse(md);
 
   beforeAll(async () => {
-    schemaPromise = renderTestEditor2({ editorSpec, plugins })().then(
+    schemaPromise = renderTestEditor({ editorSpec, plugins })().then(
       (r) => r.schema,
     );
   });
