@@ -1,34 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`inline suggest basic show and hide Case 0 different parent block 1`] = `"doc(paragraph(inline_suggest_c47(\\"/check\\")))"`;
+exports[`inline suggest basic show and hide Case 0 different parent block 1`] = `"doc(paragraph(inline_suggest_slash(\\"/check\\")))"`;
 
-exports[`inline suggest basic show and hide Case 1 different parent block 1`] = `"doc(paragraph(\\"hello \\", inline_suggest_c47(\\"/check\\")))"`;
+exports[`inline suggest basic show and hide Case 1 different parent block 1`] = `"doc(paragraph(\\"hello \\", inline_suggest_slash(\\"/check\\")))"`;
 
-exports[`inline suggest basic show and hide Case 2 different parent block 1`] = `"doc(paragraph(\\"hello\\"), paragraph(\\"hello\\"), paragraph(\\"hello \\", inline_suggest_c47(\\"/check\\")))"`;
+exports[`inline suggest basic show and hide Case 2 different parent block 1`] = `"doc(paragraph(\\"hello\\"), paragraph(\\"hello\\"), paragraph(\\"hello \\", inline_suggest_slash(\\"/check\\")))"`;
 
-exports[`inline suggest basic show and hide Case 3 different parent block 1`] = `"doc(bullet_list(list_item(paragraph(\\"hello \\", inline_suggest_c47(\\"/check\\")))))"`;
+exports[`inline suggest basic show and hide Case 3 different parent block 1`] = `"doc(bullet_list(list_item(paragraph(\\"hello \\", inline_suggest_slash(\\"/check\\")))))"`;
 
-exports[`inline suggest basic show and hide Case 4 different parent block 1`] = `"doc(todo_list(todo_item(paragraph(\\"hello \\", inline_suggest_c47(\\"/check\\")))))"`;
+exports[`inline suggest basic show and hide Case 4 different parent block 1`] = `"doc(todo_list(todo_item(paragraph(\\"hello \\", inline_suggest_slash(\\"/check\\")))))"`;
 
-exports[`inline suggest basic show and hide Case 5 different parent block 1`] = `"doc(ordered_list(list_item(paragraph(\\"hello \\", inline_suggest_c47(\\"/check\\")))))"`;
+exports[`inline suggest basic show and hide Case 5 different parent block 1`] = `"doc(ordered_list(list_item(paragraph(\\"hello \\", inline_suggest_slash(\\"/check\\")))))"`;
 
-exports[`inline suggest basic show and hide Case 6 different parent block 1`] = `"doc(blockquote(heading(\\"hello \\", inline_suggest_c47(\\"/check\\"))))"`;
+exports[`inline suggest basic show and hide Case 6 different parent block 1`] = `"doc(blockquote(heading(\\"hello \\", inline_suggest_slash(\\"/check\\"))))"`;
 
-exports[`inline suggest basic show and hide Case 7 different parent block 1`] = `"doc(blockquote(heading(\\"hello\\")), paragraph(inline_suggest_c47(\\"/check\\")))"`;
+exports[`inline suggest basic show and hide Case 7 different parent block 1`] = `"doc(blockquote(heading(\\"hello\\")), paragraph(inline_suggest_slash(\\"/check\\")))"`;
 
 exports[`inline suggest basic show and hide types a trigger 1`] = `
 <div
+  data-testid="test-editor"
   id="test-editor"
 >
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
-    tabindex="0"
   >
     <p>
       foobar 
       <span
-        data-inline_suggest_c47="true"
+        data-inline_suggest_slash="true"
         data-trigger="/"
         style="color: #0052CC"
       >
@@ -39,9 +39,9 @@ exports[`inline suggest basic show and hide types a trigger 1`] = `
   <div
     class="bangle-tooltip"
     data-show=""
-    data-tooltip-name="inline_suggest_c47Tooltip"
+    data-tooltip-name="inlineSuggest/__tooltipPlacementKey"
     role="tooltip"
-    style="position: absolute; left: 0px; top: 0px; margin: 0px;"
+    style="margin: 0px; position: absolute; left: 0px; top: 0px;"
   >
     <div
       class="bangle-tooltip-content"
@@ -54,12 +54,12 @@ exports[`inline suggest basic show and hide types a trigger 1`] = `
 
 exports[`inline suggest basic show and hide when no trigger 1`] = `
 <div
+  data-testid="test-editor"
   id="test-editor"
 >
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
-    tabindex="0"
   >
     <p>
       foobar
@@ -67,7 +67,7 @@ exports[`inline suggest basic show and hide when no trigger 1`] = `
   </div>
   <div
     class="bangle-tooltip"
-    data-tooltip-name="inline_suggest_c47Tooltip"
+    data-tooltip-name="inlineSuggest/__tooltipPlacementKey"
     role="tooltip"
   >
     <div

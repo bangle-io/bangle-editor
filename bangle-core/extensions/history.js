@@ -18,9 +18,9 @@ export const plugins = ({ depth = '', newGroupDelay = '' } = {}) => {
         newGroupDelay: newGroupDelay,
       }),
       keymap({
-        'Mod-z': undo,
-        'Mod-y': redo,
-        'Shift-Mod-z': redo,
+        'Mod-z': undo(),
+        'Mod-y': redo(),
+        'Shift-Mod-z': redo(),
       }),
     ];
   };

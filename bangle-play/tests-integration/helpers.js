@@ -31,7 +31,7 @@ async function mountEditor(page, props) {
   await page.waitForSelector(EDITOR_SELECTOR);
   await page.waitForSelector('.ProseMirror', { timeout: 500 });
   await page.click(EDITOR_SELECTOR);
-  // let the collab extension settle down
+  // let the collab  settle down
   await sleep(50);
 }
 

@@ -7,11 +7,11 @@ import { getVersion } from 'prosemirror-collab';
 import {
   psx,
   typeText,
-  renderTestEditor,
+  renderTestEditor2,
 } from 'bangle-core/test-helpers/index';
-import { CollabExtension } from '../collab-extension';
 import { CollabError } from '../../collab-error';
 import { Selection } from 'prosemirror-state';
+import * as collab from '../collab-extension';
 const DEFAULT_SLEEP = 50;
 
 function promiseNever() {
@@ -44,14 +44,22 @@ function getInitialDoc(version, text = 'hello world') {
 
 async function setupCollabEditor(handlers) {
   const clientID = 'test';
-  const extensions = [
-    new CollabExtension({
+  const editorSpec = [collab.spec()];
+  const editorPlugins = [
+    collab.plugins({
       docName: 'ole',
       clientID: clientID,
       ...handlers,
     }),
   ];
-  return renderTestEditor({ extensions }, 'data-test-' + Math.random())();
+
+  return renderTestEditor2(
+    {
+      editorSpec,
+      plugins: editorPlugins,
+    },
+    'data-test-' + Math.random(),
+  )();
 }
 
 const consoleError = console.error;
@@ -78,7 +86,7 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async () => {}),
     };
-    const { editor } = await setupCollabEditor(handlers);
+    const { view } = await setupCollabEditor(handlers);
 
     await sleep();
 
@@ -87,12 +95,12 @@ describe('pull events', () => {
     expect(handlers.pushEvents).toBeCalledTimes(0);
 
     // o gets deleted by step
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]hellworld</para>
       </doc>,
     );
-    expect(editor.state.collab$).toEqual({
+    expect(view.state.collab$).toEqual({
       version: 1,
       unconfirmed: [],
     });
@@ -120,19 +128,19 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async () => {}),
     };
-    const { editor } = await setupCollabEditor(handlers);
+    const { view } = await setupCollabEditor(handlers);
 
     await sleep();
 
     expect(handlers.getDocument).toBeCalledTimes(1);
     expect(handlers.pullEvents).toBeCalled();
     expect(handlers.pushEvents).toBeCalledTimes(0);
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]hello add world</para>
       </doc>,
     );
-    expect(editor.state.collab$).toEqual({
+    expect(view.state.collab$).toEqual({
       version: 4,
       unconfirmed: [],
     });
@@ -182,18 +190,18 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async (payload) => {}),
     };
-    const { editor } = await setupCollabEditor(handlers);
+    const { view } = await setupCollabEditor(handlers);
 
     await sleep();
 
     expect(handlers.pullEvents).toBeCalled();
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]heXllo add world</para>
       </doc>,
     );
 
-    expect(editor.state.collab$).toEqual({
+    expect(view.state.collab$).toEqual({
       version: 7,
       unconfirmed: [],
     });
@@ -218,14 +226,14 @@ describe('pull events', () => {
       pushEvents: jest.fn(async (payload) => {}),
     };
 
-    const { editor } = await setupCollabEditor(handlers);
+    const { view } = await setupCollabEditor(handlers);
     expect(handlers.pullEvents).toBeCalled();
-    expect(editor.state).toEqualDocAndSelection(
+    expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>[]hello world</para>
       </doc>,
     );
-    expect(editor.state.collab$).toEqual({
+    expect(view.state.collab$).toEqual({
       version: 2,
       unconfirmed: [],
     });
@@ -235,7 +243,7 @@ describe('pull events', () => {
     console.error = jest.fn();
     let counter = 0;
     let getDocTimes = 0;
-    let editor;
+    let view;
     const handlers = {
       getDocument: jest.fn(async () => {
         if (getDocTimes++ > 0) {
@@ -267,8 +275,8 @@ describe('pull events', () => {
         }
 
         if (counter === 2) {
-          const tr = editor.view.state.tr;
-          editor.view.dispatch(
+          const tr = view.state.tr;
+          view.dispatch(
             tr.setSelection(
               Selection.near(tr.doc.resolve(tr.doc.content.size - 3)),
             ),
@@ -286,33 +294,33 @@ describe('pull events', () => {
       }),
       pushEvents: jest.fn(async (payload) => {}),
     };
-    ({ editor } = await setupCollabEditor(handlers));
+    ({ view } = await setupCollabEditor(handlers));
 
     await sleep();
     expect(counter).toBe(4);
     expect(handlers.pullEvents).toBeCalled();
     expect(handlers.getDocument).toBeCalledTimes(2);
 
-    expect(editor.view.state.selection.toJSON()).toMatchInlineSnapshot(`
+    expect(view.state.selection.toJSON()).toMatchInlineSnapshot(`
       Object {
         "anchor": 10,
         "head": 10,
         "type": "text",
       }
     `);
-    expect(editor.state.doc).toEqualDocument(
+    expect(view.state.doc).toEqualDocument(
       <doc>
         <para>corrected document new</para>
       </doc>,
     );
 
-    expect(getVersion(editor.state)).toBe(7);
+    expect(getVersion(view.state)).toBe(7);
   });
 });
 
 test('filters transaction when getDocument req is in flight', async () => {
   console.error = jest.fn();
-  let editor;
+  let view;
   let sendDocument;
   const handlers = {
     getDocument: jest.fn(async () => {
@@ -330,10 +338,10 @@ test('filters transaction when getDocument req is in flight', async () => {
     }),
     pushEvents: jest.fn(async (payload) => {}),
   };
-  ({ editor } = await setupCollabEditor(handlers));
+  ({ view } = await setupCollabEditor(handlers));
 
-  typeText(editor.view, 'me no go');
-  expect(editor.state.doc).toEqualDocument(
+  typeText(view, 'me no go');
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para></para>
     </doc>,
@@ -342,14 +350,14 @@ test('filters transaction when getDocument req is in flight', async () => {
   sendDocument();
   await sleep();
 
-  typeText(editor.view, '👯‍♀️ ');
-  expect(editor.state.doc).toEqualDocument(
+  typeText(view, '👯‍♀️ ');
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para>👯‍♀️ hello world</para>
     </doc>,
   );
   expect(handlers.getDocument).toBeCalledTimes(1);
-  expect(getVersion(editor.state)).toBe(0);
+  expect(getVersion(view.state)).toBe(0);
 });
 
 test('pushes changes to server', async () => {
@@ -377,9 +385,9 @@ test('pushes changes to server', async () => {
     pushEvents: jest.fn(async (payload) => {}),
   };
 
-  const { editor } = await setupCollabEditor(handlers);
+  const { view } = await setupCollabEditor(handlers);
 
-  typeText(editor.view, '😊');
+  typeText(view, '😊');
 
   await sleep();
 
@@ -406,13 +414,13 @@ test('pushes changes to server', async () => {
     version: 6,
   });
 
-  expect(editor.state.doc).toEqualDocument(
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para>😊hello add world</para>
     </doc>,
   );
 
-  expect(getVersion(editor.state)).toBe(6);
+  expect(getVersion(view.state)).toBe(6);
 });
 
 test('handles invalid version error when pushing event by restarting', async () => {
@@ -464,10 +472,10 @@ test('handles invalid version error when pushing event by restarting', async () 
     }),
   };
 
-  const { editor } = await setupCollabEditor(handlers);
+  const { view } = await setupCollabEditor(handlers);
 
-  typeText(editor.view, 'XX');
-  expect(editor.state.doc).toEqualDocument(
+  typeText(view, 'XX');
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para>XXhello world</para>
     </doc>,
@@ -475,23 +483,23 @@ test('handles invalid version error when pushing event by restarting', async () 
 
   await sleep();
 
-  expect(editor.state.doc).toEqualDocument(
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para>corrected new document</para>
     </doc>,
   );
 
-  typeText(editor.view, 'YY');
+  typeText(view, 'YY');
 
   // The reason YY are placed after `co` is because
   // restarting crudely tries to preserve the selection
-  expect(editor.state.doc).toEqualDocument(
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para>coYYrrected new document</para>
     </doc>,
   );
 
-  expect(getVersion(editor.state)).toBe(10);
+  expect(getVersion(view.state)).toBe(10);
 
   expect(handlers.pullEvents).toBeCalled();
   expect(handlers.pushEvents).toBeCalledTimes(1);
@@ -500,7 +508,7 @@ test('handles invalid version error when pushing event by restarting', async () 
 
 test('if getDocument fails it restarts', async () => {
   console.error = jest.fn();
-  let editor;
+  let view;
   let counter = 0;
   const handlers = {
     getDocument: jest.fn(async () => {
@@ -517,17 +525,17 @@ test('if getDocument fails it restarts', async () => {
     }),
     pushEvents: jest.fn(async (payload) => {}),
   };
-  ({ editor } = await setupCollabEditor(handlers));
+  ({ view } = await setupCollabEditor(handlers));
 
   await sleep();
 
   expect(handlers.getDocument).toBeCalledTimes(2);
 
-  expect(editor.state.doc).toEqualDocument(
+  expect(view.state.doc).toEqualDocument(
     <doc>
       <para>hello world</para>
     </doc>,
   );
   expect(handlers.getDocument).toBeCalledTimes(2);
-  expect(getVersion(editor.state)).toBe(0);
+  expect(getVersion(view.state)).toBe(0);
 });

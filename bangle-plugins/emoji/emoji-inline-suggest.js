@@ -1,43 +1,63 @@
+import { bangleWarn } from 'bangle-core/utils/js-utils';
+import { valuePlugin } from 'bangle-core/utils/pm-utils';
+import { pluginKeyStore } from 'bangle-plugins/utils';
+import { PluginKey } from 'prosemirror-state';
 import React, { useEffect, useRef } from 'react';
 import reactDOM from 'react-dom';
-import {
-  InlineSuggest,
-  createTooltipDOM,
-  selectItemCommand,
-} from '../inline-suggest/index';
+import { inlineSuggest, selectItemCommand } from '../inline-suggest/index';
 import { emojisArray } from './data';
 
-export function EmojiInlineSuggest({ getScrollContainerDOM } = {}) {
-  const { tooltipDOM, tooltipContent } = createTooltipDOM();
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  getQueryText,
+  selectEmoji,
+};
+
+const defaultMarkName = 'emoji-inline-suggest';
+const defaultTrigger = ':';
+const keyStore = pluginKeyStore();
+const INLINE_SUGGEST_KEY = 'emojiInlineSuggest__inlineSuggest';
+
+const getInlineSuggestKey = (parentKey) => {
+  return keyStore.get(parentKey, INLINE_SUGGEST_KEY);
+};
+
+function specFactory({
+  markName = defaultMarkName,
+  trigger = defaultTrigger,
+} = {}) {
+  return inlineSuggest.spec({ markName, trigger });
+}
+
+function pluginsFactory({
+  key = new PluginKey('emoji-inline-suggest'),
+  markName = defaultMarkName,
+  trigger = defaultTrigger,
+  getScrollContainerDOM,
+} = {}) {
+  const inlineSuggestKey = keyStore.create(key, INLINE_SUGGEST_KEY);
+
+  const { tooltipDOM, tooltipContent } = inlineSuggest.createTooltipDOM();
   let counter = 0;
   const resetCounter = () => {
     counter = 0;
   };
 
-  const onSelection = (emojiKind) => (state, dispatch, view) => {
-    const emojiNode = state.schema.nodes.emoji.create({
-      'data-emojikind': emojiKind,
-    });
-    resetCounter();
-    return selectItemCommand(emojiNode, inlineSuggest.getMarkName())(
-      state,
-      dispatch,
-      view,
-    );
-  };
   const getIsTop = () =>
     tooltipDOM.getAttribute('data-popper-placement') === 'top-start';
 
   const render = (state, dispatch, view) => {
-    const emojis = getEmojis(inlineSuggest.getQueryText(state));
+    const emojis = getEmojis(getQueryText(key)(state));
 
     reactDOM.render(
       <Palette
         onClick={(i) => {
-          const emojis = getEmojis(inlineSuggest.getQueryText(state));
+          const emojis = getEmojis(getQueryText(key)(state));
           if (emojis[i]) {
             const emojiKind = emojis[i][0];
-            onSelection(emojiKind)(state, dispatch, view);
+
+            selectEmoji(key, emojiKind)(state, dispatch, view);
           }
         }}
         activeIndex={getActiveIndex(counter, emojis.length)}
@@ -49,55 +69,68 @@ export function EmojiInlineSuggest({ getScrollContainerDOM } = {}) {
     return true;
   };
 
-  const inlineSuggest = new InlineSuggest({
-    trigger: ':',
-    placement: 'bottom-start',
-    fallbackPlacements: ['bottom-start', 'top-start'],
-    tooltipDOM,
-    getScrollContainerDOM,
+  return ({ schema }) => {
+    if (!schema.marks[markName]) {
+      bangleWarn(
+        `Couldn't find the markName:${markName}, please make sure you have initialized to use the same markName you initialized the spec with`,
+      );
+      throw new Error(`markName ${markName} not found`);
+    }
 
-    onHideTooltip: () => {
-      reactDOM.unmountComponentAtNode(tooltipContent);
-      resetCounter();
-      return true;
-    },
+    return [
+      valuePlugin(key, { markName }),
+      inlineSuggest.plugins({
+        key: inlineSuggestKey,
+        markName,
+        trigger,
+        placement: 'bottom-start',
+        fallbackPlacements: ['bottom-start', 'top-start'],
+        tooltipDOM,
+        getScrollContainerDOM,
 
-    onUpdateTooltip: (state, dispatch, view) => {
-      return render(state, dispatch, view);
-    },
+        onHideTooltip: () => {
+          reactDOM.unmountComponentAtNode(tooltipContent);
+          resetCounter();
+          return true;
+        },
 
-    onEnter: (state, dispatch, view) => {
-      const emojis = getEmojis(inlineSuggest.getQueryText(state));
-      if (emojis.length === 0) {
-        return false;
-      }
-      const emojiKind = emojis[getActiveIndex(counter, emojis.length)][0];
-      return onSelection(emojiKind)(state, dispatch, view);
-    },
+        onUpdateTooltip: (state, dispatch, view) => {
+          return render(state, dispatch, view);
+        },
 
-    onArrowDown: (state, dispatch, view) => {
-      // reverse the direction if the tooltip has a top position
-      if (getIsTop()) {
-        counter--;
-      } else {
-        counter++;
-      }
-      view.focus();
-      return render(state, dispatch, view);
-    },
+        onEnter: (state, dispatch, view) => {
+          const emojis = getEmojis(getQueryText(key)(state));
+          if (emojis.length === 0) {
+            return false;
+          }
+          const emojiKind = emojis[getActiveIndex(counter, emojis.length)][0];
+          resetCounter();
+          return selectEmoji(key, emojiKind)(state, dispatch, view);
+        },
 
-    onArrowUp: (state, dispatch, view) => {
-      if (getIsTop()) {
-        counter++;
-      } else {
-        counter--;
-      }
-      view.focus();
-      return render(state, dispatch, view);
-    },
-  });
+        onArrowDown: (state, dispatch, view) => {
+          // reverse the direction if the tooltip has a top position
+          if (getIsTop()) {
+            counter--;
+          } else {
+            counter++;
+          }
+          view.focus();
+          return render(state, dispatch, view);
+        },
 
-  return inlineSuggest;
+        onArrowUp: (state, dispatch, view) => {
+          if (getIsTop()) {
+            counter++;
+          } else {
+            counter--;
+          }
+          view.focus();
+          return render(state, dispatch, view);
+        },
+      }),
+    ];
+  };
 }
 
 function Palette({ emojis, activeIndex, onClick }) {
@@ -153,4 +186,18 @@ function Row({ title, isSelected, onClick, scrollIntoViewIfNeeded = true }) {
       <span>{title}</span>
     </div>
   );
+}
+
+export function getQueryText(key) {
+  return inlineSuggest.getQueryText(getInlineSuggestKey(key));
+}
+
+export function selectEmoji(key, emojiKind) {
+  return (state, dispatch, view) => {
+    const { markName } = key.getState(state);
+    const emojiNode = state.schema.nodes.emoji.create({
+      'data-emojikind': emojiKind,
+    });
+    return selectItemCommand(emojiNode, markName)(state, dispatch, view);
+  };
 }

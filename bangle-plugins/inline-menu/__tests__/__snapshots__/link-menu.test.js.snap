@@ -2,12 +2,12 @@
 
 exports[`Link menu when link but not in selection 2`] = `
 <div
+  data-testid="test-editor"
   id="test-editor"
 >
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
-    tabindex="0"
   >
     <p>
       foo
@@ -22,7 +22,7 @@ exports[`Link menu when link but not in selection 2`] = `
   </div>
   <div
     class="bangle-tooltip bangle-selection-tooltip"
-    data-tooltip-name="inline_mark_tooltip"
+    data-tooltip-name="link_menu_tooltip"
     role="tooltip"
   >
     <div
@@ -34,12 +34,12 @@ exports[`Link menu when link but not in selection 2`] = `
 
 exports[`Link menu when no link 1`] = `
 <div
+  data-testid="test-editor"
   id="test-editor"
 >
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
-    tabindex="0"
   >
     <p>
       foobar
@@ -47,7 +47,7 @@ exports[`Link menu when no link 1`] = `
   </div>
   <div
     class="bangle-tooltip bangle-selection-tooltip"
-    data-tooltip-name="inline_mark_tooltip"
+    data-tooltip-name="link_menu_tooltip"
     role="tooltip"
   >
     <div

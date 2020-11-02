@@ -3,31 +3,21 @@
  */
 /** @jsx psx */
 import { fireEvent, wait } from '@testing-library/react';
-import { psx, sendKeyToPm, renderTestEditor } from 'bangle-core/test-helpers/';
-import {
-  OrderedList,
-  BulletList,
-  ListItem,
-  Heading,
-  HardBreak,
-  TodoList,
-  TodoItem,
-} from 'bangle-core/nodes';
-import StopwatchExtension from '../stopwatch';
-import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
-import { markdownParser } from 'bangle-plugins/markdown/index';
+import { psx, sendKeyToPm, renderTestEditor2 } from 'bangle-core/test-helpers/';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new TodoList(),
-  new TodoItem(),
-  new HardBreak(),
-  new Heading(),
-  new StopwatchExtension(),
-];
-const testEditor = renderTestEditor({ extensions });
+import { stopwatch } from '../index';
+import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import { corePlugins, coreSpec } from 'bangle-core/components';
+import { schemaLoader } from 'bangle-core/element-loaders';
+
+const editorSpec = [...coreSpec(), stopwatch.spec({})];
+const plugins = [...corePlugins(), stopwatch.plugins({})];
+
+const testEditor = renderTestEditor2({
+  editorSpec,
+  plugins,
+});
+
 const dateNow = Date.now;
 beforeEach(() => {
   Date.now = dateNow;
@@ -35,7 +25,7 @@ beforeEach(() => {
 
 test('Keyboard shortcut works', async () => {
   Date.now = jest.fn(() => 0);
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <todoList>
         <todoItem>
@@ -45,9 +35,9 @@ test('Keyboard shortcut works', async () => {
     </doc>,
   );
 
-  sendKeyToPm(editor.view, 'Shift-Ctrl-s');
+  sendKeyToPm(view, 'Shift-Ctrl-s');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <todoList>
         <todoItem>
@@ -64,7 +54,7 @@ test('Keyboard shortcut works', async () => {
 
 test('Renders react component correctly', async () => {
   Date.now = jest.fn(() => 0);
-  const { container, editor } = await testEditor(
+  const { container, view } = await testEditor(
     <doc>
       <todoList>
         <todoItem>
@@ -73,7 +63,7 @@ test('Renders react component correctly', async () => {
       </todoList>
     </doc>,
   );
-  sendKeyToPm(editor.view, 'Shift-Ctrl-s');
+  sendKeyToPm(view, 'Shift-Ctrl-s');
   expect(container.querySelector(`[data-type="stopwatch"]`)).toMatchSnapshot();
 });
 
@@ -107,21 +97,13 @@ test('Renders clicking correctly', async () => {
 });
 
 describe('markdown', () => {
-  let schemaPromise;
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
-      content = doc(await schemaPromise);
+      content = doc(schemaLoader(editorSpec));
     }
-    return markdownSerializer(extensions).serialize(content);
+    return markdownSerializer(editorSpec).serialize(content);
   };
-
-  const parse = async (md) =>
-    markdownParser(extensions, await schemaPromise).parse(md);
-
-  beforeAll(async () => {
-    schemaPromise = renderTestEditor({ extensions })().then((r) => r.schema);
-  });
 
   test('markdown serialization', async () => {
     const md = await serialize(

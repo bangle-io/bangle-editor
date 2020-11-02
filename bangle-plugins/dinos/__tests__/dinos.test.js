@@ -2,38 +2,22 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { fireEvent, wait } from '@testing-library/react';
-import { psx, sendKeyToPm, renderTestEditor } from 'bangle-core/test-helpers/';
-import {
-  OrderedList,
-  BulletList,
-  ListItem,
-  Heading,
-  HardBreak,
-  TodoList,
-  TodoItem,
-} from 'bangle-core/nodes';
-import Dino from '../index';
-import {
-  markdownParser,
-  markdownSerializer,
-} from 'bangle-plugins/markdown/index';
+import { psx, renderTestEditor2 } from 'bangle-core/test-helpers/';
+import { markdownSerializer } from 'bangle-plugins/markdown/index';
+import { corePlugins, coreSpec } from 'bangle-core/components';
+import { dinos } from '../index';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new TodoList(),
-  new TodoItem(),
-  new HardBreak(),
-  new Heading(),
-  new Dino(),
-];
-const testEditor = renderTestEditor({ extensions });
+const editorSpec = [...coreSpec(), dinos.spec()];
+const plugins = [...corePlugins(), dinos.plugins()];
+
+const testEditor = renderTestEditor2({
+  editorSpec,
+  plugins,
+});
 
 test('Rendering works', async () => {
   Date.now = jest.fn(() => 0);
-  const { container, editor } = await testEditor(
+  const { container, view } = await testEditor(
     <doc>
       <para>
         foo[]bar
@@ -42,7 +26,7 @@ test('Rendering works', async () => {
     </doc>,
   );
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>
         foo[]bar
@@ -55,7 +39,7 @@ test('Rendering works', async () => {
 
 test('Rendering works with different type of dino', async () => {
   Date.now = jest.fn(() => 0);
-  const { container, editor } = await testEditor(
+  const { container, view } = await testEditor(
     <doc>
       <para>
         foo[]bar
@@ -64,7 +48,7 @@ test('Rendering works with different type of dino', async () => {
     </doc>,
   );
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>
         foo[]bar
@@ -82,14 +66,13 @@ describe('markdown', () => {
     if (typeof doc === 'function') {
       content = doc(await schemaPromise);
     }
-    return markdownSerializer(extensions).serialize(content);
+    return markdownSerializer(editorSpec).serialize(content);
   };
 
-  const parse = async (md) =>
-    markdownParser(extensions, await schemaPromise).parse(md);
-
   beforeAll(async () => {
-    schemaPromise = renderTestEditor({ extensions })().then((r) => r.schema);
+    schemaPromise = renderTestEditor2({ editorSpec, plugins })().then(
+      (r) => r.schema,
+    );
   });
 
   test('markdown serialization', async () => {

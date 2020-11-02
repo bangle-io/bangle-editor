@@ -1,9 +1,5 @@
-import React, { useState } from 'react';
-
-import {
-  SelectionTooltip,
-  createTooltipDOM,
-} from 'bangle-plugins/selection-tooltip/index';
+import React, { useEffect, useRef, useState } from 'react';
+import { keymap } from 'prosemirror-keymap';
 import reactDOM from 'react-dom';
 import { filter } from 'bangle-core/utils/pm-utils';
 import {
@@ -12,18 +8,50 @@ import {
   setLinkAtSelection,
   getLinkMarkDetails,
   canLinkBeCreatedInRange,
-} from 'bangle-core/mark-components/link';
-
+} from 'bangle-core/marks/link';
 import { uuid } from 'bangle-core/utils/js-utils';
-import { showTooltip } from 'bangle-plugins/tooltip-placement/index';
 import { Icon } from './icon-helpers';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { pluginKeyStore } from 'bangle-plugins/utils';
+import { selectionTooltip } from '../selection-tooltip/index';
+import { hideAllSelectionTooltip } from 'bangle-plugins/selection-tooltip/selection-tooltip';
 
-export function LinkMenu({
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  hideLinkMenu,
+  showLinkMenu,
+  isLinkMenuActive,
+  focusLinkMenu,
+  showLinkTooltip,
+};
+
+const name = 'link_menu';
+
+const keyStore = pluginKeyStore();
+
+const getTooltipKey = (parentKey) => {
+  return keyStore.get(parentKey, parentKey.key + '__selectionTooltip');
+};
+const createTooltipKey = (parentKey) => {
+  return keyStore.create(parentKey, parentKey.key + '__selectionTooltip');
+};
+
+function specFactory(opts = {}) {
+  return {
+    name,
+    type: 'component',
+  };
+}
+
+function pluginsFactory({
   getScrollContainerDOM = (view) => {
     return view.dom.parentElement;
   },
+  key = new PluginKey('linkMenu'),
 } = {}) {
-  const { tooltipDOM, tooltipContent } = createTooltipDOM();
+  const { tooltipDOM, tooltipContent } = selectionTooltip.createTooltipDOM();
+  const tooltipKey = createTooltipKey(key);
 
   const getIsTop = () => {
     return tooltipDOM.getAttribute('data-popper-placement') === 'top';
@@ -52,60 +80,17 @@ export function LinkMenu({
     return true;
   };
 
-  class LinkMenuExt extends SelectionTooltip {
-    keys(...args) {
-      const parentKeys = super.keys(...args);
-
-      const newKeys = {
-        'Meta-k': (state, dispatch, view) => {
-          const isActive = this.isTooltipActive(state);
-          if (view.hasFocus() && isActive) {
-            return setFocus();
-          }
-          if (!state.selection.empty) {
-            return this.showLinkTooltip(state, dispatch, view);
-          }
-          return false;
-        },
-      };
-
-      return Object.assign({}, parentKeys, newKeys);
-    }
-
-    showLinkTooltip = filter(
-      [
-        (state) => !state.selection.empty,
-        (state) =>
-          canLinkBeCreatedInRange(
-            state.selection.$from.pos,
-            state.selection.$to.pos,
-          )(state),
-      ],
-      (state, dispatch, view) => {
-        const isActive = this.isTooltipActive(state);
-        if (isActive) {
-          setFocus();
-          return true;
-        }
-
-        let result = showTooltip(this.tooltipPlugin)(state, dispatch, view);
-        if (result) {
-          setFocus();
-          return true;
-        }
-        return false;
-      },
-    );
-  }
-
-  const inlineSuggest = new LinkMenuExt({
-    tooltipName: 'inline_mark_tooltip',
+  const selectionPlugins = selectionTooltip.plugins({
+    key: tooltipKey,
+    tooltipName: name + '_tooltip',
     tooltipDOM,
     getScrollContainerDOM,
     placement: 'top',
 
     shouldShowTooltip: filter(
-      (state) => isSelectionAroundLink(state) || isSelectionInsideLink(state),
+      (state) => {
+        return isSelectionAroundLink(state) || isSelectionInsideLink(state);
+      },
       () => {
         return true;
       },
@@ -143,12 +128,51 @@ export function LinkMenu({
     },
   });
 
-  return inlineSuggest;
+  const linkMenuStatePlugin = new Plugin({
+    key: key,
+    state: {
+      init: (_, state) => {
+        return null;
+      },
+      apply: (tr, pluginState) => {
+        const payload = tr.getMeta(key);
+        if (!payload) {
+          return pluginState;
+        }
+        if (payload.type === 'focus') {
+          setFocus();
+        }
+        return pluginState;
+      },
+    },
+  });
+
+  return [
+    linkMenuStatePlugin,
+    selectionPlugins,
+    keymap({
+      'Meta-k': (state, dispatch, view) => {
+        const isActive = selectionTooltip.isSelectionTooltipActive(tooltipKey)(
+          state,
+        );
+        if (view.hasFocus() && isActive) {
+          return setFocus();
+        }
+        if (!state.selection.empty) {
+          hideAllSelectionTooltip()(state, dispatch, view);
+          showLinkTooltip(key)(view.state, view.dispatch, view);
+          return true;
+        }
+        return false;
+      },
+    }),
+  ];
 }
 
 function Component({ result, view, inputId, getIsTop }) {
   const originalHref = result?.href || '';
   const [href, setHref] = useState(originalHref);
+  const inputRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
     setLinkAtSelection(href)(view.state, view.dispatch);
@@ -160,6 +184,7 @@ function Component({ result, view, inputId, getIsTop }) {
       <input
         id={inputId}
         value={href}
+        ref={inputRef}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleSubmit(e);
@@ -243,3 +268,76 @@ const ExternalIcon = (props) => {
     </Icon>
   );
 };
+
+/**
+ *  Commands
+ */
+
+export function hideLinkMenu(key) {
+  return selectionTooltip.hideTooltip(getTooltipKey(key));
+}
+
+export function showLinkMenu(key) {
+  return (state, dispatch, view) => {
+    window.view = view;
+    const result = selectionTooltip.showSelectionTooltip(getTooltipKey(key))(
+      state,
+      dispatch,
+      view,
+    );
+    if (result && dispatch) {
+      const tr = view.state.tr;
+      dispatch(tr.setMeta(key, { type: 'focus' }));
+    }
+
+    return result;
+  };
+}
+
+export function isLinkMenuActive(pluginKey) {
+  return selectionTooltip.isSelectionTooltipActive(getTooltipKey(pluginKey));
+}
+
+export function focusLinkMenu(pluginKey) {
+  return (state, dispatch) => {
+    if (dispatch) {
+      const tr = state.tr;
+      dispatch(tr.setMeta(pluginKey, { type: 'focus' }));
+    }
+    return true;
+  };
+}
+
+export function showLinkTooltip(key) {
+  const tooltipKey = getTooltipKey(key);
+  return filter(
+    [
+      (state) => !state.selection.empty,
+      (state) =>
+        canLinkBeCreatedInRange(
+          state.selection.$from.pos,
+          state.selection.$to.pos,
+        )(state),
+    ],
+    (state, dispatch, view) => {
+      const isActive = selectionTooltip.isSelectionTooltipActive(tooltipKey)(
+        state,
+      );
+      if (isActive) {
+        dispatch(state.tr.setMeta(key, { type: 'focus' }));
+        return true;
+      }
+
+      let result = selectionTooltip.showSelectionTooltip(tooltipKey)(
+        state,
+        dispatch,
+        view,
+      );
+      if (result) {
+        dispatch(view.state.tr.setMeta(key, { type: 'focus' }));
+        return true;
+      }
+      return false;
+    },
+  );
+}

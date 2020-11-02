@@ -9,19 +9,24 @@ import { keymap } from 'prosemirror-keymap';
 import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { CustomNodeView } from './helper-react/custom-node-view';
+import { weakCache } from './utils/js-utils';
 
 export function specValidate() {}
 
-export function schemaLoader(editorSpec) {
+// TODO while this is fine, it hides the problem of - changing the editorSpec can create
+// multiple schemas, which can cause hard to triage bugs.
+export const schemaLoader = weakCache(function schemaLoader(editorSpec) {
   let nodes = [];
   let marks = [];
   let topNode = 'doc';
   for (const spec of editorSpec) {
     if (spec.type === 'node') {
       nodes.push([spec.name, spec.schema]);
-    }
-    if (spec.type === 'mark') {
+    } else if (spec.type === 'mark') {
       marks.push([spec.name, spec.schema]);
+    } else if (spec.type === 'component') {
+    } else {
+      throw new Error(spec.name + ' unknown type: ' + spec.type);
     }
     if (spec.topNode === true) {
       topNode = spec.name;
@@ -33,16 +38,11 @@ export function schemaLoader(editorSpec) {
     nodes: Object.fromEntries(nodes),
     marks: Object.fromEntries(marks),
   });
-}
+});
 
 export function loadInputRules(
   plugins,
-  {
-    inputRules = true,
-    undoInputRule = true,
-    baseKeymap = true,
-    injectPlugins = (p) => p,
-  } = {},
+  { inputRules = true, undoInputRule = true, injectPlugins = (p) => p } = {},
 ) {
   let newPlugins = [];
   let match = [];
@@ -71,10 +71,6 @@ export function loadInputRules(
     );
   }
 
-  if (baseKeymap) {
-    plugins.push(keymap(pmBaseKeymap));
-  }
-
   plugins = injectPlugins(plugins);
 
   return plugins;
@@ -84,16 +80,19 @@ export function loadInputRules(
 // TODO do we need tabindex like in ../editor.js
 // TODO reconfigure plugins
 export function loadPlugins(
-  schema,
+  editorSpec,
   plugins,
-  { inputRules = true, editorProps, gapCursor = true, dropCursor = false } = {},
+  {
+    editorProps,
+    inputRules = true,
+    baseKeymap = true,
+    gapCursor = true,
+    dropCursor = false,
+  } = {},
 ) {
-  plugins = plugins.flatMap((p) => {
-    if (typeof p === 'function') {
-      return p({ schema });
-    }
-    return p;
-  });
+  const schema = schemaLoader(editorSpec);
+
+  plugins = recursiveFlat(plugins, { schema, editorSpec });
 
   if (editorProps) {
     plugins.push(
@@ -108,6 +107,10 @@ export function loadPlugins(
 
   if (inputRules) {
     plugins = loadInputRules(plugins);
+  }
+
+  if (baseKeymap) {
+    plugins.push(keymap(pmBaseKeymap));
   }
 
   return plugins.filter(Boolean);
@@ -134,4 +137,19 @@ export function loadNodeViews(editorSpec, renderNodeView, destroyNodeView) {
         ];
       }),
   );
+}
+
+function recursiveFlat(plugins, callbackPayload) {
+  const recurse = (plugins) => {
+    if (Array.isArray(plugins)) {
+      return plugins.flatMap((plug) => recurse(plug)).filter(Boolean);
+    }
+    if (typeof plugins === 'function') {
+      return recurse(plugins(callbackPayload));
+    }
+
+    return plugins;
+  };
+
+  return recurse(plugins);
 }

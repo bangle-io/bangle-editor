@@ -1,23 +1,24 @@
 import { PluginKey, Plugin } from 'prosemirror-state';
-import { Extension } from 'bangle-core/extensions/index';
 
-export class TrailingNode extends Extension {
-  get name() {
-    return 'trailing_node_addon';
-  }
+export const spec = specFactory;
+export const plugins = pluginsFactory;
 
-  get defaultOptions() {
-    return {
-      node: 'paragraph',
-      notAfter: ['paragraph'],
-    };
-  }
+const name = 'trailing_node_addon';
 
-  get plugins() {
-    const plugin = new PluginKey(this.name);
-    const disabledNodes = Object.entries(this.editor.schema.nodes)
+function specFactory({} = {}) {
+  return {
+    name: name,
+    type: 'component',
+  };
+}
+
+// TODO can we move this to appendTransaction ?
+function pluginsFactory({ node = 'paragraph', notAfter = ['paragraph'] } = {}) {
+  const plugin = new PluginKey(name);
+  return ({ schema }) => {
+    const disabledNodes = Object.entries(schema.nodes)
       .map(([, value]) => value)
-      .filter((node) => this.options.notAfter.includes(node.name));
+      .filter((node) => notAfter.includes(node.name));
 
     const map = new WeakMap();
     return [
@@ -40,7 +41,7 @@ export class TrailingNode extends Extension {
             }
 
             const { doc, schema, tr } = view.state;
-            const type = schema.nodes[this.options.node];
+            const type = schema.nodes[node];
             const transaction = tr.insert(doc.content.size, type.create(''));
             map.set(view.state, true);
             view.dispatch(transaction);
@@ -67,5 +68,5 @@ export class TrailingNode extends Extension {
         },
       }),
     ];
-  }
+  };
 }

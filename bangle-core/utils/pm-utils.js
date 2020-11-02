@@ -6,6 +6,7 @@ import {
 } from 'prosemirror-utils';
 import { Fragment, Slice } from 'prosemirror-model';
 import { GapCursorSelection } from '../gap-cursor';
+import { Plugin } from 'prosemirror-state';
 
 export const findParentNodeOfType = _findParentNodeOfType;
 
@@ -474,4 +475,26 @@ export function findFirstMarkPosition(mark, doc, from, to) {
   });
 
   return markPos;
+}
+
+/**
+ * Creates a plugin which allows for saving of value
+ * Helpful for use cases when you just want to store
+ * a value in the state and the value will not change
+ * over time.
+ *
+ * Good to know: you get the value by doing `key.getState(state)`
+ */
+export function valuePlugin(key, value) {
+  return new Plugin({
+    key,
+    state: {
+      init() {
+        return value;
+      },
+      apply(_, v) {
+        return v;
+      },
+    },
+  });
 }

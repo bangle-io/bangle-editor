@@ -1,17 +1,23 @@
-import { Extension } from 'bangle-core';
+import { keymap } from 'prosemirror-keymap';
 
-export class Timestamp extends Extension {
-  get name() {
-    return 'timestamp';
-  }
+export const spec = specFactory;
+export const plugins = pluginsFactory;
 
-  keys({ type }) {
-    return {
-      'Ctrl-Shift-5': printDate('medium'),
-      'Ctrl-Shift-6': printDate('utc'),
-      'Ctrl-Shift-4': printDate('short'),
-    };
-  }
+const name = 'timestamp';
+
+function specFactory({} = {}) {
+  return {
+    name: name,
+    type: 'component',
+  };
+}
+
+function pluginsFactory() {
+  return keymap({
+    'Ctrl-Shift-5': printDate('medium'),
+    'Ctrl-Shift-6': printDate('utc'),
+    'Ctrl-Shift-4': printDate('short'),
+  });
 }
 
 function printDate(type) {
