@@ -3081,7 +3081,7 @@ __metadata:
     prosemirror-dropcursor: ^1.1.1
     prosemirror-gapcursor: ^1.1.5
     prosemirror-history: ^1.0.4
-    prosemirror-inputrules: ^1.0.4
+    prosemirror-inputrules: ^1.1.3
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.11.0
     prosemirror-schema-list: ^1.1.3
