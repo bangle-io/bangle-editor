@@ -7,28 +7,32 @@ import {
   psx,
   typeText,
   sendKeyToPm,
-  renderTestEditor,
+  renderTestEditor2,
 } from 'bangle-core/test-helpers';
 
-import { TrailingNode } from '../trailing-node';
-import { Heading } from 'bangle-core/index';
+import { corePlugins, coreSpec } from 'bangle-core/components';
+import { trailingNode } from '../index';
 
-const extensions = [new Heading(), new TrailingNode()];
+const editorSpec = [...coreSpec(), trailingNode.spec({})];
+const plugins = [...corePlugins(), trailingNode.plugins({})];
 
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor2({
+  editorSpec,
+  plugins,
+});
 
 test('Does not add trailing node when typing paragraphs', async () => {
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <para>foo[]bar</para>
     </doc>,
   );
 
-  typeText(editor.view, 'hello');
-  sendKeyToPm(editor.view, 'Enter');
-  typeText(editor.view, 'lastpara');
+  typeText(view, 'hello');
+  sendKeyToPm(view, 'Enter');
+  typeText(view, 'lastpara');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>foohello</para>
       <para>lastpara[]bar</para>
@@ -37,16 +41,16 @@ test('Does not add trailing node when typing paragraphs', async () => {
 });
 
 test('creates an empty para below Heading', async () => {
-  const { editor } = await testEditor(
+  const { view } = await testEditor(
     <doc>
       <para>foobar[]</para>
     </doc>,
   );
 
-  sendKeyToPm(editor.view, 'Enter');
-  typeText(editor.view, '# heading');
+  sendKeyToPm(view, 'Enter');
+  typeText(view, '# heading');
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>foobar</para>
       <heading>heading</heading>

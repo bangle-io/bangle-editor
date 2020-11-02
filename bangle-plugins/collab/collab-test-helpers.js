@@ -1,24 +1,17 @@
 /* istanbul ignore file */
-import { Editor as PMEditor } from 'bangle-core/editor';
-import {
-  OrderedList,
-  BulletList,
-  ListItem,
-  Heading,
-  HardBreak,
-  TodoList,
-  TodoItem,
-} from 'bangle-core/nodes';
+
 import { Manager } from './server/manager';
 import {
-  renderTestEditor,
+  renderTestEditor2,
   sendKeyToPm,
   sleep,
   typeChar,
 } from 'bangle-core/test-helpers';
-import { CollabExtension } from './client/collab-extension';
+import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
+import { corePlugins, coreSpec } from 'bangle-core/components';
+import { schemaLoader } from 'bangle-core/element-loaders';
 
 const START = '💚';
 const END = '🖤';
@@ -29,6 +22,9 @@ const NOOP = '_';
 // regular string
 const EMOJI_NOOP = '🐑';
 const ENTER = '↵';
+
+export const editorSpec = [...coreSpec(), collab.spec()];
+export const editorPlugins = [...corePlugins()];
 
 export function setupDb(doc) {
   return {
@@ -56,18 +52,8 @@ export function setupDb(doc) {
 }
 
 export function setup(db = setupDb(), { managerOpts }) {
-  const extensions = () => [
-    new OrderedList(),
-    new BulletList(),
-    new ListItem(),
-    new Heading(),
-    new HardBreak(),
-    new TodoList(),
-    new TodoItem(),
-  ];
-
   let disk = new LocalDisk(db, { saveDebounce: 50 });
-  const manager = new Manager(createOneOffSchema(extensions()), {
+  const manager = new Manager(schemaLoader(editorSpec), {
     disk,
     ...managerOpts,
   });
@@ -86,12 +72,13 @@ export function setup(db = setupDb(), { managerOpts }) {
       this.editors = this.editors.filter((e) => e[0] !== id);
     },
     createEditor: async function (id, docName) {
-      const editor = await renderTestEditor(
+      const editor = await renderTestEditor2(
         {
           manager: this.manager,
-          extensions: [
-            ...extensions(),
-            new CollabExtension({
+          editorSpec,
+          plugins: [
+            ...editorPlugins,
+            collab.plugins({
               docName,
               clientID: id,
               ...collabRequestHandlers((...args) =>
@@ -228,13 +215,13 @@ async function* iterateCases(
         views: Object.fromEntries(
           currentStrokes.map(([editorName]) => [
             editorName,
-            base.getEditor(editorName)?.editor.view,
+            base.getEditor(editorName)?.view,
           ]),
         ),
         states: Object.fromEntries(
           currentStrokes.map(([editorName]) => [
             editorName,
-            base.getEditor(editorName)?.editor.view?.state,
+            base.getEditor(editorName)?.view?.state,
           ]),
         ),
       };
@@ -251,8 +238,8 @@ async function* iterateCases(
         editorName,
         char: char,
         column,
-        view: base.getEditor(editorName)?.editor.view,
-        editor: base.getEditor(editorName)?.editor,
+        view: base.getEditor(editorName)?.view,
+        // editor: base.getEditor(editorName)?.editor,
         resolveAtEndOfColumn: (promise) => {
           promises.push(promise);
         },
@@ -261,19 +248,6 @@ async function* iterateCases(
     }
     await Promise.all(promises);
   }
-}
-
-function createOneOffSchema(extensions) {
-  const dummyEditor = new PMEditor(document.createElement('div'), {
-    extensions,
-    renderNodeView: () => {},
-    destroyNodeView: () => {},
-    onInit: () => {},
-    manualViewCreate: true,
-  });
-  const schema = dummyEditor.schema;
-  dummyEditor.destroy();
-  return schema;
 }
 
 // does a deep equality on all its members

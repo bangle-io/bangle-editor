@@ -146,8 +146,12 @@ async function writeFile(fileHandle, contents) {
   // For Chrome 83 and later.
   // Create a FileSystemWritableFileStream to write to.
   const writable = await fileHandle.createWritable();
+
+  // TODO this throws a promise rejection internally, not sure
+  // if this the root cause of the crswap issue
   // Write the contents of the file to the stream.
   await writable.write(contents);
+
   // Close the file and write the contents to disk.
   await writable.close();
 }

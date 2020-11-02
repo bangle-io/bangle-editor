@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { extensions } from '../editor/extensions';
 import {
   workspaceActions,
   WorkspaceContext,
@@ -15,7 +14,7 @@ const DEBUG = true;
 export class EditorManager extends React.PureComponent {
   static contextType = WorkspaceContext;
 
-  schema = getSchema(extensions());
+  schema = getSchema();
 
   disk = new LocalDisk({
     getItem: async (docName) => {

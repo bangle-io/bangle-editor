@@ -26,7 +26,6 @@ import { Timestamp } from 'bangle-plugins/timestamp';
 import { TrailingNode } from 'bangle-plugins/trailing-node';
 import { CollabExtension } from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
-import { InlineSuggest } from 'bangle-plugins/inline-suggest/index';
 import { Emoji, EmojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
 

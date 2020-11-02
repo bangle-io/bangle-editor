@@ -2,6 +2,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { toggleList } from './list-item/commands';
 import { keymap } from 'prosemirror-keymap';
+import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
 
 const name = 'todo_list';
 const getTypeFromSchema = (schema) => schema.nodes[name];
@@ -46,7 +47,7 @@ export const plugins = (opts = {}) => {
   };
 };
 
-const toggleTodoList = (state, dispatch, view) => {
+export const toggleTodoList = (state, dispatch, view) => {
   const { schema } = state;
   return toggleList(schema.nodes.todo_list, schema.nodes.todo_item)(
     state,
@@ -55,13 +56,10 @@ const toggleTodoList = (state, dispatch, view) => {
   );
 };
 
-export const todoListCommands = {
-  toggleTodoList,
-  isSelectionInsideTodoList: (state) => {
-    const { schema } = state;
-    return parentHasDirectParentOfType(
-      schema.nodes['todo_item'],
-      schema.nodes['todo_list'],
-    )(state);
-  },
+export const isSelectionInsideTodoList = (state) => {
+  const { schema } = state;
+  return parentHasDirectParentOfType(
+    schema.nodes['todo_item'],
+    schema.nodes['todo_list'],
+  )(state);
 };

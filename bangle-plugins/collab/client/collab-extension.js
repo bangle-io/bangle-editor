@@ -5,7 +5,6 @@ import {
   sendableSteps,
 } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
-import { Extension } from 'bangle-core/extensions';
 import { Plugin, PluginKey, Selection } from 'prosemirror-state';
 import { getIdleCallback, sleep, uuid } from 'bangle-core/utils/js-utils';
 import { Emitter } from 'bangle-core/utils/emitter';
@@ -18,28 +17,39 @@ import { CollabError } from '../collab-error';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+
 export const RECOVERY_BACK_OFF = 50;
 export const collabSettingsKey = new PluginKey('bangle/collabSettingsKey');
 export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
-window.pp = collabPluginKey;
+
 export const getCollabSettings = (state) => {
   return collabSettingsKey.getState(state);
 };
 
-export class CollabExtension extends Extension {
-  get name() {
-    return 'collab_extension';
-  }
+const name = 'collab_extension';
 
-  get defaultOptions() {
-    return {
-      clientID: 'client-' + uuid(),
-    };
-  }
-  get plugins() {
+function specFactory(opts = {}) {
+  return {
+    name,
+    type: 'component',
+  };
+}
+
+function pluginsFactory({
+  clientID = 'client-' + uuid(),
+  docName,
+  getDocument,
+  pullEvents,
+  pushEvents,
+} = {}) {
+  return () => {
     return [
       collab({
-        clientID: this.options.clientID,
+        clientID,
       }),
 
       new Plugin({
@@ -47,9 +57,9 @@ export class CollabExtension extends Extension {
         state: {
           init: (_, state) => {
             return {
-              docName: this.options.docName,
-              clientID: this.options.clientID,
-              userId: 'user-' + this.options.clientID,
+              docName: docName,
+              clientID: clientID,
+              userId: 'user-' + clientID,
               ready: false,
             };
           },
@@ -83,21 +93,15 @@ export class CollabExtension extends Extension {
       }),
 
       bangleCollabPlugin({
-        getDocument: this.options.getDocument,
-        pullEvents: this.options.pullEvents,
-        pushEvents: this.options.pushEvents,
-        editor: this.editor,
+        getDocument: getDocument,
+        pullEvents: pullEvents,
+        pushEvents: pushEvents,
       }),
     ];
-  }
+  };
 }
 
-export function bangleCollabPlugin({
-  getDocument,
-  pullEvents,
-  pushEvents,
-  editor,
-}) {
+function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
   let connection;
   const restart = (view) => {
     log('restarting connection');
@@ -139,26 +143,23 @@ export function bangleCollabPlugin({
     },
     view(view) {
       connection = newConnection(view);
-      const init = () => {
-        if (connection) {
-          connection.init();
-        }
-      };
-      editor.on('init', init);
+      // TODO is it safe to do this here
+      connection.init();
+
       return {
+        update() {},
         destroy() {
           if (connection) {
             connection.destroy();
             connection = null;
           }
-          editor.off('init', init);
         },
       };
     },
   });
 }
 
-export function connectionManager({
+function connectionManager({
   view,
   restart,
   getDocument,
@@ -274,7 +275,7 @@ export function connectionManager({
  * A helper function to poll the Authority and emit newly received steps.
  * @returns {Emitter} An emitter emits steps or error and listens for pull events
  */
-export function pullEventsEmitter(view, pullEvents) {
+function pullEventsEmitter(view, pullEvents) {
   const emitter = new Emitter();
 
   let cProm;
@@ -319,7 +320,7 @@ export function pullEventsEmitter(view, pullEvents) {
   return emitter;
 }
 
-export function pushEventsEmitter(view, pushEvents) {
+function pushEventsEmitter(view, pushEvents) {
   const emitter = new Emitter();
   const queue = serialExecuteQueue();
 
@@ -352,7 +353,7 @@ export function pushEventsEmitter(view, pushEvents) {
   return emitter;
 }
 
-export function collabInitEmitter(view, getDocument) {
+function collabInitEmitter(view, getDocument) {
   const emitter = new Emitter();
   const collabSettings = getCollabSettings(view.state);
   emitter

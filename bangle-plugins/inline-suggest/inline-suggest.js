@@ -1,6 +1,9 @@
-import { Mark } from 'bangle-core/marks/index';
-import { findFirstMarkPosition, filter } from 'bangle-core/utils/pm-utils';
-
+import {
+  findFirstMarkPosition,
+  filter,
+  valuePlugin,
+} from 'bangle-core/utils/pm-utils';
+import { keymap } from 'prosemirror-keymap';
 import {
   hideTooltip,
   showTooltip,
@@ -8,139 +11,156 @@ import {
 } from '../tooltip-placement/index';
 import { tooltipController } from './tooltip-controller';
 import { triggerInputRule } from './trigger-input-rule';
-import { getQueryText } from './helpers';
+import * as helpers from './helpers';
 import { removeTypeAheadMarkCmd } from './commands';
+import { PluginKey } from 'prosemirror-state';
+import { pluginKeyStore } from 'bangle-plugins/utils';
 
 const LOG = true;
 let log = LOG ? console.log.bind(console, 'plugins/inline-suggest') : () => {};
 
-export class InlineSuggest extends Mark {
-  get name() {
-    return 'inline_suggest_c' + this.options.trigger.charCodeAt(0);
-  }
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  getQueryText,
+  isTooltipActive,
+};
 
-  get schema() {
-    return {
-      name: this.name,
+const keyStore = pluginKeyStore();
+
+const TOOLTIP_KEY = 'inlineSuggest__tooltip';
+
+export const getTooltipKey = (parentKey) => {
+  return keyStore.get(parentKey, TOOLTIP_KEY);
+};
+const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+export function specFactory({ markName, trigger }) {
+  return {
+    name: markName,
+    type: 'mark',
+    schema: {
       inclusive: true,
       group: 'triggerMarks',
-      parseDOM: [{ tag: `span[data-${this.name}]` }],
+      parseDOM: [{ tag: `span[data-${markName}]` }],
       toDOM: (node) => {
         return [
           'span',
           {
-            [`data-${this.name}`]: 'true',
+            [`data-${markName}`]: 'true',
             'data-trigger': node.attrs.trigger,
             'style': `color: #0052CC`,
           },
         ];
       },
       attrs: {
-        trigger: { default: '' },
+        trigger: { default: trigger },
       },
-    };
-  }
+    },
 
-  get markdown() {
-    // This essentially removes the mark
-    return {
+    markdown: {
       toMarkdown: {
         open: '',
         close: '',
         mixable: true,
       },
-    };
-  }
+    },
+  };
+}
 
-  get defaultOptions() {
-    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    const { tooltipDOM, tooltipContent } = createTooltipDOM();
+export function pluginsFactory({
+  key = new PluginKey('inline_suggest_key'),
+  markName,
+  trigger,
+  tooltipDOM,
+  tooltipContent,
+  placement = 'bottom-start',
+  enterKeyName = 'Enter',
+  arrowUpKeyName = 'ArrowUp',
+  arrowDownKeyName = 'ArrowDown',
+  escapeKeyName = 'Escape',
+  fallbackPlacements,
+  // Use another key to mimic enter behaviour for example, Tab for entering
+  alternateEnterKeyName,
+
+  getScrollContainerDOM = (view) => {
+    return view.dom.parentElement;
+  },
+  tooltipOffset = () => {
+    return [0, 0.4 * rem];
+  },
+  onUpdateTooltip = (state, dispatch, view) => {},
+  // No need to call removeTypeAheadMarkCmd on onHideTooltip
+  onHideTooltip = (state, dispatch, view) => {},
+  onEnter = (state, dispatch, view) => {
+    return removeTypeAheadMarkCmd(state.schema.marks[markName])(
+      state,
+      dispatch,
+      view,
+    );
+  },
+  onArrowDown = (state, dispatch, view) => {
+    return true;
+  },
+  onArrowUp = (state, dispatch, view) => {
+    return true;
+  },
+  onEscape = (state, dispatch, view) => {
+    return removeTypeAheadMarkCmd(state.schema.marks[markName])(
+      state,
+      dispatch,
+      view,
+    );
+  },
+} = {}) {
+  const defaultDOM = createTooltipDOM();
+  const isActiveCheck = isTooltipActive(key);
+  const tooltipPlacementKey = keyStore.create(key, TOOLTIP_KEY);
+
+  if (!tooltipDOM) {
+    tooltipDOM = defaultDOM.tooltipDOM;
+    tooltipContent = defaultDOM.tooltipContent;
     tooltipContent.textContent = 'hello world';
-    return {
-      trigger: '/',
-      tooltipDOM,
-      placement: 'bottom-start',
-      enterKeyName: 'Enter',
-      arrowUpKeyName: 'ArrowUp',
-      arrowDownKeyName: 'ArrowDown',
-      escapeKeyName: 'Escape',
-      fallbackPlacements: undefined,
-      // Use another key to mimic enter behaviour for example, Tab for entering
-      alternateEnterKeyName: undefined,
-      getScrollContainerDOM: (view) => {
-        return view.dom.parentElement;
-      },
-      tooltipOffset: () => {
-        return [0, 0.4 * rem];
-      },
-      onUpdateTooltip: (state, dispatch, view) => {},
-      // No need to call removeTypeAheadMarkCmd on destroy
-      onHideTooltip: (state, dispatch, view) => {},
-      onEnter: (state, dispatch, view) => {
-        return removeTypeAheadMarkCmd(this.getMarkType(state))(
-          state,
-          dispatch,
-          view,
-        );
-      },
-      onArrowDown: (state, dispatch, view) => {
-        return true;
-      },
-      onArrowUp: (state, dispatch, view) => {
-        return true;
-      },
-      onEscape: (state, dispatch, view) => {
-        return removeTypeAheadMarkCmd(this.getMarkType(state))(
-          state,
-          dispatch,
-          view,
-        );
-      },
-    };
   }
 
-  inputRules({ schema }) {
-    return [triggerInputRule(schema, this.name, this.options.trigger)];
+  const keys = {
+    [enterKeyName]: filter(isActiveCheck, onEnter),
+    [arrowUpKeyName]: filter(isActiveCheck, onArrowUp),
+    [arrowDownKeyName]: filter(isActiveCheck, onArrowDown),
+    [escapeKeyName]: filter(isActiveCheck, onEscape),
+  };
+  if (alternateEnterKeyName) {
+    keys[alternateEnterKeyName] = keys[enterKeyName];
   }
 
-  /**
-   *
-   * @param {*} maybeNode Node | string | Fragment
-   * @param {*} opts
-   */
-
-  get plugins() {
+  return ({ schema }) => {
     const plugin = tooltipPlacementPlugin({
-      pluginName: this.name + 'Tooltip',
-      placement: this.options.placement,
-      fallbackPlacements: this.options.fallbackPlacements,
-      tooltipOffset: this.options.tooltipOffset,
-      tooltipDOM: this.options.tooltipDOM,
-      getScrollContainerDOM: this.options.getScrollContainerDOM,
-      getReferenceElement: triggerReferenceElement(
-        (state) => this.getMarkType(state),
-        (state, markType) => {
-          const { selection } = state;
-          return findFirstMarkPosition(
-            markType,
-            state.doc,
-            selection.from - 1,
-            selection.to,
-          );
-        },
-      ),
+      pluginName: 'inlineSuggest' + trigger + '__tooltipPlacementKey',
+      key: tooltipPlacementKey,
+      placement: placement,
+      fallbackPlacements: fallbackPlacements,
+      tooltipOffset: tooltipOffset,
+      tooltipDOM: tooltipDOM,
+      getScrollContainerDOM: getScrollContainerDOM,
+      getReferenceElement: referenceElement((state) => {
+        const markType = schema.marks[markName];
+        const { selection } = state;
+        return findFirstMarkPosition(
+          markType,
+          state.doc,
+          selection.from - 1,
+          selection.to,
+        );
+      }),
       showTooltipArrow: false,
-      onUpdateTooltip: this.options.onUpdateTooltip,
-      onHideTooltip: this.options.onHideTooltip,
+      onUpdateTooltip: onUpdateTooltip,
+      onHideTooltip: onHideTooltip,
     });
-
-    this._tooltipPlugin = plugin;
-
-    const { trigger } = this.options;
-    const markName = this.name;
-
     return [
       plugin,
+      keymap(keys),
+      valuePlugin(key, { trigger, markName }),
+      triggerInputRule(schema, markName, trigger),
       tooltipController({
         trigger,
         markName,
@@ -148,57 +168,7 @@ export class InlineSuggest extends Mark {
         hideTooltip: hideTooltip(plugin),
       }),
     ];
-  }
-
-  keys() {
-    const isActiveCheck = (state) => this.isTooltipActive(state);
-
-    const result = {
-      [this.options.enterKeyName]: filter(isActiveCheck, this.options.onEnter),
-      [this.options.arrowUpKeyName]: filter(
-        isActiveCheck,
-        this.options.onArrowUp,
-      ),
-      [this.options.arrowDownKeyName]: filter(
-        isActiveCheck,
-        this.options.onArrowDown,
-      ),
-      [this.options.escapeKeyName]: filter(
-        isActiveCheck,
-        this.options.onEscape,
-      ),
-    };
-    if (this.options.alternateEnterKeyName) {
-      result[this.options.alternateEnterKeyName] =
-        result[this.options.enterKeyName];
-    }
-    return result;
-  }
-
-  /**
-   * Public API
-   */
-
-  getMarkName() {
-    return this.name;
-  }
-
-  getMarkType(state) {
-    return state.schema.marks[this.name];
-  }
-
-  getQueryText(state) {
-    const markType = this.getMarkType(state);
-    return getQueryText(state, markType, this.options.trigger);
-  }
-
-  isTooltipActive(state) {
-    return this._tooltipPlugin && this._tooltipPlugin.getState(state)?.show;
-  }
-
-  getTooltipPlugin() {
-    return this._tooltipPlugin;
-  }
+  };
 }
 
 export function createTooltipDOM(className = 'bangle-tooltip') {
@@ -211,13 +181,12 @@ export function createTooltipDOM(className = 'bangle-tooltip') {
   return { tooltipDOM, tooltipContent };
 }
 
-export function triggerReferenceElement(getMarkType, getActiveMarkPos) {
+function referenceElement(getActiveMarkPos) {
   return (view, tooltipDOM, scrollContainerDOM) => {
-    const markType = getMarkType(view.state);
     return {
       getBoundingClientRect: () => {
         let state = view.state;
-        const markPos = getActiveMarkPos(state, markType);
+        const markPos = getActiveMarkPos(state);
         // add by + so that we get the position right after trigger
         const startPos = markPos.start > -1 ? markPos.start + 1 : 0;
         const start = view.coordsAtPos(startPos);
@@ -241,5 +210,21 @@ export function triggerReferenceElement(getMarkType, getActiveMarkPos) {
         return z;
       },
     };
+  };
+}
+
+/** COMMANDS */
+export function getQueryText(key) {
+  return (state) => {
+    const { trigger, markName } = key.getState(state);
+    const markType = state.schema.marks[markName];
+    return helpers.getQueryText(state, markType, trigger);
+  };
+}
+
+export function isTooltipActive(key) {
+  return (state) => {
+    const tooltipKey = getTooltipKey(key);
+    return tooltipKey.getState(state)?.show;
   };
 }

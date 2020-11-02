@@ -34,6 +34,7 @@ let log = LOG
  */
 export function tooltipPlacementPlugin({
   pluginName = 'tooltipPlacementPlugin',
+  key = new PluginKey(pluginName),
   tooltipDOM,
   getScrollContainerDOM,
   getReferenceElement,
@@ -45,7 +46,7 @@ export function tooltipPlacementPlugin({
   fallbackPlacements = ['bottom', 'top'],
   getInitialShowState = (state) => false,
 }) {
-  const key = new PluginKey(pluginName);
+  // TODO can we remove this pluginName field
   tooltipDOM.setAttribute('data-tooltip-name', pluginName);
 
   const plugin = new Plugin({

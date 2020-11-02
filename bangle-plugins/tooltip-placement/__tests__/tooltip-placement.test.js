@@ -7,10 +7,12 @@ import { psx } from 'bangle-core/test-helpers/index';
 
 import { EditorState } from 'prosemirror-state';
 import { tooltipPlacementPlugin } from '../tooltip-placement-plugin';
-import { Editor as PMEditor } from 'bangle-core/editor';
+import { Editor as PMEditor, editorStateSetup } from 'bangle-core/editor';
 import { hideTooltip, showTooltip } from '../tooltip-commands';
 import { EditorView } from 'prosemirror-view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
+import { corePlugins, coreSpec } from 'bangle-core/components';
+import { schemaLoader } from 'bangle-core/element-loaders';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {
@@ -20,19 +22,6 @@ jest.mock('@popperjs/core/lib/popper-lite', () => {
     })),
   };
 });
-
-export function getSchema(extensions) {
-  // todo this is temporary way of getting schema we need better than this
-  const dummyEditor = new PMEditor(document.createElement('div'), {
-    extensions,
-    renderNodeView: () => {},
-    destroyNodeView: () => {},
-    manualViewCreate: true,
-  });
-  const schema = dummyEditor.schema;
-  dummyEditor.destroy();
-  return schema;
-}
 
 const setupPlugin = (opts = {}) => {
   const plugin = tooltipPlacementPlugin({
@@ -60,24 +49,24 @@ const setupPlugin = (opts = {}) => {
 };
 
 const setupEditorState = (plugin) => {
-  return EditorState.create({
-    plugins: [plugin],
-    schema: getSchema([]),
+  const editorSpec = [...coreSpec()];
+  const plugins = [...corePlugins(), plugin];
+
+  return editorStateSetup({
+    plugins,
+    editorSpec,
+    doc: (<doc>
+      <para>hello world</para>
+    </doc>)(schemaLoader(editorSpec)),
   });
 };
 
 const setupEditorView = ({
   state,
   viewDOM = document.createElement('div'),
-  doc = (
-    <doc>
-      <para>hello world</para>
-    </doc>
-  ),
 }) => {
   return new EditorView(viewDOM, {
     state,
-    doc: doc(state.schema),
   });
 };
 

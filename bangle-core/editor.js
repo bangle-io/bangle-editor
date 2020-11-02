@@ -1,6 +1,27 @@
 import { loadNodeViews, loadPlugins, schemaLoader } from './element-loaders';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
+import { focusAtPosition } from './nodes/doc';
+
+export function editorStateSetup({
+  plugins = [],
+  editorProps,
+  editorSpec,
+  stateOpts = {},
+}) {
+  const { doc, content, ...otherStateOpts } = stateOpts;
+
+  const schema = schemaLoader(editorSpec);
+
+  const state = EditorState.create({
+    schema,
+    doc: doc ? doc : createDocument({ schema, content: content }),
+    ...otherStateOpts,
+    plugins: loadPlugins(editorSpec, plugins, { editorProps }),
+  });
+
+  return state;
+}
 
 export function prosemirrorSetup(
   element,
@@ -11,15 +32,15 @@ export function prosemirrorSetup(
     destroyNodeView,
     stateOpts = {},
     viewOpts = {},
+    editorProps,
+    focusOnInit = true,
   },
 ) {
-  const { doc, content, ...otherStateOpts } = stateOpts;
-  const schema = schemaLoader(editorSpec);
-  const state = EditorState.create({
-    schema,
-    doc: doc ? doc : createDocument({ schema, content: content }),
-    ...otherStateOpts,
-    plugins: loadPlugins(schema, plugins),
+  const state = editorStateSetup({
+    plugins,
+    editorProps,
+    editorSpec,
+    stateOpts,
   });
 
   const view = new EditorView(element, {
@@ -32,12 +53,19 @@ export function prosemirrorSetup(
     ...viewOpts,
   });
 
+  if (focusOnInit) {
+    focusView(view);
+  }
+
   return view;
 }
 
-// TODO is this needed? copied from the ../editor.js
-export function focusView(view, position = null) {
-  // setTimeout(() => view?.focus(), 0); // TODO is this timeout needed
+export function focusView(view) {
+  if (process.env.NODE_ENV === 'test' || view.focused) {
+    return;
+  }
+
+  return focusAtPosition()(view.state, view.dispatch, view);
 }
 
 const createDocument = ({ schema, content, parseOptions }) => {

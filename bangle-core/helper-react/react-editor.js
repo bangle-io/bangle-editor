@@ -116,9 +116,6 @@ class PMEditorWrapper extends React.Component {
         destroyNodeView,
       });
       this.view = view;
-      //   this.context.onEditorReady({ view });
-      //   view.focus();
-      focusView(view);
 
       if (options.onReady) {
         options.onReady(view);

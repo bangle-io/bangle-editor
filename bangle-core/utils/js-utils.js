@@ -397,3 +397,5 @@ export function rafSchedule(fn) {
 
   return wrapperFn;
 }
+
+export const bangleWarn = console.warn.bind(console, 'Warning in bangle.js:');
