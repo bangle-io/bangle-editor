@@ -4181,7 +4181,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-dropcursor", "npm:1.3.2"],
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-history", "npm:1.1.3"],
-            ["prosemirror-inputrules", "npm:1.1.2"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-schema-list", "npm:1.1.3"],
@@ -4232,7 +4232,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-dropcursor", "npm:1.3.2"],
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-history", "npm:1.1.3"],
-            ["prosemirror-inputrules", "npm:1.1.2"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-menu", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.11.0"],
@@ -4274,6 +4274,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-inputrules", "npm:1.1.3"],
+            ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-markdown", "npm:1.5.0"],
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-state", "npm:1.3.3"],
@@ -12754,15 +12755,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-inputrules", [
-        ["npm:1.1.2", {
-          "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.1.2-041d7c0ebf-e9c5ac2e9b.zip/node_modules/prosemirror-inputrules/",
-          "packageDependencies": [
-            ["prosemirror-inputrules", "npm:1.1.2"],
-            ["prosemirror-state", "npm:1.3.3"],
-            ["prosemirror-transform", "npm:1.2.7"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:1.1.3", {
           "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.1.3-1006d2d553-fddaf86ae4.zip/node_modules/prosemirror-inputrules/",
           "packageDependencies": [
@@ -15306,7 +15298,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["tiptap-commands", "npm:1.14.4"],
             ["prosemirror-commands", "npm:1.1.4"],
-            ["prosemirror-inputrules", "npm:1.1.2"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-schema-list", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],
