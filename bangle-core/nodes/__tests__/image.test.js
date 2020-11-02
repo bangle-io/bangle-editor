@@ -5,7 +5,7 @@
 /** @jsx psx */
 import {
   psx,
-  renderTestEditor2,
+  renderTestEditor,
   dispatchPasteEvent,
   typeText,
   createEvent,
@@ -13,7 +13,7 @@ import {
 
 import { sleep } from '../../utils/js-utils';
 
-const testEditor = renderTestEditor2({});
+const testEditor = renderTestEditor({});
 const image =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==';
 

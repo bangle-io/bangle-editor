@@ -5,6 +5,20 @@ import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
 import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
 import { Plugin, PluginKey } from 'prosemirror-state';
+import { hideTooltip, showTooltip } from './tooltip-commands';
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = { hideTooltip, showTooltip };
+
+const name = 'tooltip_placement';
+
+function specFactory({} = {}) {
+  return {
+    name: name,
+    type: 'component',
+  };
+}
 
 const LOG = false;
 let log = LOG
@@ -32,7 +46,7 @@ let log = LOG
  * @param {(state: any) => Boolean} options.getInitialShowState
  * @param {Array} options.fallbackPlacement
  */
-export function tooltipPlacementPlugin({
+function pluginsFactory({
   pluginName = 'tooltipPlacementPlugin',
   key = new PluginKey(pluginName),
   tooltipDOM,

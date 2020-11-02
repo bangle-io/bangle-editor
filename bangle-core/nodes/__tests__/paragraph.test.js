@@ -4,14 +4,14 @@
 
 /** @jsx psx */
 import {
-  renderTestEditor2,
+  renderTestEditor,
   psx,
   typeText,
   sendKeyToPm,
 } from 'bangle-core/test-helpers';
 import { paragraph } from '../index';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 describe('Basics', () => {
   test('is able to type paragraph', async () => {

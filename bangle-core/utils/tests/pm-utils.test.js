@@ -2,11 +2,11 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor2 } from 'bangle-core/test-helpers';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers';
 
 import { isFirstChildOfParent, findCutBefore } from '../pm-utils';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 describe('isFirstChildOfParent', () => {
   describe('top level paragraphs', () => {

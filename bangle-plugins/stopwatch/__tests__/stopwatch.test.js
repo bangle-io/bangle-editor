@@ -3,7 +3,7 @@
  */
 /** @jsx psx */
 import { fireEvent, wait } from '@testing-library/react';
-import { psx, sendKeyToPm, renderTestEditor2 } from 'bangle-core/test-helpers/';
+import { psx, sendKeyToPm, renderTestEditor } from 'bangle-core/test-helpers/';
 
 import { stopwatch } from '../index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
@@ -13,7 +13,7 @@ import { schemaLoader } from 'bangle-core/element-loaders';
 const editorSpec = [...coreSpec(), stopwatch.spec({})];
 const plugins = [...corePlugins(), stopwatch.plugins({})];
 
-const testEditor = renderTestEditor2({
+const testEditor = renderTestEditor({
   editorSpec,
   plugins,
 });

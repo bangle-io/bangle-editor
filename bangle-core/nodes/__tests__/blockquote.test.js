@@ -5,13 +5,13 @@
 /** @jsx psx */
 import {
   psx,
-  renderTestEditor2,
+  renderTestEditor,
   sendKeyToPm,
 } from 'bangle-core/test-helpers/index';
 
 import { typeText } from 'bangle-core/test-helpers/index';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 describe('Markdown shorthand works', () => {
   it('pressing > on empty paragraph works', async () => {

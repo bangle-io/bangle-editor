@@ -5,7 +5,7 @@
 import {
   applyCommand,
   psx,
-  renderTestEditor2,
+  renderTestEditor,
   sendKeyToPm,
   typeText,
 } from 'bangle-core/test-helpers';
@@ -43,7 +43,7 @@ const plugins = [
   underline.plugins(),
 ];
 
-const testEditor = renderTestEditor2({ editorSpec, plugins });
+const testEditor = renderTestEditor({ editorSpec, plugins });
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;
@@ -79,7 +79,7 @@ describe('Command: toggleList', () => {
 });
 
 describe('Command: backspaceKeyCommand', () => {
-  const testEditor = renderTestEditor2({});
+  const testEditor = renderTestEditor({});
   let updateDoc,
     editorView,
     cmd = applyCommand(backspaceKeyCommand());
@@ -426,7 +426,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 
   it('should be not be possible to convert a code to a list item', async () => {
-    const testEditor = renderTestEditor2({});
+    const testEditor = renderTestEditor({});
 
     const { editorView, sel } = await testEditor(
       <doc>

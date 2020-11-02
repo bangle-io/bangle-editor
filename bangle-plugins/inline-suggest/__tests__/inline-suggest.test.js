@@ -8,7 +8,7 @@ import {
   psx,
   typeText,
   sendKeyToPm,
-  renderTestEditor2,
+  renderTestEditor,
 } from 'bangle-core/test-helpers/index';
 
 import { typeChar } from 'bangle-core/test-helpers/index';
@@ -43,7 +43,7 @@ describe('inline suggest basic show and hide', () => {
   };
 
   beforeEach(async () => {
-    testEditor = renderTestEditor2({ editorSpec, plugins });
+    testEditor = renderTestEditor({ editorSpec, plugins });
   });
 
   test('when no trigger', async () => {
@@ -382,7 +382,7 @@ describe('keybindings test', () => {
   const plugins = [...corePlugins(), inlineSuggest.plugins(opts)];
 
   test('calls on* callbacks correctly', async () => {
-    testEditor = renderTestEditor2({ editorSpec, plugins });
+    testEditor = renderTestEditor({ editorSpec, plugins });
     const { view } = await testEditor(
       <doc>
         <para>[] foobar</para>

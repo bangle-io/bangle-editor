@@ -9,7 +9,7 @@ import { keymap } from 'prosemirror-keymap';
 import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { CustomNodeView } from './helper-react/custom-node-view';
-import { weakCache } from './utils/js-utils';
+import { weakCache, recursiveFlat } from './utils/js-utils';
 
 export function specValidate() {}
 
@@ -19,6 +19,7 @@ export const schemaLoader = weakCache(function schemaLoader(editorSpec) {
   let nodes = [];
   let marks = [];
   let topNode = 'doc';
+  editorSpec = recursiveFlat(editorSpec);
   for (const spec of editorSpec) {
     if (spec.type === 'node') {
       nodes.push([spec.name, spec.schema]);
@@ -137,19 +138,4 @@ export function loadNodeViews(editorSpec, renderNodeView, destroyNodeView) {
         ];
       }),
   );
-}
-
-function recursiveFlat(plugins, callbackPayload) {
-  const recurse = (plugins) => {
-    if (Array.isArray(plugins)) {
-      return plugins.flatMap((plug) => recurse(plug)).filter(Boolean);
-    }
-    if (typeof plugins === 'function') {
-      return recurse(plugins(callbackPayload));
-    }
-
-    return plugins;
-  };
-
-  return recurse(plugins);
 }

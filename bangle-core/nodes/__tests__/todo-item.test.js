@@ -4,12 +4,12 @@
 /** @jsx psx */
 import {
   psx,
-  renderTestEditor2,
+  renderTestEditor,
   typeText,
   sendKeyToPm,
 } from 'bangle-core/test-helpers';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 test('Typing works', async () => {
   const { view } = await testEditor(

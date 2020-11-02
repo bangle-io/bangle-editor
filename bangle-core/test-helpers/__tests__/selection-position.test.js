@@ -3,9 +3,9 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor2 } from '../index';
+import { psx, renderTestEditor } from '../index';
 
-const testEditor = renderTestEditor2();
+const testEditor = renderTestEditor();
 
 describe('Para empty selection', () => {
   test('Correct positions with inside paragraph', async () => {

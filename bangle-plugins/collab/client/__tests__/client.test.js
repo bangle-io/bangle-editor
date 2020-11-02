@@ -7,7 +7,7 @@ import { getVersion } from 'prosemirror-collab';
 import {
   psx,
   typeText,
-  renderTestEditor2,
+  renderTestEditor,
 } from 'bangle-core/test-helpers/index';
 import { CollabError } from '../../collab-error';
 import { Selection } from 'prosemirror-state';
@@ -53,7 +53,7 @@ async function setupCollabEditor(handlers) {
     }),
   ];
 
-  return renderTestEditor2(
+  return renderTestEditor(
     {
       editorSpec,
       plugins: editorPlugins,

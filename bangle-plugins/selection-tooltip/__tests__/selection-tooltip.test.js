@@ -8,7 +8,7 @@ import {
   psx,
   typeText,
   sendKeyToPm,
-  renderTestEditor2,
+  renderTestEditor,
 } from 'bangle-core/test-helpers/index';
 
 import { createTooltipDOM } from '../selection-tooltip';
@@ -36,7 +36,7 @@ describe('selection-tooltip', () => {
       selectionTooltip.plugins({ key, tooltipDOM }),
     ];
 
-    testEditor = renderTestEditor2({ editorSpec, plugins });
+    testEditor = renderTestEditor({ editorSpec, plugins });
   });
 
   test('Correctly adds tooltip', async () => {
