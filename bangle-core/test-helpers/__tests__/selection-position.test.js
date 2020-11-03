@@ -3,18 +3,9 @@
  */
 
 /** @jsx psx */
-import { Link } from 'bangle-core/marks/link';
-import { BulletList, ListItem, OrderedList } from 'bangle-core/nodes/index';
 import { psx, renderTestEditor } from '../index';
 
-const extensions = [
-  new Link(),
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-];
-
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor();
 
 describe('Para empty selection', () => {
   test('Correct positions with inside paragraph', async () => {

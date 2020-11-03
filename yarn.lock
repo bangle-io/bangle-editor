@@ -3081,7 +3081,7 @@ __metadata:
     prosemirror-dropcursor: ^1.1.1
     prosemirror-gapcursor: ^1.1.5
     prosemirror-history: ^1.0.4
-    prosemirror-inputrules: ^1.0.4
+    prosemirror-inputrules: ^1.1.3
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.11.0
     prosemirror-schema-list: ^1.1.3
@@ -3170,6 +3170,7 @@ __metadata:
     prosemirror-collab: ^1.2.2
     prosemirror-commands: ^1.1.4
     prosemirror-inputrules: ^1.1.3
+    prosemirror-keymap: 1.1.4
     prosemirror-markdown: ^1.5.0
     prosemirror-model: ^1.12.0
     prosemirror-state: 1.3.3
@@ -10842,16 +10843,6 @@ fsevents@^1.2.7:
     prosemirror-transform: ^1.0.0
     rope-sequence: ^1.3.0
   checksum: 62437ec88209c295d7389f79d5f4b1abc390ab0493373040644068b68932d6f59801203fe87c90385bb6587eb059eed433cc3f3f0f80ddb37cae0cde8e8d9f04
-  languageName: node
-  linkType: hard
-
-"prosemirror-inputrules@npm:^1.0.4, prosemirror-inputrules@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "prosemirror-inputrules@npm:1.1.2"
-  dependencies:
-    prosemirror-state: ^1.0.0
-    prosemirror-transform: ^1.0.0
-  checksum: e9c5ac2e9b1f44b29233611c2b1e35d3decee33f3f0ff2ef19669afd8da64b8a6c297c4157829a7c5e2ca8d3be0cae8dea811fbb3f702070d793b582cbfa46ca
   languageName: node
   linkType: hard
 

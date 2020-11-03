@@ -3,56 +3,27 @@
  */
 /** @jsx psx */
 import { psx, renderTestEditor } from 'bangle-core/test-helpers/';
-import {
-  OrderedList,
-  BulletList,
-  ListItem,
-  Heading,
-  HardBreak,
-  TodoList,
-  TodoItem,
-  Image,
-  Blockquote,
-  CodeBlock,
-  HorizontalRule,
-} from 'bangle-core/nodes';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
-import { Emoji } from '../index';
 import {
   defaultMarkdownItTokenizer,
   markdownParser,
 } from 'bangle-plugins/markdown/markdown-parser';
-import { Bold, Code, Italic, Link, Strike, Underline } from 'bangle-core/index';
 import emojiParser from 'markdown-it-emoji';
+import { corePlugins, coreSpec } from 'bangle-core/components';
+import { emoji } from '../index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-  new Heading(),
-  new Underline(),
-  new TodoList(),
-  new TodoItem(),
-  new Blockquote(),
-  new CodeBlock(),
-  new HorizontalRule(),
-  new Image(),
+const specSheet = new SpecSheet([...coreSpec(), emoji.spec()]);
+const plugins = [...corePlugins(), emoji.plugins()];
 
-  // marks
-  new Link(),
-  new Bold(),
-  new Italic(),
-  new Strike(),
-  new Code(),
-  new Underline(),
-  new Emoji(),
-];
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor({
+  specSheet,
+  plugins,
+});
 
 test('Rendering works', async () => {
   Date.now = jest.fn(() => 0);
-  const { container, editor } = await testEditor(
+  const { container, view } = await testEditor(
     <doc>
       <para>
         foo[]bar
@@ -61,7 +32,7 @@ test('Rendering works', async () => {
     </doc>,
   );
 
-  expect(editor.state).toEqualDocAndSelection(
+  expect(view.state).toEqualDocAndSelection(
     <doc>
       <para>
         foo[]bar
@@ -79,17 +50,18 @@ describe('markdown', () => {
     if (typeof doc === 'function') {
       content = doc(await schemaPromise);
     }
-    return markdownSerializer(extensions).serialize(content);
+    return markdownSerializer(specSheet).serialize(content);
   };
   const parse = async (md) =>
     markdownParser(
-      extensions,
-      await schemaPromise,
+      specSheet,
       defaultMarkdownItTokenizer.use(emojiParser),
     ).parse(md);
 
   beforeAll(async () => {
-    schemaPromise = renderTestEditor({ extensions })().then((r) => r.schema);
+    schemaPromise = renderTestEditor({ specSheet, plugins })().then(
+      (r) => r.schema,
+    );
   });
 
   test('markdown', async () => {

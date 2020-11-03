@@ -3,35 +3,36 @@
  */
 
 /** @jsx psx */
-import { Link } from 'bangle-core/index';
-import { psx, renderTestEditor } from 'bangle-core/test-helpers';
+import { coreSpec } from 'bangle-core/components';
+import { link } from 'bangle-core/index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers/index';
 import { TextSelection } from 'prosemirror-state';
-import { LinkMenu } from '../link-menu';
+import { linkMenu } from '../index';
 jest.mock('bangle-plugins/helpers/index', () => {
   return {
     viewHasFocus: () => true,
   };
 });
 
+const specSheet = new SpecSheet([...coreSpec(), linkMenu.spec()]);
+const plugins = [link.plugins(), linkMenu.plugins()];
+
 describe('Link menu', () => {
   test('when no link', async () => {
-    const linkMenuPlugin = new LinkMenu();
-    const extensions = [new Link(), linkMenuPlugin];
-    const testEditor = renderTestEditor({ extensions });
-    const { editor } = await testEditor(
+    const testEditor = renderTestEditor({ specSheet, plugins });
+    const { view } = await testEditor(
       <doc>
         <para>foo[]bar</para>
       </doc>,
     );
 
-    expect(editor.view.dom.parentNode).toMatchSnapshot();
+    expect(view.dom.parentNode).toMatchSnapshot();
   });
 
   test('when link but not in selection', async () => {
-    const linkMenuPlugin = new LinkMenu();
-    const extensions = [new Link(), linkMenuPlugin];
-    const testEditor = renderTestEditor({ extensions });
-    const { editor } = await testEditor(
+    const testEditor = renderTestEditor({ specSheet, plugins });
+    const { view } = await testEditor(
       <doc>
         <para>
           foo
@@ -41,11 +42,10 @@ describe('Link menu', () => {
       </doc>,
     );
 
-    expect(editor.view.dom).toMatchInlineSnapshot(`
+    expect(view.dom).toMatchInlineSnapshot(`
       <div
         class="ProseMirror bangle-editor content"
         contenteditable="true"
-        tabindex="0"
       >
         <p>
           foo
@@ -59,14 +59,13 @@ describe('Link menu', () => {
         </p>
       </div>
     `);
-    expect(editor.view.dom.parentNode).toMatchSnapshot();
+    expect(view.dom.parentNode).toMatchSnapshot();
   });
 
   test('when selection moves inside selection', async () => {
-    const linkMenuPlugin = new LinkMenu();
-    const extensions = [new Link(), linkMenuPlugin];
-    const testEditor = renderTestEditor({ extensions });
-    const { editor } = await testEditor(
+    const testEditor = renderTestEditor({ specSheet, plugins });
+
+    const { view } = await testEditor(
       <doc>
         <para>
           foo
@@ -76,10 +75,8 @@ describe('Link menu', () => {
       </doc>,
     );
 
-    const { view } = editor;
-
-    let tooltipDOM = editor.view.dom.parentElement.querySelector(
-      '.bangle-tooltip[data-tooltip-name="inline_mark_tooltip"]',
+    let tooltipDOM = view.dom.parentElement.querySelector(
+      '.bangle-tooltip[data-tooltip-name="link_menu_tooltip"]',
     );
     expect(tooltipDOM).toBeTruthy();
     expect(tooltipDOM.hasAttribute('data-show')).toBe(false);

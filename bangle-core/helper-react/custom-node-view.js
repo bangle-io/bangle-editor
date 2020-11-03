@@ -11,21 +11,21 @@ export class CustomNodeView {
     view,
     getPos,
     decorations,
-    extension,
+    spec,
     renderNodeView,
     destroyNodeView,
   }) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
-    this.extension = extension;
+    this.spec = spec;
     this.decorations = decorations;
     // Note it is important that we not set contentDOM for leaf nodes
     // as it causes silent bugs
-    this._createContentDOM = extension.options.createContentDOM;
-    this._createDom = extension.options.createDom;
-    this._viewShouldUpdate = extension.options.viewShouldUpdate;
-    this._domRefClasses = extension.options.domRefClasses;
+    this._createContentDOM = spec.nodeView.createContentDOM;
+    this._createDom = spec.nodeView.createDom;
+    this._viewShouldUpdate = spec.nodeView.viewShouldUpdate;
+    this._domRefClasses = spec.nodeView.domRefClasses;
     this._renderNodeView = renderNodeView;
     this._destroyNodeView = destroyNodeView;
     this.init();
@@ -33,7 +33,7 @@ export class CustomNodeView {
 
   init() {
     if (typeof this.node.attrs['data-type'] !== 'string') {
-      throw new Error(`NodeView:${this.extension.name} must have a data-type`);
+      throw new Error(`NodeView:${this.spec.name} must have a data-type`);
     }
 
     this.domRef = this.createDom();
@@ -146,7 +146,7 @@ export class CustomNodeView {
     }
     Object.keys(
       node.attrs || {
-        'data-type': this.extension.name,
+        'data-type': this.spec.name,
       },
     ).forEach((attr) => {
       element.setAttribute(attr, node.attrs[attr]);
@@ -216,7 +216,7 @@ export class CustomNodeView {
     tr.setNodeMarkup(nodePos, undefined, {
       ...this.node.attrs,
       ...attrs,
-      'data-type': this.extension.name, // this is important
+      'data-type': this.spec.name, // this is important
     });
 
     this.view.dispatch(tr);
@@ -240,7 +240,7 @@ export class CustomNodeView {
 
       // for gluing with backend
       dom: this.domRef,
-      extension: this.extension,
+      spec: this.spec,
     });
   }
 }

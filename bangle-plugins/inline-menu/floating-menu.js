@@ -1,61 +1,75 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 
+import { rafWrap } from 'bangle-core/utils/js-utils';
+import { PluginKey } from 'prosemirror-state';
 import {
-  SelectionTooltip,
-  createTooltipDOM,
-} from 'bangle-plugins/selection-tooltip/index';
+  isSelectionInsideTodoList,
+  toggleTodoList,
+} from 'bangle-core/components/todo-list';
+import {
+  isItalicActiveInSelection,
+  toggleItalic,
+} from 'bangle-core/components/italic';
+import {
+  isSelectionInsideBulletList,
+  toggleBulletList,
+} from 'bangle-core/components/bullet-list';
+import {
+  toggleHeading,
+  isSelectionInHeading,
+} from 'bangle-core/components/heading';
+import {
+  isCodeActiveInSelection,
+  toggleCode,
+} from 'bangle-core/components/code';
 import {
   isBoldActiveInSelection,
-  isItalicActiveInSelection,
-  isCodeActiveInSelection,
-  isSelectionInsideLink,
   toggleBold,
-  toggleCode,
-  toggleItalic,
-} from 'bangle-core/marks/index';
-
+} from 'bangle-core/components/bold';
+import { isSelectionInsideLink } from 'bangle-core/components/link';
+import { pluginKeyStore } from 'bangle-plugins/utils';
 import {
-  bulletListCommands,
-  isSelectionInHeading,
-  todoListCommands,
-  toggleHeading,
-} from 'bangle-core/nodes/index';
-import { hideTooltip } from 'bangle-plugins/tooltip-placement/index';
+  hideAllSelectionTooltip,
+  hideSelectionTooltip,
+} from 'bangle-plugins/selection-tooltip/selection-tooltip';
+import { isLinkMenuActive, showLinkMenu } from './link-menu';
+import { selectionTooltip } from '../selection-tooltip/index';
 import { Icon } from './icon-helpers';
-import { rafWrap } from 'bangle-core/utils/js-utils';
 
-export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
-  const { tooltipDOM, tooltipContent } = createTooltipDOM();
+const name = 'floating_menu';
 
-  const floatingMenu = new SelectionTooltip({
-    tooltipName: 'floating_menu',
-    tooltipDOM,
-    getScrollContainerDOM,
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  hideFloatingMenuTooltip,
+};
 
-    onHideTooltip: () => {
-      reactDOM.unmountComponentAtNode(tooltipContent);
-      return true;
-    },
+const keyStore = pluginKeyStore();
 
-    onUpdateTooltip(state, dispatch, view) {
-      const { head, from } = state.selection;
-      if (this.popperInstance) {
-        if (head === from) {
-          this.popperInstance.setOptions({ placement: 'top' });
-        } else {
-          this.popperInstance.setOptions({ placement: 'bottom' });
-        }
-      }
-      render(state, dispatch, view);
-      return true;
-    },
+const getSelectionTooltipKey = (parentKey) => {
+  return keyStore.get(parentKey, parentKey.key + '__selectionTooltip');
+};
+const createTooltipKey = (parentKey) => {
+  return keyStore.create(parentKey, parentKey.key + '__selectionTooltip');
+};
 
-    shouldShowTooltip: (state) => {
-      return !state.selection.empty && !linkMenu.isTooltipActive(state);
-    },
-  });
+function specFactory(opts = {}) {
+  return {
+    type: 'component',
+    name,
+  };
+}
 
+function pluginsFactory({
+  key = new PluginKey('floating_menu'),
+  getScrollContainerDOM = (view) => {
+    return view.dom.parentElement;
+  },
+  linkMenuKey,
+} = {}) {
+  const { tooltipDOM, tooltipContent } = selectionTooltip.createTooltipDOM();
+  const selectionTooltipKey = createTooltipKey(key);
   const Bold = {
     type: 'command',
     name: 'Bold',
@@ -88,12 +102,21 @@ export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
     isActive: isItalicActiveInSelection,
   };
 
-  const Link = {
+  const Link = linkMenuKey && {
     type: 'command',
     name: 'Link',
     command: (state, dispatch, view) => {
-      if (linkMenu.showLinkTooltip(state, dispatch, view)) {
-        return hideTooltip(floatingMenu.tooltipPlugin)(state, dispatch, view);
+      if (showLinkMenu(linkMenuKey)(state)) {
+        if (dispatch) {
+          console.log('hiding all');
+          hideAllSelectionTooltip()(state, dispatch, view);
+          setTimeout(
+            () => showLinkMenu(linkMenuKey)(view.state, view.dispatch, view),
+            0,
+          );
+          return true;
+        }
+        return true;
       }
       return false;
     },
@@ -121,7 +144,7 @@ export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
     type: 'command',
     name: 'BulletList',
     command: (state, dispatch, view) => {
-      if (bulletListCommands.toggleBulletList(state, dispatch, view)) {
+      if (toggleBulletList(state, dispatch, view)) {
         if (dispatch) {
           view.focus();
         }
@@ -130,25 +153,25 @@ export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
       return false;
     },
     component: BulletListIcon,
-    isActive: bulletListCommands.isSelectionInsideBulletList,
+    isActive: isSelectionInsideBulletList,
   };
 
   const TodoList = {
     type: 'command',
     name: 'TodoList',
     command: (state, dispatch, view) => {
-      const allowed = todoListCommands.toggleTodoList(state, undefined, view);
+      const allowed = toggleTodoList(state, undefined, view);
       if (allowed) {
         if (dispatch) {
           view.focus();
         }
-        rafWrap(todoListCommands.toggleTodoList)(state, dispatch, view);
+        rafWrap(toggleTodoList)(state, dispatch, view);
         return true;
       }
       return false;
     },
     component: TodoListIcon,
-    isActive: todoListCommands.isSelectionInsideTodoList,
+    isActive: isSelectionInsideTodoList,
   };
 
   const Heading2 = {
@@ -186,8 +209,8 @@ export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
   };
 
   const menuItems = [
-    [Bold, Italic, Link, Code],
-    [Heading2, Heading3, BulletList, TodoList],
+    [Bold, Italic, Link, Code].filter(Boolean),
+    [Heading2, Heading3, BulletList, TodoList].filter(Boolean),
   ];
 
   const render = (state, dispatch, view) => {
@@ -230,7 +253,36 @@ export function FloatingMenu({ getScrollContainerDOM, linkMenu } = {}) {
     return true;
   };
 
-  return floatingMenu;
+  return selectionTooltip.plugins({
+    key: selectionTooltipKey,
+    tooltipName: 'floating_menu',
+    tooltipDOM,
+    getScrollContainerDOM,
+
+    onHideTooltip: () => {
+      reactDOM.unmountComponentAtNode(tooltipContent);
+      return true;
+    },
+
+    onUpdateTooltip(state, dispatch, view) {
+      const { head, from } = state.selection;
+      if (this.popperInstance) {
+        if (head === from) {
+          this.popperInstance.setOptions({ placement: 'top' });
+        } else {
+          this.popperInstance.setOptions({ placement: 'bottom' });
+        }
+      }
+      console.log('rending');
+      render(state, dispatch, view);
+      return true;
+    },
+
+    shouldShowTooltip: (state) => {
+      // TODO floating menu should not be responsible for checking other tooltips
+      return !state.selection.empty && !isLinkMenuActive(linkMenuKey)(state);
+    },
+  });
 }
 
 class Menu extends React.PureComponent {
@@ -331,3 +383,8 @@ const Heading2Icon = (props) => {
     </Icon>
   );
 };
+
+// Commands
+export function hideFloatingMenuTooltip(key) {
+  return hideSelectionTooltip(getSelectionTooltipKey(key));
+}

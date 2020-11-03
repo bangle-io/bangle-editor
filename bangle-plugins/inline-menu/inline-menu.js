@@ -1,10 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-
 import {
   SelectionTooltip,
   createTooltipDOM,
 } from 'bangle-plugins/selection-tooltip/index';
-import reactDOM from 'react-dom';
 
 export function InlineMenuRange({ menuDOM, getScrollContainerDOM }) {
   const { tooltipDOM, tooltipContent } = createTooltipDOM();

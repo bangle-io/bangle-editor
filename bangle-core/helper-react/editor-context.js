@@ -18,10 +18,8 @@ export class EditorContextProvider extends React.Component {
     editorUpdateKey: 0,
   };
 
-  onEditorReady = (editor) => {
-    if (!editor) {
-      return;
-    }
+  onEditorReady = (view) => {
+    return;
 
     if (
       this.state.editorValue.editor &&

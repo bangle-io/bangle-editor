@@ -31,20 +31,20 @@ async function mountEditor(page, props) {
   await page.waitForSelector(EDITOR_SELECTOR);
   await page.waitForSelector('.ProseMirror', { timeout: 500 });
   await page.click(EDITOR_SELECTOR);
-  // let the collab extension settle down
+  // let the collab  settle down
   await sleep(50);
 }
 
 async function getEditorState(page) {
   return page.evaluate(() => {
-    return window.editor.state.toJSON();
+    return window.editorView.state.toJSON();
   });
 }
 
 async function getDoc(page) {
   return page
     .evaluate(() => {
-      return window.editor.state.doc.toString();
+      return window.editorView.state.doc.toString();
     })
     .then(frmt);
 }

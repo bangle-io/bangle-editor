@@ -3,10 +3,6 @@ import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 import { doesQueryHaveTrigger } from './helpers';
 import { removeTypeAheadMarkCmd } from './commands';
-import {
-  hideTooltip,
-  showTooltip,
-} from 'bangle-plugins/tooltip-placement/index';
 
 const LOG = true;
 let log = LOG

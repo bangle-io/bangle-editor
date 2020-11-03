@@ -1,39 +1,41 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { TextSelection } from 'prosemirror-state';
-import {
-  EditorContextProvider,
-  EditorContext,
-} from 'bangle-core/helper-react/editor-context';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { getDocLabels } from './schema-builders';
+import { corePlugins } from '../components/index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-export function renderTestEditor(options = {}, testId = 'test-editor') {
+const defaultSpecSheet = new SpecSheet();
+const defaultPlugins = corePlugins();
+
+export function renderTestEditor(
+  { specSheet = defaultSpecSheet, plugins = defaultPlugins } = {},
+  testId = 'test-editor',
+) {
+  if (!(specSheet instanceof SpecSheet)) {
+    throw new Error('Need to be specsheet');
+  }
+  // Add the base specs for lazy asses like me
+  // specSheet = injectBaseSpec(specSheet);
+
   return async (testDoc) => {
+    let view;
+    const onReady = (_view) => {
+      view = _view;
+    };
+
     const _options = {
       id: 'test-editor',
+      testId: testId,
       editorProps: {
         attributes: { class: 'bangle-editor content' },
       },
-      extensions: [...(options.extensions || [])],
-      ...options,
+      onReady,
+      ...{ specSheet, plugins },
     };
 
-    let _editor;
-
-    const result = render(
-      <EditorContextProvider>
-        <ReactEditor options={_options} />
-        <EditorContext.Consumer>
-          {(context) => {
-            if (context.getEditor() && !_editor) {
-              _editor = context.getEditor();
-            }
-            return !context.getEditor() ? null : <span data-testid={testId} />;
-          }}
-        </EditorContext.Consumer>
-      </EditorContextProvider>,
-    );
+    const result = render(<ReactEditor options={_options} />);
 
     await result.findByTestId(testId);
 
@@ -47,7 +49,7 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
       if (!doc) {
         return;
       }
-      const editorView = _editor.view;
+      const editorView = view;
       const dispatch = editorView.dispatch;
       const defaultDoc = doc(editorView.state.schema);
       const tr = editorView.state.tr.replaceWith(
@@ -83,11 +85,15 @@ export function renderTestEditor(options = {}, testId = 'test-editor') {
 
     return {
       ...result,
-      editor: _editor,
-      editorState: _editor.view.state,
-      schema: _editor.view.state.schema,
-      editorView: _editor.view,
-      selection: _editor.view.state.selection,
+      get editor() {
+        throw new Error('wtf');
+      },
+      view: view,
+      editorState: view.state,
+      schema: view.state.schema,
+      // TODO deprecetate editorView
+      editorView: view,
+      selection: view.state.selection,
       posLabels,
       updateDoc,
     };

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Node } from 'bangle-core/nodes';
 import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
+import { keymap } from 'prosemirror-keymap';
 
 const LOG = false;
 
@@ -11,17 +11,13 @@ function log(...args) {
   }
 }
 
-export default class StopwatchExtension extends Node {
-  get defaultOptions() {
-    return {};
-  }
+const name = 'stopwatch';
 
-  get name() {
-    return 'stopwatch';
-  }
-
-  get schema() {
-    return {
+export const spec = () => {
+  return {
+    name,
+    type: 'node',
+    schema: {
       attrs: {
         'data-stopwatch': {
           default: JSON.stringify({
@@ -30,7 +26,7 @@ export default class StopwatchExtension extends Node {
           }),
         },
         'data-type': {
-          default: this.name,
+          default: name,
         },
       },
       inline: true,
@@ -43,7 +39,7 @@ export default class StopwatchExtension extends Node {
         return [
           'span',
           {
-            'data-type': this.name,
+            'data-type': name,
             'data-stopwatch': node.attrs['data-stopwatch'],
           },
         ];
@@ -53,58 +49,37 @@ export default class StopwatchExtension extends Node {
       //      Also, it only takes attributes defined in spec.attrs
       parseDOM: [
         {
-          tag: `span[data-type="${this.name}"]`,
+          tag: `span[data-type="${name}"]`,
           getAttrs: (dom) => {
             return {
-              'data-type': this.name,
+              'data-type': name,
               'data-stopwatch': dom.getAttribute('data-stopwatch'),
             };
           },
         },
       ],
-    };
-  }
-
-  get markdown() {
-    return {
+    },
+    markdown: {
       toMarkdown: (state, node) => {
-        const string = serializeAtomNodeToMdLink(this.name, node.attrs);
+        const string = serializeAtomNodeToMdLink(name, node.attrs);
         state.write(string);
       },
-    };
-  }
-
-  render = (props) => {
-    return <StopwatchComponent {...props} />;
+    },
+    nodeView: {
+      render: (props) => {
+        return <StopwatchComponent {...props} />;
+      },
+    },
   };
+};
 
-  commands({ type, schema }) {
-    return () => {
-      return this._insertStopwatch(type);
-    };
-  }
-
-  keys({ schema, type }) {
-    return {
-      'Shift-Ctrl-s': this._insertStopwatch(type),
-    };
-  }
-
-  _insertStopwatch(type) {
-    let stopwatchType = type;
-    return function (state, dispatch) {
-      let { $from } = state.selection,
-        index = $from.index();
-      if (!$from.parent.canReplaceWith(index, index, stopwatchType)) {
-        return false;
-      }
-      if (dispatch) {
-        dispatch(state.tr.replaceSelectionWith(stopwatchType.create()));
-      }
-      return true;
-    };
-  }
-}
+export const plugins = (opts = {}) => {
+  return [
+    keymap({
+      'Shift-Ctrl-s': insertStopwatch(),
+    }),
+  ];
+};
 
 class StopwatchComponent extends React.Component {
   state = {
@@ -214,4 +189,19 @@ function formatTime(secs) {
     .join(':');
 
   return days > 0 ? days + 'd ' + result : result;
+}
+
+export function insertStopwatch() {
+  return function (state, dispatch) {
+    let stopwatchType = state.schema.nodes[name];
+    let { $from } = state.selection,
+      index = $from.index();
+    if (!$from.parent.canReplaceWith(index, index, stopwatchType)) {
+      return false;
+    }
+    if (dispatch) {
+      dispatch(state.tr.replaceSelectionWith(stopwatchType.create()));
+    }
+    return true;
+  };
 }

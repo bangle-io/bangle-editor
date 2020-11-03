@@ -1,11 +1,10 @@
-import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
+import { uuid } from 'bangle-core/utils/js-utils';
 import browser from 'bangle-core/utils/browser';
 import React from 'react';
-import { extensions } from '../editor/extensions';
-import { getSchema } from '../editor/utils';
 import { IndexDbWorkspace } from './workspace';
 import { INDEXDB_TYPE } from './type-helpers';
 import { WorkspacesInfo } from './workspaces-info';
+import { specSheet } from '../editor/spec-sheet';
 
 const LOG = false;
 
@@ -311,7 +310,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
     /**@type {Workspace | undefined} */
     workspace: null,
     openedDocuments: [],
-    schema: getSchema(extensions()),
+    schema: specSheet.schema,
     availableWorkspacesInfo: null,
     pendingWorkspaceInfo: null,
   };

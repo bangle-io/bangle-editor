@@ -4,17 +4,9 @@
 /** @jsx psx */
 import { psx, renderTestEditor } from 'bangle-core/test-helpers';
 
-import { BulletList, ListItem, OrderedList, HardBreak } from '../../nodes';
 import { isFirstChildOfParent, findCutBefore } from '../pm-utils';
 
-const extensions = [
-  new BulletList(),
-  new ListItem(),
-  new OrderedList(),
-  new HardBreak(),
-];
-
-const testEditor = renderTestEditor({ extensions });
+const testEditor = renderTestEditor();
 
 describe('isFirstChildOfParent', () => {
   describe('top level paragraphs', () => {

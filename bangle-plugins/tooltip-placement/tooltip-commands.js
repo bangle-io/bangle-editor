@@ -3,21 +3,28 @@ let log = LOG
   ? console.log.bind(console, 'plugins/tooltip-commands')
   : () => {};
 
+export const makeHideTooltipTr = (tr, tooltipPluginKey) =>
+  tr
+    .setMeta(tooltipPluginKey, {
+      show: false,
+    })
+    .setMeta('addToHistory', false);
+
 // Public commands
-export const hideTooltip = (tooltipPlugin) => (state, dispatch) => {
-  const pluginState = tooltipPlugin.getState(state);
+export const hideTooltip = (tooltipPluginKey) => (state, dispatch) => {
+  const pluginState = tooltipPluginKey.getState(state);
   // Do not update an already hidden tooltip
   if (!pluginState.show) {
-    log(tooltipPlugin, 'already hidden');
+    log(tooltipPluginKey, 'already hidden');
     return false;
   }
 
-  log(tooltipPlugin, 'hiding tooltip');
+  log(tooltipPluginKey, 'hiding tooltip');
 
   if (dispatch) {
     dispatch(
       state.tr
-        .setMeta(tooltipPlugin, {
+        .setMeta(tooltipPluginKey, {
           show: false,
         })
         .setMeta('addToHistory', false),
@@ -31,7 +38,6 @@ export const showTooltip = (tooltipPlugin) => (state, dispatch) => {
   // We do not check when it is already in show state, to allow for the flexibility
   // of calling showTooltip multiple times as a way to signal updating of any downstream consumers
   // for example a tooltip can update its position
-  log('tooltipPlugin, showing tooltip');
   if (dispatch) {
     dispatch(
       state.tr
