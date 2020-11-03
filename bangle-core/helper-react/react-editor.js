@@ -5,7 +5,7 @@ import { EditorOnReadyContext } from './editor-context';
 
 import { PortalProviderAPI } from './portal';
 import { getIdleCallback, smartDebounce } from '../utils/js-utils';
-import { prosemirrorSetup, focusView } from '../editor';
+import { BangleEditor } from '../editor';
 
 const LOG = false;
 
@@ -115,24 +115,25 @@ class PMEditorWrapper extends React.Component {
       //   plugins: [],
       //   spec: [],
       // });
-      const view = prosemirrorSetup(node, {
+      const editor = new BangleEditor(node, {
         ...options,
         renderNodeView,
         destroyNodeView,
       });
-      this.view = view;
+      this.editor = editor;
 
       if (options.onReady) {
-        options.onReady(view);
+        options.onReady(editor.view);
       }
 
       if (options.devtools) {
-        window.editorView = view;
+        window.editor = editor;
+        window.editorView = editor.view;
         getIdleCallback(() => {
           import(
             /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
           ).then((args) => {
-            this.devtools = args.applyDevTools(view);
+            this.devtools = args.applyDevTools(editor.view);
           });
         });
       }
@@ -147,6 +148,7 @@ class PMEditorWrapper extends React.Component {
       this.devtools();
     }
     if (window.editorView) {
+      window.editor = null;
       window.editorView = null;
     }
   }
