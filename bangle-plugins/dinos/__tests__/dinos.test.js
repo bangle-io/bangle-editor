@@ -6,12 +6,13 @@ import { psx, renderTestEditor } from 'bangle-core/test-helpers/';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { dinos } from '../index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const editorSpec = [...coreSpec(), dinos.spec()];
+const specSheet = new SpecSheet([...coreSpec(), dinos.spec()]);
 const plugins = [...corePlugins(), dinos.plugins()];
 
 const testEditor = renderTestEditor({
-  editorSpec,
+  specSheet,
   plugins,
 });
 
@@ -66,11 +67,11 @@ describe('markdown', () => {
     if (typeof doc === 'function') {
       content = doc(await schemaPromise);
     }
-    return markdownSerializer(editorSpec).serialize(content);
+    return markdownSerializer(specSheet).serialize(content);
   };
 
   beforeAll(async () => {
-    schemaPromise = renderTestEditor({ editorSpec, plugins })().then(
+    schemaPromise = renderTestEditor({ specSheet, plugins })().then(
       (r) => r.schema,
     );
   });

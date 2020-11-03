@@ -15,6 +15,7 @@ import { typeChar } from 'bangle-core/test-helpers/index';
 import { PluginKey, Selection } from 'prosemirror-state';
 import { inlineSuggest } from '../index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
 // We are using char code to differentiate between different schema
 // 47 is char code for '/'
@@ -26,10 +27,10 @@ describe('inline suggest basic show and hide', () => {
   let suggestionKey = new PluginKey(),
     testEditor;
 
-  const editorSpec = [
+  const specSheet = new SpecSheet([
     ...coreSpec(),
     inlineSuggest.spec({ markName: 'inline_suggest_slash', trigger: '/' }),
-  ];
+  ]);
   const plugins = [
     ...corePlugins(),
     inlineSuggest.plugins({
@@ -43,7 +44,7 @@ describe('inline suggest basic show and hide', () => {
   };
 
   beforeEach(async () => {
-    testEditor = renderTestEditor({ editorSpec, plugins });
+    testEditor = renderTestEditor({ specSheet, plugins });
   });
 
   test('when no trigger', async () => {
@@ -375,14 +376,14 @@ describe('keybindings test', () => {
     onEscape: jest.fn(() => true),
   };
 
-  const editorSpec = [
+  const specSheet = new SpecSheet([
     ...coreSpec(),
     inlineSuggest.spec({ markName: 'inline_suggest_slash', trigger: '/' }),
-  ];
+  ]);
   const plugins = [...corePlugins(), inlineSuggest.plugins(opts)];
 
   test('calls on* callbacks correctly', async () => {
-    testEditor = renderTestEditor({ editorSpec, plugins });
+    testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
         <para>[] foobar</para>

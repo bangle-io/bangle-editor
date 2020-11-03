@@ -11,7 +11,7 @@ import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 import { corePlugins, coreSpec } from 'bangle-core/components';
-import { schemaLoader } from 'bangle-core/element-loaders';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
 const START = '💚';
 const END = '🖤';
@@ -23,7 +23,7 @@ const NOOP = '_';
 const EMOJI_NOOP = '🐑';
 const ENTER = '↵';
 
-export const editorSpec = [...coreSpec(), collab.spec()];
+export const specSheet = new SpecSheet([...coreSpec(), collab.spec()]);
 export const editorPlugins = [...corePlugins()];
 
 export function setupDb(doc) {
@@ -53,7 +53,7 @@ export function setupDb(doc) {
 
 export function setup(db = setupDb(), { managerOpts }) {
   let disk = new LocalDisk(db, { saveDebounce: 50 });
-  const manager = new Manager(schemaLoader(editorSpec), {
+  const manager = new Manager(specSheet.schema, {
     disk,
     ...managerOpts,
   });
@@ -75,7 +75,7 @@ export function setup(db = setupDb(), { managerOpts }) {
       const editor = await renderTestEditor(
         {
           manager: this.manager,
-          editorSpec,
+          specSheet: specSheet,
           plugins: [
             ...editorPlugins,
             collab.plugins({

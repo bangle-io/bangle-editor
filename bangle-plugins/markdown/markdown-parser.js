@@ -1,30 +1,25 @@
+import { SpecSheet } from 'bangle-core/spec-sheet';
 import markdownIt from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { todoListMarkdownItPlugin } from './todo-list-markdown-it-plugin';
-import { schemaLoader } from 'bangle-core/element-loaders';
-import { recursiveFlat } from 'bangle-core/utils/js-utils';
 
 export const defaultMarkdownItTokenizer = markdownIt().use(
   todoListMarkdownItPlugin,
 );
 
 export function markdownParser(
-  spec,
+  specSheet = new SpecSheet(),
   markdownItTokenizer = defaultMarkdownItTokenizer,
   { useDefaults = true } = {},
 ) {
-  const { schema, tokens } = markdownLoader(spec, { useDefaults });
+  const { tokens } = markdownLoader(specSheet, { useDefaults });
 
-  return new MarkdownParser(schema, markdownItTokenizer, tokens);
+  return new MarkdownParser(specSheet.schema, markdownItTokenizer, tokens);
 }
 
-export function markdownLoader(editorSpec, { useDefaults }) {
-  const schema = schemaLoader(editorSpec);
-
-  editorSpec = recursiveFlat(editorSpec);
-
+export function markdownLoader(specSheet = new SpecSheet(), { useDefaults }) {
   const tokens = Object.fromEntries(
-    editorSpec
+    specSheet.spec
       .filter((e) => e.markdown?.parseMarkdown)
       .flatMap((e) => {
         return Object.entries(e.markdown.parseMarkdown);
@@ -32,7 +27,7 @@ export function markdownLoader(editorSpec, { useDefaults }) {
   );
 
   const nodeSerializer = Object.fromEntries(
-    editorSpec
+    specSheet.spec
       .filter((spec) => spec.type === 'node' && spec.markdown?.toMarkdown)
       .map((spec) => {
         return [spec.name, spec.markdown.toMarkdown];
@@ -40,7 +35,7 @@ export function markdownLoader(editorSpec, { useDefaults }) {
   );
 
   const markSerializer = Object.fromEntries(
-    editorSpec
+    specSheet.spec
       .filter((spec) => spec.type === 'mark' && spec.markdown?.toMarkdown)
       .map((spec) => {
         return [spec.name, spec.markdown.toMarkdown];
@@ -49,7 +44,6 @@ export function markdownLoader(editorSpec, { useDefaults }) {
 
   return {
     tokens,
-    schema,
     serializer: {
       node: nodeSerializer,
       mark: markSerializer,

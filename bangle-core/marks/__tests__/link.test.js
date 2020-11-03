@@ -15,17 +15,28 @@ import {
   orderedList,
   bold,
   link,
+  doc,
+  text,
+  paragraph,
 } from '../../components';
 import { getLinkMarkDetails, setLinkAtSelection } from '../link';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const editorSpec = [
+const specSheet = new SpecSheet([
+  doc.spec(),
+  text.spec(),
+  paragraph.spec(),
   link.spec(),
   bold.spec(),
   bulletList.spec(),
   listItem.spec(),
   orderedList.spec(),
-];
+]);
+
 const plugins = [
+  doc.plugins(),
+  text.plugins(),
+  paragraph.plugins(),
   link.plugins(),
   bold.plugins(),
   bulletList.plugins(),
@@ -33,7 +44,7 @@ const plugins = [
   orderedList.plugins(),
 ];
 
-const testEditor = renderTestEditor({ editorSpec, plugins });
+const testEditor = renderTestEditor({ specSheet, plugins });
 
 test('Creates a link correctly', async () => {
   const { editorView } = await testEditor(

@@ -11,12 +11,13 @@ import {
 import emojiParser from 'markdown-it-emoji';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { emoji } from '../index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const editorSpec = [...coreSpec(), emoji.spec()];
+const specSheet = new SpecSheet([...coreSpec(), emoji.spec()]);
 const plugins = [...corePlugins(), emoji.plugins()];
 
 const testEditor = renderTestEditor({
-  editorSpec,
+  specSheet,
   plugins,
 });
 
@@ -49,16 +50,16 @@ describe('markdown', () => {
     if (typeof doc === 'function') {
       content = doc(await schemaPromise);
     }
-    return markdownSerializer(editorSpec).serialize(content);
+    return markdownSerializer(specSheet).serialize(content);
   };
   const parse = async (md) =>
     markdownParser(
-      editorSpec,
+      specSheet,
       defaultMarkdownItTokenizer.use(emojiParser),
     ).parse(md);
 
   beforeAll(async () => {
-    schemaPromise = renderTestEditor({ editorSpec, plugins })().then(
+    schemaPromise = renderTestEditor({ specSheet, plugins })().then(
       (r) => r.schema,
     );
   });

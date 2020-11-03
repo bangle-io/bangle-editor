@@ -8,13 +8,13 @@ import { psx, sendKeyToPm, renderTestEditor } from 'bangle-core/test-helpers/';
 import { stopwatch } from '../index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import { corePlugins, coreSpec } from 'bangle-core/components';
-import { schemaLoader } from 'bangle-core/element-loaders';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const editorSpec = [...coreSpec(), stopwatch.spec({})];
+const specSheet = new SpecSheet([...coreSpec(), stopwatch.spec({})]);
 const plugins = [...corePlugins(), stopwatch.plugins({})];
 
 const testEditor = renderTestEditor({
-  editorSpec,
+  specSheet: specSheet,
   plugins,
 });
 
@@ -100,9 +100,9 @@ describe('markdown', () => {
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
-      content = doc(schemaLoader(editorSpec));
+      content = doc(specSheet.schema);
     }
-    return markdownSerializer(editorSpec).serialize(content);
+    return markdownSerializer(specSheet).serialize(content);
   };
 
   test('markdown serialization', async () => {

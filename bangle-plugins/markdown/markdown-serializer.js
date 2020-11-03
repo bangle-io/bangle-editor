@@ -3,8 +3,8 @@ import { MarkdownSerializer } from 'prosemirror-markdown';
 import { markdownLoader } from './markdown-parser';
 // A markdown serializer which uses a node/mark schema's
 // toMarkdown property to generate a markdown string
-export const markdownSerializer = (editorSpec, { useDefaults = true } = {}) => {
-  const { serializer } = markdownLoader(editorSpec, { useDefaults });
+export const markdownSerializer = (specSheet, { useDefaults = true } = {}) => {
+  const { serializer } = markdownLoader(specSheet, { useDefaults });
 
   return new MarkdownSerializer(serializer.node, serializer.mark);
 };

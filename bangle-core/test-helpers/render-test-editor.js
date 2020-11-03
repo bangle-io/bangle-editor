@@ -4,17 +4,21 @@ import { TextSelection } from 'prosemirror-state';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { getDocLabels } from './schema-builders';
 import { doc, text, paragraph } from 'bangle-core/nodes/index';
-import { corePlugins, coreSpec } from 'bangle-core/components';
+import { corePlugins } from 'bangle-core/components';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const defaultEditorSpec = coreSpec();
+const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
 
 export function renderTestEditor(
-  { editorSpec = defaultEditorSpec, plugins = defaultPlugins } = {},
+  { specSheet = defaultSpecSheet, plugins = defaultPlugins } = {},
   testId = 'test-editor',
 ) {
+  if (!(specSheet instanceof SpecSheet)) {
+    throw new Error('Need to be specsheet');
+  }
   // Add the base specs for lazy asses like me
-  editorSpec = injectBaseSpec(editorSpec);
+  specSheet = injectBaseSpec(specSheet);
 
   return async (testDoc) => {
     let view;
@@ -29,7 +33,7 @@ export function renderTestEditor(
         attributes: { class: 'bangle-editor content' },
       },
       onReady,
-      ...{ editorSpec, plugins },
+      ...{ specSheet, plugins },
     };
 
     const result = render(<ReactEditor options={_options} />);
@@ -105,21 +109,20 @@ function setTextSelection(view, anchor, head) {
   view.dispatch(tr);
 }
 
-// TODO  Is this really needed, why are we expecting lazy developers?
-function injectBaseSpec(editorSpec) {
-  editorSpec = [...editorSpec];
-  const uniqueNames = new Set(editorSpec.map((r) => r.name));
+function injectBaseSpec(specSheet) {
+  const spec = [...specSheet.spec];
+  const uniqueNames = new Set(spec.map((r) => r.name));
   if (!uniqueNames.has('paragraph')) {
-    editorSpec.unshift(paragraph.spec());
+    spec.unshift(paragraph.spec());
   }
 
   if (!uniqueNames.has('text')) {
-    editorSpec.unshift(text.spec());
+    spec.unshift(text.spec());
   }
 
   if (!uniqueNames.has('doc')) {
-    editorSpec.unshift(doc.spec());
+    spec.unshift(doc.spec());
   }
 
-  return editorSpec;
+  return new SpecSheet(spec);
 }

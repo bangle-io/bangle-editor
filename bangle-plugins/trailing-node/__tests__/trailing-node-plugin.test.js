@@ -12,12 +12,13 @@ import {
 
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { trailingNode } from '../index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const editorSpec = [...coreSpec(), trailingNode.spec({})];
+const specSheet = new SpecSheet([...coreSpec(), trailingNode.spec({})]);
 const plugins = [...corePlugins(), trailingNode.plugins({})];
 
 const testEditor = renderTestEditor({
-  editorSpec,
+  specSheet,
   plugins,
 });
 

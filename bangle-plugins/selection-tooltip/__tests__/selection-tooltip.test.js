@@ -15,6 +15,7 @@ import { createTooltipDOM } from '../selection-tooltip';
 import { selectionTooltip } from '../index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { PluginKey, TextSelection } from 'prosemirror-state';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 // due to some unknown issue, the view doesn't have focus
 // when running test which causes tests to fail
 jest.mock('bangle-plugins/helpers/index', () => {
@@ -30,13 +31,13 @@ describe('selection-tooltip', () => {
     ({ tooltipDOM, tooltipContent } = createTooltipDOM());
     tooltipContent.textContent = 'hello world';
 
-    const editorSpec = [...coreSpec(), selectionTooltip.spec()];
+    const specSheet = new SpecSheet([...coreSpec(), selectionTooltip.spec()]);
     const plugins = [
       ...corePlugins(),
       selectionTooltip.plugins({ key, tooltipDOM }),
     ];
 
-    testEditor = renderTestEditor({ editorSpec, plugins });
+    testEditor = renderTestEditor({ specSheet, plugins });
   });
 
   test('Correctly adds tooltip', async () => {

@@ -1,10 +1,10 @@
 import { uuid } from 'bangle-core/utils/js-utils';
 import browser from 'bangle-core/utils/browser';
 import React from 'react';
-import { getSchema } from '../editor/utils';
 import { IndexDbWorkspace } from './workspace';
 import { INDEXDB_TYPE } from './type-helpers';
 import { WorkspacesInfo } from './workspaces-info';
+import { specSheet } from '../editor/editor-spec';
 
 const LOG = false;
 
@@ -310,7 +310,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
     /**@type {Workspace | undefined} */
     workspace: null,
     openedDocuments: [],
-    schema: getSchema(),
+    schema: specSheet.schema,
     availableWorkspacesInfo: null,
     pendingWorkspaceInfo: null,
   };
