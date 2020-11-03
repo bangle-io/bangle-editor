@@ -1,3 +1,12 @@
+// marks
+import * as bold from './bold';
+import * as code from './code';
+import * as italic from './italic';
+import * as link from './link';
+import * as strike from './strike';
+import * as underline from './underline';
+
+// nodes
 import * as doc from './doc';
 import * as paragraph from './paragraph';
 import * as text from './text';
@@ -13,6 +22,18 @@ import * as todoItem from './todo-item';
 import * as todoList from './todo-list';
 import * as image from './image';
 
+// components
+import * as history from './history';
+
+// marks
+export * as bold from './bold';
+export * as code from './code';
+export * as italic from './italic';
+export * as link from './link';
+export * as strike from './strike';
+export * as underline from './underline';
+
+// nodes
 export * as doc from './doc';
 export * as paragraph from './paragraph';
 export * as text from './text';
@@ -28,7 +49,48 @@ export * as todoItem from './todo-item';
 export * as todoList from './todo-list';
 export * as image from './image';
 
-export function coreNodeSpec(options = {}) {
+// components
+export * as history from './history';
+
+export function coreSpec(opts = {}) {
+  return [
+    ...coreMarkSpec(opts),
+    ...coreNodeSpec(opts),
+    history.spec(opts.history),
+  ];
+}
+
+export function corePlugins(opts = {}) {
+  return [
+    ...coreMarkPlugins(opts),
+    ...coreNodePlugins(opts),
+    history.plugins(opts.history),
+  ];
+}
+
+function coreMarkSpec(options = {}) {
+  return [
+    bold.spec(options.bold),
+    code.spec(options.code),
+    italic.spec(options.italic),
+    strike.spec(options.strike),
+    link.spec(options.link),
+    underline.spec(options.underline),
+  ];
+}
+
+function coreMarkPlugins(options = {}) {
+  return [
+    bold.plugins(options.bold),
+    code.plugins(options.code),
+    italic.plugins(options.italic),
+    strike.plugins(options.strike),
+    link.plugins(options.link),
+    underline.plugins(options.underline),
+  ];
+}
+
+function coreNodeSpec(options = {}) {
   return [
     doc.spec(options.doc),
     text.spec(options.text),
@@ -47,7 +109,7 @@ export function coreNodeSpec(options = {}) {
   ];
 }
 
-export function coreNodePlugins(options = {}) {
+function coreNodePlugins(options = {}) {
   return [
     doc.plugins(options.doc),
     paragraph.plugins(options.paragraph),

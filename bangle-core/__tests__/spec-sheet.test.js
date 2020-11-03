@@ -1,7 +1,7 @@
 import { MarkType, NodeType } from 'prosemirror-model';
-import { hardBreak, doc, paragraph, text } from '../nodes/index';
-import { bold } from '../marks/index';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { hardBreak, doc, paragraph, text } from '../components/index';
+import { bold } from '../components/index';
+import { SpecSheet } from '../spec-sheet';
 
 test('Loads node and marks schema correctly', () => {
   const schema = new SpecSheet([

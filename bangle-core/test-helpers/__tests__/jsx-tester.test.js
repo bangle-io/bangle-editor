@@ -3,18 +3,6 @@
  */
 /** @jsx psx */
 import { psx, renderTestEditor, typeText } from '../../test-helpers';
-import {
-  Blockquote,
-  BulletList,
-  CodeBlock,
-  HardBreak,
-  Heading,
-  ListItem,
-  OrderedList,
-  TodoItem,
-  TodoList,
-} from '../../nodes/index';
-import { Underline, Link } from '../../marks';
 
 const testEditor = renderTestEditor();
 

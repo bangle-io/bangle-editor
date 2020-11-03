@@ -1,6 +1,6 @@
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
-import { focusAtPosition } from './nodes/doc';
+import { focusAtPosition } from './components/doc';
 import { pluginsLoader } from './utils/plugins-loader';
 import { nodeViewsLoader } from './utils/node-views-loader';
 

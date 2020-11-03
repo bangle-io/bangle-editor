@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { keymap } from 'prosemirror-keymap';
 import reactDOM from 'react-dom';
 import { filter } from 'bangle-core/utils/pm-utils';
@@ -8,7 +8,7 @@ import {
   setLinkAtSelection,
   getLinkMarkDetails,
   canLinkBeCreatedInRange,
-} from 'bangle-core/marks/link';
+} from 'bangle-core/components/link';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Icon } from './icon-helpers';
 import { Plugin, PluginKey } from 'prosemirror-state';

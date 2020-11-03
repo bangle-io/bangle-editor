@@ -4,30 +4,28 @@ import reactDOM from 'react-dom';
 import { selectionTooltip } from '../selection-tooltip/index';
 import { Icon } from './icon-helpers';
 import { rafWrap } from 'bangle-core/utils/js-utils';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { PluginKey } from 'prosemirror-state';
 import {
   isSelectionInsideTodoList,
   toggleTodoList,
-} from 'bangle-core/nodes/todo-list';
-import {
   isItalicActiveInSelection,
   toggleItalic,
-} from 'bangle-core/marks/italic';
-import {
   isSelectionInsideBulletList,
   toggleBulletList,
-} from 'bangle-core/nodes/bullet-list';
-import { toggleHeading, isSelectionInHeading } from 'bangle-core/nodes/heading';
-import { isCodeActiveInSelection, toggleCode } from 'bangle-core/marks/code';
-import { isBoldActiveInSelection, toggleBold } from 'bangle-core/marks/bold';
-import { isSelectionInsideLink } from 'bangle-core/marks/link';
-import { isLinkMenuActive, showLinkMenu } from './link-menu';
-import { pluginKeyStore } from 'bangle-plugins/utils';
+  toggleHeading,
+  isSelectionInHeading,
+  isCodeActiveInSelection,
+  toggleCode,
+  isBoldActiveInSelection,
+  toggleBold,
+  isSelectionInsideLink,
+} from 'bangle-core/components/index';
+import { pluginKeyStore } from '../utils';
 import {
   hideAllSelectionTooltip,
   hideSelectionTooltip,
-} from 'bangle-plugins/selection-tooltip/selection-tooltip';
-
+} from '../selection-tooltip/selection-tooltip';
+import { isLinkMenuActive, showLinkMenu } from './link-menu';
 const name = 'floating_menu';
 
 export const spec = specFactory;

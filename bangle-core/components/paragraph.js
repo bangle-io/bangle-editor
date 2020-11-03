@@ -1,8 +1,8 @@
 import { setBlockType } from 'prosemirror-commands';
 import { TextSelection } from 'prosemirror-state';
-import { moveNode } from '../nodes/list-item/commands';
 import { keymap } from 'prosemirror-keymap';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
+import { moveNode } from './list-item/commands';
 import {
   parentHasDirectParentOfType,
   copyEmptyCommand,

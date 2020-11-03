@@ -3,8 +3,7 @@ import { render } from '@testing-library/react';
 import { TextSelection } from 'prosemirror-state';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { getDocLabels } from './schema-builders';
-import { doc, text, paragraph } from 'bangle-core/nodes/index';
-import { corePlugins } from 'bangle-core/components';
+import { corePlugins } from '../components/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
 const defaultSpecSheet = new SpecSheet();
@@ -18,7 +17,7 @@ export function renderTestEditor(
     throw new Error('Need to be specsheet');
   }
   // Add the base specs for lazy asses like me
-  specSheet = injectBaseSpec(specSheet);
+  // specSheet = injectBaseSpec(specSheet);
 
   return async (testDoc) => {
     let view;
@@ -107,22 +106,4 @@ function setTextSelection(view, anchor, head) {
     TextSelection.create(state.doc, anchor, head),
   );
   view.dispatch(tr);
-}
-
-function injectBaseSpec(specSheet) {
-  const spec = [...specSheet.spec];
-  const uniqueNames = new Set(spec.map((r) => r.name));
-  if (!uniqueNames.has('paragraph')) {
-    spec.unshift(paragraph.spec());
-  }
-
-  if (!uniqueNames.has('text')) {
-    spec.unshift(text.spec());
-  }
-
-  if (!uniqueNames.has('doc')) {
-    spec.unshift(doc.spec());
-  }
-
-  return new SpecSheet(spec);
 }

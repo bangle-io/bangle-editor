@@ -1,8 +1,8 @@
 import { keymap } from 'prosemirror-keymap';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
-import { toggleList } from '../nodes/list-item/commands';
-import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
+import { parentHasDirectParentOfType } from '../core-commands';
+import { toggleList } from './list-item/commands';
 
 const name = 'bullet_list';
 

@@ -1,7 +1,7 @@
-import { moveNode } from 'bangle-core/nodes/list-item/commands';
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType, textblockTypeInputRule } from 'tiptap-commands';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
+import { moveNode } from './list-item/commands';
 
 const name = 'code_block';
 
