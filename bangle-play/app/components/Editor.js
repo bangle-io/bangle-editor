@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
-import { specSheet } from '../editor/editor-spec';
+import { specSheet } from '../editor/spec-sheet';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { dinos } from 'bangle-plugins/dinos/index';

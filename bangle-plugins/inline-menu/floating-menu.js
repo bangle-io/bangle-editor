@@ -1,8 +1,6 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 
-import { selectionTooltip } from '../selection-tooltip/index';
-import { Icon } from './icon-helpers';
 import { rafWrap } from 'bangle-core/utils/js-utils';
 import { PluginKey } from 'prosemirror-state';
 import {
@@ -36,6 +34,8 @@ import {
   hideSelectionTooltip,
 } from 'bangle-plugins/selection-tooltip/selection-tooltip';
 import { isLinkMenuActive, showLinkMenu } from './link-menu';
+import { selectionTooltip } from '../selection-tooltip/index';
+import { Icon } from './icon-helpers';
 
 const name = 'floating_menu';
 

@@ -7,7 +7,7 @@ import {
 import { defaultContent } from './constants';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 import { Manager } from 'bangle-plugins/collab/server/manager';
-import { specSheet } from '../editor/editor-spec';
+import { specSheet } from '../editor/spec-sheet';
 
 const DEBUG = true;
 

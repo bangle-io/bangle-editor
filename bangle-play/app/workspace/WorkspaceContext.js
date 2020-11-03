@@ -4,7 +4,7 @@ import React from 'react';
 import { IndexDbWorkspace } from './workspace';
 import { INDEXDB_TYPE } from './type-helpers';
 import { WorkspacesInfo } from './workspaces-info';
-import { specSheet } from '../editor/editor-spec';
+import { specSheet } from '../editor/spec-sheet';
 
 const LOG = false;
 
