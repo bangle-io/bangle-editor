@@ -38,10 +38,11 @@ exports[`inline suggest basic show and hide types a trigger 1`] = `
   </div>
   <div
     class="bangle-tooltip"
+    data-popper-placement="bottom-start"
     data-show=""
     data-tooltip-name="inlineSuggest/__tooltipPlacementKey"
     role="tooltip"
-    style="margin: 0px; position: absolute; left: 0px; top: 0px;"
+    style="position: absolute; left: 0px; top: 0px; margin: 0px; transform: translate(0px, 0px);"
   >
     <div
       class="bangle-tooltip-content"

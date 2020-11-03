@@ -8,24 +8,35 @@ import { PluginKey } from 'prosemirror-state';
 import {
   isSelectionInsideTodoList,
   toggleTodoList,
+} from 'bangle-core/components/todo-list';
+import {
   isItalicActiveInSelection,
   toggleItalic,
+} from 'bangle-core/components/italic';
+import {
   isSelectionInsideBulletList,
   toggleBulletList,
+} from 'bangle-core/components/bullet-list';
+import {
   toggleHeading,
   isSelectionInHeading,
+} from 'bangle-core/components/heading';
+import {
   isCodeActiveInSelection,
   toggleCode,
+} from 'bangle-core/components/code';
+import {
   isBoldActiveInSelection,
   toggleBold,
-  isSelectionInsideLink,
-} from 'bangle-core/components/index';
-import { pluginKeyStore } from '../utils';
+} from 'bangle-core/components/bold';
+import { isSelectionInsideLink } from 'bangle-core/components/link';
+import { pluginKeyStore } from 'bangle-plugins/utils';
 import {
   hideAllSelectionTooltip,
   hideSelectionTooltip,
-} from '../selection-tooltip/selection-tooltip';
+} from 'bangle-plugins/selection-tooltip/selection-tooltip';
 import { isLinkMenuActive, showLinkMenu } from './link-menu';
+
 const name = 'floating_menu';
 
 export const spec = specFactory;

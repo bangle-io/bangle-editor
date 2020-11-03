@@ -4,6 +4,56 @@ import { focusAtPosition } from './components/doc';
 import { pluginsLoader } from './utils/plugins-loader';
 import { nodeViewsLoader } from './utils/node-views-loader';
 
+export class BangleEditor {
+  constructor(
+    element,
+    {
+      specSheet,
+      plugins = [],
+      renderNodeView,
+      destroyNodeView,
+      stateOpts = {},
+      viewOpts = {},
+      editorProps,
+      focusOnInit = true,
+    },
+  ) {
+    const state = editorStateSetup({
+      plugins,
+      editorProps,
+      specSheet,
+      stateOpts,
+    });
+
+    this._view = new EditorView(element, {
+      state,
+      dispatchTransaction(transaction) {
+        const newState = this.state.apply(transaction);
+        this.updateState(newState);
+      },
+      nodeViews: nodeViewsLoader(specSheet, renderNodeView, destroyNodeView),
+      ...viewOpts,
+    });
+
+    if (focusOnInit) {
+      this.focusView();
+    }
+  }
+
+  get view() {
+    return this._view;
+  }
+
+  focusView() {
+    const view = this._view;
+    if (process.env.NODE_ENV === 'test' || view.focused) {
+      return;
+    }
+
+    return focusAtPosition()(view.state, view.dispatch, view);
+  }
+}
+
 export function editorStateSetup({
   plugins = [],
   editorProps,
@@ -22,52 +72,6 @@ export function editorStateSetup({
   });
 
   return state;
-}
-
-export function prosemirrorSetup(
-  element,
-  {
-    specSheet,
-    plugins = [],
-    renderNodeView,
-    destroyNodeView,
-    stateOpts = {},
-    viewOpts = {},
-    loaders = [],
-    editorProps,
-    focusOnInit = true,
-  },
-) {
-  const state = editorStateSetup({
-    plugins,
-    editorProps,
-    specSheet,
-    stateOpts,
-  });
-
-  const view = new EditorView(element, {
-    state,
-    dispatchTransaction(transaction) {
-      const newState = this.state.apply(transaction);
-      this.updateState(newState);
-    },
-    nodeViews: nodeViewsLoader(specSheet, renderNodeView, destroyNodeView),
-    ...viewOpts,
-  });
-
-  if (focusOnInit) {
-    focusView(view);
-  }
-
-  return view;
-}
-
-export function focusView(view) {
-  if (process.env.NODE_ENV === 'test' || view.focused) {
-    return;
-  }
-
-  return focusAtPosition()(view.state, view.dispatch, view);
 }
 
 const createDocument = ({ schema, content, parseOptions }) => {
