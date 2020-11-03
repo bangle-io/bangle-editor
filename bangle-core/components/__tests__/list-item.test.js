@@ -9,13 +9,6 @@ import {
   sendKeyToPm,
   typeText,
 } from 'bangle-core/test-helpers';
-
-import {
-  enterKeyCommand,
-  toggleList,
-  backspaceKeyCommand,
-} from '../list-item/commands';
-
 import {
   bulletList,
   listItem,
@@ -27,8 +20,13 @@ import {
   doc,
   text,
   paragraph,
-} from '../../components';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+} from '../index';
+import { SpecSheet } from '../../spec-sheet';
+import {
+  enterKeyCommand,
+  toggleList,
+  backspaceKeyCommand,
+} from '../list-item/commands';
 
 const specSheet = new SpecSheet([
   doc.spec(),

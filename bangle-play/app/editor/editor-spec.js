@@ -15,7 +15,7 @@ import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
 export const specSheet = new SpecSheet([
-  ...coreSpec({ node: { heading: { levels: config.headingLevels } } }),
+  ...coreSpec({ heading: { levels: config.headingLevels } }),
   collab.spec(),
   dinos.spec(),
   emoji.spec(),

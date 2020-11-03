@@ -18,7 +18,7 @@ import {
   doc,
   text,
   paragraph,
-} from '../../components';
+} from '../index';
 import { getLinkMarkDetails, setLinkAtSelection } from '../link';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 

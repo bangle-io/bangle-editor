@@ -1,5 +1,5 @@
 import { Schema } from 'prosemirror-model';
-import { coreSpec } from './components';
+import { coreSpec } from './components/index';
 import { bangleWarn, recursiveFlat } from './utils/js-utils';
 
 export class SpecSheet {

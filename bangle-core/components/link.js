@@ -4,7 +4,7 @@ import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
 
 const LOG = false;
 
-let log = LOG ? console.log.bind(console, 'marks/link') : () => {};
+let log = LOG ? console.log.bind(console, 'components/link') : () => {};
 
 const name = 'link';
 

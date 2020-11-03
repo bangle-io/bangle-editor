@@ -3,13 +3,13 @@
  */
 
 /** @jsx psx */
+import { paragraph } from 'bangle-core/components/index';
 import {
   renderTestEditor,
   psx,
   typeText,
   sendKeyToPm,
 } from 'bangle-core/test-helpers';
-import { paragraph } from '../index';
 
 const testEditor = renderTestEditor();
 
