@@ -40,10 +40,6 @@ const getPlugins = ({ docName, manager }) => {
   };
   const linkMenuKey = new PluginKey('linkMenuKeyYes');
   return [
-    ...corePlugins({ node: { heading: { levels: config.headingLevels } } }),
-    collab.plugins(collabOpts),
-    dinos.plugins(),
-    emoji.plugins(),
     linkMenu.plugins({
       key: linkMenuKey,
       getScrollContainerDOM,
@@ -52,11 +48,14 @@ const getPlugins = ({ docName, manager }) => {
       getScrollContainerDOM,
       linkMenuKey,
     }),
-
     emojiInlineSuggest.plugins({
       markName: 'emoji_inline_suggest',
       trigger: ':',
     }),
+    ...corePlugins({ node: { heading: { levels: config.headingLevels } } }),
+    collab.plugins(collabOpts),
+    dinos.plugins(),
+    emoji.plugins(),
     stopwatch.plugins(),
     trailingNode.plugins(),
     timestamp.plugins(),

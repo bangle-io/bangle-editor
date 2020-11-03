@@ -10,7 +10,7 @@ import { triggerInputRule } from './trigger-input-rule';
 import * as helpers from './helpers';
 import { removeTypeAheadMarkCmd } from './commands';
 import { PluginKey } from 'prosemirror-state';
-import { pluginKeyStore } from 'bangle-plugins/utils';
+import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 
 const LOG = true;
 let log = LOG ? console.log.bind(console, 'plugins/inline-suggest') : () => {};
@@ -32,39 +32,36 @@ export const getTooltipKey = (parentKey) => {
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 export function specFactory({ markName, trigger }) {
-  return [
-    tooltipPlacement.spec(),
-    {
-      name: markName,
-      type: 'mark',
-      schema: {
-        inclusive: true,
-        group: 'triggerMarks',
-        parseDOM: [{ tag: `span[data-${markName}]` }],
-        toDOM: (node) => {
-          return [
-            'span',
-            {
-              [`data-${markName}`]: 'true',
-              'data-trigger': node.attrs.trigger,
-              'style': `color: #0052CC`,
-            },
-          ];
-        },
-        attrs: {
-          trigger: { default: trigger },
-        },
+  return {
+    name: markName,
+    type: 'mark',
+    schema: {
+      inclusive: true,
+      group: 'triggerMarks',
+      parseDOM: [{ tag: `span[data-${markName}]` }],
+      toDOM: (node) => {
+        return [
+          'span',
+          {
+            [`data-${markName}`]: 'true',
+            'data-trigger': node.attrs.trigger,
+            'style': `color: #0052CC`,
+          },
+        ];
       },
-
-      markdown: {
-        toMarkdown: {
-          open: '',
-          close: '',
-          mixable: true,
-        },
+      attrs: {
+        trigger: { default: trigger },
       },
     },
-  ];
+
+    markdown: {
+      toMarkdown: {
+        open: '',
+        close: '',
+        mixable: true,
+      },
+    },
+  };
 }
 
 export function pluginsFactory({
