@@ -110,6 +110,11 @@ class PMEditorWrapper extends React.Component {
     const node = this.editorRenderTarget.current;
     if (node) {
       // TODO fix this mess
+      // new BangleEditor({
+      //   loaders: [],
+      //   plugins: [],
+      //   spec: [],
+      // });
       const view = prosemirrorSetup(node, {
         ...options,
         renderNodeView,

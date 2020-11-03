@@ -12,6 +12,8 @@ import {
 import { CollabError } from '../../collab-error';
 import { Selection } from 'prosemirror-state';
 import * as collab from '../collab-extension';
+import { SpecSheet } from 'bangle-core/spec-sheet';
+import { paragraph, doc, text } from 'bangle-core/components';
 const DEFAULT_SLEEP = 50;
 
 function promiseNever() {
@@ -44,8 +46,16 @@ function getInitialDoc(version, text = 'hello world') {
 
 async function setupCollabEditor(handlers) {
   const clientID = 'test';
-  const editorSpec = [collab.spec()];
+  const specSheet = new SpecSheet([
+    doc.spec(),
+    text.spec(),
+    paragraph.spec(),
+    collab.spec(),
+  ]);
   const editorPlugins = [
+    doc.plugins(),
+    text.plugins(),
+    paragraph.plugins(),
     collab.plugins({
       docName: 'ole',
       clientID: clientID,
@@ -55,7 +65,7 @@ async function setupCollabEditor(handlers) {
 
   return renderTestEditor(
     {
-      editorSpec,
+      specSheet,
       plugins: editorPlugins,
     },
     'data-test-' + Math.random(),

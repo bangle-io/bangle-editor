@@ -1,23 +1,24 @@
-import { loadNodeViews, loadPlugins, schemaLoader } from './element-loaders';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
 import { focusAtPosition } from './nodes/doc';
+import { pluginsLoader } from './utils/plugins-loader';
+import { nodeViewsLoader } from './utils/node-views-loader';
 
 export function editorStateSetup({
   plugins = [],
   editorProps,
-  editorSpec,
+  specSheet,
   stateOpts = {},
 }) {
   const { doc, content, ...otherStateOpts } = stateOpts;
 
-  const schema = schemaLoader(editorSpec);
+  const schema = specSheet.schema;
 
   const state = EditorState.create({
     schema,
     doc: doc ? doc : createDocument({ schema, content: content }),
     ...otherStateOpts,
-    plugins: loadPlugins(editorSpec, plugins, { editorProps }),
+    plugins: pluginsLoader(specSheet, plugins, { editorProps }),
   });
 
   return state;
@@ -26,12 +27,13 @@ export function editorStateSetup({
 export function prosemirrorSetup(
   element,
   {
-    editorSpec,
+    specSheet,
     plugins = [],
     renderNodeView,
     destroyNodeView,
     stateOpts = {},
     viewOpts = {},
+    loaders = [],
     editorProps,
     focusOnInit = true,
   },
@@ -39,7 +41,7 @@ export function prosemirrorSetup(
   const state = editorStateSetup({
     plugins,
     editorProps,
-    editorSpec,
+    specSheet,
     stateOpts,
   });
 
@@ -49,7 +51,7 @@ export function prosemirrorSetup(
       const newState = this.state.apply(transaction);
       this.updateState(newState);
     },
-    nodeViews: loadNodeViews(editorSpec, renderNodeView, destroyNodeView),
+    nodeViews: nodeViewsLoader(specSheet, renderNodeView, destroyNodeView),
     ...viewOpts,
   });
 

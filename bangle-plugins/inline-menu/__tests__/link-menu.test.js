@@ -3,8 +3,10 @@
  */
 
 /** @jsx psx */
-import { link, Link } from 'bangle-core/index';
-import { psx, renderTestEditor } from 'bangle-core/test-helpers';
+import { coreSpec } from 'bangle-core/components';
+import { link } from 'bangle-core/index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers/index';
 import { TextSelection } from 'prosemirror-state';
 import { linkMenu } from '../index';
 jest.mock('bangle-plugins/helpers/index', () => {
@@ -13,12 +15,12 @@ jest.mock('bangle-plugins/helpers/index', () => {
   };
 });
 
-const editorSpec = [link.spec(), linkMenu.spec()];
+const specSheet = new SpecSheet([...coreSpec(), linkMenu.spec()]);
 const plugins = [link.plugins(), linkMenu.plugins()];
 
 describe('Link menu', () => {
   test('when no link', async () => {
-    const testEditor = renderTestEditor({ editorSpec: editorSpec, plugins });
+    const testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
         <para>foo[]bar</para>
@@ -29,7 +31,7 @@ describe('Link menu', () => {
   });
 
   test('when link but not in selection', async () => {
-    const testEditor = renderTestEditor({ editorSpec: editorSpec, plugins });
+    const testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
         <para>
@@ -61,7 +63,7 @@ describe('Link menu', () => {
   });
 
   test('when selection moves inside selection', async () => {
-    const testEditor = renderTestEditor({ editorSpec: editorSpec, plugins });
+    const testEditor = renderTestEditor({ specSheet, plugins });
 
     const { view } = await testEditor(
       <doc>

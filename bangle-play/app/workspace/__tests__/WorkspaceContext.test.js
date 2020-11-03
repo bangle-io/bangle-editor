@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import { getSchema } from 'bangle-play/app/editor/utils';
 import { IndexDbWorkspace } from 'bangle-play/app/workspace/workspace';
 import { IndexDbWorkspaceFile } from 'bangle-play/app/workspace/workspace-file';
 
@@ -14,6 +13,7 @@ import {
 } from '../WorkspaceContext';
 import { sleep } from 'bangle-core/utils/js-utils';
 import { INDEXDB_TYPE } from 'bangle-play/app/workspace/type-helpers';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
 jest.mock('localforage', () => {
   const instance = {
@@ -42,7 +42,7 @@ const DateNowBackup = jest.fn();
 
 describe('index db workspace', () => {
   let dbInstance;
-  const schema = getSchema();
+  const schema = new SpecSheet().schema;
   beforeEach(async () => {
     Date.now = jest.fn(() => 1);
     dbInstance = localforage.createInstance();

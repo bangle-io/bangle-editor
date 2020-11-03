@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
-import { editorSpec } from '../editor/editor-spec';
+import { specSheet } from '../editor/editor-spec';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { dinos } from 'bangle-plugins/dinos/index';
@@ -76,7 +76,7 @@ export class Editor extends React.PureComponent {
     id: 'bangle-play-' + this.props.docName + '-' + uuid(4),
     content: 'Loading document',
     devtools: this.devtools,
-    editorSpec: editorSpec,
+    specSheet,
     plugins: getPlugins({
       docName: this.props.docName,
       manager: this.props.manager,

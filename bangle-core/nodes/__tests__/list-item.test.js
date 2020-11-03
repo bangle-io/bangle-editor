@@ -24,17 +24,28 @@ import {
   heading,
   underline,
   codeBlock,
+  doc,
+  text,
+  paragraph,
 } from '../../components';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const editorSpec = [
+const specSheet = new SpecSheet([
+  doc.spec(),
+  text.spec(),
+  paragraph.spec(),
   bulletList.spec(),
   listItem.spec(),
   orderedList.spec(),
   hardBreak.spec(),
   heading.spec(),
   underline.spec(),
-];
+]);
+
 const plugins = [
+  doc.plugins(),
+  text.plugins(),
+  paragraph.plugins(),
   bulletList.plugins(),
   listItem.plugins(),
   orderedList.plugins(),
@@ -43,7 +54,7 @@ const plugins = [
   underline.plugins(),
 ];
 
-const testEditor = renderTestEditor({ editorSpec, plugins });
+const testEditor = renderTestEditor({ specSheet, plugins });
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;

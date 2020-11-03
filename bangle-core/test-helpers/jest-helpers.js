@@ -170,16 +170,6 @@ function toEqualDocument(equals, utils, expand) {
 }
 
 function stubMissingDOMAPIs() {
-  const warnOnce = (() => {
-    return () => {
-      // eslint-disable-next-line no-console
-      // console.warn(
-      //   'Warning! Test depends on DOM selection API which is not supported in JSDOM/Node environment.',
-      // );
-      // window.hasWarnedAboutJsdomFixtures = true;
-    };
-  })();
-
   const clientRectFixture = {
     left: 0,
     right: 0,
@@ -209,20 +199,16 @@ function stubMissingDOMAPIs() {
 
   if (typeof window !== 'undefined') {
     window.getSelection = () => {
-      warnOnce();
       return selectionFixture;
     };
   }
 
   if (typeof document !== 'undefined') {
     document.getSelection = () => {
-      warnOnce();
       return selectionFixture;
     };
 
-    // Do nothing when attempting to create DOM ranges
     document.createRange = () => {
-      warnOnce();
       return rangeFixture;
     };
 

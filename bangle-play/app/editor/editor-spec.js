@@ -12,8 +12,9 @@ import { stopwatch } from 'bangle-plugins/stopwatch/index';
 import { config } from './config';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
-export const editorSpec = [
+export const specSheet = new SpecSheet([
   ...coreSpec({ node: { heading: { levels: config.headingLevels } } }),
   collab.spec(),
   dinos.spec(),
@@ -24,4 +25,4 @@ export const editorSpec = [
   stopwatch.spec(),
   trailingNode.spec(),
   timestamp.spec(),
-];
+]);

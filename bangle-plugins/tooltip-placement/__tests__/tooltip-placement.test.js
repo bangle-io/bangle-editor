@@ -10,8 +10,8 @@ import { hideTooltip, showTooltip } from '../tooltip-commands';
 import { EditorView } from 'prosemirror-view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { corePlugins, coreSpec } from 'bangle-core/components';
-import { schemaLoader } from 'bangle-core/element-loaders';
 import { tooltipPlacement } from '../index';
+import { SpecSheet } from 'bangle-core/spec-sheet';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {
@@ -48,15 +48,15 @@ const setupPlugin = (opts = {}) => {
 };
 
 const setupEditorState = (plugin) => {
-  const editorSpec = [...coreSpec(), tooltipPlacement.spec()];
+  const specSheet = new SpecSheet([...coreSpec(), tooltipPlacement.spec()]);
   const plugins = [...corePlugins(), plugin];
 
   return editorStateSetup({
     plugins,
-    editorSpec,
+    specSheet,
     doc: (<doc>
       <para>hello world</para>
-    </doc>)(schemaLoader(editorSpec)),
+    </doc>)(specSheet.schema),
   });
 };
 

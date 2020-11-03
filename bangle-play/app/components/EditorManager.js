@@ -4,17 +4,17 @@ import {
   workspaceActions,
   WorkspaceContext,
 } from '../workspace/WorkspaceContext';
-import { getSchema } from '../editor/utils';
 import { defaultContent } from './constants';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 import { Manager } from 'bangle-plugins/collab/server/manager';
+import { specSheet } from '../editor/editor-spec';
 
 const DEBUG = true;
 
 export class EditorManager extends React.PureComponent {
   static contextType = WorkspaceContext;
 
-  schema = getSchema();
+  schema = specSheet.schema;
 
   disk = new LocalDisk({
     getItem: async (docName) => {
