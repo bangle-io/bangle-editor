@@ -1,4 +1,4 @@
-import { keymap } from 'prosemirror-keymap';
+import { keymap } from 'bangle-core/utils/keymap';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

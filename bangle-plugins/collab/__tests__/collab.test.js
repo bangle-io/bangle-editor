@@ -3,13 +3,13 @@
  */
 /** @jsx psx */
 import { TextSelection } from 'prosemirror-state';
-import { psx } from 'bangle-core/test-helpers';
+import { psx } from 'bangle-core/test-helpers/index';
 import { sleep } from 'bangle-core/utils/js-utils';
 import {
   setupDb,
   spinEditors,
   expectToHaveIdenticalElements,
-} from '../collab-test-helpers';
+} from '../collab-test-helpers/index';
 import { CollabError } from '../collab-error';
 import { RECOVERY_BACK_OFF } from '../client/collab-extension';
 jest.mock('localforage', () => ({
