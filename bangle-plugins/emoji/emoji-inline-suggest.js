@@ -1,6 +1,6 @@
 import { bangleWarn } from 'bangle-core/utils/js-utils';
 import { valuePlugin } from 'bangle-core/utils/pm-utils';
-import { pluginKeyStore } from 'bangle-plugins/utils';
+import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { PluginKey } from 'prosemirror-state';
 import React, { useEffect, useRef } from 'react';
 import reactDOM from 'react-dom';

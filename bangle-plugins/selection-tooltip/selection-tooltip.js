@@ -7,7 +7,7 @@ import {
   tooltipPlacement,
 } from 'bangle-plugins/tooltip-placement/index';
 import { filter } from 'bangle-core/utils/pm-utils';
-import { pluginKeyStore } from 'bangle-plugins/utils';
+import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { Plugin, PluginKey } from 'prosemirror-state';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
@@ -32,13 +32,10 @@ const createTooltipKey = (parentKey) => {
 };
 
 function specFactory(opts = {}) {
-  return [
-    tooltipPlacement.spec(),
-    {
-      type: 'component',
-      name,
-    },
-  ];
+  return {
+    type: 'component',
+    name,
+  };
 }
 
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);

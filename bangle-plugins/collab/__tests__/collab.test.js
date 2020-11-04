@@ -3,7 +3,7 @@
  */
 /** @jsx psx */
 import { TextSelection } from 'prosemirror-state';
-import { psx } from 'bangle-core/test-helpers';
+import { psx } from 'bangle-core/test-helpers/index';
 import { sleep } from 'bangle-core/utils/js-utils';
 import {
   setupDb,

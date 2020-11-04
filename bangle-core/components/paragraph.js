@@ -1,8 +1,8 @@
 import { setBlockType } from 'prosemirror-commands';
 import { TextSelection } from 'prosemirror-state';
-import { keymap } from 'prosemirror-keymap';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import { moveNode } from './list-item/commands';
+import { keymap } from '../utils/keymap';
 import {
   parentHasDirectParentOfType,
   copyEmptyCommand,
@@ -10,17 +10,29 @@ import {
 } from '../core-commands';
 import browser from '../utils/browser';
 
-const name = 'paragraph';
-
-const getType = (state) => state.schema.nodes[name];
-const getTypeFromSchema = (schema) => schema.nodes[name];
-
-export const defaultKeys = {
-  jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
-  jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  setParagraph: convertToParagraph,
+  jumpToStartOfLine: jumpToStartOfParagraph,
+  jumpToEndOfLine: jumpToEndOfParagraph,
 };
 
-export const spec = (opts = {}) => {
+export const defaultKeys = {
+  jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
+  jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
+  moveDown: 'Alt-ArrowDown',
+  moveUp: 'Alt-ArrowUp',
+  emptyCopy: 'Meta-c',
+  emptyCut: 'Meta-x',
+  insertEmptyAbove: 'Meta-Shift-Enter',
+  insertEmptyBelow: 'Meta-Enter',
+};
+
+const name = 'paragraph';
+const getTypeFromSchema = (schema) => schema.nodes[name];
+
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -47,37 +59,40 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ keys = defaultKeys } = {}) => {
+function pluginsFactory({ keys = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     // Enables certain command to only work if paragraph is direct child of the `doc` node
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
     return [
       keymap({
-        'Alt-ArrowUp': filter(isTopLevel, moveNode(type, 'UP')),
-        'Alt-ArrowDown': filter(isTopLevel, moveNode(type, 'DOWN')),
+        [keys.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
+        [keys.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 
-        [keys.jumpToStartOfLine]: jumpToStartOfLine(type),
-        [keys.jumpToEndOfLine]: jumpToEndOfLine(type),
+        [keys.jumpToStartOfLine]: jumpToStartOfParagraph(),
+        [keys.jumpToEndOfLine]: jumpToEndOfParagraph(),
 
-        'Meta-c': filter(isTopLevel, copyEmptyCommand(type)),
-        'Meta-x': filter(isTopLevel, cutEmptyCommand(type)),
+        [keys.emptyCopy]: filter(isTopLevel, copyEmptyCommand()),
+        [keys.emptyCut]: filter(isTopLevel, cutEmptyCommand()),
 
-        'Meta-Shift-Enter': filter(isTopLevel, insertEmpty(type, 'above')),
-        'Meta-Enter': filter(isTopLevel, insertEmpty(type, 'below')),
+        [keys.insertEmptyAbove]: filter(isTopLevel, insertEmpty(type, 'above')),
+        [keys.insertEmptyBelow]: filter(isTopLevel, insertEmpty(type, 'below')),
       }),
     ];
   };
-};
-
-export function setParagraph() {
-  return (state, dispatch) => setBlockType(getType(state))(state, dispatch);
 }
 
-function jumpToStartOfLine(type) {
+// Commands
+export function convertToParagraph() {
+  return (state, dispatch) =>
+    setBlockType(getTypeFromSchema(state.schema))(state, dispatch);
+}
+
+export function jumpToStartOfParagraph() {
   return (state, dispatch) => {
+    const type = getTypeFromSchema(state.schema);
     const current = findParentNodeOfType(type)(state.selection);
     if (!current) {
       return false;
@@ -88,8 +103,9 @@ function jumpToStartOfLine(type) {
   };
 }
 
-function jumpToEndOfLine(type) {
+export function jumpToEndOfParagraph() {
   return (state, dispatch) => {
+    const type = getTypeFromSchema(state.schema);
     const current = findParentNodeOfType(type)(state.selection);
     if (!current) {
       return false;
@@ -100,5 +116,6 @@ function jumpToEndOfLine(type) {
         TextSelection.create(state.doc, start + node.content.size),
       ),
     );
+    return true;
   };
 }

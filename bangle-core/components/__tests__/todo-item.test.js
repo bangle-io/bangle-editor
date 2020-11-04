@@ -7,7 +7,7 @@ import {
   renderTestEditor,
   typeText,
   sendKeyToPm,
-} from 'bangle-core/test-helpers';
+} from 'bangle-core/test-helpers/index';
 
 const testEditor = renderTestEditor();
 
