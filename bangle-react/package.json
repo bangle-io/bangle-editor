@@ -1,0 +1,16 @@
+{
+  "name": "bangle-react",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {},
+  "dependencies": {
+    "@popperjs/core": "^2.5.2",
+    "bangle-core": "workspace:*",
+    "bangle-plugins": "workspace:*"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^10.4.7",
+    "localforage": "^1.7.3",
+    "prettier": "^2.1.2"
+  }
+}

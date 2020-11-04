@@ -11,6 +11,9 @@
       "bangle-plugins/*": [
         "./bangle-plugins/*"
       ],
+      "bangle-react/*": [
+        "./bangle-react/*"
+      ],
     },
     "module": "es2020",
     "target": "esnext"
@@ -20,6 +23,8 @@
     "build",
     "dist",
     "archive",
+    "bangle-play/build",
+    "bangle-play/node_modules",
     "public",
     ".cache",
     ".yarn",
