@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuBar } from './menu';
-import { EditorContext } from 'bangle-core/helper-react/editor-context';
+import { EditorContext } from 'bangle-react/editor-context';
 
 export class Header extends React.PureComponent {
   static contextType = EditorContext;

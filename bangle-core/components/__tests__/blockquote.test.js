@@ -13,9 +13,9 @@ import { typeText } from 'bangle-core/test-helpers/index';
 
 const testEditor = renderTestEditor();
 
-describe('Markdown shorthand works', () => {
-  it('pressing > on empty paragraph works', async () => {
-    const { view } = await testEditor(
+describe.only('Markdown shorthand works', () => {
+  it.only('pressing > on empty paragraph works', () => {
+    const { view } = testEditor(
       <doc>
         <para>[]</para>
       </doc>,
@@ -31,8 +31,8 @@ describe('Markdown shorthand works', () => {
     );
   });
 
-  it('pressing > on empty heading works', async () => {
-    const { view } = await testEditor(
+  it('pressing > on empty heading works', () => {
+    const { view } = testEditor(
       <doc>
         <heading>[]</heading>
       </doc>,
@@ -48,8 +48,8 @@ describe('Markdown shorthand works', () => {
     );
   });
 
-  it('pressing > on empty bullet list doesnt not work', async () => {
-    const { view } = await testEditor(
+  it('pressing > on empty bullet list doesnt not work', () => {
+    const { view } = testEditor(
       <doc>
         <ul>
           <li>
@@ -73,8 +73,8 @@ describe('Markdown shorthand works', () => {
 });
 
 describe('Keyboard shortcut', () => {
-  it('works on empty para', async () => {
-    const { view } = await testEditor(
+  it('works on empty para', () => {
+    const { view } = testEditor(
       <doc>
         <para>[]</para>
       </doc>,
@@ -91,8 +91,8 @@ describe('Keyboard shortcut', () => {
     );
   });
 
-  it('works with content in the para', async () => {
-    const { view } = await testEditor(
+  it('works with content in the para', () => {
+    const { view } = testEditor(
       <doc>
         <para>kj[]</para>
       </doc>,
@@ -226,7 +226,7 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert empty paragraph above', async (input, expected) => {
-    const { view } = await testEditor(input);
+    const { view } = testEditor(input);
 
     sendKeyToPm(view, 'Cmd-Shift-Enter');
 
@@ -348,7 +348,7 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert empty paragraph below', async (input, expected) => {
-    const { view } = await testEditor(input);
+    const { view } = testEditor(input);
 
     sendKeyToPm(view, 'Cmd-Enter');
 

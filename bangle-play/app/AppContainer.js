@@ -2,7 +2,7 @@ import './style/tailwind.src.css';
 import './style/style.css';
 import './style/prosemirror.css';
 import React from 'react';
-import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
+import { EditorContextProvider } from 'bangle-react/editor-context';
 import { Editor } from './components/Editor';
 import { EditorManager } from './components/EditorManager';
 import { UIContextProvider } from './store/UIContext';

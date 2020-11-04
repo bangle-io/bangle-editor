@@ -1,26 +1,13 @@
-/**
- * @jest-environment jsdom
- */
-
+import React from 'react';
+import { render } from '@testing-library/react';
 import { TextSelection } from 'prosemirror-state';
-import { getDocLabels } from './schema-builders';
-import { corePlugins } from '../components/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { BangleEditor } from 'bangle-core/editor';
+import { ReactEditor } from 'bangle-react/react-editor';
+import { corePlugins } from 'bangle-core/index';
+import { getDocLabels } from 'bangle-core/test-helpers/index';
 
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
-
-const mountedView = new Set();
-const rootElement = document.body;
-if (typeof afterEach === 'function') {
-  afterEach(() => {
-    [...mountedView].forEach((view) => {
-      view.destroy();
-      mountedView.delete(view);
-    });
-  });
-}
 
 export function renderTestEditor(
   { specSheet = defaultSpecSheet, plugins = defaultPlugins } = {},
@@ -29,27 +16,26 @@ export function renderTestEditor(
   if (!(specSheet instanceof SpecSheet)) {
     throw new Error('Need to be specsheet');
   }
-  const container = rootElement.appendChild(document.createElement('div'));
-  container.setAttribute('data-testid', testId);
 
-  // Add the base specs for lazy asses like me
-  // specSheet = injectBaseSpec(specSheet);
-
-  return (testDoc) => {
+  return async (testDoc) => {
     let view;
-
-    const editorProps = {
-      attributes: { class: 'bangle-editor content' },
+    const onReady = (_view) => {
+      view = _view;
     };
 
-    const result = new BangleEditor(container, {
-      specSheet,
-      plugins,
-      editorProps,
-    });
+    const _options = {
+      id: 'test-editor',
+      testId: testId,
+      editorProps: {
+        attributes: { class: 'bangle-editor content' },
+      },
+      onReady,
+      ...{ specSheet, plugins },
+    };
 
-    view = result.view;
-    mountedView.add(view);
+    const result = render(<ReactEditor options={_options} />);
+
+    await result.findByTestId(testId);
 
     let posLabels;
 
@@ -97,6 +83,9 @@ export function renderTestEditor(
 
     return {
       ...result,
+      get editor() {
+        throw new Error('wtf');
+      },
       view: view,
       editorState: view.state,
       schema: view.state.schema,

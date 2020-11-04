@@ -20,16 +20,6 @@ export class EditorContextProvider extends React.Component {
 
   onEditorReady = (view) => {
     return;
-
-    if (
-      this.state.editorValue.editor &&
-      this.state.editorValue.editor !== editor
-    ) {
-      log('Setting a new editor');
-      this.cleanupEditor(this.state.editorValue.editor);
-    }
-
-    this.setupEditor(editor);
   };
 
   // TODO do we need this?

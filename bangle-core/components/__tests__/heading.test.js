@@ -52,7 +52,7 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert empty paragraph above', async (input, expected) => {
-    const { view } = await testEditor(input);
+    const { view } = testEditor(input);
 
     sendKeyToPm(view, 'Cmd-Shift-Enter');
 
@@ -100,7 +100,7 @@ describe('Insert empty paragraph above and below', () => {
       </doc>,
     ],
   ])('Case %# insert empty paragraph below', async (input, expected) => {
-    const { view } = await testEditor(input);
+    const { view } = testEditor(input);
 
     sendKeyToPm(view, 'Cmd-Enter');
 

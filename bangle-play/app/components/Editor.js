@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
 import { specSheet } from '../editor/spec-sheet';
@@ -21,6 +20,7 @@ import { stopwatch } from 'bangle-plugins/stopwatch/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { isJestIntegration } from 'bangle-core/utils/process-env';
+import { ReactEditor } from 'bangle-react/react-editor';
 
 const LOG = false;
 const DEBUG = true;

@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getIdleCallback, smartDebounce } from 'bangle-core/utils/js-utils';
+import { BangleEditor } from 'bangle-core/editor';
 
 import { EditorOnReadyContext } from './editor-context';
-
 import { PortalProviderAPI } from './portal';
-import { getIdleCallback, smartDebounce } from '../utils/js-utils';
-import { BangleEditor } from '../editor';
 
 const LOG = false;
 
