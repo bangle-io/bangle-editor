@@ -5,7 +5,6 @@ import { moveNode } from './list-item/commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
 import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
 import { keymap } from 'bangle-core/utils/keymap';
-// import { keymap } from 'prosemirror-keymap';
 
 const name = 'heading';
 

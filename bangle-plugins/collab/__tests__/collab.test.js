@@ -9,7 +9,7 @@ import {
   setupDb,
   spinEditors,
   expectToHaveIdenticalElements,
-} from '../collab-test-helpers/index';
+} from '../collab-test-helpers';
 import { CollabError } from '../collab-error';
 import { RECOVERY_BACK_OFF } from '../client/collab-extension';
 jest.mock('localforage', () => ({
