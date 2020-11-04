@@ -5,7 +5,8 @@
   "workspaces": [
     "bangle-core",
     "bangle-play",
-    "bangle-plugins"
+    "bangle-plugins",
+    "bangle-react"
   ],
   "scripts": {
     "start": "yarn workspace bangle-play start",
