@@ -8,7 +8,7 @@ import {
   typeText,
   sendKeyToPm,
   renderTestEditor,
-} from 'bangle-core/test-helpers';
+} from 'bangle-core/test-helpers/index';
 
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { trailingNode } from '../index';

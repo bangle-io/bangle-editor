@@ -8,7 +8,7 @@ import {
   renderTestEditor,
   sendKeyToPm,
   typeText,
-} from 'bangle-core/test-helpers';
+} from 'bangle-core/test-helpers/index';
 import {
   bulletList,
   listItem,

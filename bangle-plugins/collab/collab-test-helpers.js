@@ -6,7 +6,7 @@ import {
   sendKeyToPm,
   sleep,
   typeChar,
-} from 'bangle-core/test-helpers';
+} from 'bangle-core/test-helpers/index';
 import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';

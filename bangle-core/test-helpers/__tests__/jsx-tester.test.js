@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor, typeText } from '../../test-helpers';
+import { psx, renderTestEditor, typeText } from '../../test-helpers/index';
 
 const testEditor = renderTestEditor();
 

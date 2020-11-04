@@ -2,7 +2,11 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from 'bangle-core/test-helpers';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+} from 'bangle-core/test-helpers/index';
 
 const testEditor = renderTestEditor();
 

@@ -28,7 +28,7 @@ import {
   toggleBold,
 } from 'bangle-core/components/bold';
 import { isSelectionInsideLink } from 'bangle-core/components/link';
-import { pluginKeyStore } from 'bangle-plugins/utils';
+import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import {
   hideAllSelectionTooltip,
   hideSelectionTooltip,
@@ -268,6 +268,8 @@ function pluginsFactory({
       const { head, from } = state.selection;
       if (this.popperInstance) {
         if (head === from) {
+          // TODO move this as a command exposed by tooltipPlacement
+          // and also expose it in floating-menu.js
           this.popperInstance.setOptions({ placement: 'top' });
         } else {
           this.popperInstance.setOptions({ placement: 'bottom' });
