@@ -16,5 +16,21 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#f7bcc7",
+    "activityBar.activeBorder": "#288e11",
+    "activityBar.background": "#f7bcc7",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#288e11",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#f28ea1",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#ed607b",
+    "titleBar.activeBackground": "#f28ea1",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#f28ea199",
+    "titleBar.inactiveForeground": "#15202b99"
+  }
 }

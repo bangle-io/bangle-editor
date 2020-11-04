@@ -4,9 +4,12 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
-    "@popperjs/core": "^2.5.2",
     "bangle-core": "workspace:*",
-    "bangle-plugins": "workspace:*"
+    "bangle-plugins": "workspace:*",
+    "prop-types": "^15.7.2",
+    "prosemirror-dev-tools": "https://github.com/kepta/prosemirror-dev-tools#v3.3.4",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.7",

@@ -58,7 +58,7 @@ describe('Command: toggleList', () => {
   let updateDoc, editorView;
 
   beforeEach(async () => {
-    ({ editorView, updateDoc } = await testEditor());
+    ({ editorView, updateDoc } = testEditor());
   });
 
   test('toggles correctly', async () => {
@@ -94,7 +94,7 @@ describe('Command: backspaceKeyCommand', () => {
     cmd = applyCommand(backspaceKeyCommand());
 
   beforeEach(async () => {
-    ({ editorView, updateDoc } = await testEditor());
+    ({ editorView, updateDoc } = testEditor());
   });
 
   test('toggles correctly', async () => {
@@ -142,7 +142,7 @@ describe('Command: enterKeyCommand', () => {
     cmd = applyCommand(enterKeyCommand());
 
   beforeEach(async () => {
-    ({ editorView, updateDoc } = await testEditor());
+    ({ editorView, updateDoc } = testEditor());
   });
 
   test('creates a new list when pressed enter at end', async () => {
@@ -317,7 +317,7 @@ describe('Command: enterKeyCommand', () => {
 
 describe('Markdown shortcuts Input rules', () => {
   test('-<Space> should create list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <para>first</para>
         <para>[]</para>
@@ -337,7 +337,7 @@ describe('Markdown shortcuts Input rules', () => {
     );
   });
   test('*<Space> should create list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <para>first</para>
         <para>[]</para>
@@ -357,7 +357,7 @@ describe('Markdown shortcuts Input rules', () => {
     );
   });
   test.skip('*<Space> merge list if a list is already at bottom', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <para>[]</para>
         <ul>
@@ -384,7 +384,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 
   test('*<Space> merge list if near a list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <ul>
           <li>
@@ -411,7 +411,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 
   it.skip('should convert to a bullet list item after shift+enter ', async () => {
-    const { editorView, sel } = await testEditor(
+    const { editorView, sel } = testEditor(
       <doc>
         <para>
           test
@@ -437,7 +437,7 @@ describe('Markdown shortcuts Input rules', () => {
   it('should be not be possible to convert a code to a list item', async () => {
     const testEditor = renderTestEditor({});
 
-    const { editorView, sel } = await testEditor(
+    const { editorView, sel } = testEditor(
       <doc>
         <codeBlock>[]</codeBlock>
       </doc>,
@@ -451,7 +451,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 
   test.skip('1.<space> should create ordered list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <para>first[]</para>
       </doc>,
@@ -472,7 +472,7 @@ describe('Markdown shortcuts Input rules', () => {
     );
   });
   it('should not convert "2. " to a ordered list item', async () => {
-    const { editorView, sel } = await testEditor(
+    const { editorView, sel } = testEditor(
       <doc>
         <para>[]</para>
       </doc>,
@@ -487,7 +487,7 @@ describe('Markdown shortcuts Input rules', () => {
   });
 
   it('should not convert "2. " after shift+enter to a ordered list item', async () => {
-    const { editorView, sel } = await testEditor(
+    const { editorView, sel } = testEditor(
       <doc>
         <para>
           test
@@ -510,7 +510,7 @@ describe('Markdown shortcuts Input rules', () => {
 });
 
 test('Typing works', async () => {
-  const { view } = await testEditor(
+  const { view } = testEditor(
     <doc>
       <ul>
         <li>
@@ -534,7 +534,7 @@ test('Typing works', async () => {
 });
 
 test('Pressing Enter', async () => {
-  const { view } = await testEditor(
+  const { view } = testEditor(
     <doc>
       <ul>
         <li>
@@ -562,7 +562,7 @@ test('Pressing Enter', async () => {
 
 describe('Pressing Tab', () => {
   test('first list has no effect', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <ul>
           <li>
@@ -585,7 +585,7 @@ describe('Pressing Tab', () => {
     );
   });
   test('second list nests', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <ul>
           <li>
@@ -619,7 +619,7 @@ describe('Pressing Tab', () => {
 
 describe('Pressing Backspace', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Backspace');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -1067,7 +1067,7 @@ describe('Pressing Backspace', () => {
 // TODO fix these edge cases
 describe('Pressing Forward delete', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Delete');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -1129,7 +1129,7 @@ describe('Pressing Forward delete', () => {
 
 describe('Pressing Shift-Tab', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Shift-Tab');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -1164,7 +1164,7 @@ describe('Pressing Shift-Tab', () => {
 
 describe('Pressing Shift-Ctrl-8', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Shift-Ctrl-8');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -1253,7 +1253,7 @@ describe('Pressing Shift-Ctrl-8', () => {
 
 describe('Pressing Shift-Ctrl-9', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Shift-Ctrl-9');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -1276,7 +1276,7 @@ describe('Pressing Shift-Ctrl-9', () => {
 
 describe('Press Alt-Up / Down to move list', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Alt-Up');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
     sendKeyToPm(editorView, 'Alt-Down');
@@ -1500,7 +1500,7 @@ describe('Press Alt-Up / Down to move list', () => {
 
 describe('Move up for first item in their level', () => {
   const checkUp = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Alt-Up');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -1770,7 +1770,7 @@ describe('Move up for first item in their level', () => {
 
 describe('Move down for last item in their level', () => {
   const checkDown = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Alt-Down');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -2224,7 +2224,7 @@ describe('Move down for last item in their level', () => {
 
 describe('Press Alt-Down to move list', () => {
   const check = async (beforeDoc, afterDoc) => {
-    const { editorView } = await testEditor(beforeDoc);
+    const { editorView } = testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Alt-Down');
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
@@ -2543,7 +2543,7 @@ describe('Meta-c on empty selections', () => {
   it('should work', async () => {
     document.execCommand = jest.fn(() => {});
 
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <ul>
           <li>
@@ -2587,7 +2587,7 @@ describe('Meta-x on empty selections', () => {
   test('should cut a document', async () => {
     document.execCommand = jest.fn(() => {});
 
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <ul>
           <li>
@@ -2636,7 +2636,7 @@ describe('Toggling the list', () => {
       editorView,
     );
   it('should allow toggling between normal text and ordered list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <para>t[ex]t</para>
       </doc>,
@@ -2661,7 +2661,7 @@ describe('Toggling the list', () => {
   });
 
   it('should allow toggling between normal text and bullet list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <para>t[ex]t</para>
       </doc>,
@@ -2686,7 +2686,7 @@ describe('Toggling the list', () => {
   });
 
   it('should allow toggling between ordered and bullet list', async () => {
-    const { editorView } = await testEditor(
+    const { editorView } = testEditor(
       <doc>
         <ol>
           <li>
@@ -2716,7 +2716,7 @@ describe('Toggling the list', () => {
 
   describe('toggling a list', () => {
     it("shouldn't affect text selection", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>hello[]</para>
         </doc>,
@@ -2762,7 +2762,7 @@ describe('Toggling the list', () => {
     );
 
     it('should allow untoggling part of a list based on selection', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -2785,7 +2785,7 @@ describe('Toggling the list', () => {
     });
 
     it('should untoggle empty paragraphs in a list', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -2816,7 +2816,7 @@ describe('Toggling the list', () => {
     });
 
     it('should untoggle all list items with different ancestors in selection', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -2885,7 +2885,7 @@ describe('Toggling the list', () => {
           </ol>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -2931,7 +2931,7 @@ describe('Toggling the list', () => {
           </ol>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -2973,7 +2973,7 @@ describe('Toggling the list', () => {
           </ol>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>[One</para>
           <ol>
@@ -3013,7 +3013,7 @@ describe('Toggling the list', () => {
           </ol>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>[One</para>
           <ol>
@@ -3051,7 +3051,7 @@ describe('Toggling the list', () => {
           </ol>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3091,7 +3091,7 @@ describe('Toggling the list', () => {
           </ul>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3130,7 +3130,7 @@ describe('Toggling the list', () => {
           </ul>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>[One</para>
           <para></para>
@@ -3160,7 +3160,7 @@ describe('Toggling the list', () => {
           </ul>
         </doc>
       );
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>[One</para>
           <para>
@@ -3246,7 +3246,7 @@ describe('Toggling the list', () => {
     );
 
     it("should join with previous list if it's of the same type", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3272,7 +3272,7 @@ describe('Toggling the list', () => {
     });
 
     it("should join with previous list if it's of the same type and selection starts at the end of previous line", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3298,7 +3298,7 @@ describe('Toggling the list', () => {
     });
 
     it("should not join with previous list if it's not of the same type", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3345,7 +3345,7 @@ describe('Toggling the list', () => {
     });
 
     it("should not join with previous list if it's not of the same type and selection starts at the end of previous line", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3392,7 +3392,7 @@ describe('Toggling the list', () => {
     });
 
     it("should join with next list if it's of the same type", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>One</para>
           <para>[Two</para>
@@ -3416,7 +3416,7 @@ describe('Toggling the list', () => {
     });
 
     it("should join with next list if it's of the same type and selection starts at the end of previous line", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>One[</para>
           <para>Two</para>
@@ -3440,7 +3440,7 @@ describe('Toggling the list', () => {
     });
 
     it("should not join with next list if it isn't of the same type", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>One</para>
           <para>[Two</para>
@@ -3487,7 +3487,7 @@ describe('Toggling the list', () => {
     });
 
     it("should not join with next list if it isn't of the same type and selection starts at the end of previous line", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <para>One[</para>
           <para>Two</para>
@@ -3534,7 +3534,7 @@ describe('Toggling the list', () => {
     });
 
     it("should join with previous and next list if they're of the same type", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3564,7 +3564,7 @@ describe('Toggling the list', () => {
     });
 
     it("should join with previous and next list if they're of the same type and selection starts at the end of previous line", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3594,7 +3594,7 @@ describe('Toggling the list', () => {
     });
 
     it("should not join with previous and next list if they're not of the same type", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3649,7 +3649,7 @@ describe('Toggling the list', () => {
     });
 
     it("should not join with previous and next list if they're not of the same type and selectoin starts at the end of previous line", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3707,7 +3707,7 @@ describe('Toggling the list', () => {
   describe('Nested Lists', () => {
     describe('When gap cursor is inside listItem before codeBlock', () => {
       it.skip('should increase the depth of list item when Tab key press', async () => {
-        const { editorView } = await testEditor(
+        const { editorView } = testEditor(
           <doc>
             <ol>
               <li>
@@ -3735,7 +3735,7 @@ describe('Toggling the list', () => {
       });
 
       it.skip('should decrease the depth of list item when Shift-Tab key press', async () => {
-        const { editorView } = await testEditor(
+        const { editorView } = testEditor(
           <doc>
             <ol>
               <li>
@@ -3766,7 +3766,7 @@ describe('Toggling the list', () => {
     });
 
     it('should increase the depth of list item when Tab key press', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3789,7 +3789,7 @@ describe('Toggling the list', () => {
     });
 
     it("shouldn't increase the depth of list item when Tab key press when at 5 levels indentation", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3828,7 +3828,7 @@ describe('Toggling the list', () => {
     });
 
     it("shouldn't increase the depth of list item when Tab key press when a child list at 6 levels indentation", async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3874,7 +3874,7 @@ describe('Toggling the list', () => {
     });
 
     it('should nest the list item when Tab key press', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3912,7 +3912,7 @@ describe('Toggling the list', () => {
     });
 
     it('should decrease the depth of list item when Shift-Tab key press', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3937,7 +3937,7 @@ describe('Toggling the list', () => {
     });
 
     it('should lift the list item when Shift-Tab key press', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -3975,7 +3975,7 @@ describe('Toggling the list', () => {
     });
 
     it('should lift nested and same level list items correctly', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4015,7 +4015,7 @@ describe('Toggling the list', () => {
     });
 
     it('should lift the list item when Enter key press is done on empty list-item', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4056,7 +4056,7 @@ describe('Toggling the list', () => {
   describe('Enter key-press', () => {
     describe('when Enter key is pressed on empty nested list item', () => {
       it('should create new list item in parent list', async () => {
-        const { editorView } = await testEditor(
+        const { editorView } = testEditor(
           <doc>
             <ol>
               <li>
@@ -4096,7 +4096,7 @@ describe('Toggling the list', () => {
 
     describe('when Enter key is pressed on non-empty nested list item', () => {
       it('should created new nested list item', async () => {
-        const { editorView } = await testEditor(
+        const { editorView } = testEditor(
           <doc>
             <ol>
               <li>
@@ -4141,7 +4141,7 @@ describe('Toggling the list', () => {
 
     describe('when Enter key is pressed on non-empty top level list item', () => {
       it('should created new list item at top level', async () => {
-        const { editorView } = await testEditor(
+        const { editorView } = testEditor(
           <doc>
             <ol>
               <li>
@@ -4182,7 +4182,7 @@ describe('Toggling the list', () => {
 
     describe('when Enter key is pressed on empty top level list item', () => {
       it('should create new paragraph outside the list', async () => {
-        const { editorView } = await testEditor(
+        const { editorView } = testEditor(
           <doc>
             <ol>
               <li>
@@ -4221,7 +4221,7 @@ describe('Toggling the list', () => {
 
   describe('Toggle - nested list scenarios - to lift items out of list', () => {
     it('should be possible to toggle a simple nested list', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4259,7 +4259,7 @@ describe('Toggling the list', () => {
     });
 
     it('should be possible to toggle an empty nested list item', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4297,7 +4297,7 @@ describe('Toggling the list', () => {
     });
 
     it('should be possible to toggle a selection across different depths in the list', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4331,7 +4331,7 @@ describe('Toggling the list', () => {
     });
 
     it('should be possible to toggle a selection across lists with different parent lists', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4373,7 +4373,7 @@ describe('Toggling the list', () => {
     });
 
     it('should be create a new list for children of lifted list item', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4419,7 +4419,7 @@ describe('Toggling the list', () => {
     });
 
     it('should change type to bullet list when toggling orderedList to bulletList', async () => {
-      const { editorView } = await testEditor(
+      const { editorView } = testEditor(
         <doc>
           <ol>
             <li>
@@ -4572,7 +4572,7 @@ describe('Insert empty list above and below', () => {
       </doc>,
     ],
   ])('Case %# insert above', async (input, expected) => {
-    const { view } = await testEditor(input);
+    const { view } = testEditor(input);
 
     sendKeyToPm(view, 'Cmd-Shift-Enter');
 
@@ -4680,7 +4680,7 @@ describe('Insert empty list above and below', () => {
       </doc>,
     ],
   ])('Case %# insert below', async (input, expected) => {
-    const { view } = await testEditor(input);
+    const { view } = testEditor(input);
 
     sendKeyToPm(view, 'Cmd-Enter');
 

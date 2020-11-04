@@ -47,7 +47,7 @@ const plugins = [
 const testEditor = renderTestEditor({ specSheet, plugins });
 
 test('Creates a link correctly', async () => {
-  const { editorView } = await testEditor(
+  const { editorView } = testEditor(
     <doc>
       <para>[hello world]</para>
     </doc>,
@@ -67,7 +67,7 @@ test('Creates a link correctly', async () => {
 });
 
 test('Creates a link correctly', async () => {
-  const { editorView } = await testEditor(
+  const { editorView } = testEditor(
     <doc>
       <para>hello [world]</para>
     </doc>,
@@ -87,7 +87,7 @@ test('Creates a link correctly', async () => {
 });
 
 test('Pastes a link correctly on an empty selection', async () => {
-  const { editorView } = await testEditor(
+  const { editorView } = testEditor(
     <doc>
       <para>hello world[]</para>
     </doc>,
@@ -106,7 +106,7 @@ test('Pastes a link correctly on an empty selection', async () => {
 });
 
 test('Pastes a link correctly', async () => {
-  const { editorView } = await testEditor(
+  const { editorView } = testEditor(
     <doc>
       <para>hello [world]</para>
     </doc>,
@@ -124,7 +124,7 @@ test('Pastes a link correctly', async () => {
 });
 
 test('Paste a link in a list works', async () => {
-  const { editorView } = await testEditor(
+  const { editorView } = testEditor(
     <doc>
       <ul>
         <li>
@@ -244,7 +244,7 @@ describe('remove link', () => {
       </doc>,
     ],
   ])('%# Clears link at selection', async (input, expected) => {
-    const { editorView } = await testEditor(input);
+    const { editorView } = testEditor(input);
 
     setLinkAtSelection()(editorView.state, editorView.dispatch);
 
@@ -313,7 +313,7 @@ describe('remove link', () => {
       </doc>,
     ],
   ])('%# Clears link non empty selection', async (input, expected) => {
-    const { editorView } = await testEditor(input);
+    const { editorView } = testEditor(input);
 
     setLinkAtSelection()(editorView.state, editorView.dispatch);
 
@@ -357,7 +357,7 @@ describe('remove link', () => {
   ])(
     '%# When partitioned by other marks clears only the nearest mark',
     async (input, expected) => {
-      const { editorView } = await testEditor(input);
+      const { editorView } = testEditor(input);
 
       setLinkAtSelection()(editorView.state, editorView.dispatch);
 
@@ -405,7 +405,7 @@ describe('Sets link', () => {
       </doc>,
     ],
   ])('%# sets link at selection', async (input, expected) => {
-    const { editorView } = await testEditor(input);
+    const { editorView } = testEditor(input);
 
     setLinkAtSelection('https://happy.com')(
       editorView.state,
@@ -609,7 +609,7 @@ describe('getLinkMarkDetails', () => {
       { href: 'https://example.com', text: 'world' },
     ],
   ])('%#  %s case', async (testId, input, expected) => {
-    const { editorView } = await testEditor(input);
+    const { editorView } = testEditor(input);
 
     expect(getLinkMarkDetails(editorView.state)).toEqual(expected);
   });

@@ -49,7 +49,7 @@ describe('Basics', () => {
     `);
   });
   test('is able to type paragraph', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>foo[]bar</para>
       </doc>,
@@ -65,7 +65,7 @@ describe('Basics', () => {
   });
 
   test('is able to create a new paragraph', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>foo[]bar</para>
       </doc>,
@@ -82,7 +82,7 @@ describe('Basics', () => {
   });
 
   test('is able to create a new paragraph', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>foobar[]</para>
       </doc>,
@@ -100,7 +100,7 @@ describe('Basics', () => {
 
   // TODO this is broken for some reason
   test.skip('is able to backspace', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>foobar[]</para>
       </doc>,
@@ -120,7 +120,7 @@ describe('Commands', () => {
   describe('Jump selection start and end', () => {
     const keys = paragraph.defaultKeys;
     it('Moves selection to the start', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>foobar[]</para>
         </doc>,
@@ -136,7 +136,7 @@ describe('Commands', () => {
     });
 
     it('Moves selection to the start', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>f[]oobar</para>
         </doc>,
@@ -152,7 +152,7 @@ describe('Commands', () => {
     });
 
     it('Moves selection to the start', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>[]foobar</para>
         </doc>,
@@ -168,7 +168,7 @@ describe('Commands', () => {
     });
 
     it('Moves selection to start when inside a list', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <ul>
             <li>
@@ -192,7 +192,7 @@ describe('Commands', () => {
     });
 
     it('Moves selection to the end', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>[]foobar</para>
         </doc>,
@@ -208,7 +208,7 @@ describe('Commands', () => {
     });
 
     it('Moves selection to the end', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>fooba[]r</para>
         </doc>,
@@ -224,7 +224,7 @@ describe('Commands', () => {
     });
 
     it('Moves selection to end when inside a list', async () => {
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <ul>
             <li>
@@ -259,7 +259,7 @@ describe('Commands', () => {
 
       const testEditor = renderTestEditor({ specSheet, plugins });
 
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <heading>fooba[]r</heading>
         </doc>,
@@ -277,7 +277,7 @@ describe('Commands', () => {
     it('jumpToEndOfParagraph returns false if selection if not in paragraph', async () => {
       const testEditor = renderTestEditor();
 
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <heading>fooba[]r</heading>
         </doc>,
@@ -297,7 +297,7 @@ describe('Commands', () => {
     it('jumpToEndOfParagraph returns true', async () => {
       const testEditor = renderTestEditor();
 
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>fooba[]r</para>
         </doc>,
@@ -317,7 +317,7 @@ describe('Commands', () => {
     it('jumpToStartOfParagraph returns false if selection if not in paragraph', async () => {
       const testEditor = renderTestEditor();
 
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <heading>fooba[]r</heading>
         </doc>,
@@ -337,7 +337,7 @@ describe('Commands', () => {
     it('jumpToStartOfParagraph returns true', async () => {
       const testEditor = renderTestEditor();
 
-      const { view } = await testEditor(
+      const { view } = testEditor(
         <doc>
           <para>fooba[]r</para>
         </doc>,
@@ -360,7 +360,7 @@ describe('Commands', () => {
 
   describe('Moving up and down', () => {
     const check = async (beforeDoc, afterDoc) => {
-      const { editorView } = await testEditor(beforeDoc);
+      const { editorView } = testEditor(beforeDoc);
       sendKeyToPm(editorView, 'Alt-Up');
       expect(editorView.state).toEqualDocAndSelection(afterDoc);
       sendKeyToPm(editorView, 'Alt-Down');
@@ -635,7 +635,7 @@ describe('Commands', () => {
         </doc>,
       ],
     ])('Case %# insert above', async (input, expected) => {
-      const { view } = await testEditor(input);
+      const { view } = testEditor(input);
 
       sendKeyToPm(view, 'Cmd-Shift-Enter');
 
@@ -701,7 +701,7 @@ describe('Commands', () => {
         </doc>,
       ],
     ])('Case %# insert below', async (input, expected) => {
-      const { view } = await testEditor(input);
+      const { view } = testEditor(input);
 
       sendKeyToPm(view, 'Cmd-Enter');
 
@@ -710,7 +710,7 @@ describe('Commands', () => {
   });
 
   test('convert to paragraph', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <heading level={1}>foobar[]</heading>
       </doc>,

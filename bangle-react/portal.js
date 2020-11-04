@@ -1,8 +1,8 @@
 import React from 'react';
 import reactDOM from 'react-dom';
-import { objUid } from '../utils/object-uid';
-import { Emitter } from '../utils/emitter';
-import { CachedMap } from '../utils/js-utils';
+import { objUid } from 'bangle-core/utils/object-uid';
+import { Emitter } from 'bangle-core/utils/emitter';
+import { CachedMap } from 'bangle-core/utils/js-utils';
 
 const LOG = false;
 

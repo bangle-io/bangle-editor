@@ -3130,9 +3130,7 @@ __metadata:
     "@testing-library/react": ^11.0.2
     lodash.debounce: ^4.0.8
     prettier: ^2.1.1
-    prop-types: ^15.7.2
     prosemirror-commands: ^1.1.4
-    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     prosemirror-dropcursor: ^1.1.1
     prosemirror-gapcursor: ^1.1.5
     prosemirror-history: ^1.0.4
@@ -3163,6 +3161,7 @@ __metadata:
     babel-loader: ^8.1.0
     bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
     case-sensitive-paths-webpack-plugin: ^2.3.0
     css-loader: ^4.2.1
     css.gg: ^2.0.0
@@ -3235,6 +3234,22 @@ __metadata:
     prosemirror-utils: ^0.9.6
     prosemirror-view: ^1.15.7
     punycode: ^2.1.1
+    react: ^16.13.0
+    react-dom: ^16.13.0
+  languageName: unknown
+  linkType: soft
+
+"bangle-react@workspace:*, bangle-react@workspace:bangle-react":
+  version: 0.0.0-use.local
+  resolution: "bangle-react@workspace:bangle-react"
+  dependencies:
+    "@testing-library/react": ^10.4.7
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    localforage: ^1.7.3
+    prettier: ^2.1.2
+    prop-types: ^15.7.2
+    prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     react: ^16.13.0
     react-dom: ^16.13.0
   languageName: unknown

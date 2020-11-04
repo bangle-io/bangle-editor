@@ -19,7 +19,7 @@ const image =
 
 describe('Markdown shorthand', () => {
   it('works', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -41,7 +41,7 @@ describe('Markdown shorthand', () => {
 
 describe('Image pasting', () => {
   it('pasting single image', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -77,7 +77,7 @@ describe('Image pasting', () => {
   });
 
   it('pasting two images', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -119,7 +119,7 @@ describe('Image pasting', () => {
   });
 
   it('filters out non images', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -160,7 +160,7 @@ describe('Image pasting', () => {
   });
 
   it('when item.getAsFile returns null', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
@@ -195,7 +195,7 @@ describe('Image pasting', () => {
 
 describe('Image dropping', () => {
   it('dropping single image', async () => {
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>hello[]</para>
       </doc>,
