@@ -39,13 +39,13 @@ export const showTooltip = (tooltipPlugin) => (state, dispatch) => {
   // of calling showTooltip multiple times as a way to signal updating of any downstream consumers
   // for example a tooltip can update its position
   if (dispatch) {
-    dispatch(
-      state.tr
-        .setMeta(tooltipPlugin, {
-          show: true,
-        })
-        .setMeta('addToHistory', false),
-    );
+    // dispatch(
+    //   state.tr
+    //     .setMeta(tooltipPlugin, {
+    //       show: true,
+    //     })
+    //     .setMeta('addToHistory', false),
+    // );
   }
   return true;
 };
