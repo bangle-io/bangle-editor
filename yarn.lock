@@ -3250,6 +3250,7 @@ __metadata:
     prettier: ^2.1.2
     prop-types: ^15.7.2
     prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
+    prosemirror-utils: ^0.9.6
     react: ^16.13.0
     react-dom: ^16.13.0
   languageName: unknown

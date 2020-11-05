@@ -4387,6 +4387,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.1.2"],
             ["prop-types", "npm:15.7.2"],
             ["prosemirror-dev-tools", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
+            ["prosemirror-utils", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:0.9.6"],
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:16.13.1"]
           ],
@@ -12306,6 +12307,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.11.0"],
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-tables", "npm:1.1.1"]
+          ],
+          "packagePeers": [
+            "@types/prosemirror-model",
+            "@types/prosemirror-state",
+            "@types/prosemirror-tables",
+            "prosemirror-model",
+            "prosemirror-state",
+            "prosemirror-tables"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:0.9.6", {
+          "packageLocation": "./.yarn/$$virtual/prosemirror-utils-virtual-a381ca0739/0/cache/prosemirror-utils-npm-0.9.6-5911c8beb1-b0a1274aa3.zip/node_modules/prosemirror-utils/",
+          "packageDependencies": [
+            ["prosemirror-utils", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:0.9.6"],
+            ["@types/prosemirror-model", null],
+            ["@types/prosemirror-state", null],
+            ["@types/prosemirror-tables", null],
+            ["prosemirror-model", null],
+            ["prosemirror-state", null],
+            ["prosemirror-tables", null]
           ],
           "packagePeers": [
             "@types/prosemirror-model",

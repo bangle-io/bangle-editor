@@ -21,9 +21,10 @@ import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { isJestIntegration } from 'bangle-core/utils/process-env';
 import { ReactEditor } from 'bangle-react/react-editor';
+import { dinos2 } from 'bangle-react/components/index';
 
 const LOG = false;
-const DEBUG = true;
+const DEBUG = false;
 let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
 
 const getScrollContainerDOM = (view) => {
@@ -55,11 +56,12 @@ const getPlugins = ({ docName, manager }) => {
     }),
     ...corePlugins({ node: { heading: { levels: config.headingLevels } } }),
     collab.plugins(collabOpts),
-    dinos.plugins(),
+    // dinos.plugins(),
     emoji.plugins(),
     stopwatch.plugins(),
     trailingNode.plugins(),
     timestamp.plugins(),
+    dinos2.plugins(),
   ];
 };
 

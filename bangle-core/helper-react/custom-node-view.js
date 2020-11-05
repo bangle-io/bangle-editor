@@ -1,10 +1,7 @@
-const LOG = false;
+const LOG = true;
 
-function log(...args) {
-  if (LOG) {
-    console.log('custome-node-view.js', ...args);
-  }
-}
+const log = LOG ? console.log.bind('custome-node-view.js') : () => {};
+
 export class CustomNodeView {
   constructor({
     node,
@@ -236,6 +233,8 @@ export class CustomNodeView {
         updateAttrs: this.updateAttrs,
         getPos: this.getPos,
         selected: selected,
+        // cheating
+        dom: this.domRef,
       },
 
       // for gluing with backend

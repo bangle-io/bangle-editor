@@ -179,6 +179,8 @@ function TodoItemComp(props) {
             outline: 'none',
           }}
           onChange={() => {
+            debugger;
+
             updateAttrs({
               'data-done': !done,
             });

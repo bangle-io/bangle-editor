@@ -398,7 +398,10 @@ export function rafSchedule(fn) {
   return wrapperFn;
 }
 
-export const bangleWarn = console.warn.bind(console, 'Warning in bangle.js:');
+export const bangleWarn =
+  process.env.NODE_ENV === 'test'
+    ? () => {}
+    : console.warn.bind(console, 'Warning in bangle.js:');
 
 export function recursiveFlat(data, callbackPayload) {
   const recurse = (d) => {

@@ -13,11 +13,12 @@ import { config } from './config';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
+import { dinos2 } from 'bangle-react/components/index';
 
 export const specSheet = new SpecSheet([
   ...coreSpec({ heading: { levels: config.headingLevels } }),
   collab.spec(),
-  dinos.spec(),
+  // dinos.spec(),
   emoji.spec(),
   floatingMenu.spec(),
   linkMenu.spec(),
@@ -25,4 +26,5 @@ export const specSheet = new SpecSheet([
   stopwatch.spec(),
   trailingNode.spec(),
   timestamp.spec(),
+  dinos2.spec(),
 ]);
