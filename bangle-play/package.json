@@ -45,7 +45,7 @@
     "w3c-keyname": "^2.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
+    "@babel/core": "^7.12.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "autoprefixer": "^9.8.6",
