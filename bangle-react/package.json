@@ -1,7 +1,6 @@
 {
   "name": "bangle-react",
   "version": "0.1.0",
-  "type": "module",
   "scripts": {},
   "dependencies": {
     "bangle-core": "workspace:*",
@@ -12,8 +11,18 @@
     "react-dom": "^16.13.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
     "@testing-library/react": "^10.4.7",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.2.1",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.4.1",
     "localforage": "^1.7.3",
-    "prettier": "^2.1.2"
+    "pnp-webpack-plugin": "^1.6.4",
+    "prettier": "^2.1.2",
+    "style-loader": "^2.0.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }
