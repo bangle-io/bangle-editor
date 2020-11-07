@@ -20,6 +20,7 @@ import { PluginKey } from 'prosemirror-state';
 import { stopwatch } from 'bangle-plugins/stopwatch/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
+import { isJestIntegration } from 'bangle-core/utils/process-env';
 
 const LOG = false;
 const DEBUG = true;
@@ -68,7 +69,7 @@ export class Editor extends React.PureComponent {
     manager: PropTypes.object.isRequired,
     docName: PropTypes.string.isRequired,
   };
-  devtools = this.props.isFirst && (process.env.JEST_INTEGRATION || DEBUG);
+  devtools = this.props.isFirst && (isJestIntegration() || DEBUG);
   inlineMenuDOM = document.createElement('div');
 
   options = {

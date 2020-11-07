@@ -28,13 +28,20 @@ module.exports = (env, argv) => {
     },
     devServer: {
       contentBase: './build',
+      disableHostCheck: true,
     },
     output: {
       filename: 'main.[contenthash].js',
       chunkFilename: '[name].bundle.[contenthash].js',
       path: path.resolve(__dirname, 'build'),
     },
+
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(
+          isProduction ? 'production' : 'development',
+        ),
+      }),
       new CaseSensitivePathsPlugin(),
       new HtmlWebpackPlugin({
         title: 'Bangle',
@@ -44,9 +51,6 @@ module.exports = (env, argv) => {
         filename: '[name].[contenthash].css',
         chunkFilename: '[id].[contenthash].css',
         ignoreOrder: false,
-      }),
-      new webpack.EnvironmentPlugin({
-        NODE_ENV: isProduction ? 'production' : 'development',
       }),
     ],
     module: {
@@ -89,6 +93,10 @@ module.exports = (env, argv) => {
           ],
         },
       ],
+    },
+    node: {
+      Buffer: false,
+      process: false,
     },
   };
 };
