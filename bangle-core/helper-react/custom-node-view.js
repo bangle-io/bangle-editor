@@ -71,10 +71,9 @@ export class CustomNodeView {
     return !this.contentDOM.contains(mutation.target);
   }
 
-  update(node) {
+  update(node, ...args) {
     // @see https://github.com/ProseMirror/prosemirror/issues/648
     const isValidUpdate = this.node.type === node.type; // && validUpdate(this.node, node);
-
     if (!isValidUpdate) {
       return false;
     }
@@ -119,13 +118,13 @@ export class CustomNodeView {
   selectNode() {
     this.dom.classList.add('ProseMirror-selectednode');
     log('selectNode');
-    this.renderComp({ selected: true });
+    // this.renderComp({ selected: true });
   }
 
   deselectNode() {
     this.dom.classList.remove('ProseMirror-selectednode');
     log('deselectNode');
-    this.renderComp({ selected: false });
+    // this.renderComp({ selected: false });
   }
 
   // copied from atlasmk2
@@ -197,7 +196,7 @@ export class CustomNodeView {
       node.appendChild(contentDOM);
       this.refNode = node;
     }
-    log('handleRef', node, contentDOM);
+    // log('handleRef', node, contentDOM);
   };
 
   // from tiptap
@@ -224,7 +223,6 @@ export class CustomNodeView {
       return;
     }
 
-    log('rendering', this.contentDOM, this.dom);
     this._renderNodeView({
       renderingPayload: {
         node: this.node,

@@ -9,7 +9,7 @@ import { Header } from './Header';
 import { specSheet } from '../editor/spec-sheet';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
-import { dinos } from 'bangle-plugins/dinos/index';
+// import { dinos } from 'bangle-plugins/dinos/index';
 import { corePlugins } from 'bangle-core/components';
 import { config } from '../editor/config';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
@@ -21,10 +21,10 @@ import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { isJestIntegration } from 'bangle-core/utils/process-env';
 import { ReactEditor } from 'bangle-react/react-editor';
-import { dinos2 } from 'bangle-react/components/index';
+import { dinos } from 'bangle-react/components/index';
 
 const LOG = false;
-const DEBUG = false;
+const DEBUG = true;
 let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
 
 const getScrollContainerDOM = (view) => {
@@ -61,7 +61,7 @@ const getPlugins = ({ docName, manager }) => {
     stopwatch.plugins(),
     trailingNode.plugins(),
     timestamp.plugins(),
-    dinos2.plugins(),
+    dinos.plugins(),
   ];
 };
 

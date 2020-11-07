@@ -14,6 +14,8 @@ function log(...args) {
   }
 }
 
+window.BangleEditor = BangleEditor;
+
 export class ReactEditor extends React.PureComponent {
   static propTypes = {
     options: PropTypes.object.isRequired,

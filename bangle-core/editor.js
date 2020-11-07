@@ -4,6 +4,10 @@ import { focusAtPosition } from './components/doc';
 import { pluginsLoader } from './utils/plugins-loader';
 import { nodeViewsLoader } from './utils/node-views-loader';
 import { isTestEnv } from './utils/process-env';
+import { DOMSerializer, DOMParser } from 'prosemirror-model';
+import { __parseFromClipboard } from 'prosemirror-view';
+
+window.__parseFromClipboard = __parseFromClipboard;
 
 export class BangleEditor {
   constructor(
@@ -19,6 +23,7 @@ export class BangleEditor {
       focusOnInit = true,
     },
   ) {
+    this._specSheet = specSheet;
     const state = editorStateSetup({
       plugins,
       editorProps,
@@ -52,6 +57,17 @@ export class BangleEditor {
     }
 
     return focusAtPosition()(view.state, view.dispatch, view);
+  }
+
+  toHTMLString() {
+    const div = document.createElement('div');
+    const fragment = DOMSerializer.fromSchema(
+      this._specSheet.schema,
+    ).serializeFragment(this._view.state.doc.content);
+
+    div.appendChild(fragment);
+
+    return div.innerHTML;
   }
 }
 

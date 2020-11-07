@@ -13,8 +13,8 @@ import { typeText } from 'bangle-core/test-helpers/index';
 
 const testEditor = renderTestEditor();
 
-describe.only('Markdown shorthand works', () => {
-  it.only('pressing > on empty paragraph works', () => {
+describe('Markdown shorthand works', () => {
+  it('pressing > on empty paragraph works', () => {
     const { view } = testEditor(
       <doc>
         <para>[]</para>

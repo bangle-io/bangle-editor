@@ -1,5 +1,10 @@
+import reactDOM from 'react-dom';
+import React from 'react';
+import { uuid } from 'bangle-core/utils/js-utils';
 import { keymap } from 'bangle-core/utils/keymap';
+import { NodeView } from 'bangle-core/utils/node-view';
 import { Dino } from './Dino';
+import { serializationHelpers } from 'bangle-core/utils/node-view-helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -8,11 +13,11 @@ export const commands = {
   insertDino,
 };
 
-const name = 'name';
+const name = 'dinos';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory() {
-  return {
+  let spec = {
     type: 'node',
     name,
     schema: {
@@ -33,11 +38,41 @@ function specFactory() {
         state.write('dino');
       },
     },
+    nodeView2: (node, view, getPos, decorations) => {
+      const containerDOM = document.createElement('span');
+      containerDOM.setAttribute('data-uuid', name + '-' + uuid(4));
+      const reactContainerDOM = document.createElement('span');
+      reactContainerDOM.setAttribute('data-uuid', name + '-react-' + uuid(4));
+      containerDOM.appendChild(reactContainerDOM);
 
-    nodeView: {
-      render: Dino,
+      return new NodeView({
+        node,
+        view,
+        getPos,
+        decorations,
+        containerDOM,
+        update({ node, view, getPos, decorations, selected }) {
+          reactDOM.render(
+            <Dino
+              view={view}
+              selected={selected}
+              node={node}
+              commands={commands}
+            />,
+            reactContainerDOM,
+          );
+        },
+        destroy() {
+          reactDOM.unmountComponentAtNode(reactContainerDOM);
+          containerDOM.removeChild(reactContainerDOM);
+        },
+      });
     },
   };
+
+  spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
+
+  return spec;
 }
 
 function pluginsFactory() {
@@ -71,6 +106,7 @@ export function insertDino(dinoName) {
     if (!$from.parent.canReplaceWith(index, index, dinoType)) {
       return false;
     }
+
     if (dispatch) {
       const attr = {
         'data-dinokind': dinoName,

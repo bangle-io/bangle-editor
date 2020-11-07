@@ -194,6 +194,7 @@ function TodoItemComp(props) {
         className="todo-content flex-grow"
         ref={handleRef}
         data-done={done.toString()}
+        contentEditable={true}
       />
     </>
   );

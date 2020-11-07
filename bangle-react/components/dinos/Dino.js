@@ -15,10 +15,21 @@ export const DINO_IMAGES = {
 };
 
 // no children for this type
-export function Dino({ attributes = {}, children, selected, node }) {
+export function Dino({
+  attributes = {},
+  children,
+  selected,
+  node,
+  commands,
+  view,
+}) {
   const nodeAttrs = node.attrs;
   return (
-    <span {...attributes} style={selected ? { outline: '2px solid blue' } : {}}>
+    <span
+      {...attributes}
+      style={selected ? { border: '4px solid pink' } : {}}
+      className={`bangle-dino ${selected ? 'bangle-selected' : ''}`}
+    >
       <img
         style={{
           display: 'inline',
