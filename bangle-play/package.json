@@ -2,7 +2,7 @@
   "name": "bangle-play",
   "version": "0.1.0",
   "scripts": {
-    "start": "yarn webpack-dev-server --mode development --port 4000 --host 0.0.0.0",
+    "start": "yarn webpack",
     "build": "NODE_ENV=production yarn webpack --env.production",
     "build-serve": "yarn build && yarn run serve build",
     "snapshot": "yarn build && yarn node ./scripts/snapshot"
@@ -34,6 +34,7 @@
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "latest",
     "prosemirror-view": "^1.15.2",
+    "punycode": "^2.1.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-popper": "^2.2.3",
@@ -63,8 +64,8 @@
     "serve": "^11.3.2",
     "style-loader": "^1.2.1",
     "surge": "^0.21.6",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
   }
 }
