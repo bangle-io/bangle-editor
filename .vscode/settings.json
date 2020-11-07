@@ -1,0 +1,36 @@
+{
+  "cSpell.words": [
+    "INDEXDB",
+    "activitybar",
+    "kushanjoshi",
+    "textblock",
+    "tr's"
+  ],
+  "peacock.color": "#f28ea1",
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#f7bcc7",
+    "activityBar.activeBorder": "#288e11",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#288e11",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "titleBar.activeBackground": "#f28ea1",
+    "titleBar.inactiveBackground": "#f28ea199",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveForeground": "#15202b99",
+    "statusBar.background": "#f28ea1",
+    "statusBarItem.hoverBackground": "#ed607b",
+    "statusBar.foreground": "#15202b",
+    "activityBar.activeBackground": "#f7bcc7"
+  },
+  "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "files.exclude": {
+    // ".yarn/**": true
+  },
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "editor.formatOnSave": true
+}
