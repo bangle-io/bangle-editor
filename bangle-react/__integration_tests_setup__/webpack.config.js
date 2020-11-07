@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
   return {
     target: 'web',
     mode,
-    entry: './__integration_tests__/entry.js',
+    entry: './__integration_tests_setup__/entry.js',
     devtool: 'source-map',
     optimization: {
       minimize: false,

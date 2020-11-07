@@ -23,7 +23,7 @@ if (typeof afterEach === 'function') {
 }
 
 export function renderTestEditor(
-  { specSheet = defaultSpecSheet, plugins = defaultPlugins } = {},
+  { specSheet = defaultSpecSheet, plugins = defaultPlugins, ...opts } = {},
   testId = 'test-editor',
 ) {
   if (!(specSheet instanceof SpecSheet)) {
@@ -42,13 +42,14 @@ export function renderTestEditor(
       attributes: { class: 'bangle-editor content' },
     };
 
-    const result = new BangleEditor(container, {
+    const editor = new BangleEditor(container, {
       specSheet,
       plugins,
       editorProps,
+      ...opts,
     });
 
-    view = result.view;
+    view = editor.view;
     mountedView.add(view);
 
     let posLabels;
@@ -96,7 +97,8 @@ export function renderTestEditor(
     }
 
     return {
-      ...result,
+      // ...editor,
+      editor: editor,
       view: view,
       editorState: view.state,
       schema: view.state.schema,

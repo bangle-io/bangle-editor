@@ -6,7 +6,7 @@ module.exports = {
   testRunner: 'jest-circus/runner',
   modulePaths: workspaces.map((w) => `<rootDir>/${w}`),
   testPathIgnorePatterns: workspaces.map(
-    (w) => `<rootDir>/${w}/tests-integration/`,
+    (w) => `<rootDir>/${w}/__integration_tests__/`,
   ),
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],

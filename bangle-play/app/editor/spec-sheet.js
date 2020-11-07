@@ -1,6 +1,6 @@
 import { coreSpec } from 'bangle-core/components';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
-import { dinos } from 'bangle-plugins/dinos/index';
+// import { dinos } from 'bangle-plugins/dinos/index';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
 
@@ -13,7 +13,7 @@ import { config } from './config';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { dinos2 } from 'bangle-react/components/index';
+import { dinos } from 'bangle-react/components/index';
 
 export const specSheet = new SpecSheet([
   ...coreSpec({ heading: { levels: config.headingLevels } }),
@@ -26,5 +26,5 @@ export const specSheet = new SpecSheet([
   stopwatch.spec(),
   trailingNode.spec(),
   timestamp.spec(),
-  dinos2.spec(),
+  dinos.spec(),
 ]);
