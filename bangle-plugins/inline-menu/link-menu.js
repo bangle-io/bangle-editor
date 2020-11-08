@@ -274,7 +274,7 @@ const ExternalIcon = (props) => {
  */
 
 export function hideLinkMenu(key) {
-  return selectionTooltip.hideTooltip(getTooltipKey(key));
+  return selectionTooltip.hideSelectionTooltip(getTooltipKey(key));
 }
 
 export function showLinkMenu(key) {

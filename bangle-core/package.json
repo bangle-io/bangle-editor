@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "main": "index.js",
   "module": "index.js",
-  "type": "module",
   "scripts": {
     "unit-tests": "yarn jest"
   },

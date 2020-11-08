@@ -3,6 +3,7 @@ import { EditorState } from 'prosemirror-state';
 import { focusAtPosition } from './components/doc';
 import { pluginsLoader } from './utils/plugins-loader';
 import { nodeViewsLoader } from './utils/node-views-loader';
+import { isTestEnv } from './utils/process-env';
 
 export class BangleEditor {
   constructor(
@@ -46,7 +47,7 @@ export class BangleEditor {
 
   focusView() {
     const view = this._view;
-    if (process.env.NODE_ENV === 'test' || view.focused) {
+    if (isTestEnv() || view.focused) {
       return;
     }
 
