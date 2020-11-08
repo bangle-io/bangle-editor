@@ -1,7 +1,8 @@
-const { uuid } = require('bangle-core/utils/js-utils');
+const os = require('os');
 const prettier = require('prettier');
+const { uuid } = require('bangle-core/utils/js-utils');
 
-const ctrlKey = process.env.CI ? 'Control' : 'Meta';
+const ctrlKey = os.platform() === 'darwin' ? 'Control' : 'Meta';
 const EDITOR_ID = `bangle-play`;
 const EDITOR_SELECTOR = `[id^='${EDITOR_ID}']`;
 
