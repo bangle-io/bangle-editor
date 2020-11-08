@@ -1,7 +1,8 @@
-const { uuid } = require('bangle-core/utils/js-utils');
+const os = require('os');
 const prettier = require('prettier');
+const { uuid } = require('bangle-core/utils/js-utils');
 
-const ctrlKey = process.env.CI ? 'Control' : 'Meta';
+const ctrlKey = os.platform() === 'darwin' ? 'Meta' : 'Control';
 const EDITOR_ID = `bangle-play`;
 const EDITOR_SELECTOR = `[id^='${EDITOR_ID}']`;
 
@@ -29,7 +30,7 @@ function frmt(doc) {
 }
 async function mountEditor(page, props) {
   await page.waitForSelector(EDITOR_SELECTOR);
-  await page.waitForSelector('.ProseMirror', { timeout: 500 });
+  await page.waitForSelector('.ProseMirror', { timeout: 1500 });
   await page.click(EDITOR_SELECTOR);
   // let the collab  settle down
   await sleep(50);

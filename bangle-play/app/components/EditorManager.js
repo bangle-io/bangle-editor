@@ -8,6 +8,7 @@ import { defaultContent } from './constants';
 import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 import { Manager } from 'bangle-plugins/collab/server/manager';
 import { specSheet } from '../editor/spec-sheet';
+import { config } from 'bangle-play/config';
 
 const DEBUG = true;
 
@@ -48,7 +49,7 @@ export class EditorManager extends React.PureComponent {
     }
     if (
       this.context.workspace.name.includes('production') ||
-      process.env.NODE_ENV === 'production'
+      config.isProduction
     ) {
       const listener = (event) => {
         this.disk.flushAll();

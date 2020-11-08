@@ -1,7 +1,6 @@
 {
   "name": "bangle-plugins",
   "version": "0.1.0",
-  "type": "module",
   "scripts": {},
   "dependencies": {
     "@popperjs/core": "^2.5.2",
@@ -19,6 +18,7 @@
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "^0.9.6",
     "prosemirror-view": "^1.15.7",
+    "punycode": "^2.1.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
   },

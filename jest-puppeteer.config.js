@@ -2,7 +2,7 @@
 module.exports = {
   server: {
     command:
-      'NODE_ENV=integration yarn workspace bangle-play webpack-dev-server --port 4444 ',
+      'NODE_ENV=integration yarn workspace bangle-play webpack serve --env development --port 4444 ',
     port: 4444,
     launchTimeout: 8000,
   },

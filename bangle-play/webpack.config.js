@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
-const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = (env, argv) => {
@@ -19,22 +18,30 @@ module.exports = (env, argv) => {
     mode,
     entry: './index.js',
     devtool: true ? 'source-map' : 'eval-source-map',
-    stats: { maxModules: 50, modulesSort: 'size' },
     resolve: {
-      plugins: [PnpWebpackPlugin],
+      // TODO fix me punycode
+      fallback: { punycode: require.resolve('punycode/') },
     },
-    resolveLoader: {
-      plugins: [PnpWebpackPlugin.moduleLoader(module)],
-    },
+    resolveLoader: {},
     devServer: {
-      contentBase: './build',
+      contentBase: path.join(__dirname, 'build'),
+      publicPath: '/',
+      disableHostCheck: true,
+      port: 4000,
+      host: '0.0.0.0',
     },
     output: {
       filename: 'main.[contenthash].js',
       chunkFilename: '[name].bundle.[contenthash].js',
       path: path.resolve(__dirname, 'build'),
     },
+
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(
+          isProduction ? 'production' : 'development',
+        ),
+      }),
       new CaseSensitivePathsPlugin(),
       new HtmlWebpackPlugin({
         title: 'Bangle',
@@ -44,9 +51,6 @@ module.exports = (env, argv) => {
         filename: '[name].[contenthash].css',
         chunkFilename: '[id].[contenthash].css',
         ignoreOrder: false,
-      }),
-      new webpack.EnvironmentPlugin({
-        NODE_ENV: isProduction ? 'production' : 'development',
       }),
     ],
     module: {
@@ -70,10 +74,7 @@ module.exports = (env, argv) => {
             // 'style-loader',
             {
               loader: MiniCssExtractPlugin.loader,
-              options: {
-                publicPath: '/',
-                hmr: process.env.NODE_ENV === 'development',
-              },
+              options: {},
             },
             {
               loader: 'css-loader',
