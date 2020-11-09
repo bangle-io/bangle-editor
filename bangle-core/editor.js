@@ -4,9 +4,6 @@ import { focusAtPosition } from './components/doc';
 import { pluginsLoader } from './utils/plugins-loader';
 import { isTestEnv } from './utils/process-env';
 import { DOMSerializer, DOMParser } from 'prosemirror-model';
-import { __parseFromClipboard } from 'prosemirror-view';
-
-window.__parseFromClipboard = __parseFromClipboard;
 
 export class BangleEditor {
   constructor(
@@ -64,6 +61,10 @@ export class BangleEditor {
     div.appendChild(fragment);
 
     return div.innerHTML;
+  }
+
+  destroy() {
+    this._view.destroy();
   }
 }
 

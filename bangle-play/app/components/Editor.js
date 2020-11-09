@@ -9,7 +9,6 @@ import { Header } from './Header';
 import { specSheet } from '../editor/spec-sheet';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
-// import { dinos } from 'bangle-plugins/dinos/index';
 import { corePlugins } from 'bangle-core/components';
 import { config } from '../editor/config';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
@@ -22,6 +21,7 @@ import { timestamp } from 'bangle-plugins/timestamp/index';
 import { isJestIntegration } from 'bangle-core/utils/process-env';
 import { ReactEditor } from 'bangle-react/react-editor';
 import { dinos } from 'bangle-react/components/index';
+import { Dino } from 'bangle-react/components/dinos/Dino';
 
 const LOG = false;
 const DEBUG = true;
@@ -90,15 +90,31 @@ export class Editor extends React.PureComponent {
 
   componentWillUnmount() {
     console.log('unmounting editor', this.props.docName);
+    if (this.props.isFirst) {
+      window.editor = undefined;
+    }
   }
 
+  onEditorReady = (editor) => {
+    if (this.props.isFirst) {
+      window.editor = editor;
+    }
+  };
+
+  renderNodeViews = (args) => {
+    return <Dino {...args} />;
+  };
+
   render() {
-    log('updateding', this.props.isFirst);
     return (
       <>
         {this.inlineMenuDOM &&
           ReactDOM.createPortal(<Header />, this.inlineMenuDOM)}
-        <ReactEditor options={this.options} />
+        <ReactEditor
+          options={this.options}
+          onReady={this.onEditorReady}
+          renderNodeViews={this.renderNodeViews}
+        />
       </>
     );
   }

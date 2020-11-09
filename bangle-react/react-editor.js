@@ -1,157 +1,71 @@
 import React from 'react';
+import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { getIdleCallback, smartDebounce } from 'bangle-core/utils/js-utils';
+import { objUid } from 'bangle-core/utils/object-uid';
 import { BangleEditor } from 'bangle-core/editor';
-
-import { EditorOnReadyContext } from './editor-context';
-import { PortalProviderAPI } from './portal';
+import { saveRenderHandlers } from 'bangle-core/node-view';
+import { bangleWarn } from 'bangle-core/utils/js-utils';
 
 const LOG = false;
 
-function log(...args) {
-  if (LOG) {
-    console.log('react-editor2.js', ...args);
-  }
-}
+let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
-window.BangleEditor = BangleEditor;
+const nodeViewUpdateArgsCache = new WeakMap();
+const nodeViewUpdateCallbackCache = new WeakMap();
 
 export class ReactEditor extends React.PureComponent {
   static propTypes = {
     options: PropTypes.object.isRequired,
+    renderNodeViews: PropTypes.func,
   };
 
-  render() {
-    return (
-      <PortalWrapper>
-        {(renderNodeView, destroyNodeView) => (
-          <PMEditorWrapper
-            // This allows us to let react handle creating destroying Editor
-            options={this.props.options}
-            renderNodeView={renderNodeView}
-            destroyNodeView={destroyNodeView}
-          />
-        )}
-      </PortalWrapper>
-    );
-  }
-}
-
-class PortalWrapper extends React.PureComponent {
-  portalProviderAPI = new PortalProviderAPI();
-  state = {
-    counter: 0,
-  };
-
-  componentWillUnmount() {
-    this.portalProviderAPI.destroy();
-    this.portalProviderAPI = null;
-  }
-
-  // called from custom-node-view.js#renderComp
-  renderNodeView = ({ dom, spec, renderingPayload }) => {
-    if (this.portalProviderAPI.render({ dom, spec, renderingPayload })) {
-      log('asking to rerender due to renderNodeView');
-      this.rerender();
-    }
-  };
-
-  destroyNodeView = (dom) => {
-    if (this.portalProviderAPI?.remove(dom)) {
-      log('removing nodeView dom');
-      this.rerender();
-    }
-  };
-
-  // TODO investigate if this can cause problems
-  //    - explore if debounce only when portalProviderAPI.size > LARGE_SIZE
-  //    - investigate the waitTime
-  rerender = smartDebounce(
-    () => {
-      log('rerendering by state change');
-      // Since this can be called after editor is unmounted
-      this.portalProviderAPI &&
-        this.setState((state) => ({ counter: state.counter + 1 }));
-    },
-    100,
-    20,
-    {
-      trailing: true,
-      leading: true,
-      maxWait: 50,
-    },
-  );
-
-  render() {
-    log('rendering portal comp');
-    return (
-      <>
-        {this.portalProviderAPI.getPortals()}
-        {this.props.children(this.renderNodeView, this.destroyNodeView)}
-      </>
-    );
-  }
-}
-
-class PMEditorWrapper extends React.Component {
-  static contextType = EditorOnReadyContext;
-  static propTypes = {
-    options: PropTypes.object.isRequired,
-    renderNodeView: PropTypes.func.isRequired,
-    destroyNodeView: PropTypes.func.isRequired,
-  };
   editorRenderTarget = React.createRef();
-  devtools;
+  state = { nodeViews: [] };
 
-  shouldComponentUpdate() {
-    return false;
-  }
-  async componentDidMount() {
-    const { options, renderNodeView, destroyNodeView } = this.props;
-    const node = this.editorRenderTarget.current;
-    if (node) {
-      // TODO fix this mess
-      // new BangleEditor({
-      //   loaders: [],
-      //   plugins: [],
-      //   spec: [],
-      // });
-      const editor = new BangleEditor(node, {
-        ...options,
-        renderNodeView,
-        destroyNodeView,
+  renderHandlers = {
+    create: (nodeViewInstance, nodeViewArgs) => {
+      log('create');
+      nodeViewUpdateArgsCache.set(nodeViewInstance, nodeViewArgs);
+      this.setState({
+        nodeViews: [...this.state.nodeViews, nodeViewInstance],
       });
-      this.editor = editor;
-
-      if (options.onReady) {
-        options.onReady(editor.view);
+    },
+    update: (nodeViewInstance, nodeViewArgs) => {
+      log('update');
+      nodeViewUpdateArgsCache.set(nodeViewInstance, nodeViewArgs);
+      const updateCallback = nodeViewUpdateCallbackCache.get(nodeViewInstance);
+      // I am thinking that this might be called before react had the chance
+      // to mount. I believe saving of args in nodeViewArgsCache will get the react
+      // render up to date with latest nodeViewArgs
+      if (updateCallback) {
+        updateCallback();
       }
+    },
+    destroy: (nodeViewInstance) => {
+      log('destroy');
 
-      if (options.devtools) {
-        window.editor = editor;
-        window.editorView = editor.view;
-        getIdleCallback(() => {
-          import(
-            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-          ).then((args) => {
-            this.devtools = args.applyDevTools(editor.view);
-          });
-        });
-      }
+      this.setState({
+        nodeViews: this.state.nodeViews.filter((n) => n !== nodeViewInstance),
+      });
+    },
+  };
+
+  async componentDidMount() {
+    const { options } = this.props;
+    // save the renderHandlers in the dom to decouple nodeView instantiating code
+    // from the editor. Since PM passing view when nodeView is created, the author
+    // of the component can get the handler reference from `getRenderHandlers(view)`.
+    // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
+    saveRenderHandlers(this.editorRenderTarget.current, this.renderHandlers);
+    this.editor = new BangleEditor(this.editorRenderTarget.current, options);
+    if (options.onReady) {
+      options.onReady(this.editor);
     }
   }
 
   componentWillUnmount() {
-    log('EditorComp unmounting');
-    // When editor is destroyed it takes care  of calling destroyNodeView
-    this.view && this.view.destroy();
-    if (this.props.options.devtools && this.devtools) {
-      this.devtools();
-    }
-    if (window.editorView) {
-      window.editor = null;
-      window.editorView = null;
-    }
+    this.editor.destroy();
+    this.editor = null;
   }
 
   render() {
@@ -163,7 +77,47 @@ class PMEditorWrapper extends React.Component {
           id={this.props.options.id}
           data-testid={this.props.options.testId}
         />
+        {this.state.nodeViews.map((nodeViewInstance) => {
+          return reactDOM.createPortal(
+            <ChildElement
+              nodeView={nodeViewInstance}
+              renderNodeViews={this.props.renderNodeViews}
+            />,
+            nodeViewInstance.mountDOM,
+            objUid.get(nodeViewInstance),
+          );
+        })}
       </>
     );
+  }
+}
+
+class ChildElement extends React.PureComponent {
+  updateArgs = () => {
+    const args = nodeViewUpdateArgsCache.get(this.props.nodeView);
+    this.setState(args);
+  };
+
+  constructor(props) {
+    super(props);
+    // This is okay because a nodeView and ReactComponent has
+    // 1:1 mapping always.
+    nodeViewUpdateCallbackCache.set(props.nodeView, this.updateArgs);
+    this.state = nodeViewUpdateArgsCache.get(props.nodeView);
+  }
+
+  render() {
+    // TODO more assertion on this renderNodeViews
+    const element = this.props.renderNodeViews({ ...this.state });
+    if (!element) {
+      bangleWarn(
+        'renderNodeView prop must return a react element for the node',
+        this.state.node,
+      );
+      throw new Error(
+        `Missing react render for node of type "${this.state.node.type.name}"`,
+      );
+    }
+    return element;
   }
 }

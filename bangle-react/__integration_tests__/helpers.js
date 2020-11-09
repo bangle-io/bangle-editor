@@ -10,8 +10,9 @@ module.exports = {
 };
 
 async function mountEditor(page, props) {
+  // await page.waitForSelector('#pm-root', { timeout: 500 });
   await page.waitForSelector('#pm-root', { timeout: 500 });
-  // let the collab  settle down
+  await page.waitForSelector('.Prosemirror', { timeout: 500 });
 }
 
 async function getEditorState(page) {

@@ -1,44 +1,62 @@
 import './entry.css';
-import { BangleEditor } from 'bangle-core/editor';
+import React from 'react';
+import reactDOM from 'react-dom';
 import { corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { Slice } from 'prosemirror-model';
 import { DOMSerializer } from 'prosemirror-model';
 import * as bangleComponents from 'bangle-react/components/index';
 import * as prosemirrorView from 'prosemirror-view';
+import { ReactEditor } from 'bangle-react/react-editor';
+import { Dino } from 'bangle-react/components/dinos/Dino';
 
 window.prosemirrorView = prosemirrorView;
 
 console.debug('Bangle-react entry.js');
+setup();
 
 function setup() {
   const element = document.createElement('div');
   window.document.body.appendChild(element);
   element.setAttribute('id', 'root');
-  const editorContainer = document.createElement('div');
-  editorContainer.setAttribute('id', 'pm-root');
-  element.appendChild(editorContainer);
-  setupEditor(editorContainer);
+  // const editorContainer = document.createElement('div');
+  // editorContainer.setAttribute('id', 'pm-root');
+  // element.appendChild(editorContainer);
+  // setupEditor(editorContainer);
+  reactDOM.render(<App />, element);
 }
 
-function setupEditor(container) {
+function App() {
   const specSheet = new SpecSheet([...coreSpec(), ...bangleComponents.spec()]);
   const plugins = [...corePlugins(), ...bangleComponents.plugins()];
   window.commands = bangleComponents.commands;
+  let editor;
+  const onEditorReady = (_editor) => {
+    editor = _editor;
+    window.editor = _editor;
+  };
+  const renderNodeViews = ({ node, ...args }) => {
+    if (node.type.name === 'dinos') {
+      return <Dino node={node} {...args} />;
+    }
+  };
 
-  window.editor = new BangleEditor(container, {
-    specSheet,
-    plugins,
-  });
-  window.dispatcher = (command) =>
-    command(
+  window.commands = bangleComponents.commands;
+  window.dispatcher = (command) => {
+    return command(
       window.editor.view.state,
       window.editor.view.dispatch,
       window.editor.view,
     );
+  };
+  return (
+    <ReactEditor
+      options={{ id: 'pm-root', specSheet, plugins }}
+      onReady={onEditorReady}
+      renderNodeViews={renderNodeViews}
+    />
+  );
 }
-
-setup();
 
 const createEvent = (name, options = {}) => {
   let event;
