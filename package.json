@@ -52,6 +52,7 @@
     "@babel/preset-react": "^7.10.4",
     "@typescript-eslint/eslint-plugin": "2.x",
     "@typescript-eslint/parser": "2.x",
+    "@yarnpkg/pnpify": "^2.3.3",
     "babel-eslint": "10.x",
     "babel-jest": "^26.3.0",
     "eslint": "6.x",
