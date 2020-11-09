@@ -2,7 +2,6 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
 import { focusAtPosition } from './components/doc';
 import { pluginsLoader } from './utils/plugins-loader';
-import { nodeViewsLoader } from './utils/node-views-loader';
 import { isTestEnv } from './utils/process-env';
 import { DOMSerializer, DOMParser } from 'prosemirror-model';
 import { __parseFromClipboard } from 'prosemirror-view';
@@ -15,21 +14,19 @@ export class BangleEditor {
     {
       specSheet,
       plugins = [],
-      renderNodeView,
-      destroyNodeView,
-      stateOpts = {},
       viewOpts = {},
       editorProps,
+      stateOpts = {},
+      state = editorStateSetup({
+        plugins,
+        editorProps,
+        specSheet,
+        stateOpts,
+      }),
       focusOnInit = true,
     },
   ) {
     this._specSheet = specSheet;
-    const state = editorStateSetup({
-      plugins,
-      editorProps,
-      specSheet,
-      stateOpts,
-    });
 
     this._view = new EditorView(element, {
       state,
@@ -37,7 +34,6 @@ export class BangleEditor {
         const newState = this.state.apply(transaction);
         this.updateState(newState);
       },
-      nodeViews: nodeViewsLoader(specSheet, renderNodeView, destroyNodeView),
       ...viewOpts,
     });
 

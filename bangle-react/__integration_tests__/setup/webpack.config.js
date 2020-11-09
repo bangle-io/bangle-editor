@@ -1,11 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const PnpWebpackPlugin = require('pnp-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = env && env.production;
-  const mode = 'development';
+  const mode = isProduction ? 'production' : 'development';
   if (isProduction && process.env.NODE_ENV !== 'production') {
     throw new Error('NODE_ENV not production');
   }
@@ -15,28 +14,34 @@ module.exports = (env, argv) => {
   return {
     target: 'web',
     mode,
-    entry: './__integration_tests_setup__/entry.js',
-    devtool: 'source-map',
-    optimization: {
-      minimize: false,
-    },
+    entry: path.join(__dirname, 'entry.js'),
+    devtool: true ? 'source-map' : 'eval-source-map',
     resolve: {
-      plugins: [PnpWebpackPlugin],
+      // TODO fix me punycode
+      // fallback: { punycode: require.resolve('punycode/') },
     },
-    resolveLoader: {
-      plugins: [PnpWebpackPlugin.moduleLoader(module)],
+    resolveLoader: {},
+    devServer: {
+      contentBase: path.join(__dirname, 'build'),
+      publicPath: '/',
+      disableHostCheck: true,
+      port: 4000,
+      host: '0.0.0.0',
     },
     output: {
       filename: 'main.[contenthash].js',
       chunkFilename: '[name].bundle.[contenthash].js',
       path: path.resolve(__dirname, 'build'),
     },
+
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(
+          isProduction ? 'production' : 'development',
+        ),
+      }),
       new HtmlWebpackPlugin({
         title: 'bangle-react testing',
-      }),
-      new webpack.EnvironmentPlugin({
-        NODE_ENV: isProduction ? 'production' : 'development',
       }),
     ],
     module: {

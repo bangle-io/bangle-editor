@@ -4,9 +4,7 @@ import { corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { Slice } from 'prosemirror-model';
 import { DOMSerializer } from 'prosemirror-model';
-
 import * as bangleComponents from 'bangle-react/components/index';
-
 import * as prosemirrorView from 'prosemirror-view';
 
 window.prosemirrorView = prosemirrorView;
