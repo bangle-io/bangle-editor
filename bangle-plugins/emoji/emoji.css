@@ -1,5 +1,11 @@
 @import '../tooltip-placement/tooltip.css';
 
+span[data-type='emoji'] {
+  display: inline-block;
+}
+
+/** inline suggest*/
+
 .bangle-inline-suggest-emoji {
   display: flex;
   flex-direction: column;

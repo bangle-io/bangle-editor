@@ -2,14 +2,20 @@
 
 exports[`Rendering works 1`] = `
 <span
-  class="emoji-NodeView-Wrap"
-  data-emojikind=":horse:"
+  data-emojikind="horse"
   data-type="emoji"
   draggable="true"
-  style="display: inline-block;"
 >
-  <span
-    contenteditable="false"
-  />
+  🐴
+</span>
+`;
+
+exports[`Unknown emoji puts question mark 1`] = `
+<span
+  data-emojikind="unknown_emoji"
+  data-type="emoji"
+  draggable="true"
+>
+  ❓
 </span>
 `;
