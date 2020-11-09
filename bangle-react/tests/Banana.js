@@ -1,5 +1,5 @@
 import React from 'react';
-import { serializationHelpers } from 'bangle-core/utils/node-view-helpers';
+import { serializationHelpers } from 'bangle-core/node-view';
 import reactDOM from 'react-dom';
 import { NodeView } from 'bangle-core/utils/node-view';
 

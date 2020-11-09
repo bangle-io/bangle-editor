@@ -1,13 +1,13 @@
-import reactDOM from 'react-dom';
-import React from 'react';
 import { uuid } from 'bangle-core/utils/js-utils';
 import { keymap } from 'bangle-core/utils/keymap';
-import { NodeView } from 'bangle-core/utils/node-view';
-import { Dino } from './Dino';
-import { serializationHelpers } from 'bangle-core/utils/node-view-helpers';
+import { NodeView } from 'bangle-core/node-view';
+import { serializationHelpers } from 'bangle-core/node-view';
+import { Plugin } from 'prosemirror-state';
+import { createElement } from '../../utils/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
+
 export const commands = {
   randomDino,
   insertDino,
@@ -38,36 +38,6 @@ function specFactory() {
         state.write('dino');
       },
     },
-    nodeView2: (node, view, getPos, decorations) => {
-      const containerDOM = document.createElement('span');
-      containerDOM.setAttribute('data-uuid', name + '-' + uuid(4));
-      const reactContainerDOM = document.createElement('span');
-      reactContainerDOM.setAttribute('data-uuid', name + '-react-' + uuid(4));
-      containerDOM.appendChild(reactContainerDOM);
-
-      return new NodeView({
-        node,
-        view,
-        getPos,
-        decorations,
-        containerDOM,
-        update({ node, view, getPos, decorations, selected }) {
-          reactDOM.render(
-            <Dino
-              view={view}
-              selected={selected}
-              node={node}
-              commands={commands}
-            />,
-            reactContainerDOM,
-          );
-        },
-        destroy() {
-          reactDOM.unmountComponentAtNode(reactContainerDOM);
-          containerDOM.removeChild(reactContainerDOM);
-        },
-      });
-    },
   };
 
   spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
@@ -76,9 +46,36 @@ function specFactory() {
 }
 
 function pluginsFactory() {
-  return keymap({
-    'Ctrl-B': randomDino(),
-  });
+  return ({ schema }) => [
+    keymap({
+      'Ctrl-B': randomDino(),
+    }),
+    new Plugin({
+      props: {
+        nodeViews: {
+          [name]: (node, view, getPos, decorations) => {
+            const containerDOM = createElement('span', {
+              'data-uuid': name + '-' + uuid(4),
+            });
+            const mountDOM = createElement('span', {
+              'data-uuid': name + '-react-' + uuid(4),
+              'data-mount': 'true',
+            });
+            containerDOM.appendChild(mountDOM);
+
+            return new NodeView({
+              node,
+              view,
+              getPos,
+              decorations,
+              containerDOM,
+              mountDOM: mountDOM,
+            });
+          },
+        },
+      },
+    }),
+  ];
 }
 
 export const dinoNames = [

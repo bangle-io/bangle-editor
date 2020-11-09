@@ -1,6 +1,6 @@
 // babel.config.js
 
-const DEBUG = false;
+const DEBUG = true;
 
 module.exports = (api) => {
   if (api.env('test')) {
@@ -19,8 +19,16 @@ module.exports = (api) => {
       ],
     };
   }
+
+  let envOptions = { debug: DEBUG };
+
+  // browserslist is not configured when running integration tests
+  if (api.env('integration')) {
+    envOptions.targets = 'last 3 chrome version';
+  }
+
   return {
-    presets: ['@babel/preset-react', ['@babel/preset-env', { debug: DEBUG }]],
+    presets: ['@babel/preset-react', ['@babel/preset-env', envOptions]],
     plugins: [
       ['@babel/plugin-proposal-class-properties', { loose: true }],
       '@babel/plugin-proposal-optional-chaining',

@@ -1,6 +1,6 @@
 import { paragraph, doc, text } from 'bangle-core/index';
+import { serializationHelpers } from 'bangle-core/node-view';
 import { SpecSheet } from '../../spec-sheet';
-import { serializationHelpers } from '../node-view-helpers';
 
 describe('serializationHelpers parseDOM', () => {
   test('does not get affected by other attributes', () => {
