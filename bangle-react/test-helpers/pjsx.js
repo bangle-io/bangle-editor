@@ -1,7 +1,7 @@
 import React from 'react';
 import { psx as banglePsx } from 'bangle-core/test-helpers/index';
 
-export function psx(name, ...args) {
+export function pjsx(name, ...args) {
   if (typeof name !== 'string') {
     return React.createElement(name, ...args);
   }

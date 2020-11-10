@@ -11,7 +11,6 @@ import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
 import { bangleWarn, recursiveFlat } from './js-utils';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
-// TODO remove the added free plugins
 // TODO do we need tabindex
 // TODO reconfigure plugins
 export function pluginsLoader(

@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-/** @jsx psx */
+/** @jsx pjsx */
 import { fireEvent, wait } from '@testing-library/react';
-import { psx } from 'bangle-react/test-helpers/psx';
+import { pjsx } from 'bangle-react/test-helpers/pjsx';
 import { sendKeyToPm } from 'bangle-core/test-helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import { corePlugins, coreSpec } from 'bangle-core/components/index';

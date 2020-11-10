@@ -11,7 +11,8 @@ const {
 jest.setTimeout(25 * 1000);
 
 describe('Title load test', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await jestPuppeteer.resetPage();
     await page.goto(uniqDatabaseUrl());
   });
 
@@ -21,9 +22,8 @@ describe('Title load test', () => {
 });
 
 describe('Basic typing', () => {
-  let page;
   beforeEach(async () => {
-    page = await browser.newPage();
+    await jestPuppeteer.resetPage();
     // page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     await page.goto(uniqDatabaseUrl());
     await mountEditor(page);
@@ -31,9 +31,6 @@ describe('Basic typing', () => {
     await page.keyboard.press('a', { delay: 70 });
     await page.keyboard.up(ctrlKey);
     await page.keyboard.press('Backspace', { delay: 70 });
-  });
-  afterEach(async () => {
-    await page.close();
   });
 
   it('should type sentence correctly', async () => {

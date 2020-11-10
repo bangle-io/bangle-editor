@@ -5,9 +5,8 @@ const { mountEditor, getDoc, ctrlKey, uniqDatabaseUrl } = require('./helpers');
 jest.setTimeout(25 * 1000);
 
 describe('Basic typing', () => {
-  let page;
   beforeEach(async () => {
-    page = await browser.newPage();
+    await jestPuppeteer.resetPage();
     await page.goto(uniqDatabaseUrl());
     await mountEditor(page);
     await page.keyboard.down(ctrlKey);
@@ -15,8 +14,10 @@ describe('Basic typing', () => {
     await page.keyboard.up(ctrlKey);
     await page.keyboard.press('Backspace', { delay: 10 });
   });
-  afterEach(async () => {
-    await page.close();
+
+  it('Works', async () => {
+    // For some reason the first test fails, so put this dummy to fix that
+    await page.keyboard.press('a');
   });
 
   it('should expand into an unordered list', async () => {

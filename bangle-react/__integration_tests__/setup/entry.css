@@ -1,17 +1,1 @@
-.ProseMirror {
-  word-wrap: break-word !important;
-  white-space: pre-wrap;
-  white-space: break-spaces;
-  -webkit-font-variant-ligatures: none;
-  font-variant-ligatures: none;
-  font-feature-settings: 'liga' 0; /* the above doesn't seem to work in Edge */
-}
-
-.ProseMirror pre {
-  white-space: pre-wrap;
-}
-
-.ProseMirror-selectednode {
-  outline: 4px solid #8cf;
-  border-radius: 2px;
-}
+@import 'bangle-core/style.css';
