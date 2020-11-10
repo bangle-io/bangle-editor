@@ -1,0 +1,10 @@
+ul[data-type='todo_list'] > li {
+  display: flex;
+  flex-direction: row;
+}
+
+/** So that the element takes full width, else the browser does not 
+  show selection cursor.*/
+.bangle-content-mount {
+  width: 100%;
+}
