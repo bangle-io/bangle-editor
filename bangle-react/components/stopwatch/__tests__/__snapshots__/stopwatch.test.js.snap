@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders react component correctly 1`] = `
+<span
+  class="stopwatch"
+  contenteditable="false"
+  style="background-color: pink; border-radius: 10px; padding: 1px 2px 1px 2px; margin: 1px 2px; font-weight: 500; font-family: monospace;"
+>
+  ⏲
+  00:00:00
+</span>
+`;
