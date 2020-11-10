@@ -32,9 +32,6 @@ export function renderTestEditor(
   const container = rootElement.appendChild(document.createElement('div'));
   container.setAttribute('data-testid', testId);
 
-  // Add the base specs for lazy asses like me
-  // specSheet = injectBaseSpec(specSheet);
-
   return (testDoc) => {
     let view;
 
@@ -97,7 +94,6 @@ export function renderTestEditor(
     }
 
     return {
-      // ...editor,
       get editor() {
         return editor;
       },

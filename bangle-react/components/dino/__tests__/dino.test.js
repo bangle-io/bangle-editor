@@ -1,12 +1,12 @@
 /**
  * @jest-environment jsdom
  */
-/** @jsx psx */
+/** @jsx pjsx */
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { reactTestEditor } from 'bangle-react/test-helpers/react-test-editor';
-import { psx } from 'bangle-react/test-helpers/psx';
+import { pjsx } from 'bangle-react/test-helpers/pjsx';
 import { dino } from '../index';
 
 const specSheet = new SpecSheet([...coreSpec(), dino.spec()]);

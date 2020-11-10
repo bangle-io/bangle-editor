@@ -1,11 +1,7 @@
-import 'prosemirror-gapcursor/style/gapcursor.css';
-
-import ReactDOM from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
-import { Header } from './Header';
 import { specSheet } from '../editor/spec-sheet';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
@@ -69,7 +65,6 @@ export class Editor extends React.PureComponent {
     docName: PropTypes.string.isRequired,
   };
   devtools = this.props.isFirst && (isJestIntegration() || DEBUG);
-  inlineMenuDOM = document.createElement('div');
 
   options = {
     id: 'bangle-play-' + this.props.docName + '-' + uuid(4),
@@ -118,8 +113,6 @@ export class Editor extends React.PureComponent {
   render() {
     return (
       <>
-        {this.inlineMenuDOM &&
-          ReactDOM.createPortal(<Header />, this.inlineMenuDOM)}
         <ReactEditor
           options={this.options}
           onReady={this.onEditorReady}

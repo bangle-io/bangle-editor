@@ -1,5 +1,3 @@
-const PM_ID = '.ProseMirror';
-
 const {
   mountEditor,
   getDoc,
@@ -7,14 +5,23 @@ const {
   ctrlKey,
   sleep,
   uniqDatabaseUrl,
+  PM_ID,
 } = require('./helpers');
 
 jest.setTimeout(25 * 1000);
 
 describe('Todo test', () => {
-  let page;
   beforeEach(async () => {
-    page = await browser.newPage();
+    await jestPuppeteer.resetPage();
+
+    page.on('error', (err) => {
+      console.log('error happen at the page: ', err);
+    });
+
+    page.on('pageerror', (pageerr) => {
+      console.log('pageerror occurred: ', pageerr);
+    });
+
     await page.goto(uniqDatabaseUrl());
     await mountEditor(page);
     await page.keyboard.down(ctrlKey);
@@ -22,8 +29,10 @@ describe('Todo test', () => {
     await page.keyboard.up(ctrlKey);
     await page.keyboard.press('Backspace', { delay: 10 });
   });
-  afterEach(async () => {
-    await page.close();
+
+  it('Works', async () => {
+    // For some reason the first test fails, so put this dummy to fix that
+    await page.keyboard.press('a');
   });
 
   it('Creates a todo task', async () => {

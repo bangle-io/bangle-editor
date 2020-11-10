@@ -11,14 +11,6 @@ module.exports = {
 
 async function mountEditor(page, props) {
   await page.waitForSelector('#pm-root', { timeout: 500 });
-  // page.on('error', (err) => {
-  //   console.log('error happen at the page: ', err);
-  // });
-
-  // page.on('pageerror', (pageerr) => {
-  //   console.log('pageerror occurred: ', pageerr);
-  // });
-
   await page.waitForSelector('.ProseMirror', { timeout: 500 });
 }
 

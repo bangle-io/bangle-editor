@@ -3,7 +3,6 @@ jest.setTimeout(25 * 1000);
 
 beforeEach(async () => {
   await jestPuppeteer.resetPage();
-  page = await browser.newPage();
 
   await page.goto(helpers.url);
   page.on('error', (err) => {

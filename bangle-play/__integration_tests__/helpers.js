@@ -1,6 +1,7 @@
 const os = require('os');
 const prettier = require('prettier');
 const { uuid } = require('bangle-core/utils/js-utils');
+const PM_ID = '.ProseMirror';
 
 const ctrlKey = os.platform() === 'darwin' ? 'Meta' : 'Control';
 const EDITOR_ID = `bangle-play`;
@@ -14,6 +15,7 @@ module.exports = {
   sleep,
   EDITOR_SELECTOR,
   uniqDatabaseUrl,
+  PM_ID,
 };
 
 function uniqDatabaseUrl() {
@@ -33,19 +35,18 @@ async function mountEditor(page, props) {
   await page.waitForSelector('.ProseMirror', { timeout: 1500 });
   await page.click(EDITOR_SELECTOR);
   // let the collab  settle down
-  await sleep(50);
 }
 
 async function getEditorState(page) {
   return page.evaluate(() => {
-    return window.editorView.state.toJSON();
+    return window.editor.view.state.toJSON();
   });
 }
 
 async function getDoc(page) {
   return page
     .evaluate(() => {
-      return window.editorView.state.doc.toString();
+      return window.editor.view.state.doc.toString();
     })
     .then(frmt);
 }

@@ -1,7 +1,6 @@
 import 'bangle-core/style.css';
 import { coreSpec } from 'bangle-core/components';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
-// import { dino } from 'bangle-plugins/dino/index';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
 
