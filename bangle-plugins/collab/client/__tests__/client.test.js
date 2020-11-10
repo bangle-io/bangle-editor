@@ -396,12 +396,15 @@ test('pushes changes to server', async () => {
   };
 
   const { view } = await setupCollabEditor(handlers);
+  // give editor time to settle, if we donot do this,
+  // it sends push Event too soon
+  await sleep();
 
   typeText(view, '😊');
 
   await sleep();
 
-  // expect(handlers.pushEvents).toBeCalledTimes(1);
+  expect(handlers.pushEvents).toBeCalledTimes(1);
   expect(handlers.pushEvents).toHaveBeenNthCalledWith(1, {
     clientID: 'test',
     docName: 'ole',

@@ -1,19 +1,26 @@
 /** @jsx psx */
 import { screen } from '@testing-library/dom';
-import { renderTestEditor } from 'bangle-core/test-helpers/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { corePlugins, coreSpec } from 'bangle-core/index';
 import { psx } from 'bangle-react/test-helpers/psx';
-import { bananaComponent } from './Banana';
+import { bananaComponent, Banana } from './banana';
+import { reactTestEditor } from 'bangle-react/test-helpers/react-test-editor';
+const renderNodeViews = jest.fn(({ node, ...args }) => {
+  if (node.type.name === 'banana') {
+    return <Banana node={node} {...args} />;
+  }
+  throw new Error('Unknown node');
+});
 
 describe('Inline node banana', () => {
   test('Inits banana', async () => {
     const banana = bananaComponent();
     const specSheet = new SpecSheet([...coreSpec(), banana.spec()]);
-    const plugins = [...corePlugins()];
-    const testEditor = renderTestEditor({ specSheet, plugins });
+    const plugins = [...corePlugins(), banana.plugins()];
 
-    const { view, editor } = testEditor(
+    const testEditor = reactTestEditor({ specSheet, plugins, renderNodeViews });
+
+    const { view, editor } = await testEditor(
       <doc>
         <heading>Wow[]</heading>
         <para>
@@ -38,10 +45,10 @@ describe('Inline node banana', () => {
     const testId = 'Can update attrs';
     const banana = bananaComponent(testId);
     const specSheet = new SpecSheet([...coreSpec(), banana.spec()]);
-    const plugins = [...corePlugins()];
-    const testEditor = renderTestEditor({ specSheet, plugins });
+    const plugins = [...corePlugins(), banana.plugins()];
+    const testEditor = reactTestEditor({ specSheet, plugins, renderNodeViews });
 
-    const { view, posLabels } = testEditor(
+    const { view, posLabels } = await testEditor(
       <doc>
         <heading>Wow</heading>
         <para>
@@ -64,6 +71,7 @@ describe('Inline node banana', () => {
     const el = await screen.findByTestId(testId);
     await expect(el).toMatchInlineSnapshot(`
             <span
+              data-mount="true"
               data-testid="Can update attrs"
             >
               <div>
@@ -95,6 +103,7 @@ describe('Inline node banana', () => {
 
     await expect(el).toMatchInlineSnapshot(`
             <span
+              data-mount="true"
               data-testid="Can update attrs"
             >
               <div>

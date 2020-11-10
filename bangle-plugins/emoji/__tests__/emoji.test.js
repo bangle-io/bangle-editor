@@ -23,7 +23,7 @@ const testEditor = renderTestEditor({
 
 test('Rendering works', async () => {
   Date.now = jest.fn(() => 0);
-  const { container, view } = await testEditor(
+  const { container, view } = testEditor(
     <doc>
       <para>
         foo[]bar
@@ -45,8 +45,7 @@ test('Rendering works', async () => {
 
 test('Unknown emoji puts question mark', async () => {
   Date.now = jest.fn(() => 0);
-  debugger;
-  const { container, view } = await testEditor(
+  const { container, view } = testEditor(
     <doc>
       <para>
         foo[]bar

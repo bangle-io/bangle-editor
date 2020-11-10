@@ -1,7 +1,8 @@
 import React from 'react';
-import { serializationHelpers } from 'bangle-core/node-view';
+import { NodeView, serializationHelpers } from 'bangle-core/node-view';
 import reactDOM from 'react-dom';
-import { NodeView } from 'bangle-core/utils/node-view';
+import { createElement } from 'bangle-core/utils/js-utils';
+import { Plugin } from 'prosemirror-state';
 
 export class Banana extends React.Component {
   render() {
@@ -63,6 +64,31 @@ export function bananaComponent(testId) {
 
       spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
       return spec;
+    },
+    plugins: () => {
+      return new Plugin({
+        props: {
+          nodeViews: {
+            [name]: (node, view, getPos, decorations) => {
+              const containerDOM = createElement('span', {});
+              const mountDOM = createElement('span', {
+                'data-testid': testId,
+                'data-mount': 'true',
+              });
+              containerDOM.appendChild(mountDOM);
+
+              return new NodeView({
+                node,
+                view,
+                getPos,
+                decorations,
+                containerDOM,
+                mountDOM: mountDOM,
+              });
+            },
+          },
+        },
+      });
     },
   };
 }

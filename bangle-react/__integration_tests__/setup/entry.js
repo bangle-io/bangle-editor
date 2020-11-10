@@ -5,10 +5,9 @@ import { corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { Slice } from 'prosemirror-model';
 import { DOMSerializer } from 'prosemirror-model';
-import * as bangleComponents from 'bangle-react/components/index';
+import { dino, stopwatch } from 'bangle-react/components/index';
 import * as prosemirrorView from 'prosemirror-view';
 import { ReactEditor } from 'bangle-react/react-editor';
-import { Dino } from 'bangle-react/components/dinos/Dino';
 
 window.prosemirrorView = prosemirrorView;
 
@@ -27,21 +26,24 @@ function setup() {
 }
 
 function App() {
-  const specSheet = new SpecSheet([...coreSpec(), ...bangleComponents.spec()]);
-  const plugins = [...corePlugins(), ...bangleComponents.plugins()];
-  window.commands = bangleComponents.commands;
-  let editor;
+  const specSheet = new SpecSheet([
+    ...coreSpec(),
+    stopwatch.spec(),
+    dino.spec(),
+  ]);
+  const plugins = [...corePlugins(), stopwatch.plugins(), dino.plugins()];
+  window.commands = {
+    stopwatch: stopwatch.commands,
+    dino: dino.commands,
+  };
   const onEditorReady = (_editor) => {
-    editor = _editor;
     window.editor = _editor;
   };
   const renderNodeViews = ({ node, ...args }) => {
-    if (node.type.name === 'dinos') {
-      return <Dino node={node} {...args} />;
+    if (node.type.name === 'dino') {
+      return <dino.Dino node={node} {...args} />;
     }
   };
-
-  window.commands = bangleComponents.commands;
   window.dispatcher = (command) => {
     return command(
       window.editor.view.state,

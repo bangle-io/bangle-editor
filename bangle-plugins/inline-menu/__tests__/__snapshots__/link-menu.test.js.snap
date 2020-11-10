@@ -3,7 +3,6 @@
 exports[`Link menu when link but not in selection 2`] = `
 <div
   data-testid="test-editor"
-  id="test-editor"
 >
   <div
     class="ProseMirror bangle-editor content"
@@ -35,7 +34,6 @@ exports[`Link menu when link but not in selection 2`] = `
 exports[`Link menu when no link 1`] = `
 <div
   data-testid="test-editor"
-  id="test-editor"
 >
   <div
     class="ProseMirror bangle-editor content"

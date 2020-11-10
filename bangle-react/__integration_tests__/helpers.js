@@ -10,9 +10,16 @@ module.exports = {
 };
 
 async function mountEditor(page, props) {
-  // await page.waitForSelector('#pm-root', { timeout: 500 });
   await page.waitForSelector('#pm-root', { timeout: 500 });
-  await page.waitForSelector('.Prosemirror', { timeout: 500 });
+  // page.on('error', (err) => {
+  //   console.log('error happen at the page: ', err);
+  // });
+
+  // page.on('pageerror', (pageerr) => {
+  //   console.log('pageerror occurred: ', pageerr);
+  // });
+
+  await page.waitForSelector('.ProseMirror', { timeout: 500 });
 }
 
 async function getEditorState(page) {
@@ -29,6 +36,6 @@ async function pressLeft() {
   await page.keyboard.press('ArrowLeft');
 }
 
-async function debug() {
+function debug() {
   return jestPuppeteer.debug();
 }
