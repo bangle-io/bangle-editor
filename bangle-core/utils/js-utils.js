@@ -431,6 +431,8 @@ export function createElement(type = 'div', attrs = {}) {
       element.id = value;
     } else if (attr === 'class') {
       value.split(' ').forEach((c) => element.classList.add(c));
+    } else if (attr === 'contentEditable') {
+      element.contentEditable = value;
     } else {
       throw new Error(`Attr ${attr} not supported`);
     }

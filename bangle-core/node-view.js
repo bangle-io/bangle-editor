@@ -1,5 +1,5 @@
 import { objectFilter, bangleWarn } from './utils/js-utils';
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};
 const renderHandlersCache = new WeakMap();
@@ -12,6 +12,12 @@ class BaseNodeView {
       getPos: this._getPos,
       decorations: this._decorations,
       selected: this._selected,
+      updateAttrs: (attrs) => {
+        this._view.dispatch(
+          updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
+        );
+        return true;
+      },
     };
   }
 
@@ -22,7 +28,19 @@ class BaseNodeView {
   }
 
   constructor(
-    { node, view, getPos, decorations, containerDOM, contentDOM, mountDOM },
+    {
+      node,
+      view,
+      getPos,
+      decorations,
+      containerDOM,
+      contentDOM,
+      mountDOM,
+      // Defaults to whatever is set by the rendering framework which ideally
+      // would have called the method `saveRenderHandlers` before this gets
+      // executed.
+      renderHandlers = getRenderHandlers(view),
+    },
     { selectionSensitive = true } = {},
   ) {
     // by PM
@@ -32,20 +50,23 @@ class BaseNodeView {
     this._decorations = decorations;
     this._selected = false;
 
-    this.renderHandlers = getRenderHandlers(view); // This is expected to be set by whatever rendering framework is instantiating bangle-editor
-    if (!this.renderHandlers) {
+    if (!renderHandlers) {
       bangleWarn(
         'It appears the view =',
         view,
         ' was not associated with renderHandlers. You are either using nodeViews accidentally or have incorrectly setup nodeViews',
       );
-      throw new Error('Cannot find render handlers for the view.');
+      throw new Error(
+        'You either did not pass the renderHandlers correct or it cannot find render handlers associated with the view.',
+      );
     }
+
+    this.renderHandlers = renderHandlers;
 
     // by the implementor
     this.containerDOM = containerDOM;
     this.contentDOM = contentDOM;
-    this.mountDOM = mountDOM; // for ui libraries to mount
+    this.mountDOM = mountDOM || containerDOM; // for ui libraries to mount
 
     // options
     this.opts = {
@@ -92,17 +113,18 @@ export class NodeView extends BaseNodeView {
     this.renderHandlers.update(this, this._pmProps);
   }
 
-  setSelection(...args) {
-    console.log('hi', ...args);
-  }
+  // Donot unset it if you donot have an implmentation.
+  // Unsetting this is dangerous as it fucks up elements who have editable content inside them.
+  // setSelection(...args) {
+  //   console.log('hi', ...args);
+  // }
 
   ignoreMutation(mutation) {
-    console.log({ mutation });
+    // TODO do we need this
     // allow leaf nodes to be selected
     if (mutation.type === 'selection') {
       return false;
     }
-
     if (!this.contentDOM) {
       return true;
     }
@@ -146,6 +168,7 @@ export function serializationHelpers(
       return [
         container,
         {
+          // todo move this to bangle-name
           'data-bangle-id': spec.name,
           'data-bangle-attrs': serializer(node),
         },
@@ -167,6 +190,11 @@ export function serializationHelpers(
 }
 
 export function saveRenderHandlers(editorContainer, handlers) {
+  if (renderHandlersCache.has(editorContainer)) {
+    throw new Error(
+      'It looks like renderHandlers were already set by someone else.',
+    );
+  }
   renderHandlersCache.set(editorContainer, handlers);
 }
 
@@ -179,9 +207,9 @@ export function getRenderHandlers(view) {
   return handlers;
 }
 
-// function updateAttrs(pos, node, newAttrs, tr) {
-//   return tr.setNodeMarkup(pos, undefined, {
-//     ...node.attrs,
-//     ...newAttrs,
-//   });
-// }
+function updateAttrs(pos, node, newAttrs, tr) {
+  return tr.setNodeMarkup(pos, undefined, {
+    ...node.attrs,
+    ...newAttrs,
+  });
+}

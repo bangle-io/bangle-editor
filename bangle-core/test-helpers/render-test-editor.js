@@ -11,13 +11,13 @@ import { BangleEditor } from 'bangle-core/editor';
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
 
-const mountedView = new Set();
+const mountedEditors = new Set();
 const rootElement = document.body;
 if (typeof afterEach === 'function') {
   afterEach(() => {
-    [...mountedView].forEach((view) => {
-      view.destroy();
-      mountedView.delete(view);
+    [...mountedEditors].forEach((editor) => {
+      editor.destroy();
+      mountedEditors.delete(editor);
     });
   });
 }
@@ -42,7 +42,7 @@ export function renderTestEditor(
       attributes: { class: 'bangle-editor content' },
     };
 
-    const editor = new BangleEditor(container, {
+    let editor = new BangleEditor(container, {
       specSheet,
       plugins,
       editorProps,
@@ -50,7 +50,7 @@ export function renderTestEditor(
     });
 
     view = editor.view;
-    mountedView.add(view);
+    mountedEditors.add(editor);
 
     let posLabels;
 
@@ -98,8 +98,13 @@ export function renderTestEditor(
 
     return {
       // ...editor,
-      editor: editor,
-      view: view,
+      get editor() {
+        return editor;
+      },
+      get view() {
+        return editor.view;
+      },
+      container,
       editorState: view.state,
       schema: view.state.schema,
       // TODO deprecetate editorView
@@ -107,6 +112,10 @@ export function renderTestEditor(
       selection: view.state.selection,
       posLabels,
       updateDoc,
+      destroy: () => {
+        editor.destroy();
+        editor = null;
+      },
     };
   };
 }

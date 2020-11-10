@@ -11,7 +11,7 @@ import {
 
 const testEditor = renderTestEditor();
 
-test.skip('Typing works', async () => {
+test('Typing works', async () => {
   const { view } = await testEditor(
     <doc>
       <todoList>
@@ -35,7 +35,7 @@ test.skip('Typing works', async () => {
   );
 });
 
-test.skip('Pressing Enter', async () => {
+test('Pressing Enter', async () => {
   const { view } = await testEditor(
     <doc>
       <todoList>
@@ -64,7 +64,7 @@ test.skip('Pressing Enter', async () => {
   );
 });
 
-describe.skip('Pressing Tab', () => {
+describe('Pressing Tab', () => {
   test('first list has no effect', async () => {
     const { view } = await testEditor(
       <doc>
@@ -136,7 +136,7 @@ describe.skip('Pressing Tab', () => {
   });
 });
 
-describe.skip('Markdown shortcuts', () => {
+describe('Markdown shortcuts', () => {
   it('Typing [ ]  works', async () => {
     const { editorView, sel } = await testEditor(
       <doc>
@@ -157,7 +157,7 @@ describe.skip('Markdown shortcuts', () => {
   });
 });
 
-describe.skip('Heterogenous toggle', () => {
+describe('Heterogenous toggle', () => {
   it('Toggles todo to ordered list', async () => {
     const { editorView } = await testEditor(
       <doc>
@@ -227,7 +227,7 @@ describe.skip('Heterogenous toggle', () => {
   });
 });
 
-describe.skip('Pressing Backspace', () => {
+describe('Pressing Backspace', () => {
   it('Backspacing works', async () => {
     const { editorView } = await testEditor(
       <doc>
@@ -422,7 +422,7 @@ describe.skip('Pressing Backspace', () => {
   });
 });
 
-describe.skip('Pressing Alt-Up / Down to move list', () => {
+describe('Pressing Alt-Up / Down to move list', () => {
   const check = async (beforeDoc, afterDoc) => {
     const { editorView } = await testEditor(beforeDoc);
     sendKeyToPm(editorView, 'Alt-Up');
@@ -522,7 +522,7 @@ describe.skip('Pressing Alt-Up / Down to move list', () => {
   });
 });
 
-describe.skip('Alt-up/down of nesting ol/ul list', () => {
+describe('Alt-up/down of nesting ol/ul list', () => {
   it('works for nested ul', async () => {
     const { editorView } = await testEditor(
       <doc>
@@ -641,7 +641,7 @@ describe.skip('Alt-up/down of nesting ol/ul list', () => {
   });
 });
 
-describe.skip('Nesting heterogenous lists', () => {
+describe('Nesting heterogenous lists', () => {
   it('converts to ol', async () => {
     const { view } = await testEditor(
       <doc>
@@ -868,7 +868,7 @@ describe.skip('Nesting heterogenous lists', () => {
   });
 });
 
-describe.skip('Toggle todo list with keyboard shortcut', () => {
+describe('Toggle todo list with keyboard shortcut', () => {
   it('toggles the todo with the command', async () => {
     const { editorView } = await testEditor(
       <doc>
@@ -953,7 +953,7 @@ describe.skip('Toggle todo list with keyboard shortcut', () => {
   });
 });
 
-describe.skip('Insert empty todo above and below', () => {
+describe('Insert empty todo above and below', () => {
   test.each([
     [
       <doc>
