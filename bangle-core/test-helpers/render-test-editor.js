@@ -1,43 +1,53 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+/**
+ * @jest-environment jsdom
+ */
+
 import { TextSelection } from 'prosemirror-state';
-import { ReactEditor } from 'bangle-core/helper-react/react-editor';
 import { getDocLabels } from './schema-builders';
 import { corePlugins } from '../components/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
+import { BangleEditor } from 'bangle-core/editor';
 
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
 
+const mountedEditors = new Set();
+const rootElement = document.body;
+if (typeof afterEach === 'function') {
+  afterEach(() => {
+    [...mountedEditors].forEach((editor) => {
+      editor.destroy();
+      mountedEditors.delete(editor);
+    });
+  });
+}
+
 export function renderTestEditor(
-  { specSheet = defaultSpecSheet, plugins = defaultPlugins } = {},
+  { specSheet = defaultSpecSheet, plugins = defaultPlugins, ...opts } = {},
   testId = 'test-editor',
 ) {
   if (!(specSheet instanceof SpecSheet)) {
     throw new Error('Need to be specsheet');
   }
-  // Add the base specs for lazy asses like me
-  // specSheet = injectBaseSpec(specSheet);
+  const container = rootElement.appendChild(document.createElement('div'));
+  container.setAttribute('data-testid', testId);
 
-  return async (testDoc) => {
+  return (testDoc) => {
     let view;
-    const onReady = (_view) => {
-      view = _view;
+
+    const editorProps = {
+      attributes: { class: 'bangle-editor content' },
     };
 
-    const _options = {
-      id: 'test-editor',
-      testId: testId,
-      editorProps: {
-        attributes: { class: 'bangle-editor content' },
-      },
-      onReady,
-      ...{ specSheet, plugins },
-    };
+    let editor = new BangleEditor(container, {
+      specSheet,
+      plugins,
+      editorProps,
+      ...opts,
+    });
 
-    const result = render(<ReactEditor options={_options} />);
-
-    await result.findByTestId(testId);
+    view = editor.view;
+    mountedEditors.add(editor);
 
     let posLabels;
 
@@ -84,11 +94,13 @@ export function renderTestEditor(
     }
 
     return {
-      ...result,
       get editor() {
-        throw new Error('wtf');
+        return editor;
       },
-      view: view,
+      get view() {
+        return editor.view;
+      },
+      container,
       editorState: view.state,
       schema: view.state.schema,
       // TODO deprecetate editorView
@@ -96,6 +108,10 @@ export function renderTestEditor(
       selection: view.state.selection,
       posLabels,
       updateDoc,
+      destroy: () => {
+        editor.destroy();
+        editor = null;
+      },
     };
   };
 }

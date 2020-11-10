@@ -1,9 +1,10 @@
 import React from 'react';
+import reactDOM from 'react-dom';
 import { chainCommands } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 
 import browser from '../utils/browser';
-import { uuid, classNames as cx } from '../utils/js-utils';
+import { uuid, classNames as cx, createElement } from '../utils/js-utils';
 import { objUid } from '../utils/object-uid';
 import {
   enterKeyCommand,
@@ -20,14 +21,8 @@ import {
   parentHasDirectParentOfType,
 } from '../core-commands';
 import { filter, insertEmpty } from '../utils/pm-utils';
-
-const LOG = false;
-
-function log(...args) {
-  if (LOG) {
-    console.log('todo-item.js', ...args);
-  }
-}
+import { Plugin } from 'prosemirror-state';
+import { NodeView } from 'bangle-core/node-view';
 
 const name = 'todo_item';
 
@@ -87,27 +82,6 @@ export const spec = ({ nested = true } = {}) => {
         },
       },
     },
-    nodeView: {
-      createContentDOM: () => {
-        const d = document.createElement('div');
-        d.setAttribute('data-uuid', 'todo-content-dom-' + uuid(4));
-        return { dom: d };
-      },
-      createDom: () => {
-        const d = document.createElement('li');
-        d.setAttribute('data-uuid', 'todo-dom-' + uuid(4));
-        return d;
-      },
-      domRefClasses: () => `flex flex-row`,
-      render: (props) => {
-        const mobile = browser.ios || browser.android;
-
-        if (mobile) {
-          return <MobileTodo {...props} />;
-        }
-        return <TodoItemComp {...props} />;
-      },
-    },
   };
 };
 
@@ -150,12 +124,71 @@ export const plugins = ({ nested = true, keys = {} } = {}) => {
         ),
         'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
       }),
+      new Plugin({
+        props: {
+          nodeViews: {
+            [name]: (node, view, getPos, decorations) => {
+              const containerDOM = createElement('li', {
+                'data-uuid': 'todo-dom-' + uuid(4),
+                'data-type': 'todo_item',
+              });
+              const contentDOM = createElement('div', {
+                class: 'bangle-content',
+              });
+
+              const update = (instance, { node, updateAttrs }) => {
+                const mobile = browser.ios || browser.android;
+                const children = (
+                  <div
+                    className="bangle-content-mount"
+                    ref={(node) => {
+                      if (!node) {
+                        return;
+                      }
+                      if (!node.contains(contentDOM)) {
+                        node.appendChild(contentDOM);
+                      }
+                    }}
+                  />
+                );
+
+                const props = { node, view, updateAttrs };
+                if (mobile) {
+                  return reactDOM.render(
+                    <MobileTodo {...props} children={children} />,
+                    containerDOM,
+                  );
+                }
+                return reactDOM.render(
+                  <TodoItemComp {...props} children={children} />,
+                  containerDOM,
+                );
+              };
+              return new NodeView({
+                node,
+                view,
+                getPos,
+                decorations,
+                containerDOM,
+                contentDOM,
+                renderHandlers: {
+                  create: update,
+                  update: update,
+                  destroy: () => {
+                    reactDOM.unmountComponentAtNode(containerDOM);
+                  },
+                },
+              });
+            },
+          },
+        },
+      }),
     ];
   };
 };
 
 function TodoItemComp(props) {
-  const { node, view, handleRef, updateAttrs } = props;
+  const { node, view, children, updateAttrs } = props;
 
   let uid = node.type.name + objUid.get(node);
 
@@ -188,21 +221,17 @@ function TodoItemComp(props) {
         />
         <label htmlFor={uid} />
       </span>
-      <div
-        className="todo-content flex-grow"
-        ref={handleRef}
-        data-done={done.toString()}
-      />
+      {children}
     </>
   );
 }
 
 function MobileTodo(props) {
-  const { node, view, handleRef, updateAttrs } = props;
+  const { node, updateAttrs, children } = props;
   const { 'data-done': done } = node.attrs;
 
   return (
-    <div contentEditable={true} className="flex flex-grow">
+    <div className="flex flex-grow">
       <button
         contentEditable={false}
         style={{
@@ -222,12 +251,7 @@ function MobileTodo(props) {
       >
         {done ? '✅' : '🟨'}
       </button>
-      <div
-        className="todo-content inline-block flex flex-grow"
-        ref={handleRef}
-        data-done={done.toString()}
-        contentEditable={true}
-      />
+      {children}
     </div>
   );
 }

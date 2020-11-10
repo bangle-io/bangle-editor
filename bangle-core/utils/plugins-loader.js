@@ -8,10 +8,9 @@ import { keymap } from 'prosemirror-keymap';
 import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
-import { recursiveFlat } from './js-utils';
+import { bangleWarn, recursiveFlat } from './js-utils';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
-// TODO remove the added free plugins
 // TODO do we need tabindex
 // TODO reconfigure plugins
 export function pluginsLoader(
@@ -60,7 +59,16 @@ export function pluginsLoader(
 
   plugins = transformPlugins(plugins);
 
-  return plugins.filter(Boolean);
+  plugins = plugins.filter(Boolean);
+
+  if (plugins.some((p) => !(p instanceof Plugin))) {
+    bangleWarn(
+      'You are either using multiple versions of the library or returning not returning a Plugin class in your plugins.',
+      plugins,
+    );
+    throw new Error('Invalid plugin');
+  }
+  return plugins;
 }
 
 function processInputRules(

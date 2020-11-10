@@ -5,7 +5,8 @@
   "workspaces": [
     "bangle-core",
     "bangle-play",
-    "bangle-plugins"
+    "bangle-plugins",
+    "bangle-react"
   ],
   "scripts": {
     "start": "yarn workspace bangle-play start",
@@ -44,13 +45,14 @@
     "prosemirror-utils/prosemirror-tables": "0.9.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
+    "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@typescript-eslint/eslint-plugin": "2.x",
     "@typescript-eslint/parser": "2.x",
+    "@yarnpkg/pnpify": "^2.3.3",
     "babel-eslint": "10.x",
     "babel-jest": "^26.3.0",
     "eslint": "6.x",

@@ -49,34 +49,33 @@ describe('selection-tooltip', () => {
     view.hasFocus = () => true;
 
     expect(view.dom.parentNode).toMatchInlineSnapshot(`
+      <div
+        data-testid="test-editor"
+      >
+        <div
+          class="ProseMirror bangle-editor content"
+          contenteditable="true"
+        >
+          <p>
+            foobar
+          </p>
+        </div>
+        <div
+          class="bangle-tooltip bangle-selection-tooltip"
+          data-popper-placement="top"
+          data-show=""
+          data-tooltip-name="selection"
+          role="tooltip"
+          style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 0px);"
+        >
           <div
-            data-testid="test-editor"
-            id="test-editor"
+            class="bangle-tooltip-content"
           >
-            <div
-              class="ProseMirror bangle-editor content"
-              contenteditable="true"
-            >
-              <p>
-                foobar
-              </p>
-            </div>
-            <div
-              class="bangle-tooltip bangle-selection-tooltip"
-              data-popper-placement="top"
-              data-show=""
-              data-tooltip-name="selection"
-              role="tooltip"
-              style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 0px);"
-            >
-              <div
-                class="bangle-tooltip-content"
-              >
-                hello world
-              </div>
-            </div>
+            hello world
           </div>
-      `);
+        </div>
+      </div>
+    `);
   });
 
   test('Handles a custom tooltip', async () => {

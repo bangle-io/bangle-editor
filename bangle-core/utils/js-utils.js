@@ -398,7 +398,10 @@ export function rafSchedule(fn) {
   return wrapperFn;
 }
 
-export const bangleWarn = console.warn.bind(console, 'Warning in bangle.js:');
+export const bangleWarn =
+  process.env.NODE_ENV === 'test'
+    ? () => {}
+    : console.warn.bind(console, 'Warning in bangle.js:');
 
 export function recursiveFlat(data, callbackPayload) {
   const recurse = (d) => {
@@ -416,4 +419,23 @@ export function recursiveFlat(data, callbackPayload) {
   };
 
   return recurse(data);
+}
+
+export function createElement(type = 'div', attrs = {}) {
+  const element = document.createElement(type);
+  for (let attr in attrs) {
+    const value = attrs[attr];
+    if (attr.startsWith('data-')) {
+      element.setAttribute(attr, value);
+    } else if (attr === 'id') {
+      element.id = value;
+    } else if (attr === 'class') {
+      value.split(' ').forEach((c) => element.classList.add(c));
+    } else if (attr === 'contentEditable') {
+      element.contentEditable = value;
+    } else {
+      throw new Error(`Attr ${attr} not supported`);
+    }
+  }
+  return element;
 }

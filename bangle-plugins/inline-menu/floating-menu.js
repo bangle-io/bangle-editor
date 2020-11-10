@@ -165,7 +165,7 @@ function pluginsFactory({
         if (dispatch) {
           view.focus();
         }
-        rafWrap(toggleTodoList)(state, dispatch, view);
+        toggleTodoList(state, dispatch, view);
         return true;
       }
       return false;

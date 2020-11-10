@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor } from 'bangle-core/test-helpers/';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import {
   defaultMarkdownItTokenizer,
   markdownParser,
 } from 'bangle-plugins/markdown/markdown-parser';
 import emojiParser from 'markdown-it-emoji';
-import { corePlugins, coreSpec } from 'bangle-core/components';
+import { corePlugins, coreSpec } from 'bangle-core/components/index';
 import { emoji } from '../index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
@@ -23,11 +23,11 @@ const testEditor = renderTestEditor({
 
 test('Rendering works', async () => {
   Date.now = jest.fn(() => 0);
-  const { container, view } = await testEditor(
+  const { container, view } = testEditor(
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind=":horse:" />
+        <emoji data-emojikind="horse" />
       </para>
     </doc>,
   );
@@ -36,7 +36,29 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind=":horse:" />
+        <emoji data-emojikind="horse" />
+      </para>
+    </doc>,
+  );
+  expect(container.querySelector(`[data-type="emoji"]`)).toMatchSnapshot();
+});
+
+test('Unknown emoji puts question mark', async () => {
+  Date.now = jest.fn(() => 0);
+  const { container, view } = testEditor(
+    <doc>
+      <para>
+        foo[]bar
+        <emoji data-emojikind="unknown_emoji" />
+      </para>
+    </doc>,
+  );
+
+  expect(view.state).toEqualDocAndSelection(
+    <doc>
+      <para>
+        foo[]bar
+        <emoji data-emojikind="unknown_emoji" />
       </para>
     </doc>,
   );
@@ -44,11 +66,10 @@ test('Rendering works', async () => {
 });
 
 describe('markdown', () => {
-  let schemaPromise;
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
-      content = doc(await schemaPromise);
+      content = doc(specSheet.schema);
     }
     return markdownSerializer(specSheet).serialize(content);
   };
@@ -57,12 +78,6 @@ describe('markdown', () => {
       specSheet,
       defaultMarkdownItTokenizer.use(emojiParser),
     ).parse(md);
-
-  beforeAll(async () => {
-    schemaPromise = renderTestEditor({ specSheet, plugins })().then(
-      (r) => r.schema,
-    );
-  });
 
   test('markdown', async () => {
     const doc = (

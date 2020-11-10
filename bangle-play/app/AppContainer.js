@@ -2,7 +2,6 @@ import './style/tailwind.src.css';
 import './style/style.css';
 import './style/prosemirror.css';
 import React from 'react';
-import { EditorContextProvider } from 'bangle-core/helper-react/editor-context';
 import { Editor } from './components/Editor';
 import { EditorManager } from './components/EditorManager';
 import { UIContextProvider } from './store/UIContext';
@@ -27,13 +26,11 @@ export class AppContainer extends React.PureComponent {
                       className="flex-1 max-w-screen-md ml-6 mr-6"
                       style={{ height: '100vh', overflowY: 'scroll' }}
                     >
-                      <EditorContextProvider>
-                        <Editor
-                          isFirst={i === 0}
-                          docName={openedDocument.docName}
-                          manager={manager}
-                        />
-                      </EditorContextProvider>
+                      <Editor
+                        isFirst={i === 0}
+                        docName={openedDocument.docName}
+                        manager={manager}
+                      />
                       {/* adds white space at bottoms */}
                       <div
                         style={{
