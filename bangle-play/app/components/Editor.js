@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { uuid } from 'bangle-core/utils/js-utils';
+import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
 import { Header } from './Header';
 import { specSheet } from '../editor/spec-sheet';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
@@ -15,13 +15,11 @@ import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import * as floatingMenu from 'bangle-plugins/inline-menu/floating-menu';
 import * as linkMenu from 'bangle-plugins/inline-menu/link-menu';
 import { PluginKey } from 'prosemirror-state';
-import { stopwatch } from 'bangle-plugins/stopwatch/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { isJestIntegration } from 'bangle-core/utils/process-env';
 import { ReactEditor } from 'bangle-react/react-editor';
-import { dinos } from 'bangle-react/components/index';
-import { Dino } from 'bangle-react/components/dinos/Dino';
+import { dino, stopwatch } from 'bangle-react/components/index';
 
 const LOG = false;
 const DEBUG = true;
@@ -56,12 +54,11 @@ const getPlugins = ({ docName, manager }) => {
     }),
     ...corePlugins({ node: { heading: { levels: config.headingLevels } } }),
     collab.plugins(collabOpts),
-    // dinos.plugins(),
     emoji.plugins(),
     stopwatch.plugins(),
     trailingNode.plugins(),
     timestamp.plugins(),
-    dinos.plugins(),
+    dino.plugins(),
   ];
 };
 
@@ -98,11 +95,24 @@ export class Editor extends React.PureComponent {
   onEditorReady = (editor) => {
     if (this.props.isFirst) {
       window.editor = editor;
+
+      getIdleCallback(() => {
+        import(
+          /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+        ).then((args) => {
+          this.devtools = args.applyDevTools(editor.view);
+        });
+      });
     }
   };
 
-  renderNodeViews = (args) => {
-    return <Dino {...args} />;
+  renderNodeViews = ({ node, ...args }) => {
+    if (node.type.name === 'dino') {
+      return <dino.Dino node={node} {...args} />;
+    }
+    if (node.type.name === 'stopwatch') {
+      return <stopwatch.Stopwatch node={node} {...args} />;
+    }
   };
 
   render() {
