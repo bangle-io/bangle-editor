@@ -2,6 +2,9 @@ import React from 'react';
 
 import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 import { keymap } from 'prosemirror-keymap';
+import { NodeView, serializationHelpers } from 'bangle-core/node-view';
+import { Plugin } from 'prosemirror-state';
+import { createElement, uuid } from 'bangle-core/utils/js-utils';
 
 const LOG = false;
 
@@ -13,17 +16,20 @@ function log(...args) {
 
 const name = 'stopwatch';
 
-export const spec = () => {
-  return {
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+function specFactory() {
+  const spec = {
     name,
     type: 'node',
     schema: {
       attrs: {
         'data-stopwatch': {
-          default: JSON.stringify({
+          default: {
             startTime: 0,
             stopTime: 0,
-          }),
+          },
         },
         'data-type': {
           default: name,
@@ -33,31 +39,6 @@ export const spec = () => {
       group: 'inline',
       draggable: true,
       atom: true,
-      // NOTE: Seems like this is used as an output to outside world
-      //      when you like copy or drag
-      toDOM: (node) => {
-        return [
-          'span',
-          {
-            'data-type': name,
-            'data-stopwatch': node.attrs['data-stopwatch'],
-          },
-        ];
-      },
-      // NOTE: this is the opposite part where you parse the output of toDOM
-      //      When getAttrs returns false, the rule won't match
-      //      Also, it only takes attributes defined in spec.attrs
-      parseDOM: [
-        {
-          tag: `span[data-type="${name}"]`,
-          getAttrs: (dom) => {
-            return {
-              'data-type': name,
-              'data-stopwatch': dom.getAttribute('data-stopwatch'),
-            };
-          },
-        },
-      ],
     },
     markdown: {
       toMarkdown: (state, node) => {
@@ -65,23 +46,47 @@ export const spec = () => {
         state.write(string);
       },
     },
-    nodeView: {
-      render: (props) => {
-        return <StopwatchComponent {...props} />;
-      },
-    },
   };
-};
 
-export const plugins = (opts = {}) => {
+  spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
+
+  return spec;
+}
+
+export function pluginsFactory(opts = {}) {
   return [
     keymap({
       'Shift-Ctrl-s': insertStopwatch(),
     }),
-  ];
-};
+    new Plugin({
+      props: {
+        nodeViews: {
+          [name]: (node, view, getPos, decorations) => {
+            const containerDOM = createElement('span', {
+              'data-uuid': name + '-' + uuid(4),
+            });
+            const mountDOM = createElement('span', {
+              'data-mount': 'true',
+              'contentEditable': 'false',
+            });
+            containerDOM.appendChild(mountDOM);
 
-class StopwatchComponent extends React.Component {
+            return new NodeView({
+              node,
+              view,
+              getPos,
+              decorations,
+              containerDOM,
+              mountDOM,
+            });
+          },
+        },
+      },
+    }),
+  ];
+}
+
+export class Stopwatch extends React.Component {
   state = {
     counter: 0,
   };
@@ -109,17 +114,15 @@ class StopwatchComponent extends React.Component {
 
   updateAttrs({ stopTime, startTime }) {
     this.props.updateAttrs({
-      'data-stopwatch': JSON.stringify({
+      'data-stopwatch': {
         stopTime,
         startTime,
-      }),
+      },
     });
   }
 
   getAttrs() {
-    const { stopTime, startTime } = JSON.parse(
-      this.props.node.attrs['data-stopwatch'],
-    );
+    const { stopTime, startTime } = this.props.node.attrs['data-stopwatch'];
 
     return {
       stopTime,
@@ -149,6 +152,7 @@ class StopwatchComponent extends React.Component {
 
     return (
       <span
+        className="stopwatch"
         contentEditable={false}
         style={{
           backgroundColor: isPaused ? 'pink' : '#00CED1',
