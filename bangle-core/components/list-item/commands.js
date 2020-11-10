@@ -42,6 +42,8 @@ const _setTextSelection = (position, dir = 1) => (tr) => {
   return tr;
 };
 
+window.NodeSelection = NodeSelection;
+
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
   const {
@@ -191,6 +193,7 @@ function canToJoinToPreviousListItem(state) {
  * ------------------
  */
 
+window.toggleList = toggleList;
 /**
  *
  * @param {Object} listType  bullet_list, ordered_list, todo_list
@@ -201,7 +204,6 @@ export function toggleList(listType, itemType) {
     const { selection } = state;
     const fromNode = selection.$from.node(selection.$from.depth - 2);
     const endNode = selection.$to.node(selection.$to.depth - 2);
-
     if (
       !fromNode ||
       fromNode.type.name !== listType.name ||
@@ -216,10 +218,22 @@ export function toggleList(listType, itemType) {
 
       const depth = rootListDepth(listItem, selection.$to, state.schema.nodes);
 
+      let liftFrom = selection.$to.pos;
+
+      // I am not fully sure the best solution,
+      // but if we donot handle the the nodeSelection of itemType
+      // an incorrect content error in thrown by liftFollowingList.
+      if (
+        selection instanceof NodeSelection &&
+        selection.node.type === listItem
+      ) {
+        liftFrom = selection.$from.pos + selection.node.firstChild.content.size;
+      }
+
       let tr = liftFollowingList(
         listItem,
         state,
-        selection.$to.pos,
+        liftFrom,
         selection.$to.end(depth),
         depth || 0,
         state.tr,

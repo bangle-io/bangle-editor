@@ -27,6 +27,7 @@ import {
   toggleList,
   backspaceKeyCommand,
 } from '../list-item/commands';
+import { NodeSelection } from 'prosemirror-state';
 
 const specSheet = new SpecSheet([
   doc.spec(),
@@ -53,6 +54,10 @@ const plugins = [
 ];
 
 const testEditor = renderTestEditor({ specSheet, plugins });
+const selectNodeAt = (view, pos) => {
+  const tr = view.state.tr;
+  view.dispatch(tr.setSelection(NodeSelection.create(tr.doc, pos)));
+};
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;
@@ -80,6 +85,211 @@ describe('Command: toggleList', () => {
         <ul>
           <li>
             <para>foobar</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  test('toggles correctly when para node is selected', async () => {
+    const { editorView } = testEditor(
+      <doc>
+        <para>hey</para>
+      </doc>,
+    );
+
+    const nodePosition = 0;
+
+    selectNodeAt(editorView, nodePosition);
+    // check to make sure it is node selection
+    expect(editorView.state.selection.node.type.name).toEqual('paragraph');
+
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  test('toggles correctly when li node is selected', async () => {
+    const { editorView, posLabels } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>[]hey</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    const nodePosition = posLabels['[]'] - 2;
+
+    selectNodeAt(editorView, nodePosition);
+    // check to make sure it is node selection
+    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  test('toggles correctly when nested  li node is selected ', async () => {
+    const { editorView, posLabels } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+            <ul>
+              <li>
+                <para>[]ku</para>
+              </li>
+              <li>
+                <para>other</para>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    const nodePosition = posLabels['[]'] - 2;
+
+    selectNodeAt(editorView, nodePosition);
+    // // check to make sure it is node selection
+    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+        <para>[]ku</para>
+        <ul>
+          <li>
+            <para>other</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  test('toggles correctly when nested empty li node is selected ', async () => {
+    const { editorView, posLabels } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+            <ul>
+              <li>
+                <para>[]</para>
+              </li>
+              <li>
+                <para>other</para>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    const nodePosition = posLabels['[]'] - 2;
+
+    selectNodeAt(editorView, nodePosition);
+    // // check to make sure it is node selection
+    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+        <para>[]</para>
+        <ul>
+          <li>
+            <para>other</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  // TODO the outcome of this is a bit weird and unexpected
+  test('toggles when the bullet_list node is selected ', async () => {
+    const { editorView, posLabels } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+            <ul>
+              <li>
+                <para>[]first</para>
+              </li>
+              <li>
+                <para>other</para>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    const nodePosition = posLabels['[]'] - 3;
+
+    selectNodeAt(editorView, nodePosition);
+    // // check to make sure it is node selection
+    expect(editorView.state.selection.node.type.name).toEqual('bullet_list');
+
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+            <para>first</para>
+            <para>other</para>
           </li>
         </ul>
       </doc>,

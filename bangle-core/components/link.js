@@ -194,7 +194,9 @@ function setLink(from, to, href) {
         });
         tr.addMark(from, to, mark);
       }
-      dispatch(tr);
+      if (dispatch) {
+        dispatch(tr);
+      }
       return true;
     },
   );
