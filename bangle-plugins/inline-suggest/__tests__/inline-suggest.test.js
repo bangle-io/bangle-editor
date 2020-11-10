@@ -16,6 +16,7 @@ import { PluginKey, Selection } from 'prosemirror-state';
 import { inlineSuggest } from '../index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
+import { sleep } from 'bangle-core/utils/js-utils';
 
 // We are using char code to differentiate between different schema
 // 47 is char code for '/'
@@ -197,6 +198,8 @@ describe('inline suggest basic show and hide', () => {
       show: true,
     });
 
+    // Give dom time to settle, as popper state updates as not sync
+    await sleep(5);
     expect(view.dom.parentNode).toMatchSnapshot();
   });
 

@@ -17,6 +17,7 @@ export class ReactEditor extends React.PureComponent {
   static propTypes = {
     options: PropTypes.object.isRequired,
     renderNodeViews: PropTypes.func,
+    onReady: PropTypes.func,
   };
 
   editorRenderTarget = React.createRef();
@@ -58,8 +59,8 @@ export class ReactEditor extends React.PureComponent {
     // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     saveRenderHandlers(this.editorRenderTarget.current, this.renderHandlers);
     this.editor = new BangleEditor(this.editorRenderTarget.current, options);
-    if (options.onReady) {
-      options.onReady(this.editor);
+    if (this.props.onReady) {
+      this.props.onReady(this.editor);
     }
   }
 

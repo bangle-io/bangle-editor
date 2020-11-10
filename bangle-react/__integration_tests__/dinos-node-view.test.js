@@ -1,16 +1,26 @@
 const helpers = require('./helpers');
-jest.setTimeout(125 * 1000);
+jest.setTimeout(25 * 1000);
 
 beforeEach(async () => {
   await jestPuppeteer.resetPage();
   page = await browser.newPage();
+
   await page.goto(helpers.url);
+  page.on('error', (err) => {
+    console.log('error happen at the page');
+    throw err;
+  });
+
+  page.on('pageerror', (pageerr) => {
+    console.log('pageerror occurred');
+    throw pageerr;
+  });
   await helpers.mountEditor(page);
 });
 
 const insertDino = () =>
   page.evaluate(() => {
-    return window.dispatcher(window.commands.dinos.insertDino('triceratops'));
+    return window.dispatcher(window.commands.dino.insertDino('triceratops'));
   });
 
 test('Creates a dino correctly', async () => {
@@ -25,9 +35,9 @@ test('Creates a dino correctly', async () => {
               Object {
                 "attrs": Object {
                   "data-dinokind": "triceratops",
-                  "data-type": "dinos",
+                  "data-type": "dino",
                 },
-                "type": "dinos",
+                "type": "dino",
               },
             ],
             "type": "paragraph",
@@ -107,9 +117,9 @@ test('typing before and after dino', async () => {
           Object {
             "attrs": Object {
               "data-dinokind": "triceratops",
-              "data-type": "dinos",
+              "data-type": "dino",
             },
-            "type": "dinos",
+            "type": "dino",
           },
           Object {
             "text": "after",
@@ -202,16 +212,16 @@ test('copy pasting dino should work', async () => {
               Object {
                 "attrs": Object {
                   "data-dinokind": "triceratops",
-                  "data-type": "dinos",
+                  "data-type": "dino",
                 },
-                "type": "dinos",
+                "type": "dino",
               },
               Object {
                 "attrs": Object {
                   "data-dinokind": "triceratops",
-                  "data-type": "dinos",
+                  "data-type": "dino",
                 },
-                "type": "dinos",
+                "type": "dino",
               },
             ],
             "type": "paragraph",

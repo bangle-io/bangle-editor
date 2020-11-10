@@ -52,7 +52,6 @@ function pluginsFactory({
 } = {}) {
   const { tooltipDOM, tooltipContent } = selectionTooltip.createTooltipDOM();
   const tooltipKey = createTooltipKey(key);
-
   const getIsTop = () => {
     return tooltipDOM.getAttribute('data-popper-placement') === 'top';
   };

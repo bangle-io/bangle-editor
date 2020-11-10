@@ -21,7 +21,7 @@ const plugins = [link.plugins(), linkMenu.plugins()];
 describe('Link menu', () => {
   test('when no link', async () => {
     const testEditor = renderTestEditor({ specSheet, plugins });
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>foo[]bar</para>
       </doc>,
@@ -32,7 +32,7 @@ describe('Link menu', () => {
 
   test('when link but not in selection', async () => {
     const testEditor = renderTestEditor({ specSheet, plugins });
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>
           foo
@@ -62,10 +62,10 @@ describe('Link menu', () => {
     expect(view.dom.parentNode).toMatchSnapshot();
   });
 
-  test('when selection moves inside selection', async () => {
+  test('when selection moves inside link', async () => {
     const testEditor = renderTestEditor({ specSheet, plugins });
 
-    const { view } = await testEditor(
+    const { view } = testEditor(
       <doc>
         <para>
           foo

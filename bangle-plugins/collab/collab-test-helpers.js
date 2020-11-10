@@ -68,13 +68,12 @@ export function setup(db = setupDb(), { managerOpts }) {
       if (!match) {
         throw new Error(id + ' editor not found');
       }
-      match.unmount();
+      match.editor.destroy();
       this.editors = this.editors.filter((e) => e[0] !== id);
     },
     createEditor: async function (id, docName) {
-      const editor = await renderTestEditor(
+      const editor = renderTestEditor(
         {
-          manager: this.manager,
           specSheet: specSheet,
           plugins: [
             ...editorPlugins,
@@ -86,7 +85,6 @@ export function setup(db = setupDb(), { managerOpts }) {
               ),
             }),
           ],
-          content: docName,
         },
         'data-test-' + id,
       )();

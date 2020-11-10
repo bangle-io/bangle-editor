@@ -1,7 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
-import { render } from '@testing-library/react';
 import { TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
+import { render } from '@testing-library/react';
 import { ReactEditor } from 'bangle-react/react-editor';
 import { corePlugins } from 'bangle-core/index';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
@@ -9,8 +12,12 @@ import { getDocLabels } from 'bangle-core/test-helpers/index';
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
 
-export function renderTestEditor(
-  { specSheet = defaultSpecSheet, plugins = defaultPlugins } = {},
+export function reactTestEditor(
+  {
+    specSheet = defaultSpecSheet,
+    plugins = defaultPlugins,
+    renderNodeViews,
+  } = {},
   testId = 'test-editor',
 ) {
   if (!(specSheet instanceof SpecSheet)) {
@@ -18,24 +25,33 @@ export function renderTestEditor(
   }
 
   return async (testDoc) => {
-    let view;
-    const onReady = (_view) => {
-      view = _view;
+    let editor;
+    const onReady = (_editor) => {
+      editor = _editor;
+    };
+
+    const editorProps = {
+      attributes: { class: 'bangle-editor content' },
     };
 
     const _options = {
       id: 'test-editor',
-      testId: testId,
-      editorProps: {
-        attributes: { class: 'bangle-editor content' },
-      },
-      onReady,
+      testId,
+      editorProps,
       ...{ specSheet, plugins },
     };
 
-    const result = render(<ReactEditor options={_options} />);
+    const result = render(
+      <ReactEditor
+        options={_options}
+        onReady={onReady}
+        renderNodeViews={renderNodeViews}
+      />,
+    );
 
     await result.findByTestId(testId);
+
+    let view = editor.view;
 
     let posLabels;
 
@@ -82,10 +98,9 @@ export function renderTestEditor(
     }
 
     return {
-      ...result,
-      get editor() {
-        throw new Error('wtf');
-      },
+      editor: editor,
+      container: result.container,
+      renderResult: result,
       view: view,
       editorState: view.state,
       schema: view.state.schema,

@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
     devtool: true ? 'source-map' : 'eval-source-map',
     resolve: {
       // TODO fix me punycode
-      // fallback: { punycode: require.resolve('punycode/') },
+      fallback: { punycode: require.resolve('punycode/') },
     },
     resolveLoader: {},
     devServer: {
