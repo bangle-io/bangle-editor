@@ -1,7 +1,6 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 
-import { rafWrap } from 'bangle-core/utils/js-utils';
 import { PluginKey } from 'prosemirror-state';
 import {
   isSelectionInsideTodoList,
@@ -27,7 +26,10 @@ import {
   isBoldActiveInSelection,
   toggleBold,
 } from 'bangle-core/components/bold';
-import { isSelectionInsideLink } from 'bangle-core/components/link';
+import {
+  isSelectionInsideLink,
+  setLinkAtSelection,
+} from 'bangle-core/components/link';
 import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import {
   hideAllSelectionTooltip,
@@ -36,6 +38,7 @@ import {
 import { isLinkMenuActive, showLinkMenu } from './link-menu';
 import { selectionTooltip } from '../selection-tooltip/index';
 import { Icon } from './icon-helpers';
+import { filter } from 'bangle-core/utils/pm-utils';
 
 const name = 'floating_menu';
 
@@ -105,21 +108,24 @@ function pluginsFactory({
   const Link = linkMenuKey && {
     type: 'command',
     name: 'Link',
-    command: (state, dispatch, view) => {
-      if (showLinkMenu(linkMenuKey)(state)) {
-        if (dispatch) {
-          console.log('hiding all');
-          hideAllSelectionTooltip()(state, dispatch, view);
-          setTimeout(
-            () => showLinkMenu(linkMenuKey)(view.state, view.dispatch, view),
-            0,
-          );
+    command: filter(
+      (state) => setLinkAtSelection('')(state),
+      (state, dispatch, view) => {
+        if (showLinkMenu(linkMenuKey)(state)) {
+          if (dispatch) {
+            console.log('hiding all');
+            hideAllSelectionTooltip()(state, dispatch, view);
+            setTimeout(
+              () => showLinkMenu(linkMenuKey)(view.state, view.dispatch, view),
+              0,
+            );
+            return true;
+          }
           return true;
         }
-        return true;
-      }
-      return false;
-    },
+        return false;
+      },
+    ),
     component: LinkIcon,
     isActive: isSelectionInsideLink,
   };

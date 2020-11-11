@@ -21,6 +21,12 @@ import {
 } from '../index';
 import { getLinkMarkDetails, setLinkAtSelection } from '../link';
 import { SpecSheet } from 'bangle-core/spec-sheet';
+import { NodeSelection } from 'prosemirror-state';
+
+const selectNodeAt = (view, pos) => {
+  const tr = view.state.tr;
+  view.dispatch(tr.setSelection(NodeSelection.create(tr.doc, pos)));
+};
 
 const specSheet = new SpecSheet([
   doc.spec(),
@@ -364,6 +370,37 @@ describe('remove link', () => {
       expect(editorView.state).toEqualDocAndSelection(expected);
     },
   );
+
+  test('when node is selected it should ignore', async () => {
+    const { editorView, posLabels } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>[]hey</para>
+          </li>
+        </ul>
+        <para>there</para>
+      </doc>,
+    );
+
+    const nodePosition = posLabels['[]'] - 2;
+    selectNodeAt(editorView, nodePosition);
+    // check to make sure it is node selection
+    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+
+    setLinkAtSelection()(editorView.state, editorView.dispatch);
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+        <para>there</para>
+      </doc>,
+    );
+  });
 });
 
 describe('Sets link', () => {
