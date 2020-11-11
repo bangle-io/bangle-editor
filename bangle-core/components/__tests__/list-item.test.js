@@ -2606,6 +2606,8 @@ describe('Meta-x on empty selections', () => {
             "type": "node",
           }
         `);
+    // The data is the same  because we just set the selection
+    // and expect the browser to do the actual cutting.
     expect(editorView.state.doc).toEqualDocument(
       <doc>
         <ul>

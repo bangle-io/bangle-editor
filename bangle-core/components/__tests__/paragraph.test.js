@@ -18,6 +18,7 @@ import {
 } from '../paragraph';
 
 const testEditor = renderTestEditor();
+const keys = paragraph.defaultKeys;
 
 describe('Basics', () => {
   test('Snapshot schema', () => {
@@ -637,7 +638,7 @@ describe('Commands', () => {
     ])('Case %# insert above', async (input, expected) => {
       const { view } = testEditor(input);
 
-      sendKeyToPm(view, 'Cmd-Shift-Enter');
+      sendKeyToPm(view, keys.insertEmptyAbove);
 
       expect(view.state).toEqualDocAndSelection(expected);
     });
@@ -703,7 +704,7 @@ describe('Commands', () => {
     ])('Case %# insert below', async (input, expected) => {
       const { view } = testEditor(input);
 
-      sendKeyToPm(view, 'Cmd-Enter');
+      sendKeyToPm(view, keys.insertEmptyBelow);
 
       expect(view.state).toEqualDocAndSelection(expected);
     });
@@ -723,5 +724,56 @@ describe('Commands', () => {
         <para>foobar[]</para>
       </doc>,
     );
+  });
+
+  test('Empty cut', async () => {
+    document.execCommand = jest.fn(() => {});
+    const { view } = await testEditor(
+      <doc>
+        <para>hello world</para>
+        <para>foobar[]</para>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keys.emptyCut);
+
+    expect(document.execCommand).toBeCalledTimes(1);
+    expect(document.execCommand).toBeCalledWith('cut');
+    expect(view.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 13,
+        "type": "node",
+      }
+    `);
+    // The data is the same  because we just set the selection
+    // and expect the browser to do the actual cutting.
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>hello world</para>
+        <para>foobar</para>
+      </doc>,
+    );
+  });
+
+  test('Empty copy', async () => {
+    document.execCommand = jest.fn(() => {});
+    const { view } = await testEditor(
+      <doc>
+        <para>hello world</para>
+        <para>foobar[]</para>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keys.emptyCopy);
+
+    expect(document.execCommand).toBeCalledTimes(1);
+    expect(document.execCommand).toBeCalledWith('copy');
+    expect(view.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 20,
+        "head": 20,
+        "type": "text",
+      }
+    `);
   });
 });
