@@ -53,6 +53,7 @@ const plugins = [
 ];
 
 const testEditor = renderTestEditor({ specSheet, plugins });
+const keybindings = listItem.defaultKeys;
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;
@@ -2539,7 +2540,7 @@ describe('Press Alt-Down to move list', () => {
   });
 });
 
-describe('Meta-c on empty selections', () => {
+describe('Mod-c on empty selections', () => {
   it('should work', async () => {
     document.execCommand = jest.fn(() => {});
 
@@ -2560,7 +2561,7 @@ describe('Meta-c on empty selections', () => {
         </ul>
       </doc>,
     );
-    sendKeyToPm(editorView, 'Cmd-c');
+    sendKeyToPm(editorView, keybindings.emptyCopy);
     expect(editorView.state).toEqualDocAndSelection(
       <doc>
         <ul>
@@ -2583,7 +2584,7 @@ describe('Meta-c on empty selections', () => {
   });
 });
 
-describe('Meta-x on empty selections', () => {
+describe('Mod-x on empty selections', () => {
   test('should cut a document', async () => {
     document.execCommand = jest.fn(() => {});
 
@@ -2599,7 +2600,7 @@ describe('Meta-x on empty selections', () => {
         </ul>
       </doc>,
     );
-    sendKeyToPm(editorView, 'Cmd-x');
+    sendKeyToPm(editorView, keybindings.emptyCut);
     expect(editorView.state.selection).toMatchInlineSnapshot(`
           Object {
             "anchor": 10,
@@ -4576,7 +4577,7 @@ describe('Insert empty list above and below', () => {
   ])('Case %# insert above', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -4684,7 +4685,7 @@ describe('Insert empty list above and below', () => {
   ])('Case %# insert below', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });

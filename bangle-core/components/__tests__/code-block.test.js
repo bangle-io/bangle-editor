@@ -8,9 +8,10 @@ import {
   renderTestEditor,
   sendKeyToPm,
 } from 'bangle-core/test-helpers/index';
+import { codeBlock } from '../index';
 
 const testEditor = renderTestEditor();
-
+const keybindings = codeBlock.defaultKeys;
 describe('Insert empty paragraph above and below', () => {
   test.each([
     [
@@ -55,7 +56,7 @@ describe('Insert empty paragraph above and below', () => {
   ])('Case %# insert empty paragraph above', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -103,7 +104,7 @@ describe('Insert empty paragraph above and below', () => {
   ])('Case %# insert empty paragraph below', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
