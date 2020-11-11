@@ -34,7 +34,7 @@ export const spec = (opts = {}) => {
 };
 
 export const plugins = ({
-  keys = {
+  keybindings = {
     toggleCode: 'Mod-`',
   },
 } = {}) => {
@@ -45,7 +45,7 @@ export const plugins = ({
       markPasteRule(/(?:`)([^`]+)(?:`)/g, type),
       markInputRule(/(?:`)([^`]+)(?:`)$/, type),
       keymap({
-        [keys.toggleCode]: toggleMark(type),
+        [keybindings.toggleCode]: toggleMark(type),
       }),
     ];
   };

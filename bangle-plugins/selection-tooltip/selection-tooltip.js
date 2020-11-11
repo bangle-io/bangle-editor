@@ -102,14 +102,14 @@ function pluginsFactory({
 
   const isActiveCheck = isSelectionTooltipActive(key);
 
-  const keys = {
+  const keybindings = {
     [enterKeyName]: filter(isActiveCheck, onEnter),
     [arrowUpKeyName]: filter(isActiveCheck, onArrowUp),
     [arrowDownKeyName]: filter(isActiveCheck, onArrowDown),
     [escapeKeyName]: filter(isActiveCheck, onEscape),
   };
   if (alternateEnterKeyName) {
-    keys[alternateEnterKeyName] = keys[enterKeyName];
+    keybindings[alternateEnterKeyName] = keybindings[enterKeyName];
   }
 
   return [
@@ -119,7 +119,7 @@ function pluginsFactory({
       tooltipPlugin: plugin,
       shouldShowTooltip,
     }).plugin,
-    keymap(keys),
+    keymap(keybindings),
     new Plugin({
       appendTransaction(trs, oldState, newState) {
         if (trs.some((tr) => tr.getMeta(HIDE_ALL_SELECTION_TOOLTIP))) {

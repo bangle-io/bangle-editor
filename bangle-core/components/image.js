@@ -61,7 +61,7 @@ export const spec = (opts = {}) => {
   };
 };
 
-export const plugins = ({ keys = {} } = {}) => {
+export const plugins = ({ keybindings = {} } = {}) => {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 

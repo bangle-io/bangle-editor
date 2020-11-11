@@ -6,11 +6,25 @@ import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
 import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+
+export const defaultKeys = {
+  wrapIn: 'Ctrl-ArrowRight',
+  moveDown: 'Alt-ArrowDown',
+  moveUp: 'Alt-ArrowUp',
+  emptyCopy: 'Mod-c',
+  emptyCut: 'Mod-x',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
+};
+
 const name = 'blockquote';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -33,9 +47,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ keys = {} } = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const isInBlockquote = (state) =>
@@ -43,27 +57,27 @@ export const plugins = ({ keys = {} } = {}) => {
     return [
       wrappingInputRule(/^\s*>\s$/, type),
       keymap({
-        'Ctrl-ArrowRight': filter(
+        [keybindings.wrapIn]: filter(
           (state) => !isInBlockquote(state),
           (state, dispatch, view) => {
             return wrapIn(type)(state, dispatch, view);
           },
         ),
-        'Alt-ArrowUp': moveNode(type, 'UP'),
-        'Alt-ArrowDown': moveNode(type, 'DOWN'),
+        [keybindings.moveUp]: moveNode(type, 'UP'),
+        [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-        'Meta-c': copyEmptyCommand(type),
-        'Meta-x': cutEmptyCommand(type),
+        [keybindings.emptyCopy]: copyEmptyCommand(type),
+        [keybindings.emptyCut]: cutEmptyCommand(type),
 
-        'Meta-Shift-Enter': filter(
+        [keybindings.insertEmptyAbove]: filter(
           isInBlockquote,
           insertEmpty(schema.nodes.paragraph, 'above', true),
         ),
-        'Meta-Enter': filter(
+        [keybindings.insertEmptyBelow]: filter(
           isInBlockquote,
           insertEmpty(schema.nodes.paragraph, 'below', true),
         ),
       }),
     ];
   };
-};
+}

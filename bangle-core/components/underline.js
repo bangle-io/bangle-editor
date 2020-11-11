@@ -37,7 +37,7 @@ export const spec = (opts = {}) => {
 };
 
 export const plugins = ({
-  keys = {
+  keybindings = {
     toggleUnderline: 'Mod-u',
   },
 } = {}) => {
@@ -48,7 +48,7 @@ export const plugins = ({
       markInputRule(/~([^~]+)~$/, type),
       markPasteRule(/~([^~]+)~/g, type),
       keymap({
-        [keys.toggleUnderline]: toggleMark(type),
+        [keybindings.toggleUnderline]: toggleMark(type),
       }),
     ];
   };
