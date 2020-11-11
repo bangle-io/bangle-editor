@@ -75,11 +75,13 @@ function specFactory({} = {}) {
   };
 }
 
-function pluginsFactory({ keys = { insertRandomEmoji: 'Shift-Ctrl-e' } } = {}) {
+function pluginsFactory({
+  keybindings = { insertRandomEmoji: 'Shift-Ctrl-e' },
+} = {}) {
   return () => {
     return [
       keymap({
-        [keys.insertRandomEmoji]: insertRandomEmoji(),
+        [keybindings.insertRandomEmoji]: insertRandomEmoji(),
       }),
     ];
   };

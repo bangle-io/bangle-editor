@@ -119,14 +119,14 @@ export function pluginsFactory({
     tooltipContent.textContent = 'hello world';
   }
 
-  const keys = {
+  const keybindings = {
     [enterKeyName]: filter(isActiveCheck, onEnter),
     [arrowUpKeyName]: filter(isActiveCheck, onArrowUp),
     [arrowDownKeyName]: filter(isActiveCheck, onArrowDown),
     [escapeKeyName]: filter(isActiveCheck, onEscape),
   };
   if (alternateEnterKeyName) {
-    keys[alternateEnterKeyName] = keys[enterKeyName];
+    keybindings[alternateEnterKeyName] = keybindings[enterKeyName];
   }
 
   return ({ schema }) => {
@@ -154,7 +154,7 @@ export function pluginsFactory({
     });
     return [
       plugin,
-      keymap(keys),
+      keymap(keybindings),
       valuePlugin(key, { trigger, markName }),
       triggerInputRule(schema, markName, trigger),
       tooltipController({

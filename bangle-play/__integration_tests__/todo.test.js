@@ -23,6 +23,7 @@ describe('Todo test', () => {
     });
 
     await page.goto(uniqDatabaseUrl());
+    await sleep(30);
     await mountEditor(page);
     await page.keyboard.down(ctrlKey);
     await page.keyboard.press('a');

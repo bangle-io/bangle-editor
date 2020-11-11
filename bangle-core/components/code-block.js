@@ -6,8 +6,18 @@ import { moveNode } from './list-item/commands';
 const name = 'code_block';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+export const defaultKeys = {
+  toCodeBlock: 'Shift-Ctrl-\\',
+  moveDown: 'Alt-ArrowDown',
+  moveUp: 'Alt-ArrowUp',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
+};
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -42,9 +52,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ keys = {} } = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const isInCodeBlock = (state) =>
@@ -53,20 +63,20 @@ export const plugins = ({ keys = {} } = {}) => {
     return [
       textblockTypeInputRule(/^```$/, type),
       keymap({
-        'Shift-Ctrl-\\': setBlockType(type),
+        [keybindings.toCodeBlock]: setBlockType(type),
 
-        'Alt-ArrowUp': moveNode(type, 'UP'),
-        'Alt-ArrowDown': moveNode(type, 'DOWN'),
+        [keybindings.moveUp]: moveNode(type, 'UP'),
+        [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-        'Meta-Shift-Enter': filter(
+        [keybindings.insertEmptyAbove]: filter(
           isInCodeBlock,
           insertEmpty(schema.nodes.paragraph, 'above', false),
         ),
-        'Meta-Enter': filter(
+        [keybindings.insertEmptyBelow]: filter(
           isInCodeBlock,
           insertEmpty(schema.nodes.paragraph, 'below', false),
         ),
       }),
     ];
   };
-};
+}

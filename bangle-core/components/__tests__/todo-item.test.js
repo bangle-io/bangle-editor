@@ -8,8 +8,10 @@ import {
   typeText,
   sendKeyToPm,
 } from 'bangle-core/test-helpers/index';
+import { todoItem } from '../index';
 
 const testEditor = renderTestEditor();
+const keybindings = todoItem.defaultKeys;
 
 test('Typing works', async () => {
   const { view } = await testEditor(
@@ -885,7 +887,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       </doc>,
     );
 
-    sendKeyToPm(editorView, 'Ctrl-Enter');
+    sendKeyToPm(editorView, keybindings.markDone);
 
     let { $from } = editorView.state.selection;
     let node = $from.node(-1);
@@ -895,7 +897,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       'data-type': 'todo_item',
     });
 
-    sendKeyToPm(editorView, 'Ctrl-Enter');
+    sendKeyToPm(editorView, keybindings.markDone);
 
     ({ $from } = editorView.state.selection);
     node = $from.node(-1);
@@ -922,7 +924,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       </doc>,
     );
 
-    sendKeyToPm(editorView, 'Ctrl-Enter');
+    sendKeyToPm(editorView, keybindings.markDone);
 
     let { $from } = editorView.state.selection;
     let node = $from.node(-1);
@@ -936,7 +938,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       'data-type': 'todo_item',
     });
 
-    sendKeyToPm(editorView, 'Ctrl-Enter');
+    sendKeyToPm(editorView, keybindings.markDone);
 
     ({ $from } = editorView.state.selection);
     node = $from.node(-1);
@@ -1057,7 +1059,7 @@ describe('Insert empty todo above and below', () => {
   ])('Case %# insert above', async (input, expected) => {
     const { view } = await testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -1165,7 +1167,7 @@ describe('Insert empty todo above and below', () => {
   ])('Case %# insert below', async (input, expected) => {
     const { view } = await testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });

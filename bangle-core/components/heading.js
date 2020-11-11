@@ -6,13 +6,32 @@ import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
 import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
 import { keymap } from 'bangle-core/utils/keymap';
 
-const name = 'heading';
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleHeading,
+  isSelectionInHeading,
+};
+export const defaultKeys = {
+  toH1: 'Shift-Ctrl-1',
+  toH2: 'Shift-Ctrl-2',
+  toH3: 'Shift-Ctrl-3',
+  toH4: 'Shift-Ctrl-4',
+  toH5: 'Shift-Ctrl-5',
+  toH6: 'Shift-Ctrl-6',
+  moveDown: 'Alt-ArrowDown',
+  moveUp: 'Alt-ArrowUp',
+  emptyCopy: 'Mod-c',
+  emptyCut: 'Mod-x',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
+};
 
+const name = 'heading';
+const defaultLevels = ['1', '2', '3', '4', '5', '6'];
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-const defaultLevels = ['1', '2', '3', '4', '5', '6'];
-
-export const spec = ({ levels = defaultLevels, classNames } = {}) => {
+function specFactory({ levels = defaultLevels, classNames } = {}) {
   return {
     type: 'node',
     name,
@@ -59,9 +78,12 @@ export const spec = ({ levels = defaultLevels, classNames } = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ levels = defaultLevels, keys = {} } = {}) => {
+function pluginsFactory({
+  levels = defaultLevels,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
@@ -72,21 +94,21 @@ export const plugins = ({ levels = defaultLevels, keys = {} } = {}) => {
           (items, level) => ({
             ...items,
             ...{
-              [`Shift-Ctrl-${level}`]: setBlockType(type, { level }),
+              [keybindings[`toH${level}`]]: setBlockType(type, { level }),
             },
           }),
           {
-            'Alt-ArrowUp': moveNode(type, 'UP'),
-            'Alt-ArrowDown': moveNode(type, 'DOWN'),
+            [keybindings.moveUp]: moveNode(type, 'UP'),
+            [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-            'Meta-c': copyEmptyCommand(type),
-            'Meta-x': cutEmptyCommand(type),
+            [keybindings.emptyCopy]: copyEmptyCommand(type),
+            [keybindings.emptyCut]: cutEmptyCommand(type),
 
-            'Meta-Shift-Enter': filter(
+            [keybindings.insertEmptyAbove]: filter(
               isInHeading,
               insertEmpty(schema.nodes.paragraph, 'above', false),
             ),
-            'Meta-Enter': filter(
+            [keybindings.insertEmptyBelow]: filter(
               isInHeading,
               insertEmpty(schema.nodes.paragraph, 'below', false),
             ),
@@ -104,16 +126,16 @@ export const plugins = ({ levels = defaultLevels, keys = {} } = {}) => {
       ),
     ];
   };
-};
+}
 
-export const toggleHeading = ({ level = 3 } = {}) => {
+export function toggleHeading({ level = 3 } = {}) {
   return (state, dispatch, view) =>
     toggleBlockType(state.schema.nodes.heading, state.schema.nodes.paragraph, {
       level,
     })(state, dispatch, view);
-};
+}
 
-export const isSelectionInHeading = ({ level = 3 }) => {
+export function isSelectionInHeading({ level = 3 }) {
   return (state) => {
     const match = findParentNodeOfType(state.schema.nodes.heading)(
       state.selection,
@@ -124,4 +146,4 @@ export const isSelectionInHeading = ({ level = 3 }) => {
     const { node } = match;
     return node.attrs.level === level;
   };
-};
+}

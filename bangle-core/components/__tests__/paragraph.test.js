@@ -18,7 +18,7 @@ import {
 } from '../paragraph';
 
 const testEditor = renderTestEditor();
-const keys = paragraph.defaultKeys;
+const keybindings = paragraph.defaultKeys;
 
 describe('Basics', () => {
   test('Snapshot schema', () => {
@@ -119,7 +119,6 @@ describe('Basics', () => {
 
 describe('Commands', () => {
   describe('Jump selection start and end', () => {
-    const keys = paragraph.defaultKeys;
     it('Moves selection to the start', async () => {
       const { view } = testEditor(
         <doc>
@@ -127,7 +126,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -143,7 +142,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -159,7 +158,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -179,7 +178,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -199,7 +198,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -215,7 +214,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -235,7 +234,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -266,7 +265,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keys.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfLine);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -638,7 +637,7 @@ describe('Commands', () => {
     ])('Case %# insert above', async (input, expected) => {
       const { view } = testEditor(input);
 
-      sendKeyToPm(view, keys.insertEmptyAbove);
+      sendKeyToPm(view, keybindings.insertEmptyAbove);
 
       expect(view.state).toEqualDocAndSelection(expected);
     });
@@ -704,7 +703,7 @@ describe('Commands', () => {
     ])('Case %# insert below', async (input, expected) => {
       const { view } = testEditor(input);
 
-      sendKeyToPm(view, keys.insertEmptyBelow);
+      sendKeyToPm(view, keybindings.insertEmptyBelow);
 
       expect(view.state).toEqualDocAndSelection(expected);
     });
@@ -735,7 +734,7 @@ describe('Commands', () => {
       </doc>,
     );
 
-    sendKeyToPm(view, keys.emptyCut);
+    sendKeyToPm(view, keybindings.emptyCut);
 
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('cut');
@@ -764,7 +763,7 @@ describe('Commands', () => {
       </doc>,
     );
 
-    sendKeyToPm(view, keys.emptyCopy);
+    sendKeyToPm(view, keybindings.emptyCopy);
 
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('copy');
