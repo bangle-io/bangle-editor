@@ -87,7 +87,7 @@ describe('one client - server', () => {
 
     await sleep(50); // wait for disk
 
-    expect(store.setItem).lastCalledWith('ole', view.state.doc.toJSON());
+    expect(store.setItem).lastCalledWith('ole', view.state.doc);
   });
 });
 
