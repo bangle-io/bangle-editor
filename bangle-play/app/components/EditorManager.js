@@ -9,31 +9,97 @@ import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
 import { Manager } from 'bangle-plugins/collab/server/manager';
 import { specSheet } from '../editor/spec-sheet';
 import { config } from 'bangle-play/config';
+import { WorkspacesInfo } from '../workspace/workspaces-info';
+import { IndexDbWorkspace } from '../workspace/workspace';
 
 const DEBUG = true;
+const LOG = true;
+let log = LOG ? console.log.bind(console, 'EditorManager') : () => {};
 
+async function findMatchingWorkspace(docName, schema) {
+  const availableWorkspacesInfo = await WorkspacesInfo.list();
+  for (const info of availableWorkspacesInfo) {
+    let workspace = await IndexDbWorkspace.openExistingWorkspace(info, schema);
+
+    if (workspace.hasFile(docName)) {
+      return workspace;
+    }
+  }
+}
 export class EditorManager extends React.PureComponent {
   static contextType = WorkspaceContext;
 
   schema = specSheet.schema;
+  cache = new WeakMap();
 
   disk = new LocalDisk({
     getItem: async (docName) => {
       const file = this.context.workspace.getFile(docName);
-      if (!file || file.doc === null) {
+
+      if (!file) {
+        let oldWorkspace = await findMatchingWorkspace(docName, this.schema);
+
+        if (!oldWorkspace) {
+          // This shouldnt happen, if !file this should be true or where else
+          // is file coming
+          log('no matching ws found, creating default content');
+          return defaultContent;
+        }
+
+        log(
+          'docName=',
+          docName,
+          'found matching content for an old workspace',
+          oldWorkspace,
+        );
+        return oldWorkspace.getFile(docName).doc;
+      }
+
+      if (file.doc === null) {
         return defaultContent;
       }
       return file.doc;
     },
-    setItem: async (docName, docJson) => {
+    setItem: async (docName, doc) => {
+      let lookup = this.cache.get(this.context.workspace);
+      if (!lookup) {
+        lookup = {};
+        this.cache.set(this.context.workspace, lookup);
+      }
+
+      if (lookup[docName] === doc) {
+        log('same doc passed in', docName);
+        return;
+      }
+      lookup[docName] = doc;
+
+      const docJson = doc.toJSON();
+      log('setitem', docName);
       const workspaceFile = this.context.workspace.getFile(docName);
       if (workspaceFile) {
         await workspaceFile.updateDoc(docJson);
         return;
       }
-      await this.context.updateContext(
-        workspaceActions.createWorkspaceFile(docName, docJson),
+
+      let oldWorkspace = await findMatchingWorkspace(docName, this.schema);
+
+      if (!oldWorkspace) {
+        log(
+          'no matching ws found, creating new file in ',
+          this.context.workspace,
+        );
+        await this.context.updateContext(
+          workspaceActions.createWorkspaceFile(docName, docJson),
+        );
+        return;
+      }
+      log(
+        'docName=',
+        docName,
+        'found matching content for an old workspace, SAVING!',
+        oldWorkspace,
       );
+      await oldWorkspace.getFile(docName).updateDoc(docJson);
     },
   });
 

@@ -14,7 +14,7 @@ export class LocalDisk extends Disk {
 
     this._saveTimeout = null;
 
-    await this._setItem(docName, doc.toJSON());
+    await this._setItem(docName, doc);
   }
 
   /**
