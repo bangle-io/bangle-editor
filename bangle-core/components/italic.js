@@ -30,7 +30,7 @@ export const spec = (opts = {}) => {
 };
 
 export const plugins = ({
-  keys = {
+  keybindings = {
     toggleItalic: 'Mod-i',
   },
 } = {}) => {
@@ -43,7 +43,7 @@ export const plugins = ({
       markInputRule(/(?:^|[^_])(_([^_]+)_)$/, type),
       markInputRule(/(?:^|[^*])(\*([^*]+)\*)$/, type),
       keymap({
-        [keys.toggleItalic]: toggleMark(type),
+        [keybindings.toggleItalic]: toggleMark(type),
       }),
     ];
   };

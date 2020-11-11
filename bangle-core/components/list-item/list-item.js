@@ -15,10 +15,24 @@ import {
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+export const defaultKeys = {
+  indent: 'Tab',
+  outdent: 'Shift-Tab',
+  moveDown: 'Alt-ArrowDown',
+  moveUp: 'Alt-ArrowUp',
+  emptyCopy: 'Mod-c',
+  emptyCut: 'Mod-x',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
+};
+
 const name = 'list_item';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -38,9 +52,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = (opts = {}) => {
+function pluginsFactory(opts = {}, keybindings = defaultKeys) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const parentCheck = parentHasDirectParentOfType(type, [
@@ -53,20 +67,23 @@ export const plugins = (opts = {}) => {
 
     return [
       keymap({
-        'Backspace': backspaceKeyCommand(type),
-        'Tab': indentList(type),
-        'Enter': enterKeyCommand(type),
-        'Shift-Tab': outdentList(type),
-        'Alt-ArrowUp': filter(parentCheck, move('UP')),
-        'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
-        'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
-        'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
-        'Meta-Shift-Enter': filter(
+        Backspace: backspaceKeyCommand(type),
+        Enter: enterKeyCommand(type),
+        [keybindings.indent]: indentList(type),
+        [keybindings.outdent]: outdentList(type),
+        [keybindings.moveUp]: filter(parentCheck, move('UP')),
+        [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
+        [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
+        [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
+        [keybindings.insertEmptyAbove]: filter(
           parentCheck,
           insertEmpty(type, 'above', true),
         ),
-        'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
+        [keybindings.insertEmptyBelow]: filter(
+          parentCheck,
+          insertEmpty(type, 'below', true),
+        ),
       }),
     ];
   };
-};
+}

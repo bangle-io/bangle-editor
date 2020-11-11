@@ -24,11 +24,35 @@ import { filter, insertEmpty } from '../utils/pm-utils';
 import { Plugin } from 'prosemirror-state';
 import { NodeView } from 'bangle-core/node-view';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+
+export const defaultKeys = {
+  markDone: browser.mac ? 'Ctrl-Enter' : 'Ctrl-I',
+  indent: 'Tab',
+  outdent: 'Shift-Tab',
+  moveDown: 'Alt-ArrowDown',
+  moveUp: 'Alt-ArrowUp',
+  emptyCopy: 'Mod-c',
+  emptyCut: 'Mod-x',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
+};
+
+const LOG = false;
+
+function log(...args) {
+  if (LOG) {
+    console.log('todo-item.js', ...args);
+  }
+}
+
 const name = 'todo_item';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = ({ nested = true } = {}) => {
+function specFactory({ nested = true } = {}) {
   return {
     type: 'node',
     name,
@@ -83,9 +107,9 @@ export const spec = ({ nested = true } = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ nested = true, keys = {} } = {}) => {
+function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
@@ -97,7 +121,7 @@ export const plugins = ({ nested = true, keys = {} } = {}) => {
     );
     return [
       keymap({
-        'Ctrl-Enter': filter(
+        [keybindings.markDone]: filter(
           parentCheck,
           updateNodeAttrs(type, (attrs) => ({
             ...attrs,
@@ -105,24 +129,27 @@ export const plugins = ({ nested = true, keys = {} } = {}) => {
           })),
         ),
 
-        'Enter': enterKeyCommand(type),
+        Enter: enterKeyCommand(type),
 
-        'Backspace': backspaceKeyCommand(type),
+        Backspace: backspaceKeyCommand(type),
 
-        'Tab': nested ? indentList(type) : () => {},
-        'Shift-Tab': outdentList(type),
+        [keybindings.indent]: nested ? indentList(type) : () => {},
+        [keybindings.outdent]: outdentList(type),
 
-        'Alt-ArrowUp': filter(parentCheck, move('UP')),
-        'Alt-ArrowDown': filter(parentCheck, move('DOWN')),
+        [keybindings.moveUp]: filter(parentCheck, move('UP')),
+        [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
 
-        'Meta-x': filter(parentCheck, cutEmptyCommand(type)),
-        'Meta-c': filter(parentCheck, copyEmptyCommand(type)),
+        [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
+        [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
 
-        'Meta-Shift-Enter': filter(
+        [keybindings.insertEmptyAbove]: filter(
           parentCheck,
           insertEmpty(type, 'above', true),
         ),
-        'Meta-Enter': filter(parentCheck, insertEmpty(type, 'below', true)),
+        [keybindings.insertEmptyBelow]: filter(
+          parentCheck,
+          insertEmpty(type, 'below', true),
+        ),
       }),
       new Plugin({
         props: {
@@ -185,7 +212,7 @@ export const plugins = ({ nested = true, keys = {} } = {}) => {
       }),
     ];
   };
-};
+}
 
 function TodoItemComp(props) {
   const { node, view, children, updateAttrs } = props;

@@ -23,10 +23,10 @@ export const defaultKeys = {
   jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
   moveDown: 'Alt-ArrowDown',
   moveUp: 'Alt-ArrowUp',
-  emptyCopy: 'Meta-c',
-  emptyCut: 'Meta-x',
-  insertEmptyAbove: 'Meta-Shift-Enter',
-  insertEmptyBelow: 'Meta-Enter',
+  emptyCopy: 'Mod-c',
+  emptyCut: 'Mod-x',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
 };
 
 const name = 'paragraph';
@@ -61,24 +61,30 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keys = defaultKeys } = {}) {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     // Enables certain command to only work if paragraph is direct child of the `doc` node
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
     return [
       keymap({
-        [keys.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
-        [keys.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
+        [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
+        [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 
-        [keys.jumpToStartOfLine]: jumpToStartOfParagraph(),
-        [keys.jumpToEndOfLine]: jumpToEndOfParagraph(),
+        [keybindings.jumpToStartOfLine]: jumpToStartOfParagraph(),
+        [keybindings.jumpToEndOfLine]: jumpToEndOfParagraph(),
 
-        [keys.emptyCopy]: filter(isTopLevel, copyEmptyCommand()),
-        [keys.emptyCut]: filter(isTopLevel, cutEmptyCommand()),
+        [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
+        [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
 
-        [keys.insertEmptyAbove]: filter(isTopLevel, insertEmpty(type, 'above')),
-        [keys.insertEmptyBelow]: filter(isTopLevel, insertEmpty(type, 'below')),
+        [keybindings.insertEmptyAbove]: filter(
+          isTopLevel,
+          insertEmpty(type, 'above'),
+        ),
+        [keybindings.insertEmptyBelow]: filter(
+          isTopLevel,
+          insertEmpty(type, 'below'),
+        ),
       }),
     ];
   };

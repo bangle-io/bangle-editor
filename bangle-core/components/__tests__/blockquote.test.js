@@ -10,8 +10,10 @@ import {
 } from 'bangle-core/test-helpers/index';
 
 import { typeText } from 'bangle-core/test-helpers/index';
-
+import { blockquote } from '../index';
 const testEditor = renderTestEditor();
+
+const keybindings = blockquote.defaultKeys;
 
 describe('Markdown shorthand works', () => {
   it('pressing > on empty paragraph works', () => {
@@ -228,7 +230,7 @@ describe('Insert empty paragraph above and below', () => {
   ])('Case %# insert empty paragraph above', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Shift-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -350,7 +352,7 @@ describe('Insert empty paragraph above and below', () => {
   ])('Case %# insert empty paragraph below', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, 'Cmd-Enter');
+    sendKeyToPm(view, keybindings.insertEmptyBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });

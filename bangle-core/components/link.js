@@ -65,7 +65,7 @@ export const spec = (opts = {}) => {
   };
 };
 
-export const plugins = ({ openOnClick = true, keys = {} } = {}) => {
+export const plugins = ({ openOnClick = true, keybindings = {} } = {}) => {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
