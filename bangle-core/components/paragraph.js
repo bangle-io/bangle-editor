@@ -23,10 +23,10 @@ export const defaultKeys = {
   jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
   moveDown: 'Alt-ArrowDown',
   moveUp: 'Alt-ArrowUp',
-  emptyCopy: 'Meta-c',
-  emptyCut: 'Meta-x',
-  insertEmptyAbove: 'Meta-Shift-Enter',
-  insertEmptyBelow: 'Meta-Enter',
+  emptyCopy: 'Mod-c',
+  emptyCut: 'Mod-x',
+  insertEmptyAbove: 'Mod-Shift-Enter',
+  insertEmptyBelow: 'Mod-Enter',
 };
 
 const name = 'paragraph';
@@ -74,8 +74,8 @@ function pluginsFactory({ keys = defaultKeys } = {}) {
         [keys.jumpToStartOfLine]: jumpToStartOfParagraph(),
         [keys.jumpToEndOfLine]: jumpToEndOfParagraph(),
 
-        [keys.emptyCopy]: filter(isTopLevel, copyEmptyCommand()),
-        [keys.emptyCut]: filter(isTopLevel, cutEmptyCommand()),
+        [keys.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
+        [keys.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
 
         [keys.insertEmptyAbove]: filter(isTopLevel, insertEmpty(type, 'above')),
         [keys.insertEmptyBelow]: filter(isTopLevel, insertEmpty(type, 'below')),
