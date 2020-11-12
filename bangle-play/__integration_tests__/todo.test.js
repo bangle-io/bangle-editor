@@ -69,17 +69,15 @@ describe('Todo test', () => {
 
     expect(
       await page.evaluate(
-        () => document.querySelector('.todo-checkbox input').outerHTML,
+        () => document.querySelector('.bangle-todo-item input').outerHTML,
       ),
-    ).toMatch(
-      /<input class="inline-block" type="checkbox" id="todo_item[\d]+" name="todo_item[\d]+/,
-    );
+    ).toMatch(/<input type="checkbox">/);
   });
 
   it('Clicking the task dones it', async () => {
     await page.type(PM_ID, '[ ] my task');
 
-    await page.click('.todo-checkbox input');
+    await page.click('.bangle-todo-item input');
 
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
@@ -90,7 +88,7 @@ describe('Todo test', () => {
     `);
     expect(
       await page.evaluate(() => {
-        const el = document.querySelector('.todo-checkbox input');
+        const el = document.querySelector('.bangle-todo-item input');
         if (!el) {
           throw new Error('Input not found');
         }
@@ -102,9 +100,9 @@ describe('Todo test', () => {
   it('Clicking a done task undones it', async () => {
     await page.type(PM_ID, '[ ] my task');
 
-    await page.click('.todo-checkbox input');
+    await page.click('.bangle-todo-item input');
     await sleep(10);
-    await page.click('.todo-checkbox input');
+    await page.click('.bangle-todo-item input');
 
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
@@ -115,7 +113,7 @@ describe('Todo test', () => {
     `);
     expect(
       await page.evaluate(() => {
-        const el = document.querySelector('.todo-checkbox input');
+        const el = document.querySelector('.bangle-todo-item input');
         if (!el) {
           throw new Error('Input not found');
         }

@@ -75,9 +75,6 @@ export class Editor extends React.PureComponent {
       docName: this.props.docName,
       manager: this.props.manager,
     }),
-    editorProps: {
-      attributes: { class: 'bangle-editor content' },
-    },
   };
 
   componentWillUnmount() {

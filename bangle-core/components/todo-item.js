@@ -1,11 +1,7 @@
-import React from 'react';
-import reactDOM from 'react-dom';
 import { chainCommands } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 
 import browser from '../utils/browser';
-import { uuid, classNames as cx, createElement } from '../utils/js-utils';
-import { objUid } from '../utils/object-uid';
 import {
   enterKeyCommand,
   backspaceKeyCommand,
@@ -23,6 +19,7 @@ import {
 import { filter, insertEmpty } from '../utils/pm-utils';
 import { Plugin } from 'prosemirror-state';
 import { NodeView } from 'bangle-core/node-view';
+import { DOMSerializer } from 'prosemirror-model';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -40,13 +37,9 @@ export const defaultKeys = {
   insertEmptyBelow: 'Mod-Enter',
 };
 
-const LOG = false;
+const LOG = true;
 
-function log(...args) {
-  if (LOG) {
-    console.log('todo-item.js', ...args);
-  }
-}
+let log = LOG ? console.log.bind(console, 'todo-item') : () => {};
 
 const name = 'todo_item';
 
@@ -77,7 +70,6 @@ function specFactory({ nested = true } = {}) {
             'data-type': name,
             'data-done': done.toString(),
           },
-          ['span', { contenteditable: 'false' }],
           ['div', { class: 'todo-content' }, 0],
         ];
       },
@@ -114,7 +106,6 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
-
     const parentCheck = parentHasDirectParentOfType(
       type,
       schema.nodes['todo_list'],
@@ -130,7 +121,6 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
         ),
 
         Enter: enterKeyCommand(type),
-
         Backspace: backspaceKeyCommand(type),
 
         [keybindings.indent]: nested ? indentList(type) : () => {},
@@ -155,42 +145,66 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
         props: {
           nodeViews: {
             [name]: (node, view, getPos, decorations) => {
-              const containerDOM = createElement('li', {
-                'data-uuid': 'todo-dom-' + uuid(4),
-                'data-type': 'todo_item',
-              });
-              const contentDOM = createElement('div', {
-                class: 'bangle-content',
-              });
+              const isDone = () =>
+                view.state.doc.nodeAt(getPos()).attrs['data-done'];
+              const {
+                dom: containerDOM,
+                contentDOM,
+              } = DOMSerializer.renderSpec(window.document, [
+                'li',
+                {
+                  'data-type': 'todo_item',
+                  'class': 'bangle-todo-item',
+                },
+                [
+                  'span',
+                  { contentEditable: false },
+                  [
+                    'input',
+                    {
+                      type: 'checkbox',
+                    },
+                  ],
+                ],
+                ['span', { class: 'bangle-content-mount' }, 0],
+              ]);
 
-              const update = (instance, { node, updateAttrs }) => {
-                const mobile = browser.ios || browser.android;
-                const children = (
-                  <div
-                    className="bangle-content-mount"
-                    ref={(node) => {
-                      if (!node) {
-                        return;
-                      }
-                      if (!node.contains(contentDOM)) {
-                        node.appendChild(contentDOM);
-                      }
-                    }}
-                  />
-                );
+              const inputElement = containerDOM.querySelector('input');
 
-                const props = { node, view, updateAttrs };
-                if (mobile) {
-                  return reactDOM.render(
-                    <MobileTodo {...props} children={children} />,
-                    containerDOM,
-                  );
+              const create = (instance, { updateAttrs }) => {
+                const done = isDone();
+                if (done) {
+                  inputElement.setAttribute('checked', 'true');
+                  inputElement.setAttribute('data-done', 'true');
                 }
-                return reactDOM.render(
-                  <TodoItemComp {...props} children={children} />,
-                  containerDOM,
-                );
+                inputElement.addEventListener('change', (e) => {
+                  log('change event');
+                  updateAttrs({
+                    'data-done': !isDone(),
+                  });
+                  e.preventDefault();
+                });
               };
+
+              const update = (instance, { node }) => {
+                const done = isDone();
+                const hasAttribute = inputElement.hasAttribute('checked');
+                if (done === hasAttribute) {
+                  log('skipping update', done, hasAttribute);
+                  return;
+                }
+
+                log('updating', node, 'setting to', done);
+
+                if (done) {
+                  inputElement.setAttribute('checked', 'true');
+                  inputElement.setAttribute('data-done', 'true');
+                } else {
+                  inputElement.removeAttribute('checked');
+                  inputElement.removeAttribute('data-done');
+                }
+              };
+
               return new NodeView({
                 node,
                 view,
@@ -199,10 +213,13 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
                 containerDOM,
                 contentDOM,
                 renderHandlers: {
-                  create: update,
+                  create: create,
                   update: update,
                   destroy: () => {
-                    reactDOM.unmountComponentAtNode(containerDOM);
+                    // TODO i think this is unnecessary
+                    while (containerDOM.firstChild) {
+                      containerDOM.removeChild(containerDOM.lastChild);
+                    }
                   },
                 },
               });
@@ -212,73 +229,4 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
       }),
     ];
   };
-}
-
-function TodoItemComp(props) {
-  const { node, view, children, updateAttrs } = props;
-
-  let uid = node.type.name + objUid.get(node);
-
-  const { 'data-done': done } = node.attrs;
-  return (
-    <>
-      <span
-        className="todo-checkbox self-start flex-none"
-        style={{
-          marginRight: '0.5rem',
-        }}
-        contentEditable={false}
-      >
-        <input
-          className="inline-block"
-          type="checkbox"
-          id={uid}
-          name={uid}
-          style={{
-            marginTop: '0.450rem',
-            outline: 'none',
-          }}
-          onChange={() => {
-            updateAttrs({
-              'data-done': !done,
-            });
-          }}
-          checked={!!done}
-          disabled={!view.editable}
-        />
-        <label htmlFor={uid} />
-      </span>
-      {children}
-    </>
-  );
-}
-
-function MobileTodo(props) {
-  const { node, updateAttrs, children } = props;
-  const { 'data-done': done } = node.attrs;
-
-  return (
-    <div className="flex flex-grow">
-      <button
-        contentEditable={false}
-        style={{
-          margin: '10px 8px 10px 8px',
-          padding: '20px 36px 20px 36px',
-        }}
-        className={cx({
-          'flex-none': true,
-          'bg-green-200': done,
-          'bg-yellow-200': !done,
-        })}
-        onClick={() => {
-          updateAttrs({
-            'data-done': !done,
-          });
-        }}
-      >
-        {done ? '✅' : '🟨'}
-      </button>
-      {children}
-    </div>
-  );
 }
