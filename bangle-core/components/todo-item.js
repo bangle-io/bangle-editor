@@ -177,12 +177,11 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
                   inputElement.setAttribute('checked', 'true');
                   inputElement.setAttribute('data-done', 'true');
                 }
-                inputElement.addEventListener('change', (e) => {
+                inputElement.addEventListener('input', (e) => {
                   log('change event');
                   updateAttrs({
                     'data-done': !isDone(),
                   });
-                  e.preventDefault();
                 });
               };
 
