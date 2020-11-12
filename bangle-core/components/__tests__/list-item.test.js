@@ -14,10 +14,13 @@ import {
   listItem,
   orderedList,
   hardBreak,
+  todoItem,
+  todoList,
   heading,
   underline,
   codeBlock,
   doc,
+  strike,
   text,
   paragraph,
 } from '../index';
@@ -36,9 +39,12 @@ const specSheet = new SpecSheet([
   bulletList.spec(),
   listItem.spec(),
   orderedList.spec(),
+  todoItem.spec(),
+  todoList.spec(),
   hardBreak.spec(),
   heading.spec(),
   underline.spec(),
+  strike.spec(),
 ]);
 
 const plugins = [
@@ -46,11 +52,14 @@ const plugins = [
   text.plugins(),
   paragraph.plugins(),
   bulletList.plugins(),
+  todoItem.plugins(),
+  todoList.plugins(),
   listItem.plugins(),
   orderedList.plugins(),
   hardBreak.plugins(),
   heading.plugins(),
   underline.plugins(),
+  strike.plugins(),
 ];
 
 const testEditor = renderTestEditor({ specSheet, plugins });
@@ -60,7 +69,6 @@ const selectNodeAt = (view, pos) => {
   view.dispatch(tr.setSelection(NodeSelection.create(tr.doc, pos)));
 };
 const keybindings = listItem.defaultKeys;
-
 
 describe('Command: toggleList', () => {
   let updateDoc, editorView;
@@ -90,6 +98,59 @@ describe('Command: toggleList', () => {
             <para>foobar</para>
           </li>
         </ul>
+      </doc>,
+    );
+  });
+
+  test('toggle correctly when it has hard_break in it', async () => {
+    updateDoc(
+      <doc>
+        <todoList>
+          <todoItem>
+            <para>fi[rst</para>
+          </todoItem>
+          <todoItem>
+            <para>
+              <strike>
+                <br />
+              </strike>
+              <strike>- I </strike>
+            </para>
+          </todoItem>
+          <todoItem>
+            <para>las]t</para>
+          </todoItem>
+        </todoList>
+        <para></para>
+      </doc>,
+    );
+    // because togglelist requires a view to work
+    // we are not using the applyCommand helper
+    toggleList(editorView.state.schema.nodes['bullet_list'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>fi[rst</para>
+          </li>
+          <li>
+            <para>
+              <strike>
+                <br />
+              </strike>
+              <strike>- I </strike>
+            </para>
+          </li>
+          <li>
+            <para>las]t</para>
+          </li>
+        </ul>
+        <para></para>
       </doc>,
     );
   });
