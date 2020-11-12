@@ -2612,20 +2612,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:7.24.1", {
-          "packageLocation": "./.yarn/cache/@testing-library-dom-npm-7.24.1-d77dd6fc4f-e5ebd9a27e.zip/node_modules/@testing-library/dom/",
-          "packageDependencies": [
-            ["@testing-library/dom", "npm:7.24.1"],
-            ["@babel/code-frame", "npm:7.10.4"],
-            ["@babel/runtime", "npm:7.11.2"],
-            ["@types/aria-query", "npm:4.2.0"],
-            ["aria-query", "npm:4.2.2"],
-            ["chalk", "npm:4.1.0"],
-            ["dom-accessibility-api", "npm:0.5.2"],
-            ["pretty-format", "npm:26.4.2"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:7.24.3", {
           "packageLocation": "./.yarn/cache/@testing-library-dom-npm-7.24.3-b309c4597e-5ca69789ac.zip/node_modules/@testing-library/dom/",
           "packageDependencies": [
@@ -2703,25 +2689,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", null],
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.13.1"]
-          ],
-          "packagePeers": [
-            "@types/react-dom",
-            "@types/react",
-            "react-dom",
-            "react"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:11.0.2", {
-          "packageLocation": "./.yarn/$$virtual/@testing-library-react-virtual-bd25629496/0/cache/@testing-library-react-npm-11.0.2-3f710d1c12-664dfbafb3.zip/node_modules/@testing-library/react/",
-          "packageDependencies": [
-            ["@testing-library/react", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:11.0.2"],
-            ["@babel/runtime", "npm:7.11.2"],
-            ["@testing-library/dom", "npm:7.24.1"],
-            ["@types/react", null],
-            ["@types/react-dom", null],
-            ["react", null],
-            ["react-dom", null]
           ],
           "packagePeers": [
             "@types/react-dom",
@@ -4661,8 +4628,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./bangle-core/",
           "packageDependencies": [
             ["bangle-core", "workspace:bangle-core"],
-            ["@testing-library/react", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:11.0.2"],
-            ["lodash.debounce", "npm:4.0.8"],
             ["prettier", "npm:2.1.1"],
             ["prosemirror-commands", "npm:1.1.4"],
             ["prosemirror-dropcursor", "npm:1.3.2"],

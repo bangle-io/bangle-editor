@@ -7,7 +7,6 @@
     "unit-tests": "yarn jest"
   },
   "dependencies": {
-    "lodash.debounce": "^4.0.8",
     "prosemirror-commands": "^1.1.4",
     "prosemirror-dropcursor": "^1.1.1",
     "prosemirror-gapcursor": "^1.1.5",
@@ -24,7 +23,6 @@
     "tiptap-commands": "^1.14.3"
   },
   "devDependencies": {
-    "@testing-library/react": "^11.0.2",
     "prettier": "^2.1.1"
   }
 }
