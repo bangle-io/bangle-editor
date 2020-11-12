@@ -21,8 +21,6 @@
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "^0.9.6",
     "prosemirror-view": "^1.15.2",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
     "tiptap-commands": "^1.14.3"
   },
   "devDependencies": {
