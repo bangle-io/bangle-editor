@@ -1836,21 +1836,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/dom@npm:^7.23.0":
-  version: 7.24.1
-  resolution: "@testing-library/dom@npm:7.24.1"
-  dependencies:
-    "@babel/code-frame": ^7.10.4
-    "@babel/runtime": ^7.10.3
-    "@types/aria-query": ^4.2.0
-    aria-query: ^4.2.2
-    chalk: ^4.1.0
-    dom-accessibility-api: ^0.5.1
-    pretty-format: ^26.4.2
-  checksum: e5ebd9a27e48f48012b77888e6c2bb16b6e36c2fe4db299ea17fb25d427491afea28cb3bf33379a4ea8d1f4fc76ef294964027747f58c102c69086ed1a1dbe50
-  languageName: node
-  linkType: hard
-
 "@testing-library/dom@npm:^7.24.2":
   version: 7.24.3
   resolution: "@testing-library/dom@npm:7.24.3"
@@ -1908,19 +1893,6 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: 8e725f094be47651b852a356e7fff9bcde2ab665c8ba7b0d9ef8e2140dd1158c8b58d4fcbebd4f5d03e32cff34c4c035a4d5a761903f1c908bebc2fe6abc8ec2
-  languageName: node
-  linkType: hard
-
-"@testing-library/react@npm:^11.0.2":
-  version: 11.0.2
-  resolution: "@testing-library/react@npm:11.0.2"
-  dependencies:
-    "@babel/runtime": ^7.11.2
-    "@testing-library/dom": ^7.23.0
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: 664dfbafb36dcad0fb232a48824e63d58db4594f6ada073bea9fe322c4a9fc717aa95a0d2f196fbaa40b0cc3c78683967b8571405a6ceb755f7eb9c3dd916cd6
   languageName: node
   linkType: hard
 
@@ -3460,8 +3432,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-core@workspace:bangle-core"
   dependencies:
-    "@testing-library/react": ^11.0.2
-    lodash.debounce: ^4.0.8
     prettier: ^2.1.1
     prosemirror-commands: ^1.1.4
     prosemirror-dropcursor: ^1.1.1
@@ -3476,8 +3446,6 @@ __metadata:
     prosemirror-transform: ^1.2.7
     prosemirror-utils: ^0.9.6
     prosemirror-view: ^1.15.2
-    react: ^16.13.0
-    react-dom: ^16.13.0
     tiptap-commands: ^1.14.3
   languageName: unknown
   linkType: soft

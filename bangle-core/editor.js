@@ -32,6 +32,7 @@ export class BangleEditor {
         this.updateState(newState);
       },
       ...viewOpts,
+      attributes: { class: 'bangle-editor' },
     });
 
     if (focusOnInit) {
