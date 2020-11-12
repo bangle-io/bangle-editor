@@ -288,7 +288,7 @@ export const isEmptySelectionAtStart = (state) => {
  */
 export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
   let tr;
-  const { from, to } = state.tr.selection;
+  let { from, to } = state.tr.selection;
 
   state.doc.nodesBetween(
     from,
@@ -306,6 +306,13 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
         ) {
           const filteredMarks = node.marks.filter((m) => m.type !== mark.type);
           const position = pos > 0 ? pos - 1 : 0;
+          let targetNode = state.doc.nodeAt(position);
+
+          // you cannot set markup for text node
+          if (!targetNode || targetNode.isText) {
+            return;
+          }
+
           tr = (tr || state.tr).setNodeMarkup(
             position,
             undefined,
