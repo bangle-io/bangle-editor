@@ -2,15 +2,14 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { fireEvent, wait } from '@testing-library/react';
-import { pjsx } from 'bangle-react/test-helpers/pjsx';
+import { fireEvent } from '@testing-library/react';
+import { pjsx, reactTestEditor } from 'bangle-react/__test-helpers__/index';
 import { sendKeyToPm } from 'bangle-core/test-helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import { corePlugins, coreSpec } from 'bangle-core/components/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { stopwatch } from '../index';
 import { Stopwatch } from '../stopwatch';
-import { reactTestEditor } from 'bangle-react/test-helpers/react-test-editor';
 
 const specSheet = new SpecSheet([...coreSpec(), stopwatch.spec({})]);
 const plugins = [...corePlugins(), stopwatch.plugins({})];

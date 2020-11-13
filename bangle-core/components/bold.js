@@ -2,11 +2,19 @@ import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleBold,
+  isBoldActiveInSelection,
+};
+
 const name = 'bold';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'mark',
     name,
@@ -38,13 +46,13 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({
+function pluginsFactory({
   keybindings = {
     toggleBold: 'Mod-b',
   },
-} = {}) => {
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -56,12 +64,12 @@ export const plugins = ({
       }),
     ];
   };
-};
+}
 
-export const toggleBold = (state, dispatch, view) => {
+export function toggleBold(state, dispatch, view) {
   return toggleMark(state.schema.marks.bold)(state, dispatch, view);
-};
+}
 
-export const isBoldActiveInSelection = (state) => {
+export function isBoldActiveInSelection(state) {
   return isMarkActiveInSelection(state.schema.marks.bold)(state);
-};
+}

@@ -2,9 +2,8 @@
 import { screen } from '@testing-library/dom';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { corePlugins, coreSpec } from 'bangle-core/index';
-import { pjsx } from 'bangle-react/test-helpers/pjsx';
+import { pjsx, reactTestEditor } from 'bangle-react/__test-helpers__';
 import { bananaComponent, Banana } from './banana';
-import { reactTestEditor } from 'bangle-react/test-helpers/react-test-editor';
 const renderNodeViews = jest.fn(({ node, ...args }) => {
   if (node.type.name === 'banana') {
     return <Banana node={node} {...args} />;

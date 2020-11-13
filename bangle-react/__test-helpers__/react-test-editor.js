@@ -5,9 +5,9 @@ import React from 'react';
 import { TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { render } from '@testing-library/react';
-import { ReactEditor } from 'bangle-react/react-editor';
 import { corePlugins } from 'bangle-core/index';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
+import { ReactEditor } from '../react-editor';
 
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
