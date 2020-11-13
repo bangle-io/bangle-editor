@@ -101,7 +101,11 @@ function specFactory({ nested = true } = {}) {
   };
 }
 
-function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  nested = true,
+  nodeView = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
@@ -141,91 +145,92 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
           insertEmpty(type, 'below', true),
         ),
       }),
-      new Plugin({
-        props: {
-          nodeViews: {
-            [name]: (node, view, getPos, decorations) => {
-              const isDone = () =>
-                view.state.doc.nodeAt(getPos()).attrs['data-done'];
-              const {
-                dom: containerDOM,
-                contentDOM,
-              } = DOMSerializer.renderSpec(window.document, [
-                'li',
-                {
-                  'data-type': 'todo_item',
-                  'class': 'bangle-todo-item',
-                },
-                [
-                  'span',
-                  { contentEditable: false },
-                  [
-                    'input',
-                    {
-                      type: 'checkbox',
-                    },
-                  ],
-                ],
-                ['span', { class: 'bangle-content-mount' }, 0],
-              ]);
-
-              const inputElement = containerDOM.querySelector('input');
-
-              const create = (instance, { updateAttrs }) => {
-                const done = isDone();
-                if (done) {
-                  inputElement.setAttribute('checked', 'true');
-                  inputElement.setAttribute('data-done', 'true');
-                }
-                inputElement.addEventListener('input', (e) => {
-                  log('change event');
-                  updateAttrs({
-                    'data-done': !isDone(),
-                  });
-                });
-              };
-
-              const update = (instance, { node }) => {
-                const done = isDone();
-                const hasAttribute = inputElement.hasAttribute('checked');
-                if (done === hasAttribute) {
-                  log('skipping update', done, hasAttribute);
-                  return;
-                }
-
-                log('updating', node, 'setting to', done);
-
-                if (done) {
-                  inputElement.setAttribute('checked', 'true');
-                  inputElement.setAttribute('data-done', 'true');
-                } else {
-                  inputElement.removeAttribute('checked');
-                  inputElement.removeAttribute('data-done');
-                }
-              };
-
-              return new NodeView({
-                node,
-                view,
-                getPos,
-                decorations,
-                containerDOM,
-                contentDOM,
-                renderHandlers: {
-                  create: create,
-                  update: update,
-                  destroy: () => {
-                    // TODO i think this is unnecessary
-                    while (containerDOM.firstChild) {
-                      containerDOM.removeChild(containerDOM.lastChild);
-                    }
+      nodeView &&
+        new Plugin({
+          props: {
+            nodeViews: {
+              [name]: (node, view, getPos, decorations) => {
+                const isDone = () =>
+                  view.state.doc.nodeAt(getPos()).attrs['data-done'];
+                const {
+                  dom: containerDOM,
+                  contentDOM,
+                } = DOMSerializer.renderSpec(window.document, [
+                  'li',
+                  {
+                    'data-type': 'todo_item',
+                    'class': 'bangle-todo-item',
                   },
-                },
-              });
+                  [
+                    'span',
+                    { contentEditable: false },
+                    [
+                      'input',
+                      {
+                        type: 'checkbox',
+                      },
+                    ],
+                  ],
+                  ['span', { class: 'bangle-content-mount' }, 0],
+                ]);
+
+                const inputElement = containerDOM.querySelector('input');
+
+                const create = (instance, { updateAttrs }) => {
+                  const done = isDone();
+                  if (done) {
+                    inputElement.setAttribute('checked', 'true');
+                    inputElement.setAttribute('data-done', 'true');
+                  }
+                  inputElement.addEventListener('input', (e) => {
+                    log('change event');
+                    updateAttrs({
+                      'data-done': !isDone(),
+                    });
+                  });
+                };
+
+                const update = (instance, { node }) => {
+                  const done = isDone();
+                  const hasAttribute = inputElement.hasAttribute('checked');
+                  if (done === hasAttribute) {
+                    log('skipping update', done, hasAttribute);
+                    return;
+                  }
+
+                  log('updating', node, 'setting to', done);
+
+                  if (done) {
+                    inputElement.setAttribute('checked', 'true');
+                    inputElement.setAttribute('data-done', 'true');
+                  } else {
+                    inputElement.removeAttribute('checked');
+                    inputElement.removeAttribute('data-done');
+                  }
+                };
+
+                return new NodeView({
+                  node,
+                  view,
+                  getPos,
+                  decorations,
+                  containerDOM,
+                  contentDOM,
+                  renderHandlers: {
+                    create: create,
+                    update: update,
+                    destroy: () => {
+                      // TODO i think this is unnecessary
+                      while (containerDOM.firstChild) {
+                        containerDOM.removeChild(containerDOM.lastChild);
+                      }
+                    },
+                  },
+                });
+              },
             },
           },
-        },
-      }),
+        }),
     ];
   };
 }

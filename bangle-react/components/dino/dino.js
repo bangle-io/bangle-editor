@@ -5,12 +5,8 @@ import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
-import { uuid } from 'bangle-core/utils/js-utils';
 import { keymap } from 'bangle-core/utils/keymap';
-import { NodeView } from 'bangle-core/node-view';
-import { serializationHelpers } from 'bangle-core/node-view';
-import { Plugin } from 'prosemirror-state';
-import { createElement } from '../../utils/utils';
+import { NodeView, serializationHelpers } from 'bangle-core/node-view';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -57,31 +53,7 @@ function pluginsFactory() {
     keymap({
       'Ctrl-B': randomDino(),
     }),
-    new Plugin({
-      props: {
-        nodeViews: {
-          [name]: (node, view, getPos, decorations) => {
-            const containerDOM = createElement('span', {
-              'data-uuid': name + '-' + uuid(4),
-            });
-            const mountDOM = createElement('span', {
-              'data-uuid': name + '-react-' + uuid(4),
-              'data-mount': 'true',
-            });
-            containerDOM.appendChild(mountDOM);
-
-            return new NodeView({
-              node,
-              view,
-              getPos,
-              decorations,
-              containerDOM,
-              mountDOM: mountDOM,
-            });
-          },
-        },
-      },
-    }),
+    NodeView.createPlugin({ name: 'dino', containerDOM: ['span'] }),
   ];
 }
 
