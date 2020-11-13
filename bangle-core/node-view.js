@@ -1,11 +1,12 @@
-import { objectFilter, bangleWarn } from './utils/js-utils';
+import { Plugin } from 'prosemirror-state';
+import { objectFilter, bangleWarn, createElement } from './utils/js-utils';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};
 const renderHandlersCache = new WeakMap();
 
 class BaseNodeView {
-  get _pmProps() {
+  getNodeViewProps() {
     return {
       node: this._node,
       view: this._view,
@@ -73,14 +74,50 @@ class BaseNodeView {
       selectionSensitive,
     };
 
-    this.renderHandlers.create(this, this._pmProps);
+    this.renderHandlers.create(this, this.getNodeViewProps());
   }
 }
 
 export class NodeView extends BaseNodeView {
+  static createPlugin({
+    name,
+    containerDOM: containerDOMSpec,
+    contentDOM: contentDOMSpec,
+    renderHandlers,
+  }) {
+    return new Plugin({
+      props: {
+        nodeViews: {
+          [name]: (node, view, getPos, decorations) => {
+            const containerDOM = createElement(containerDOMSpec);
+
+            containerDOM.setAttribute('data-bangle-name', name);
+            containerDOM.setAttribute('data-bangle-container', '');
+
+            let contentDOM;
+            if (contentDOMSpec) {
+              contentDOM = createElement(contentDOMSpec);
+              containerDOM.setAttribute('data-bangle-content', '');
+            }
+
+            return new NodeView({
+              node,
+              view,
+              getPos,
+              decorations,
+              containerDOM,
+              contentDOM,
+              renderHandlers,
+            });
+          },
+        },
+      },
+    });
+  }
+
   update(node, decorations) {
     log('update node');
-    // @see https://github.com/ProseMirror/prosemirror/issues/648
+    // https://github.com/ProseMirror/prosemirror/issues/648
     if (this._node.type !== node.type) {
       return false;
     }
@@ -94,7 +131,7 @@ export class NodeView extends BaseNodeView {
     this._node = node;
     this._decorations = decorations;
     log('update node execute');
-    this.renderHandlers.update(this, this._pmProps);
+    this.renderHandlers.update(this, this.getNodeViewProps());
 
     return true;
   }
@@ -103,14 +140,14 @@ export class NodeView extends BaseNodeView {
     this.containerDOM.classList.add('ProseMirror-selectednode');
     this._selected = true;
     log('select node');
-    this.renderHandlers.update(this, this._pmProps);
+    this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
   deselectNode() {
     this.containerDOM.classList.remove('ProseMirror-selectednode');
     this._selected = false;
     log('deselectNode node');
-    this.renderHandlers.update(this, this._pmProps);
+    this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
   // Donot unset it if you donot have an implmentation.
@@ -136,7 +173,7 @@ export class NodeView extends BaseNodeView {
   // }
 
   destroy() {
-    this.renderHandlers.destroy(this, this._pmProps);
+    this.renderHandlers.destroy(this, this.getNodeViewProps());
     // TODO do we need to cleanup mountDOM
     this.containerDOM = undefined;
     this.contentDOM = undefined;

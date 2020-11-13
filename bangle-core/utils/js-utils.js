@@ -1,3 +1,5 @@
+import { DOMSerializer } from 'prosemirror-model';
+
 const LOG = false;
 
 function log(...args) {
@@ -383,21 +385,10 @@ export function recursiveFlat(data, callbackPayload) {
   return recurse(data);
 }
 
-export function createElement(type = 'div', attrs = {}) {
-  const element = document.createElement(type);
-  for (let attr in attrs) {
-    const value = attrs[attr];
-    if (attr.startsWith('data-')) {
-      element.setAttribute(attr, value);
-    } else if (attr === 'id') {
-      element.id = value;
-    } else if (attr === 'class') {
-      value.split(' ').forEach((c) => element.classList.add(c));
-    } else if (attr === 'contentEditable') {
-      element.contentEditable = value;
-    } else {
-      throw new Error(`Attr ${attr} not supported`);
-    }
+export function createElement(spec) {
+  const { dom, contentDOM } = DOMSerializer.renderSpec(window.document, spec);
+  if (contentDOM) {
+    throw new Error('createElement does not support creating contentDOM');
   }
-  return element;
+  return dom;
 }
