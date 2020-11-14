@@ -143,7 +143,7 @@ export class Editor extends React.PureComponent {
 }
 
 function TodoItem({ children, node, updateAttrs }) {
-  const { 'data-done': done } = node.attrs;
+  const { done: done } = node.attrs;
 
   return (
     <>
@@ -152,7 +152,7 @@ function TodoItem({ children, node, updateAttrs }) {
           type="checkbox"
           onChange={() => {
             updateAttrs({
-              'data-done': !done,
+              done: !done,
             });
           }}
           checked={!!done}

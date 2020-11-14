@@ -893,7 +893,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
     let node = $from.node(-1);
 
     expect(node.attrs).toEqual({
-      'data-done': true,
+      'done': true,
       'data-type': 'todo_item',
     });
 
@@ -903,7 +903,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
     node = $from.node(-1);
 
     expect(node.attrs).toEqual({
-      'data-done': false,
+      'done': false,
       'data-type': 'todo_item',
     });
   });
@@ -930,11 +930,11 @@ describe('Toggle todo list with keyboard shortcut', () => {
     let node = $from.node(-1);
     let ancestorTodo = $from.node(-3);
     expect(node.attrs).toEqual({
-      'data-done': true,
+      'done': true,
       'data-type': 'todo_item',
     });
     expect(ancestorTodo.attrs).toEqual({
-      'data-done': false,
+      'done': false,
       'data-type': 'todo_item',
     });
 
@@ -945,11 +945,11 @@ describe('Toggle todo list with keyboard shortcut', () => {
     ancestorTodo = $from.node(-3);
 
     expect(node.attrs).toEqual({
-      'data-done': false,
+      'done': false,
       'data-type': 'todo_item',
     });
     expect(ancestorTodo.attrs).toEqual({
-      'data-done': false,
+      'done': false,
       'data-type': 'todo_item',
     });
   });

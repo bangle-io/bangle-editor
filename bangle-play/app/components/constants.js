@@ -62,7 +62,7 @@ export const defaultContent = {
           type: 'todo_item',
           attrs: {
             'data-type': 'todo_item',
-            'data-done': false,
+            'done': false,
           },
           content: [
             {

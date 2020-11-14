@@ -20,7 +20,7 @@ import { filter, insertEmpty } from '../utils/pm-utils';
 import { Plugin } from 'prosemirror-state';
 import { NodeView } from 'bangle-core/node-view';
 import { DOMSerializer } from 'prosemirror-model';
-
+import { domSerializationHelpers } from '../dom-serialization-helpers';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
@@ -46,15 +46,18 @@ const name = 'todo_item';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory({ nested = true } = {}) {
+  const { toDOM, parseDOM } = domSerializationHelpers(name, {
+    tagName: 'li',
+    parsingPriority: 51,
+    hasContent: true,
+  });
+
   return {
     type: 'node',
     name,
     schema: {
       attrs: {
-        'data-type': {
-          default: name,
-        },
-        'data-done': {
+        done: {
           default: false,
         },
       },
@@ -62,30 +65,13 @@ function specFactory({ nested = true } = {}) {
       content: nested
         ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
         : '(paragraph) (paragraph | bullet_list | ordered_list)*',
-      toDOM: (node) => {
-        const { 'data-done': done } = node.attrs;
-        return [
-          'li',
-          {
-            'data-type': name,
-            'data-done': done.toString(),
-          },
-          ['div', { class: 'todo-content' }, 0],
-        ];
-      },
-      parseDOM: [
-        {
-          priority: 51,
-          tag: `[data-type="${name}"]`,
-          getAttrs: (dom) => ({
-            'data-done': dom.getAttribute('data-done') === 'true',
-          }),
-        },
-      ],
+
+      toDOM,
+      parseDOM,
     },
     markdown: {
       toMarkdown(state, node) {
-        state.write(node.attrs['data-done'] ? '[x] ' : '[ ] ');
+        state.write(node.attrs['done'] ? '[x] ' : '[ ] ');
         state.renderContent(node);
       },
       parseMarkdown: {
@@ -93,7 +79,7 @@ function specFactory({ nested = true } = {}) {
           block: 'todo_item',
           getAttrs: (tok) => ({
             'data-name': 'todo_item',
-            'data-done': tok.attrGet('isDone') || false,
+            'done': tok.attrGet('isDone') || false,
           }),
         },
       },
@@ -120,7 +106,7 @@ function pluginsFactory({
           parentCheck,
           updateNodeAttrs(type, (attrs) => ({
             ...attrs,
-            'data-done': !attrs['data-done'],
+            done: !attrs['done'],
           })),
         ),
 
@@ -151,7 +137,7 @@ function pluginsFactory({
             nodeViews: {
               [name]: (node, view, getPos, decorations) => {
                 const isDone = () =>
-                  view.state.doc.nodeAt(getPos()).attrs['data-done'];
+                  view.state.doc.nodeAt(getPos()).attrs['done'];
                 const {
                   dom: containerDOM,
                   contentDOM,
@@ -180,12 +166,12 @@ function pluginsFactory({
                   const done = isDone();
                   if (done) {
                     inputElement.setAttribute('checked', 'true');
-                    inputElement.setAttribute('data-done', 'true');
+                    inputElement.setAttribute('done', 'true');
                   }
                   inputElement.addEventListener('input', (e) => {
                     log('change event');
                     updateAttrs({
-                      'data-done': !isDone(),
+                      done: !isDone(),
                     });
                   });
                 };
@@ -202,10 +188,10 @@ function pluginsFactory({
 
                   if (done) {
                     inputElement.setAttribute('checked', 'true');
-                    inputElement.setAttribute('data-done', 'true');
+                    inputElement.setAttribute('done', 'true');
                   } else {
                     inputElement.removeAttribute('checked');
-                    inputElement.removeAttribute('data-done');
+                    inputElement.removeAttribute('done');
                   }
                 };
 
