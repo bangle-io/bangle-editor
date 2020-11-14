@@ -47,7 +47,7 @@ const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory({ nested = true, draggable = true } = {}) {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
-    tagName: 'li',
+    tag: 'li',
     parsingPriority: 51,
     content: 0,
   });

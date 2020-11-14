@@ -4,11 +4,18 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 import { parentHasDirectParentOfType } from '../core-commands';
 import { toggleList } from './list-item/commands';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleBulletList,
+  isSelectionInsideBulletList,
+};
+
 const name = 'bullet_list';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -29,9 +36,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ keybindings = {} } = {}) => {
+function pluginsFactory({ keybindings = {} } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -42,18 +49,18 @@ export const plugins = ({ keybindings = {} } = {}) => {
       wrappingInputRule(/^\s*([-+*])\s$/, type),
     ];
   };
-};
+}
 
-export const toggleBulletList = (state, dispatch, view) => {
+export function toggleBulletList(state, dispatch, view) {
   return toggleList(
     state.schema.nodes.bullet_list,
     state.schema.nodes.list_item,
   )(state, dispatch, view);
-};
+}
 
-export const isSelectionInsideBulletList = (state) => {
+export function isSelectionInsideBulletList(state) {
   const { schema } = state;
   return parentHasDirectParentOfType(schema.nodes['list_item'], [
     schema.nodes['bullet_list'],
   ])(state);
-};
+}

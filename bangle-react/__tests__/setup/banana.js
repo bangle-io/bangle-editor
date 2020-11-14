@@ -40,7 +40,7 @@ export function bananaComponent(testId) {
 
       spec.schema = {
         ...spec.schema,
-        ...domSerializationHelpers(name, { tagName: 'span' }),
+        ...domSerializationHelpers(name, { tag: 'span' }),
       };
       return spec;
     },

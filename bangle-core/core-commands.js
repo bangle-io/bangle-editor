@@ -1,6 +1,7 @@
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { NodeSelection, Selection, TextSelection } from 'prosemirror-state';
 import { arrayify } from './utils/js-utils';
+
 function getParentTextSelection(state, currentDepth) {
   const { $from } = state.selection;
   const parentPos = $from.start(currentDepth);

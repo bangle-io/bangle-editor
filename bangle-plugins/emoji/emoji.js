@@ -14,7 +14,7 @@ const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory({} = {}) {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
-    tagName: 'span',
+    tag: 'span',
     parsingPriority: 51,
     content: (node) => {
       let result = emojiLookup[node.attrs.emojiKind];

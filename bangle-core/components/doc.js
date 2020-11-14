@@ -17,32 +17,6 @@ export const plugins = (opts = {}) => {
   return ({ schema }) => [];
 };
 
-function resolveSelection(state, position) {
-  if (state.selection && position === null) {
-    return;
-  }
-
-  if (position === 'start' || position === undefined) {
-    return {
-      from: 0,
-      to: 0,
-    };
-  }
-
-  if (position === 'end') {
-    const { doc } = state;
-    return {
-      from: doc.content.size,
-      to: doc.content.size,
-    };
-  }
-
-  return {
-    from: position,
-    to: position,
-  };
-}
-
 function minMax(value = 0, min = 0, max = 0) {
   return Math.min(Math.max(parseInt(value, 10), min), max);
 }
