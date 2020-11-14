@@ -139,7 +139,8 @@ function pluginsFactory({
           containerDOM: [
             'li',
             {
-              class: 'bangle-todo-item',
+              // To style our todo friend different than a regular li
+              'data-bangle-name': name,
             },
           ],
           contentDOM: ['span', {}],
@@ -160,7 +161,7 @@ function pluginsFactory({
               if (attrs['done']) {
                 inputElement.setAttribute('checked', '');
               }
-
+              // Connect the two contentDOM and containerDOM
               instance.containerDOM.appendChild(checkBox);
               instance.containerDOM.appendChild(instance.contentDOM);
 

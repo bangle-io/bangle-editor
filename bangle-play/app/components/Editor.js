@@ -64,7 +64,6 @@ const getPlugins = ({ docName, manager }) => {
     //   containerDOM: [
     //     'li',
     //     {
-    //       'data-type': 'todo_item',
     //       'class': 'bangle-todo-item',
     //     },
     //   ],

@@ -74,6 +74,12 @@ class BaseNodeView {
     this.contentDOM = contentDOM;
     this.mountDOM = mountDOM || containerDOM; // for ui libraries to mount
 
+    if (this.contentDOM) {
+      // This css rule makes sure the content dom has non-zero width
+      // so that folks can type inside it
+      this.contentDOM.classList.add('bangle-content-mount');
+    }
+
     // options
     this.opts = {
       selectionSensitive,
