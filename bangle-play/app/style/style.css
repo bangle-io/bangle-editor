@@ -83,11 +83,6 @@ button:focus {
   outline: none;
 }
 
-ul[data-type='todo_list'] div[data-done='true'] > div > p:first-of-type {
-  color: grey;
-  text-decoration: line-through;
-}
-
 .bg-stronger {
   background-color: var(--bg-stronger-color);
 }
