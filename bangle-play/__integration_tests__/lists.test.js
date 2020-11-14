@@ -3,6 +3,9 @@ const PM_ID = '.ProseMirror';
 const { mountEditor, getDoc, ctrlKey, uniqDatabaseUrl } = require('./helpers');
 
 jest.setTimeout(25 * 1000);
+function debug() {
+  return jestPuppeteer.debug();
+}
 
 describe('Basic typing', () => {
   beforeEach(async () => {

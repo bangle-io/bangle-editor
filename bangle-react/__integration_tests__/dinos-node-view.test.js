@@ -33,8 +33,8 @@ test('Creates a dino correctly', async () => {
             "content": Array [
               Object {
                 "attrs": Object {
+                  "data-bangle-name": "dino",
                   "data-dinokind": "triceratops",
-                  "data-type": "dino",
                 },
                 "type": "dino",
               },
@@ -115,8 +115,8 @@ test('typing before and after dino', async () => {
           },
           Object {
             "attrs": Object {
+              "data-bangle-name": "dino",
               "data-dinokind": "triceratops",
-              "data-type": "dino",
             },
             "type": "dino",
           },
@@ -210,15 +210,15 @@ test('copy pasting dino should work', async () => {
             "content": Array [
               Object {
                 "attrs": Object {
+                  "data-bangle-name": "dino",
                   "data-dinokind": "triceratops",
-                  "data-type": "dino",
                 },
                 "type": "dino",
               },
               Object {
                 "attrs": Object {
+                  "data-bangle-name": "dino",
                   "data-dinokind": "triceratops",
-                  "data-type": "dino",
                 },
                 "type": "dino",
               },

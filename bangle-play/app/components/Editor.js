@@ -15,8 +15,8 @@ import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { isJestIntegration } from 'bangle-core/utils/process-env';
 import { ReactEditor } from 'bangle-react/react-editor';
-import { dino, stopwatch } from 'bangle-react/components/index';
-import { NodeView } from 'bangle-core/node-view';
+import { dino } from 'bangle-react/dino';
+import { stopwatch } from 'bangle-react/stopwatch';
 
 const LOG = false;
 const DEBUG = true;
@@ -102,13 +102,15 @@ export class Editor extends React.PureComponent {
     if (this.props.isFirst) {
       window.editor = editor;
 
-      getIdleCallback(() => {
-        import(
-          /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-        ).then((args) => {
-          this.devtools = args.applyDevTools(editor.view);
+      if (process.env.NODE_ENV !== 'integration') {
+        getIdleCallback(() => {
+          import(
+            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+          ).then((args) => {
+            this.devtools = args.applyDevTools(editor.view);
+          });
         });
-      });
+      }
     }
   };
 

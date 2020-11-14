@@ -37,8 +37,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -49,8 +49,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -61,7 +61,7 @@ export const defaultContent = {
         {
           type: 'todo_item',
           attrs: {
-            'data-type': 'todo_item',
+            'data-bangle-name': 'todo_item',
             'done': false,
           },
           content: [
@@ -76,8 +76,8 @@ export const defaultContent = {
                   type: 'emoji',
                   attrs: {
                     'style': 'display: inline-block;',
-                    'data-emojikind': ':mrs_claus_tone2:',
-                    'data-type': 'emoji',
+                    'emojiKind': ':mrs_claus_tone2:',
+                    'data-bangle-name': 'emoji',
                   },
                 },
               ],
@@ -173,8 +173,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -185,8 +185,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -215,8 +215,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -227,8 +227,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -257,8 +257,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -269,8 +269,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -299,8 +299,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -311,8 +311,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -341,8 +341,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -353,8 +353,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -383,8 +383,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -395,8 +395,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -425,8 +425,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -437,8 +437,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -467,8 +467,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -479,8 +479,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -509,8 +509,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -521,8 +521,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -551,8 +551,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -563,8 +563,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -593,8 +593,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -605,8 +605,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -635,8 +635,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -647,8 +647,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -677,8 +677,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -689,8 +689,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -719,8 +719,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -731,8 +731,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -761,8 +761,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -773,8 +773,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -803,8 +803,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -815,8 +815,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -845,8 +845,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -857,8 +857,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -887,8 +887,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -899,8 +899,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -929,8 +929,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -941,8 +941,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -971,8 +971,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -983,8 +983,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1013,8 +1013,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1025,8 +1025,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1055,8 +1055,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1067,8 +1067,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1097,8 +1097,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1109,8 +1109,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1139,8 +1139,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1151,8 +1151,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1181,8 +1181,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1193,8 +1193,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1223,8 +1223,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1235,8 +1235,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1265,8 +1265,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1277,8 +1277,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1307,8 +1307,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1319,8 +1319,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1349,8 +1349,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1361,8 +1361,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1391,8 +1391,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1403,8 +1403,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1433,8 +1433,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1445,8 +1445,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1475,8 +1475,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1487,8 +1487,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1517,8 +1517,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1529,8 +1529,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1559,8 +1559,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1571,8 +1571,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1601,8 +1601,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1613,8 +1613,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1643,8 +1643,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1655,8 +1655,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1685,8 +1685,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1697,8 +1697,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1727,8 +1727,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1739,8 +1739,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1769,8 +1769,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1781,8 +1781,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],
@@ -1811,8 +1811,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':handball_tone4:‍♀️',
-            'data-type': 'emoji',
+            'emojiKind': ':handball_tone4:‍♀️',
+            'data-bangle-name': 'emoji',
           },
         },
         {
@@ -1823,8 +1823,8 @@ export const defaultContent = {
           type: 'emoji',
           attrs: {
             'style': 'display: inline-block;',
-            'data-emojikind': ':bug:',
-            'data-type': 'emoji',
+            'emojiKind': ':bug:',
+            'data-bangle-name': 'emoji',
           },
         },
       ],

@@ -1,6 +1,6 @@
 @import '../tooltip-placement/tooltip.css';
 
-span[data-type='emoji'] {
+span[data-bangle-name='emoji'] {
   display: inline-block;
 }
 

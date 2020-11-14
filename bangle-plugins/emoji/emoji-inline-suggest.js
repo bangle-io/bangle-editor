@@ -196,7 +196,7 @@ export function selectEmoji(key, emojiKind) {
   return (state, dispatch, view) => {
     const { markName } = key.getState(state);
     const emojiNode = state.schema.nodes.emoji.create({
-      'data-emojikind': emojiKind,
+      emojiKind: emojiKind,
     });
     return selectItemCommand(emojiNode, markName)(state, dispatch, view);
   };

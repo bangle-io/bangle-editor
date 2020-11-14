@@ -49,7 +49,7 @@ function specFactory({ nested = true, draggable = true } = {}) {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tagName: 'li',
     parsingPriority: 51,
-    hasContent: true,
+    content: 0,
   });
 
   const content = nested

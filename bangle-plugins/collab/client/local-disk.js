@@ -1,4 +1,4 @@
-import { Disk } from '../collab/client/disk';
+import { Disk } from './disk';
 
 const LOG = false;
 
