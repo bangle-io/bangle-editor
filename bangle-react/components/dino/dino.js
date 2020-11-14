@@ -6,7 +6,8 @@ import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
 import { keymap } from 'bangle-core/utils/keymap';
-import { NodeView, serializationHelpers } from 'bangle-core/node-view';
+import { NodeView } from 'bangle-core/node-view';
+import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -43,7 +44,10 @@ function specFactory() {
     },
   };
 
-  spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
+  spec.schema = {
+    ...spec.schema,
+    ...domSerializationHelpers(name, { tagName: 'span' }),
+  };
 
   return spec;
 }

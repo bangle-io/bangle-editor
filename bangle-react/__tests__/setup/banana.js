@@ -1,6 +1,6 @@
 import React from 'react';
-import { NodeView, serializationHelpers } from 'bangle-core/node-view';
-
+import { NodeView } from 'bangle-core/node-view';
+import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 export class Banana extends React.Component {
   render() {
     const { attrs, updateAttrs } = this.props;
@@ -38,7 +38,10 @@ export function bananaComponent(testId) {
         },
       };
 
-      spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
+      spec.schema = {
+        ...spec.schema,
+        ...domSerializationHelpers(name, { tagName: 'span' }),
+      };
       return spec;
     },
     plugins: () => {

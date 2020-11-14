@@ -2,7 +2,8 @@ import React from 'react';
 
 import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 import { keymap } from 'prosemirror-keymap';
-import { NodeView, serializationHelpers } from 'bangle-core/node-view';
+import { NodeView } from 'bangle-core/node-view';
+import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 
 const LOG = false;
 
@@ -46,7 +47,10 @@ function specFactory() {
     },
   };
 
-  spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
+  spec.schema = {
+    ...spec.schema,
+    ...domSerializationHelpers(name, { tagName: 'span' }),
+  };
 
   return spec;
 }

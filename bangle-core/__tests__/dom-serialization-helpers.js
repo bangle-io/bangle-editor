@@ -1,8 +1,8 @@
+import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 import { paragraph, doc, text } from 'bangle-core/index';
-import { serializationHelpers } from 'bangle-core/node-view';
 import { SpecSheet } from '../spec-sheet';
 
-describe('serializationHelpers parseDOM', () => {
+describe('domSerializationHelpers parseDOM', () => {
   test('does not get affected by other attributes', () => {
     const spec = {
       name: 'dummy',
@@ -11,7 +11,7 @@ describe('serializationHelpers parseDOM', () => {
         inline: true,
       },
     };
-    const result = serializationHelpers(spec);
+    const result = domSerializationHelpers(spec);
 
     expect(result.parseDOM).toHaveLength(1);
     const parseDOM = result.parseDOM[0];
@@ -33,7 +33,7 @@ describe('serializationHelpers parseDOM', () => {
         inline: true,
       },
     };
-    const [parseDOM] = serializationHelpers(spec).parseDOM;
+    const [parseDOM] = domSerializationHelpers(spec).parseDOM;
 
     const dom = document.createElement('span');
     dom.setAttribute('data-bangle-attrs', JSON.stringify({ has: 'value' }));
@@ -53,7 +53,7 @@ describe('serializationHelpers parseDOM', () => {
         inline: true,
       },
     };
-    const [parseDOM] = serializationHelpers(spec, {
+    const [parseDOM] = domSerializationHelpers(spec, {
       parser: (value) => `custom-${value}`,
     }).parseDOM;
 
@@ -64,11 +64,11 @@ describe('serializationHelpers parseDOM', () => {
   });
 });
 
-describe('serializationHelpers toDOM', () => {
+describe('domSerializationHelpers toDOM', () => {
   test('adds correct attribtues', () => {
     const specSheet = new SpecSheet();
 
-    const { toDOM } = serializationHelpers(
+    const { toDOM } = domSerializationHelpers(
       specSheet.spec.find((s) => s.name === 'paragraph'),
     );
 
@@ -104,7 +104,7 @@ describe('serializationHelpers toDOM', () => {
       codeSpec,
     ]);
 
-    const { toDOM } = serializationHelpers(codeSpec, {
+    const { toDOM } = domSerializationHelpers(codeSpec, {
       container: 'code',
     });
 
@@ -143,7 +143,7 @@ describe('serializationHelpers toDOM', () => {
       codeSpec,
     ]);
 
-    const { toDOM } = serializationHelpers(codeSpec, {
+    const { toDOM } = domSerializationHelpers(codeSpec, {
       container: 'code',
       allowedAttrs: ['language', 'magic'],
     });
