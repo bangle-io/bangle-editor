@@ -1,3 +1,4 @@
+import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 import { keymap } from 'prosemirror-keymap';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 
@@ -12,61 +13,42 @@ const name = EMOJI_NODE_NAME;
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory({} = {}) {
+  const { toDOM, parseDOM } = domSerializationHelpers(name, {
+    tagName: 'span',
+    parsingPriority: 51,
+    content: (node) => {
+      let result = emojiLookup[node.attrs.emojiKind];
+      return result || emojiLookup['question'];
+    },
+  });
+
   return {
     type: 'node',
     name,
     schema: {
       attrs: {
-        'data-emojikind': {
+        emojiKind: {
           default: 'performing_arts',
-        },
-        'data-bangle-name': {
-          default: name,
         },
       },
       inline: true,
       group: 'inline',
       draggable: true,
       atom: true,
-      toDOM: (node) => {
-        const { 'data-emojikind': emojikind } = node.attrs;
-        let result = emojiLookup[emojikind];
-        if (!result) {
-          result = emojiLookup['question'];
-        }
-
-        return [
-          'span',
-          {
-            'data-bangle-name': name,
-            'data-emojikind': emojikind.toString(),
-          },
-          result,
-        ];
-      },
-      parseDOM: [
-        {
-          tag: `span[data-bangle-name="${name}"]`,
-          getAttrs: (dom) => {
-            return {
-              'data-bangle-name': name,
-              'data-emojikind': dom.getAttribute('data-emojikind'),
-            };
-          },
-        },
-      ],
+      toDOM,
+      parseDOM,
     },
 
     markdown: {
       toMarkdown: (state, node) => {
-        state.write(`:${node.attrs['data-emojikind']}:`);
+        state.write(`:${node.attrs['emojiKind']}:`);
       },
       parseMarkdown: {
         emoji: {
           node: 'emoji',
           getAttrs: (tok) => {
             return {
-              'data-emojikind': tok.markup,
+              emojiKind: tok.markup,
             };
           },
         },
@@ -108,7 +90,7 @@ export function insertEmoji(
     }
     if (dispatch) {
       const attr = {
-        'data-emojikind': name,
+        emojiKind: name,
       };
 
       dispatch(state.tr.replaceSelectionWith(emojiType.create(attr)));

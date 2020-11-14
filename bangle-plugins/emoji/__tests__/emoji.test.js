@@ -27,7 +27,7 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="horse" />
+        <emoji emojiKind="horse" />
       </para>
     </doc>,
   );
@@ -36,7 +36,7 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="horse" />
+        <emoji emojiKind="horse" />
       </para>
     </doc>,
   );
@@ -51,7 +51,7 @@ test('Unknown emoji puts question mark', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="unknown_emoji" />
+        <emoji emojiKind="unknown_emoji" />
       </para>
     </doc>,
   );
@@ -60,7 +60,7 @@ test('Unknown emoji puts question mark', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="unknown_emoji" />
+        <emoji emojiKind="unknown_emoji" />
       </para>
     </doc>,
   );
@@ -88,7 +88,7 @@ describe('markdown', () => {
       <doc>
         <para>
           hello world
-          <emoji data-emojikind="horse" />
+          <emoji emojiKind="horse" />
         </para>
       </doc>
     );
