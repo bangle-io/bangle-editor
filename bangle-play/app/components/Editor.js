@@ -102,13 +102,15 @@ export class Editor extends React.PureComponent {
     if (this.props.isFirst) {
       window.editor = editor;
 
-      getIdleCallback(() => {
-        import(
-          /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
-        ).then((args) => {
-          this.devtools = args.applyDevTools(editor.view);
+      if (process.env.NODE_ENV !== 'integration') {
+        getIdleCallback(() => {
+          import(
+            /* webpackChunkName: "prosemirror-dev-tools" */ 'prosemirror-dev-tools'
+          ).then((args) => {
+            this.devtools = args.applyDevTools(editor.view);
+          });
         });
-      });
+      }
     }
   };
 
