@@ -97,7 +97,7 @@ export function insertDino(dinoName) {
   };
 }
 
-export const DINO_IMAGES = {
+const DINO_IMAGES = {
   brontosaurus: brontosaurusImg,
   stegosaurus: stegosaurusImg,
   triceratops: triceratopsImg,

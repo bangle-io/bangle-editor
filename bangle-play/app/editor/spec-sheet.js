@@ -12,7 +12,8 @@ import { config } from './config';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { dino, stopwatch } from 'bangle-react/components/index';
+import { dino } from 'bangle-react/dino';
+import { stopwatch } from 'bangle-react/stopwatch';
 
 export const specSheet = new SpecSheet([
   ...coreSpec({ heading: { levels: config.headingLevels } }),
