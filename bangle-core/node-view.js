@@ -99,12 +99,9 @@ export class NodeView extends BaseNodeView {
           [name]: (node, view, getPos, decorations) => {
             const containerDOM = createElement(containerDOMSpec);
 
-            containerDOM.setAttribute('data-bangle-container', '');
-
             let contentDOM;
             if (contentDOMSpec) {
               contentDOM = createElement(contentDOMSpec);
-              contentDOM.setAttribute('data-bangle-content', '');
             }
 
             return new NodeView({
