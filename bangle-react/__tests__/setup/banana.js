@@ -44,7 +44,10 @@ export function bananaComponent(testId) {
     plugins: () => {
       return NodeView.createPlugin({
         name,
-        containerDOM: ['span', { 'data-testid': testId }],
+        containerDOM: [
+          'span',
+          { 'data-testid': testId, 'data-bangle-container': '' },
+        ],
       });
     },
   };

@@ -73,7 +73,6 @@ describe('Inline node banana', () => {
     await expect(el).toMatchInlineSnapshot(`
             <span
               data-bangle-container=""
-              data-bangle-name="banana"
               data-testid="Can update attrs"
               draggable="true"
             >
@@ -105,7 +104,6 @@ describe('Inline node banana', () => {
     await expect(el).toMatchInlineSnapshot(`
             <span
               data-bangle-container=""
-              data-bangle-name="banana"
               data-testid="Can update attrs"
               draggable="true"
             >

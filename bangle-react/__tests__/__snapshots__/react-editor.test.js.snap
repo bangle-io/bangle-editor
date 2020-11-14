@@ -12,7 +12,6 @@ exports[`rendering node views Handles add and delete of node views 1`] = `
       <p>
         <span
           data-bangle-container=""
-          data-bangle-name="banana"
           data-testid="react-editor-test"
           draggable="true"
         >
@@ -24,7 +23,6 @@ exports[`rendering node views Handles add and delete of node views 1`] = `
         </span>
         <span
           data-bangle-container=""
-          data-bangle-name="banana"
           data-testid="react-editor-test"
           draggable="true"
         >
@@ -36,7 +34,6 @@ exports[`rendering node views Handles add and delete of node views 1`] = `
         </span>
         <span
           data-bangle-container=""
-          data-bangle-name="banana"
           data-testid="react-editor-test"
           draggable="true"
         >
@@ -65,7 +62,6 @@ exports[`rendering node views Handles add and delete of node views 2`] = `
       <p>
         <span
           data-bangle-container=""
-          data-bangle-name="banana"
           data-testid="react-editor-test"
           draggable="true"
         >
@@ -77,7 +73,6 @@ exports[`rendering node views Handles add and delete of node views 2`] = `
         </span>
         <span
           data-bangle-container=""
-          data-bangle-name="banana"
           data-testid="react-editor-test"
           draggable="true"
         >
