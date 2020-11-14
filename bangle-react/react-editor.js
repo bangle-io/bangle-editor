@@ -10,7 +10,6 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
-const nodeViewUpdateArgsCache = new WeakMap();
 const nodeViewUpdateCallbackCache = new WeakMap();
 
 export class ReactEditor extends React.PureComponent {
@@ -24,29 +23,25 @@ export class ReactEditor extends React.PureComponent {
   state = { nodeViews: [] };
 
   renderHandlers = {
-    create: (nodeViewInstance, nodeViewArgs) => {
+    create: (nodeView, nodeViewProps) => {
       log('create');
-      nodeViewUpdateArgsCache.set(nodeViewInstance, nodeViewArgs);
       this.setState({
-        nodeViews: [...this.state.nodeViews, nodeViewInstance],
+        nodeViews: [...this.state.nodeViews, nodeView],
       });
     },
-    update: (nodeViewInstance, nodeViewArgs) => {
+    update: (nodeView, nodeViewProps) => {
       log('update');
-      nodeViewUpdateArgsCache.set(nodeViewInstance, nodeViewArgs);
-      const updateCallback = nodeViewUpdateCallbackCache.get(nodeViewInstance);
-      // I am thinking that this might be called before react had the chance
-      // to mount. I believe saving of args in nodeViewArgsCache will get the react
-      // render up to date with latest nodeViewArgs
+      const updateCallback = nodeViewUpdateCallbackCache.get(nodeView);
+      // If updateCallback is undefined (which can happen if react took long to mount),
+      // we are still okay, as the latest nodeViewProps will be accessed whenever it mounts.
       if (updateCallback) {
         updateCallback();
       }
     },
-    destroy: (nodeViewInstance) => {
+    destroy: (nodeView) => {
       log('destroy');
-
       this.setState({
-        nodeViews: this.state.nodeViews.filter((n) => n !== nodeViewInstance),
+        nodeViews: this.state.nodeViews.filter((n) => n !== nodeView),
       });
     },
   };
@@ -65,27 +60,25 @@ export class ReactEditor extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.editor.destroy();
-    this.editor = null;
+    if (this.editor) {
+      this.editor.destroy();
+      this.editor = null;
+    }
   }
 
   render() {
     log('rendering PMEditorWrapper');
     return (
       <>
-        <div
-          ref={this.editorRenderTarget}
-          id={this.props.options.id}
-          data-testid={this.props.options.testId}
-        />
-        {this.state.nodeViews.map((nodeViewInstance) => {
+        <div ref={this.editorRenderTarget} id={this.props.options.id} />
+        {this.state.nodeViews.map((nodeView) => {
           return reactDOM.createPortal(
-            <ChildElement
-              nodeView={nodeViewInstance}
+            <NodeViewElement
+              nodeView={nodeView}
               renderNodeViews={this.props.renderNodeViews}
             />,
-            nodeViewInstance.mountDOM,
-            objUid.get(nodeViewInstance),
+            nodeView.mountDOM,
+            objUid.get(nodeView),
           );
         })}
       </>
@@ -93,30 +86,70 @@ export class ReactEditor extends React.PureComponent {
   }
 }
 
-class ChildElement extends React.PureComponent {
-  updateArgs = () => {
-    const args = nodeViewUpdateArgsCache.get(this.props.nodeView);
-    this.setState(args);
+class NodeViewElement extends React.PureComponent {
+  static propTypes = {
+    nodeView: PropTypes.object.isRequired,
+    renderNodeViews: PropTypes.func.isRequired,
+  };
+
+  update = () => {
+    this.setState({ nodeViewProps: this.props.nodeView.getNodeViewProps() });
   };
 
   constructor(props) {
     super(props);
-    // This is okay because a nodeView and ReactComponent has
+    // So that we can directly update the nodeView without the mess
+    // of prop forwarding. This is okay because a nodeView and ReactComponent has
     // 1:1 mapping always.
-    nodeViewUpdateCallbackCache.set(props.nodeView, this.updateArgs);
-    this.state = nodeViewUpdateArgsCache.get(props.nodeView);
+    nodeViewUpdateCallbackCache.set(props.nodeView, this.update);
+    this.state = { nodeViewProps: this.props.nodeView.getNodeViewProps() };
+  }
+
+  attachToContentDOM = (reactElement) => {
+    if (!reactElement) {
+      return;
+    }
+    const { contentDOM } = this.props.nodeView;
+    // Since we do not control how many times this callback is called
+    // make sure it is not already mounted.
+    if (!reactElement.contains(contentDOM)) {
+      // If contentDOM happens to be mounted to someone else
+      // remove it from there.
+      if (contentDOM.parentNode) {
+        contentDOM.parentNode.removeChild(contentDOM);
+      }
+      reactElement.appendChild(contentDOM);
+    }
+  };
+
+  getChildren() {
+    if (!this.props.nodeView.contentDOM) {
+      return null;
+    }
+
+    if (this.state.nodeViewProps.node.isInline) {
+      return (
+        <span className="bangle-content-mount" ref={this.attachToContentDOM} />
+      );
+    }
+
+    return (
+      <div className="bangle-content-mount" ref={this.attachToContentDOM} />
+    );
   }
 
   render() {
-    // TODO more assertion on this renderNodeViews
-    const element = this.props.renderNodeViews({ ...this.state });
+    const element = this.props.renderNodeViews({
+      ...this.state.nodeViewProps,
+      children: this.getChildren(),
+    });
     if (!element) {
       bangleWarn(
         'renderNodeView prop must return a react element for the node',
-        this.state.node,
+        this.state.nodeViewProps.node,
       );
       throw new Error(
-        `Missing react render for node of type "${this.state.node.type.name}"`,
+        `renderNodeView must handle rendering for node of type "${this.state.nodeViewProps.node.type.name}"`,
       );
     }
     return element;

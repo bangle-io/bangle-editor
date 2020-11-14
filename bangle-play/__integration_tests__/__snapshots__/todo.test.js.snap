@@ -8,8 +8,7 @@ Object {
         "content": Array [
           Object {
             "attrs": Object {
-              "data-done": false,
-              "data-type": "todo_item",
+              "done": false,
             },
             "content": Array [
               Object {

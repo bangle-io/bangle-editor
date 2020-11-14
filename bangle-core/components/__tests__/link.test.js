@@ -7,6 +7,7 @@ import {
   dispatchPasteEvent,
   psx,
   renderTestEditor,
+  selectNodeAt,
 } from '../../test-helpers/index';
 import { toggleMark } from 'tiptap-commands';
 import {
@@ -22,11 +23,6 @@ import {
 import { getLinkMarkDetails, setLinkAtSelection } from '../link';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { NodeSelection } from 'prosemirror-state';
-
-const selectNodeAt = (view, pos) => {
-  const tr = view.state.tr;
-  view.dispatch(tr.setSelection(NodeSelection.create(tr.doc, pos)));
-};
 
 const specSheet = new SpecSheet([
   doc.spec(),

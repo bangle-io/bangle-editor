@@ -5,28 +5,26 @@ import React from 'react';
 import { TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { render } from '@testing-library/react';
-import { ReactEditor } from 'bangle-react/react-editor';
 import { corePlugins } from 'bangle-core/index';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
+import { ReactEditor } from '../react-editor';
 
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();
 
-export function reactTestEditor(
-  {
-    specSheet = defaultSpecSheet,
-    plugins = defaultPlugins,
-    renderNodeViews,
-  } = {},
-  testId = 'test-editor',
-) {
+export function reactTestEditor({
+  specSheet = defaultSpecSheet,
+  plugins = defaultPlugins,
+  renderNodeViews,
+  id = 'test-editor',
+} = {}) {
   if (!(specSheet instanceof SpecSheet)) {
     throw new Error('Need to be specsheet');
   }
 
   return async (testDoc) => {
     let editor;
-    const onReady = (_editor) => {
+    const _onReady = (_editor) => {
       editor = _editor;
     };
 
@@ -35,8 +33,7 @@ export function reactTestEditor(
     };
 
     const _options = {
-      id: 'test-editor',
-      testId,
+      id,
       editorProps,
       ...{ specSheet, plugins },
     };
@@ -44,13 +41,15 @@ export function reactTestEditor(
     const result = render(
       <ReactEditor
         options={_options}
-        onReady={onReady}
+        onReady={_onReady}
         renderNodeViews={renderNodeViews}
       />,
     );
 
-    await result.findByTestId(testId);
-
+    let element = await result.container.querySelector('#test-editor');
+    if (!element) {
+      throw new Error('Unable to mount bangle editor');
+    }
     let view = editor.view;
 
     let posLabels;

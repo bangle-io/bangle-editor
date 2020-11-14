@@ -1,22 +1,27 @@
-import { objectFilter, bangleWarn } from './utils/js-utils';
+import { Plugin } from 'prosemirror-state';
+import { objectFilter, bangleWarn, createElement } from './utils/js-utils';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};
 const renderHandlersCache = new WeakMap();
 
 class BaseNodeView {
-  get _pmProps() {
+  getAttrs() {
+    return this._node.attrs;
+  }
+
+  getNodeViewProps() {
     return {
       node: this._node,
       view: this._view,
       getPos: this._getPos,
       decorations: this._decorations,
       selected: this._selected,
+      attrs: this._node.attrs,
       updateAttrs: (attrs) => {
         this._view.dispatch(
           updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
         );
-        return true;
       },
     };
   }
@@ -68,19 +73,60 @@ class BaseNodeView {
     this.contentDOM = contentDOM;
     this.mountDOM = mountDOM || containerDOM; // for ui libraries to mount
 
+    if (this.contentDOM) {
+      // This css rule makes sure the content dom has non-zero width
+      // so that folks can type inside it
+      this.contentDOM.classList.add('bangle-content-mount');
+    }
+
     // options
     this.opts = {
       selectionSensitive,
     };
 
-    this.renderHandlers.create(this, this._pmProps);
+    this.renderHandlers.create(this, this.getNodeViewProps());
   }
 }
 
 export class NodeView extends BaseNodeView {
+  /**
+   *
+   */
+  static createPlugin({
+    name,
+    containerDOM: containerDOMSpec,
+    contentDOM: contentDOMSpec,
+    renderHandlers,
+  }) {
+    return new Plugin({
+      props: {
+        nodeViews: {
+          [name]: (node, view, getPos, decorations) => {
+            const containerDOM = createElement(containerDOMSpec);
+
+            let contentDOM;
+            if (contentDOMSpec) {
+              contentDOM = createElement(contentDOMSpec);
+            }
+
+            return new NodeView({
+              node,
+              view,
+              getPos,
+              decorations,
+              containerDOM,
+              contentDOM,
+              renderHandlers,
+            });
+          },
+        },
+      },
+    });
+  }
+
   update(node, decorations) {
     log('update node');
-    // @see https://github.com/ProseMirror/prosemirror/issues/648
+    // https://github.com/ProseMirror/prosemirror/issues/648
     if (this._node.type !== node.type) {
       return false;
     }
@@ -94,7 +140,7 @@ export class NodeView extends BaseNodeView {
     this._node = node;
     this._decorations = decorations;
     log('update node execute');
-    this.renderHandlers.update(this, this._pmProps);
+    this.renderHandlers.update(this, this.getNodeViewProps());
 
     return true;
   }
@@ -103,14 +149,14 @@ export class NodeView extends BaseNodeView {
     this.containerDOM.classList.add('ProseMirror-selectednode');
     this._selected = true;
     log('select node');
-    this.renderHandlers.update(this, this._pmProps);
+    this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
   deselectNode() {
     this.containerDOM.classList.remove('ProseMirror-selectednode');
     this._selected = false;
     log('deselectNode node');
-    this.renderHandlers.update(this, this._pmProps);
+    this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
   // Donot unset it if you donot have an implmentation.
@@ -136,57 +182,11 @@ export class NodeView extends BaseNodeView {
   // }
 
   destroy() {
-    this.renderHandlers.destroy(this, this._pmProps);
+    this.renderHandlers.destroy(this, this.getNodeViewProps());
     // TODO do we need to cleanup mountDOM
     this.containerDOM = undefined;
     this.contentDOM = undefined;
   }
-}
-
-/**
- * @param {*} spec
- * @param {Object} opts
- * @param {string} opts.container
- */
-export function serializationHelpers(
-  spec,
-  {
-    allowedAttrs,
-    container = spec.schema.inline ? 'span' : 'div',
-    serializer = (node) =>
-      JSON.stringify(
-        allowedAttrs
-          ? objectFilter(node.attrs, (value, key) => allowedAttrs.includes(key))
-          : node.attrs,
-      ),
-    parser = (value) => JSON.parse(value),
-  } = {},
-) {
-  // TODO need to make a hole
-  return {
-    toDOM: (node) => {
-      return [
-        container,
-        {
-          // todo move this to bangle-name
-          'data-bangle-id': spec.name,
-          'data-bangle-attrs': serializer(node),
-        },
-      ];
-    },
-    parseDOM: [
-      {
-        tag: `${container}[data-bangle-id="${spec.name}"]`,
-        getAttrs: (dom) => {
-          const attrs = dom.getAttribute('data-bangle-attrs');
-          if (!attrs) {
-            return {};
-          }
-          return parser(attrs);
-        },
-      },
-    ],
-  };
 }
 
 export function saveRenderHandlers(editorContainer, handlers) {

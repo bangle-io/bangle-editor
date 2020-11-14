@@ -8,7 +8,7 @@ import { Fragment, Slice } from 'prosemirror-model';
 import { GapCursorSelection } from '../gap-cursor';
 import { Plugin } from 'prosemirror-state';
 
-export { safeInsert } from 'prosemirror-utils';
+export { safeInsert, removeSelectedNode } from 'prosemirror-utils';
 
 export const findParentNodeOfType = _findParentNodeOfType;
 

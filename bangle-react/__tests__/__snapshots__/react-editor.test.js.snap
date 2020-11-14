@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering node views Handles add and delete of node views 1`] = `
+<div>
+  <div
+    id="test"
+  >
+    <div
+      class="ProseMirror bangle-editor"
+      contenteditable="true"
+    >
+      <p>
+        <span
+          data-bangle-container=""
+          data-testid="react-editor-test"
+          draggable="true"
+        >
+          <div
+            data-color="brown"
+          >
+            I am fresh brown banana
+          </div>
+        </span>
+        <span
+          data-bangle-container=""
+          data-testid="react-editor-test"
+          draggable="true"
+        >
+          <div
+            data-color="pink"
+          >
+            I am fresh pink banana
+          </div>
+        </span>
+        <span
+          data-bangle-container=""
+          data-testid="react-editor-test"
+          draggable="true"
+        >
+          <div
+            data-color="yellow"
+          >
+            I am fresh yellow banana
+          </div>
+        </span>
+        hello world
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`rendering node views Handles add and delete of node views 2`] = `
+<div>
+  <div
+    id="test"
+  >
+    <div
+      class="ProseMirror bangle-editor"
+      contenteditable="true"
+    >
+      <p>
+        <span
+          data-bangle-container=""
+          data-testid="react-editor-test"
+          draggable="true"
+        >
+          <div
+            data-color="brown"
+          >
+            I am fresh brown banana
+          </div>
+        </span>
+        <span
+          data-bangle-container=""
+          data-testid="react-editor-test"
+          draggable="true"
+        >
+          <div
+            data-color="yellow"
+          >
+            I am fresh yellow banana
+          </div>
+        </span>
+        hello world
+      </p>
+    </div>
+  </div>
+</div>
+`;

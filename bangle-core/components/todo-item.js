@@ -17,9 +17,9 @@ import {
   parentHasDirectParentOfType,
 } from '../core-commands';
 import { filter, insertEmpty } from '../utils/pm-utils';
-import { Plugin } from 'prosemirror-state';
 import { NodeView } from 'bangle-core/node-view';
-import { DOMSerializer } from 'prosemirror-model';
+import { domSerializationHelpers } from '../dom-serialization-helpers';
+import { createElement } from 'bangle-core/utils/js-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -45,47 +45,34 @@ const name = 'todo_item';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-function specFactory({ nested = true } = {}) {
+function specFactory({ nested = true, draggable = true } = {}) {
+  const { toDOM, parseDOM } = domSerializationHelpers(name, {
+    tagName: 'li',
+    parsingPriority: 51,
+    hasContent: true,
+  });
+
+  const content = nested
+    ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
+    : '(paragraph) (paragraph | bullet_list | ordered_list)*';
+
   return {
     type: 'node',
     name,
     schema: {
       attrs: {
-        'data-type': {
-          default: name,
-        },
-        'data-done': {
+        done: {
           default: false,
         },
       },
-      draggable: true,
-      content: nested
-        ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
-        : '(paragraph) (paragraph | bullet_list | ordered_list)*',
-      toDOM: (node) => {
-        const { 'data-done': done } = node.attrs;
-        return [
-          'li',
-          {
-            'data-type': name,
-            'data-done': done.toString(),
-          },
-          ['div', { class: 'todo-content' }, 0],
-        ];
-      },
-      parseDOM: [
-        {
-          priority: 51,
-          tag: `[data-type="${name}"]`,
-          getAttrs: (dom) => ({
-            'data-done': dom.getAttribute('data-done') === 'true',
-          }),
-        },
-      ],
+      draggable,
+      content,
+      toDOM,
+      parseDOM,
     },
     markdown: {
       toMarkdown(state, node) {
-        state.write(node.attrs['data-done'] ? '[x] ' : '[ ] ');
+        state.write(node.attrs['done'] ? '[x] ' : '[ ] ');
         state.renderContent(node);
       },
       parseMarkdown: {
@@ -93,7 +80,7 @@ function specFactory({ nested = true } = {}) {
           block: 'todo_item',
           getAttrs: (tok) => ({
             'data-name': 'todo_item',
-            'data-done': tok.attrGet('isDone') || false,
+            'done': tok.attrGet('isDone') || false,
           }),
         },
       },
@@ -101,11 +88,16 @@ function specFactory({ nested = true } = {}) {
   };
 }
 
-function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  nested = true,
+  nodeView = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
+
     const parentCheck = parentHasDirectParentOfType(
       type,
       schema.nodes['todo_list'],
@@ -116,7 +108,7 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
           parentCheck,
           updateNodeAttrs(type, (attrs) => ({
             ...attrs,
-            'data-done': !attrs['data-done'],
+            done: !attrs['done'],
           })),
         ),
 
@@ -141,91 +133,71 @@ function pluginsFactory({ nested = true, keybindings = defaultKeys } = {}) {
           insertEmpty(type, 'below', true),
         ),
       }),
-      new Plugin({
-        props: {
-          nodeViews: {
-            [name]: (node, view, getPos, decorations) => {
-              const isDone = () =>
-                view.state.doc.nodeAt(getPos()).attrs['data-done'];
-              const {
-                dom: containerDOM,
-                contentDOM,
-              } = DOMSerializer.renderSpec(window.document, [
-                'li',
-                {
-                  'data-type': 'todo_item',
-                  'class': 'bangle-todo-item',
-                },
+      nodeView &&
+        NodeView.createPlugin({
+          name,
+          containerDOM: [
+            'li',
+            {
+              // To style our todo friend different than a regular li
+              'data-bangle-name': name,
+            },
+          ],
+          contentDOM: ['span', {}],
+          renderHandlers: {
+            create: (instance, { attrs, updateAttrs, getPos }) => {
+              const checkBox = createElement([
+                'span',
+                { contentEditable: false },
                 [
-                  'span',
-                  { contentEditable: false },
-                  [
-                    'input',
-                    {
-                      type: 'checkbox',
-                    },
-                  ],
-                ],
-                ['span', { class: 'bangle-content-mount' }, 0],
-              ]);
-
-              const inputElement = containerDOM.querySelector('input');
-
-              const create = (instance, { updateAttrs }) => {
-                const done = isDone();
-                if (done) {
-                  inputElement.setAttribute('checked', 'true');
-                  inputElement.setAttribute('data-done', 'true');
-                }
-                inputElement.addEventListener('input', (e) => {
-                  log('change event');
-                  updateAttrs({
-                    'data-done': !isDone(),
-                  });
-                });
-              };
-
-              const update = (instance, { node }) => {
-                const done = isDone();
-                const hasAttribute = inputElement.hasAttribute('checked');
-                if (done === hasAttribute) {
-                  log('skipping update', done, hasAttribute);
-                  return;
-                }
-
-                log('updating', node, 'setting to', done);
-
-                if (done) {
-                  inputElement.setAttribute('checked', 'true');
-                  inputElement.setAttribute('data-done', 'true');
-                } else {
-                  inputElement.removeAttribute('checked');
-                  inputElement.removeAttribute('data-done');
-                }
-              };
-
-              return new NodeView({
-                node,
-                view,
-                getPos,
-                decorations,
-                containerDOM,
-                contentDOM,
-                renderHandlers: {
-                  create: create,
-                  update: update,
-                  destroy: () => {
-                    // TODO i think this is unnecessary
-                    while (containerDOM.firstChild) {
-                      containerDOM.removeChild(containerDOM.lastChild);
-                    }
+                  'input',
+                  {
+                    type: 'checkbox',
                   },
-                },
+                ],
+              ]);
+              const inputElement = checkBox.querySelector('input');
+
+              if (attrs['done']) {
+                inputElement.setAttribute('checked', '');
+              }
+              // Connect the two contentDOM and containerDOM
+              instance.containerDOM.appendChild(checkBox);
+              instance.containerDOM.appendChild(instance.contentDOM);
+
+              inputElement.addEventListener('input', (e) => {
+                log('change event', inputElement.checked);
+                updateAttrs({
+                  // Fetch latest attrs as the one is outer
+                  // closure can be stale.
+                  done: inputElement.checked,
+                });
               });
             },
+
+            // We need to achieve a two way binding of the done state.
+            // First binding: dom -> editor : done by  inputElement's `input` event listener
+            // Second binding: editor -> dom: Done by the `update` handler below
+            update: (instance, { attrs }) => {
+              const inputElement = instance.containerDOM.querySelector('input');
+
+              const done = attrs['done'];
+              const hasAttribute = inputElement.hasAttribute('checked');
+              if (done === hasAttribute) {
+                log('skipping update', done, hasAttribute);
+                return;
+              }
+              log('updating inputElement');
+              if (done) {
+                inputElement.setAttribute('checked', 'true');
+              } else {
+                inputElement.removeAttribute('checked');
+              }
+            },
+
+            destroy: () => {},
           },
-        },
-      }),
+        }),
     ];
   };
 }

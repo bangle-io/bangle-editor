@@ -2,9 +2,8 @@ import React from 'react';
 
 import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
 import { keymap } from 'prosemirror-keymap';
-import { NodeView, serializationHelpers } from 'bangle-core/node-view';
-import { Plugin } from 'prosemirror-state';
-import { createElement, uuid } from 'bangle-core/utils/js-utils';
+import { NodeView } from 'bangle-core/node-view';
+import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 
 const LOG = false;
 
@@ -48,7 +47,10 @@ function specFactory() {
     },
   };
 
-  spec.schema = { ...spec.schema, ...serializationHelpers(spec) };
+  spec.schema = {
+    ...spec.schema,
+    ...domSerializationHelpers(name, { tagName: 'span' }),
+  };
 
   return spec;
 }
@@ -58,31 +60,7 @@ export function pluginsFactory(opts = {}) {
     keymap({
       'Shift-Ctrl-s': insertStopwatch(),
     }),
-    new Plugin({
-      props: {
-        nodeViews: {
-          [name]: (node, view, getPos, decorations) => {
-            const containerDOM = createElement('span', {
-              'data-uuid': name + '-' + uuid(4),
-            });
-            const mountDOM = createElement('span', {
-              'data-mount': 'true',
-              'contentEditable': 'false',
-            });
-            containerDOM.appendChild(mountDOM);
-
-            return new NodeView({
-              node,
-              view,
-              getPos,
-              decorations,
-              containerDOM,
-              mountDOM,
-            });
-          },
-        },
-      },
-    }),
+    NodeView.createPlugin({ name, containerDOM: ['span'] }),
   ];
 }
 
