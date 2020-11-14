@@ -40,7 +40,9 @@ test('Rendering works', async () => {
       </para>
     </doc>,
   );
-  expect(container.querySelector(`[data-type="emoji"]`)).toMatchSnapshot();
+  expect(
+    container.querySelector(`[data-bangle-name="emoji"]`),
+  ).toMatchSnapshot();
 });
 
 test('Unknown emoji puts question mark', async () => {
@@ -62,7 +64,9 @@ test('Unknown emoji puts question mark', async () => {
       </para>
     </doc>,
   );
-  expect(container.querySelector(`[data-type="emoji"]`)).toMatchSnapshot();
+  expect(
+    container.querySelector(`[data-bangle-name="emoji"]`),
+  ).toMatchSnapshot();
 });
 
 describe('markdown', () => {

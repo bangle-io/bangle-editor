@@ -2,8 +2,8 @@
 
 exports[`Rendering works 1`] = `
 <span
+  data-bangle-name="emoji"
   data-emojikind="horse"
-  data-type="emoji"
   draggable="true"
 >
   🐴
@@ -12,8 +12,8 @@ exports[`Rendering works 1`] = `
 
 exports[`Unknown emoji puts question mark 1`] = `
 <span
+  data-bangle-name="emoji"
   data-emojikind="unknown_emoji"
-  data-type="emoji"
   draggable="true"
 >
   ❓

@@ -20,7 +20,7 @@ function specFactory({} = {}) {
         'data-emojikind': {
           default: 'performing_arts',
         },
-        'data-type': {
+        'data-bangle-name': {
           default: name,
         },
       },
@@ -38,7 +38,7 @@ function specFactory({} = {}) {
         return [
           'span',
           {
-            'data-type': name,
+            'data-bangle-name': name,
             'data-emojikind': emojikind.toString(),
           },
           result,
@@ -46,10 +46,10 @@ function specFactory({} = {}) {
       },
       parseDOM: [
         {
-          tag: `span[data-type="${name}"]`,
+          tag: `span[data-bangle-name="${name}"]`,
           getAttrs: (dom) => {
             return {
-              'data-type': name,
+              'data-bangle-name': name,
               'data-emojikind': dom.getAttribute('data-emojikind'),
             };
           },

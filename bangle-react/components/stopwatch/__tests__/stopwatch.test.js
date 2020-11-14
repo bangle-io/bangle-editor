@@ -99,7 +99,7 @@ test('Renders clicking correctly', async () => {
       startTime: 0,
       stopTime: 0,
     },
-    'data-type': 'stopwatch',
+    'data-bangle-name': 'stopwatch',
   });
 
   Date.now = jest.fn(() => 150);
@@ -110,7 +110,7 @@ test('Renders clicking correctly', async () => {
       startTime: 1,
       stopTime: null,
     },
-    'data-type': 'stopwatch',
+    'data-bangle-name': 'stopwatch',
   });
 });
 
@@ -133,7 +133,7 @@ describe('markdown', () => {
       </doc>,
     );
     expect(md).toMatchInlineSnapshot(
-      `"hello world[$stopwatch](bangle://data-stopwatch=%7B%22startTime%22%3A0%2C%22stopTime%22%3A0%7D&data-type=%22stopwatch%22)"`,
+      `"hello world[$stopwatch](bangle://data-stopwatch=%7B%22startTime%22%3A0%2C%22stopTime%22%3A0%7D&data-bangle-name=%22stopwatch%22)"`,
     );
   });
 });
