@@ -27,7 +27,7 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="horse" />
+        <emoji emojiKind="horse" />
       </para>
     </doc>,
   );
@@ -36,11 +36,13 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="horse" />
+        <emoji emojiKind="horse" />
       </para>
     </doc>,
   );
-  expect(container.querySelector(`[data-type="emoji"]`)).toMatchSnapshot();
+  expect(
+    container.querySelector(`[data-bangle-name="emoji"]`),
+  ).toMatchSnapshot();
 });
 
 test('Unknown emoji puts question mark', async () => {
@@ -49,7 +51,7 @@ test('Unknown emoji puts question mark', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="unknown_emoji" />
+        <emoji emojiKind="unknown_emoji" />
       </para>
     </doc>,
   );
@@ -58,11 +60,13 @@ test('Unknown emoji puts question mark', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji data-emojikind="unknown_emoji" />
+        <emoji emojiKind="unknown_emoji" />
       </para>
     </doc>,
   );
-  expect(container.querySelector(`[data-type="emoji"]`)).toMatchSnapshot();
+  expect(
+    container.querySelector(`[data-bangle-name="emoji"]`),
+  ).toMatchSnapshot();
 });
 
 describe('markdown', () => {
@@ -84,7 +88,7 @@ describe('markdown', () => {
       <doc>
         <para>
           hello world
-          <emoji data-emojikind="horse" />
+          <emoji emojiKind="horse" />
         </para>
       </doc>
     );

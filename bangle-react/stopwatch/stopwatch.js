@@ -30,7 +30,7 @@ function specFactory() {
             stopTime: 0,
           },
         },
-        'data-type': {
+        'data-bangle-name': {
           default: name,
         },
       },

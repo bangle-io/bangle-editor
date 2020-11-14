@@ -11,7 +11,6 @@ import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
-
 export const commands = {
   randomDino,
   insertDino,
@@ -29,7 +28,7 @@ function specFactory() {
         'data-dinokind': {
           default: 'brontosaurus',
         },
-        'data-type': {
+        'data-bangle-name': {
           default: name,
         },
       },
@@ -98,7 +97,7 @@ export function insertDino(dinoName) {
   };
 }
 
-export const DINO_IMAGES = {
+const DINO_IMAGES = {
   brontosaurus: brontosaurusImg,
   stegosaurus: stegosaurusImg,
   triceratops: triceratopsImg,

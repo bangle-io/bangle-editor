@@ -5,7 +5,8 @@ import { corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { Slice } from 'prosemirror-model';
 import { DOMSerializer } from 'prosemirror-model';
-import { dino, stopwatch } from 'bangle-react/components/index';
+import { dino } from 'bangle-react/dino';
+import { stopwatch } from 'bangle-react/stopwatch';
 import * as prosemirrorView from 'prosemirror-view';
 import { ReactEditor } from 'bangle-react/react-editor';
 

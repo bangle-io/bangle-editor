@@ -5,7 +5,7 @@ import {
   WorkspaceContext,
 } from '../workspace/WorkspaceContext';
 import { defaultContent } from './constants';
-import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
+import { LocalDisk } from 'bangle-plugins/collab/client/local-disk';
 import { Manager } from 'bangle-plugins/collab/server/manager';
 import { specSheet } from '../editor/spec-sheet';
 import { config } from 'bangle-play/config';

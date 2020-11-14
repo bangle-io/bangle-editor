@@ -9,7 +9,8 @@ import {
 } from 'bangle-core/test-helpers/index';
 import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
-import { LocalDisk } from 'bangle-plugins/local-disk/local-disk';
+import { LocalDisk } from 'bangle-plugins/collab/client/local-disk';
+
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
