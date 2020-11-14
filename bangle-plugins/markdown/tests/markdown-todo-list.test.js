@@ -43,7 +43,7 @@ describe('todo list', () => {
               <link href="https://example.com">https://example.com</link>
             </para>
           </todoItem>
-          <todoItem data-done={true}>
+          <todoItem done={true}>
             <para>[]second</para>
           </todoItem>
         </todoList>
@@ -67,7 +67,7 @@ describe('todo list', () => {
           <todoItem>
             <para>first</para>
           </todoItem>
-          <todoItem data-done={false}>
+          <todoItem done={false}>
             <para>[]second</para>
           </todoItem>
         </todoList>

@@ -7,8 +7,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -32,8 +31,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -49,8 +47,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -66,8 +63,7 @@ Object {
                       "content": Array [
                         Object {
                           "attrs": Object {
-                            "data-done": false,
-                            "data-type": "todo_item",
+                            "done": false,
                           },
                           "content": Array [
                             Object {
@@ -84,8 +80,7 @@ Object {
                         },
                         Object {
                           "attrs": Object {
-                            "data-done": false,
-                            "data-type": "todo_item",
+                            "done": false,
                           },
                           "content": Array [
                             Object {
@@ -141,8 +136,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -194,8 +188,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -212,8 +205,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -230,8 +222,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -248,8 +239,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -266,8 +256,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -284,8 +273,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -302,8 +290,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": true,
-            "data-type": "todo_item",
+            "done": true,
           },
           "content": Array [
             Object {
@@ -353,8 +340,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -370,8 +356,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -388,8 +373,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -406,8 +390,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -423,8 +406,7 @@ Object {
                       "content": Array [
                         Object {
                           "attrs": Object {
-                            "data-done": false,
-                            "data-type": "todo_item",
+                            "done": false,
                           },
                           "content": Array [
                             Object {
@@ -441,8 +423,7 @@ Object {
                         },
                         Object {
                           "attrs": Object {
-                            "data-done": false,
-                            "data-type": "todo_item",
+                            "done": false,
                           },
                           "content": Array [
                             Object {
@@ -498,8 +479,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -545,8 +525,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -563,8 +542,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -581,8 +559,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": true,
-            "data-type": "todo_item",
+            "done": true,
           },
           "content": Array [
             Object {
@@ -599,8 +576,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -735,8 +711,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -752,8 +727,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -770,8 +744,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -788,8 +761,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -806,8 +778,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -830,8 +801,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -848,8 +818,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -883,8 +852,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -900,8 +868,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -918,8 +885,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -936,8 +902,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -954,8 +919,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -995,8 +959,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1012,8 +975,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1030,8 +992,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1048,8 +1009,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1066,8 +1026,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -1090,8 +1049,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1108,8 +1066,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1271,8 +1228,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1288,8 +1244,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1306,8 +1261,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1324,8 +1278,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1342,8 +1295,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -1366,8 +1318,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1384,8 +1335,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1419,8 +1369,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1436,8 +1385,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1454,8 +1402,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1472,8 +1419,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -1490,8 +1436,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -1531,8 +1476,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1548,8 +1492,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1566,8 +1509,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1584,8 +1526,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": false,
-                    "data-type": "todo_item",
+                    "done": false,
                   },
                   "content": Array [
                     Object {
@@ -1602,8 +1543,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "data-done": true,
-                    "data-type": "todo_item",
+                    "done": true,
                   },
                   "content": Array [
                     Object {
@@ -1626,8 +1566,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
@@ -1644,8 +1583,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "data-done": false,
-            "data-type": "todo_item",
+            "done": false,
           },
           "content": Array [
             Object {
