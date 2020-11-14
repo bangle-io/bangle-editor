@@ -5,9 +5,9 @@ const { workspaces } = require('./package.json');
 module.exports = {
   testRunner: 'jest-circus/runner',
   modulePaths: workspaces.map((w) => `<rootDir>/${w}`),
-  testPathIgnorePatterns: workspaces.map(
-    (w) => `<rootDir>/${w}/__integration_tests__/`,
-  ),
+  testPathIgnorePatterns: [
+    ...workspaces.map((w) => `<rootDir>/${w}/__integration_tests__/`),
+  ],
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   // collectCoverage: true,
@@ -17,4 +17,5 @@ module.exports = {
       '<rootDir>/scripts/fileMock.js',
     '\\.(css)$': '<rootDir>/scripts/styleMock.js',
   },
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
 };

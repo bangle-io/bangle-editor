@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Inline node banana Inits banana 1`] = `"<h1>Wow</h1><p>Child <span data-bangle-id=\\"banana\\" data-bangle-attrs=\\"{&quot;data-ripe&quot;:&quot;fresh&quot;,&quot;color&quot;:&quot;yellow&quot;}\\"></span></p>"`;

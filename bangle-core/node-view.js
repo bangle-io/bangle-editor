@@ -13,6 +13,7 @@ class BaseNodeView {
       getPos: this._getPos,
       decorations: this._decorations,
       selected: this._selected,
+      attrs: this._node.attrs,
       updateAttrs: (attrs) => {
         this._view.dispatch(
           updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
@@ -79,6 +80,9 @@ class BaseNodeView {
 }
 
 export class NodeView extends BaseNodeView {
+  /**
+   *
+   */
   static createPlugin({
     name,
     containerDOM: containerDOMSpec,

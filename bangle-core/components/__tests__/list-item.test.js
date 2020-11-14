@@ -8,6 +8,7 @@ import {
   renderTestEditor,
   sendKeyToPm,
   typeText,
+  selectNodeAt,
 } from 'bangle-core/test-helpers/index';
 import {
   bulletList,
@@ -64,10 +65,6 @@ const plugins = [
 
 const testEditor = renderTestEditor({ specSheet, plugins });
 
-const selectNodeAt = (view, pos) => {
-  const tr = view.state.tr;
-  view.dispatch(tr.setSelection(NodeSelection.create(tr.doc, pos)));
-};
 const keybindings = listItem.defaultKeys;
 
 describe('Command: toggleList', () => {

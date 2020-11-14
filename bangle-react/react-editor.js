@@ -32,9 +32,8 @@ export class ReactEditor extends React.PureComponent {
     update: (nodeView, nodeViewProps) => {
       log('update');
       const updateCallback = nodeViewUpdateCallbackCache.get(nodeView);
-      // I am thinking that this might be called before react had the chance
-      // to mount. I believe saving of args in nodeViewPropsCache will get the react
-      // render up to date with latest nodeViewProps
+      // If updateCallback is undefined (which can happen if react took long to mount),
+      // we are still okay, as the latest nodeViewProps will be accessed whenever it mounts.
       if (updateCallback) {
         updateCallback();
       }
@@ -61,19 +60,17 @@ export class ReactEditor extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.editor.destroy();
-    this.editor = null;
+    if (this.editor) {
+      this.editor.destroy();
+      this.editor = null;
+    }
   }
 
   render() {
     log('rendering PMEditorWrapper');
     return (
       <>
-        <div
-          ref={this.editorRenderTarget}
-          id={this.props.options.id}
-          data-testid={this.props.options.testId}
-        />
+        <div ref={this.editorRenderTarget} id={this.props.options.id} />
         {this.state.nodeViews.map((nodeView) => {
           return reactDOM.createPortal(
             <NodeViewElement
@@ -90,6 +87,11 @@ export class ReactEditor extends React.PureComponent {
 }
 
 class NodeViewElement extends React.PureComponent {
+  static propTypes = {
+    nodeView: PropTypes.object.isRequired,
+    renderNodeViews: PropTypes.func.isRequired,
+  };
+
   update = () => {
     this.setState({ nodeViewProps: this.props.nodeView.getNodeViewProps() });
   };
@@ -147,7 +149,7 @@ class NodeViewElement extends React.PureComponent {
         this.state.nodeViewProps.node,
       );
       throw new Error(
-        `Missing react render for node of type "${this.state.nodeViewProps.node.type.name}"`,
+        `renderNodeView must handle rendering for node of type "${this.state.nodeViewProps.node.type.name}"`,
       );
     }
     return element;
