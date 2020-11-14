@@ -1,9 +1,11 @@
 /** @jsx pjsx */
+
 import { screen } from '@testing-library/dom';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { corePlugins, coreSpec } from 'bangle-core/index';
-import { pjsx, reactTestEditor } from 'bangle-react/__test-helpers__';
-import { bananaComponent, Banana } from './banana';
+import { pjsx, reactTestEditor } from 'bangle-react/__test-helpers__/index';
+import { bananaComponent, Banana } from './setup/banana';
+
 const renderNodeViews = jest.fn(({ node, ...args }) => {
   if (node.type.name === 'banana') {
     return <Banana node={node} {...args} />;
@@ -70,15 +72,15 @@ describe('Inline node banana', () => {
     const el = await screen.findByTestId(testId);
     await expect(el).toMatchInlineSnapshot(`
             <span
-              data-mount="true"
+              data-bangle-container=""
+              data-bangle-name="banana"
               data-testid="Can update attrs"
+              draggable="true"
             >
-              <div>
-                I am 
-                fresh
-                 
-                yellow
-                 banana
+              <div
+                data-color="yellow"
+              >
+                I am fresh yellow banana
               </div>
             </span>
           `);
@@ -102,15 +104,15 @@ describe('Inline node banana', () => {
 
     await expect(el).toMatchInlineSnapshot(`
             <span
-              data-mount="true"
+              data-bangle-container=""
+              data-bangle-name="banana"
               data-testid="Can update attrs"
+              draggable="true"
             >
-              <div>
-                I am 
-                fresh
-                 
-                brown
-                 banana
+              <div
+                data-color="brown"
+              >
+                I am fresh brown banana
               </div>
             </span>
           `);
