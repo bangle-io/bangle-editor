@@ -22,7 +22,6 @@ class BaseNodeView {
         this._view.dispatch(
           updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
         );
-        return true;
       },
     };
   }
@@ -188,52 +187,6 @@ export class NodeView extends BaseNodeView {
     this.containerDOM = undefined;
     this.contentDOM = undefined;
   }
-}
-
-/**
- * @param {*} spec
- * @param {Object} opts
- * @param {string} opts.container
- */
-export function serializationHelpers(
-  spec,
-  {
-    allowedAttrs,
-    container = spec.schema.inline ? 'span' : 'div',
-    serializer = (node) =>
-      JSON.stringify(
-        allowedAttrs
-          ? objectFilter(node.attrs, (value, key) => allowedAttrs.includes(key))
-          : node.attrs,
-      ),
-    parser = (value) => JSON.parse(value),
-  } = {},
-) {
-  // TODO need to make a hole
-  return {
-    toDOM: (node) => {
-      return [
-        container,
-        {
-          // todo move this to bangle-name
-          'data-bangle-id': spec.name,
-          'data-bangle-attrs': serializer(node),
-        },
-      ];
-    },
-    parseDOM: [
-      {
-        tag: `${container}[data-bangle-id="${spec.name}"]`,
-        getAttrs: (dom) => {
-          const attrs = dom.getAttribute('data-bangle-attrs');
-          if (!attrs) {
-            return {};
-          }
-          return parser(attrs);
-        },
-      },
-    ],
-  };
 }
 
 export function saveRenderHandlers(editorContainer, handlers) {
