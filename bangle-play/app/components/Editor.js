@@ -51,7 +51,7 @@ const getPlugins = ({ docName, manager }) => {
     }),
     ...corePlugins({
       heading: { levels: config.headingLevels },
-      todoItem: { nodeView: false },
+      // todoItem: { nodeView: false },
     }),
     collab.plugins(collabOpts),
     emoji.plugins(),
@@ -59,17 +59,17 @@ const getPlugins = ({ docName, manager }) => {
     trailingNode.plugins(),
     timestamp.plugins(),
     dino.plugins(),
-    NodeView.createPlugin({
-      name: 'todo_item',
-      containerDOM: [
-        'li',
-        {
-          'data-type': 'todo_item',
-          'class': 'bangle-todo-item',
-        },
-      ],
-      contentDOM: ['span', {}],
-    }),
+    // NodeView.createPlugin({
+    //   name: 'todo_item',
+    //   containerDOM: [
+    //     'li',
+    //     {
+    //       'data-type': 'todo_item',
+    //       'class': 'bangle-todo-item',
+    //     },
+    //   ],
+    //   contentDOM: ['span', {}],
+    // }),
   ];
 };
 

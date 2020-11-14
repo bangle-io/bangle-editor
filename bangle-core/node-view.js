@@ -6,6 +6,10 @@ let log = LOG ? console.log.bind(console, 'node-view') : () => {};
 const renderHandlersCache = new WeakMap();
 
 class BaseNodeView {
+  getAttrs() {
+    return this._node.attrs;
+  }
+
   getNodeViewProps() {
     return {
       node: this._node,
@@ -95,13 +99,12 @@ export class NodeView extends BaseNodeView {
           [name]: (node, view, getPos, decorations) => {
             const containerDOM = createElement(containerDOMSpec);
 
-            containerDOM.setAttribute('data-bangle-name', name);
             containerDOM.setAttribute('data-bangle-container', '');
 
             let contentDOM;
             if (contentDOMSpec) {
               contentDOM = createElement(contentDOMSpec);
-              containerDOM.setAttribute('data-bangle-content', '');
+              contentDOM.setAttribute('data-bangle-content', '');
             }
 
             return new NodeView({
