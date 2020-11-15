@@ -3,9 +3,6 @@ import { setBlockType, textblockTypeInputRule } from 'tiptap-commands';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import { moveNode } from './list-item/commands';
 
-const name = 'code_block';
-
-const getTypeFromSchema = (schema) => schema.nodes[name];
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
@@ -16,6 +13,9 @@ export const defaultKeys = {
   insertEmptyAbove: 'Mod-Shift-Enter',
   insertEmptyBelow: 'Mod-Enter',
 };
+
+const name = 'code_block';
+const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {
   return {

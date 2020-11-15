@@ -31,7 +31,7 @@ const name = 'heading';
 const defaultLevels = ['1', '2', '3', '4', '5', '6'];
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-function specFactory({ levels = defaultLevels, classNames } = {}) {
+function specFactory({ levels = defaultLevels } = {}) {
   return {
     type: 'node',
     name,
@@ -52,16 +52,7 @@ function specFactory({ levels = defaultLevels, classNames } = {}) {
         };
       }),
       toDOM: (node) => {
-        return [
-          `h${node.attrs.level}`,
-          {
-            class:
-              classNames && classNames[`h${node.attrs.level}`]
-                ? classNames[`h${node.attrs.level}`]
-                : undefined,
-          },
-          0,
-        ];
+        return [`h${node.attrs.level}`, {}, 0];
       },
     },
     markdown: {
@@ -87,34 +78,30 @@ function pluginsFactory({
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
-
+    const levelBindings = Object.fromEntries(
+      levels.map((level) => [
+        keybindings[`toH${level}`],
+        setBlockType(type, { level }),
+      ]),
+    );
     return [
-      keymap(
-        levels.reduce(
-          (items, level) => ({
-            ...items,
-            ...{
-              [keybindings[`toH${level}`]]: setBlockType(type, { level }),
-            },
-          }),
-          {
-            [keybindings.moveUp]: moveNode(type, 'UP'),
-            [keybindings.moveDown]: moveNode(type, 'DOWN'),
+      keymap({
+        ...levelBindings,
+        [keybindings.moveUp]: moveNode(type, 'UP'),
+        [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-            [keybindings.emptyCopy]: copyEmptyCommand(type),
-            [keybindings.emptyCut]: cutEmptyCommand(type),
+        [keybindings.emptyCopy]: copyEmptyCommand(type),
+        [keybindings.emptyCut]: cutEmptyCommand(type),
 
-            [keybindings.insertEmptyAbove]: filter(
-              isInHeading,
-              insertEmpty(schema.nodes.paragraph, 'above', false),
-            ),
-            [keybindings.insertEmptyBelow]: filter(
-              isInHeading,
-              insertEmpty(schema.nodes.paragraph, 'below', false),
-            ),
-          },
+        [keybindings.insertEmptyAbove]: filter(
+          isInHeading,
+          insertEmpty(schema.nodes.paragraph, 'above', false),
         ),
-      ),
+        [keybindings.insertEmptyBelow]: filter(
+          isInHeading,
+          insertEmpty(schema.nodes.paragraph, 'below', false),
+        ),
+      }),
       ...levels.map((level) =>
         textblockTypeInputRule(
           new RegExp(`^(#{1,${level}})\\s$`),

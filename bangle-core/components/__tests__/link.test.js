@@ -22,7 +22,6 @@ import {
 } from '../index';
 import { getLinkMarkDetails, setLinkAtSelection } from '../link';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { NodeSelection } from 'prosemirror-state';
 
 const specSheet = new SpecSheet([
   doc.spec(),

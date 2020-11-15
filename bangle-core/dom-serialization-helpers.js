@@ -8,14 +8,14 @@ import { objectFilter } from './utils/js-utils';
  *
  * @param {*} spec
  * @param {Object} opts
- * @param {string} opts.tagName
+ * @param {string} opts.tag
  * @param {string|0|(node)=>string} opts.content - `0` signals content that PM will inject.
  * @param {string} opts.ignoreAttrs
  * @param {Number} opts.parsingPriority https://prosemirror.net/docs/ref/#model.ParseRule.priority
  */
 export function domSerializationHelpers(
   name,
-  { tagName = 'div', content, ignoreAttrs = [], parsingPriority } = {},
+  { tag = 'div', content, ignoreAttrs = [], parsingPriority } = {},
 ) {
   const serializer = (node) =>
     JSON.stringify(
@@ -28,7 +28,7 @@ export function domSerializationHelpers(
   return {
     toDOM: (node) => {
       const domSpec = [
-        tagName,
+        tag,
         {
           'data-bangle-name': name,
           'data-bangle-attrs': serializer(node),
@@ -48,7 +48,7 @@ export function domSerializationHelpers(
     parseDOM: [
       {
         priority: parsingPriority,
-        tag: `${tagName}[data-bangle-name="${name}"]`,
+        tag: `${tag}[data-bangle-name="${name}"]`,
         getAttrs: (dom) => {
           const attrs = dom.getAttribute('data-bangle-attrs');
           if (!attrs) {
