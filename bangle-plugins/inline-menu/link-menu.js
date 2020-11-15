@@ -16,7 +16,6 @@ import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { selectionTooltip } from '../selection-tooltip/index';
 import { hideAllSelectionTooltip } from 'bangle-plugins/selection-tooltip/selection-tooltip';
 
-export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   hideLinkMenu,
@@ -36,13 +35,6 @@ const getTooltipKey = (parentKey) => {
 const createTooltipKey = (parentKey) => {
   return keyStore.create(parentKey, parentKey.key + '__selectionTooltip');
 };
-
-function specFactory(opts = {}) {
-  return {
-    name,
-    type: 'component',
-  };
-}
 
 function pluginsFactory({
   getScrollContainerDOM = (view) => {

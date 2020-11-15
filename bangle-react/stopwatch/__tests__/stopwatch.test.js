@@ -3,7 +3,7 @@
  */
 /** @jsx pjsx */
 import { fireEvent } from '@testing-library/react';
-import { pjsx, reactTestEditor } from 'bangle-react/__test-helpers__/index';
+import { pjsx, reactTestEditor } from '../../__tests__/helpers/index';
 import { sendKeyToPm } from 'bangle-core/test-helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
 import { corePlugins, coreSpec } from 'bangle-core/components/index';

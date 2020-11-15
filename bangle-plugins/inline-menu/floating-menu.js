@@ -40,9 +40,6 @@ import { selectionTooltip } from '../selection-tooltip/index';
 import { Icon } from './icon-helpers';
 import { filter } from 'bangle-core/utils/pm-utils';
 
-const name = 'floating_menu';
-
-export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   hideFloatingMenuTooltip,
@@ -56,13 +53,6 @@ const getSelectionTooltipKey = (parentKey) => {
 const createTooltipKey = (parentKey) => {
   return keyStore.create(parentKey, parentKey.key + '__selectionTooltip');
 };
-
-function specFactory(opts = {}) {
-  return {
-    type: 'component',
-    name,
-  };
-}
 
 function pluginsFactory({
   key = new PluginKey('floating_menu'),
