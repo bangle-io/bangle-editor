@@ -119,7 +119,7 @@ export class Editor extends React.PureComponent {
       return <dino.Dino node={node} {...args} />;
     }
     if (node.type.name === 'stopwatch') {
-      return <stopwatch.Stopwatch node={node} {...args} />;
+      return <stopwatch.Stopwatch node={node} updateAttrs={updateAttrs} />;
     }
     if (node.type.name === 'todo_item') {
       return (

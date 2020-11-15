@@ -3,7 +3,7 @@
 import { screen } from '@testing-library/dom';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { corePlugins, coreSpec } from 'bangle-core/index';
-import { pjsx, reactTestEditor } from 'bangle-react/__test-helpers__/index';
+import { pjsx, reactTestEditor } from './helpers/index';
 import { bananaComponent, Banana } from './setup/banana';
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { reactTestEditor, pjsx } from 'bangle-react/__test-helpers__';
+import { reactTestEditor, pjsx } from '../../__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';

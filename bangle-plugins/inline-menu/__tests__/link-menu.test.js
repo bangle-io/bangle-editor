@@ -15,7 +15,7 @@ jest.mock('bangle-plugins/helpers/index', () => {
   };
 });
 
-const specSheet = new SpecSheet([...coreSpec(), linkMenu.spec()]);
+const specSheet = new SpecSheet([...coreSpec()]);
 const plugins = [link.plugins(), linkMenu.plugins()];
 
 describe('Link menu', () => {
