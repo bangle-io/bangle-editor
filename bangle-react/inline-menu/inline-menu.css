@@ -1,4 +1,4 @@
-@import '../selection-tooltip/selection-tooltip.css';
+@import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
 
 .bangle-link-menu {
   display: flex;

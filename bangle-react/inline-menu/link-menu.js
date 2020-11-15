@@ -13,7 +13,7 @@ import { uuid } from 'bangle-core/utils/js-utils';
 import { Icon } from './icon-helpers';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
-import { selectionTooltip } from '../selection-tooltip/index';
+import * as selectionTooltip from 'bangle-plugins/selection-tooltip/index';
 import { hideAllSelectionTooltip } from 'bangle-plugins/selection-tooltip/selection-tooltip';
 
 export const plugins = pluginsFactory;
