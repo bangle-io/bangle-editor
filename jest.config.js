@@ -10,6 +10,7 @@ module.exports = {
   ],
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/test-helpers/'],
   // collectCoverage: true,
   clearMocks: true,
   moduleNameMapper: {
