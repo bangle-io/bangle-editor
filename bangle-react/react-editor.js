@@ -24,13 +24,13 @@ export class ReactEditor extends React.PureComponent {
 
   renderHandlers = {
     create: (nodeView, nodeViewProps) => {
-      log('create');
-      this.setState({
-        nodeViews: [...this.state.nodeViews, nodeView],
-      });
+      log('create', objUid.get(nodeView));
+      this.setState(({ nodeViews }) => ({
+        nodeViews: [...nodeViews, nodeView],
+      }));
     },
     update: (nodeView, nodeViewProps) => {
-      log('update');
+      log('update', objUid.get(nodeView));
       const updateCallback = nodeViewUpdateCallbackCache.get(nodeView);
       // If updateCallback is undefined (which can happen if react took long to mount),
       // we are still okay, as the latest nodeViewProps will be accessed whenever it mounts.
@@ -39,10 +39,10 @@ export class ReactEditor extends React.PureComponent {
       }
     },
     destroy: (nodeView) => {
-      log('destroy');
-      this.setState({
-        nodeViews: this.state.nodeViews.filter((n) => n !== nodeView),
-      });
+      log('destroy', objUid.get(nodeView));
+      this.setState(({ nodeViews }) => ({
+        nodeViews: nodeViews.filter((n) => n !== nodeView),
+      }));
     },
   };
 
@@ -67,7 +67,10 @@ export class ReactEditor extends React.PureComponent {
   }
 
   render() {
-    log('rendering PMEditorWrapper');
+    log(
+      'rendering PMEditorWrapper',
+      this.state.nodeViews.map((n) => objUid.get(n)),
+    );
     return (
       <>
         <div ref={this.editorRenderTarget} id={this.props.options.id} />
@@ -93,7 +96,9 @@ class NodeViewElement extends React.PureComponent {
   };
 
   update = () => {
-    this.setState({ nodeViewProps: this.props.nodeView.getNodeViewProps() });
+    this.setState((state, props) => ({
+      nodeViewProps: props.nodeView.getNodeViewProps(),
+    }));
   };
 
   constructor(props) {
@@ -139,6 +144,7 @@ class NodeViewElement extends React.PureComponent {
   }
 
   render() {
+    log('react rendering', objUid.get(this.props.nodeView));
     const element = this.props.renderNodeViews({
       ...this.state.nodeViewProps,
       children: this.getChildren(),
