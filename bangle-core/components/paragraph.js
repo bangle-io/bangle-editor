@@ -27,6 +27,7 @@ export const defaultKeys = {
   emptyCut: 'Mod-x',
   insertEmptyAbove: 'Mod-Shift-Enter',
   insertEmptyBelow: 'Mod-Enter',
+  toggleParagraph: 'Ctrl-Shift-0',
 };
 
 const name = 'paragraph';
@@ -68,6 +69,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
     return [
       keymap({
+        [keybindings.toggleParagraph]: convertToParagraph(),
+
         [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
         [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 

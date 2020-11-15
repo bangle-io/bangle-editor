@@ -45,7 +45,7 @@ function specFactory() {
 
   spec.schema = {
     ...spec.schema,
-    ...domSerializationHelpers(name, { tagName: 'span' }),
+    ...domSerializationHelpers(name, { tag: 'span' }),
   };
 
   return spec;

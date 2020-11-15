@@ -1,7 +1,6 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
-import { keymap } from 'prosemirror-keymap';
 
 const name = 'image';
 

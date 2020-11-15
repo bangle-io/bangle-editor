@@ -103,7 +103,7 @@ export function renderTestEditor(
       container,
       editorState: view.state,
       schema: view.state.schema,
-      // TODO deprecetate editorView
+      // TODO deprecate editorView
       editorView: view,
       selection: view.state.selection,
       posLabels,

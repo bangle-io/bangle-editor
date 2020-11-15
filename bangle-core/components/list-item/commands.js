@@ -34,14 +34,6 @@ import { liftSelectionList, liftFollowingList } from './transforms';
 
 const maxIndentation = 4;
 
-const _setTextSelection = (position, dir = 1) => (tr) => {
-  const nextSelection = Selection.findFrom(tr.doc.resolve(position), dir, true);
-  if (nextSelection) {
-    return tr.setSelection(nextSelection);
-  }
-  return tr;
-};
-
 window.NodeSelection = NodeSelection;
 
 // Returns the number of nested lists that are ancestors of the given selection

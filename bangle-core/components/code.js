@@ -3,11 +3,18 @@ import { toggleMark } from 'prosemirror-commands';
 import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleCode,
+  isCodeActiveInSelection,
+};
+
 const name = 'code';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'mark',
     name,
@@ -31,13 +38,13 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({
+function pluginsFactory({
   keybindings = {
     toggleCode: 'Mod-`',
   },
-} = {}) => {
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -49,15 +56,15 @@ export const plugins = ({
       }),
     ];
   };
-};
+}
 
-export const toggleCode = (state, dispatch, view) => {
+export function toggleCode(state, dispatch, view) {
   return toggleMark(state.schema.marks.code)(state, dispatch, view);
-};
+}
 
-export const isCodeActiveInSelection = (state) => {
+export function isCodeActiveInSelection(state) {
   return isMarkActiveInSelection(state.schema.marks.code)(state);
-};
+}
 
 function backticksFor(node, side) {
   let ticks = /`+/g,
