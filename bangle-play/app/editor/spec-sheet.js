@@ -3,8 +3,7 @@ import { coreSpec } from 'bangle-core/components';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
-
-import 'bangle-plugins/inline-menu/inline-menu.css';
+import 'bangle-react/inline-menu/inline-menu.css';
 
 import { config } from './config';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';

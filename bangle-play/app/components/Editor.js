@@ -8,8 +8,8 @@ import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { corePlugins } from 'bangle-core/components/index';
 import { config } from '../editor/config';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
-import * as floatingMenu from 'bangle-plugins/inline-menu/floating-menu';
-import * as linkMenu from 'bangle-plugins/inline-menu/link-menu';
+import * as floatingMenu from 'bangle-react/inline-menu/floating-menu';
+import * as linkMenu from 'bangle-react/inline-menu/link-menu';
 import { PluginKey } from 'prosemirror-state';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
@@ -51,7 +51,7 @@ const getPlugins = ({ docName, manager }) => {
     }),
     ...corePlugins({
       heading: { levels: config.headingLevels },
-      // todoItem: { nodeView: false },
+      todoItem: { nodeView: false },
     }),
     collab.plugins(collabOpts),
     emoji.plugins(),
@@ -59,16 +59,16 @@ const getPlugins = ({ docName, manager }) => {
     trailingNode.plugins(),
     timestamp.plugins(),
     dino.plugins(),
-    // NodeView.createPlugin({
-    //   name: 'todo_item2',
-    //   containerDOM: [
-    //     'li',
-    //     {
-    //       class: 'bangle-todo-item magic',
-    //     },
-    //   ],
-    //   contentDOM: ['span', {}],
-    // }),
+    NodeView.createPlugin({
+      name: 'todo_item',
+      containerDOM: [
+        'li',
+        {
+          'data-bangle-name': 'todo_item',
+        },
+      ],
+      contentDOM: ['span', {}],
+    }),
   ];
 };
 
