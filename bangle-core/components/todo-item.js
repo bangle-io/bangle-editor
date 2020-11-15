@@ -103,36 +103,37 @@ function pluginsFactory({
       schema.nodes['todo_list'],
     );
     return [
-      keymap({
-        [keybindings.markDone]: filter(
-          parentCheck,
-          updateNodeAttrs(type, (attrs) => ({
-            ...attrs,
-            done: !attrs['done'],
-          })),
-        ),
+      keybindings &&
+        keymap({
+          [keybindings.markDone]: filter(
+            parentCheck,
+            updateNodeAttrs(type, (attrs) => ({
+              ...attrs,
+              done: !attrs['done'],
+            })),
+          ),
 
-        Enter: enterKeyCommand(type),
-        Backspace: backspaceKeyCommand(type),
+          Enter: enterKeyCommand(type),
+          Backspace: backspaceKeyCommand(type),
 
-        [keybindings.indent]: nested ? indentList(type) : () => {},
-        [keybindings.outdent]: outdentList(type),
+          [keybindings.indent]: nested ? indentList(type) : () => {},
+          [keybindings.outdent]: outdentList(type),
 
-        [keybindings.moveUp]: filter(parentCheck, move('UP')),
-        [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
+          [keybindings.moveUp]: filter(parentCheck, move('UP')),
+          [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
 
-        [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
-        [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
+          [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
+          [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
 
-        [keybindings.insertEmptyAbove]: filter(
-          parentCheck,
-          insertEmpty(type, 'above', true),
-        ),
-        [keybindings.insertEmptyBelow]: filter(
-          parentCheck,
-          insertEmpty(type, 'below', true),
-        ),
-      }),
+          [keybindings.insertEmptyAbove]: filter(
+            parentCheck,
+            insertEmpty(type, 'above', true),
+          ),
+          [keybindings.insertEmptyBelow]: filter(
+            parentCheck,
+            insertEmpty(type, 'below', true),
+          ),
+        }),
       nodeView &&
         NodeView.createPlugin({
           name,

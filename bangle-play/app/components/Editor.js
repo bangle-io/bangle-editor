@@ -13,10 +13,10 @@ import * as linkMenu from 'bangle-plugins/inline-menu/link-menu';
 import { PluginKey } from 'prosemirror-state';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
-import { isJestIntegration } from 'bangle-core/utils/process-env';
 import { ReactEditor } from 'bangle-react/react-editor';
 import { dino } from 'bangle-react/dino';
 import { stopwatch } from 'bangle-react/stopwatch';
+import { NodeView } from 'bangle-core/node-view';
 
 const LOG = false;
 const DEBUG = true;
@@ -60,11 +60,11 @@ const getPlugins = ({ docName, manager }) => {
     timestamp.plugins(),
     dino.plugins(),
     // NodeView.createPlugin({
-    //   name: 'todo_item',
+    //   name: 'todo_item2',
     //   containerDOM: [
     //     'li',
     //     {
-    //       'class': 'bangle-todo-item',
+    //       class: 'bangle-todo-item magic',
     //     },
     //   ],
     //   contentDOM: ['span', {}],
@@ -144,7 +144,7 @@ export class Editor extends React.PureComponent {
 }
 
 function TodoItem({ children, node, updateAttrs }) {
-  const { done: done } = node.attrs;
+  const { done } = node.attrs;
 
   return (
     <>
@@ -162,4 +162,8 @@ function TodoItem({ children, node, updateAttrs }) {
       {children}
     </>
   );
+}
+
+function isJestIntegration() {
+  return process.env.NODE_ENV === 'test' && process.env.JEST_INTEGRATION;
 }

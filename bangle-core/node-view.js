@@ -1,4 +1,4 @@
-import { Plugin } from 'prosemirror-state';
+import { Plugin, PluginKey } from './plugin';
 import { objectFilter, bangleWarn, createElement } from './utils/js-utils';
 const LOG = false;
 
@@ -99,6 +99,7 @@ export class NodeView extends BaseNodeView {
     renderHandlers,
   }) {
     return new Plugin({
+      key: new PluginKey(name + 'NodeView'),
       props: {
         nodeViews: {
           [name]: (node, view, getPos, decorations) => {

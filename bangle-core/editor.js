@@ -1,8 +1,8 @@
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
 import { focusAtPosition } from './components/doc';
-import { pluginsLoader } from './utils/plugins-loader';
-import { isTestEnv } from './utils/process-env';
+import { pluginLoader } from './utils/plugin-loader';
+import { isTestEnv } from './utils/environment';
 import { DOMSerializer, DOMParser } from 'prosemirror-model';
 
 export class BangleEditor {
@@ -83,7 +83,7 @@ export function editorStateSetup({
     schema,
     doc: doc ? doc : createDocument({ schema, content: content }),
     ...otherStateOpts,
-    plugins: pluginsLoader(specSheet, plugins, { editorProps }),
+    plugins: pluginLoader(specSheet, plugins, { editorProps }),
   });
 
   return state;
