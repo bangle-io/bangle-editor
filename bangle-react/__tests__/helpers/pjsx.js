@@ -10,3 +10,8 @@ export function pjsx(name, ...args) {
   }
   return banglePsx(name, ...args);
 }
+
+export const Span = (props) => {
+  const { children, ...otherProps } = props;
+  return React.createElement('span', otherProps, children);
+};
