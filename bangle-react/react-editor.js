@@ -2,7 +2,7 @@ import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { objUid } from 'bangle-core/utils/object-uid';
-import { BangleEditor } from 'bangle-core/editor';
+import { BangleEditor, editorStateSetup } from 'bangle-core/editor';
 import { saveRenderHandlers } from 'bangle-core/node-view';
 import { bangleWarn } from 'bangle-core/utils/js-utils';
 
@@ -12,15 +12,23 @@ let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
 const nodeViewUpdateCallbackCache = new WeakMap();
 
+export const EditorViewContext = React.createContext();
+
 export class ReactEditor extends React.PureComponent {
+  static contextType = EditorViewContext;
+
   static propTypes = {
     options: PropTypes.object.isRequired,
     renderNodeViews: PropTypes.func,
     onReady: PropTypes.func,
+    children: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.arrayOf(PropTypes.element),
+    ]),
   };
 
   editorRenderTarget = React.createRef();
-  state = { nodeViews: [] };
+  state = { nodeViews: [], editor: null };
 
   renderHandlers = {
     create: (nodeView, nodeViewProps) => {
@@ -46,6 +54,14 @@ export class ReactEditor extends React.PureComponent {
     },
   };
 
+  get editor() {
+    if (this.destroyed) {
+      return null;
+    }
+
+    return this.state.editor;
+  }
+
   async componentDidMount() {
     const { options } = this.props;
     // save the renderHandlers in the dom to decouple nodeView instantiating code
@@ -53,16 +69,54 @@ export class ReactEditor extends React.PureComponent {
     // of the component can get the handler reference from `getRenderHandlers(view)`.
     // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     saveRenderHandlers(this.editorRenderTarget.current, this.renderHandlers);
-    this.editor = new BangleEditor(this.editorRenderTarget.current, options);
+    const initialEditorState =
+      options.state ||
+      editorStateSetup({
+        plugins: options.plugins,
+        editorProps: options.editorProps,
+        specSheet: options.specSheet,
+        stateOpts: options.stateOpts,
+      });
+
+    const editor = new BangleEditor(this.editorRenderTarget.current, {
+      ...options,
+      state: initialEditorState,
+    });
+
+    editor.view._updatePluginWatcher = this.updatePluginWatcher;
+
     if (this.props.onReady) {
-      this.props.onReady(this.editor);
+      this.props.onReady(editor);
     }
+
+    this.setState({
+      editor,
+    });
   }
 
+  updatePluginWatcher = (watcher, remove = false) => {
+    if (!this.editor) {
+      return;
+    }
+
+    let state = this.editor.view.state;
+
+    const newPlugins = remove
+      ? state.plugins.filter((p) => p !== watcher)
+      : [...state.plugins, watcher];
+
+    state = state.reconfigure({
+      plugins: newPlugins,
+    });
+
+    log('Adding watching to existing state', watcher);
+    this.editor.view.updateState(state);
+  };
+
   componentWillUnmount() {
-    if (this.editor) {
+    if (!this.destroyed) {
       this.editor.destroy();
-      this.editor = null;
+      this.destroyed = true;
     }
   }
 
@@ -71,6 +125,7 @@ export class ReactEditor extends React.PureComponent {
       'rendering PMEditorWrapper',
       this.state.nodeViews.map((n) => objUid.get(n)),
     );
+
     return (
       <>
         <div ref={this.editorRenderTarget} id={this.props.options.id} />
@@ -84,6 +139,11 @@ export class ReactEditor extends React.PureComponent {
             objUid.get(nodeView),
           );
         })}
+        {this.editor && (
+          <EditorViewContext.Provider value={this.editor.view}>
+            {this.props.children}
+          </EditorViewContext.Provider>
+        )}
       </>
     );
   }
