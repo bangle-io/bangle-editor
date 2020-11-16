@@ -9,6 +9,7 @@ import {
 import { filter } from 'bangle-core/utils/pm-utils';
 import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { Plugin, PluginKey } from 'prosemirror-state';
+import { DOMSerializer } from 'prosemirror-model';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
 
@@ -131,19 +132,46 @@ function pluginsFactory({
 }
 
 export function createTooltipDOM(arrow = false) {
-  const tooltipDOM = document.createElement('div');
-  tooltipDOM.className = 'bangle-tooltip bangle-selection-tooltip';
-  tooltipDOM.setAttribute('role', 'tooltip');
+  const {
+    dom: tooltipDOM,
+    contentDOM: tooltipContent,
+  } = DOMSerializer.renderSpec(
+    window.document,
+    [
+      'div',
+      {
+        class: 'bangle-tooltip bangle-selection-tooltip',
+        role: 'tooltip',
+      },
+      [
+        'div',
+        {
+          class: 'bangle-tooltip-content',
+        },
+        0,
+      ],
+      arrow && [
+        'div',
+        {
+          'class': 'bangle-tooltip-arrow',
+          'data-popper-arrow': '',
+        },
+      ],
+    ].filter(Boolean),
+  );
+  // const tooltipDOM = document.createElement('div');
+  // tooltipDOM.className = 'bangle-tooltip bangle-selection-tooltip';
+  // tooltipDOM.setAttribute('role', 'tooltip');
 
-  const tooltipContent = document.createElement('div');
-  tooltipContent.className = 'bangle-tooltip-content';
-  tooltipDOM.appendChild(tooltipContent);
-  if (arrow) {
-    const arrowDOM = document.createElement('div');
-    arrowDOM.className = 'bangle-tooltip-arrow';
-    arrowDOM.setAttribute('data-popper-arrow', '');
-    tooltipDOM.appendChild(arrowDOM);
-  }
+  // const tooltipContent = document.createElement('div');
+  // tooltipContent.className = 'bangle-tooltip-content';
+  // tooltipDOM.appendChild(tooltipContent);
+  // if (arrow) {
+  //   const arrowDOM = document.createElement('div');
+  //   arrowDOM.className = 'bangle-tooltip-arrow';
+  //   arrowDOM.setAttribute('data-popper-arrow', '');
+  //   tooltipDOM.appendChild(arrowDOM);
+  // }
   return { tooltipDOM, tooltipContent };
 }
 

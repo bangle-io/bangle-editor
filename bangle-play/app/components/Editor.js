@@ -8,7 +8,7 @@ import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { corePlugins } from 'bangle-core/components/index';
 import { config } from '../editor/config';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
-import * as floatingMenu from 'bangle-react/inline-menu/floating-menu';
+// import * as floatingMenu from 'bangle-react/inline-menu/floating-menu';
 import * as linkMenu from 'bangle-react/inline-menu/link-menu';
 import { PluginKey } from 'prosemirror-state';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
@@ -16,7 +16,10 @@ import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from 'bangle-react/react-editor';
 import { dino } from 'bangle-react/dino';
 import { stopwatch } from 'bangle-react/stopwatch';
+import { floatingMenu } from 'bangle-react/floating-menu/index';
 import { NodeView } from 'bangle-core/node-view';
+import { FloatingMenu } from 'bangle-react/floating-menu/FloatingMenu';
+import { selectionTooltipPlugin } from 'bangle-react/floating-menu/selection-tooltip-plugin';
 
 const LOG = false;
 const DEBUG = true;
@@ -26,6 +29,7 @@ const getScrollContainerDOM = (view) => {
   return view.dom.parentElement.parentElement;
 };
 
+const menuKey = new PluginKey('menuKey');
 const getPlugins = ({ docName, manager }) => {
   const collabOpts = {
     docName: docName,
@@ -41,10 +45,11 @@ const getPlugins = ({ docName, manager }) => {
       key: linkMenuKey,
       getScrollContainerDOM,
     }),
-    floatingMenu.plugins({
-      getScrollContainerDOM,
-      linkMenuKey,
-    }),
+    selectionTooltipPlugin({ key: menuKey, getScrollContainerDOM }),
+    // floatingMenu.plugins({
+    //   key: menuKey,
+    //   getScrollContainerDOM,
+    // }),
     emojiInlineSuggest.plugins({
       markName: 'emoji_inline_suggest',
       trigger: ':',
@@ -137,7 +142,9 @@ export class Editor extends React.PureComponent {
           options={this.options}
           onReady={this.onEditorReady}
           renderNodeViews={this.renderNodeViews}
-        />
+        >
+          <FloatingMenu menuKey={menuKey} />
+        </ReactEditor>
       </>
     );
   }
@@ -145,7 +152,6 @@ export class Editor extends React.PureComponent {
 
 function TodoItem({ children, node, updateAttrs }) {
   const { done } = node.attrs;
-
   return (
     <>
       <span contentEditable={false}>
