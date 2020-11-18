@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link menu when no link 1`] = `
+<div>
+  <div
+    id="test-editor"
+  >
+    <div
+      class="ProseMirror bangle-editor content"
+      contenteditable="true"
+    >
+      <p>
+        foobar
+      </p>
+    </div>
+    <div
+      class="bangle-tooltip"
+      data-tooltip-name="selectionTooltipPlacement"
+      role="tooltip"
+    >
+      <div
+        class="bangle-tooltip-content"
+      />
+    </div>
+  </div>
+</div>
+`;

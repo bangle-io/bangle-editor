@@ -3,7 +3,7 @@ import {
   isItalicActiveInSelection,
   toggleItalic,
 } from 'bangle-core/components/italic';
-import { Icon } from './icon-helpers';
+import { Icon } from './Icon';
 import {
   isBoldActiveInSelection,
   toggleBold,
@@ -25,12 +25,10 @@ import {
   isSelectionInsideLink,
   setLinkAtSelection,
 } from 'bangle-core/components/link';
-import { showLinkMenu } from './link-menu';
 import {
   isSelectionInsideBulletList,
   toggleBulletList,
 } from 'bangle-core/components/bullet-list';
-import * as selectionTooltip from 'bangle-plugins/selection-tooltip/index';
 
 export const boldItem = () => ({
   type: 'command',
@@ -148,25 +146,16 @@ export const heading3Item = () => ({
   isActive: isSelectionInHeading({ level: 3 }),
 });
 
-export const linkItem = (linkMenuKey) => ({
+export const linkItem = (showLinkMenu) => ({
   type: 'command',
   name: 'Link',
   command: filter(
     (state) => setLinkAtSelection('')(state),
     (state, dispatch, view) => {
-      if (showLinkMenu(linkMenuKey)(state)) {
-        if (dispatch) {
-          console.log('hiding all');
-          selectionTooltip.hideAllSelectionTooltip()(state, dispatch, view);
-          setTimeout(
-            () => showLinkMenu(linkMenuKey)(view.state, view.dispatch, view),
-            0,
-          );
-          return true;
-        }
-        return true;
+      if (dispatch) {
+        showLinkMenu();
       }
-      return false;
+      return true;
     },
   ),
   component: LinkIcon,
@@ -262,6 +251,41 @@ function LinkIcon(props) {
       <path d="M14.8284 12L16.2426 13.4142L19.071 10.5858C20.6331 9.02365 20.6331 6.49099 19.071 4.9289C17.509 3.3668 14.9763 3.3668 13.4142 4.9289L10.5858 7.75732L12 9.17154L14.8284 6.34311C15.6095 5.56206 16.8758 5.56206 17.6568 6.34311C18.4379 7.12416 18.4379 8.39049 17.6568 9.17154L14.8284 12Z" />
       <path d="M12 14.8285L13.4142 16.2427L10.5858 19.0711C9.02372 20.6332 6.49106 20.6332 4.92896 19.0711C3.36686 17.509 3.36686 14.9764 4.92896 13.4143L7.75739 10.5858L9.1716 12L6.34317 14.8285C5.56212 15.6095 5.56212 16.8758 6.34317 17.6569C7.12422 18.4379 8.39055 18.4379 9.1716 17.6569L12 14.8285Z" />
       <path d="M14.8285 10.5857C15.219 10.1952 15.219 9.56199 14.8285 9.17147C14.4379 8.78094 13.8048 8.78094 13.4142 9.17147L9.1716 13.4141C8.78107 13.8046 8.78107 14.4378 9.1716 14.8283C9.56212 15.2188 10.1953 15.2188 10.5858 14.8283L14.8285 10.5857Z" />
+    </Icon>
+  );
+}
+
+export function DoneIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M10.2426 16.3137L6 12.071L7.41421 10.6568L10.2426 13.4853L15.8995 7.8284L17.3137 9.24262L10.2426 16.3137Z" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z"
+      />
+    </Icon>
+  );
+}
+
+export function ExternalIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M15.6396 7.02527H12.0181V5.02527H19.0181V12.0253H17.0181V8.47528L12.1042 13.3892L10.6899 11.975L15.6396 7.02527Z" />
+      <path d="M10.9819 6.97473H4.98193V18.9747H16.9819V12.9747H14.9819V16.9747H6.98193V8.97473H10.9819V6.97473Z" />
+    </Icon>
+  );
+}
+
+export function CloseIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M16.34 9.32a1 1 0 10-1.36-1.46l-2.93 2.73-2.73-2.93a1 1 0 00-1.46 1.36l2.73 2.93-2.93 2.73a1 1 0 101.36 1.46l2.93-2.73 2.73 2.93a1 1 0 101.46-1.36l-2.73-2.93 2.93-2.73z" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M1 12a11 11 0 1122 0 11 11 0 01-22 0zm11 9a9 9 0 110-18 9 9 0 010 18z"
+      />
     </Icon>
   );
 }

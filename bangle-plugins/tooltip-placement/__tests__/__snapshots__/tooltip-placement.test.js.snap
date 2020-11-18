@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`plugin view passed options correctly 1`] = `
+exports[`plugin view passed options correctly 2`] = `
 Array [
   Object {
     "enabled": true,

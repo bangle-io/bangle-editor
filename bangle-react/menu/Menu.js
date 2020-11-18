@@ -1,8 +1,6 @@
-import React, { useCallback, useContext, useEffect } from 'react';
-import reactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import React, { useContext } from 'react';
+import { EditorViewContext } from 'bangle-react/react-editor';
+import { focusFloatingMenuInput, toggleLinkMenu } from './floating-menu';
 import {
   boldItem,
   bulletListItem,
@@ -11,36 +9,31 @@ import {
   heading3Item,
   todoListItem,
   italicItem,
-} from '../inline-menu/menu-item';
-import { usePluginState } from '../use-plugin-state';
-import { EditorViewContext } from 'bangle-react/react-editor';
+  linkItem,
+} from './MenuIcons';
 
-export function FloatingMenu(props) {
-  const { menuKey } = props;
-  const menuState = usePluginState([menuKey]);
-
-  return (
-    menuState.show &&
-    reactDOM.createPortal(<Menu />, menuState.tooltipContentDOM)
-  );
-}
-
-FloatingMenu.propTypes = {
-  menuKey: PropTypes.instanceOf(PluginKey).isRequired,
-};
-
-function Menu() {
+export function Menu({ menuKey }) {
   const view = useContext(EditorViewContext);
 
   const menuItems = [
-    [boldItem(), italicItem(), codeItem()].filter(Boolean),
+    [
+      boldItem(),
+      italicItem(),
+      linkItem(() => {
+        toggleLinkMenu(menuKey)(view.state, view.dispatch, view);
+        requestAnimationFrame(() =>
+          focusFloatingMenuInput(menuKey)(view.state, view.dispatch, view),
+        );
+      }),
+      codeItem(),
+    ].filter(Boolean),
     [heading2Item(), heading3Item(), bulletListItem(), todoListItem()].filter(
       Boolean,
     ),
   ];
 
   return (
-    <span className="bangle-floating-menu">
+    <span className="bangle-menu">
       {menuItems.map((group, index, array) => {
         if (!Array.isArray(group)) {
           group = [group];
@@ -50,7 +43,7 @@ function Menu() {
         return (
           <span
             key={index}
-            className={`bangle-floating-menu-group ${leftBorder} ${rightBorder}`}
+            className={`bangle-menu-group ${leftBorder} ${rightBorder}`}
           >
             {group.map((item) => (
               <item.component
@@ -65,8 +58,6 @@ function Menu() {
                 key={item.name}
                 onMouseDown={(e) => {
                   e.preventDefault();
-                  // e.preventDefault();
-                  // e.stopPropagation();
                   item.command(view.state, view.dispatch, view);
                 }}
               />

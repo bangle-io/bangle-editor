@@ -1,6 +1,6 @@
-@import 'bangle-plugins/selection-tooltip/selection-tooltip.css';
-
 .bangle-link-menu {
+  background-color: #333;
+  border-radius: 4px;
   display: flex;
   flex-direction: row;
   padding: 4px 2px;
@@ -10,6 +10,7 @@
 .bangle-link-menu input {
   background-color: transparent;
   margin-left: 4px;
+  padding-left: 4px;
 }
 
 .bangle-link-menu a {
@@ -23,26 +24,23 @@
   transform: scale(1.1, 1.1);
 }
 
-.bangle-selection-tooltip {
+.bangle-menu {
   background-color: #333;
   border-radius: 4px;
-}
-
-.bangle-floating-menu {
   display: flex;
   flex-direction: row;
   padding: 4px 2px;
   align-items: center;
 }
 
-.bangle-floating-menu-group {
+.bangle-menu-group {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0 2px;
 }
 
-.bangle-floating-menu-group.right-border {
+.bangle-menu-group.right-border {
   border-right: 1px solid #666;
 }
 

@@ -1,6 +1,6 @@
 // babel.config.js
 
-const DEBUG = true;
+const DEBUG = false;
 
 module.exports = (api) => {
   if (api.env('test')) {

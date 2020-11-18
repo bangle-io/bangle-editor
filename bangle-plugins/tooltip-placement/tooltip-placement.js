@@ -4,21 +4,11 @@ import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
 import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
 import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { hideTooltip, showTooltip } from './tooltip-commands';
+import { Plugin } from 'prosemirror-state';
 
-export const spec = specFactory;
 export const plugins = pluginsFactory;
-export const commands = { hideTooltip, showTooltip };
 
 const name = 'tooltip_placement';
-
-function specFactory({} = {}) {
-  return {
-    name: name,
-    type: 'component',
-  };
-}
 
 const LOG = false;
 let log = LOG
@@ -43,50 +33,29 @@ let log = LOG
  * @param {(state: any, dispatch: any, view) => void} options.onUpdateTooltip - Called whenever tooltip is updated, will also be called when tooltip mounts for the first time
  * @param {(state: any, dispatch: any, view)  => void} options.onHideTooltip
  * @param {(view: any) => Array} options.customPopperModifiers
- * @param {(state: any) => Boolean} options.getInitialShowState
  * @param {Array} options.fallbackPlacement
  */
 function pluginsFactory({
   pluginName = 'tooltipPlacementPlugin',
-  key = new PluginKey(pluginName),
+  tooltipStateKey,
   tooltipDOM,
   getScrollContainerDOM,
   getReferenceElement,
   placement = 'top',
-  tooltipOffset,
   onUpdateTooltip = (state, dispatch, view) => {},
   onHideTooltip = (state, dispatch, view) => {},
+  tooltipOffset = () => {
+    return [0, 5];
+  },
   customPopperModifiers,
   fallbackPlacements = ['bottom', 'top'],
-  getInitialShowState = (state) => false,
 }) {
   // TODO can we remove this pluginName field
   tooltipDOM.setAttribute('data-tooltip-name', pluginName);
 
   const plugin = new Plugin({
-    key: key,
     view: (view) => {
       return new TooltipPlacementView(view);
-    },
-    state: {
-      init: (_, state) => {
-        return {
-          show: getInitialShowState(state),
-        };
-      },
-      apply: (tr, pluginState) => {
-        if (!tr.getMeta(key)) {
-          return pluginState;
-        }
-
-        const newState = tr.getMeta(key);
-        // Do not change object reference if 'show' was and is false
-        if (newState.show === false && newState.show === pluginState.show) {
-          return pluginState;
-        }
-
-        return newState;
-      },
     },
   });
 
@@ -100,7 +69,7 @@ function pluginsFactory({
       // TODO should this be this plugins responsibility
       this._view.dom.parentNode.appendChild(this._tooltip);
 
-      const pluginState = key.getState(view.state);
+      const pluginState = tooltipStateKey.getState(view.state);
       // if the initial state is to show, setup the tooltip
       if (pluginState.show) {
         this._showTooltip();
@@ -109,14 +78,15 @@ function pluginsFactory({
     }
 
     update(view, prevState) {
-      const pluginState = key.getState(view.state);
-      if (pluginState === key.getState(prevState)) {
+      const pluginState = tooltipStateKey.getState(view.state);
+      if (pluginState === tooltipStateKey.getState(prevState)) {
         return;
       }
+      log('here');
       if (pluginState.show) {
         log('calling updatetoolip ');
-
         onUpdateTooltip.call(this, view.state, view.dispatch, view);
+
         this._showTooltip();
       } else {
         log('calling hidetooltip');
@@ -214,7 +184,6 @@ function pluginsFactory({
             : defaultModifiers,
         },
       );
-
       onUpdateTooltip.call(this, view.state, view.dispatch, view);
     }
   }

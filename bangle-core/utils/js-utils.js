@@ -392,3 +392,7 @@ export function createElement(spec) {
   }
   return dom;
 }
+
+export function fNot(func) {
+  return (...args) => !func(...args);
+}
