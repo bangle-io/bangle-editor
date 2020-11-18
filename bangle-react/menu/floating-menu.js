@@ -16,9 +16,10 @@ import { PluginKey } from 'prosemirror-state';
 export const plugins = floatingMenu;
 export const commands = {
   focusFloatingMenuInput,
-  toggleLinkMenu,
+  toggleFloatingLinkMenu,
+  updateFloatingTooltipType: updateSelectionTooltipType,
+  hideFloatingMenu: hideSelectionTooltip,
 };
-
 export const defaultKeys = {
   hide: 'Escape',
   toggleLink: 'Meta-k',
@@ -63,38 +64,34 @@ function floatingMenu({
           queryIsSelectionTooltipActive(key),
           hideSelectionTooltip(key),
         ),
-        [keybindings.toggleLink]: toggleLinkMenu(key),
+        [keybindings.toggleLink]: toggleFloatingLinkMenu(key),
       }),
   ];
 }
 
-export function toggleLinkMenu(tooltipStateKey) {
+export function toggleFloatingLinkMenu(key) {
   return (state, dispatch, view) => {
-    const type = querySelectionTooltipType(tooltipStateKey)(state);
+    const type = querySelectionTooltipType(key)(state);
 
     if (state.selection.empty) {
       // Focus on link tooltip by keyboard shortcut
       if (type === 'floatingLinkMenu') {
         requestAnimationFrame(() =>
-          focusFloatingMenuInput(tooltipStateKey)(state, dispatch, view),
+          focusFloatingMenuInput(key)(state, dispatch, view),
         );
       }
       return false;
     }
 
     if (type === 'floatingLinkMenu') {
-      return hideSelectionTooltip(tooltipStateKey)(
-        view.state,
-        view.dispatch,
-        view,
-      );
+      return hideSelectionTooltip(key)(view.state, view.dispatch, view);
     }
 
     requestAnimationFrame(() =>
-      focusFloatingMenuInput(tooltipStateKey)(state, dispatch, view),
+      focusFloatingMenuInput(key)(state, dispatch, view),
     );
 
-    return updateSelectionTooltipType(tooltipStateKey, 'floatingLinkMenu')(
+    return updateSelectionTooltipType(key, 'floatingLinkMenu')(
       view.state,
       view.dispatch,
       view,

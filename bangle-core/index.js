@@ -3,3 +3,4 @@ import browser, { isChromeWithSelectionBug } from './utils/browser';
 export * from './components/index';
 export * from './editor';
 export { logging, browser, isChromeWithSelectionBug };
+export * from './plugin';
