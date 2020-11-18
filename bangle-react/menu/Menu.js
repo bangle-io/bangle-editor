@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { EditorViewContext } from 'bangle-react/react-editor';
-import { focusFloatingMenuInput, toggleLinkMenu } from './floating-menu';
+import {
+  focusFloatingMenuInput,
+  toggleFloatingLinkMenu,
+} from './floating-menu';
 import {
   boldItem,
   bulletListItem,
@@ -20,7 +23,7 @@ export function Menu({ menuKey }) {
       boldItem(),
       italicItem(),
       linkItem(() => {
-        toggleLinkMenu(menuKey)(view.state, view.dispatch, view);
+        toggleFloatingLinkMenu(menuKey)(view.state, view.dispatch, view);
         requestAnimationFrame(() =>
           focusFloatingMenuInput(menuKey)(view.state, view.dispatch, view),
         );
