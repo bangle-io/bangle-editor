@@ -37,7 +37,7 @@ export const defaultKeys = {
   insertEmptyBelow: 'Mod-Enter',
 };
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'todo-item') : () => {};
 

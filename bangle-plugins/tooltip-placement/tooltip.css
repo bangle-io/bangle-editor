@@ -3,10 +3,6 @@
   z-index: 30;
 }
 
-.bangle-tooltip .bangle-tooltip-content {
-  color: white;
-}
-
 .bangle-tooltip[data-show] {
   display: block;
 }

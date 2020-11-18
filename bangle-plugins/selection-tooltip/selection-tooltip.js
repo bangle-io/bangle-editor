@@ -1,178 +1,147 @@
-import { keymap } from 'prosemirror-keymap';
-import { trackMousePlugin } from './track-mouse-plugin';
-import {
-  showTooltip,
-  hideTooltip,
-  makeHideTooltipTr,
-  tooltipPlacement,
-} from 'bangle-plugins/tooltip-placement/index';
-import { filter } from 'bangle-core/utils/pm-utils';
-import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { Plugin, PluginKey } from 'prosemirror-state';
-import { DOMSerializer } from 'prosemirror-model';
-const LOG = false;
-let log = LOG ? console.log.bind(console, 'plugins/tooltip') : () => {};
+import { tooltipPlacement } from 'bangle-plugins/tooltip-placement/index';
+import { createSelectionTooltipDOM } from './create-selection-tooltip-dom';
 
-export const spec = specFactory;
-export const plugins = pluginsFactory;
+export const plugins = selectionTooltip;
 export const commands = {
-  isTooltipActive: isSelectionTooltipActive,
+  updateSelectionTooltipType,
   hideSelectionTooltip,
-  showSelectionTooltip,
-  hideAllSelectionTooltip,
+  queryIsSelectionTooltipActive,
+  querySelectionTooltipType,
 };
 
-const name = 'selection_tooltip';
-const keyStore = pluginKeyStore();
+const LOG = false;
 
-const getTooltipKey = (parentKey) => {
-  return keyStore.get(parentKey, parentKey.key + '__tooltip');
-};
-const createTooltipKey = (parentKey) => {
-  return keyStore.create(parentKey, parentKey.key + '__tooltip');
-};
+let log = LOG ? console.log.bind(console, 'selection-tooltip') : () => {};
 
-function specFactory(opts = {}) {
-  return {
-    type: 'component',
-    name,
-  };
-}
-
-const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-const HIDE_ALL_SELECTION_TOOLTIP = 'HIDE_ALL_SELECTION_TOOLTIP';
-
-function pluginsFactory({
-  key = new PluginKey('selectionTooltip'),
-  tooltipName = 'selection',
-  tooltipDOM,
+function selectionTooltip({
+  key = new PluginKey('selectionTooltipPlugin'),
+  calculateType = (state, prevType) => {
+    return state.selection.empty ? null : 'default';
+  },
   getScrollContainerDOM = (view) => {
     return view.dom.parentElement;
   },
-  tooltipOffset = () => {
-    return [0, 0.5 * rem];
-  },
-  getReferenceElement = getSelectionReferenceElement,
-  shouldShowTooltip = (state) => {
-    return !state.selection.empty;
-  },
-  getInitialShowState = (state) => false,
-
-  placement,
-
-  // key bindings
-  enterKeyName = 'Enter',
-  arrowUpKeyName = 'ArrowUp',
-  arrowDownKeyName = 'ArrowDown',
-  escapeKeyName = 'Escape',
-  alternateEnterKeyName,
-
-  onHideTooltip = () => {},
-
-  onUpdateTooltip = () => {},
-
-  onEnter = (state, dispatch, view) => {
-    return false;
-  },
-  onArrowDown = (state, dispatch, view) => {
-    return false;
-  },
-  onArrowUp = (state, dispatch, view) => {
-    return false;
-  },
-  // TODO this is added in the plugin
-  onEscape = undefined,
-} = {}) {
-  const tooltipKey = createTooltipKey(key);
-  const plugin = tooltipPlacement.plugins({
-    key: tooltipKey,
-    pluginName: tooltipName,
-    tooltipOffset: tooltipOffset,
-    tooltipDOM: tooltipDOM,
-    getScrollContainerDOM: getScrollContainerDOM,
-    getReferenceElement: getReferenceElement,
-    onUpdateTooltip: onUpdateTooltip,
-    getInitialShowState: getInitialShowState,
-    onHideTooltip: onHideTooltip,
-    placement,
-  });
-
-  if (!onEscape) {
-    onEscape = hideSelectionTooltip(key);
-  }
-
-  const isActiveCheck = isSelectionTooltipActive(key);
-
-  const keybindings = {
-    [enterKeyName]: filter(isActiveCheck, onEnter),
-    [arrowUpKeyName]: filter(isActiveCheck, onArrowUp),
-    [arrowDownKeyName]: filter(isActiveCheck, onArrowDown),
-    [escapeKeyName]: filter(isActiveCheck, onEscape),
-  };
-  if (alternateEnterKeyName) {
-    keybindings[alternateEnterKeyName] = keybindings[enterKeyName];
+  tooltipDOM,
+  tooltipContentDOM,
+  tooltipArrow,
+  tooltipOffset,
+  hideOnBlur = false,
+}) {
+  if (!tooltipDOM) {
+    ({ tooltipDOM, tooltipContentDOM } = createSelectionTooltipDOM(
+      tooltipArrow,
+    ));
   }
 
   return [
-    plugin,
-    trackMousePlugin({
-      tooltipDOM: tooltipDOM,
-      tooltipPlugin: plugin,
-      shouldShowTooltip,
-    }).plugin,
-    keymap(keybindings),
-    new Plugin({
-      appendTransaction(trs, oldState, newState) {
-        if (trs.some((tr) => tr.getMeta(HIDE_ALL_SELECTION_TOOLTIP))) {
-          return makeHideTooltipTr(newState.tr, tooltipKey);
-        }
-      },
+    selectionTooltipState({
+      key: key,
+      tooltipDOM,
+      tooltipContentDOM,
+      calculateType,
+    }),
+    selectionTooltipController({ tooltipStateKey: key, hideOnBlur }),
+    tooltipPlacement.plugins({
+      // TODO get rid of this pluginName
+      pluginName: 'selectionTooltipPlacement',
+      tooltipDOM,
+      tooltipStateKey: key,
+      tooltipOffset,
+      getReferenceElement: getSelectionReferenceElement,
+      getScrollContainerDOM,
     }),
   ];
 }
 
-export function createTooltipDOM(arrow = false) {
-  const {
-    dom: tooltipDOM,
-    contentDOM: tooltipContent,
-  } = DOMSerializer.renderSpec(
-    window.document,
-    [
-      'div',
-      {
-        class: 'bangle-tooltip bangle-selection-tooltip',
-        role: 'tooltip',
+function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
+  return new Plugin({
+    key,
+    state: {
+      init: (_, state) => {
+        const type = calculateType(state, null);
+        return {
+          type,
+          tooltipContentDOM,
+          // For tooltipPlacement plugin
+          show: typeof type === 'string',
+          // helpers
+          calculateType,
+        };
       },
-      [
-        'div',
-        {
-          class: 'bangle-tooltip-content',
-        },
-        0,
-      ],
-      arrow && [
-        'div',
-        {
-          'class': 'bangle-tooltip-arrow',
-          'data-popper-arrow': '',
-        },
-      ],
-    ].filter(Boolean),
-  );
-  // const tooltipDOM = document.createElement('div');
-  // tooltipDOM.className = 'bangle-tooltip bangle-selection-tooltip';
-  // tooltipDOM.setAttribute('role', 'tooltip');
+      apply: (tr, pluginState) => {
+        const meta = tr.getMeta(key);
+        if (meta === undefined) {
+          return pluginState;
+        }
 
-  // const tooltipContent = document.createElement('div');
-  // tooltipContent.className = 'bangle-tooltip-content';
-  // tooltipDOM.appendChild(tooltipContent);
-  // if (arrow) {
-  //   const arrowDOM = document.createElement('div');
-  //   arrowDOM.className = 'bangle-tooltip-arrow';
-  //   arrowDOM.setAttribute('data-popper-arrow', '');
-  //   tooltipDOM.appendChild(arrowDOM);
-  // }
-  return { tooltipDOM, tooltipContent };
+        // Do not change object reference if 'type' was and is null
+        if (meta.type == null && pluginState.type == null) {
+          return pluginState;
+        }
+
+        log('update tooltip state to ', meta.type);
+        return {
+          ...pluginState,
+          type: meta.type,
+          show: typeof meta.type === 'string',
+        };
+      },
+    },
+  });
+}
+
+function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
+  let mouseDown = false;
+  return new Plugin({
+    props: {
+      handleDOMEvents: {
+        blur(view, event) {
+          if (hideOnBlur) {
+            hideSelectionTooltip(tooltipStateKey)(
+              view.state,
+              view.dispatch,
+              view,
+            );
+          }
+        },
+        mousedown(view, event) {
+          mouseDown = true;
+        },
+        mouseup(view, event) {
+          mouseDown = false;
+          return updateTooltipOnSelectionChange(tooltipStateKey)(
+            view.state,
+            view.dispatch,
+            view,
+          );
+        },
+      },
+    },
+    view() {
+      return {
+        update(view, lastState) {
+          const state = view.state;
+          if (mouseDown || lastState === state) {
+            return;
+          }
+          if (
+            lastState &&
+            lastState.doc.eq(state.doc) &&
+            lastState.selection.eq(state.selection)
+          ) {
+            return;
+          }
+
+          return updateTooltipOnSelectionChange(tooltipStateKey)(
+            view.state,
+            view.dispatch,
+            view,
+          );
+        },
+      };
+    },
+  });
 }
 
 function getSelectionReferenceElement(view) {
@@ -195,30 +164,61 @@ function getSelectionReferenceElement(view) {
   };
 }
 
-/**
- * Commands
- */
+export function updateTooltipOnSelectionChange(key) {
+  return (state, dispatch, view) => {
+    const tooltipState = key.getState(state);
+    log('updateTooltipStateOnSelectionChange', tooltipState);
+    const newType = tooltipState.calculateType(state, tooltipState.type);
+    if (typeof newType === 'string') {
+      return updateSelectionTooltipType(key, newType)(state, dispatch, view);
+    }
 
-/**
- * Shows a tooltip when there is a selection
- */
-export function isSelectionTooltipActive(key) {
-  return (state) => {
-    return getTooltipKey(key).getState(state)?.show;
+    // Only hide if it is not already hidden
+    if (newType == null && tooltipState.type != null) {
+      return hideSelectionTooltip(key)(state, dispatch, view);
+    }
+
+    return false;
+  };
+}
+
+/** Commands  */
+
+// This command will rerender if you call it with the type
+// it already has. This is done in order to update the position of a tooltip.
+export function updateSelectionTooltipType(key, type) {
+  return (state, dispatch) => {
+    log('updateSelectionTooltipType', type);
+
+    if (dispatch) {
+      dispatch(state.tr.setMeta(key, { type }).setMeta('addToHistory', false));
+    }
+    return true;
   };
 }
 
 export function hideSelectionTooltip(key) {
-  return hideTooltip(getTooltipKey(key));
-}
-
-export function showSelectionTooltip(key) {
-  return showTooltip(getTooltipKey(key));
-}
-
-export function hideAllSelectionTooltip() {
   return (state, dispatch) => {
-    dispatch(state.tr.setMeta(HIDE_ALL_SELECTION_TOOLTIP, true));
-    return true;
+    log('hideSelectionTooltip');
+
+    if (dispatch) {
+      dispatch(
+        state.tr.setMeta(key, { type: null }).setMeta('addToHistory', false),
+      );
+    }
+  };
+}
+
+export function queryIsSelectionTooltipActive(key) {
+  return (state) => {
+    const pluginState = key.getState(state);
+    return pluginState && typeof pluginState.type === 'string' ? true : false;
+  };
+}
+
+export function querySelectionTooltipType(key) {
+  return (state) => {
+    const pluginState = key.getState(state);
+    return pluginState && pluginState.type;
   };
 }

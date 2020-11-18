@@ -8,18 +8,15 @@ import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { corePlugins } from 'bangle-core/components/index';
 import { config } from '../editor/config';
 import { emoji, emojiInlineSuggest } from 'bangle-plugins/emoji/index';
-// import * as floatingMenu from 'bangle-react/inline-menu/floating-menu';
-import * as linkMenu from 'bangle-react/inline-menu/link-menu';
 import { PluginKey } from 'prosemirror-state';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from 'bangle-react/react-editor';
 import { dino } from 'bangle-react/dino';
 import { stopwatch } from 'bangle-react/stopwatch';
-import { floatingMenu } from 'bangle-react/floating-menu/index';
 import { NodeView } from 'bangle-core/node-view';
-import { FloatingMenu } from 'bangle-react/floating-menu/FloatingMenu';
-import { selectionTooltipPlugin } from 'bangle-react/floating-menu/selection-tooltip-plugin';
+import { floatingMenu, FloatingMenu } from 'bangle-react/menu/index';
+import 'bangle-plugins/selection-tooltip/style.css';
 
 const LOG = false;
 const DEBUG = true;
@@ -41,19 +38,15 @@ const getPlugins = ({ docName, manager }) => {
   };
   const linkMenuKey = new PluginKey('linkMenuKeyYes');
   return [
-    linkMenu.plugins({
-      key: linkMenuKey,
-      getScrollContainerDOM,
-    }),
-    selectionTooltipPlugin({ key: menuKey, getScrollContainerDOM }),
-    // floatingMenu.plugins({
-    //   key: menuKey,
+    // linkMenu.plugins({
+    //   key: linkMenuKey,
     //   getScrollContainerDOM,
     // }),
-    emojiInlineSuggest.plugins({
-      markName: 'emoji_inline_suggest',
-      trigger: ':',
-    }),
+    floatingMenu.plugins({ key: menuKey, getScrollContainerDOM }),
+    // emojiInlineSuggest.plugins({
+    //   markName: 'emoji_inline_suggest',
+    //   trigger: ':',
+    // }),
     ...corePlugins({
       heading: { levels: config.headingLevels },
       todoItem: { nodeView: false },
