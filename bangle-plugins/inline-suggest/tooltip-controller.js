@@ -1,4 +1,4 @@
-import { Plugin } from 'prosemirror-state';
+import { Plugin } from 'bangle-core/index';
 import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 
 import { doesQueryHaveTrigger } from './helpers';

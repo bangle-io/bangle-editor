@@ -8,7 +8,7 @@ import { corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { ReactEditor } from 'bangle-react/react-editor';
 import { pjsx, Span } from './helpers/index';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey } from 'bangle-core/index';
 import { usePluginState } from 'bangle-react/use-plugin-state';
 import { useEffect, useState } from 'react';
 

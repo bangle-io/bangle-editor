@@ -1,5 +1,5 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { tooltipPlacement } from 'bangle-plugins/tooltip-placement/index';
+import { Plugin, PluginKey } from 'bangle-core/index';
+import { tooltipPlacement } from 'bangle-plugins/tooltip/index';
 import { createSelectionTooltipDOM } from './create-selection-tooltip-dom';
 
 export const plugins = selectionTooltip;

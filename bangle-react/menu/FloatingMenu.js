@@ -1,7 +1,7 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { PluginKey } from 'prosemirror-state';
+import { PluginKey } from 'bangle-core/index';
 
 import { usePluginState } from '../use-plugin-state';
 import { LinkMenu } from './FloatingLinkMenu';

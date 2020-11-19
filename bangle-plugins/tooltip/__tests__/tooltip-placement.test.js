@@ -11,7 +11,7 @@ import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { tooltipPlacement } from '../index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey } from 'bangle-core/index';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {

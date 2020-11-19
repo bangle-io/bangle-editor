@@ -1,5 +1,5 @@
 import { Plugin, PluginKey } from './plugin';
-import { objectFilter, bangleWarn, createElement } from './utils/js-utils';
+import { bangleWarn, createElement } from './utils/js-utils';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};

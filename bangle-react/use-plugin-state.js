@@ -1,4 +1,4 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey } from 'bangle-core/index';
 import { useContext, useEffect, useState } from 'react';
 import { EditorViewContext } from './react-editor';
 
