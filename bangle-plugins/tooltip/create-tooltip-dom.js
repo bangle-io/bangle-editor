@@ -1,6 +1,6 @@
 import { DOMSerializer } from 'prosemirror-model';
 
-export function createSelectionTooltipDOM(arrow = false) {
+export function createTooltipDOM(arrow = false) {
   const {
     dom: tooltipDOM,
     contentDOM: tooltipContentDOM,

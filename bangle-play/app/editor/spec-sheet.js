@@ -17,7 +17,7 @@ export const specSheet = new SpecSheet([
   ...coreSpec({ heading: { levels: config.headingLevels } }),
   collab.spec(),
   emoji.spec(),
-  // emojiInlineSuggest.spec({ markName: 'emoji_inline_suggest', trigger: ':' }),
+  emojiInlineSuggest.spec({ markName: 'emoji_inline_suggest', trigger: ':' }),
   stopwatch.spec(),
   trailingNode.spec(),
   timestamp.spec(),

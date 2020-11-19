@@ -1,3 +1,4 @@
+export * from './create-tooltip-dom';
 export * as tooltipPlacement from './tooltip-placement';
-export * from './create-selection-tooltip-dom';
 export * as selectionTooltip from './selection-tooltip';
+export * as suggestionsTooltip from './suggestions-tooltip';

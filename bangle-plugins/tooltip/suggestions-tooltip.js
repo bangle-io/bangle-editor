@@ -1,16 +1,15 @@
-import {
-  findFirstMarkPosition,
-  filter,
-  valuePlugin,
-} from 'bangle-core/utils/pm-utils';
+import { findFirstMarkPosition, filter } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
-import { tooltipPlacement } from '../tooltip/index';
-import { tooltipController } from './tooltip-controller';
-import { triggerInputRule } from './trigger-input-rule';
-import * as helpers from './helpers';
-import { removeTypeAheadMarkCmd } from './commands';
-import { PluginKey } from 'prosemirror-state';
+import {
+  triggerInputRule,
+  tooltipController,
+  removeTypeAheadMarkCmd,
+  helpers,
+} from 'bangle-plugins/inline-suggest/index';
+import { Plugin, PluginKey } from 'bangle-core';
 import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
+import { createTooltipDOM } from './create-tooltip-dom';
+import { tooltipPlacement } from './index';
 
 const LOG = true;
 let log = LOG ? console.log.bind(console, 'plugins/inline-suggest') : () => {};
@@ -69,7 +68,7 @@ export function pluginsFactory({
   markName,
   trigger,
   tooltipDOM,
-  tooltipContent,
+  tooltipContent: tooltipContentDOM,
   placement = 'bottom-start',
   enterKeyName = 'Enter',
   arrowUpKeyName = 'ArrowUp',
@@ -109,14 +108,11 @@ export function pluginsFactory({
     );
   },
 } = {}) {
-  const defaultDOM = createTooltipDOM();
   const isActiveCheck = isTooltipActive(key);
-  const tooltipPlacementKey = keyStore.create(key, TOOLTIP_KEY);
 
   if (!tooltipDOM) {
-    tooltipDOM = defaultDOM.tooltipDOM;
-    tooltipContent = defaultDOM.tooltipContent;
-    tooltipContent.textContent = 'hello world';
+    ({ tooltipContentDOM, tooltipDOM } = createTooltipDOM());
+    tooltipContentDOM.textContent = 'hello world';
   }
 
   const keybindings = {
@@ -132,12 +128,12 @@ export function pluginsFactory({
   return ({ schema }) => {
     const plugin = tooltipPlacement.plugins({
       pluginName: 'inlineSuggest' + trigger + '__tooltipPlacementKey',
-      key: tooltipPlacementKey,
-      placement: placement,
-      fallbackPlacements: fallbackPlacements,
-      tooltipOffset: tooltipOffset,
-      tooltipDOM: tooltipDOM,
-      getScrollContainerDOM: getScrollContainerDOM,
+      tooltipStateKey: key,
+      placement,
+      fallbackPlacements,
+      tooltipOffset,
+      tooltipDOM,
+      getScrollContainerDOM,
       getReferenceElement: referenceElement((state) => {
         const markType = schema.marks[markName];
         const { selection } = state;
@@ -148,34 +144,53 @@ export function pluginsFactory({
           selection.to,
         );
       }),
-      showTooltipArrow: false,
       onUpdateTooltip: onUpdateTooltip,
       onHideTooltip: onHideTooltip,
     });
     return [
+      new Plugin({
+        key,
+        state: {
+          init(_, state) {
+            return { trigger, markName, show: false };
+          },
+          apply(tr, pluginState) {
+            const meta = tr.getMeta(key);
+            if (meta === undefined) {
+              return pluginState;
+            }
+
+            // Do not change object reference if show was and is false
+            if (meta.show === false && pluginState.show === false) {
+              return pluginState;
+            }
+
+            return { ...pluginState, show: meta.show };
+          },
+        },
+      }),
       plugin,
       keymap(keybindings),
-      valuePlugin(key, { trigger, markName }),
       triggerInputRule(schema, markName, trigger),
       tooltipController({
         trigger,
         markName,
-        showTooltip: tooltipPlacement.commands.showTooltip(plugin),
-        hideTooltip: tooltipPlacement.commands.hideTooltip(plugin),
+        showTooltip: showSuggestionsTooltip(key),
+        hideTooltip: hideSuggestionsTooltip(key),
       }),
     ];
   };
 }
 
-export function createTooltipDOM(className = 'bangle-tooltip') {
-  const tooltipDOM = document.createElement('div');
-  tooltipDOM.className = className;
-  tooltipDOM.setAttribute('role', 'tooltip');
-  const tooltipContent = document.createElement('div');
-  tooltipContent.className = className + '-content';
-  tooltipDOM.appendChild(tooltipContent);
-  return { tooltipDOM, tooltipContent };
-}
+// export function createTooltipDOM(className = 'bangle-tooltip') {
+//   const tooltipDOM = document.createElement('div');
+//   tooltipDOM.className = className;
+//   tooltipDOM.setAttribute('role', 'tooltip');
+//   const tooltipContent = document.createElement('div');
+//   tooltipContent.className = className + '-content';
+//   tooltipDOM.appendChild(tooltipContent);
+//   return { tooltipDOM, tooltipContent };
+// }
 
 function referenceElement(getActiveMarkPos) {
   return (view, tooltipDOM, scrollContainerDOM) => {
@@ -220,7 +235,28 @@ export function getQueryText(key) {
 
 export function isTooltipActive(key) {
   return (state) => {
-    const tooltipKey = getTooltipKey(key);
-    return tooltipKey.getState(state)?.show;
+    return key.getState(state)?.show;
+  };
+}
+
+export function showSuggestionsTooltip(key) {
+  return (state, dispatch, view) => {
+    if (dispatch) {
+      dispatch(
+        state.tr.setMeta(key, { show: true }).setMeta('addToHistory', false),
+      );
+    }
+    return true;
+  };
+}
+
+export function hideSuggestionsTooltip(key) {
+  return (state, dispatch, view) => {
+    if (dispatch) {
+      dispatch(
+        state.tr.setMeta(key, { show: false }).setMeta('addToHistory', false),
+      );
+    }
+    return true;
   };
 }

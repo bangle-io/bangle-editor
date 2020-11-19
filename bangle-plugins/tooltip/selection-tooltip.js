@@ -1,6 +1,6 @@
 import { Plugin, PluginKey } from 'bangle-core/index';
 import { tooltipPlacement } from 'bangle-plugins/tooltip/index';
-import { createSelectionTooltipDOM } from './create-selection-tooltip-dom';
+import { createTooltipDOM } from './index';
 
 export const plugins = selectionTooltip;
 export const commands = {
@@ -29,9 +29,7 @@ function selectionTooltip({
   hideOnBlur = false,
 }) {
   if (!tooltipDOM) {
-    ({ tooltipDOM, tooltipContentDOM } = createSelectionTooltipDOM(
-      tooltipArrow,
-    ));
+    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM(tooltipArrow));
   }
 
   return [
@@ -206,6 +204,7 @@ export function hideSelectionTooltip(key) {
         state.tr.setMeta(key, { type: null }).setMeta('addToHistory', false),
       );
     }
+    return true;
   };
 }
 

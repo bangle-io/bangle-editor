@@ -35,17 +35,16 @@ const getPlugins = ({ docName, manager }) => {
       manager.handleRequest(...args).then((resp) => resp.body),
     ),
   };
-  const linkMenuKey = new PluginKey('linkMenuKeyYes');
   return [
     // linkMenu.plugins({
     //   key: linkMenuKey,
     //   getScrollContainerDOM,
     // }),
     floatingMenu.plugins({ key: menuKey, getScrollContainerDOM }),
-    // emojiInlineSuggest.plugins({
-    //   markName: 'emoji_inline_suggest',
-    //   trigger: ':',
-    // }),
+    emojiInlineSuggest.plugins({
+      markName: 'emoji_inline_suggest',
+      trigger: ':',
+    }),
     ...corePlugins({
       heading: { levels: config.headingLevels },
       todoItem: { nodeView: false },

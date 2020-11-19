@@ -46,6 +46,8 @@ function floatingMenu({
   },
   keybindings = defaultKeys,
   tooltipArrow = false,
+  tooltipDOM,
+  tooltipContentDOM,
   tooltipOffset = () => {
     return [0, 0.5 * rem];
   },
@@ -57,6 +59,8 @@ function floatingMenu({
       calculateType,
       tooltipArrow,
       tooltipOffset,
+      tooltipDOM,
+      tooltipContentDOM,
     }),
     keybindings &&
       keymap({
