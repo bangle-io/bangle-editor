@@ -4,11 +4,9 @@ import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
 import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
 import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
-import { Plugin } from 'prosemirror-state';
+import { Plugin } from 'bangle-core/index';
 
-export const plugins = pluginsFactory;
-
-const name = 'tooltip_placement';
+export const plugins = tooltipPlacement;
 
 const LOG = false;
 let log = LOG
@@ -35,7 +33,7 @@ let log = LOG
  * @param {(view: any) => Array} options.customPopperModifiers
  * @param {Array} options.fallbackPlacement
  */
-function pluginsFactory({
+function tooltipPlacement({
   pluginName = 'tooltipPlacementPlugin',
   tooltipStateKey,
   tooltipDOM,

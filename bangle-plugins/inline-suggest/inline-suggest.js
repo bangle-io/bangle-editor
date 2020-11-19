@@ -4,7 +4,7 @@ import {
   valuePlugin,
 } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
-import { tooltipPlacement } from '../tooltip-placement/index';
+import { tooltipPlacement } from '../tooltip/index';
 import { tooltipController } from './tooltip-controller';
 import { triggerInputRule } from './trigger-input-rule';
 import * as helpers from './helpers';

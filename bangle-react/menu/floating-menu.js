@@ -11,7 +11,7 @@ import {
   updateSelectionTooltipType,
 } from 'bangle-plugins/selection-tooltip/selection-tooltip';
 import { keymap } from 'prosemirror-keymap';
-import { PluginKey } from 'prosemirror-state';
+import { PluginKey } from 'bangle-core/index';
 
 export const plugins = floatingMenu;
 export const commands = {
