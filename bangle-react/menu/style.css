@@ -1,3 +1,9 @@
+@import 'bangle-plugins/tooltip/style.css';
+
+.bangle-tooltip-content {
+  color: white;
+}
+
 .bangle-link-menu {
   background-color: #333;
   border-radius: 4px;

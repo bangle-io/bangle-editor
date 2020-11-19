@@ -3,13 +3,13 @@ import {
   isSelectionInsideLink,
 } from 'bangle-core/components/link';
 import { filter } from 'bangle-core/utils/pm-utils';
-import { selectionTooltip } from 'bangle-plugins/selection-tooltip/index';
+import { selectionTooltip } from 'bangle-plugins/tooltip/index';
 import {
   queryIsSelectionTooltipActive,
   querySelectionTooltipType,
   hideSelectionTooltip,
   updateSelectionTooltipType,
-} from 'bangle-plugins/selection-tooltip/selection-tooltip';
+} from 'bangle-plugins/tooltip/selection-tooltip';
 import { keymap } from 'prosemirror-keymap';
 import { PluginKey } from 'bangle-core/index';
 

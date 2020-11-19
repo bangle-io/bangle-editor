@@ -1,4 +1,4 @@
-@import '../tooltip/tooltip.css';
+@import '../tooltip/style.css';
 
 span[data-bangle-name='emoji'] {
   display: inline-block;
