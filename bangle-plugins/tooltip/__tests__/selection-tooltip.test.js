@@ -14,7 +14,7 @@ import { selectionTooltip } from '../index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { createSelectionTooltipDOM } from '../create-selection-tooltip-dom';
+import { createSelectionTooltipDOM } from '../index';
 import { updateTooltipOnSelectionChange } from '../selection-tooltip';
 // due to some unknown issue, the view doesn't have focus
 // when running test which causes tests to fail

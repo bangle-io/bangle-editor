@@ -16,7 +16,6 @@ import { dino } from 'bangle-react/dino';
 import { stopwatch } from 'bangle-react/stopwatch';
 import { NodeView } from 'bangle-core/node-view';
 import { floatingMenu, FloatingMenu } from 'bangle-react/menu/index';
-import 'bangle-plugins/selection-tooltip/style.css';
 
 const LOG = false;
 const DEBUG = true;
