@@ -4,7 +4,11 @@ import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { PluginKey } from 'prosemirror-state';
 import React, { useEffect, useRef } from 'react';
 import reactDOM from 'react-dom';
-import { inlineSuggest, selectItemCommand } from '../inline-suggest/index';
+import { selectItemCommand } from '../inline-suggest/index';
+import {
+  suggestionsTooltip,
+  createTooltipDOM,
+} from 'bangle-plugins/tooltip/index';
 import { emojisArray } from './data';
 
 export const spec = specFactory;
@@ -27,7 +31,7 @@ function specFactory({
   markName = defaultMarkName,
   trigger = defaultTrigger,
 } = {}) {
-  return inlineSuggest.spec({ markName, trigger });
+  return suggestionsTooltip.spec({ markName, trigger });
 }
 
 function pluginsFactory({
@@ -38,7 +42,7 @@ function pluginsFactory({
 } = {}) {
   const inlineSuggestKey = keyStore.create(key, INLINE_SUGGEST_KEY);
 
-  const { tooltipDOM, tooltipContent } = inlineSuggest.createTooltipDOM();
+  const { tooltipDOM, tooltipContentDOM } = createTooltipDOM();
   let counter = 0;
   const resetCounter = () => {
     counter = 0;
@@ -63,7 +67,7 @@ function pluginsFactory({
         activeIndex={getActiveIndex(counter, emojis.length)}
         emojis={emojis}
       />,
-      tooltipContent,
+      tooltipContentDOM,
     );
 
     return true;
@@ -79,7 +83,7 @@ function pluginsFactory({
 
     return [
       valuePlugin(key, { markName }),
-      inlineSuggest.plugins({
+      suggestionsTooltip.plugins({
         key: inlineSuggestKey,
         markName,
         trigger,
@@ -89,7 +93,7 @@ function pluginsFactory({
         getScrollContainerDOM,
 
         onHideTooltip: () => {
-          reactDOM.unmountComponentAtNode(tooltipContent);
+          reactDOM.unmountComponentAtNode(tooltipContentDOM);
           resetCounter();
           return true;
         },
@@ -189,7 +193,7 @@ function Row({ title, isSelected, onClick, scrollIntoViewIfNeeded = true }) {
 }
 
 export function getQueryText(key) {
-  return inlineSuggest.getQueryText(getInlineSuggestKey(key));
+  return suggestionsTooltip.getQueryText(getInlineSuggestKey(key));
 }
 
 export function selectEmoji(key, emojiKind) {

@@ -41,7 +41,7 @@ describe('inline suggest basic show and hide', () => {
     }),
   ];
   const getTooltipState = (state) => {
-    return inlineSuggest.getTooltipKey(suggestionKey).getState(state);
+    return suggestionKey.getState(state);
   };
 
   beforeEach(async () => {
@@ -115,7 +115,9 @@ describe('inline suggest basic show and hide', () => {
     expect(view.state.doc.toString()).toMatchSnapshot();
 
     expect(getTooltipState(view.state)).toEqual({
+      markName: 'inline_suggest_slash',
       show: true,
+      trigger: '/',
     });
   });
 
@@ -147,6 +149,8 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: false,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
   });
 
@@ -174,6 +178,8 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: true,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
   });
 
@@ -196,6 +202,8 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: true,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
 
     // Give dom time to settle, as popper state updates as not sync
@@ -219,6 +227,8 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: false,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
 
     let tr = state.tr;
@@ -227,6 +237,8 @@ describe('inline suggest basic show and hide', () => {
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(2))));
     expect(getTooltipState(view.state)).toEqual({
       show: true,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
     expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
   });
@@ -247,6 +259,8 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: false,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
 
     let tr = state.tr;
@@ -255,6 +269,8 @@ describe('inline suggest basic show and hide', () => {
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(2))));
     expect(getTooltipState(view.state)).toEqual({
       show: true,
+      markName: 'inline_suggest_slash',
+      trigger: '/',
     });
     expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
   });

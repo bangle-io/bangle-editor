@@ -14,7 +14,7 @@ import { selectionTooltip } from '../index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { createSelectionTooltipDOM } from '../index';
+import { createTooltipDOM } from '../index';
 import { updateTooltipOnSelectionChange } from '../selection-tooltip';
 // due to some unknown issue, the view doesn't have focus
 // when running test which causes tests to fail
@@ -28,7 +28,7 @@ describe('selection-tooltip', () => {
   let testEditor, tooltipDOM, tooltipContentDOM, specSheet;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
-    ({ tooltipDOM, tooltipContentDOM } = createSelectionTooltipDOM());
+    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
     tooltipContentDOM.textContent = 'hello world';
 
     specSheet = new SpecSheet([...coreSpec()]);
@@ -194,7 +194,7 @@ describe('commands', () => {
   let testEditor, tooltipDOM, tooltipContentDOM, specSheet;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
-    ({ tooltipDOM, tooltipContentDOM } = createSelectionTooltipDOM());
+    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
     tooltipContentDOM.textContent = 'hello world';
 
     specSheet = new SpecSheet([...coreSpec()]);

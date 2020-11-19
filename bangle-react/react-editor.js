@@ -115,7 +115,7 @@ export class ReactEditor extends React.PureComponent {
 
   componentWillUnmount() {
     if (!this.destroyed) {
-      this.editor.destroy();
+      this.editor && this.editor.destroy();
       this.destroyed = true;
     }
   }
