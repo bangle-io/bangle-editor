@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`suggest basic show and hide Case 0 different parent block 1`] = `"doc(paragraph(suggest_slash(\\"/check\\")))"`;
+
+exports[`suggest basic show and hide Case 1 different parent block 1`] = `"doc(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))"`;
+
+exports[`suggest basic show and hide Case 2 different parent block 1`] = `"doc(paragraph(\\"hello\\"), paragraph(\\"hello\\"), paragraph(\\"hello \\", suggest_slash(\\"/check\\")))"`;
+
+exports[`suggest basic show and hide Case 3 different parent block 1`] = `"doc(bullet_list(list_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+
+exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(todo_list(todo_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+
+exports[`suggest basic show and hide Case 5 different parent block 1`] = `"doc(ordered_list(list_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+
+exports[`suggest basic show and hide Case 6 different parent block 1`] = `"doc(blockquote(heading(\\"hello \\", suggest_slash(\\"/check\\"))))"`;
+
+exports[`suggest basic show and hide Case 7 different parent block 1`] = `"doc(blockquote(heading(\\"hello\\")), paragraph(suggest_slash(\\"/check\\")))"`;
+
+exports[`suggest basic show and hide types a trigger 1`] = `
+<div
+  data-testid="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+  >
+    <p>
+      foobar 
+      <span
+        data-bangle-name="suggest_slash"
+        data-suggest-trigger="/"
+        style="color: #0052CC"
+      >
+        /check
+      </span>
+    </p>
+  </div>
+  <div
+    class="bangle-tooltip"
+    data-popper-placement="bottom-start"
+    data-show=""
+    data-tooltip-name="suggest_slash__tooltipPlacementKey"
+    role="tooltip"
+    style="margin: 0px; position: absolute; left: 0px; top: 0px; transform: translate(0px, 0px);"
+  >
+    <div
+      class="bangle-tooltip-content"
+    >
+      hello world
+    </div>
+  </div>
+</div>
+`;
+
+exports[`suggest basic show and hide when no trigger 1`] = `
+<div
+  data-testid="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+  >
+    <p>
+      foobar
+    </p>
+  </div>
+  <div
+    class="bangle-tooltip"
+    data-tooltip-name="suggest_slash__tooltipPlacementKey"
+    role="tooltip"
+  >
+    <div
+      class="bangle-tooltip-content"
+    >
+      hello world
+    </div>
+  </div>
+</div>
+`;

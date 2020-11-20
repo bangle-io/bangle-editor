@@ -4,17 +4,13 @@ import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import { PluginKey } from 'prosemirror-state';
 import React, { useEffect, useRef } from 'react';
 import reactDOM from 'react-dom';
-import { selectItemCommand } from '../inline-suggest/index';
-import {
-  suggestionsTooltip,
-  createTooltipDOM,
-} from 'bangle-plugins/tooltip/index';
+import { suggestTooltip, createTooltipDOM } from 'bangle-plugins/tooltip/index';
 import { emojisArray } from './data';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  getQueryText,
+  queryTriggerText,
   selectEmoji,
 };
 
@@ -31,7 +27,7 @@ function specFactory({
   markName = defaultMarkName,
   trigger = defaultTrigger,
 } = {}) {
-  return suggestionsTooltip.spec({ markName, trigger });
+  return suggestTooltip.spec({ markName, trigger });
 }
 
 function pluginsFactory({
@@ -52,12 +48,12 @@ function pluginsFactory({
     tooltipDOM.getAttribute('data-popper-placement') === 'top-start';
 
   const render = (state, dispatch, view) => {
-    const emojis = getEmojis(getQueryText(key)(state));
+    const emojis = getEmojis(queryTriggerText(key)(state));
 
     reactDOM.render(
       <Palette
         onClick={(i) => {
-          const emojis = getEmojis(getQueryText(key)(state));
+          const emojis = getEmojis(queryTriggerText(key)(state));
           if (emojis[i]) {
             const emojiKind = emojis[i][0];
 
@@ -83,7 +79,7 @@ function pluginsFactory({
 
     return [
       valuePlugin(key, { markName }),
-      suggestionsTooltip.plugins({
+      suggestTooltip.plugins({
         key: inlineSuggestKey,
         markName,
         trigger,
@@ -103,7 +99,7 @@ function pluginsFactory({
         },
 
         onEnter: (state, dispatch, view) => {
-          const emojis = getEmojis(getQueryText(key)(state));
+          const emojis = getEmojis(queryTriggerText(key)(state));
           if (emojis.length === 0) {
             return false;
           }
@@ -192,8 +188,8 @@ function Row({ title, isSelected, onClick, scrollIntoViewIfNeeded = true }) {
   );
 }
 
-export function getQueryText(key) {
-  return suggestionsTooltip.getQueryText(getInlineSuggestKey(key));
+export function queryTriggerText(key) {
+  return suggestTooltip.queryTriggerText(getInlineSuggestKey(key));
 }
 
 export function selectEmoji(key, emojiKind) {
@@ -202,6 +198,10 @@ export function selectEmoji(key, emojiKind) {
     const emojiNode = state.schema.nodes.emoji.create({
       emojiKind: emojiKind,
     });
-    return selectItemCommand(emojiNode, markName)(state, dispatch, view);
+    return suggestTooltip.replaceSuggestMarkWith(emojiNode, markName)(
+      state,
+      dispatch,
+      view,
+    );
   };
 }

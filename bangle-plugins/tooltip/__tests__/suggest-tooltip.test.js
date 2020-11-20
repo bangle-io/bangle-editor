@@ -13,30 +13,29 @@ import {
 
 import { typeChar } from 'bangle-core/test-helpers/index';
 import { PluginKey, Selection } from 'prosemirror-state';
-import { inlineSuggest } from '../index';
 import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { sleep } from 'bangle-core/utils/js-utils';
-
+import { suggestTooltip } from '../index';
 // We are using char code to differentiate between different schema
 // 47 is char code for '/'
-const triggerMarkSlash = (content) => (
-  <inline_suggest_slash trigger="/">{content}</inline_suggest_slash>
+const suggestTriggerMarkSlash = (content) => (
+  <suggest_slash trigger="/">{content}</suggest_slash>
 );
 
-describe('inline suggest basic show and hide', () => {
+describe('suggest basic show and hide', () => {
   let suggestionKey = new PluginKey(),
     testEditor;
 
   const specSheet = new SpecSheet([
     ...coreSpec(),
-    inlineSuggest.spec({ markName: 'inline_suggest_slash', trigger: '/' }),
+    suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
   const plugins = [
     ...corePlugins(),
-    inlineSuggest.plugins({
+    suggestTooltip.plugins({
       key: suggestionKey,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     }),
   ];
@@ -105,17 +104,21 @@ describe('inline suggest basic show and hide', () => {
   ])('Case %# different parent block', async (input) => {
     const { view } = await testEditor(input);
 
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(
-      false,
-    );
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(false);
     typeChar(view, '/');
     typeText(view, 'check');
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('check');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'check',
+    );
     expect(view.state.doc.toString()).toMatchSnapshot();
 
     expect(getTooltipState(view.state)).toEqual({
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       show: true,
       trigger: '/',
     });
@@ -149,7 +152,7 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: false,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
   });
@@ -161,24 +164,28 @@ describe('inline suggest basic show and hide', () => {
       </doc>,
     );
 
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(
-      false,
-    );
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(false);
 
     typeChar(view, '/');
     typeText(view, 'check');
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('check');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'check',
+    );
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <para>{triggerMarkSlash('/check')}[]</para>
+        <para>{suggestTriggerMarkSlash('/check')}[]</para>
       </doc>,
     );
 
     expect(getTooltipState(view.state)).toEqual({
       show: true,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
   });
@@ -192,17 +199,19 @@ describe('inline suggest basic show and hide', () => {
 
     typeChar(view, '/');
     typeText(view, 'check');
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('check');
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'check',
+    );
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <para>foobar {triggerMarkSlash('/check')}[]</para>
+        <para>foobar {suggestTriggerMarkSlash('/check')}[]</para>
       </doc>,
     );
 
     expect(getTooltipState(view.state)).toEqual({
       show: true,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
 
@@ -227,7 +236,7 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: false,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
 
@@ -237,10 +246,12 @@ describe('inline suggest basic show and hide', () => {
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(2))));
     expect(getTooltipState(view.state)).toEqual({
       show: true,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
   });
 
   test('Selection going to other location hides the tooltip', async () => {
@@ -259,7 +270,7 @@ describe('inline suggest basic show and hide', () => {
 
     expect(getTooltipState(view.state)).toEqual({
       show: false,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
 
@@ -269,10 +280,12 @@ describe('inline suggest basic show and hide', () => {
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(2))));
     expect(getTooltipState(view.state)).toEqual({
       show: true,
-      markName: 'inline_suggest_slash',
+      markName: 'suggest_slash',
       trigger: '/',
     });
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
   });
 
   test('Query at end of document', async () => {
@@ -292,8 +305,10 @@ describe('inline suggest basic show and hide', () => {
     typeChar(view, '/');
     typeText(view, 'second');
 
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe(
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
       'second',
     );
 
@@ -301,8 +316,12 @@ describe('inline suggest basic show and hide', () => {
 
     // Inside the mark
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(7))));
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('first');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'first',
+    );
   });
 
   test('Really long query', async () => {
@@ -317,13 +336,15 @@ describe('inline suggest basic show and hide', () => {
     typeChar(view, '/');
     typeText(view, longText);
 
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe(
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
       longText,
     );
   });
 
-  test('Typing query slowly', async () => {
+  test('Typing trigger text slowly', async () => {
     const { view } = await testEditor(
       <doc>
         <para>[] hello</para>
@@ -337,8 +358,12 @@ describe('inline suggest basic show and hide', () => {
     typeText(view, 'c');
     typeText(view, 'k');
 
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('check');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'check',
+    );
   });
 
   test.skip('When forward deleting the mark the tooltip hides', async () => {
@@ -350,7 +375,7 @@ describe('inline suggest basic show and hide', () => {
 
     // typeChar(view, '/');
     // typeText(view, 'check');
-    // expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
+    // expect(suggestionsTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state)).toBe(true);
 
     // view.dispatch(view.state.tr.delete(1, 2));
 
@@ -367,7 +392,9 @@ describe('inline suggest basic show and hide', () => {
         <para>hello</para>
       </doc>,
     );
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
   });
 });
 
@@ -377,7 +404,7 @@ describe('keybindings test', () => {
 
   const opts = {
     key: suggestionKey,
-    markName: 'inline_suggest_slash',
+    markName: 'suggest_slash',
     trigger: '/',
     placement: 'bottom-start',
     enterKeyName: 'Enter',
@@ -397,9 +424,9 @@ describe('keybindings test', () => {
 
   const specSheet = new SpecSheet([
     ...coreSpec(),
-    inlineSuggest.spec({ markName: 'inline_suggest_slash', trigger: '/' }),
+    suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
-  const plugins = [...corePlugins(), inlineSuggest.plugins(opts)];
+  const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
 
   test('calls on* callbacks correctly', async () => {
     testEditor = renderTestEditor({ specSheet, plugins });
@@ -411,18 +438,24 @@ describe('keybindings test', () => {
 
     typeChar(view, '/');
     typeText(view, 'check');
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('check');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'check',
+    );
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <para>{triggerMarkSlash('/check')}[] foobar</para>
+        <para>{suggestTriggerMarkSlash('/check')}[] foobar</para>
       </doc>,
     );
     // since it is called many times
     expect(opts.onUpdateTooltip).toBeCalled();
     expect(opts.onHideTooltip).toBeCalledTimes(0);
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
 
     sendKeyToPm(view, 'Escape');
     expect(opts.onEscape).toBeCalledTimes(1);
@@ -433,8 +466,12 @@ describe('keybindings test', () => {
     sendKeyToPm(view, 'ArrowDown');
     expect(opts.onArrowDown).toBeCalledTimes(1);
 
-    expect(inlineSuggest.isTooltipActive(suggestionKey)(view.state)).toBe(true);
-    expect(inlineSuggest.getQueryText(suggestionKey)(view.state)).toBe('check');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+    ).toBe(true);
+    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+      'check',
+    );
 
     // Outside the mark
     view.dispatch(view.state.tr.setSelection(Selection.atEnd(view.state.doc)));
