@@ -12,6 +12,7 @@ import {
 } from 'bangle-plugins/tooltip/selection-tooltip';
 import { keymap } from 'prosemirror-keymap';
 import { PluginKey } from 'bangle-core/index';
+import { rafCommandExec } from 'bangle-core/utils/js-utils';
 
 export const plugins = floatingMenu;
 export const commands = {
@@ -80,9 +81,7 @@ export function toggleFloatingLinkMenu(key) {
     if (state.selection.empty) {
       // Focus on link tooltip by keyboard shortcut
       if (type === 'floatingLinkMenu') {
-        requestAnimationFrame(() =>
-          focusFloatingMenuInput(key)(state, dispatch, view),
-        );
+        rafCommandExec(view, focusFloatingMenuInput(key));
       }
       return false;
     }
@@ -91,9 +90,7 @@ export function toggleFloatingLinkMenu(key) {
       return hideSelectionTooltip(key)(view.state, view.dispatch, view);
     }
 
-    requestAnimationFrame(() =>
-      focusFloatingMenuInput(key)(state, dispatch, view),
-    );
+    rafCommandExec(view, focusFloatingMenuInput(key));
 
     return updateSelectionTooltipType(key, 'floatingLinkMenu')(
       view.state,

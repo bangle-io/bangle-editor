@@ -332,7 +332,6 @@ function restoreWorkspaceFromBackup(command, type) {
             accept="application/json"
             style={{ display: 'none' }}
             onChange={async (event) => {
-              console.log('here');
               const fileList = event.target.files;
               try {
                 const file = JSON.parse(await readFile(fileList[0]));

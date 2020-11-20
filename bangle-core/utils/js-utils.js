@@ -396,3 +396,9 @@ export function createElement(spec) {
 export function fNot(func) {
   return (...args) => !func(...args);
 }
+
+export function rafCommandExec(view, command) {
+  requestAnimationFrame(() => {
+    command(view.state, view.dispatch, view);
+  });
+}

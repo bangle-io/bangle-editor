@@ -44,7 +44,7 @@ beforeEach(() => {
 });
 
 function TestComponent({ pluginKey, renderCounter }) {
-  const menuState = usePluginState([pluginKey]);
+  const menuState = usePluginState(pluginKey);
   renderCounter();
   return <Span data-testid="test-component">{menuState.counter}</Span>;
 }
@@ -96,7 +96,7 @@ test('Mounting and Unmounting of editor', async () => {
   let mountTimes = 0;
   let unmountTimes = 0;
   const TestComponent = ({ pluginKey, renderCounter }) => {
-    const menuState = usePluginState([pluginKey]);
+    const menuState = usePluginState(pluginKey);
     useEffect(() => {
       mountTimes++;
       return () => {
@@ -150,7 +150,7 @@ test('Unmounting just the component', async () => {
     return null;
   };
   const TestComponent = ({ pluginKey, renderCounter }) => {
-    const menuState = usePluginState([pluginKey]);
+    const menuState = usePluginState(pluginKey);
     useEffect(() => {
       mountTimes++;
       return () => {

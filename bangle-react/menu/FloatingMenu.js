@@ -19,7 +19,7 @@ export function FloatingMenu({
     return null;
   },
 }) {
-  const menuState = usePluginState([menuKey]);
+  const menuState = usePluginState(menuKey);
   const renderElement = renderMenuType({ type: menuState.type, menuKey });
 
   return renderElement
