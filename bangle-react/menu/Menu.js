@@ -14,6 +14,7 @@ import {
   italicItem,
   linkItem,
 } from './MenuIcons';
+import { rafCommandExec } from 'bangle-core/utils/js-utils';
 
 export function Menu({ menuKey }) {
   const view = useContext(EditorViewContext);
@@ -24,9 +25,7 @@ export function Menu({ menuKey }) {
       italicItem(),
       linkItem(() => {
         toggleFloatingLinkMenu(menuKey)(view.state, view.dispatch, view);
-        requestAnimationFrame(() =>
-          focusFloatingMenuInput(menuKey)(view.state, view.dispatch, view),
-        );
+        rafCommandExec(view, focusFloatingMenuInput(menuKey));
       }),
       codeItem(),
     ].filter(Boolean),

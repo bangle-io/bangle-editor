@@ -5,7 +5,7 @@ import { EditorViewContext } from './react-editor';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};
 
-export function usePluginState([pluginKey]) {
+export function usePluginState(pluginKey) {
   const view = useContext(EditorViewContext);
   const [state, setState] = useState(pluginKey.getState(view.state));
 

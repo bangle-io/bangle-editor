@@ -25,6 +25,16 @@ export function pluginKeyStore() {
       const key = new PluginKey(childKeyId);
       if (store.has(parentKey)) {
         const children = store.get(parentKey);
+        if (children[childKeyId]) {
+          bangleWarn(
+            `There is already a key ${childKeyId} associated with the pluginKey =`,
+            parentKey,
+          );
+
+          throw new Error(
+            `Parent is already associated with key'${childKeyId}'`,
+          );
+        }
         children[childKeyId] = key;
       } else {
         store.set(parentKey, { [childKeyId]: key });

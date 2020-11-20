@@ -19,6 +19,9 @@ export const commands = {
   queryTriggerText,
   queryIsSuggestTooltipActive,
   replaceSuggestMarkWith,
+  incrementSuggestTooltipCounter,
+  decrementSuggestTooltipCounter,
+  resetSuggestTooltipCounter,
 };
 
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -145,19 +148,45 @@ export function pluginsFactory({
         key,
         state: {
           init(_, state) {
-            return { trigger, markName, show: false };
+            return {
+              trigger,
+              markName,
+              triggerText: '',
+              show: false,
+              counter: 0,
+            };
           },
-          apply(tr, pluginState) {
+          apply(tr, pluginState, oldState, newState) {
             const meta = tr.getMeta(key);
             if (meta === undefined) {
               return pluginState;
             }
-
-            // Do not change object reference if show was and is false
-            if (meta.show === false && pluginState.show === false) {
-              return pluginState;
+            if (meta.type === 'SHOW_TOOLTIP') {
+              return {
+                ...pluginState,
+                // Cannot use queryTriggerText because it relies on
+                // reading the pluginState which will not be there in newState.
+                triggerText: getTriggerText(newState, markName, trigger),
+                show: true,
+              };
             }
-            return { ...pluginState, show: meta.show };
+            if (meta.type === 'HIDE_TOOLTIP') {
+              // Do not change object reference if show was and is false
+              if (pluginState.show === false) {
+                return pluginState;
+              }
+              return { ...pluginState, triggerText: '', show: false };
+            }
+            if (meta.type === 'INCREMENT_COUNTER') {
+              return { ...pluginState, counter: pluginState.counter + 1 };
+            }
+            if (meta.type === 'RESET_COUNTER') {
+              return { ...pluginState, counter: 0 };
+            }
+            if (meta.type === 'DECREMENT_COUNTER') {
+              return { ...pluginState, counter: pluginState.counter - 1 };
+            }
+            throw new Error('Unknown type');
           },
         },
       }),
@@ -275,56 +304,13 @@ function doesQueryHaveTrigger(state, markType, trigger) {
   return textContent.includes(trigger);
 }
 
-function removeSuggestMark(markType) {
-  return (state, dispatch) => {
-    const { from, to } = state.selection;
-
-    const queryMark = findFirstMarkPosition(markType, state.doc, from - 1, to);
-
-    const { start, end } = queryMark;
-    if (
-      start === -1 &&
-      state.storedMarks &&
-      markType.isInSet(state.storedMarks)
-    ) {
-      if (dispatch) {
-        dispatch(state.tr.removeStoredMark(markType));
-      }
-
-      return true;
-    }
-
-    if (start === -1) {
-      return false;
-    }
-
-    if (dispatch) {
-      dispatch(
-        state.tr
-          .removeMark(start, end, markType)
-          // stored marks are marks which will be carried forward to whatever
-          // the user types next, like if current mark
-          // is bold, new input continues being bold
-          .removeStoredMark(markType)
-          // This helps us avoid the case:
-          // when a user deleted the trigger/ in '<suggest_mark>/something</suggest_mark>'
-          // and then performs undo.
-          // If we do not hide this from history, command z will bring
-          // us in the state of `<suggest_mark>something<suggest_mark>` without the trigger `/`
-          // and seeing this state `tooltipActivatePlugin` plugin will dispatch a new command removing
-          // the mark, hence never allowing the user to command z.
-          .setMeta('addToHistory', false),
-      );
-    }
-    return true;
-  };
-}
-
 function showSuggestionsTooltip(key) {
   return (state, dispatch, view) => {
     if (dispatch) {
       dispatch(
-        state.tr.setMeta(key, { show: true }).setMeta('addToHistory', false),
+        state.tr
+          .setMeta(key, { type: 'SHOW_TOOLTIP' })
+          .setMeta('addToHistory', false),
       );
     }
     return true;
@@ -335,40 +321,45 @@ function hideSuggestionsTooltip(key) {
   return (state, dispatch, view) => {
     if (dispatch) {
       dispatch(
-        state.tr.setMeta(key, { show: false }).setMeta('addToHistory', false),
+        state.tr
+          .setMeta(key, { type: 'HIDE_TOOLTIP' })
+          .setMeta('addToHistory', false),
       );
     }
     return true;
   };
 }
 
-/** COMMANDS */
+function getTriggerText(state, markName, trigger) {
+  const markType = state.schema.marks[markName];
+
+  const { nodeBefore } = state.selection.$from;
+
+  // nodeBefore in a new line (a new paragraph) is null
+  if (!nodeBefore) {
+    return '';
+  }
+
+  const suggestMark = markType.isInSet(nodeBefore.marks || []);
+
+  // suggestMark is undefined if you delete the trigger while keeping rest of the query alive
+  if (!suggestMark) {
+    return '';
+  }
+
+  const textContent = nodeBefore.textContent || '';
+  return (
+    textContent
+      // eslint-disable-next-line no-control-regex
+      .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
+      .replace(trigger, '')
+  );
+}
+
 export function queryTriggerText(key) {
   return (state) => {
     const { trigger, markName } = key.getState(state);
-    const markType = state.schema.marks[markName];
-
-    const { nodeBefore } = state.selection.$from;
-
-    // nodeBefore in a new line (a new paragraph) is null
-    if (!nodeBefore) {
-      return '';
-    }
-
-    const suggestMark = markType.isInSet(nodeBefore.marks || []);
-
-    // suggestMark is undefined if you delete the trigger while keeping rest of the query alive
-    if (!suggestMark) {
-      return '';
-    }
-
-    const textContent = nodeBefore.textContent || '';
-    return (
-      textContent
-        // eslint-disable-next-line no-control-regex
-        .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
-        .replace(trigger, '')
-    );
+    return getTriggerText(state, markName, trigger);
   };
 }
 
@@ -455,6 +446,88 @@ export function replaceSuggestMarkWith(maybeNode, markName) {
       dispatch(tr);
     }
 
+    return true;
+  };
+}
+
+export function removeSuggestMark(markType) {
+  return (state, dispatch) => {
+    const { from, to } = state.selection;
+
+    const queryMark = findFirstMarkPosition(markType, state.doc, from - 1, to);
+
+    const { start, end } = queryMark;
+    if (
+      start === -1 &&
+      state.storedMarks &&
+      markType.isInSet(state.storedMarks)
+    ) {
+      if (dispatch) {
+        dispatch(state.tr.removeStoredMark(markType));
+      }
+
+      return true;
+    }
+
+    if (start === -1) {
+      return false;
+    }
+
+    if (dispatch) {
+      dispatch(
+        state.tr
+          .removeMark(start, end, markType)
+          // stored marks are marks which will be carried forward to whatever
+          // the user types next, like if current mark
+          // is bold, new input continues being bold
+          .removeStoredMark(markType)
+          // This helps us avoid the case:
+          // when a user deleted the trigger/ in '<suggest_mark>/something</suggest_mark>'
+          // and then performs undo.
+          // If we do not hide this from history, command z will bring
+          // us in the state of `<suggest_mark>something<suggest_mark>` without the trigger `/`
+          // and seeing this state `tooltipActivatePlugin` plugin will dispatch a new command removing
+          // the mark, hence never allowing the user to command z.
+          .setMeta('addToHistory', false),
+      );
+    }
+    return true;
+  };
+}
+
+export function incrementSuggestTooltipCounter(key) {
+  return (state, dispatch, view) => {
+    if (dispatch) {
+      dispatch(
+        state.tr
+          .setMeta(key, { type: 'INCREMENT_COUNTER' })
+          .setMeta('addToHistory', false),
+      );
+    }
+    return true;
+  };
+}
+export function decrementSuggestTooltipCounter(key) {
+  return (state, dispatch, view) => {
+    if (dispatch) {
+      dispatch(
+        state.tr
+          .setMeta(key, { type: 'DECREMENT_COUNTER' })
+          .setMeta('addToHistory', false),
+      );
+    }
+    return true;
+  };
+}
+export function resetSuggestTooltipCounter(key) {
+  return (state, dispatch, view) => {
+    if (dispatch) {
+      dispatch(
+        state.tr
+          .setMeta(key, { type: 'RESET_COUNTER' })
+          .setMeta('addToHistory', false),
+      );
+    }
     return true;
   };
 }
