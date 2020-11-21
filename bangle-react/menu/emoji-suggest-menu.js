@@ -132,11 +132,10 @@ export function queryTriggerText(key) {
 
 export function selectEmoji(key, emojiKind) {
   return (state, dispatch, view) => {
-    const { markName } = key.getState(state);
     const emojiNode = state.schema.nodes.emoji.create({
       emojiKind: emojiKind,
     });
-    return suggestTooltip.replaceSuggestMarkWith(emojiNode, markName)(
+    return suggestTooltip.replaceSuggestMarkWith(key, emojiNode)(
       state,
       dispatch,
       view,

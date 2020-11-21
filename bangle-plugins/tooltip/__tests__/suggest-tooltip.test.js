@@ -17,15 +17,19 @@ import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { sleep } from 'bangle-core/utils/js-utils';
 import { suggestTooltip } from '../index';
+import { replaceSuggestMarkWith } from '../suggest-tooltip';
 // We are using char code to differentiate between different schema
 // 47 is char code for '/'
 const suggestTriggerMarkSlash = (content) => (
   <suggest_slash trigger="/">{content}</suggest_slash>
 );
+let suggestKey = new PluginKey();
+const getTooltipState = (state) => {
+  return suggestKey.getState(state);
+};
 
 describe('suggest basic show and hide', () => {
-  let suggestionKey = new PluginKey(),
-    testEditor;
+  let testEditor;
 
   const specSheet = new SpecSheet([
     ...coreSpec(),
@@ -34,14 +38,11 @@ describe('suggest basic show and hide', () => {
   const plugins = [
     ...corePlugins(),
     suggestTooltip.plugins({
-      key: suggestionKey,
+      key: suggestKey,
       markName: 'suggest_slash',
       trigger: '/',
     }),
   ];
-  const getTooltipState = (state) => {
-    return suggestionKey.getState(state);
-  };
 
   beforeEach(async () => {
     testEditor = renderTestEditor({ specSheet, plugins });
@@ -105,19 +106,21 @@ describe('suggest basic show and hide', () => {
     const { view } = await testEditor(input);
 
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(false);
     typeChar(view, '/');
     typeText(view, 'check');
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'check',
     );
     expect(view.state.doc.toString()).toMatchSnapshot();
 
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: 'check',
       markName: 'suggest_slash',
       show: true,
       trigger: '/',
@@ -151,6 +154,8 @@ describe('suggest basic show and hide', () => {
     );
 
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
       show: false,
       markName: 'suggest_slash',
       trigger: '/',
@@ -165,15 +170,15 @@ describe('suggest basic show and hide', () => {
     );
 
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(false);
 
     typeChar(view, '/');
     typeText(view, 'check');
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'check',
     );
 
@@ -184,6 +189,8 @@ describe('suggest basic show and hide', () => {
     );
 
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: 'check',
       show: true,
       markName: 'suggest_slash',
       trigger: '/',
@@ -199,7 +206,7 @@ describe('suggest basic show and hide', () => {
 
     typeChar(view, '/');
     typeText(view, 'check');
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'check',
     );
 
@@ -210,6 +217,8 @@ describe('suggest basic show and hide', () => {
     );
 
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: 'check',
       show: true,
       markName: 'suggest_slash',
       trigger: '/',
@@ -235,6 +244,8 @@ describe('suggest basic show and hide', () => {
     view.dispatch(state.tr.setSelection(Selection.atEnd(state.doc)));
 
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
       show: false,
       markName: 'suggest_slash',
       trigger: '/',
@@ -245,12 +256,14 @@ describe('suggest basic show and hide', () => {
     // Inside the mark
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(2))));
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
       show: true,
       markName: 'suggest_slash',
       trigger: '/',
     });
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
   });
 
@@ -269,6 +282,8 @@ describe('suggest basic show and hide', () => {
     view.dispatch(state.tr.setSelection(Selection.atEnd(state.doc)));
 
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
       show: false,
       markName: 'suggest_slash',
       trigger: '/',
@@ -279,12 +294,14 @@ describe('suggest basic show and hide', () => {
     // Inside the mark
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(2))));
     expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
       show: true,
       markName: 'suggest_slash',
       trigger: '/',
     });
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
   });
 
@@ -306,9 +323,9 @@ describe('suggest basic show and hide', () => {
     typeText(view, 'second');
 
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'second',
     );
 
@@ -317,9 +334,9 @@ describe('suggest basic show and hide', () => {
     // Inside the mark
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(7))));
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'first',
     );
   });
@@ -337,9 +354,9 @@ describe('suggest basic show and hide', () => {
     typeText(view, longText);
 
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       longText,
     );
   });
@@ -359,76 +376,143 @@ describe('suggest basic show and hide', () => {
     typeText(view, 'k');
 
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'check',
     );
   });
-
-  test.skip('When forward deleting the mark the tooltip hides', async () => {
+  test('Increment, reset & decrement of counter', async () => {
     const { view } = await testEditor(
       <doc>
-        <para>hello[]</para>
+        <para>[] hello</para>
       </doc>,
     );
 
-    // typeChar(view, '/');
-    // typeText(view, 'check');
-    // expect(suggestionsTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state)).toBe(true);
+    typeChar(view, '/');
+    typeText(view, 'first');
 
-    // view.dispatch(view.state.tr.delete(1, 2));
+    suggestTooltip.incrementSuggestTooltipCounter(suggestKey)(
+      view.state,
+      view.dispatch,
+      view,
+    );
 
-    // view.dispatch(
-    //   view.state.tr.setSelection(Selection.atStart(view.state.doc)),
-    // );
+    expect(getTooltipState(view.state)).toEqual({
+      counter: 1,
+      triggerText: 'first',
+      show: true,
+      markName: 'suggest_slash',
+      trigger: '/',
+    });
 
-    sendKeyToPm(view, 'Z');
-    // sendKeyToPm(view, 'Backspace');
-    // sendKeyToPm(view, 'Backspace');
+    suggestTooltip.resetSuggestTooltipCounter(suggestKey)(
+      view.state,
+      view.dispatch,
+      view,
+    );
+
+    expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: 'first',
+      show: true,
+      markName: 'suggest_slash',
+      trigger: '/',
+    });
+
+    suggestTooltip.decrementSuggestTooltipCounter(suggestKey)(
+      view.state,
+      view.dispatch,
+      view,
+    );
+
+    expect(getTooltipState(view.state)).toEqual({
+      counter: -1,
+      triggerText: 'first',
+      show: true,
+      markName: 'suggest_slash',
+      trigger: '/',
+    });
+  });
+
+  test('Moving cursor before the trigger should hide the tooltip', async () => {
+    const { view } = await testEditor(
+      <doc>
+        <para>[]</para>
+      </doc>,
+    );
+    typeChar(view, '/');
+    typeText(view, 'check');
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
+    ).toBe(true);
+    view.dispatch(
+      view.state.tr.setSelection(Selection.atStart(view.state.doc)),
+    );
+
+    expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
+      show: false,
+      markName: 'suggest_slash',
+      trigger: '/',
+    });
+  });
+  test('When user deletes the trigger, hide the tooltip and remove the mark', async () => {
+    const { view } = await testEditor(
+      <doc>
+        <para>[] hello</para>
+      </doc>,
+    );
+
+    typeChar(view, '/');
+    typeText(view, 'check');
+
+    expect(
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
+    ).toBe(true);
+    view.dispatch(view.state.tr.delete(1, 2));
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <para>hello</para>
+        <para>check hello</para>
       </doc>,
     );
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
-    ).toBe(true);
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
+    ).toBe(false);
   });
 });
 
 describe('keybindings test', () => {
   let testEditor;
-  let suggestionKey = new PluginKey();
-
-  const opts = {
-    key: suggestionKey,
-    markName: 'suggest_slash',
-    trigger: '/',
-    placement: 'bottom-start',
-    enterKeyName: 'Enter',
-    arrowUpKeyName: 'ArrowUp',
-    arrowDownKeyName: 'ArrowDown',
-    escapeKeyName: 'Escape',
-    // Use another key to mimic enter behaviour for example, Tab for entering
-    alternateEnterKeyName: undefined,
-
-    onUpdateTooltip: jest.fn(() => true),
-    onHideTooltip: jest.fn(() => true),
-    onEnter: jest.fn(() => true),
-    onArrowDown: jest.fn(() => true),
-    onArrowUp: jest.fn(() => true),
-    onEscape: jest.fn(() => true),
-  };
-
   const specSheet = new SpecSheet([
     ...coreSpec(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
-  const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
 
   test('calls on* callbacks correctly', async () => {
+    const opts = {
+      key: suggestKey,
+      markName: 'suggest_slash',
+      trigger: '/',
+      placement: 'bottom-start',
+      enterKeyName: 'Enter',
+      arrowUpKeyName: 'ArrowUp',
+      arrowDownKeyName: 'ArrowDown',
+      escapeKeyName: 'Escape',
+      // Use another key to mimic enter behaviour for example, Tab for entering
+      alternateEnterKeyName: undefined,
+
+      onUpdateTooltip: jest.fn(() => true),
+      onHideTooltip: jest.fn(() => true),
+      onEnter: jest.fn(() => true),
+      onArrowDown: jest.fn(() => true),
+      onArrowUp: jest.fn(() => true),
+      onEscape: jest.fn(() => true),
+    };
+
+    const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
     testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
@@ -439,9 +523,9 @@ describe('keybindings test', () => {
     typeChar(view, '/');
     typeText(view, 'check');
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'check',
     );
 
@@ -454,7 +538,7 @@ describe('keybindings test', () => {
     expect(opts.onUpdateTooltip).toBeCalled();
     expect(opts.onHideTooltip).toBeCalledTimes(0);
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
 
     sendKeyToPm(view, 'Escape');
@@ -467,9 +551,9 @@ describe('keybindings test', () => {
     expect(opts.onArrowDown).toBeCalledTimes(1);
 
     expect(
-      suggestTooltip.queryIsSuggestTooltipActive(suggestionKey)(view.state),
+      suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
-    expect(suggestTooltip.queryTriggerText(suggestionKey)(view.state)).toBe(
+    expect(suggestTooltip.queryTriggerText(suggestKey)(view.state)).toBe(
       'check',
     );
 
@@ -477,6 +561,172 @@ describe('keybindings test', () => {
     view.dispatch(view.state.tr.setSelection(Selection.atEnd(view.state.doc)));
     // TODO for some mysterious reason this is called twice with the same state
     expect(opts.onHideTooltip).toBeCalledTimes(1);
+  });
+
+  test('pressing enter works removes the mark', async () => {
+    const opts = {
+      key: suggestKey,
+      markName: 'suggest_slash',
+      trigger: '/',
+      placement: 'bottom-start',
+      enterKeyName: 'Enter',
+      arrowUpKeyName: 'ArrowUp',
+      arrowDownKeyName: 'ArrowDown',
+      escapeKeyName: 'Escape',
+      // Use another key to mimic enter behaviour for example, Tab for entering
+      alternateEnterKeyName: undefined,
+    };
+
+    const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
+    testEditor = renderTestEditor({ specSheet, plugins });
+    const { view } = await testEditor(
+      <doc>
+        <para>[] foobar</para>
+      </doc>,
+    );
+
+    typeChar(view, '/');
+    typeText(view, 'check');
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>{suggestTriggerMarkSlash('/check')}[] foobar</para>
+      </doc>,
+    );
+
+    sendKeyToPm(view, 'Enter');
+
+    expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
+      show: false,
+      markName: 'suggest_slash',
+      trigger: '/',
+    });
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>/check[] foobar</para>
+      </doc>,
+    );
+  });
+
+  test('pressing escape removes the mark', async () => {
+    const opts = {
+      key: suggestKey,
+      markName: 'suggest_slash',
+      trigger: '/',
+      placement: 'bottom-start',
+      enterKeyName: 'Enter',
+      arrowUpKeyName: 'ArrowUp',
+      arrowDownKeyName: 'ArrowDown',
+      escapeKeyName: 'Escape',
+      // Use another key to mimic enter behaviour for example, Tab for entering
+      alternateEnterKeyName: undefined,
+    };
+
+    const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
+    testEditor = renderTestEditor({ specSheet, plugins });
+    const { view } = await testEditor(
+      <doc>
+        <para>[] foobar</para>
+      </doc>,
+    );
+
+    typeChar(view, '/');
+    typeText(view, 'check');
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>{suggestTriggerMarkSlash('/check')}[] foobar</para>
+      </doc>,
+    );
+
+    sendKeyToPm(view, 'Escape');
+
+    expect(getTooltipState(view.state)).toEqual({
+      counter: 0,
+      triggerText: '',
+      show: false,
+      markName: 'suggest_slash',
+      trigger: '/',
+    });
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>/check[] foobar</para>
+      </doc>,
+    );
+  });
+});
+
+describe('replaceSuggestMarkWith', () => {
+  let testEditor;
+
+  const specSheet = new SpecSheet([
+    ...coreSpec(),
+    suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
+  ]);
+  const plugins = [
+    ...corePlugins(),
+    suggestTooltip.plugins({
+      key: suggestKey,
+      markName: 'suggest_slash',
+      trigger: '/',
+    }),
+  ];
+
+  beforeEach(async () => {
+    testEditor = renderTestEditor({ specSheet, plugins });
+  });
+
+  test('replaces with textnode', async () => {
+    const { view } = await testEditor(
+      <doc>
+        <para>[] hello</para>
+      </doc>,
+    );
+    view.focus = jest.fn();
+
+    typeChar(view, '/');
+    typeText(view, 'check');
+
+    replaceSuggestMarkWith(suggestKey, view.state.schema.text('replacement'))(
+      view.state,
+      view.dispatch,
+      view,
+    );
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>replacement[] hello</para>
+      </doc>,
+    );
+    expect(view.focus).toBeCalledTimes(1);
+  });
+
+  test('replaces with hard break', async () => {
+    const { view } = await testEditor(
+      <doc>
+        <para>[] hello</para>
+      </doc>,
+    );
+    view.focus = jest.fn();
+
+    typeChar(view, '/');
+    typeText(view, 'check');
+
+    replaceSuggestMarkWith(
+      suggestKey,
+      view.state.schema.nodes.hard_break.createChecked(),
+    )(view.state, view.dispatch, view);
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>
+          <br /> [] hello
+        </para>
+      </doc>,
+    );
+    expect(view.focus).toBeCalledTimes(1);
   });
 });
 

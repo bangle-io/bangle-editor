@@ -1,11 +1,13 @@
-import { findFirstMarkPosition, filter } from 'bangle-core/utils/pm-utils';
 import { Fragment, Node } from 'prosemirror-model';
 import { keymap } from 'prosemirror-keymap';
-import { Plugin, PluginKey } from 'bangle-core';
-import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
-import { isChromeWithSelectionBug } from 'bangle-core/index';
 import { Selection } from 'prosemirror-state';
-import { safeInsert } from 'bangle-core/utils/pm-utils';
+import {
+  findFirstMarkPosition,
+  filter,
+  safeInsert,
+} from 'bangle-core/utils/pm-utils';
+import { Plugin, PluginKey, isChromeWithSelectionBug } from 'bangle-core';
+
 import { createTooltipDOM } from './create-tooltip-dom';
 import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';
@@ -23,10 +25,16 @@ export const commands = {
   decrementSuggestTooltipCounter,
   resetSuggestTooltipCounter,
 };
+export const defaultKeys = {
+  select: 'Enter',
+  up: 'ArrowUp',
+  down: 'ArrowDown',
+  hide: 'Escape',
+};
 
 const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-export function specFactory({ markName, trigger }) {
+export function specFactory({ markName, trigger, markColor = '#005893' }) {
   return {
     name: markName,
     type: 'mark',
@@ -40,7 +48,7 @@ export function specFactory({ markName, trigger }) {
           {
             'data-bangle-name': markName,
             'data-suggest-trigger': node.attrs.trigger,
-            'style': `color: #0052CC`,
+            'style': `color: ${markColor}`,
           },
         ];
       },
@@ -66,13 +74,8 @@ export function pluginsFactory({
   tooltipDOM,
   tooltipContent: tooltipContentDOM,
   placement = 'bottom-start',
-  enterKeyName = 'Enter',
-  arrowUpKeyName = 'ArrowUp',
-  arrowDownKeyName = 'ArrowDown',
-  escapeKeyName = 'Escape',
+  keybindings = defaultKeys,
   fallbackPlacements,
-  // Use another key to mimic enter behaviour for example, Tab for entering
-  alternateEnterKeyName,
 
   getScrollContainerDOM = (view) => {
     return view.dom.parentElement;
@@ -90,12 +93,8 @@ export function pluginsFactory({
       view,
     );
   },
-  onArrowDown = (state, dispatch, view) => {
-    return true;
-  },
-  onArrowUp = (state, dispatch, view) => {
-    return true;
-  },
+  onArrowDown = incrementSuggestTooltipCounter(key),
+  onArrowUp = decrementSuggestTooltipCounter(key),
   onEscape = (state, dispatch, view) => {
     return removeSuggestMark(state.schema.marks[markName])(
       state,
@@ -104,45 +103,14 @@ export function pluginsFactory({
     );
   },
 } = {}) {
-  const isActiveCheck = queryIsSuggestTooltipActive(key);
-
-  if (!tooltipDOM) {
-    ({ tooltipContentDOM, tooltipDOM } = createTooltipDOM());
-    tooltipContentDOM.textContent = 'hello world';
-  }
-
-  const keybindings = {
-    [enterKeyName]: filter(isActiveCheck, onEnter),
-    [arrowUpKeyName]: filter(isActiveCheck, onArrowUp),
-    [arrowDownKeyName]: filter(isActiveCheck, onArrowDown),
-    [escapeKeyName]: filter(isActiveCheck, onEscape),
-  };
-  if (alternateEnterKeyName) {
-    keybindings[alternateEnterKeyName] = keybindings[enterKeyName];
-  }
-
   return ({ schema }) => {
-    const plugin = tooltipPlacement.plugins({
-      pluginName: markName + '__tooltipPlacementKey',
-      tooltipStateKey: key,
-      tooltipDOM,
-      getScrollContainerDOM,
-      getReferenceElement: referenceElement((state) => {
-        const markType = schema.marks[markName];
-        const { selection } = state;
-        return findFirstMarkPosition(
-          markType,
-          state.doc,
-          selection.from - 1,
-          selection.to,
-        );
-      }),
-      placement,
-      onUpdateTooltip: onUpdateTooltip,
-      onHideTooltip: onHideTooltip,
-      tooltipOffset,
-      fallbackPlacements,
-    });
+    const isActiveCheck = queryIsSuggestTooltipActive(key);
+
+    if (!tooltipDOM) {
+      ({ tooltipContentDOM, tooltipDOM } = createTooltipDOM());
+      tooltipContentDOM.textContent = 'hello world';
+    }
+
     return [
       new Plugin({
         key,
@@ -190,15 +158,42 @@ export function pluginsFactory({
           },
         },
       }),
-      plugin,
-      keymap(keybindings),
+      tooltipPlacement.plugins({
+        pluginName: markName + '__tooltipPlacementKey',
+        tooltipStateKey: key,
+        tooltipDOM,
+        getScrollContainerDOM,
+        getReferenceElement: referenceElement((state) => {
+          const markType = schema.marks[markName];
+          const { selection } = state;
+          return findFirstMarkPosition(
+            markType,
+            state.doc,
+            selection.from - 1,
+            selection.to,
+          );
+        }),
+        placement,
+        onUpdateTooltip: onUpdateTooltip,
+        onHideTooltip: onHideTooltip,
+        tooltipOffset,
+        fallbackPlacements,
+      }),
       triggerInputRule(schema, markName, trigger),
       tooltipController({
         trigger,
         markName,
-        showTooltip: showSuggestionsTooltip(key),
-        hideTooltip: hideSuggestionsTooltip(key),
+        key,
       }),
+      keybindings &&
+        keymap({
+          [keybindings.select]: (state, dispatch, view) => {
+            return filter(isActiveCheck, onEnter)(state, dispatch, view);
+          },
+          [keybindings.up]: filter(isActiveCheck, onArrowUp),
+          [keybindings.down]: filter(isActiveCheck, onArrowDown),
+          [keybindings.hide]: filter(isActiveCheck, onEscape),
+        }),
     ];
   };
 }
@@ -212,7 +207,6 @@ function referenceElement(getActiveMarkPos) {
         // add by + so that we get the position right after trigger
         const startPos = markPos.start > -1 ? markPos.start + 1 : 0;
         const start = view.coordsAtPos(startPos);
-
         // if the suggestMark text spanned two lines, we want to show the tooltip based on the end pos
         // so that it doesn't hide the text
         const end = view.coordsAtPos(markPos.end > -1 ? markPos.end : startPos);
@@ -235,7 +229,7 @@ function referenceElement(getActiveMarkPos) {
   };
 }
 
-function tooltipController({ trigger, showTooltip, hideTooltip, markName }) {
+function tooltipController({ key, trigger, markName }) {
   return new Plugin({
     view() {
       return {
@@ -256,7 +250,7 @@ function tooltipController({ trigger, showTooltip, hideTooltip, markName }) {
             return;
           }
 
-          const isMarkActive = isMarkActiveInSelection(markType)(state);
+          const isMarkActive = isSuggestMarkActive(markName)(state);
 
           // clear the mark if the user delete the trigger but remaining mark text
           // stayed.
@@ -268,11 +262,11 @@ function tooltipController({ trigger, showTooltip, hideTooltip, markName }) {
           }
 
           if (!isMarkActive) {
-            hideTooltip(state, view.dispatch, view);
+            hideSuggestionsTooltip(key)(view.state, view.dispatch, view);
             return;
           }
 
-          showTooltip(state, view.dispatch, view);
+          showSuggestionsTooltip(key)(view.state, view.dispatch, view);
           return;
         },
       };
@@ -284,6 +278,14 @@ function isStoredMark(state, markType) {
   return state && state.storedMarks && markType.isInSet(state.storedMarks);
 }
 
+function isSuggestMarkActive(markName, from, to) {
+  return (state) => {
+    const { from, to } = state.selection;
+
+    const markType = state.schema.marks[markName];
+    return state.doc.rangeHasMark(from - 1, to, markType);
+  };
+}
 function doesQueryHaveTrigger(state, markType, trigger) {
   const { nodeBefore } = state.selection.$from;
 
@@ -369,8 +371,9 @@ export function queryIsSuggestTooltipActive(key) {
   };
 }
 
-export function replaceSuggestMarkWith(maybeNode, markName) {
+export function replaceSuggestMarkWith(key, maybeNode) {
   return (state, dispatch, view) => {
+    const { markName } = key.getState(state);
     const { schema } = state;
     const markType = schema.marks[markName];
     const { selection } = state;
@@ -519,6 +522,7 @@ export function decrementSuggestTooltipCounter(key) {
     return true;
   };
 }
+
 export function resetSuggestTooltipCounter(key) {
   return (state, dispatch, view) => {
     if (dispatch) {

@@ -29,7 +29,7 @@ exports[`suggest basic show and hide types a trigger 1`] = `
       <span
         data-bangle-name="suggest_slash"
         data-suggest-trigger="/"
-        style="color: #0052CC"
+        style="color: #005893"
       >
         /check
       </span>
