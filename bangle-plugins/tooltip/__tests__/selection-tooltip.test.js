@@ -30,8 +30,10 @@ describe('selection-tooltip', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 
@@ -44,9 +46,11 @@ describe('selection-tooltip', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 
@@ -79,9 +83,8 @@ describe('selection-tooltip', () => {
           class="bangle-tooltip"
           data-popper-placement="top"
           data-show=""
-          data-tooltip-name="selectionTooltipPlacement"
           role="tooltip"
-          style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, -5px);"
+          style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 0px);"
         >
           <div
             class="bangle-tooltip-content"
@@ -142,9 +145,11 @@ describe('selection-tooltip', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 
@@ -196,8 +201,10 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 
@@ -211,9 +218,11 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 
@@ -246,9 +255,11 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 
@@ -319,9 +330,11 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOM,
+          tooltipContentDOM,
+        },
       }),
     ];
 

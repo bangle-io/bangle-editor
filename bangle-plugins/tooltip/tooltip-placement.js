@@ -5,6 +5,8 @@ import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
 import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
 import { Plugin } from 'bangle-core/index';
+import { bangleWarn } from 'bangle-core/utils/js-utils';
+import { createTooltipDOM } from './create-tooltip-dom';
 
 export const plugins = tooltipPlacement;
 
@@ -12,6 +14,7 @@ const LOG = false;
 let log = LOG
   ? console.log.bind(console, 'tooltip/tooltip-placement')
   : () => {};
+const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 /**
  * Dispatching show: true to the plugin will also update the tooltip position
@@ -22,7 +25,6 @@ let log = LOG
  * To show a tooltip appendChild a div element to tooltipDOM with [data-popper-arrow] attribute
  *
  * @param {Object} options
- * @param {string} options.pluginName
  * @param {Element} options.tooltipDOM
  * @param {(view: any) => Element} options.getScrollContainerDOM
  * @param {(view: any, tooltipDOM: Element, scrollContainerDOM: Element) => {getBoundingClientRect: Function}} options.getReferenceElement
@@ -34,23 +36,24 @@ let log = LOG
  * @param {Array} options.fallbackPlacement
  */
 function tooltipPlacement({
-  pluginName = 'tooltipPlacementPlugin',
-  tooltipStateKey,
-  tooltipDOM,
-  getScrollContainerDOM,
-  getReferenceElement,
-  placement = 'top',
-  onUpdateTooltip = (state, dispatch, view) => {},
-  onHideTooltip = (state, dispatch, view) => {},
-  tooltipOffset = () => {
-    return [0, 5];
+  stateKey,
+  renderOpts: {
+    tooltipDOM,
+    tooltipContentDOM,
+    placement = 'top',
+    getReferenceElement,
+    getScrollContainerDOM = (view) => {
+      return view.dom.parentElement;
+    },
+    onUpdateTooltip = (state, dispatch, view) => {},
+    onHideTooltip = (state, dispatch, view) => {},
+    tooltipOffset = () => {
+      return [0, 0.5 * rem];
+    },
+    fallbackPlacements = ['bottom', 'top'],
+    customPopperModifiers,
   },
-  customPopperModifiers,
-  fallbackPlacements = ['bottom', 'top'],
 }) {
-  // TODO can we remove this pluginName field
-  tooltipDOM.setAttribute('data-tooltip-name', pluginName);
-
   const plugin = new Plugin({
     view: (view) => {
       return new TooltipPlacementView(view);
@@ -62,12 +65,19 @@ function tooltipPlacement({
 
     constructor(view) {
       this._view = view;
+
+      if (!tooltipDOM) {
+        ({ tooltipContentDOM, tooltipDOM } = createTooltipDOM());
+        tooltipContentDOM.textContent = 'I am a tooltip';
+      }
+
       this._tooltip = tooltipDOM;
       this._scrollContainerDOM = getScrollContainerDOM(view);
       // TODO should this be this plugins responsibility
       this._view.dom.parentNode.appendChild(this._tooltip);
 
-      const pluginState = tooltipStateKey.getState(view.state);
+      const pluginState = stateKey.getState(view.state);
+      validateState(pluginState);
       // if the initial state is to show, setup the tooltip
       if (pluginState.show) {
         this._showTooltip();
@@ -76,8 +86,8 @@ function tooltipPlacement({
     }
 
     update(view, prevState) {
-      const pluginState = tooltipStateKey.getState(view.state);
-      if (pluginState === tooltipStateKey.getState(prevState)) {
+      const pluginState = stateKey.getState(view.state);
+      if (pluginState === stateKey.getState(prevState)) {
         return;
       }
       log('here');
@@ -187,4 +197,14 @@ function tooltipPlacement({
   }
 
   return plugin;
+}
+
+function validateState(state) {
+  if (typeof state.show !== 'boolean') {
+    bangleWarn(
+      `Tooltip must be controlled by a plugin having a boolean field "show" in its state, but received the state=`,
+      state,
+    );
+    throw new Error('"show" field required.');
+  }
 }

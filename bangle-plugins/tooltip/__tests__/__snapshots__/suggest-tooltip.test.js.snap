@@ -37,16 +37,15 @@ exports[`suggest basic show and hide types a trigger 1`] = `
   </div>
   <div
     class="bangle-tooltip"
-    data-popper-placement="bottom-start"
+    data-popper-placement="top"
     data-show=""
-    data-tooltip-name="suggest_slash__tooltipPlacementKey"
     role="tooltip"
-    style="margin: 0px; position: absolute; left: 0px; top: 0px; transform: translate(0px, 0px);"
+    style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 0px);"
   >
     <div
       class="bangle-tooltip-content"
     >
-      hello world
+      I am a tooltip
     </div>
   </div>
 </div>
@@ -66,13 +65,12 @@ exports[`suggest basic show and hide when no trigger 1`] = `
   </div>
   <div
     class="bangle-tooltip"
-    data-tooltip-name="suggest_slash__tooltipPlacementKey"
     role="tooltip"
   >
     <div
       class="bangle-tooltip-content"
     >
-      hello world
+      I am a tooltip
     </div>
   </div>
 </div>

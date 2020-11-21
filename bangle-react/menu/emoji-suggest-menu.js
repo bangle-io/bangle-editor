@@ -33,13 +33,15 @@ function pluginsFactory({
   key = new PluginKey('emojiSuggestMenu'),
   markName = defaultMarkName,
   trigger = defaultTrigger,
-  getScrollContainerDOM,
+  tooltipRenderOpts,
   emojis,
 } = {}) {
   return ({ schema }) => {
-    const { tooltipDOM, tooltipContentDOM } = createTooltipDOM();
     const suggestTooltipKey = keyStore.create(key, 'suggestTooltipKey');
-
+    let { tooltipDOM, tooltipContentDOM } = tooltipRenderOpts;
+    if (!tooltipDOM) {
+      ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
+    }
     const getIsTop = () =>
       tooltipDOM.getAttribute('data-popper-placement') === 'top-start';
 
@@ -79,10 +81,11 @@ function pluginsFactory({
         key: suggestTooltipKey,
         markName,
         trigger,
-        placement: 'bottom-start',
-        fallbackPlacements: ['bottom-start', 'top-start'],
-        tooltipDOM,
-        getScrollContainerDOM,
+        tooltipRenderOpts: {
+          ...tooltipRenderOpts,
+          tooltipDOM,
+          tooltipContentDOM,
+        },
         onEnter: (state, dispatch, view) => {
           const matchedEmojis = getEmojis(emojis, queryTriggerText(key)(state));
           if (matchedEmojis.length === 0) {
@@ -94,7 +97,6 @@ function pluginsFactory({
           rafCommandExec(view, resetSuggestTooltipCounter(suggestTooltipKey));
           return selectEmoji(key, emojiKind)(state, dispatch, view);
         },
-
         onArrowDown: updateCounter('DOWN'),
         onArrowUp: updateCounter('UP'),
       }),

@@ -19,19 +19,12 @@ function selectionTooltip({
   calculateType = (state, prevType) => {
     return state.selection.empty ? null : 'default';
   },
-  getScrollContainerDOM = (view) => {
-    return view.dom.parentElement;
-  },
-  tooltipDOM,
-  tooltipContentDOM,
-  tooltipArrow,
-  tooltipOffset,
-  hideOnBlur = false,
+  tooltipRenderOpts = {},
 }) {
+  let { tooltipDOM, tooltipContentDOM } = tooltipRenderOpts;
   if (!tooltipDOM) {
-    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM(tooltipArrow));
+    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
   }
-
   return [
     selectionTooltipState({
       key: key,
@@ -39,15 +32,15 @@ function selectionTooltip({
       tooltipContentDOM,
       calculateType,
     }),
-    selectionTooltipController({ tooltipStateKey: key, hideOnBlur }),
+    selectionTooltipController({ stateKey: key }),
     tooltipPlacement.plugins({
-      // TODO get rid of this pluginName
-      pluginName: 'selectionTooltipPlacement',
-      tooltipDOM,
-      tooltipStateKey: key,
-      tooltipOffset,
-      getReferenceElement: getSelectionReferenceElement,
-      getScrollContainerDOM,
+      stateKey: key,
+      renderOpts: {
+        getReferenceElement: getSelectionReferenceElement,
+        ...tooltipRenderOpts,
+        tooltipDOM,
+        tooltipContentDOM,
+      },
     }),
   ];
 }
@@ -89,32 +82,18 @@ function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
   });
 }
 
-function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
+function selectionTooltipController({ stateKey }) {
   let mouseDown = false;
   return new Plugin({
     props: {
       handleDOMEvents: {
-        blur(view, event) {
-          if (hideOnBlur) {
-            hideSelectionTooltip(tooltipStateKey)(
-              view.state,
-              view.dispatch,
-              view,
-            );
-          }
-          return false;
-        },
         mousedown(view, event) {
           mouseDown = true;
           return false;
         },
         mouseup(view, event) {
           mouseDown = false;
-          _syncTooltipOnUpdate(tooltipStateKey)(
-            view.state,
-            view.dispatch,
-            view,
-          );
+          _syncTooltipOnUpdate(stateKey)(view.state, view.dispatch, view);
           return false;
         },
       },
@@ -134,7 +113,7 @@ function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
             return;
           }
 
-          return _syncTooltipOnUpdate(tooltipStateKey)(
+          return _syncTooltipOnUpdate(stateKey)(
             view.state,
             view.dispatch,
             view,

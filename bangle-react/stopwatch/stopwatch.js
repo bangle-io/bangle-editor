@@ -18,6 +18,7 @@ const name = 'stopwatch';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
+
 function specFactory() {
   const spec = {
     name,
@@ -55,7 +56,7 @@ function specFactory() {
   return spec;
 }
 
-export function pluginsFactory(opts = {}) {
+function pluginsFactory(opts = {}) {
   return [
     keymap({
       'Shift-Ctrl-s': insertStopwatch(),

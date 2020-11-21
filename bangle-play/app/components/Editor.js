@@ -42,11 +42,18 @@ const getPlugins = ({ docName, manager }) => {
     ),
   };
   return [
-    floatingMenu.plugins({ key: menuKey, getScrollContainerDOM }),
+    floatingMenu.plugins({
+      key: menuKey,
+      tooltipRenderOpts: {
+        getScrollContainerDOM,
+      },
+    }),
     emojiSuggestMenu.plugins({
       key: emojiSuggestKey,
-      getScrollContainerDOM,
       emojis: emojisArray,
+      tooltipRenderOpts: {
+        getScrollContainerDOM,
+      },
     }),
     ...corePlugins({
       heading: { levels: config.headingLevels },

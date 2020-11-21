@@ -496,16 +496,12 @@ describe('keybindings test', () => {
       key: suggestKey,
       markName: 'suggest_slash',
       trigger: '/',
-      placement: 'bottom-start',
-      enterKeyName: 'Enter',
-      arrowUpKeyName: 'ArrowUp',
-      arrowDownKeyName: 'ArrowDown',
-      escapeKeyName: 'Escape',
-      // Use another key to mimic enter behaviour for example, Tab for entering
-      alternateEnterKeyName: undefined,
+      tooltipRenderOpts: {
+        onUpdateTooltip: jest.fn(() => true),
+        onHideTooltip: jest.fn(() => true),
+        placement: 'bottom-start',
+      },
 
-      onUpdateTooltip: jest.fn(() => true),
-      onHideTooltip: jest.fn(() => true),
       onEnter: jest.fn(() => true),
       onArrowDown: jest.fn(() => true),
       onArrowUp: jest.fn(() => true),
@@ -535,8 +531,8 @@ describe('keybindings test', () => {
       </doc>,
     );
     // since it is called many times
-    expect(opts.onUpdateTooltip).toBeCalled();
-    expect(opts.onHideTooltip).toBeCalledTimes(0);
+    expect(opts.tooltipRenderOpts.onUpdateTooltip).toBeCalled();
+    expect(opts.tooltipRenderOpts.onHideTooltip).toBeCalledTimes(0);
     expect(
       suggestTooltip.queryIsSuggestTooltipActive(suggestKey)(view.state),
     ).toBe(true);
@@ -560,7 +556,7 @@ describe('keybindings test', () => {
     // Outside the mark
     view.dispatch(view.state.tr.setSelection(Selection.atEnd(view.state.doc)));
     // TODO for some mysterious reason this is called twice with the same state
-    expect(opts.onHideTooltip).toBeCalledTimes(1);
+    expect(opts.tooltipRenderOpts.onHideTooltip).toBeCalledTimes(1);
   });
 
   test('pressing enter works removes the mark', async () => {
@@ -568,13 +564,6 @@ describe('keybindings test', () => {
       key: suggestKey,
       markName: 'suggest_slash',
       trigger: '/',
-      placement: 'bottom-start',
-      enterKeyName: 'Enter',
-      arrowUpKeyName: 'ArrowUp',
-      arrowDownKeyName: 'ArrowDown',
-      escapeKeyName: 'Escape',
-      // Use another key to mimic enter behaviour for example, Tab for entering
-      alternateEnterKeyName: undefined,
     };
 
     const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
@@ -615,13 +604,9 @@ describe('keybindings test', () => {
       key: suggestKey,
       markName: 'suggest_slash',
       trigger: '/',
-      placement: 'bottom-start',
-      enterKeyName: 'Enter',
-      arrowUpKeyName: 'ArrowUp',
-      arrowDownKeyName: 'ArrowDown',
-      escapeKeyName: 'Escape',
-      // Use another key to mimic enter behaviour for example, Tab for entering
-      alternateEnterKeyName: undefined,
+      tooltipRenderOpts: {
+        placement: 'bottom-start',
+      },
     };
 
     const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];

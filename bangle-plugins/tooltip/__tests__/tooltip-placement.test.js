@@ -47,28 +47,31 @@ const setupStatePlugin = ({ key, initialState = { show: false } }) => {
   });
 };
 
-const setupTooltipPlugin = (opts = {}) => {
+const setupTooltipPlugin = ({ stateKey, renderOpts }) => {
   return [
     tooltipPlacement.plugins({
-      tooltipDOM: document.createElement('div'),
-      getScrollContainerDOM: () => {
-        return document.createElement('div');
+      stateKey,
+      renderOpts: {
+        tooltipDOM: document.createElement('div'),
+        getScrollContainerDOM: () => {
+          return document.createElement('div');
+        },
+        getReferenceElement: () => {
+          return {
+            getBoundingClientRect: () => {
+              return {
+                width: 0,
+                height: 0,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              };
+            },
+          };
+        },
+        ...renderOpts,
       },
-      getReferenceElement: () => {
-        return {
-          getBoundingClientRect: () => {
-            return {
-              width: 0,
-              height: 0,
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-            };
-          },
-        };
-      },
-      ...opts,
     }),
   ];
 };
@@ -109,13 +112,15 @@ describe('plugin view', () => {
     const getReferenceElement = jest.fn(() => referenceElement);
     const scrollContainerDOM = document.createElement('div');
     const plugin = setupTooltipPlugin({
-      tooltipDOM,
-      tooltipStateKey: stateKey,
-      fallbackPlacements: ['pos-a', 'pos-b'],
-      getReferenceElement,
-      getScrollContainerDOM: () => scrollContainerDOM,
-      placement: 'test-placement',
-      tooltipOffset: () => 'test_offset',
+      stateKey: stateKey,
+      renderOpts: {
+        tooltipDOM,
+        fallbackPlacements: ['pos-a', 'pos-b'],
+        getReferenceElement,
+        getScrollContainerDOM: () => scrollContainerDOM,
+        placement: 'test-placement',
+        tooltipOffset: () => 'test_offset',
+      },
     });
     const view = setupEditorView({
       state: setupEditorState([statePlugin, plugin]),
@@ -163,10 +168,12 @@ describe('plugin view', () => {
     const tooltipDOM = document.createElement('div');
     const viewDOM = document.createElement('div');
     const plugin = setupTooltipPlugin({
-      tooltipStateKey: stateKey,
-      onUpdateTooltip,
-      onHideTooltip,
-      tooltipDOM,
+      stateKey: stateKey,
+      renderOpts: {
+        onUpdateTooltip,
+        onHideTooltip,
+        tooltipDOM,
+      },
     });
     const view = setupEditorView({
       state: setupEditorState([statePlugin, plugin]),
@@ -210,10 +217,12 @@ describe('plugin view', () => {
 
     const onHideTooltip = jest.fn();
     const plugin = setupTooltipPlugin({
-      tooltipStateKey: stateKey,
-      onUpdateTooltip,
-      onHideTooltip,
-      tooltipDOM,
+      stateKey,
+      renderOpts: {
+        onUpdateTooltip,
+        onHideTooltip,
+        tooltipDOM,
+      },
     });
     const view = setupEditorView({
       state: setupEditorState([statePlugin, plugin]),
@@ -252,10 +261,8 @@ describe('plugin view', () => {
 
     const onHideTooltip = jest.fn();
     const plugin = setupTooltipPlugin({
-      tooltipStateKey: stateKey,
-      onUpdateTooltip,
-      onHideTooltip,
-      tooltipDOM,
+      stateKey: stateKey,
+      renderOpts: { onUpdateTooltip, onHideTooltip, tooltipDOM },
     });
 
     const viewDOM = document.createElement('div');
@@ -274,5 +281,33 @@ describe('plugin view', () => {
     view.destroy();
 
     expect(viewDOM.contains(tooltipDOM)).toBe(false);
+  });
+
+  it('throws error if stateKeys plugin has no show field', async () => {
+    const statePlugin = setupStatePlugin({
+      key: stateKey,
+      initialState: {},
+    });
+
+    const tooltipDOM = document.createElement('div');
+
+    const onHideTooltip = jest.fn();
+
+    const plugin = setupTooltipPlugin({
+      stateKey,
+      renderOpts: {
+        onHideTooltip,
+        tooltipDOM,
+      },
+    });
+
+    const viewDOM = document.createElement('div');
+
+    expect(() =>
+      setupEditorView({
+        state: setupEditorState([statePlugin, plugin]),
+        viewDOM,
+      }),
+    ).toThrowError(`"show" field required.`);
   });
 });
