@@ -25,15 +25,13 @@ export function pluginKeyStore() {
       const key = new PluginKey(childKeyId);
       if (store.has(parentKey)) {
         const children = store.get(parentKey);
+        // This situation might arise when a new view
+        // is created or just calling the 'create' without worry.
+        // Returning a pre-existing key is okay, because
+        // you need a view.state + key to get the correct plugin store.
+        // Hence, using the same key for multiple views is totally fine.
         if (children[childKeyId]) {
-          bangleWarn(
-            `There is already a key ${childKeyId} associated with the pluginKey =`,
-            parentKey,
-          );
-
-          throw new Error(
-            `Parent is already associated with key'${childKeyId}'`,
-          );
+          return children[childKeyId];
         }
         children[childKeyId] = key;
       } else {
