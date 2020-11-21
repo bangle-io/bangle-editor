@@ -102,17 +102,20 @@ function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
               view,
             );
           }
+          return false;
         },
         mousedown(view, event) {
           mouseDown = true;
+          return false;
         },
         mouseup(view, event) {
           mouseDown = false;
-          return updateTooltipOnSelectionChange(tooltipStateKey)(
+          updateTooltipOnSelectionChange(tooltipStateKey)(
             view.state,
             view.dispatch,
             view,
           );
+          return false;
         },
       },
     },
