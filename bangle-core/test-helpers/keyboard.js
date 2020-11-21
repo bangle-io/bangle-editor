@@ -1,5 +1,28 @@
 import browser from 'bangle-core/utils/browser';
+// So the basic editing operations are not handled
+// by PM actively and instead it waits for the browser
+// to do its thing and then sync it with its view.
+// Some of the key operations like pressing Enter, Backspace etc
+// need to use the functions below to simulate the operation.
+// Inspiration: https://github.com/prosemirror/prosemirror-view/blob/b57ba7716918de26b17d2550f99b4041b1bcee5b/test%2Ftest-domchange.js#L89
+function flush(view) {
+  view.domObserver.flush();
+}
 
+function findTextNode(node, text) {
+  if (node.nodeType === 3) {
+    if (node.nodeValue === text) {
+      return node;
+    }
+  } else if (node.nodeType === 1) {
+    for (let ch = node.firstChild; ch; ch = ch.nextSibling) {
+      let found = findTextNode(ch, text);
+      if (found) {
+        return found;
+      }
+    }
+  }
+}
 export function sendKeyToPm(editorView, keys) {
   const keyCodes = {
     'Enter': 13,

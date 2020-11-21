@@ -1,6 +1,6 @@
 import { Plugin, PluginKey } from 'bangle-core/index';
 import { useContext, useEffect, useState } from 'react';
-import { EditorViewContext } from './react-editor';
+import { EditorViewContext } from './ReactEditor';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};

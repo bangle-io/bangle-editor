@@ -7,7 +7,7 @@ import { SpecSheet } from 'bangle-core/spec-sheet';
 import { render } from '@testing-library/react';
 import { corePlugins } from 'bangle-core/index';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
-import { ReactEditor } from '../../react-editor';
+import { ReactEditor } from '../../ReactEditor';
 
 const defaultSpecSheet = new SpecSheet();
 const defaultPlugins = corePlugins();

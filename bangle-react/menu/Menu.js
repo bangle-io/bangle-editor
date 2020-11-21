@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { EditorViewContext } from 'bangle-react/react-editor';
+import { EditorViewContext } from 'bangle-react/ReactEditor';
 import {
   focusFloatingMenuInput,
   toggleFloatingLinkMenu,

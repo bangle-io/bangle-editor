@@ -8,7 +8,7 @@ import { DOMSerializer } from 'prosemirror-model';
 import { dino } from 'bangle-react/dino';
 import { stopwatch } from 'bangle-react/stopwatch';
 import * as prosemirrorView from 'prosemirror-view';
-import { ReactEditor } from 'bangle-react/react-editor';
+import { ReactEditor } from 'bangle-react/ReactEditor';
 
 window.prosemirrorView = prosemirrorView;
 

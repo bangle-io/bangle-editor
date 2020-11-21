@@ -110,7 +110,7 @@ function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
         },
         mouseup(view, event) {
           mouseDown = false;
-          updateTooltipOnSelectionChange(tooltipStateKey)(
+          _syncTooltipOnUpdate(tooltipStateKey)(
             view.state,
             view.dispatch,
             view,
@@ -134,7 +134,7 @@ function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
             return;
           }
 
-          return updateTooltipOnSelectionChange(tooltipStateKey)(
+          return _syncTooltipOnUpdate(tooltipStateKey)(
             view.state,
             view.dispatch,
             view,
@@ -165,10 +165,9 @@ function getSelectionReferenceElement(view) {
   };
 }
 
-export function updateTooltipOnSelectionChange(key) {
+export function _syncTooltipOnUpdate(key) {
   return (state, dispatch, view) => {
     const tooltipState = key.getState(state);
-    log('updateTooltipStateOnSelectionChange', tooltipState);
     const newType = tooltipState.calculateType(state, tooltipState.type);
     if (typeof newType === 'string') {
       return updateSelectionTooltipType(key, newType)(state, dispatch, view);

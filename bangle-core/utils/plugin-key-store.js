@@ -1,5 +1,5 @@
 import { bangleWarn } from 'bangle-core/utils/js-utils';
-import { PluginKey } from 'prosemirror-state';
+import { PluginKey } from '../plugin';
 
 export function pluginKeyStore() {
   const store = new WeakMap();

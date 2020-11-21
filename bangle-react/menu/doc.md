@@ -1,6 +1,6 @@
 # menu
 
-The menu module provides you with tools to help build flexible and powerful menu user interface. 
+The menu module provides you with tools to help build flexible and powerful menu user interface.
 
 ### Installation
 
@@ -18,7 +18,7 @@ This is a bangle component which helps you create floating menus. By default it 
 
 3. `null` No menu tooltip shown.
 
-You add more types of tooltips by tweaking the `calculateType` parameter in the `.plugins({ ... })` . 
+You add more types of tooltips by tweaking the `calculateType` parameter in the `.plugins({ ... })` .
 
 ```
 import { floatingMenu } from '@banglejs/react/menu'
@@ -40,9 +40,9 @@ Named parameters:
   A function to calculate the type of floating menu to show whenever the editor's selection changes. Note that this will _not_ be called if the type is changed via the `updateFloatingTooltipType` command. \
   _default_: Calculates the first of the following types whose conditions are matched.:
 
-  - `floatingLinkMenu`: If the the selection is inside a link mark 
+  - `floatingLinkMenu`: If the the selection is inside a link mark
 
-  - `null` : If the above do not match and the selection is empty. 
+  - `null` : If the above do not match and the selection is empty.
 
   - `floatingMenu`: If the above do not match.
 
@@ -52,7 +52,7 @@ Named parameters:
   Sets the focus on the `input` element in the floating menu. Ideally used to set the focus to `floatingLinkMenu`, which has an input element for updating the link.
 
 - **toggleFloatingLinkMenu**(key: PluginKey): Command\
-  Toggles the  `floatingLinkMenu` tooltip.
+  Toggles the `floatingLinkMenu` tooltip.
 
 - **updateFloatingTooltipType**(key: PluginKey, type: string | null): Command\
   Sets the floating menu's current type to `type` .Set type to `null` to hide the floating menu tooltip.
@@ -113,4 +113,4 @@ const renderMenuType = ({ type, menuKey }) => {
 
 Helpful links:
 
-- Building a floating menu 
+- Building a floating menu
