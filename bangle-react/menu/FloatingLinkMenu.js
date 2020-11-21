@@ -3,7 +3,7 @@ import {
   setLinkAtSelection,
   getLinkMarkDetails,
 } from 'bangle-core/components/link';
-import { EditorViewContext } from 'bangle-react/react-editor';
+import { EditorViewContext } from 'bangle-react/ReactEditor';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
 
 export function LinkMenu({ getIsTop = () => true }) {

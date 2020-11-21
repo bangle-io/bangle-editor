@@ -87,20 +87,12 @@ export function pluginsFactory({
   // No need to call removeSuggestMark on onHideTooltip
   onHideTooltip = (state, dispatch, view) => {},
   onEnter = (state, dispatch, view) => {
-    return removeSuggestMark(state.schema.marks[markName])(
-      state,
-      dispatch,
-      view,
-    );
+    return removeSuggestMark(key)(state, dispatch, view);
   },
   onArrowDown = incrementSuggestTooltipCounter(key),
   onArrowUp = decrementSuggestTooltipCounter(key),
   onEscape = (state, dispatch, view) => {
-    return removeSuggestMark(state.schema.marks[markName])(
-      state,
-      dispatch,
-      view,
-    );
+    return removeSuggestMark(key)(state, dispatch, view);
   },
 } = {}) {
   return ({ schema }) => {
@@ -257,7 +249,7 @@ function tooltipController({ key, trigger, markName }) {
           // Example `<mark>/hello</mark>` --(user deletes the /)-> `<mark>hello</mark>`
           // -> (clear) ->  hello
           if (isMarkActive && !doesQueryHaveTrigger(state, markType, trigger)) {
-            removeSuggestMark(markType)(state, view.dispatch, view);
+            removeSuggestMark(key)(state, view.dispatch, view);
             return;
           }
 
@@ -286,6 +278,7 @@ function isSuggestMarkActive(markName, from, to) {
     return state.doc.rangeHasMark(from - 1, to, markType);
   };
 }
+
 function doesQueryHaveTrigger(state, markType, trigger) {
   const { nodeBefore } = state.selection.$from;
 
@@ -357,6 +350,8 @@ function getTriggerText(state, markName, trigger) {
       .replace(trigger, '')
   );
 }
+
+/** Commands */
 
 export function queryTriggerText(key) {
   return (state) => {
@@ -453,11 +448,18 @@ export function replaceSuggestMarkWith(key, maybeNode) {
   };
 }
 
-export function removeSuggestMark(markType) {
+export function removeSuggestMark(key) {
   return (state, dispatch) => {
-    const { from, to } = state.selection;
+    const { markName } = key.getState(state);
+    const { schema, selection } = state;
+    const markType = schema.marks[markName];
 
-    const queryMark = findFirstMarkPosition(markType, state.doc, from - 1, to);
+    const queryMark = findFirstMarkPosition(
+      markType,
+      state.doc,
+      selection.from - 1,
+      selection.to,
+    );
 
     const { start, end } = queryMark;
     if (
@@ -510,6 +512,7 @@ export function incrementSuggestTooltipCounter(key) {
     return true;
   };
 }
+
 export function decrementSuggestTooltipCounter(key) {
   return (state, dispatch, view) => {
     if (dispatch) {

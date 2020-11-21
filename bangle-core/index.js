@@ -4,3 +4,4 @@ export * from './components/index';
 export * from './editor';
 export { logging, browser, isChromeWithSelectionBug };
 export * from './plugin';
+export * from './node-view';

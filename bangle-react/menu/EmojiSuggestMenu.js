@@ -1,5 +1,5 @@
-import { EditorViewContext } from 'bangle-react/react-editor';
 import reactDOM from 'react-dom';
+import { EditorViewContext } from 'bangle-react/ReactEditor';
 import { usePluginState } from 'bangle-react/use-plugin-state';
 import React, { useContext, useEffect, useRef } from 'react';
 import {
@@ -35,7 +35,7 @@ export function EmojiSuggestMenu({ emojiSuggestKey, emojis }) {
 
 function Palette({ activeIndex, filteredEmojis, onSelectEmoji }) {
   return (
-    <div className="bangle-inline-suggest-emoji">
+    <div className="bangle-emoji-suggest-menu">
       {filteredEmojis.map(([key, emoji], i) => (
         <Row
           key={key}
@@ -69,7 +69,11 @@ function Row({ title, isSelected, onClick, scrollIntoViewIfNeeded = true }) {
   }, [scrollIntoViewIfNeeded, isSelected]);
 
   return (
-    <div onClick={onClick} ref={ref} data-is-selected={isSelected}>
+    <div
+      className={`bangle-row ${isSelected ? 'bangle-is-selected' : ''}`}
+      onClick={onClick}
+      ref={ref}
+    >
       <span>{title}</span>
     </div>
   );

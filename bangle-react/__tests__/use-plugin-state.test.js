@@ -6,7 +6,7 @@
 import { render, act } from '@testing-library/react';
 import { corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { ReactEditor } from 'bangle-react/react-editor';
+import { ReactEditor } from 'bangle-react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from 'bangle-core/index';
 import { usePluginState } from 'bangle-react/use-plugin-state';

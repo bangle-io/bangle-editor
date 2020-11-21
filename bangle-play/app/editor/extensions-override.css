@@ -1,12 +1,12 @@
-.bangle-inline-suggest-emoji {
+.bangle-emoji-suggest-menu {
   background-color: var(--bg-stronger-color);
   color: var(--font-color);
 }
 
-.bangle-inline-suggest-emoji > div[data-is-selected='true'] {
+.bangle-emoji-suggest-menu > .bangle-row.bangle-is-selected {
   background-color: var(--accent-color);
 }
 
-.bangle-inline-suggest-emoji > div:hover {
+.bangle-emoji-suggest-menu > .bangle-row:hover {
   background-color: var(--accent-color);
 }

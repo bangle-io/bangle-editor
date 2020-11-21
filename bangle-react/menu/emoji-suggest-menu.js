@@ -1,7 +1,6 @@
 import { bangleWarn, rafCommandExec } from 'bangle-core/utils/js-utils';
 import { suggestTooltip, createTooltipDOM } from 'bangle-plugins/tooltip/index';
 import { PluginKey } from 'bangle-core';
-import { pluginKeyStore } from 'bangle-plugins/helpers/utils';
 import {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,
@@ -9,6 +8,7 @@ import {
   resetSuggestTooltipCounter,
 } from 'bangle-plugins/tooltip/suggest-tooltip';
 import { valuePlugin } from 'bangle-core/utils/pm-utils';
+import { pluginKeyStore } from 'bangle-core/utils/plugin-key-store';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -86,11 +86,7 @@ function pluginsFactory({
         onEnter: (state, dispatch, view) => {
           const matchedEmojis = getEmojis(emojis, queryTriggerText(key)(state));
           if (matchedEmojis.length === 0) {
-            return removeSuggestMark(state.schema.marks[markName])(
-              state,
-              dispatch,
-              view,
-            );
+            return removeSuggestMark(key)(state, dispatch, view);
           }
           const { counter } = suggestTooltipKey.getState(state);
           const emojiKind =
@@ -125,7 +121,6 @@ export function getSuggestTooltipKey(key) {
 }
 
 /** Commands */
-
 export function queryTriggerText(key) {
   return suggestTooltip.queryTriggerText(getSuggestTooltipKey(key));
 }

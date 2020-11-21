@@ -10,12 +10,6 @@ import { reactTestEditor, pjsx } from 'bangle-react/__tests__/helpers/index';
 import { PluginKey, TextSelection } from 'prosemirror-state';
 import { floatingMenu } from '../index';
 
-jest.mock('bangle-plugins/helpers/index', () => {
-  return {
-    viewHasFocus: () => true,
-  };
-});
-
 const menuKey = new PluginKey('floatingMenuTestKey');
 const specSheet = new SpecSheet([...coreSpec()]);
 const plugins = [

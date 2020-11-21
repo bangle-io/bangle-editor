@@ -6,7 +6,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import { BangleEditor, corePlugins, coreSpec } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { ReactEditor } from 'bangle-react/react-editor';
+import { ReactEditor } from 'bangle-react/ReactEditor';
 import { getRenderHandlers } from 'bangle-core/node-view';
 import { safeInsert, removeSelectedNode } from 'bangle-core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';

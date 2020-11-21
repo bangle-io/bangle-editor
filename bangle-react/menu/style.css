@@ -87,3 +87,50 @@ button.inline-menu-icon:disabled {
 button.inline-menu-icon:disabled:hover {
   background-color: transparent;
 }
+
+/** 
+ * 
+ * emoji-suggest-menu
+ *
+ */
+
+.bangle-emoji-suggest-menu {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  max-height: 200px;
+  overflow-y: scroll;
+  padding: 0.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid;
+  color: #333;
+  background-color: white;
+}
+
+.bangle-tooltip[data-popper-placement='top-start'] .bangle-emoji-suggest-menu {
+  flex-direction: column-reverse;
+}
+
+.bangle-emoji-suggest-menu > .bangle-row {
+  padding-left: 3px;
+  padding-right: 16px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.bangle-emoji-suggest-menu > .bangle-row.bangle-is-selected {
+  background-color: teal;
+}
+
+.bangle-emoji-suggest-menu > .bangle-row:hover {
+  background-color: teal;
+}
+
+.bangle-emoji-suggest-menu > .bangle-row > span {
+  font-size: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  user-select: none;
+}
