@@ -21,31 +21,35 @@ function selectionTooltip({
   },
   tooltipRenderOpts = {},
 }) {
-  let { tooltipDOM, tooltipContentDOM } = tooltipRenderOpts;
-  if (!tooltipDOM) {
-    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
-  }
-  return [
-    selectionTooltipState({
-      key: key,
-      tooltipDOM,
-      tooltipContentDOM,
-      calculateType,
-    }),
-    selectionTooltipController({ stateKey: key }),
-    tooltipPlacement.plugins({
-      stateKey: key,
-      renderOpts: {
-        getReferenceElement: getSelectionReferenceElement,
-        ...tooltipRenderOpts,
-        tooltipDOM,
-        tooltipContentDOM,
-      },
-    }),
-  ];
+  return () => {
+    // - We are creating tooltipDOMSpec inside the callback because if we create outside
+    //   it might get reused by multiple view instances if the caller of
+    //   selectionTooltip is not careful and does not make a new selectionTooltip() call.
+    //   Though this doesn't mitigate the risk of caller using real
+    //   dom instances in the `tooltipRenderOpts.tooltipDOMSpec`.
+    // - We are converting to DOM elements so that their instances
+    //   can be shared across plugins.
+    const tooltipDOMSpec = createTooltipDOM(tooltipRenderOpts.tooltipDOMSpec);
+    return [
+      selectionTooltipState({
+        key: key,
+        tooltipDOMSpec,
+        calculateType,
+      }),
+      selectionTooltipController({ stateKey: key }),
+      tooltipPlacement.plugins({
+        stateKey: key,
+        renderOpts: {
+          getReferenceElement: getSelectionReferenceElement,
+          ...tooltipRenderOpts,
+          tooltipDOMSpec,
+        },
+      }),
+    ];
+  };
 }
 
-function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
+function selectionTooltipState({ key, calculateType, tooltipDOMSpec }) {
   return new Plugin({
     key,
     state: {
@@ -53,7 +57,7 @@ function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
         const type = calculateType(state, null);
         return {
           type,
-          tooltipContentDOM,
+          tooltipContentDOM: tooltipDOMSpec.contentDOM,
           // For tooltipPlacement plugin
           show: typeof type === 'string',
           // helpers

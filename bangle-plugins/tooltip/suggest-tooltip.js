@@ -201,7 +201,6 @@ function tooltipController({ key, trigger, markName }) {
       return {
         update: (view, lastState) => {
           const { state } = view;
-
           if (lastState === state || !state.selection.empty) {
             return;
           }

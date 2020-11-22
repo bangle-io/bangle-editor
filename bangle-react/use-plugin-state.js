@@ -21,6 +21,7 @@ export function usePluginState(pluginKey) {
               return;
             }
             const newPluginState = pluginKey.getState(state);
+
             if (newPluginState !== pluginKey.getState(prevState)) {
               setState(newPluginState);
             }

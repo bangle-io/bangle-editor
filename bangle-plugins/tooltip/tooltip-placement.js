@@ -26,7 +26,7 @@ const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
  *
  * @param {Object} options
  * @param {Element} options.tooltipDOM
- * @param {(view: any) => Element} options.getScrollContainerDOM
+ * @param {(view: any) => Element} options.getScrollContainer
  * @param {(view: any, tooltipDOM: Element, scrollContainerDOM: Element) => {getBoundingClientRect: Function}} options.getReferenceElement
  * @param {string} options.placement
  * @param {(state: any, dispatch: any, view) => [number, number]} options.tooltipOffset
@@ -38,11 +38,10 @@ const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 function tooltipPlacement({
   stateKey,
   renderOpts: {
-    tooltipDOM,
-    tooltipContentDOM,
+    tooltipDOMSpec,
     placement = 'top',
     getReferenceElement,
-    getScrollContainerDOM = (view) => {
+    getScrollContainer = (view) => {
       return view.dom.parentElement;
     },
     onUpdateTooltip = (state, dispatch, view) => {},
@@ -66,13 +65,10 @@ function tooltipPlacement({
     constructor(view) {
       this._view = view;
 
-      if (!tooltipDOM) {
-        ({ tooltipContentDOM, tooltipDOM } = createTooltipDOM());
-        tooltipContentDOM.textContent = 'I am a tooltip';
-      }
+      const { dom: tooltipDOM } = createTooltipDOM(tooltipDOMSpec);
 
       this._tooltip = tooltipDOM;
-      this._scrollContainerDOM = getScrollContainerDOM(view);
+      this._scrollContainerDOM = getScrollContainer(view);
       // TODO should this be this plugins responsibility
       this._view.dom.parentNode.appendChild(this._tooltip);
 

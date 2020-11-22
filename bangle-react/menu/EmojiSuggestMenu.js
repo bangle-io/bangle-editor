@@ -1,7 +1,13 @@
 import reactDOM from 'react-dom';
 import { EditorViewContext } from 'bangle-react/ReactEditor';
 import { usePluginState } from 'bangle-react/use-plugin-state';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   getActiveIndex,
   getEmojis,
@@ -15,47 +21,44 @@ export function EmojiSuggestMenu({ emojiSuggestKey, emojis }) {
   const { counter, triggerText } = usePluginState(
     getSuggestTooltipKey(emojiSuggestKey),
   );
-  const filteredEmojis = getEmojis(emojis, triggerText);
+  const filteredEmojis = useMemo(() => getEmojis(emojis, triggerText), [
+    emojis,
+    triggerText,
+  ]);
   const activeIndex = getActiveIndex(counter, filteredEmojis.length);
+  const onSelectEmoji = useCallback(
+    (emojiKind) => {
+      selectEmoji(emojiSuggestKey, emojiKind)(view.state, view.dispatch, view);
+    },
+    [view, emojiSuggestKey],
+  );
+
   return reactDOM.createPortal(
-    <Palette
-      activeIndex={activeIndex}
-      filteredEmojis={filteredEmojis}
-      onSelectEmoji={(emojiKind) => {
-        selectEmoji(emojiSuggestKey, emojiKind)(
-          view.state,
-          view.dispatch,
-          view,
+    <div className="bangle-emoji-suggest-menu">
+      {filteredEmojis.map(([emojiKind, emoji], i) => {
+        return (
+          <Row
+            key={emojiKind}
+            scrollIntoViewIfNeeded={true}
+            isSelected={activeIndex === i}
+            emoji={emoji}
+            emojiKind={emojiKind}
+            onSelectEmoji={onSelectEmoji}
+          />
         );
-      }}
-    />,
+      })}
+    </div>,
     emojiPluginState.tooltipContentDOM,
   );
 }
 
-function Palette({ activeIndex, filteredEmojis, onSelectEmoji }) {
-  return (
-    <div className="bangle-emoji-suggest-menu">
-      {filteredEmojis.map(([key, emoji], i) => (
-        <Row
-          key={key}
-          scrollIntoViewIfNeeded={true}
-          isSelected={activeIndex === i}
-          title={emoji + ' ' + key}
-          onClick={(e) => {
-            e.preventDefault();
-            if (filteredEmojis[i]) {
-              const emojiKind = filteredEmojis[i][0];
-              onSelectEmoji(emojiKind);
-            }
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function Row({ title, isSelected, onClick, scrollIntoViewIfNeeded = true }) {
+const Row = React.memo(function Row({
+  isSelected,
+  emoji,
+  emojiKind,
+  scrollIntoViewIfNeeded = true,
+  onSelectEmoji,
+}) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -71,10 +74,13 @@ function Row({ title, isSelected, onClick, scrollIntoViewIfNeeded = true }) {
   return (
     <div
       className={`bangle-row ${isSelected ? 'bangle-is-selected' : ''}`}
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        onSelectEmoji(emojiKind);
+      }}
       ref={ref}
     >
-      <span>{title}</span>
+      <span>{emoji + ' ' + emojiKind}</span>
     </div>
   );
-}
+});

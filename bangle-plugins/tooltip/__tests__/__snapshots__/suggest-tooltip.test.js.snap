@@ -44,9 +44,7 @@ exports[`suggest basic show and hide types a trigger 1`] = `
   >
     <div
       class="bangle-tooltip-content"
-    >
-      I am a tooltip
-    </div>
+    />
   </div>
 </div>
 `;
@@ -69,9 +67,7 @@ exports[`suggest basic show and hide when no trigger 1`] = `
   >
     <div
       class="bangle-tooltip-content"
-    >
-      I am a tooltip
-    </div>
+    />
   </div>
 </div>
 `;

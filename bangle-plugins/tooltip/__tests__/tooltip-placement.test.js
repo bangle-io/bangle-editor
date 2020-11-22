@@ -12,6 +12,7 @@ import { corePlugins, coreSpec } from 'bangle-core/components';
 import { tooltipPlacement } from '../index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { Plugin, PluginKey } from 'bangle-core/index';
+import { createTooltipDOM } from '../create-tooltip-dom';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {
@@ -53,7 +54,7 @@ const setupTooltipPlugin = ({ stateKey, renderOpts }) => {
       stateKey,
       renderOpts: {
         tooltipDOM: document.createElement('div'),
-        getScrollContainerDOM: () => {
+        getScrollContainer: () => {
           return document.createElement('div');
         },
         getReferenceElement: () => {
@@ -106,7 +107,8 @@ describe('plugin view', () => {
       key: stateKey,
       initialState: { show: true },
     });
-    const tooltipDOM = document.createElement('div');
+    const tooltipDOMSpec = createTooltipDOM();
+    const { dom: tooltipDOM } = tooltipDOMSpec;
 
     const referenceElement = jest.fn();
     const getReferenceElement = jest.fn(() => referenceElement);
@@ -114,10 +116,10 @@ describe('plugin view', () => {
     const plugin = setupTooltipPlugin({
       stateKey: stateKey,
       renderOpts: {
-        tooltipDOM,
+        tooltipDOMSpec,
         fallbackPlacements: ['pos-a', 'pos-b'],
         getReferenceElement,
-        getScrollContainerDOM: () => scrollContainerDOM,
+        getScrollContainer: () => scrollContainerDOM,
         placement: 'test-placement',
         tooltipOffset: () => 'test_offset',
       },
@@ -165,14 +167,15 @@ describe('plugin view', () => {
       mockPopperInstance = this.popperInstance;
     });
     const onHideTooltip = jest.fn();
-    const tooltipDOM = document.createElement('div');
+    const tooltipDOMSpec = createTooltipDOM();
+    const { dom: tooltipDOM } = tooltipDOMSpec;
     const viewDOM = document.createElement('div');
     const plugin = setupTooltipPlugin({
       stateKey: stateKey,
       renderOpts: {
         onUpdateTooltip,
         onHideTooltip,
-        tooltipDOM,
+        tooltipDOMSpec,
       },
     });
     const view = setupEditorView({
@@ -213,15 +216,15 @@ describe('plugin view', () => {
     const onUpdateTooltip = jest.fn(function () {
       mockPopperInstance = this.popperInstance;
     });
-    const tooltipDOM = document.createElement('div');
-
+    const tooltipDOMSpec = createTooltipDOM();
+    const { dom: tooltipDOM } = tooltipDOMSpec;
     const onHideTooltip = jest.fn();
     const plugin = setupTooltipPlugin({
       stateKey,
       renderOpts: {
         onUpdateTooltip,
         onHideTooltip,
-        tooltipDOM,
+        tooltipDOMSpec,
       },
     });
     const view = setupEditorView({
@@ -257,12 +260,12 @@ describe('plugin view', () => {
     });
 
     const onUpdateTooltip = jest.fn(function () {});
-    const tooltipDOM = document.createElement('div');
-
+    const tooltipDOMSpec = createTooltipDOM();
+    const { dom: tooltipDOM } = tooltipDOMSpec;
     const onHideTooltip = jest.fn();
     const plugin = setupTooltipPlugin({
       stateKey: stateKey,
-      renderOpts: { onUpdateTooltip, onHideTooltip, tooltipDOM },
+      renderOpts: { onUpdateTooltip, onHideTooltip, tooltipDOMSpec },
     });
 
     const viewDOM = document.createElement('div');
@@ -289,15 +292,12 @@ describe('plugin view', () => {
       initialState: {},
     });
 
-    const tooltipDOM = document.createElement('div');
-
     const onHideTooltip = jest.fn();
 
     const plugin = setupTooltipPlugin({
       stateKey,
       renderOpts: {
         onHideTooltip,
-        tooltipDOM,
       },
     });
 

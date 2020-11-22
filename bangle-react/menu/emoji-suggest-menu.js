@@ -38,12 +38,13 @@ function pluginsFactory({
 } = {}) {
   return ({ schema }) => {
     const suggestTooltipKey = keyStore.create(key, 'suggestTooltipKey');
-    let { tooltipDOM, tooltipContentDOM } = tooltipRenderOpts;
-    if (!tooltipDOM) {
-      ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
-    }
+
+    // We are converting to DOM elements so that their instances
+    // can be shared across plugins.
+    const tooltipDOMSpec = createTooltipDOM(tooltipRenderOpts.tooltipDOMSpec);
+
     const getIsTop = () =>
-      tooltipDOM.getAttribute('data-popper-placement') === 'top-start';
+      tooltipDOMSpec.dom.getAttribute('data-popper-placement') === 'top-start';
 
     if (!schema.marks[markName]) {
       bangleWarn(
@@ -74,7 +75,7 @@ function pluginsFactory({
     };
     return [
       valuePlugin(key, {
-        tooltipContentDOM,
+        tooltipContentDOM: tooltipDOMSpec.contentDOM,
         markName,
       }),
       suggestTooltip.plugins({
@@ -83,8 +84,7 @@ function pluginsFactory({
         trigger,
         tooltipRenderOpts: {
           ...tooltipRenderOpts,
-          tooltipDOM,
-          tooltipContentDOM,
+          tooltipDOMSpec,
         },
         onEnter: (state, dispatch, view) => {
           const matchedEmojis = getEmojis(emojis, queryTriggerText(key)(state));
