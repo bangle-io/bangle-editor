@@ -18,11 +18,11 @@ import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 
 describe('selection-tooltip', () => {
-  let testEditor, tooltipDOM, tooltipContentDOM, specSheet;
+  let testEditor, specSheet, tooltipDOMSpec;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
-    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
-    tooltipContentDOM.textContent = 'hello world';
+    tooltipDOMSpec = createTooltipDOM();
+    tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
     specSheet = new SpecSheet([...coreSpec()]);
 
@@ -30,8 +30,7 @@ describe('selection-tooltip', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
+        tooltipRenderOpts: { tooltipDOMSpec },
       }),
     ];
 
@@ -44,9 +43,8 @@ describe('selection-tooltip', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: { tooltipDOMSpec },
       }),
     ];
 
@@ -79,9 +77,8 @@ describe('selection-tooltip', () => {
           class="bangle-tooltip"
           data-popper-placement="top"
           data-show=""
-          data-tooltip-name="selectionTooltipPlacement"
           role="tooltip"
-          style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, -5px);"
+          style="position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 0px);"
         >
           <div
             class="bangle-tooltip-content"
@@ -100,11 +97,11 @@ describe('selection-tooltip', () => {
       </doc>,
     );
 
-    expect(view.dom.parentNode.contains(tooltipDOM)).toBe(true);
-    expect(tooltipDOM.hasAttribute('data-show')).toBe(true);
+    expect(view.dom.parentNode.contains(tooltipDOMSpec.dom)).toBe(true);
+    expect(tooltipDOMSpec.dom.hasAttribute('data-show')).toBe(true);
     expect(key.getState(view.state)).toEqual({
       type: 'default',
-      tooltipContentDOM,
+      tooltipContentDOM: tooltipDOMSpec.contentDOM,
       show: true,
       calculateType: expect.any(Function),
     });
@@ -117,8 +114,8 @@ describe('selection-tooltip', () => {
       </doc>,
     );
 
-    expect(view.dom.parentNode.contains(tooltipDOM)).toBe(true);
-    expect(tooltipDOM.hasAttribute('data-show')).toBe(false);
+    expect(view.dom.parentNode.contains(tooltipDOMSpec.dom)).toBe(true);
+    expect(tooltipDOMSpec.dom.hasAttribute('data-show')).toBe(false);
   });
 
   test('On typing hide tooltip', async () => {
@@ -128,10 +125,10 @@ describe('selection-tooltip', () => {
       </doc>,
     );
 
-    expect(tooltipDOM.hasAttribute('data-show')).toBe(true);
+    expect(tooltipDOMSpec.dom.hasAttribute('data-show')).toBe(true);
 
     typeText(view, 'hello');
-    expect(tooltipDOM.hasAttribute('data-show')).toBe(false);
+    expect(tooltipDOMSpec.dom.hasAttribute('data-show')).toBe(false);
   });
 
   test('Creating a selection should show tooltip, set type and  call calculateType', async () => {
@@ -142,9 +139,10 @@ describe('selection-tooltip', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOMSpec,
+        },
       }),
     ];
 
@@ -184,11 +182,12 @@ describe('selection-tooltip', () => {
 });
 
 describe('commands', () => {
-  let testEditor, tooltipDOM, tooltipContentDOM, specSheet;
+  let testEditor, tooltipDOMSpec, specSheet;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
-    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM());
-    tooltipContentDOM.textContent = 'hello world';
+    tooltipDOMSpec = createTooltipDOM();
+
+    tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
     specSheet = new SpecSheet([...coreSpec()]);
 
@@ -196,8 +195,9 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
+        tooltipRenderOpts: {
+          tooltipDOMSpec,
+        },
       }),
     ];
 
@@ -211,9 +211,10 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOMSpec,
+        },
       }),
     ];
 
@@ -246,9 +247,10 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOMSpec,
+        },
       }),
     ];
 
@@ -319,9 +321,10 @@ describe('commands', () => {
       ...corePlugins(),
       selectionTooltip.plugins({
         key,
-        tooltipDOM,
-        tooltipContentDOM,
         calculateType,
+        tooltipRenderOpts: {
+          tooltipDOMSpec,
+        },
       }),
     ];
 
@@ -361,8 +364,6 @@ describe('commands', () => {
         <para>f[oo]bar</para>
       </doc>,
     );
-
-    expect(tooltipDOM.hasAttribute('data-show')).toBe(true);
 
     expect(
       selectionTooltip.queryIsSelectionTooltipActive(key)(view.state),

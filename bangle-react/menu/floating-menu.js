@@ -26,13 +26,11 @@ export const defaultKeys = {
   toggleLink: 'Meta-k',
 };
 
-const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
 function floatingMenu({
   key = new PluginKey('floatingMenuPlugin'),
-  getScrollContainerDOM = (view) => {
-    return view.dom.parentElement;
-  },
+  tooltipRenderOpts = {},
+  keybindings = defaultKeys,
+
   calculateType = (state, prevType) => {
     if (isSelectionAroundLink(state) || isSelectionInsideLink(state)) {
       return 'floatingLinkMenu';
@@ -45,23 +43,12 @@ function floatingMenu({
     }
     return 'floatingMenu';
   },
-  keybindings = defaultKeys,
-  tooltipArrow = false,
-  tooltipDOM,
-  tooltipContentDOM,
-  tooltipOffset = () => {
-    return [0, 0.5 * rem];
-  },
 }) {
   return [
     selectionTooltip.plugins({
       key,
-      getScrollContainerDOM,
       calculateType,
-      tooltipArrow,
-      tooltipOffset,
-      tooltipDOM,
-      tooltipContentDOM,
+      tooltipRenderOpts,
     }),
     keybindings &&
       keymap({

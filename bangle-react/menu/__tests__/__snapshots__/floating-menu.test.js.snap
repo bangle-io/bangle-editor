@@ -15,7 +15,6 @@ exports[`Link menu when no link 1`] = `
     </div>
     <div
       class="bangle-tooltip"
-      data-tooltip-name="selectionTooltipPlacement"
       role="tooltip"
     >
       <div

@@ -25,7 +25,7 @@ const LOG = false;
 const DEBUG = true;
 let log = LOG ? console.log.bind(console, 'play/Editor') : () => {};
 
-const getScrollContainerDOM = (view) => {
+const getScrollContainer = (view) => {
   return view.dom.parentElement.parentElement;
 };
 
@@ -42,11 +42,18 @@ const getPlugins = ({ docName, manager }) => {
     ),
   };
   return [
-    floatingMenu.plugins({ key: menuKey, getScrollContainerDOM }),
+    floatingMenu.plugins({
+      key: menuKey,
+      tooltipRenderOpts: {
+        getScrollContainer,
+      },
+    }),
     emojiSuggestMenu.plugins({
       key: emojiSuggestKey,
-      getScrollContainerDOM,
       emojis: emojisArray,
+      tooltipRenderOpts: {
+        getScrollContainer,
+      },
     }),
     ...corePlugins({
       heading: { levels: config.headingLevels },

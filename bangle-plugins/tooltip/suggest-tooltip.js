@@ -8,7 +8,6 @@ import {
 } from 'bangle-core/utils/pm-utils';
 import { Plugin, PluginKey, isChromeWithSelectionBug } from 'bangle-core';
 
-import { createTooltipDOM } from './create-tooltip-dom';
 import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';
 
@@ -32,9 +31,7 @@ export const defaultKeys = {
   hide: 'Escape',
 };
 
-const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-export function specFactory({ markName, trigger, markColor = '#005893' }) {
+function specFactory({ markName, trigger, markColor = '#005893' }) {
   return {
     name: markName,
     type: 'mark',
@@ -67,25 +64,12 @@ export function specFactory({ markName, trigger, markColor = '#005893' }) {
   };
 }
 
-export function pluginsFactory({
+function pluginsFactory({
   key = new PluginKey('suggest_tooltip'),
   markName,
   trigger,
-  tooltipDOM,
-  tooltipContent: tooltipContentDOM,
-  placement = 'bottom-start',
+  tooltipRenderOpts = {},
   keybindings = defaultKeys,
-  fallbackPlacements,
-
-  getScrollContainerDOM = (view) => {
-    return view.dom.parentElement;
-  },
-  tooltipOffset = () => {
-    return [0, 0.4 * rem];
-  },
-  onUpdateTooltip = (state, dispatch, view) => {},
-  // No need to call removeSuggestMark on onHideTooltip
-  onHideTooltip = (state, dispatch, view) => {},
   onEnter = (state, dispatch, view) => {
     return removeSuggestMark(key)(state, dispatch, view);
   },
@@ -97,11 +81,6 @@ export function pluginsFactory({
 } = {}) {
   return ({ schema }) => {
     const isActiveCheck = queryIsSuggestTooltipActive(key);
-
-    if (!tooltipDOM) {
-      ({ tooltipContentDOM, tooltipDOM } = createTooltipDOM());
-      tooltipContentDOM.textContent = 'hello world';
-    }
 
     return [
       new Plugin({
@@ -151,25 +130,20 @@ export function pluginsFactory({
         },
       }),
       tooltipPlacement.plugins({
-        pluginName: markName + '__tooltipPlacementKey',
-        tooltipStateKey: key,
-        tooltipDOM,
-        getScrollContainerDOM,
-        getReferenceElement: referenceElement((state) => {
-          const markType = schema.marks[markName];
-          const { selection } = state;
-          return findFirstMarkPosition(
-            markType,
-            state.doc,
-            selection.from - 1,
-            selection.to,
-          );
-        }),
-        placement,
-        onUpdateTooltip: onUpdateTooltip,
-        onHideTooltip: onHideTooltip,
-        tooltipOffset,
-        fallbackPlacements,
+        stateKey: key,
+        renderOpts: {
+          getReferenceElement: referenceElement((state) => {
+            const markType = schema.marks[markName];
+            const { selection } = state;
+            return findFirstMarkPosition(
+              markType,
+              state.doc,
+              selection.from - 1,
+              selection.to,
+            );
+          }),
+          ...tooltipRenderOpts,
+        },
       }),
       triggerInputRule(schema, markName, trigger),
       tooltipController({
@@ -227,7 +201,6 @@ function tooltipController({ key, trigger, markName }) {
       return {
         update: (view, lastState) => {
           const { state } = view;
-
           if (lastState === state || !state.selection.empty) {
             return;
           }

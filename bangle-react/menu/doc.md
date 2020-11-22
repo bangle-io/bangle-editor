@@ -32,7 +32,7 @@ Named parameters:
 
 - **keybindings:** ?Object = defaultKeys
 
-- **getScrollContainerDOM:** ?fn(view: EditorView) -> dom.Node\
+- **getScrollContainer:** ?fn(view: EditorView) -> dom.Node\
   The dom Node which contains the scrollbar. This will be used to prevent the tooltip from overflowing.\
   _default:_ Uses the parent dom Node of the view.
 

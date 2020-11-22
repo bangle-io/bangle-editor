@@ -31,7 +31,7 @@ describe('Link menu', () => {
     expect(menuKey.getState(view.state)).toMatchObject({
       calculateType: expect.any(Function),
       show: false,
-      tooltipContentDOM: expect.any(Object),
+      tooltipContentDOM: expect.any(window.Node),
       type: null,
     });
     expect(container).toMatchSnapshot();
@@ -52,7 +52,7 @@ describe('Link menu', () => {
     expect(menuKey.getState(view.state)).toMatchObject({
       calculateType: expect.any(Function),
       show: false,
-      tooltipContentDOM: expect.any(Object),
+      tooltipContentDOM: expect.any(window.Node),
       type: null,
     });
   });
@@ -72,7 +72,7 @@ describe('Link menu', () => {
     expect(menuKey.getState(view.state)).toMatchObject({
       calculateType: expect.any(Function),
       show: false,
-      tooltipContentDOM: expect.any(Object),
+      tooltipContentDOM: expect.any(window.Node),
       type: null,
     });
 
@@ -85,7 +85,7 @@ describe('Link menu', () => {
     expect(menuKey.getState(view.state)).toMatchObject({
       calculateType: expect.any(Function),
       show: true,
-      tooltipContentDOM: expect.any(Object),
+      tooltipContentDOM: expect.any(window.Node),
       type: 'floatingLinkMenu',
     });
   });

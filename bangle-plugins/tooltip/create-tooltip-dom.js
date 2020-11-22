@@ -1,33 +1,36 @@
 import { DOMSerializer } from 'prosemirror-model';
 
-export function createTooltipDOM(arrow = false) {
-  const {
-    dom: tooltipDOM,
-    contentDOM: tooltipContentDOM,
-  } = DOMSerializer.renderSpec(
-    window.document,
+export function createTooltipDOM(
+  tooltipDOMSpec = [
+    'div',
+    {
+      class: 'bangle-tooltip',
+      role: 'tooltip',
+    },
     [
       'div',
       {
-        class: 'bangle-tooltip',
-        role: 'tooltip',
+        class: 'bangle-tooltip-content',
       },
-      [
-        'div',
-        {
-          class: 'bangle-tooltip-content',
-        },
-        0,
-      ],
-      arrow && [
-        'div',
-        {
-          'class': 'bangle-tooltip-arrow',
-          'data-popper-arrow': '',
-        },
-      ],
-    ].filter(Boolean),
+      0,
+    ],
+  ],
+  arrow,
+) {
+  const { dom, contentDOM } = DOMSerializer.renderSpec(
+    window.document,
+    tooltipDOMSpec,
   );
 
-  return { tooltipDOM, tooltipContentDOM };
+  if (arrow) {
+    const arrowElement = DOMSerializer.renderSpec(window.document, [
+      'div',
+      {
+        'class': 'bangle-tooltip-arrow',
+        'data-popper-arrow': '',
+      },
+    ]);
+    dom.appendChild(arrowElement);
+  }
+  return { dom, contentDOM };
 }

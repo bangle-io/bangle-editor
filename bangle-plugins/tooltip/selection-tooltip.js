@@ -19,40 +19,37 @@ function selectionTooltip({
   calculateType = (state, prevType) => {
     return state.selection.empty ? null : 'default';
   },
-  getScrollContainerDOM = (view) => {
-    return view.dom.parentElement;
-  },
-  tooltipDOM,
-  tooltipContentDOM,
-  tooltipArrow,
-  tooltipOffset,
-  hideOnBlur = false,
+  tooltipRenderOpts = {},
 }) {
-  if (!tooltipDOM) {
-    ({ tooltipDOM, tooltipContentDOM } = createTooltipDOM(tooltipArrow));
-  }
-
-  return [
-    selectionTooltipState({
-      key: key,
-      tooltipDOM,
-      tooltipContentDOM,
-      calculateType,
-    }),
-    selectionTooltipController({ tooltipStateKey: key, hideOnBlur }),
-    tooltipPlacement.plugins({
-      // TODO get rid of this pluginName
-      pluginName: 'selectionTooltipPlacement',
-      tooltipDOM,
-      tooltipStateKey: key,
-      tooltipOffset,
-      getReferenceElement: getSelectionReferenceElement,
-      getScrollContainerDOM,
-    }),
-  ];
+  return () => {
+    // - We are creating tooltipDOMSpec inside the callback because if we create outside
+    //   it might get reused by multiple view instances if the caller of
+    //   selectionTooltip is not careful and does not make a new selectionTooltip() call.
+    //   Though this doesn't mitigate the risk of caller using real
+    //   dom instances in the `tooltipRenderOpts.tooltipDOMSpec`.
+    // - We are converting to DOM elements so that their instances
+    //   can be shared across plugins.
+    const tooltipDOMSpec = createTooltipDOM(tooltipRenderOpts.tooltipDOMSpec);
+    return [
+      selectionTooltipState({
+        key: key,
+        tooltipDOMSpec,
+        calculateType,
+      }),
+      selectionTooltipController({ stateKey: key }),
+      tooltipPlacement.plugins({
+        stateKey: key,
+        renderOpts: {
+          getReferenceElement: getSelectionReferenceElement,
+          ...tooltipRenderOpts,
+          tooltipDOMSpec,
+        },
+      }),
+    ];
+  };
 }
 
-function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
+function selectionTooltipState({ key, calculateType, tooltipDOMSpec }) {
   return new Plugin({
     key,
     state: {
@@ -60,7 +57,7 @@ function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
         const type = calculateType(state, null);
         return {
           type,
-          tooltipContentDOM,
+          tooltipContentDOM: tooltipDOMSpec.contentDOM,
           // For tooltipPlacement plugin
           show: typeof type === 'string',
           // helpers
@@ -89,32 +86,18 @@ function selectionTooltipState({ key, calculateType, tooltipContentDOM }) {
   });
 }
 
-function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
+function selectionTooltipController({ stateKey }) {
   let mouseDown = false;
   return new Plugin({
     props: {
       handleDOMEvents: {
-        blur(view, event) {
-          if (hideOnBlur) {
-            hideSelectionTooltip(tooltipStateKey)(
-              view.state,
-              view.dispatch,
-              view,
-            );
-          }
-          return false;
-        },
         mousedown(view, event) {
           mouseDown = true;
           return false;
         },
         mouseup(view, event) {
           mouseDown = false;
-          _syncTooltipOnUpdate(tooltipStateKey)(
-            view.state,
-            view.dispatch,
-            view,
-          );
+          _syncTooltipOnUpdate(stateKey)(view.state, view.dispatch, view);
           return false;
         },
       },
@@ -134,7 +117,7 @@ function selectionTooltipController({ tooltipStateKey, hideOnBlur }) {
             return;
           }
 
-          return _syncTooltipOnUpdate(tooltipStateKey)(
+          return _syncTooltipOnUpdate(stateKey)(
             view.state,
             view.dispatch,
             view,
