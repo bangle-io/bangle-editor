@@ -7,7 +7,10 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleBold,
-  isBoldActiveInSelection,
+  queryIsSelectionInBold,
+};
+export const defaultKeys = {
+  toggleBold: 'Mod-b',
 };
 
 const name = 'bold';
@@ -42,34 +45,33 @@ function specFactory(opts = {}) {
         expelEnclosingWhitespace: true,
       },
       parseMarkdown: {
-        strong: { mark: 'bold' },
+        strong: { mark: name },
       },
     },
   };
 }
 
-function pluginsFactory({
-  keybindings = {
-    toggleBold: 'Mod-b',
-  },
-} = {}) {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
       markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type),
       markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type),
-      keymap({
-        [keybindings.toggleBold]: toggleMark(type),
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.toggleBold]: toggleBold(),
+        }),
     ];
   };
 }
 
-export function toggleBold(state, dispatch, view) {
-  return toggleMark(state.schema.marks.bold)(state, dispatch, view);
+export function toggleBold() {
+  return (state, dispatch, view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+  };
 }
 
-export function isBoldActiveInSelection(state) {
-  return isMarkActiveInSelection(state.schema.marks.bold)(state);
+export function queryIsSelectionInBold() {
+  return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
 }

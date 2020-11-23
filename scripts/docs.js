@@ -1,8 +1,14 @@
 const snippet = {
-  links: {
+  link: {
+    Component: '',
     SpecFactory: '',
     PluginsFactory: '',
     Keybindings: '',
+    Command: '',
+    CommandsObject: '',
+    QueryCommand: {
+      boolean: '',
+    },
   },
   text: {
     emptyCut: '',
