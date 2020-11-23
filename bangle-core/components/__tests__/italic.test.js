@@ -63,12 +63,6 @@ describe('Basic', () => {
 
     setSelectionNear(view, 9);
 
-    expect(
-      italic.commands.queryIsSelectionInItalic()(
-        view.state,
-        view.dispatch,
-        view,
-      ),
-    ).toBe(true);
+    expect(italic.commands.queryIsSelectionInItalic()(view.state)).toBe(true);
   });
 });

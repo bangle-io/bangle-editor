@@ -94,7 +94,7 @@ toggleFloatingLinkMenu(menuKey)(state, dispatch, view)
   Return the type of floating menu to render based on the type.\
   _default:_ Returns `<Menu />` for the type `floatingMenu` , `<LinkMenu />` for `floatingLinkMenu` and `null` for anything else.
 
-```
+```js
 const renderMenuType = ({ type, menuKey }) => {
     if (type === 'fancyMenu') {
       return <FancyMenu menuKey={menuKey} />;

@@ -49,9 +49,10 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
       markPasteRule(/\*([^*]+)\*/g, type),
       markInputRule(/(?:^|[^_])(_([^_]+)_)$/, type),
       markInputRule(/(?:^|[^*])(\*([^*]+)\*)$/, type),
-      keymap({
-        [keybindings.toggleItalic]: toggleMark(type),
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.toggleItalic]: toggleMark(type),
+        }),
     ];
   };
 }
