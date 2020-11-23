@@ -5,7 +5,7 @@ import {
 } from 'bangle-core/components/italic';
 import { Icon } from './Icon';
 import {
-  isBoldActiveInSelection,
+  queryIsSelectionInBold,
   toggleBold,
 } from 'bangle-core/components/bold';
 import {
@@ -34,7 +34,7 @@ export const boldItem = () => ({
   type: 'command',
   name: 'Bold',
   command: (state, dispatch, view) => {
-    if (toggleBold(state, dispatch, view)) {
+    if (toggleBold()(state, dispatch, view)) {
       if (dispatch) {
         view.focus();
       }
@@ -43,7 +43,7 @@ export const boldItem = () => ({
     return false;
   },
   component: BoldIcon,
-  isActive: isBoldActiveInSelection,
+  isActive: queryIsSelectionInBold,
 });
 
 export const italicItem = () => ({
