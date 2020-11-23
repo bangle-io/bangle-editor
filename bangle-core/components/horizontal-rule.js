@@ -1,10 +1,14 @@
+import { safeInsert } from 'bangle-core/utils/pm-utils';
 import { InputRule } from 'prosemirror-inputrules';
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
 
 const name = 'horizontal_rule';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -18,22 +22,26 @@ export const spec = (opts = {}) => {
         state.write(node.attrs.markup || '---');
         state.closeBlock(node);
       },
-      parseMarkdown: { hr: { node: 'horizontal_rule' } },
+      parseMarkdown: { hr: { node: name } },
     },
   };
-};
+}
 
-export const plugins = ({ keybindings = {} } = {}) => {
+function pluginsFactory({} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
       new InputRule(/^(?:---|___\s|\*\*\*\s)$/, (state, match, start, end) => {
         if (!match[0]) {
-          return false;
+          return null;
         }
-        return state.tr.replaceWith(start - 1, end, type.create({}));
+        let tr = state.tr.replaceWith(start - 1, end, type.createChecked());
+        return safeInsert(
+          state.schema.nodes.paragraph.createChecked(),
+          tr.selection.end,
+        )(tr);
       }),
     ];
   };
-};
+}
