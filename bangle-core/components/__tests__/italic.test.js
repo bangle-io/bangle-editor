@@ -11,31 +11,31 @@ import {
 
 import { typeText } from 'bangle-core/test-helpers/index';
 import { setSelectionNear } from 'bangle-core/test-helpers/selection-helpers';
-import { bold } from '../index';
+import { italic } from '../index';
 
-const keybindings = bold.defaultKeys;
+const keybindings = italic.defaultKeys;
 
 describe('Basic', () => {
   const testEditor = renderTestEditor();
 
-  test('toggles Bold correctly', async () => {
+  test('toggles Italic correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
       </doc>,
     );
 
-    sendKeyToPm(view, keybindings.toggleBold);
+    sendKeyToPm(view, keybindings.toggleItalic);
 
     expect(view.state.doc).toEqualDocument(
       <doc>
         <para>
-          hello <bold>world</bold>
+          hello <italic>world</italic>
         </para>
       </doc>,
     );
 
-    sendKeyToPm(view, keybindings.toggleBold);
+    sendKeyToPm(view, keybindings.toggleItalic);
 
     expect(view.state.doc).toEqualDocument(
       <doc>
@@ -44,19 +44,19 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInBold works correctly', async () => {
+  test('queryIsSelectionInItalic works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
       </doc>,
     );
 
-    bold.commands.toggleBold()(view.state, view.dispatch, view);
+    italic.commands.toggleItalic()(view.state, view.dispatch, view);
 
     expect(view.state.doc).toEqualDocument(
       <doc>
         <para>
-          hello <bold>world</bold>
+          hello <italic>world</italic>
         </para>
       </doc>,
     );
@@ -64,7 +64,11 @@ describe('Basic', () => {
     setSelectionNear(view, 9);
 
     expect(
-      bold.commands.queryIsSelectionInBold()(view.state, view.dispatch, view),
+      italic.commands.queryIsSelectionInItalic()(
+        view.state,
+        view.dispatch,
+        view,
+      ),
     ).toBe(true);
   });
 });

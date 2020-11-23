@@ -2,6 +2,8 @@ const snippet = {
   link: {
     Component: '',
     SpecFactory: '',
+    MarkSpecFactory: '',
+    NodeSpecFactory: '',
     PluginsFactory: '',
     Keybindings: '',
     Command: '',
@@ -16,5 +18,6 @@ const snippet = {
     insertEmptyParaAbove: '',
     insertEmptyParaBelow: '',
     pluginsParamKeybindings: '',
+    Nodes: '',
   },
 };

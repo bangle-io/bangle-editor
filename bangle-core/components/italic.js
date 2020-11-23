@@ -3,11 +3,22 @@ import { toggleMark } from 'prosemirror-commands';
 import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleItalic,
+  queryIsSelectionInItalic,
+};
+
+export const defaultKeys = {
+  toggleItalic: 'Mod-i',
+};
+
 const name = 'italic';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'mark',
     name,
@@ -23,17 +34,13 @@ export const spec = (opts = {}) => {
         expelEnclosingWhitespace: true,
       },
       parseMarkdown: {
-        em: { mark: 'italic' },
+        em: { mark: name },
       },
     },
   };
-};
+}
 
-export const plugins = ({
-  keybindings = {
-    toggleItalic: 'Mod-i',
-  },
-} = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -47,12 +54,16 @@ export const plugins = ({
       }),
     ];
   };
-};
+}
 
-export const toggleItalic = (state, dispatch, view) => {
-  return toggleMark(state.schema.marks.italic)(state, dispatch, view);
-};
+export function toggleItalic() {
+  return (state, dispatch, view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+  };
+}
 
-export const isItalicActiveInSelection = (state) => {
-  return isMarkActiveInSelection(state.schema.marks.italic)(state);
-};
+export function queryIsSelectionInItalic() {
+  return (state) => {
+    return isMarkActiveInSelection(state.schema.marks[name])(state);
+  };
+}
