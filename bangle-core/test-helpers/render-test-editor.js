@@ -4,12 +4,9 @@
 
 import { TextSelection } from 'prosemirror-state';
 import { getDocLabels } from './schema-builders';
-import { corePlugins } from '../components/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { BangleEditor } from 'bangle-core/editor';
-
-const defaultSpecSheet = new SpecSheet();
-const defaultPlugins = corePlugins();
+import { defaultPlugins, defaultSpecs } from './default-components';
 
 const mountedEditors = new Set();
 const rootElement = document.body;
@@ -22,13 +19,27 @@ if (typeof afterEach === 'function') {
   });
 }
 
+/**
+ *
+ * @param {*} param0
+ * @param {SpecSheet | undefined | Object} param0.specSheet pass an object to set properties to all default
+ *                        specs, for example calling `renderTestEditor({ specSheet: {heading: {level : 4}}}))`
+ *                        will use all the defaultSpecs with heading spec getting the options `{level:4}`.
+ * @param {Array<PluginFactory> | undefined | Object} param0.specSheet passing an object behaves similar to specSheet param.
+ * @param {*} testId
+ */
 export function renderTestEditor(
-  { specSheet = defaultSpecSheet, plugins = defaultPlugins, ...opts } = {},
+  { specSheet, plugins, ...opts } = {},
   testId = 'test-editor',
 ) {
   if (!(specSheet instanceof SpecSheet)) {
-    throw new Error('Need to be specsheet');
+    specSheet = new SpecSheet(defaultSpecs(specSheet));
   }
+
+  if (!plugins || !Array.isArray(plugins)) {
+    plugins = defaultPlugins(plugins);
+  }
+
   const container = rootElement.appendChild(document.createElement('div'));
   container.setAttribute('data-testid', testId);
 
