@@ -174,3 +174,45 @@ const plugins = [
   strike.plugins(),
 ];
 ```
+
+# underline: {link.Component}
+
+Allows text in your editor to be marked as underline.
+
+### spec(): {link.MarkSpecFactory}
+
+Returns a mark spec, read more {text.Marks}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+### defaultKeys: {link.Keybindings}
+
+- **toggleUnderline** = `Mod-u`: toggle an underline mark
+
+### commands: {link.CommandsObject}
+
+- **toggleUnderline**(): {link.Command}\
+  Toggles underline mark.
+
+- **queryIsSelectionInUnderline**(): {link.QueryCommand.boolean}\
+  Check if the selection is inside an underline mark or not.
+
+## **Usage**
+
+```js
+import { underline } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  underline.spec(),
+];
+
+const plugins = [
+  // other plugins
+  underline.plugins(),
+];
+```

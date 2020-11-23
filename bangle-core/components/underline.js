@@ -1,12 +1,23 @@
 import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleUnderline,
+  queryIsSelectionInUnderline,
+};
+export const defaultKeys = {
+  toggleUnderline: 'Mod-u',
+};
 
 const name = 'underline';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'mark',
     name,
@@ -17,7 +28,7 @@ export const spec = (opts = {}) => {
         },
         {
           style: 'text-decoration',
-          getAttrs: (value) => value === 'underline',
+          getAttrs: (value) => value === name,
         },
       ],
       toDOM: () => ['u', 0],
@@ -34,13 +45,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({
-  keybindings = {
-    toggleUnderline: 'Mod-u',
-  },
-} = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -52,4 +59,16 @@ export const plugins = ({
       }),
     ];
   };
-};
+}
+
+export function toggleUnderline() {
+  return (state, dispatch, view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+  };
+}
+
+export function queryIsSelectionInUnderline() {
+  return (state) => {
+    return isMarkActiveInSelection(state.schema.marks[name])(state);
+  };
+}

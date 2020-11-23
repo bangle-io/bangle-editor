@@ -9,7 +9,6 @@ export const commands = {
   toggleItalic,
   queryIsSelectionInItalic,
 };
-
 export const defaultKeys = {
   toggleItalic: 'Mod-i',
 };
