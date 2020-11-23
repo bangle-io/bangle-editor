@@ -2,7 +2,9 @@
 
 Enables blockquote in your editor.
 
-### spec(): {link.SpecFactory}
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
 
 ### plugins({ ... }): {link.PluginsFactory}
 
@@ -49,9 +51,11 @@ const plugins = [
 
 # bold: {link.Component}
 
-Allows text in your editor to marked as bold.
+Allows text in your editor to be marked as bold.
 
-### spec(): {link.SpecFactory}
+### spec(): {link.MarkSpecFactory}
+
+Returns a mark spec, read more {text.Marks}.
 
 ### plugins({ ... }): {link.PluginsFactory}
 
@@ -84,5 +88,47 @@ const specFactory = [
 const plugins = [
   // other plugins
   bold.plugins(),
+];
+```
+
+# italic: {link.Component}
+
+Allows text in your editor to be marked as italic.
+
+### spec(): {link.MarkSpecFactory}
+
+Returns a mark spec, read more {text.Marks}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+### defaultKeys: {link.Keybindings}
+
+- toggleItalic: `Mod-b` toggle an italic mark
+
+### commands: {link.CommandsObject}
+
+- **toggleItalic**(): {link.Command}\
+  Toggles italic mark.
+
+- **queryIsSelectionInItalic**(): {link.QueryCommand.boolean}\
+  Check if the selection is inside an italic mark or not.
+
+## **Usage**
+
+```js
+import { italic } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  italic.spec(),
+];
+
+const plugins = [
+  // other plugins
+  italic.plugins(),
 ];
 ```

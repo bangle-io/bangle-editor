@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  isItalicActiveInSelection,
+  queryIsSelectionInItalic,
   toggleItalic,
 } from 'bangle-core/components/italic';
 import { Icon } from './Icon';
@@ -43,14 +43,14 @@ export const boldItem = () => ({
     return false;
   },
   component: BoldIcon,
-  isActive: queryIsSelectionInBold,
+  isActive: queryIsSelectionInBold(),
 });
 
 export const italicItem = () => ({
   type: 'command',
   name: 'Italic',
   command: (state, dispatch, view) => {
-    if (toggleItalic(state, dispatch, view)) {
+    if (toggleItalic()(state, dispatch, view)) {
       if (dispatch) {
         view.focus();
       }
@@ -59,7 +59,7 @@ export const italicItem = () => ({
     return false;
   },
   component: ItalicIcon,
-  isActive: isItalicActiveInSelection,
+  isActive: queryIsSelectionInItalic(),
 });
 
 export const codeItem = () => ({
