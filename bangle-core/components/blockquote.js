@@ -1,27 +1,27 @@
 import { wrappingInputRule } from 'prosemirror-inputrules';
 import { wrapIn } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
 
 import { moveNode } from './list-item/commands';
 import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
 import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
-import { keymap } from 'prosemirror-keymap';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
-export const commands = {};
-
+export const commands = {
+  queryIsSelectionInBlockQuote,
+};
 export const defaultKeys = {
   wrapIn: 'Ctrl-ArrowRight',
   moveDown: 'Alt-ArrowDown',
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyAbove: 'Mod-Shift-Enter',
-  insertEmptyBelow: 'Mod-Enter',
+  insertEmptyParaAbove: 'Mod-Shift-Enter',
+  insertEmptyParaBelow: 'Mod-Enter',
 };
 
 const name = 'blockquote';
-
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {
@@ -52,32 +52,39 @@ function specFactory(opts = {}) {
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const isInBlockquote = (state) =>
-      Boolean(findParentNodeOfType(type)(state.selection));
+    const isInBlockquote = queryIsSelectionInBlockQuote();
     return [
       wrappingInputRule(/^\s*>\s$/, type),
-      keymap({
-        [keybindings.wrapIn]: filter(
-          (state) => !isInBlockquote(state),
-          (state, dispatch, view) => {
-            return wrapIn(type)(state, dispatch, view);
-          },
-        ),
-        [keybindings.moveUp]: moveNode(type, 'UP'),
-        [keybindings.moveDown]: moveNode(type, 'DOWN'),
+      keybindings &&
+        keymap({
+          [keybindings.wrapIn]: filter(
+            (state) => !isInBlockquote(state),
+            (state, dispatch, view) => {
+              return wrapIn(type)(state, dispatch, view);
+            },
+          ),
+          [keybindings.moveUp]: moveNode(type, 'UP'),
+          [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-        [keybindings.emptyCopy]: copyEmptyCommand(type),
-        [keybindings.emptyCut]: cutEmptyCommand(type),
+          [keybindings.emptyCopy]: copyEmptyCommand(type),
+          [keybindings.emptyCut]: cutEmptyCommand(type),
 
-        [keybindings.insertEmptyAbove]: filter(
-          isInBlockquote,
-          insertEmpty(schema.nodes.paragraph, 'above', true),
-        ),
-        [keybindings.insertEmptyBelow]: filter(
-          isInBlockquote,
-          insertEmpty(schema.nodes.paragraph, 'below', true),
-        ),
-      }),
+          [keybindings.insertEmptyParaAbove]: filter(
+            isInBlockquote,
+            insertEmpty(schema.nodes.paragraph, 'above', true),
+          ),
+          [keybindings.insertEmptyParaBelow]: filter(
+            isInBlockquote,
+            insertEmpty(schema.nodes.paragraph, 'below', true),
+          ),
+        }),
     ];
+  };
+}
+
+export function queryIsSelectionInBlockQuote() {
+  return (state) => {
+    const type = getTypeFromSchema(state.schema);
+    return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }

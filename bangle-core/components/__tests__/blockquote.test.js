@@ -11,11 +11,12 @@ import {
 
 import { typeText } from 'bangle-core/test-helpers/index';
 import { blockquote } from '../index';
-const testEditor = renderTestEditor();
 
 const keybindings = blockquote.defaultKeys;
 
 describe('Markdown shorthand works', () => {
+  const testEditor = renderTestEditor();
+
   it('pressing > on empty paragraph works', () => {
     const { view } = testEditor(
       <doc>
@@ -75,6 +76,73 @@ describe('Markdown shorthand works', () => {
 });
 
 describe('Keyboard shortcut', () => {
+  const testEditor = renderTestEditor();
+
+  test('Empty cut', async () => {
+    document.execCommand = jest.fn(() => {});
+    const { view } = await testEditor(
+      <doc>
+        <para>hello world</para>
+        <blockquote>
+          <para>foobar[]</para>
+        </blockquote>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keybindings.emptyCut);
+
+    expect(document.execCommand).toBeCalledTimes(1);
+    expect(document.execCommand).toBeCalledWith('cut');
+    expect(view.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 13,
+        "type": "node",
+      }
+    `);
+    // The data is the same  because we just set the selection
+    // and expect the browser to do the actual cutting.
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>hello world</para>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+      </doc>,
+    );
+  });
+
+  test('Empty copy', async () => {
+    document.execCommand = jest.fn(() => {});
+    const { view } = await testEditor(
+      <doc>
+        <para>hello world</para>
+        <blockquote>
+          <para>foobar[]</para>
+        </blockquote>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keybindings.emptyCopy);
+
+    expect(document.execCommand).toBeCalledTimes(1);
+    expect(document.execCommand).toBeCalledWith('copy');
+    expect(view.state.selection).toMatchInlineSnapshot(`
+      Object {
+        "anchor": 21,
+        "head": 21,
+        "type": "text",
+      }
+    `);
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <para>hello world</para>
+        <blockquote>
+          <para>foobar</para>
+        </blockquote>
+      </doc>,
+    );
+  });
+
   it('works on empty para', () => {
     const { view } = testEditor(
       <doc>
@@ -82,7 +150,7 @@ describe('Keyboard shortcut', () => {
       </doc>,
     );
 
-    sendKeyToPm(view, 'Ctrl-ArrowRight');
+    sendKeyToPm(view, keybindings.wrapIn);
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
@@ -100,7 +168,7 @@ describe('Keyboard shortcut', () => {
       </doc>,
     );
 
-    sendKeyToPm(view, 'Ctrl-ArrowRight');
+    sendKeyToPm(view, keybindings.wrapIn);
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
@@ -113,6 +181,8 @@ describe('Keyboard shortcut', () => {
 });
 
 describe('Insert empty paragraph above and below', () => {
+  const testEditor = renderTestEditor();
+
   test.each([
     [
       <doc>
@@ -230,7 +300,7 @@ describe('Insert empty paragraph above and below', () => {
   ])('Case %# insert empty paragraph above', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyAbove);
+    sendKeyToPm(view, keybindings.insertEmptyParaAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -352,8 +422,34 @@ describe('Insert empty paragraph above and below', () => {
   ])('Case %# insert empty paragraph below', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyBelow);
+    sendKeyToPm(view, keybindings.insertEmptyParaBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
+  });
+});
+
+describe('Opts', () => {
+  test('Setting keybindings to null works', async () => {
+    const testEditor = renderTestEditor({
+      plugins: { blockquote: { keybindings: null } },
+    });
+
+    const { view } = testEditor(
+      <doc>
+        <blockquote>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keybindings.insertEmptyParaAbove);
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <blockquote>
+          <para>[]</para>
+        </blockquote>
+      </doc>,
+    );
   });
 });
