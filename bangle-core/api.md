@@ -51,7 +51,7 @@ const plugins = [
 
 # bold: {link.Component}
 
-Allows text in your editor to be marked as bold.
+Allows text in your editor to be marked as bold. Comes with the markdown shortcut `**text**` to enable bold mark.
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -91,9 +91,39 @@ const plugins = [
 ];
 ```
 
+# horizontalRule: {link.Component}
+
+Enables a horizontal (`<hr />`) rule component in your editor. Type `---` and `___` {link.InputRules} to insert a horizontal rule followed by an empty paragraph.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+## **Usage**
+
+```js
+import { horizontalRule } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  horizontalRule.spec(),
+];
+
+const plugins = [
+  // other plugins
+  horizontalRule.plugins(),
+];
+```
+
 # italic: {link.Component}
 
-Allows text in your editor to be marked as italic.
+Allows text in your editor to be marked as italic. Comes with the markdown shortcut `_text_` to enable italic mark.
 
 ### spec(): {link.MarkSpecFactory}
 

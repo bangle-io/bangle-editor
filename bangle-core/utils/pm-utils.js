@@ -1,6 +1,7 @@
 import {
   findParentNode,
-  safeInsert,
+  safeInsert as _safeInsert,
+  removeSelectedNode as _removeSelectedNode,
   findSelectedNodeOfType,
   findParentNodeOfType as _findParentNodeOfType,
 } from 'prosemirror-utils';
@@ -8,7 +9,13 @@ import { Fragment, Slice } from 'prosemirror-model';
 import { GapCursorSelection } from '../gap-cursor';
 import { Plugin } from 'bangle-core/index';
 
-export { safeInsert, removeSelectedNode } from 'prosemirror-utils';
+export function safeInsert(...args) {
+  return _safeInsert(...args);
+}
+
+export function removeSelectedNode(...args) {
+  return _removeSelectedNode(...args);
+}
 
 export const findParentNodeOfType = _findParentNodeOfType;
 

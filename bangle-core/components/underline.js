@@ -54,9 +54,10 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
     return [
       markInputRule(/~([^~]+)~$/, type),
       markPasteRule(/~([^~]+)~/g, type),
-      keymap({
-        [keybindings.toggleUnderline]: toggleMark(type),
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.toggleUnderline]: toggleMark(type),
+        }),
     ];
   };
 }
