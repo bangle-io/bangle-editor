@@ -11,31 +11,31 @@ import {
 
 import { typeText } from 'bangle-core/test-helpers/index';
 import { setSelectionNear } from 'bangle-core/test-helpers/selection-helpers';
-import { bold } from '../index';
+import { strike } from '../index';
 
-const keybindings = bold.defaultKeys;
+const keybindings = strike.defaultKeys;
 
 describe('Basic', () => {
   const testEditor = renderTestEditor();
 
-  test('toggles Bold correctly', async () => {
+  test('toggles Strike correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
       </doc>,
     );
 
-    sendKeyToPm(view, keybindings.toggleBold);
+    sendKeyToPm(view, keybindings.toggleStrike);
 
     expect(view.state.doc).toEqualDocument(
       <doc>
         <para>
-          hello <bold>world</bold>
+          hello <strike>world</strike>
         </para>
       </doc>,
     );
 
-    sendKeyToPm(view, keybindings.toggleBold);
+    sendKeyToPm(view, keybindings.toggleStrike);
 
     expect(view.state.doc).toEqualDocument(
       <doc>
@@ -44,25 +44,25 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInBold works correctly', async () => {
+  test('queryIsSelectionInStrike works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
       </doc>,
     );
 
-    bold.commands.toggleBold()(view.state, view.dispatch, view);
+    strike.commands.toggleStrike()(view.state, view.dispatch, view);
 
     expect(view.state.doc).toEqualDocument(
       <doc>
         <para>
-          hello <bold>world</bold>
+          hello <strike>world</strike>
         </para>
       </doc>,
     );
 
     setSelectionNear(view, 9);
 
-    expect(bold.commands.queryIsSelectionInBold()(view.state)).toBe(true);
+    expect(strike.commands.queryIsSelectionInStrike()(view.state)).toBe(true);
   });
 });

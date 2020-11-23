@@ -1,12 +1,23 @@
 import { markInputRule, markPasteRule } from 'tiptap-commands';
 import { toggleMark } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { isMarkActiveInSelection } from 'bangle-core/utils/pm-utils';
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  toggleStrike,
+  queryIsSelectionInStrike,
+};
+export const defaultKeys = {
+  toggleStrike: 'Mod-d',
+};
 
 const name = 'strike';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'mark',
     name,
@@ -40,22 +51,31 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({
-  keybindings = {
-    toggleStrike: 'Mod-d',
-  },
-} = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
       markPasteRule(/~([^~]+)~/g, type),
       markInputRule(/~([^~]+)~$/, type),
-      keymap({
-        [keybindings.toggleStrike]: toggleMark(type),
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.toggleStrike]: toggleMark(type),
+        }),
     ];
   };
-};
+}
+
+export function toggleStrike() {
+  return (state, dispatch, view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+  };
+}
+
+export function queryIsSelectionInStrike() {
+  return (state) => {
+    return isMarkActiveInSelection(state.schema.marks[name])(state);
+  };
+}
