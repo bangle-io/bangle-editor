@@ -51,6 +51,16 @@ hr {
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
+.bangle-editor p > code {
+  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+  padding: 0.2em 0.4em;
+  margin: 0 0.1em;
+  font-size: 85%;
+  background-color: rgba(29, 30, 35, 0.06);
+  border-radius: 6px;
+}
+
 .bangle-editor li {
   position: relative;
 }
