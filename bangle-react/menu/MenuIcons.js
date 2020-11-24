@@ -9,7 +9,7 @@ import {
   toggleBold,
 } from 'bangle-core/components/bold';
 import {
-  isCodeActiveInSelection,
+  queryIsSelectionInCode,
   toggleCode,
 } from 'bangle-core/components/code';
 import {
@@ -66,7 +66,7 @@ export const codeItem = () => ({
   type: 'command',
   name: 'Code',
   command: (state, dispatch, view) => {
-    if (toggleCode(state, dispatch, view)) {
+    if (toggleCode()(state, dispatch, view)) {
       if (dispatch) {
         view.focus();
       }
@@ -75,7 +75,7 @@ export const codeItem = () => ({
     return false;
   },
   component: CodeIcon,
-  isActive: isCodeActiveInSelection,
+  isActive: queryIsSelectionInCode(),
 });
 
 export const bulletListItem = () => ({

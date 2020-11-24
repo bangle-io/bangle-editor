@@ -47,10 +47,6 @@
   @apply font-mono text-gray-700 font-light text-sm;
 }
 
-.bangle-editor p > code {
-  @apply font-mono text-gray-700 font-light bg-gray-200 px-2 py-1 rounded;
-}
-
 .bangle-editor hr {
   border-top: 1px solid var(--font-color);
 }

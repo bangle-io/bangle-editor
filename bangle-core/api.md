@@ -91,6 +91,51 @@ const plugins = [
 ];
 ```
 
+# code: {link.Component}
+
+Allows text in your editor to be marked as code. Comes with the markdown shortcut `` `text` `` to enable code mark.
+
+### spec(): {link.MarkSpecFactory}
+
+Returns a mark spec, read more {text.Marks}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **escapeAtEdge:** ?Boolean = true\
+  Allows graceful escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
+
+### defaultKeys: {link.Keybindings}
+
+- **toggleCode** = `Mod-b`: toggle code mark
+
+### commands: {link.CommandsObject}
+
+- **toggleCode**(): {link.Command}\
+  Toggles code mark.
+
+- **queryIsSelectionInCode**(): {link.QueryCommand.boolean}\
+  Check if the selection is inside a code mark or not.
+
+## **Usage**
+
+```js
+import { code } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  code.spec(),
+];
+
+const plugins = [
+  // other plugins
+  code.plugins(),
+];
+```
+
 # horizontalRule: {link.Component}
 
 Enables a horizontal (`<hr />`) rule component in your editor. Type `---` and `___` {link.InputRules} to insert a horizontal rule followed by an empty paragraph.

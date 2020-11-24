@@ -27,7 +27,7 @@ export function isMarkActiveInSelection(type) {
   return (state) => {
     const { from, $from, to, empty } = state.selection;
     if (empty) {
-      return Boolean(type.isInSet(state.storedMarks || $from.marks()));
+      return Boolean(type.isInSet(state.tr.storedMarks || $from.marks()));
     }
     return Boolean(state.doc.rangeHasMark(from, to, type));
   };
