@@ -136,6 +136,56 @@ const plugins = [
 ];
 ```
 
+# codeBlock: {link.Component}
+
+Enables `<code/>` in your editor.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?Boolean = true\
+  Toggle the markdown shortcut ` ``` ` to convert a paragraph into a codeBlock.
+
+### defaultKeys: {link.Keybindings}
+
+- **toCodeBlock**=`Shift-Ctrl-\`: wraps text in codeBlock.
+
+- **moveDown**=`Alt-ArrowDown`: move codeBlock down
+
+- **moveUp**=`Alt-ArrowUp`: move codeBlock up
+
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {text.insertEmptyParaAbove}
+
+- **insertEmptyParaBelow**=`Mod-Enter`: {text.insertEmptyParaBelow}
+
+### commands: {link.CommandsObject}
+
+- **queryIsSelectionInCodeBlock**(): {link.QueryCommand.boolean}\
+  Query if the selection is inside a codeBlock or not.
+
+## **Usage**
+
+```js
+import { codeBlock } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  codeBlock.spec(),
+];
+
+const plugins = [
+  // other plugins
+  codeBlock.plugins(),
+];
+```
+
 # doc: {link.Component}
 
 Top level node needed by the editor to contain every other node. This is a required node and if a node spec with name `doc` is not provided, BangleJS will automatically use this spec.

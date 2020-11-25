@@ -5,13 +5,15 @@ import { moveNode } from './list-item/commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
-export const commands = {};
+export const commands = {
+  queryIsSelectionInCodeBlock,
+};
 export const defaultKeys = {
   toCodeBlock: 'Shift-Ctrl-\\',
   moveDown: 'Alt-ArrowDown',
   moveUp: 'Alt-ArrowUp',
-  insertEmptyAbove: 'Mod-Shift-Enter',
-  insertEmptyBelow: 'Mod-Enter',
+  insertEmptyParaAbove: 'Mod-Shift-Enter',
+  insertEmptyParaBelow: 'Mod-Enter',
 };
 
 const name = 'code_block';
@@ -43,9 +45,9 @@ function specFactory(opts = {}) {
         state.closeBlock(node);
       },
       parseMarkdown: {
-        code_block: { block: 'code_block', noCloseToken: true },
+        code_block: { block: name, noCloseToken: true },
         fence: {
-          block: 'code_block',
+          block: name,
           getAttrs: (tok) => ({ language: tok.info || '' }),
           noCloseToken: true,
         },
@@ -54,29 +56,37 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  markdownShortcut = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const isInCodeBlock = (state) =>
-      findParentNodeOfType(type)(state.selection);
 
     return [
-      textblockTypeInputRule(/^```$/, type),
+      markdownShortcut && textblockTypeInputRule(/^```$/, type),
       keymap({
         [keybindings.toCodeBlock]: setBlockType(type),
 
         [keybindings.moveUp]: moveNode(type, 'UP'),
         [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-        [keybindings.insertEmptyAbove]: filter(
-          isInCodeBlock,
+        [keybindings.insertEmptyParaAbove]: filter(
+          queryIsSelectionInCodeBlock(),
           insertEmpty(schema.nodes.paragraph, 'above', false),
         ),
-        [keybindings.insertEmptyBelow]: filter(
-          isInCodeBlock,
+        [keybindings.insertEmptyParaBelow]: filter(
+          queryIsSelectionInCodeBlock(),
           insertEmpty(schema.nodes.paragraph, 'below', false),
         ),
       }),
     ];
+  };
+}
+
+export function queryIsSelectionInCodeBlock() {
+  return (state) => {
+    const type = getTypeFromSchema(state.schema);
+    return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }
