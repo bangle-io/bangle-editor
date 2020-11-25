@@ -22,8 +22,8 @@ import {
 } from 'bangle-core/components/heading';
 import { filter } from 'bangle-core/utils/pm-utils';
 import {
-  isSelectionInsideLink,
-  setLinkAtSelection,
+  queryIsSelectionInLink,
+  updateLinkAtSelection,
 } from 'bangle-core/components/link';
 import {
   isSelectionInsideBulletList,
@@ -150,7 +150,7 @@ export const linkItem = (showLinkMenu) => ({
   type: 'command',
   name: 'Link',
   command: filter(
-    (state) => setLinkAtSelection('')(state),
+    (state) => updateLinkAtSelection('')(state),
     (state, dispatch, view) => {
       if (dispatch) {
         showLinkMenu();
@@ -159,7 +159,7 @@ export const linkItem = (showLinkMenu) => ({
     },
   ),
   component: LinkIcon,
-  isActive: isSelectionInsideLink,
+  isActive: queryIsSelectionInLink(),
 });
 
 function BoldIcon(props) {

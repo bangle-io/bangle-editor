@@ -20,7 +20,7 @@ import {
   text,
   paragraph,
 } from '../index';
-import { getLinkMarkDetails, setLinkAtSelection } from '../link';
+import { queryLinkMarkAtSelection, updateLinkAtSelection } from '../link';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
 const specSheet = new SpecSheet([
@@ -245,7 +245,7 @@ describe('remove link', () => {
   ])('%# Clears link at selection', async (input, expected) => {
     const { editorView } = testEditor(input);
 
-    setLinkAtSelection()(editorView.state, editorView.dispatch);
+    updateLinkAtSelection()(editorView.state, editorView.dispatch);
 
     expect(editorView.state).toEqualDocAndSelection(expected);
   });
@@ -314,7 +314,7 @@ describe('remove link', () => {
   ])('%# Clears link non empty selection', async (input, expected) => {
     const { editorView } = testEditor(input);
 
-    setLinkAtSelection()(editorView.state, editorView.dispatch);
+    updateLinkAtSelection()(editorView.state, editorView.dispatch);
 
     expect(editorView.state).toEqualDocAndSelection(expected);
   });
@@ -358,7 +358,7 @@ describe('remove link', () => {
     async (input, expected) => {
       const { editorView } = testEditor(input);
 
-      setLinkAtSelection()(editorView.state, editorView.dispatch);
+      updateLinkAtSelection()(editorView.state, editorView.dispatch);
 
       expect(editorView.state).toEqualDocAndSelection(expected);
     },
@@ -381,7 +381,7 @@ describe('remove link', () => {
     // check to make sure it is node selection
     expect(editorView.state.selection.node.type.name).toEqual('list_item');
 
-    setLinkAtSelection()(editorView.state, editorView.dispatch);
+    updateLinkAtSelection()(editorView.state, editorView.dispatch);
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
@@ -437,7 +437,7 @@ describe('Sets link', () => {
   ])('%# sets link at selection', async (input, expected) => {
     const { editorView } = testEditor(input);
 
-    setLinkAtSelection('https://happy.com')(
+    updateLinkAtSelection('https://happy.com')(
       editorView.state,
       editorView.dispatch,
     );
@@ -446,7 +446,7 @@ describe('Sets link', () => {
   });
 });
 
-describe('getLinkMarkDetails', () => {
+describe('queryLinkMarkAtSelection', () => {
   test.each([
     [
       0,
@@ -641,6 +641,6 @@ describe('getLinkMarkDetails', () => {
   ])('%#  %s case', async (testId, input, expected) => {
     const { editorView } = testEditor(input);
 
-    expect(getLinkMarkDetails(editorView.state)).toEqual(expected);
+    expect(queryLinkMarkAtSelection()(editorView.state)).toEqual(expected);
   });
 });

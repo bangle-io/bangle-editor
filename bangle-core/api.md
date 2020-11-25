@@ -432,6 +432,57 @@ const plugins = [
 ];
 ```
 
+# link: {link.Component}
+
+Allows text in your editor to be marked as link.
+
+### spec(): {link.MarkSpecFactory}
+
+Returns a mark spec, read more {text.Marks}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- **openOnClick**: Boolean=`false`\
+  If enabled clicking a link will open the link in new tab. Is disabled, clicking a link will set the cursor on it.
+
+### commands: {link.CommandsObject}
+
+- **createLinkAtSelection**(href : string): {link.Command}\
+  Creates a link mark on the selection text.
+
+- **updateLinkAtSelection**(href : ?string): {link.Command}\
+  Updates a link mark on the selection text with `href`. Set `href` to `undefined` to clear the link mark. If selection is empty, it will update the parent text node.
+
+- **queryLinkMarkAtSelection**(): {link.QueryCommand.customStart}?{href: string, text: string}{link.QueryCommand.customEnd} \
+  Returns the details of the link mark in selection.
+
+- **queryLinkAllowedInRange**(from: number, to: number): {link.QueryCommand.boolean}\
+  Queries if the range allows for creation of link mark.
+
+- **queryIsSelectionInLink**(): {link.QueryCommand.boolean}\
+  Queries if the selection is in a link mark.
+
+- **queryIsSelectionAroundLink**(): {link.QueryCommand.boolean}\
+  Queries if the selection is around a link mark.
+
+## **Usage**
+
+```js
+import { link } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  link.spec(),
+];
+
+const plugins = [
+  // other plugins
+  link.plugins(),
+];
+```
+
 # strike: {link.Component}
 
 Allows text in your editor to be marked as strike.
