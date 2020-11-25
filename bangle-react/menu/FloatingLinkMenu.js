@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import {
-  setLinkAtSelection,
-  getLinkMarkDetails,
+  updateLinkAtSelection,
+  queryLinkMarkAtSelection,
 } from 'bangle-core/components/link';
 import { EditorViewContext } from 'bangle-react/ReactEditor';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
@@ -9,13 +9,13 @@ import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
 export function LinkMenu({ getIsTop = () => true }) {
   const view = useContext(EditorViewContext);
 
-  const result = getLinkMarkDetails(view.state);
+  const result = queryLinkMarkAtSelection()(view.state);
   const originalHref = result?.href || '';
   const [href, setHref] = useState(originalHref);
   const inputRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLinkAtSelection(href)(view.state, view.dispatch);
+    updateLinkAtSelection(href)(view.state, view.dispatch);
     view.focus();
   };
 
@@ -58,7 +58,7 @@ export function LinkMenu({ getIsTop = () => true }) {
       {href === originalHref ? (
         <CloseIcon
           onClick={() => {
-            setLinkAtSelection()(view.state, view.dispatch);
+            updateLinkAtSelection()(view.state, view.dispatch);
             view.focus();
           }}
         />

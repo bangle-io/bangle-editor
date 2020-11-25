@@ -2,6 +2,17 @@ import { Plugin } from 'prosemirror-state';
 import { matchAllPlus } from '../utils/js-utils';
 import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {
+  createLinkAtSelection,
+  updateLinkAtSelection,
+  queryLinkMarkAtSelection,
+  queryLinkAllowedInRange,
+  queryIsSelectionInLink,
+  queryIsSelectionAroundLink,
+};
+
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'components/link') : () => {};
@@ -10,7 +21,7 @@ const name = 'link';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'mark',
     name,
@@ -63,9 +74,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ openOnClick = true, keybindings = {} } = {}) => {
+function pluginsFactory({ openOnClick = false } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -94,7 +105,7 @@ export const plugins = ({ openOnClick = true, keybindings = {} } = {}) => {
         }),
     ];
   };
-};
+}
 
 /**
  * Helpers
@@ -124,7 +135,7 @@ function pasteLinkify(regexp) {
         if (!singleMatch) {
           return false;
         }
-        return createLink(text)(state, dispatch);
+        return createLinkAtSelection(text)(state, dispatch);
       },
     },
   });
@@ -182,7 +193,7 @@ function isTextAtPos(pos) {
 }
 
 function setLink(from, to, href) {
-  href = href?.trim();
+  href = href && href.trim();
   return filter(
     (state) => isTextAtPos(from)(state),
     (state, dispatch) => {
@@ -212,10 +223,10 @@ function setLink(from, to, href) {
  * Sets the selection to href
  * @param {*} href
  */
-export function createLink(href) {
+export function createLinkAtSelection(href) {
   return filter(
     (state) =>
-      canLinkBeCreatedInRange(
+      queryLinkAllowedInRange(
         state.selection.$from.pos,
         state.selection.$to.pos,
       )(state),
@@ -231,13 +242,15 @@ export function createLink(href) {
         tr.addMark(from, to, mark);
       }
 
-      dispatch(tr);
+      if (dispatch) {
+        dispatch(tr);
+      }
       return true;
     },
   );
 }
 
-export function setLinkAtSelection(href) {
+export function updateLinkAtSelection(href) {
   return (state, dispatch) => {
     if (!state.selection.empty) {
       return setLink(
@@ -260,32 +273,34 @@ export function setLinkAtSelection(href) {
   };
 }
 
-export function getLinkMarkDetails(state) {
-  const { $from } = state.selection;
+export function queryLinkMarkAtSelection() {
+  return (state) => {
+    const { $from } = state.selection;
 
-  const pos = $from.pos - $from.textOffset;
+    const pos = $from.pos - $from.textOffset;
 
-  const $pos = state.doc.resolve(pos);
-  const node = state.doc.nodeAt(pos);
-  const { nodeAfter } = $pos;
+    const $pos = state.doc.resolve(pos);
+    const node = state.doc.nodeAt(pos);
+    const { nodeAfter } = $pos;
 
-  if (!nodeAfter) {
-    return;
-  }
+    if (!nodeAfter) {
+      return;
+    }
 
-  const type = state.schema.marks.link;
+    const type = state.schema.marks.link;
 
-  const mark = type.isInSet(nodeAfter.marks || []);
+    const mark = type.isInSet(nodeAfter.marks || []);
 
-  if (mark) {
-    return {
-      href: mark.attrs.href,
-      text: node.textContent,
-    };
-  }
+    if (mark) {
+      return {
+        href: mark.attrs.href,
+        text: node.textContent,
+      };
+    }
+  };
 }
 
-export function canLinkBeCreatedInRange(from, to) {
+export function queryLinkAllowedInRange(from, to) {
   return (state) => {
     const $from = state.doc.resolve(from);
     const $to = state.doc.resolve(to);
@@ -296,17 +311,21 @@ export function canLinkBeCreatedInRange(from, to) {
   };
 }
 
-export const isSelectionInsideLink = (state) =>
-  !!state.doc.type.schema.marks.link.isInSet(state.selection.$from.marks());
+export function queryIsSelectionInLink() {
+  return (state) =>
+    !!state.doc.type.schema.marks.link.isInSet(state.selection.$from.marks());
+}
 
-export const isSelectionAroundLink = (state) => {
-  const { $from, $to } = state.selection;
-  const node = $from.nodeAfter;
+export function queryIsSelectionAroundLink() {
+  return (state) => {
+    const { $from, $to } = state.selection;
+    const node = $from.nodeAfter;
 
-  return (
-    !!node &&
-    $from.textOffset === 0 &&
-    $to.pos - $from.pos === node.nodeSize &&
-    !!state.doc.type.schema.marks.link.isInSet(node.marks)
-  );
-};
+    return (
+      !!node &&
+      $from.textOffset === 0 &&
+      $to.pos - $from.pos === node.nodeSize &&
+      !!state.doc.type.schema.marks.link.isInSet(node.marks)
+    );
+  };
+}

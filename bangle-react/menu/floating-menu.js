@@ -1,6 +1,6 @@
 import {
-  isSelectionAroundLink,
-  isSelectionInsideLink,
+  queryIsSelectionAroundLink,
+  queryIsSelectionInLink,
 } from 'bangle-core/components/link';
 import { filter } from 'bangle-core/utils/pm-utils';
 import { selectionTooltip } from 'bangle-plugins/tooltip/index';
@@ -32,7 +32,10 @@ function floatingMenu({
   keybindings = defaultKeys,
 
   calculateType = (state, prevType) => {
-    if (isSelectionAroundLink(state) || isSelectionInsideLink(state)) {
+    if (
+      queryIsSelectionAroundLink()(state) ||
+      queryIsSelectionInLink()(state)
+    ) {
       return 'floatingLinkMenu';
     }
     if (state.selection.empty) {
