@@ -91,6 +91,35 @@ const plugins = [
 ];
 ```
 
+# bulletList: {link.Component}
+
+Enables bulletList `<ul/>`. **Requires `listItem` to work**
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Enable the markdown shortcut for creating a bullet list. Type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
+
+### defaultKeys: {link.Keybindings}
+
+- **toggle**=`Shift-Ctrl-8`: Executes `toggleBulletList` command.
+
+### commands: {link.CommandsObject}
+
+- **toggleBulletList**(): {link.Command}\
+   Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
+
+- **queryIsSelectionInsideBulletList**(): {link.QueryCommand.boolean}\
+  Query if the selection is inside a bullet list.
+
 # code: {link.Component}
 
 Allows text in your editor to be marked as code. Comes with the markdown shortcut `` `text` `` to enable code mark.

@@ -8,7 +8,10 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleBulletList,
-  isSelectionInsideBulletList,
+  queryIsSelectionInsideBulletList,
+};
+export const defaultKeys = {
+  toggle: 'Shift-Ctrl-8',
 };
 
 const name = 'bullet_list';
@@ -38,29 +41,37 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keybindings = {} } = {}) {
+function pluginsFactory({
+  markdownShortcut = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
-      keymap({
-        'Shift-Ctrl-8': toggleList(type, schema.nodes.list_item),
-      }),
-      wrappingInputRule(/^\s*([-+*])\s$/, type),
+      keybindings &&
+        keymap({
+          [keybindings.toggle]: toggleList(type, schema.nodes.list_item),
+        }),
+      markdownShortcut && wrappingInputRule(/^\s*([-+*])\s$/, type),
     ];
   };
 }
 
-export function toggleBulletList(state, dispatch, view) {
-  return toggleList(
-    state.schema.nodes.bullet_list,
-    state.schema.nodes.list_item,
-  )(state, dispatch, view);
+export function toggleBulletList() {
+  return (state, dispatch, view) => {
+    return toggleList(
+      state.schema.nodes.bullet_list,
+      state.schema.nodes.list_item,
+    )(state, dispatch, view);
+  };
 }
 
-export function isSelectionInsideBulletList(state) {
-  const { schema } = state;
-  return parentHasDirectParentOfType(schema.nodes['list_item'], [
-    schema.nodes['bullet_list'],
-  ])(state);
+export function queryIsSelectionInsideBulletList() {
+  return (state) => {
+    const { schema } = state;
+    return parentHasDirectParentOfType(schema.nodes['list_item'], [
+      schema.nodes['bullet_list'],
+    ])(state);
+  };
 }
