@@ -93,7 +93,7 @@ const plugins = [
 
 # bulletList: {link.Component}
 
-Enables bulletList `<ul/>`. **Requires `listItem` to work**
+Enables bulletList `<ul/>`. **Requires node components with names `orderedList` & `listItem` to work**
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -119,6 +119,26 @@ Named parameters:
 
 - **queryIsSelectionInsideBulletList**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a bullet list.
+
+## **Usage**
+
+```js
+import { bulletList, listItem } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  listItem.spec(),
+  bulletList.spec(),
+  orderedList.spec(),
+];
+
+const plugins = [
+  // other plugins
+  listItem.plugins(),
+  bulletList.plugins(),
+  orderedList.plugins(),
+];
+```
 
 # code: {link.Component}
 
@@ -509,6 +529,55 @@ const specFactory = [
 const plugins = [
   // other plugins
   link.plugins(),
+];
+```
+
+# orderedList: {link.Component}
+
+Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Enable the markdown shortcut for creating an ordered list. Type `1.` followed by a space to create an ordered list on an empty paragraph.
+
+### defaultKeys: {link.Keybindings}
+
+- **toggle**=`Shift-Ctrl-9`: Executes `toggleOrderedList` command.
+
+### commands: {link.CommandsObject}
+
+- **toggleOrderedList**(): {link.Command}\
+   Convert to an orderedList and if already an orderedList, convert it to a paragraph node.
+
+- **queryIsSelectionInsideOrderedList**(): {link.QueryCommand.boolean}\
+  Query if the selection is inside an ordered list.
+
+## **Usage**
+
+```js
+import { orderedList, bulletList, listItem } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  listItem.spec(),
+  orderedList.spec(),
+  bulletList.spec(),
+];
+
+const plugins = [
+  // other plugins
+  listItem.plugins(),
+  orderedList.plugins(),
+  bulletList.spec(),
 ];
 ```
 
