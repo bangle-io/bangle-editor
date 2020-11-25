@@ -255,7 +255,7 @@ describe('Commands', () => {
         heading.spec(),
       ]);
       // Not loading heading plugins to not interfere
-      const plugins = [doc.plugins(), text.plugins(), paragraph.plugins()];
+      const plugins = [paragraph.plugins()];
 
       const testEditor = renderTestEditor({ specSheet, plugins });
 

@@ -53,8 +53,6 @@ async function setupCollabEditor(handlers) {
     collab.spec(),
   ]);
   const editorPlugins = [
-    doc.plugins(),
-    text.plugins(),
     paragraph.plugins(),
     collab.plugins({
       docName: 'ole',

@@ -1,6 +1,8 @@
+export const spec = specFactory;
+
 const name = 'text';
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -13,6 +15,4 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
-
-export const plugins = (opts = {}) => {};
+}
