@@ -25,8 +25,8 @@ export const defaultKeys = {
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyAbove: 'Mod-Shift-Enter',
-  insertEmptyBelow: 'Mod-Enter',
+  insertEmptyParaAbove: 'Mod-Shift-Enter',
+  insertEmptyParaBelow: 'Mod-Enter',
 };
 
 const name = 'list_item';
@@ -75,11 +75,11 @@ function pluginsFactory(opts = {}, keybindings = defaultKeys) {
         [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
         [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
         [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
-        [keybindings.insertEmptyAbove]: filter(
+        [keybindings.insertEmptyParaAbove]: filter(
           parentCheck,
           insertEmpty(type, 'above', true),
         ),
-        [keybindings.insertEmptyBelow]: filter(
+        [keybindings.insertEmptyParaBelow]: filter(
           parentCheck,
           insertEmpty(type, 'below', true),
         ),

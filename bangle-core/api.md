@@ -629,7 +629,89 @@ The text node which the editor uses to wrap the text. This is a required node an
 
 ### spec(): {link.NodeSpecFactory}
 
+Creates a todoItem node spec with `done` attribute, read more {text.Nodes}.
+
+# todoItem: {link.Component}
+
+Creates a todoItem with a `done` attribute. **Requires node components with names `todoList`, `bulletList`,`orderedList` & `listItem` to work**
+
+### spec({ ... }): {link.NodeSpecFactory}
+
 Returns a node spec, read more {text.Nodes}.
+
+Named parameters:
+
+- **nested**: boolean=`true`\
+  Allows nesting of todo items.
+- **draggable**: boolean=`true`\
+  Make todo items draggable.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **nodeView**: boolean=`true`\
+  If `true`, will use the default todoItem nodeView. Set it to `false` to disable the default todoItem nodeView. The typical use-case for setting it to `false` is when you want to use a custom nodeView for todoItem. See the {link.nodeViews} section for more details.
+
+### defaultKeys: {link.Keybindings}
+
+- **toggleDone**=`Ctrl-Enter (mac) Ctrl-I (linux/windows)`: Toggles the todo item's done status.
+
+- **indent**=`Tab`: Indents the todo item
+
+- **outdent**=`Shift-Tab`: Outdents the todo item
+
+- **moveDown**=`Alt-ArrowDown`: move todoItem down
+
+- **moveUp**=`Alt-ArrowUp`: move todoItem up
+
+- **emptyCopy**=`Mod-c`: {text.emptyCopy}
+
+- **emptyCut**=`Mod-x`: {text.emptyCut}
+
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {text.insertEmptyParaAbove}
+
+- **insertEmptyParaBelow**=`Mod-Enter`: {text.insertEmptyParaBelow}
+
+### commands: {link.CommandsObject}
+
+- **toggleTodoItemDone**(): {link.Command}\
+   Toggle the done attribute of the todo item in the selection.
+
+- **queryTodoItemAttrs**(): {link.QueryCommand.customStart}?{done: boolean}{link.QueryCommand.customEnd}\
+  Query the todo item attributes.
+
+## **Usage**
+
+```js
+import {
+  todoList,
+  todoItem,
+  orderedList,
+  bulletList,
+  listItem,
+} from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  listItem.spec(),
+  todoItem.spec(),
+  orderedList.spec(),
+  bulletList.spec(),
+  todoList.spec(),
+];
+
+const plugins = [
+  // other plugins
+  listItem.plugins(),
+  todoItem.plugins(),
+  orderedList.plugins(),
+  bulletList.spec(),
+  todoList.plugins(),
+];
+```
 
 # todoList: {link.Component}
 
@@ -662,33 +744,7 @@ Named parameters:
 
 ## **Usage**
 
-```js
-import {
-  todoList,
-  todoItem,
-  orderedList,
-  bulletList,
-  listItem,
-} from '@banglejs/core';
-
-const specFactory = [
-  // other specs
-  listItem.spec(),
-  todoItem.spec(),
-  orderedList.spec(),
-  bulletList.spec(),
-  todoList.spec(),
-];
-
-const plugins = [
-  // other plugins
-  listItem.plugins(),
-  todoItem.plugins(),
-  orderedList.plugins(),
-  bulletList.spec(),
-  todoList.plugins(),
-];
-```
+See `todoItem` usage.
 
 # underline: {link.Component}
 

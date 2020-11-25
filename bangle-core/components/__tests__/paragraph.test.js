@@ -637,7 +637,7 @@ describe('Commands', () => {
     ])('Case %# insert above', async (input, expected) => {
       const { view } = testEditor(input);
 
-      sendKeyToPm(view, keybindings.insertEmptyAbove);
+      sendKeyToPm(view, keybindings.insertEmptyParaAbove);
 
       expect(view.state).toEqualDocAndSelection(expected);
     });
@@ -703,7 +703,7 @@ describe('Commands', () => {
     ])('Case %# insert below', async (input, expected) => {
       const { view } = testEditor(input);
 
-      sendKeyToPm(view, keybindings.insertEmptyBelow);
+      sendKeyToPm(view, keybindings.insertEmptyParaBelow);
 
       expect(view.state).toEqualDocAndSelection(expected);
     });

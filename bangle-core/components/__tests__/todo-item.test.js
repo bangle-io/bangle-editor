@@ -887,7 +887,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       </doc>,
     );
 
-    sendKeyToPm(editorView, keybindings.markDone);
+    sendKeyToPm(editorView, keybindings.toggleDone);
 
     let { $from } = editorView.state.selection;
     let node = $from.node(-1);
@@ -896,7 +896,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       done: true,
     });
 
-    sendKeyToPm(editorView, keybindings.markDone);
+    sendKeyToPm(editorView, keybindings.toggleDone);
 
     ({ $from } = editorView.state.selection);
     node = $from.node(-1);
@@ -922,7 +922,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       </doc>,
     );
 
-    sendKeyToPm(editorView, keybindings.markDone);
+    sendKeyToPm(editorView, keybindings.toggleDone);
 
     let { $from } = editorView.state.selection;
     let node = $from.node(-1);
@@ -934,7 +934,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
       done: false,
     });
 
-    sendKeyToPm(editorView, keybindings.markDone);
+    sendKeyToPm(editorView, keybindings.toggleDone);
 
     ({ $from } = editorView.state.selection);
     node = $from.node(-1);
@@ -1053,7 +1053,7 @@ describe('Insert empty todo above and below', () => {
   ])('Case %# insert above', async (input, expected) => {
     const { view } = await testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyAbove);
+    sendKeyToPm(view, keybindings.insertEmptyParaAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -1161,7 +1161,7 @@ describe('Insert empty todo above and below', () => {
   ])('Case %# insert below', async (input, expected) => {
     const { view } = await testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyBelow);
+    sendKeyToPm(view, keybindings.insertEmptyParaBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
