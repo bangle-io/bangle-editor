@@ -144,6 +144,40 @@ Top level node needed by the editor to contain every other node. This is a requi
 
 Returns a top level node spec, read more {text.Nodes}.
 
+# hardBreak: {link.Component}
+
+Enables the `<br />` element in your editor.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+### defaultKeys: {link.Keybindings}
+
+- **insert** = `Shift-Enter`: inserts a hard break
+
+## **Usage**
+
+```js
+import { hardBreak } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  hardBreak.spec(),
+];
+
+const plugins = [
+  // other plugins
+  hardBreak.plugins(),
+];
+```
+
 # horizontalRule: {link.Component}
 
 Enables a horizontal (`<hr />`) rule component in your editor. Type `---` and `___` {link.InputRules} to insert a horizontal rule followed by an empty paragraph.
