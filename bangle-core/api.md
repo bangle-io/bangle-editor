@@ -194,6 +194,77 @@ Top level node needed by the editor to contain every other node. This is a requi
 
 Returns a top level node spec, read more {text.Nodes}.
 
+# heading: {link.Component}
+
+Enables headings of various levels in your editor.
+
+### spec({ ... }): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+Named parameters:
+
+- **levels**=`[1,2,3,4,5,6]` The allowed levels for the heading, think `<h1/>`, `<h2/>` and so on. The array must be contiguous and the first element must be `1` and the last element must be less than or equal to `6`.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?Boolean = true\
+  Toggle the markdown shortcut `#<space>` to convert a paragraph into a heading element.
+
+### defaultKeys: {link.Keybindings}
+
+- **toH1**=`Shift-Ctrl-1`: Convert a node to heading of level 1. Is a no-op if the level `1` is disallowed.
+
+- **toH2**=`Shift-Ctrl-2`: Convert a node to heading of level 2. Is a no-op if the level `2` is disallowed.
+
+- **toH3**=`Shift-Ctrl-3`: Convert a node to heading of level 3. Is a no-op if the level `3` is disallowed.
+
+- **toH4**=`Shift-Ctrl-4`: Convert a node to heading of level 4. Is a no-op if the level `4` is disallowed.
+
+- **toH5**=`Shift-Ctrl-5`: Convert a node to heading of level 5. Is a no-op if the level `5` is disallowed.
+
+- **toH6**=`Shift-Ctrl-6`: Convert a node to heading of level 6. Is a no-op if the level `6` is disallowed.
+
+- **moveDown**=`Alt-ArrowDown`: move heading down
+
+- **moveUp**=`Alt-ArrowUp`: move heading up
+
+- **emptyCopy**=`Mod-c`: {text.emptyCopy}
+
+- **emptyCut**=`Mod-x`: {text.emptyCut}
+
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {text.insertEmptyParaAbove}
+
+- **insertEmptyParaBelow**=`Mod-Enter`: {text.insertEmptyParaBelow}
+
+### commands: {link.CommandsObject}
+
+- **toggleItalic**(level: number = 3): {link.Command}\
+  Toggles text into heading of given `level` and vice versa.
+
+- **queryIsSelectionInHeading**(level: number = 3): {link.QueryCommand.boolean}\
+  Query if the selection is inside a heading of given `level`.
+
+## **Usage**
+
+```js
+import { heading } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  heading.spec({ levels: [1, 2] }),
+];
+
+const plugins = [
+  // other plugins
+  heading.plugins(),
+];
+```
+
 # hardBreak: {link.Component}
 
 Enables the `<br />` element in your editor.

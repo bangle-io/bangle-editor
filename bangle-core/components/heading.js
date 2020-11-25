@@ -10,7 +10,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleHeading,
-  isSelectionInHeading,
+  queryIsSelectionInHeading,
 };
 export const defaultKeys = {
   toH1: 'Shift-Ctrl-1',
@@ -23,8 +23,8 @@ export const defaultKeys = {
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyAbove: 'Mod-Shift-Enter',
-  insertEmptyBelow: 'Mod-Enter',
+  insertEmptyParaAbove: 'Mod-Shift-Enter',
+  insertEmptyParaBelow: 'Mod-Enter',
 };
 
 const name = 'heading';
@@ -32,6 +32,7 @@ const defaultLevels = ['1', '2', '3', '4', '5', '6'];
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory({ levels = defaultLevels } = {}) {
+  levels = levels.map((r) => r + '');
   return {
     type: 'node',
     name,
@@ -68,14 +69,18 @@ function specFactory({ levels = defaultLevels } = {}) {
         },
       },
     },
+    options: {
+      levels,
+    },
   };
 }
 
 function pluginsFactory({
-  levels = defaultLevels,
+  markdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema, specSheet }) => {
+    const { levels } = specSheet.options[name];
     const type = getTypeFromSchema(schema);
     const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
     const levelBindings = Object.fromEntries(
@@ -85,24 +90,25 @@ function pluginsFactory({
       ]),
     );
     return [
-      keymap({
-        ...levelBindings,
-        [keybindings.moveUp]: moveNode(type, 'UP'),
-        [keybindings.moveDown]: moveNode(type, 'DOWN'),
+      keybindings &&
+        keymap({
+          ...levelBindings,
+          [keybindings.moveUp]: moveNode(type, 'UP'),
+          [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-        [keybindings.emptyCopy]: copyEmptyCommand(type),
-        [keybindings.emptyCut]: cutEmptyCommand(type),
+          [keybindings.emptyCopy]: copyEmptyCommand(type),
+          [keybindings.emptyCut]: cutEmptyCommand(type),
 
-        [keybindings.insertEmptyAbove]: filter(
-          isInHeading,
-          insertEmpty(schema.nodes.paragraph, 'above', false),
-        ),
-        [keybindings.insertEmptyBelow]: filter(
-          isInHeading,
-          insertEmpty(schema.nodes.paragraph, 'below', false),
-        ),
-      }),
-      ...levels.map((level) =>
+          [keybindings.insertEmptyParaAbove]: filter(
+            isInHeading,
+            insertEmpty(schema.nodes.paragraph, 'above', false),
+          ),
+          [keybindings.insertEmptyParaBelow]: filter(
+            isInHeading,
+            insertEmpty(schema.nodes.paragraph, 'below', false),
+          ),
+        }),
+      ...(markdownShortcut ? levels : []).map((level) =>
         textblockTypeInputRule(
           new RegExp(`^(#{1,${level}})\\s$`),
           type,
@@ -115,14 +121,14 @@ function pluginsFactory({
   };
 }
 
-export function toggleHeading({ level = 3 } = {}) {
+export function toggleHeading(level = 3) {
   return (state, dispatch, view) =>
     toggleBlockType(state.schema.nodes.heading, state.schema.nodes.paragraph, {
       level,
     })(state, dispatch, view);
 }
 
-export function isSelectionInHeading({ level = 3 }) {
+export function queryIsSelectionInHeading(level = 3) {
   return (state) => {
     const match = findParentNodeOfType(state.schema.nodes.heading)(
       state.selection,
