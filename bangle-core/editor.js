@@ -49,8 +49,7 @@ export class BangleEditor {
     if (isTestEnv() || view.focused) {
       return;
     }
-
-    return focusAtPosition()(view.state, view.dispatch, view);
+    view.focus();
   }
 
   toHTMLString() {

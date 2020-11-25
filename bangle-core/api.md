@@ -31,7 +31,7 @@ Named parameters:
 ### commands: {link.CommandsObject}
 
 - **queryIsSelectionInBlockQuote**(): {link.QueryCommand.boolean}\
-  Check if the selection is inside a blockquote or not.
+  Query if the selection is inside a blockquote or not.
 
 ## **Usage**
 
@@ -73,7 +73,7 @@ Named parameters:
   Toggles bold mark.
 
 - **queryIsSelectionInBold**(): {link.QueryCommand.boolean}\
-  Check if the selection is inside a bold mark or not.
+  Query if the selection is inside a bold mark or not.
 
 ## **Usage**
 
@@ -106,11 +106,11 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **escapeAtEdge:** ?Boolean = true\
-  Allows graceful escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
+  Allows automatic escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
 
 ### defaultKeys: {link.Keybindings}
 
-- **toggleCode** = `Mod-b`: toggle code mark
+- **toggleCode** = `` Mod-` ``: toggle code mark
 
 ### commands: {link.CommandsObject}
 
@@ -118,7 +118,7 @@ Named parameters:
   Toggles code mark.
 
 - **queryIsSelectionInCode**(): {link.QueryCommand.boolean}\
-  Check if the selection is inside a code mark or not.
+  Query if the selection is inside a code mark or not.
 
 ## **Usage**
 
@@ -135,6 +135,14 @@ const plugins = [
   code.plugins(),
 ];
 ```
+
+# doc: {link.Component}
+
+Top level node needed by the editor to contain every other node. This is a required node and if a node spec with name `doc` is not provided, BangleJS will automatically use this spec.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a top level node spec, read more {text.Nodes}.
 
 # horizontalRule: {link.Component}
 
@@ -190,7 +198,7 @@ Named parameters:
   Toggles italic mark.
 
 - **queryIsSelectionInItalic**(): {link.QueryCommand.boolean}\
-  Check if the selection is inside an italic mark or not.
+  Query if the selection is inside an italic mark or not.
 
 ## **Usage**
 
@@ -232,7 +240,7 @@ Named parameters:
   Toggles strike mark.
 
 - **queryIsSelectionInStrike**(): {link.QueryCommand.boolean}\
-  Check if the selection is inside a strike mark or not.
+  Query if the selection is inside a strike mark or not.
 
 ## **Usage**
 
@@ -249,6 +257,14 @@ const plugins = [
   strike.plugins(),
 ];
 ```
+
+# text: {link.Component}
+
+The text node which the editor uses to wrap the text. This is a required node and if a node spec with name `text` is not provided, BangleJS will automatically use this spec.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
 
 # underline: {link.Component}
 
@@ -274,7 +290,7 @@ Named parameters:
   Toggles underline mark.
 
 - **queryIsSelectionInUnderline**(): {link.QueryCommand.boolean}\
-  Check if the selection is inside an underline mark or not.
+  Query if the selection is inside an underline mark or not.
 
 ## **Usage**
 

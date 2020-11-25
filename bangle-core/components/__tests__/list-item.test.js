@@ -49,8 +49,6 @@ const specSheet = new SpecSheet([
 ]);
 
 const plugins = [
-  doc.plugins(),
-  text.plugins(),
   paragraph.plugins(),
   bulletList.plugins(),
   todoItem.plugins(),

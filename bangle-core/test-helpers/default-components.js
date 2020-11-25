@@ -81,9 +81,7 @@ function coreNodeSpec(options = {}) {
 
 function coreNodePlugins(options = {}) {
   return [
-    doc.plugins(options.doc),
     paragraph.plugins(options.paragraph),
-    text.plugins(options.text),
     blockquote.plugins(options.blockquote),
     bulletList.plugins(options.bulletList),
     codeBlock.plugins(options.codeBlock),

@@ -35,8 +35,6 @@ const specSheet = new SpecSheet([
 ]);
 
 const plugins = [
-  doc.plugins(),
-  text.plugins(),
   paragraph.plugins(),
   link.plugins(),
   bold.plugins(),
