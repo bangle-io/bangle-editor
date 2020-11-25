@@ -2,12 +2,19 @@ import { toggleList } from './list-item/commands';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { keymap } from 'prosemirror-keymap';
+import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
+
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+export const defaultKeys = {
+  toggle: 'Shift-Ctrl-9',
+};
 
 const name = 'ordered_list';
-
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -49,9 +56,9 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ keybindings = {} } = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -62,9 +69,28 @@ export const plugins = ({ keybindings = {} } = {}) => {
         (match) => ({ order: +match[1] }),
         (match, node) => node.childCount + node.attrs.order === +match[1],
       ),
-      keymap({
-        'Shift-Ctrl-9': toggleList(type),
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.toggle]: toggleList(type),
+        }),
     ];
   };
-};
+}
+
+export function toggleOrderedList() {
+  return (state, dispatch, view) => {
+    return toggleList(
+      state.schema.nodes.ordered_list,
+      state.schema.nodes.list_item,
+    )(state, dispatch, view);
+  };
+}
+
+export function queryIsSelectionInsideBulletList() {
+  return (state) => {
+    const { schema } = state;
+    return parentHasDirectParentOfType(schema.nodes['list_item'], [
+      schema.nodes[name],
+    ])(state);
+  };
+}

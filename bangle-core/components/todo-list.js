@@ -11,7 +11,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleTodoList,
-  isSelectionInsideTodoList,
+  queryIsSelectionInsideTodoList,
 };
 
 function specFactory(opts = {}) {
@@ -63,10 +63,12 @@ export function toggleTodoList(state, dispatch, view) {
   );
 }
 
-export function isSelectionInsideTodoList(state) {
-  const { schema } = state;
-  return parentHasDirectParentOfType(
-    schema.nodes['todo_item'],
-    schema.nodes['todo_list'],
-  )(state);
+export function queryIsSelectionInsideTodoList() {
+  return (state) => {
+    const { schema } = state;
+    return parentHasDirectParentOfType(
+      schema.nodes['todo_item'],
+      schema.nodes['todo_list'],
+    )(state);
+  };
 }

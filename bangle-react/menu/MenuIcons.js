@@ -13,7 +13,7 @@ import {
   toggleCode,
 } from 'bangle-core/components/code';
 import {
-  isSelectionInsideTodoList,
+  queryIsSelectionInsideTodoList,
   toggleTodoList,
 } from 'bangle-core/components/todo-list';
 import {
@@ -109,7 +109,7 @@ export const todoListItem = () => ({
     return false;
   },
   component: TodoListIcon,
-  isActive: isSelectionInsideTodoList,
+  isActive: queryIsSelectionInsideTodoList(),
 });
 
 export const heading2Item = () => ({

@@ -31,6 +31,8 @@ import {
   toggleList,
   backspaceKeyCommand,
 } from '../list-item/commands';
+import { defaultKeys as orderedListDefaultKeys } from '../ordered-list';
+import { defaultKeys as bulletListDefaultKeys } from '../bullet-list';
 import { NodeSelection } from 'prosemirror-state';
 
 const specSheet = new SpecSheet([
@@ -1431,10 +1433,10 @@ describe('Pressing Shift-Tab', () => {
   });
 });
 
-describe('Pressing Shift-Ctrl-8', () => {
+describe('Pressing bulletListDefaultKeys.toggle', () => {
   const check = async (beforeDoc, afterDoc) => {
     const { editorView } = testEditor(beforeDoc);
-    sendKeyToPm(editorView, 'Shift-Ctrl-8');
+    sendKeyToPm(editorView, bulletListDefaultKeys.toggle);
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
 
@@ -1520,10 +1522,10 @@ describe('Pressing Shift-Ctrl-8', () => {
   });
 });
 
-describe('Pressing Shift-Ctrl-9', () => {
+describe('Pressing orderedListDefaultKeys.toggle', () => {
   const check = async (beforeDoc, afterDoc) => {
     const { editorView } = testEditor(beforeDoc);
-    sendKeyToPm(editorView, 'Shift-Ctrl-9');
+    sendKeyToPm(editorView, orderedListDefaultKeys.toggle);
     expect(editorView.state).toEqualDocAndSelection(afterDoc);
   };
 
