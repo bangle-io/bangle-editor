@@ -204,7 +204,8 @@ Returns a node spec, read more {text.Nodes}.
 
 Named parameters:
 
-- **levels**=`[1,2,3,4,5,6]` The allowed levels for the heading, think `<h1/>`, `<h2/>` and so on. The array must be contiguous and the first element must be `1` and the last element must be less than or equal to `6`.
+- **levels**: ?Array<Number> = `[1,2,3,4,5,6]` \
+  The allowed levels for the heading, think `<h1/>`, `<h2/>` and so on. The array must be contiguous and the first element must be `1` and the last element must be less than or equal to `6`.
 
 ### plugins({ ... }): {link.PluginsFactory}
 
@@ -212,7 +213,7 @@ Named parameters:
 
 - {text.pluginsParamKeybindings}
 
-- **markdownShortcut**: ?Boolean = true\
+- **markdownShortcut**: ?Boolean = `true`\
   Toggle the markdown shortcut `#<space>` to convert a paragraph into a heading element.
 
 ### defaultKeys: {link.Keybindings}
@@ -264,6 +265,33 @@ const plugins = [
   heading.plugins(),
 ];
 ```
+
+# history: {link.Component}
+
+Enables history in your editor, this is a wrapper for the prosemirror's [history module](https://prosemirror.net/docs/ref/#history). **Unless you are overriding this component, it will be included by default.**
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **historyOpts**: Object \
+  see the Prosemirror history `config` [docs](https://prosemirror.net/docs/ref/#history.history^config) for the API.
+
+### defaultKeys: {link.Keybindings}
+
+- **undo**=`Mod-x`
+
+- **redo**=`Mod-y Shift-Mod-z`
+
+### commands: {link.CommandsObject}
+
+- **undo**(): {link.Command}\
+  Undoes the last step.
+
+- **redo**(): {link.Command}\
+  Redoes the last step.
 
 # hardBreak: {link.Component}
 

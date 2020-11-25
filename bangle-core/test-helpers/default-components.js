@@ -23,11 +23,7 @@ import {
 } from 'bangle-core/components/index';
 
 export function defaultSpecs(opts = {}) {
-  return [
-    ...coreMarkSpec(opts),
-    ...coreNodeSpec(opts),
-    history.spec(opts.history),
-  ];
+  return [...coreMarkSpec(opts), ...coreNodeSpec(opts)];
 }
 
 export function defaultPlugins(opts = {}) {
