@@ -25,8 +25,8 @@ export const defaultKeys = {
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyAbove: 'Mod-Shift-Enter',
-  insertEmptyBelow: 'Mod-Enter',
+  insertEmptyParaAbove: 'Mod-Shift-Enter',
+  insertEmptyParaBelow: 'Mod-Enter',
   toggleParagraph: 'Ctrl-Shift-0',
 };
 
@@ -80,11 +80,11 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
         [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
         [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
 
-        [keybindings.insertEmptyAbove]: filter(
+        [keybindings.insertEmptyParaAbove]: filter(
           isTopLevel,
           insertEmpty(type, 'above'),
         ),
-        [keybindings.insertEmptyBelow]: filter(
+        [keybindings.insertEmptyParaBelow]: filter(
           isTopLevel,
           insertEmpty(type, 'below'),
         ),

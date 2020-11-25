@@ -920,6 +920,17 @@ export function updateNodeAttrs(type, cb) {
   };
 }
 
+export function queryNodeAttrs(type) {
+  return (state, dispatch) => {
+    const { $from } = state.selection;
+    const current = $from.node(-1);
+    if (current && current.type === type) {
+      return current.attrs;
+    }
+    return false;
+  };
+}
+
 /**
  * Moves a node up and down. Please do a sanity check if the node is allowed to move or not
  * before calling this command.

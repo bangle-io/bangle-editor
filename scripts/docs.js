@@ -11,6 +11,7 @@ const snippet = {
     QueryCommand: {
       boolean: '',
     },
+    nodeViews: '',
   },
   text: {
     emptyCut: '',

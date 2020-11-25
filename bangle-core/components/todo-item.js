@@ -10,6 +10,7 @@ import {
   updateNodeAttrs,
   moveNode,
   moveEdgeListItem,
+  queryNodeAttrs,
 } from './list-item/commands';
 import {
   cutEmptyCommand,
@@ -23,20 +24,21 @@ import { createElement } from 'bangle-core/utils/js-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
-export const commands = {};
-
 export const defaultKeys = {
-  markDone: browser.mac ? 'Ctrl-Enter' : 'Ctrl-I',
+  toggleDone: browser.mac ? 'Ctrl-Enter' : 'Ctrl-I',
   indent: 'Tab',
   outdent: 'Shift-Tab',
   moveDown: 'Alt-ArrowDown',
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyAbove: 'Mod-Shift-Enter',
-  insertEmptyBelow: 'Mod-Enter',
+  insertEmptyParaAbove: 'Mod-Shift-Enter',
+  insertEmptyParaBelow: 'Mod-Enter',
 };
-
+export const commands = {
+  toggleTodoItemDone,
+  queryTodoItemAttrs,
+};
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'todo-item') : () => {};
@@ -85,15 +87,15 @@ function specFactory({ nested = true, draggable = true } = {}) {
         },
       },
     },
+    options: {
+      nested,
+    },
   };
 }
 
-function pluginsFactory({
-  nested = true,
-  nodeView = true,
-  keybindings = defaultKeys,
-} = {}) {
-  return ({ schema }) => {
+function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
+  return ({ schema, specSheet }) => {
+    const { nested } = specSheet.options[name];
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
@@ -105,7 +107,7 @@ function pluginsFactory({
     return [
       keybindings &&
         keymap({
-          [keybindings.markDone]: filter(
+          [keybindings.toggleDone]: filter(
             parentCheck,
             updateNodeAttrs(type, (attrs) => ({
               ...attrs,
@@ -125,11 +127,11 @@ function pluginsFactory({
           [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
           [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
 
-          [keybindings.insertEmptyAbove]: filter(
+          [keybindings.insertEmptyParaAbove]: filter(
             parentCheck,
             insertEmpty(type, 'above', true),
           ),
-          [keybindings.insertEmptyBelow]: filter(
+          [keybindings.insertEmptyParaBelow]: filter(
             parentCheck,
             insertEmpty(type, 'below', true),
           ),
@@ -169,7 +171,7 @@ function pluginsFactory({
               inputElement.addEventListener('input', (e) => {
                 log('change event', inputElement.checked);
                 updateAttrs({
-                  // Fetch latest attrs as the one is outer
+                  // Fetch latest attrs as the one in outer
                   // closure can be stale.
                   done: inputElement.checked,
                 });
@@ -200,5 +202,25 @@ function pluginsFactory({
           },
         }),
     ];
+  };
+}
+
+export function toggleTodoItemDone() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+
+    return updateNodeAttrs(type, (attrs) => ({
+      ...attrs,
+      done: !attrs['done'],
+    }))(state, dispatch, view);
+  };
+}
+
+export function queryTodoItemAttrs() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+
+    const attrs = queryNodeAttrs(type)(state, dispatch, view);
+    return attrs;
   };
 }
