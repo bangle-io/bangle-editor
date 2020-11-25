@@ -17,7 +17,7 @@ import {
   toggleTodoList,
 } from 'bangle-core/components/todo-list';
 import {
-  isSelectionInHeading,
+  queryIsSelectionInHeading,
   toggleHeading,
 } from 'bangle-core/components/heading';
 import { filter } from 'bangle-core/utils/pm-utils';
@@ -121,12 +121,12 @@ export const heading2Item = () => ({
       if (dispatch) {
         view.focus();
       }
-      return toggleHeading({ level: 2 })(state, dispatch, view);
+      return toggleHeading(2)(state, dispatch, view);
     }
     return false;
   },
   component: Heading2Icon,
-  isActive: isSelectionInHeading({ level: 2 }),
+  isActive: queryIsSelectionInHeading(2),
 });
 
 export const heading3Item = () => ({
@@ -138,12 +138,12 @@ export const heading3Item = () => ({
       if (dispatch) {
         view.focus();
       }
-      return toggleHeading({ level: 3 })(state, dispatch, view);
+      return toggleHeading(3)(state, dispatch, view);
     }
     return false;
   },
   component: Heading3Icon,
-  isActive: isSelectionInHeading({ level: 3 }),
+  isActive: queryIsSelectionInHeading(3),
 });
 
 export const linkItem = (showLinkMenu) => ({

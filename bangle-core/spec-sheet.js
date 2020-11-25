@@ -16,6 +16,11 @@ export class SpecSheet {
       throw new Error('Duplicate spec error, please check your specSheet');
     }
     this._schema = createSchema(this._spec);
+    this._options = Object.fromEntries(
+      this._spec
+        .filter((spec) => spec.options)
+        .map((spec) => [spec.name, spec.options]),
+    );
   }
 
   get spec() {
@@ -24,6 +29,10 @@ export class SpecSheet {
 
   get schema() {
     return this._schema;
+  }
+
+  get options() {
+    return this._options;
   }
 }
 
