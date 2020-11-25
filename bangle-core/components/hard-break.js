@@ -1,11 +1,17 @@
 import { chainCommands, exitCode } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const defaultKeys = {
+  insert: 'Shift-Enter',
+};
+
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 const name = 'hard_break';
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -28,19 +34,22 @@ export const spec = (opts = {}) => {
       parseMarkdown: { hardbreak: { node: 'hard_break' } },
     },
   };
-};
+}
 
-export const plugins = (opts = {}) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const command = chainCommands(exitCode, (state, dispatch) => {
-      dispatch(state.tr.replaceSelectionWith(type.create()).scrollIntoView());
+      if (dispatch) {
+        dispatch(state.tr.replaceSelectionWith(type.create()).scrollIntoView());
+      }
       return true;
     });
     return [
-      keymap({
-        'Shift-Enter': command,
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.insert]: command,
+        }),
     ];
   };
-};
+}
