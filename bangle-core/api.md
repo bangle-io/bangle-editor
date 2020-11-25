@@ -631,6 +631,65 @@ The text node which the editor uses to wrap the text. This is a required node an
 
 Returns a node spec, read more {text.Nodes}.
 
+# todoList: {link.Component}
+
+A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names `todoItem`, `bulletList`,`orderedList` & `listItem` to work**
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList on an empty paragraph.
+
+### defaultKeys: {link.Keybindings}
+
+- **toggle**=`Shift-Ctrl-7`: Executes `toggleTodoList` command.
+
+### commands: {link.CommandsObject}
+
+- **toggleTodoList**(): {link.Command}\
+   Convert to an todoList and if already an todoList, convert it to a paragraph node.
+
+- **queryIsSelectionInsideTodoList**(): {link.QueryCommand.boolean}\
+  Query if the selection is inside a todo list.
+
+## **Usage**
+
+```js
+import {
+  todoList,
+  todoItem,
+  orderedList,
+  bulletList,
+  listItem,
+} from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  listItem.spec(),
+  todoItem.spec(),
+  orderedList.spec(),
+  bulletList.spec(),
+  todoList.spec(),
+];
+
+const plugins = [
+  // other plugins
+  listItem.plugins(),
+  todoItem.plugins(),
+  orderedList.plugins(),
+  bulletList.spec(),
+  todoList.plugins(),
+];
+```
+
 # underline: {link.Component}
 
 Allows text in your editor to be marked as underline.

@@ -98,12 +98,12 @@ export const todoListItem = () => ({
   type: 'command',
   name: 'TodoList',
   command: (state, dispatch, view) => {
-    const allowed = toggleTodoList(state, undefined, view);
+    const allowed = toggleTodoList()(state, undefined, view);
     if (allowed) {
       if (dispatch) {
         view.focus();
       }
-      toggleTodoList(state, dispatch, view);
+      toggleTodoList()(state, dispatch, view);
       return true;
     }
     return false;

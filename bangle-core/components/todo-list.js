@@ -13,6 +13,9 @@ export const commands = {
   toggleTodoList,
   queryIsSelectionInsideTodoList,
 };
+export const defaultKeys = {
+  toggle: 'Shift-Ctrl-7',
+};
 
 function specFactory(opts = {}) {
   return {
@@ -35,32 +38,37 @@ function specFactory(opts = {}) {
       },
       parseMarkdown: {
         todo_list: {
-          block: 'todo_list',
+          block: name,
         },
       },
     },
   };
 }
 
-function pluginsFactory(opts = {}) {
+function pluginsFactory({
+  keybindings = defaultKeys,
+  markdownShortcut = true,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     return [
-      wrappingInputRule(/^\s*(\[ \])\s$/, type),
+      markdownShortcut && wrappingInputRule(/^\s*(\[ \])\s$/, type),
       keymap({
-        'Shift-Ctrl-7': toggleList(type, schema.nodes.todo_item),
+        [keybindings.toggle]: toggleList(type, schema.nodes.todo_item),
       }),
     ];
   };
 }
 
-export function toggleTodoList(state, dispatch, view) {
-  const { schema } = state;
-  return toggleList(schema.nodes.todo_list, schema.nodes.todo_item)(
-    state,
-    dispatch,
-    view,
-  );
+export function toggleTodoList() {
+  return (state, dispatch, view) => {
+    const { schema } = state;
+    return toggleList(schema.nodes[name], schema.nodes.todo_item)(
+      state,
+      dispatch,
+      view,
+    );
+  };
 }
 
 export function queryIsSelectionInsideTodoList() {
@@ -68,7 +76,7 @@ export function queryIsSelectionInsideTodoList() {
     const { schema } = state;
     return parentHasDirectParentOfType(
       schema.nodes['todo_item'],
-      schema.nodes['todo_list'],
+      schema.nodes[name],
     )(state);
   };
 }
