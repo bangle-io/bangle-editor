@@ -357,6 +357,39 @@ const plugins = [
 ];
 ```
 
+# image: {link.Component}
+
+Enables images in your editor.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+- **handleDragAndDrop:** Boolean=`true` \
+  Toggle the functionality of dragging-n-dropping and pasting of images into the editor.
+
+## **Usage**
+
+```js
+import { image } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  image.spec(),
+];
+
+const plugins = [
+  // other plugins
+  image.plugins(),
+];
+```
+
 # italic: {link.Component}
 
 Allows text in your editor to be marked as italic. Comes with the markdown shortcut `_text_` to enable italic mark.

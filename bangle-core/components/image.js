@@ -2,11 +2,15 @@ import { InputRule } from 'prosemirror-inputrules';
 import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
 
+export const spec = specFactory;
+export const plugins = pluginsFactory;
+export const commands = {};
+
 const name = 'image';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-export const spec = (opts = {}) => {
+function specFactory(opts = {}) {
   return {
     type: 'node',
     name,
@@ -48,7 +52,7 @@ export const spec = (opts = {}) => {
       },
       parseMarkdown: {
         image: {
-          node: 'image',
+          node: name,
           getAttrs: (tok) => ({
             src: tok.attrGet('src'),
             title: tok.attrGet('title') || null,
@@ -58,22 +62,14 @@ export const spec = (opts = {}) => {
       },
     },
   };
-};
+}
 
-export const plugins = ({ keybindings = {} } = {}) => {
+function pluginsFactory({ handleDragAndDrop = true, keybindings = {} } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
       new InputRule(
-        /**
-         * Matches following attributes in Markdown-typed image: [, alt, src, title]
-         *
-         * Example:
-         * ![Lorem](image.jpg) -> [, "Lorem", "image.jpg"]
-         * ![](image.jpg "Ipsum") -> [, "", "image.jpg", "Ipsum"]
-         * ![Lorem](image.jpg "Ipsum") -> [, "Lorem", "image.jpg", "Ipsum"]
-         */
         /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/,
         (state, match, start, end) => {
           let [, alt, src, title] = match;
@@ -96,63 +92,64 @@ export const plugins = ({ keybindings = {} } = {}) => {
         },
       ),
 
-      new Plugin({
-        key: new PluginKey(name + '-drop-paste'),
-        props: {
-          handleDOMEvents: {
-            drop(view, event) {
-              if (event.dataTransfer == null) {
+      handleDragAndDrop &&
+        new Plugin({
+          key: new PluginKey(name + '-drop-paste'),
+          props: {
+            handleDOMEvents: {
+              drop(view, event) {
+                if (event.dataTransfer == null) {
+                  return false;
+                }
+                const files = getFileData(event.dataTransfer, 'image/*', true);
+                // TODO should we handle all drops but just show error?
+                // returning false here would just default to native behaviour
+                // But then any drop handler would fail to work.
+                if (!files || files.length === 0) {
+                  return false;
+                }
+                event.preventDefault();
+                const coordinates = view.posAtCoords({
+                  left: event.clientX,
+                  top: event.clientY,
+                });
+
+                addImagesToView(
+                  view,
+                  coordinates == null ? undefined : coordinates.pos,
+                  files.map((file) => readFile(file)),
+                );
+
+                return true;
+              },
+            },
+
+            handlePaste: (view, rawEvent, slice) => {
+              const event = rawEvent;
+              if (!event.clipboardData) {
                 return false;
               }
-              const files = getFileData(event.dataTransfer, 'image/*', true);
-              // TODO should we handle all drops but just show error?
-              // returning false here would just default to native behaviour
-              // But then any drop handler would fail to work.
+              const files = getFileData(event.clipboardData, 'image/*', true);
               if (!files || files.length === 0) {
                 return false;
               }
-              event.preventDefault();
-              const coordinates = view.posAtCoords({
-                left: event.clientX,
-                top: event.clientY,
-              });
-
               addImagesToView(
                 view,
-                coordinates == null ? undefined : coordinates.pos,
+                view.state.selection.from,
                 files.map((file) => readFile(file)),
-              );
-
+              ).catch((err) => console.error(err));
               return true;
             },
           },
-
-          handlePaste: (view, rawEvent, slice) => {
-            const event = rawEvent;
-            if (!event.clipboardData) {
-              return false;
-            }
-            const files = getFileData(event.clipboardData, 'image/*', true);
-            if (!files || files.length === 0) {
-              return false;
-            }
-            addImagesToView(
-              view,
-              view.state.selection.from,
-              files.map((file) => readFile(file)),
-            ).catch((err) => console.error(err));
-            return true;
-          },
-        },
-      }),
+        }),
     ];
   };
-};
+}
 
 async function addImagesToView(view, pos, imagePromises) {
   for (const imagePromise of imagePromises) {
     const image = await imagePromise;
-    const node = view.state.schema.nodes.image.create({
+    const node = getTypeFromSchema(view.state.schema).create({
       src: image,
     });
     const { tr } = view.state;
@@ -216,7 +213,6 @@ function getMatchingItems(list, accept, multiple) {
     return multiple ? results : [results[0]];
   }
 
-  // Split accepts values by ',' then by '/'. Trim everything & lowercase.
   const accepts = accept
     .toLowerCase()
     .split(',')
@@ -264,15 +260,11 @@ export const updateImageNodeAttribute = (attr = {}) => (
     return false;
   }
   const { node } = state.selection;
-  if (node.type !== state.schema.nodes.image) {
+  if (node.type !== getTypeFromSchema(state.schema)) {
     return false;
   }
 
   if (dispatch) {
-    console.log('dispatching', {
-      ...node.attrs,
-      ...attr,
-    });
     dispatch(
       state.tr.setNodeMarkup(state.selection.$from.pos, undefined, {
         ...node.attrs,
