@@ -26,7 +26,7 @@ import {
   updateLinkAtSelection,
 } from 'bangle-core/components/link';
 import {
-  isSelectionInsideBulletList,
+  queryIsSelectionInsideBulletList,
   toggleBulletList,
 } from 'bangle-core/components/bullet-list';
 
@@ -82,7 +82,7 @@ export const bulletListItem = () => ({
   type: 'command',
   name: 'BulletList',
   command: (state, dispatch, view) => {
-    if (toggleBulletList(state, dispatch, view)) {
+    if (toggleBulletList()(state, dispatch, view)) {
       if (dispatch) {
         view.focus();
       }
@@ -91,7 +91,7 @@ export const bulletListItem = () => ({
     return false;
   },
   component: BulletListIcon,
-  isActive: isSelectionInsideBulletList,
+  isActive: queryIsSelectionInsideBulletList(),
 });
 
 export const todoListItem = () => ({
