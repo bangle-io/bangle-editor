@@ -25,8 +25,8 @@ export const defaultKeys = {
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyParaAbove: 'Mod-Shift-Enter',
-  insertEmptyParaBelow: 'Mod-Enter',
+  insertEmptyListAbove: 'Mod-Shift-Enter',
+  insertEmptyListBelow: 'Mod-Enter',
 };
 
 const name = 'list_item';
@@ -54,7 +54,7 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory(opts = {}, keybindings = defaultKeys) {
+function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const parentCheck = parentHasDirectParentOfType(type, [
@@ -66,24 +66,25 @@ function pluginsFactory(opts = {}, keybindings = defaultKeys) {
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
     return [
-      keymap({
-        Backspace: backspaceKeyCommand(type),
-        Enter: enterKeyCommand(type),
-        [keybindings.indent]: indentList(type),
-        [keybindings.outdent]: outdentList(type),
-        [keybindings.moveUp]: filter(parentCheck, move('UP')),
-        [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
-        [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
-        [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
-        [keybindings.insertEmptyParaAbove]: filter(
-          parentCheck,
-          insertEmpty(type, 'above', true),
-        ),
-        [keybindings.insertEmptyParaBelow]: filter(
-          parentCheck,
-          insertEmpty(type, 'below', true),
-        ),
-      }),
+      keybindings &&
+        keymap({
+          Backspace: backspaceKeyCommand(type),
+          Enter: enterKeyCommand(type),
+          [keybindings.indent]: indentList(type),
+          [keybindings.outdent]: outdentList(type),
+          [keybindings.moveUp]: filter(parentCheck, move('UP')),
+          [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
+          [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
+          [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
+          [keybindings.insertEmptyListAbove]: filter(
+            parentCheck,
+            insertEmpty(type, 'above', true),
+          ),
+          [keybindings.insertEmptyListBelow]: filter(
+            parentCheck,
+            insertEmpty(type, 'below', true),
+          ),
+        }),
     ];
   };
 }

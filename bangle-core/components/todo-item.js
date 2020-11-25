@@ -32,8 +32,8 @@ export const defaultKeys = {
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
-  insertEmptyParaAbove: 'Mod-Shift-Enter',
-  insertEmptyParaBelow: 'Mod-Enter',
+  insertEmptyTodoAbove: 'Mod-Shift-Enter',
+  insertEmptyTodoBelow: 'Mod-Enter',
 };
 export const commands = {
   toggleTodoItemDone,
@@ -127,11 +127,11 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
           [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
           [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
 
-          [keybindings.insertEmptyParaAbove]: filter(
+          [keybindings.insertEmptyTodoAbove]: filter(
             parentCheck,
             insertEmpty(type, 'above', true),
           ),
-          [keybindings.insertEmptyParaBelow]: filter(
+          [keybindings.insertEmptyTodoBelow]: filter(
             parentCheck,
             insertEmpty(type, 'below', true),
           ),

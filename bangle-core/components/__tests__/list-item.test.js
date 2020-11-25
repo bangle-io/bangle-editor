@@ -4847,7 +4847,7 @@ describe('Insert empty list above and below', () => {
   ])('Case %# insert above', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyParaAbove);
+    sendKeyToPm(view, keybindings.insertEmptyListAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -4955,7 +4955,7 @@ describe('Insert empty list above and below', () => {
   ])('Case %# insert below', async (input, expected) => {
     const { view } = testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyParaBelow);
+    sendKeyToPm(view, keybindings.insertEmptyListBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });

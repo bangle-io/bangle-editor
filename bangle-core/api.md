@@ -532,6 +532,60 @@ const plugins = [
 ];
 ```
 
+# listItem: {link.Component}
+
+Creates a listItem `<li/>`. **Requires node components with names `bulletList` and `orderedList` to work**
+
+### spec({ ... }): {link.NodeSpecFactory}
+
+Returns a node spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+### defaultKeys: {link.Keybindings}
+
+- **indent**=`Tab`: Indents the listItem
+
+- **outdent**=`Shift-Tab`: Outdents the listItem
+
+- **moveDown**=`Alt-ArrowDown`: move listItem down
+
+- **moveUp**=`Alt-ArrowUp`: move listItem up
+
+- **emptyCopy**=`Mod-c`: {text.emptyCopy}
+
+- **emptyCut**=`Mod-x`: {text.emptyCut}
+
+- **insertEmptyListAbove**=`Mod-Shift-Enter`: Insert a new list above the current list and move cursor to it.
+
+- **insertEmptyListBelow**=`Mod-Enter`: Insert a new list below the current list and move cursor to it.
+
+### commands: {link.CommandsObject}
+
+## **Usage**
+
+```js
+import { orderedList, bulletList, listItem } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  listItem.spec(),
+  orderedList.spec(),
+  bulletList.spec(),
+];
+
+const plugins = [
+  // other plugins
+  listItem.plugins(),
+  orderedList.plugins(),
+  bulletList.spec(),
+];
+```
+
 # orderedList: {link.Component}
 
 Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**
