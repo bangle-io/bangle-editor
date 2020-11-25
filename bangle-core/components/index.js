@@ -53,11 +53,7 @@ export * as image from './image';
 export * as history from './history';
 
 export function coreSpec(opts = {}) {
-  return [
-    ...coreMarkSpec(opts),
-    ...coreNodeSpec(opts),
-    history.spec(opts.history),
-  ];
+  return [...coreMarkSpec(opts), ...coreNodeSpec(opts)];
 }
 
 export function corePlugins(opts = {}) {
