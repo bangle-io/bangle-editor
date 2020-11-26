@@ -14,13 +14,13 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   setParagraph: convertToParagraph,
-  jumpToStartOfLine: jumpToStartOfParagraph,
-  jumpToEndOfLine: jumpToEndOfParagraph,
+  jumpToStartOfParagraph,
+  jumpToEndOfParagraph,
 };
 
 export const defaultKeys = {
-  jumpToEndOfLine: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
-  jumpToStartOfLine: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
+  jumpToEndOfParagraph: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
+  jumpToStartOfParagraph: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
   moveDown: 'Alt-ArrowDown',
   moveUp: 'Alt-ArrowUp',
   emptyCopy: 'Mod-c',
@@ -74,8 +74,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
         [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
         [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 
-        [keybindings.jumpToStartOfLine]: jumpToStartOfParagraph(),
-        [keybindings.jumpToEndOfLine]: jumpToEndOfParagraph(),
+        [keybindings.jumpToStartOfParagraph]: jumpToStartOfParagraph(),
+        [keybindings.jumpToEndOfParagraph]: jumpToEndOfParagraph(),
 
         [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
         [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
@@ -126,5 +126,19 @@ export function jumpToEndOfParagraph() {
       ),
     );
     return true;
+  };
+}
+
+export function queryIsTopLevelParagraph() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return parentHasDirectParentOfType(type, state.schema.nodes.doc);
+  };
+}
+
+export function queryIsParagraph() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return parentHasDirectParentOfType(type, state.schema.nodes.doc);
   };
 }
