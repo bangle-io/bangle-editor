@@ -126,7 +126,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -142,7 +142,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -158,7 +158,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -178,7 +178,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToStartOfLine);
+      sendKeyToPm(view, keybindings.jumpToStartOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -198,7 +198,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -214,7 +214,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -234,7 +234,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -265,7 +265,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      sendKeyToPm(view, keybindings.jumpToEndOfLine);
+      sendKeyToPm(view, keybindings.jumpToEndOfParagraph);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>

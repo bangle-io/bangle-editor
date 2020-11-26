@@ -635,6 +635,73 @@ const plugins = [
 ];
 ```
 
+# paragraph: {link.Component}
+
+Enables paragraph (`<p/>` in html) nodes in your editor. This is a **required** component and bangle will import it automatically if a `paragraph` spec or plugin is not provided.
+
+### spec(): {link.NodeSpecFactory}
+
+Returns a spec, read more {text.Nodes}.
+
+### plugins({ ... }): {link.PluginsFactory}
+
+Named parameters:
+
+- {text.pluginsParamKeybindings}
+
+### defaultKeys: {link.Keybindings}
+
+- **jumpToStartOfParagraph**=`Ctrl-a (mac) Ctrl-Home (linux/pc)`: Executes the `jumpToStartOfParagraph` command (see commands below).
+
+- **jumpToEndOfParagraph**=`Ctrl-a (mac) Ctrl-Home (linux/pc)`: Executes the `jumpToEndOfParagraph` command (see commands below).
+
+- **moveDown**=`Alt-ArrowDown`: move paragraph down
+
+- **moveUp**=`Alt-ArrowUp`: move paragraph up
+
+- **emptyCopy**=`Mod-c`: {text.emptyCopy}
+
+- **emptyCut**=`Mod-x`: {text.emptyCut}
+
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {text.insertEmptyParaAbove}
+
+- **insertEmptyParaBelow**=`Mod-Enter`: {text.insertEmptyParaBelow}
+
+- **toggleParagraph**=`Ctrl-Shift-0`: Toggles a node to paragraph and vice versa.
+
+### commands: {link.CommandsObject}
+
+- **jumpToStartOfParagraph**(): {link.Command}\
+  Jumps the cursor to the start of paragraph.
+
+- **jumpToEndOfParagraph**(): {link.Command}\
+  Jumps the cursor to the end of paragraph.
+
+- **convertToParagraph**(): {link.Command}\
+  Coverts the node in selection to paragraph type.
+
+- **queryIsParagraph**(): {link.QueryCommand.boolean}\
+  Query if it is paragraph under the selection.
+
+- **queryIsTopLevelParagraph**(): {link.QueryCommand.boolean}\
+  Query if it is paragraph under the selection and it is a direct descendant of the top level `doc` node.
+
+## **Usage**
+
+```js
+import { blockquote } from '@banglejs/core';
+
+const specFactory = [
+  // other specs
+  blockquote.spec(),
+];
+
+const plugins = [
+  // other plugins
+  blockquote.plugins(),
+];
+```
+
 # strike: {link.Component}
 
 Allows text in your editor to be marked as strike.
@@ -679,7 +746,7 @@ const plugins = [
 
 # text: {link.Component}
 
-The text node which the editor uses to wrap the text. This is a required node and if a node spec with name `text` is not provided, BangleJS will automatically use this spec.
+The text node which the editor uses to wrap the text. This is a **required** node and if a node spec with name `text` is not provided, BangleJS will automatically use this spec.
 
 ### spec(): {link.NodeSpecFactory}
 
