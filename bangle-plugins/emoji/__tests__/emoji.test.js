@@ -9,12 +9,15 @@ import {
   markdownParser,
 } from 'bangle-plugins/markdown/markdown-parser';
 import emojiParser from 'markdown-it-emoji';
-import { corePlugins, coreSpec } from 'bangle-core/components/index';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 import { emoji } from '../index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
-const specSheet = new SpecSheet([...coreSpec(), emoji.spec()]);
-const plugins = [...corePlugins(), emoji.plugins()];
+const specSheet = new SpecSheet([...defaultSpecs(), emoji.spec()]);
+const plugins = [...defaultPlugins(), emoji.plugins()];
 
 const testEditor = renderTestEditor({
   specSheet,

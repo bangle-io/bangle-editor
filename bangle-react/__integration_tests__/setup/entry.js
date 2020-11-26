@@ -1,7 +1,10 @@
 import './entry.css';
 import React from 'react';
 import reactDOM from 'react-dom';
-import { corePlugins, coreSpec } from 'bangle-core/index';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { Slice } from 'prosemirror-model';
 import { DOMSerializer } from 'prosemirror-model';
@@ -28,11 +31,11 @@ function setup() {
 
 function App() {
   const specSheet = new SpecSheet([
-    ...coreSpec(),
+    ...defaultSpecs(),
     stopwatch.spec(),
     dino.spec(),
   ]);
-  const plugins = [...corePlugins(), stopwatch.plugins(), dino.plugins()];
+  const plugins = [...defaultPlugins(), stopwatch.plugins(), dino.plugins()];
   window.commands = {
     stopwatch: stopwatch.commands,
     dino: dino.commands,

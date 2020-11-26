@@ -11,7 +11,7 @@ import {
 } from 'bangle-core/test-helpers/index';
 
 import { selectionTooltip } from '../index';
-import { corePlugins, coreSpec } from 'bangle-core/components';
+import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { createTooltipDOM } from '../index';
@@ -24,10 +24,10 @@ describe('selection-tooltip', () => {
     tooltipDOMSpec = createTooltipDOM();
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
-    specSheet = new SpecSheet([...coreSpec()]);
+    specSheet = new SpecSheet();
 
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         tooltipRenderOpts: { tooltipDOMSpec },
@@ -40,7 +40,7 @@ describe('selection-tooltip', () => {
   test('Correctly adds tooltip', async () => {
     const calculateType = jest.fn(() => 'default');
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         calculateType,
@@ -136,7 +136,7 @@ describe('selection-tooltip', () => {
       return state.selection.empty ? null : 'test';
     });
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         calculateType,
@@ -189,10 +189,10 @@ describe('commands', () => {
 
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
-    specSheet = new SpecSheet([...coreSpec()]);
+    specSheet = new SpecSheet();
 
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         tooltipRenderOpts: {
@@ -208,7 +208,7 @@ describe('commands', () => {
       return state.selection.empty ? null : 'test';
     });
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         calculateType,
@@ -244,7 +244,7 @@ describe('commands', () => {
       return state.selection.empty ? null : 'test';
     });
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         calculateType,
@@ -318,7 +318,7 @@ describe('commands', () => {
       return state.selection.empty ? null : 'test';
     });
     const plugins = [
-      ...corePlugins(),
+      ...defaultPlugins(),
       selectionTooltip.plugins({
         key,
         calculateType,

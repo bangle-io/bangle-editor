@@ -10,8 +10,10 @@ import {
 import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
 import { LocalDisk } from 'bangle-plugins/collab/client/local-disk';
-
-import { corePlugins, coreSpec } from 'bangle-core/components';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 
 const START = '💚';
@@ -24,8 +26,8 @@ const NOOP = '_';
 const EMOJI_NOOP = '🐑';
 const ENTER = '↵';
 
-export const specSheet = new SpecSheet([...coreSpec(), collab.spec()]);
-export const editorPlugins = [...corePlugins()];
+export const specSheet = new SpecSheet([...defaultSpecs(), collab.spec()]);
+export const editorPlugins = defaultPlugins();
 
 export function setupDb(doc) {
   return {

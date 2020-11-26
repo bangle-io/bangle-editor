@@ -4,7 +4,7 @@
  */
 
 import { render, act } from '@testing-library/react';
-import { corePlugins, coreSpec } from 'bangle-core/index';
+import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
@@ -24,7 +24,7 @@ const updateCounter = (counter) =>
 
 beforeEach(() => {
   view = undefined;
-  specSheet = new SpecSheet([...coreSpec()]);
+  specSheet = new SpecSheet();
 
   counterPlugin = new Plugin({
     key,
@@ -40,7 +40,7 @@ beforeEach(() => {
       },
     },
   });
-  plugins = [...corePlugins(), counterPlugin];
+  plugins = [...defaultPlugins(), counterPlugin];
 });
 
 function TestComponent({ pluginKey, renderCounter }) {

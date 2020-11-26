@@ -1,8 +1,8 @@
 import { SpecSheet } from '../../spec-sheet';
-import { corePlugins } from '../../components/index';
 import { NodeView } from '../../node-view';
 import { pluginLoader } from '../plugin-loader';
 import { Plugin, PluginGroup, PluginKey } from '../../plugin';
+import { corePlugins } from '../core-components';
 
 describe('nodeViews validation', () => {
   test('Throws error if duplicate nodeViews', () => {

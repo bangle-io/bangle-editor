@@ -64,13 +64,12 @@ Named parameters:
 - **toggleLink** = 'Meta-k'
 
 ```
-import {corePlugins, PluginKey} from '@banglejs/core';
 import {ReactEditor} from '@banglejs/react';
 import {floatingMenu} from '@banglejs/react/menu';
 
 const menuKey = new PluginKey();
 const plugins = [
-  ...corePlugins(),
+  // otherPlugins
   floatingMenu.plugins({ key: menuKey })
 ]
 

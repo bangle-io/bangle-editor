@@ -4,7 +4,11 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditor, corePlugins, coreSpec } from 'bangle-core/index';
+import { BangleEditor } from 'bangle-core/index';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { getRenderHandlers } from 'bangle-core/node-view';
@@ -33,8 +37,8 @@ const insertBananaAtSelection = (attrs = {}) => (dispatch, state) => {
 describe('basic tests', () => {
   let specSheet, plugins;
   beforeEach(() => {
-    specSheet = new SpecSheet([...coreSpec()]);
-    plugins = [...corePlugins()];
+    specSheet = new SpecSheet();
+    plugins = defaultPlugins();
   });
 
   test('mounts correctly', async () => {
@@ -101,8 +105,8 @@ describe('rendering node views', () => {
       <ReactEditor
         options={{
           id: 'test',
-          specSheet: new SpecSheet([...coreSpec()]),
-          plugins: [...corePlugins()],
+          specSheet: new SpecSheet([...defaultSpecs()]),
+          plugins: [...defaultPlugins()],
         }}
         onReady={onReady}
       />,
@@ -123,14 +127,14 @@ describe('rendering node views', () => {
     };
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...coreSpec(), banana.spec()]);
+    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
     expect(() =>
       render(
         <ReactEditor
           options={{
             id: 'test',
             specSheet: spec,
-            plugins: [...corePlugins(), banana.plugins()],
+            plugins: [...defaultPlugins(), banana.plugins()],
             stateOpts: {
               doc: (<doc>
                 <para>
@@ -163,14 +167,14 @@ describe('rendering node views', () => {
     });
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...coreSpec(), banana.spec()]);
+    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
 
     const { container } = await render(
       <ReactEditor
         options={{
           id: 'test',
           specSheet: spec,
-          plugins: [...corePlugins(), banana.plugins()],
+          plugins: [...defaultPlugins(), banana.plugins()],
           stateOpts: {
             doc: (<doc>
               <para>hello world</para>
@@ -250,14 +254,14 @@ describe('rendering node views', () => {
     });
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...coreSpec(), banana.spec()]);
+    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
 
     const { container } = await render(
       <ReactEditor
         options={{
           id: 'test',
           specSheet: spec,
-          plugins: [...corePlugins(), banana.plugins()],
+          plugins: [...defaultPlugins(), banana.plugins()],
           stateOpts: {
             doc: (<doc>
               <para>hello world</para>
@@ -320,14 +324,14 @@ describe('rendering node views', () => {
     });
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...coreSpec(), banana.spec()]);
+    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
 
     const { container } = await render(
       <ReactEditor
         options={{
           id: 'test',
           specSheet: spec,
-          plugins: [...corePlugins(), banana.plugins()],
+          plugins: [...defaultPlugins(), banana.plugins()],
           stateOpts: {
             doc: (<doc>
               <para>hello world</para>

@@ -237,7 +237,7 @@ const plugins = [
 
 # doc: {link.Component}
 
-Top level node needed by the editor to contain every other node. This is a required node and if a node spec with name `doc` is not provided, BangleJS will automatically use this spec.
+Top level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not found in not defined, Bangle will default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -637,7 +637,7 @@ const plugins = [
 
 # paragraph: {link.Component}
 
-Enables paragraph (`<p/>` in html) nodes in your editor. This is a **required** component and bangle will import it automatically if a `paragraph` spec or plugin is not provided.
+Enables paragraph (`<p/>` in html) nodes in your editor. The spec & plugins for this component are **required** for Bangle to function, if a spec named `paragraph` is not found in not defined, Bangle will default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -746,7 +746,7 @@ const plugins = [
 
 # text: {link.Component}
 
-The text node which the editor uses to wrap the text. This is a **required** node and if a node spec with name `text` is not provided, BangleJS will automatically use this spec.
+The text node which the editor uses to wrap the text. The spec & plugins for this component are **required** for Bangle to function, if a spec named `text` is not found in not defined, Bangle will default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 

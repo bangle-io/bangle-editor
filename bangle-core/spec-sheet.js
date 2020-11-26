@@ -1,6 +1,7 @@
 import { Schema } from 'prosemirror-model';
-import { coreSpec, doc, paragraph, text } from './components/index';
+import { doc, paragraph, text } from './components/index';
 import { bangleWarn } from './utils/js-utils';
+import { coreSpec } from './utils/core-components';
 
 export class SpecSheet {
   constructor(rawSpecs = coreSpec(), { defaultSpecs = true } = {}) {

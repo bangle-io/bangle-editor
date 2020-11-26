@@ -5,8 +5,8 @@ import { PluginKey } from 'prosemirror-state';
 import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
-import { corePlugins, NodeView } from 'bangle-core/index';
-import { config } from '../editor/config';
+import * as coreComps from 'bangle-core/components/index';
+import { NodeView } from 'bangle-core/node-view';
 import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
@@ -55,10 +55,25 @@ const getPlugins = ({ docName, manager }) => {
         getScrollContainer,
       },
     }),
-    ...corePlugins({
-      heading: { levels: config.headingLevels },
-      todoItem: { nodeView: false },
-    }),
+    coreComps.bold.plugins(),
+    coreComps.code.plugins(),
+    coreComps.italic.plugins(),
+    coreComps.strike.plugins(),
+    coreComps.link.plugins(),
+    coreComps.underline.plugins(),
+    coreComps.paragraph.plugins(),
+    coreComps.blockquote.plugins(),
+    coreComps.bulletList.plugins(),
+    coreComps.codeBlock.plugins(),
+    coreComps.hardBreak.plugins(),
+    coreComps.heading.plugins(),
+    coreComps.horizontalRule.plugins(),
+    coreComps.listItem.plugins(),
+    coreComps.orderedList.plugins(),
+    coreComps.todoItem.plugins({ nodeView: false }),
+    coreComps.todoList.plugins(),
+    coreComps.image.plugins(),
+    coreComps.history.plugins(),
     collab.plugins(collabOpts),
     emoji.plugins(),
     stopwatch.plugins(),
