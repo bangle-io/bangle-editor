@@ -7,70 +7,70 @@ import { keymap } from 'prosemirror-keymap';
 import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
-import { bangleWarn, recursiveFlat } from './js-utils';
-import { Plugin } from '../plugin';
+import { bangleWarn } from './js-utils';
+import { Plugin, PluginGroup } from '../plugin';
+import { history } from '../components/index';
 
 // TODO do we need tabindex
-// TODO reconfigure plugins
 export function pluginLoader(
   specSheet,
   plugins,
   {
     editorProps,
-    inputRules = true,
-    baseKeymap = true,
-    gapCursor = true,
-    dropCursor = true,
-    validate = true,
+    defaultPlugins = true,
+    dropCursorOpts,
     transformPlugins = (p) => p,
   } = {},
 ) {
   const schema = specSheet.schema;
 
-  plugins = recursiveFlat(plugins, { schema, specSheet });
+  let [flatPlugins, pluginGroupNames] = flatten(plugins, {
+    schema,
+    specSheet,
+  });
 
-  if (inputRules) {
-    plugins = processInputRules(plugins);
-  }
+  if (defaultPlugins) {
+    let defaultPluginGroups = [];
 
-  if (baseKeymap) {
-    plugins.push(keymap(pmBaseKeymap));
+    if (!pluginGroupNames.has('history')) {
+      defaultPluginGroups.push(history.plugins());
+    }
+
+    flatPlugins = flatPlugins.concat(
+      flatten(defaultPluginGroups, { schema, specSheet })[0],
+    );
+
+    flatPlugins = processInputRules(flatPlugins);
+
+    flatPlugins.push(
+      keymap(pmBaseKeymap),
+      pmDropCursor(dropCursorOpts),
+      pmGapCursor(),
+    );
   }
 
   if (editorProps) {
-    plugins.push(
+    flatPlugins.push(
       new Plugin({
         props: editorProps,
       }),
     );
   }
 
-  if (dropCursor) {
-    // Can overload prop dropCursor as options to prosemirror-dropcursor
-    plugins.push(pmDropCursor(dropCursor === true ? undefined : dropCursor));
+  flatPlugins = flatPlugins.filter(Boolean);
+  flatPlugins = transformPlugins(flatPlugins);
+
+  if (flatPlugins.some((p) => !(p instanceof Plugin))) {
+    bangleWarn(
+      'You are either using multiple versions of the library or not returning a Plugin class in your plugins. Investigate :',
+      flatPlugins.find((p) => !(p instanceof Plugin)),
+    );
+    throw new Error('Invalid plugin');
   }
 
-  if (gapCursor) {
-    plugins.push(pmGapCursor());
-  }
+  validateNodeViews(flatPlugins, specSheet);
 
-  plugins = plugins.filter(Boolean);
-
-  plugins = transformPlugins(plugins);
-
-  if (validate) {
-    if (plugins.some((p) => !(p instanceof Plugin))) {
-      bangleWarn(
-        'You are either using multiple versions of the library or not returning a Plugin class in your plugins. Investigate :',
-        plugins.find((p) => !(p instanceof Plugin)),
-      );
-      throw new Error('Invalid plugin');
-    }
-
-    validateNodeViews(plugins, specSheet);
-  }
-
-  return plugins;
+  return flatPlugins;
 }
 
 function processInputRules(
@@ -138,4 +138,35 @@ function validateNodeViews(plugins, specSheet) {
       nodeViewNames.set(name, plugin);
     }
   }
+}
+
+function flatten(rawPlugins, callbackPayload) {
+  const pluginGroupNames = new Set();
+
+  const recurse = (plugins) => {
+    if (Array.isArray(plugins)) {
+      return plugins.flatMap((p) => recurse(p)).filter(Boolean);
+    }
+
+    if (plugins instanceof PluginGroup) {
+      if (pluginGroupNames.has(plugins.name)) {
+        throw new Error(
+          `Duplicate names of pluginGroups ${plugins.name} not allowed.`,
+        );
+      }
+      pluginGroupNames.add(plugins.name);
+      return recurse(plugins.plugins);
+    }
+
+    if (typeof plugins === 'function') {
+      if (!callbackPayload) {
+        throw new Error('Found a function but no payload');
+      }
+      return recurse(plugins(callbackPayload));
+    }
+
+    return plugins;
+  };
+
+  return [recurse(rawPlugins), pluginGroupNames];
 }

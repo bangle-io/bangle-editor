@@ -24,3 +24,19 @@ test('Loads node and marks schema correctly', () => {
     bold: expect.any(MarkType),
   });
 });
+
+test('Loads default nodes', () => {
+  const schema = new SpecSheet([hardBreak.spec(), bold.spec()]).schema;
+  expect(schema.nodes).toMatchObject({
+    doc: expect.any(NodeType),
+    hard_break: expect.any(NodeType),
+    paragraph: expect.any(NodeType),
+    text: expect.any(NodeType),
+  });
+
+  expect(schema.topNodeType.name).toBe('doc');
+
+  expect(schema.marks).toEqual({
+    bold: expect.any(MarkType),
+  });
+});
