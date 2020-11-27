@@ -17,10 +17,10 @@
     "prosemirror-tables": "^1.1.1",
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "^0.9.6",
-    "prosemirror-view": "^1.15.7",
+    "prosemirror-view": "^1.16.3",
     "punycode": "^2.1.1",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.14.0"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.7",

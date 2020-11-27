@@ -3502,7 +3502,7 @@ __metadata:
     prosemirror-tables: ^1.1.1
     prosemirror-transform: ^1.2.7
     prosemirror-utils: ^0.9.6
-    prosemirror-view: ^1.15.2
+    prosemirror-view: ^1.16.3
     tiptap-commands: ^1.14.3
   languageName: unknown
   linkType: soft
@@ -3550,11 +3550,11 @@ __metadata:
     prosemirror-tables: ^1.1.0
     prosemirror-transform: ^1.2.7
     prosemirror-utils: latest
-    prosemirror-view: ^1.15.2
+    prosemirror-view: ^1.16.3
     punycode: ^2.1.1
     react: ^16.13.0
-    react-dom: ^16.13.0
-    react-popper: ^2.2.3
+    react-dom: ^16.14.0
+    react-popper: ^2.2.4
     serve: ^11.3.2
     style-loader: ^1.2.1
     surge: ^0.21.6
@@ -3562,7 +3562,7 @@ __metadata:
     throttle-debounce: ^2.1.0
     tiptap-commands: ^1.14.3
     w3c-keyname: ^2.2.4
-    webpack: ^5.4.0
+    webpack: ^5.8.0
     webpack-cli: ^4.2.0
     webpack-dev-server: latest
   languageName: unknown
@@ -3589,10 +3589,10 @@ __metadata:
     prosemirror-tables: ^1.1.1
     prosemirror-transform: ^1.2.7
     prosemirror-utils: ^0.9.6
-    prosemirror-view: ^1.15.7
+    prosemirror-view: ^1.16.3
     punycode: ^2.1.1
     react: ^16.13.0
-    react-dom: ^16.13.0
+    react-dom: ^16.14.0
   languageName: unknown
   linkType: soft
 
@@ -3617,13 +3617,13 @@ __metadata:
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.12.0
     prosemirror-state: ^1.3.3
-    prosemirror-view: ^1.15.2
+    prosemirror-view: ^1.16.3
     punycode: ^2.1.1
     react: ^16.13.0
-    react-dom: ^16.13.0
+    react-dom: ^16.14.0
     react-test-renderer: ^17.0.1
     style-loader: ^2.0.0
-    webpack: ^5.4.0
+    webpack: ^5.8.0
     webpack-cli: ^4.2.0
     webpack-dev-server: ^3.11.0
   languageName: unknown
@@ -11210,14 +11210,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-view@npm:^1.15.2":
-  version: 1.15.2
-  resolution: "prosemirror-view@npm:1.15.2"
+"prosemirror-view@npm:^1.16.3":
+  version: 1.16.3
+  resolution: "prosemirror-view@npm:1.16.3"
   dependencies:
     prosemirror-model: ^1.1.0
     prosemirror-state: ^1.0.0
     prosemirror-transform: ^1.1.0
-  checksum: 622bcd6cddf728b803089340d5e943606cf402c58d801e86bbd2589540880749223b8f2b1a69f56b9b80959e74bd464fe470dc981a7b1b98dc336e6b7e395202
+  checksum: e9c92ce0b6db16db71e7adb9e6b4b2c5695c82763bbd582e5237d77f4fd018981a5f3d936563cf37795a3188b6eae4ef835576810fe4b57ab771dc7f07096f6c
   languageName: node
   linkType: hard
 
@@ -11408,17 +11408,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.13.0":
-  version: 16.13.1
-  resolution: "react-dom@npm:16.13.1"
+"react-dom@npm:^16.14.0":
+  version: 16.14.0
+  resolution: "react-dom@npm:16.14.0"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
     prop-types: ^15.6.2
     scheduler: ^0.19.1
   peerDependencies:
-    react: ^16.13.1
-  checksum: fb5c3ad41360c6a8674f33916aa895d05e79d063d31a6963074220c1cda9e07e880799d01670b4ebd570b4d3457584f13cc898b5033a05641e8e801f5611607e
+    react: ^16.14.0
+  checksum: a13558f0e7c6d1a98684214460bcd4b9005500015b5048fb1b0d2856786b8764dbc713e6b078a5b1a56e17866400e1d862183c7a0a513ae8351de11f6f6749d2
   languageName: node
   linkType: hard
 
@@ -11443,16 +11443,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-popper@npm:^2.2.3":
-  version: 2.2.3
-  resolution: "react-popper@npm:2.2.3"
+"react-popper@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "react-popper@npm:2.2.4"
   dependencies:
     react-fast-compare: ^3.0.1
     warning: ^4.0.2
   peerDependencies:
     "@popperjs/core": ^2.0.0
-    react: ^16.8.0
-  checksum: 1dbc4a9c385c406fc374ef0a813fc1c9e82a1a00bc71e356b63ead36addea2a819b779e3fa844a2050f4749e9068be26d2078579d0eeffacc67caecc2b05f91d
+    react: ^16.8.0 || ^17
+  checksum: 0b1303d3285e93245fb7e0460996c4dfd53b66152d09e41b1dcb6c9f99932513bf891b4359511aeb3b17eaa2ae8555129631ca2f61337d461e691104cc454898
   languageName: node
   linkType: hard
 
@@ -13222,6 +13222,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"tapable@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "tapable@npm:2.1.1"
+  checksum: 02f2c18d9faaeb4b084af4c3cfbdfe87a89032083bc34103f40595e3eb41a8e6c619ba01726622f9d469a47cd6080af2ca975a2e5a94d5e5c2a7302a327c98a3
+  languageName: node
+  linkType: hard
+
 "tar-fs@npm:^2.0.0":
   version: 2.1.0
   resolution: "tar-fs@npm:2.1.0"
@@ -14210,9 +14217,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "webpack@npm:5.4.0"
+"webpack@npm:^5.8.0":
+  version: 5.8.0
+  resolution: "webpack@npm:5.8.0"
   dependencies:
     "@types/eslint-scope": ^3.7.0
     "@types/estree": ^0.0.45
@@ -14234,7 +14241,7 @@ fsevents@^1.2.7:
     neo-async: ^2.6.2
     pkg-dir: ^4.2.0
     schema-utils: ^3.0.0
-    tapable: ^2.0.0
+    tapable: ^2.1.1
     terser-webpack-plugin: ^5.0.3
     watchpack: ^2.0.0
     webpack-sources: ^2.1.1
@@ -14243,7 +14250,7 @@ fsevents@^1.2.7:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 1da5d7f1f0ec1f8f0a0ef2ef4b374805a9abd9a1a30e8834ab4b2f7793ce43251ea5c50b0132884666bd5189711f2049c66bb06ca6c381bfb022355619dc93bc
+  checksum: be26f7176d16db0b99368baf2cb5a1c5823a0656e61895b28d61081e44ade528cefb2d47007dcb3655c8c8d665bf56958c11da843fa9b5203d86cca99d37b8f7
   languageName: node
   linkType: hard
 

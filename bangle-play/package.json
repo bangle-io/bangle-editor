@@ -33,11 +33,11 @@
     "prosemirror-tables": "^1.1.0",
     "prosemirror-transform": "^1.2.7",
     "prosemirror-utils": "latest",
-    "prosemirror-view": "^1.15.2",
+    "prosemirror-view": "^1.16.3",
     "punycode": "^2.1.1",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "react-popper": "^2.2.3",
+    "react-dom": "^16.14.0",
+    "react-popper": "^2.2.4",
     "tailwindcss": "^1.6.0",
     "throttle-debounce": "^2.1.0",
     "tiptap-commands": "^1.14.3",
@@ -64,7 +64,7 @@
     "serve": "^11.3.2",
     "style-loader": "^1.2.1",
     "surge": "^0.21.6",
-    "webpack": "^5.4.0",
+    "webpack": "^5.8.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "latest"
   }
