@@ -15,7 +15,7 @@ const nodeAlias = {
   li: 'listItem',
   codeBlock: 'codeBlock',
   br: 'hardBreak',
-  hr: 'horizontal_rule',
+  hr: 'horizontalRule',
   todoList: 'todoList',
   todoItem: 'todoItem',
 };
