@@ -21,7 +21,7 @@ const name = 'link';
 
 const getTypeFromSchema = (schema) => schema.marks[name];
 
-function specFactory(opts = {}) {
+function specFactory({ openOnClick = false } = {}) {
   return {
     type: 'mark',
     name,
@@ -73,13 +73,16 @@ function specFactory(opts = {}) {
         },
       },
     },
+    options: {
+      openOnClick,
+    },
   };
 }
 
-function pluginsFactory({ openOnClick = false } = {}) {
-  return ({ schema }) => {
+function pluginsFactory() {
+  return ({ schema, specRegistry }) => {
+    const { openOnClick } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
-
     return [
       pasteLinkify(
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
@@ -89,7 +92,7 @@ function pluginsFactory({ openOnClick = false } = {}) {
         type,
         (match) => ({ href: match }),
       ),
-      !openOnClick &&
+      openOnClick &&
         new Plugin({
           props: {
             handleClick: (view, pos, event) => {

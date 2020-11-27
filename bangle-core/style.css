@@ -1,4 +1,6 @@
-/** Prosemirror */
+/** 
+ * Prosemirror
+ */
 .ProseMirror {
   word-wrap: break-word !important;
   white-space: pre-wrap;
@@ -8,17 +10,19 @@
   font-feature-settings: 'liga' 0; /* the above doesn't seem to work in Edge */
 }
 
-/** So that the element takes full width, else the browser does not 
-  show selection cursor.*/
-.bangle-content-mount {
-  width: 100%;
-}
-
-/** Component Styling */
-
 .ProseMirror-selectednode {
   outline: 4px solid #8cf;
   border-radius: 2px;
+}
+/** Prosemirror-END */
+
+/** 
+ * Bangle
+ */
+.bangle-content-mount {
+  /** So that the element takes full width, else the browser does not 
+    show selection cursor.*/
+  width: 100%;
 }
 
 .bangle-editor p,
@@ -30,8 +34,36 @@ h5,
 h6,
 blockquote,
 pre,
-hr {
+hr,
+figure,
+dl,
+dd {
   margin: 0;
+}
+/** Bangle-end*/
+
+/** 
+ * Component-Styling
+ */
+
+.bangle-editor a {
+  color: #4299e1;
+  text-decoration: underline;
+}
+
+.bangle-editor a:hover {
+  color: #24659b;
+  text-decoration: underline;
+}
+
+.bangle-editor blockquote {
+  padding-left: 0.5rem;
+  background-color: #f7fafc;
+  color: #414e64;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .bangle-editor hr {
@@ -39,26 +71,50 @@ hr {
   padding: 2px 2px;
 }
 
-.bangle-editor pre {
-  white-space: pre-wrap;
+.bangle-editor h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  margin-top: 1.25rem;
 }
 
-.bangle-editor p {
-  font-size: 1rem;
-  line-height: 1.625;
+.bangle-editor h2 {
+  font-size: 1.875rem;
+  margin-bottom: 0.25rem;
+  margin-top: 1rem;
+}
+
+.bangle-editor h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  margin-top: 1rem;
+}
+
+.bangle-editor h4 {
   font-size: 1.125rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  margin-top: 1rem;
 }
 
-.bangle-editor p > code {
-  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
-  padding: 0.2em 0.4em;
-  margin: 0 0.1em;
-  font-size: 85%;
-  background-color: rgba(29, 30, 35, 0.06);
-  border-radius: 6px;
+.bangle-editor h5 {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 0.1rem;
+  margin-top: 0.5rem;
+}
+
+.bangle-editor h6 {
+  font-weight: 500;
+  font-size: 0.75rem;
+  margin-bottom: 0.1rem;
+  margin-top: 0.5rem;
+}
+
+.bangle-editor img {
+  margin: 0 0.25rem;
+  border: 1px solid grey;
+  padding: 2px;
 }
 
 .bangle-editor li {
@@ -80,6 +136,17 @@ hr {
   pointer-events: none;
 }
 
+.bangle-editor li[data-bangle-name='todoItem'] {
+  display: flex;
+  flex-direction: row;
+}
+
+.bangle-editor li[data-bangle-name='todoItem'] > span:first-child > input {
+  margin-top: 0.5rem;
+  margin-right: 6px;
+  outline: none;
+}
+
 /** Ordered list */
 .bangle-editor > ol {
   margin-top: 0.5rem;
@@ -90,6 +157,35 @@ hr {
   list-style-type: decimal;
   list-style-position: outside;
   padding-left: 1.5rem;
+}
+
+.bangle-editor p {
+  font-size: 1rem;
+  line-height: 1.625;
+  font-size: 1.125rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+.bangle-editor p > code {
+  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+  padding: 0.2em 0.4em;
+  margin: 0 0.1em;
+  font-size: 85%;
+  background-color: rgba(29, 30, 35, 0.06);
+  border-radius: 6px;
+}
+
+.bangle-editor pre {
+  white-space: pre-wrap;
+  border-color: #718096;
+  padding-left: 0.5rem;
+  background-color: #edf2f7;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 /** Bullet List */
@@ -109,20 +205,11 @@ hr {
   padding-left: 0.125rem;
 }
 
-.bangle-editor li[data-bangle-name='todoItem'] {
-  display: flex;
-  flex-direction: row;
-}
+/** Component-Styling-END */
 
-.bangle-editor li[data-bangle-name='todoItem'] > span:first-child > input {
-  margin-top: 0.5rem;
-  margin-right: 6px;
-  outline: none;
-}
-
-/** Component Styling:End */
-
-/** Gap Cursor */
+/** 
+ * Prosemirror-Gap-Cursor 
+ */
 /** From https://github.com/ProseMirror/prosemirror-gapcursor/blob/master/style/gapcursor.css */
 .ProseMirror-gapcursor {
   display: none;
@@ -159,5 +246,4 @@ hr {
 .ProseMirror-hideselection {
   caret-color: transparent;
 }
-
-/** Gap Cursor:End */
+/** Prosemirror-Gap-Cursor-END */
