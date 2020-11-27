@@ -40,7 +40,6 @@
     "react-popper": "^2.2.4",
     "tailwindcss": "^1.6.0",
     "throttle-debounce": "^2.1.0",
-    "tiptap-commands": "^1.14.3",
     "w3c-keyname": "^2.2.4"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
-import { markInputRule, markPasteRule } from 'tiptap-commands';
+import { markInputRule } from 'bangle-core/utils/mark-input-rule';
+import { markPasteRule } from 'bangle-core/utils/mark-paste-rule';
 import { toggleMark } from 'prosemirror-commands';
 import { isMarkActiveInSelection, filter } from 'bangle-core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
