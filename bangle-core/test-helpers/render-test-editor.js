@@ -4,7 +4,7 @@
 
 import { TextSelection } from 'prosemirror-state';
 import { getDocLabels } from './schema-builders';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { BangleEditor } from 'bangle-core/editor';
 import { defaultPlugins, defaultSpecs } from './default-components';
 
@@ -22,18 +22,18 @@ if (typeof afterEach === 'function') {
 /**
  *
  * @param {*} param0
- * @param {SpecSheet | undefined | Object} param0.specSheet pass an object to set properties to all default
- *                        specs, for example calling `renderTestEditor({ specSheet: {heading: {level : 4}}}))`
+ * @param {SpecRegistry | undefined | Object} param0.specRegistry pass an object to set properties to all default
+ *                        specs, for example calling `renderTestEditor({ specRegistry: {heading: {level : 4}}}))`
  *                        will use all the defaultSpecs with heading spec getting the options `{level:4}`.
- * @param {Array<PluginFactory> | undefined | Object} param0.specSheet passing an object behaves similar to specSheet param.
+ * @param {Array<PluginFactory> | undefined | Object} param0.specRegistry passing an object behaves similar to specRegistry param.
  * @param {*} testId
  */
 export function renderTestEditor(
-  { specSheet, plugins, ...opts } = {},
+  { specRegistry, plugins, ...opts } = {},
   testId = 'test-editor',
 ) {
-  if (!(specSheet instanceof SpecSheet)) {
-    specSheet = new SpecSheet(defaultSpecs(specSheet));
+  if (!(specRegistry instanceof SpecRegistry)) {
+    specRegistry = new SpecRegistry(defaultSpecs(specRegistry));
   }
 
   if (!plugins || !Array.isArray(plugins)) {
@@ -51,7 +51,7 @@ export function renderTestEditor(
     };
 
     let editor = new BangleEditor(container, {
-      specSheet,
+      specRegistry,
       plugins,
       editorProps,
       ...opts,

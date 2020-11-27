@@ -4,13 +4,13 @@
 
 /** @jsx pjsx */
 import { link } from 'bangle-core/index';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { reactTestEditor, pjsx } from 'bangle-react/__tests__/helpers/index';
 import { PluginKey, TextSelection } from 'prosemirror-state';
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
-const specSheet = new SpecSheet();
+const specRegistry = new SpecRegistry();
 const plugins = [
   link.plugins(),
   floatingMenu.plugins({
@@ -20,7 +20,7 @@ const plugins = [
 
 describe('Link menu', () => {
   test('when no link', async () => {
-    const testEditor = reactTestEditor({ specSheet, plugins });
+    const testEditor = reactTestEditor({ specRegistry, plugins });
     const { view, container } = await testEditor(
       <doc>
         <para>foo[]bar</para>
@@ -37,7 +37,7 @@ describe('Link menu', () => {
   });
 
   test('when link but not in selection', async () => {
-    const testEditor = reactTestEditor({ specSheet, plugins });
+    const testEditor = reactTestEditor({ specRegistry, plugins });
     const { view } = await testEditor(
       <doc>
         <para>
@@ -57,7 +57,7 @@ describe('Link menu', () => {
   });
 
   test('when selection moves inside link', async () => {
-    const testEditor = reactTestEditor({ specSheet, plugins });
+    const testEditor = reactTestEditor({ specRegistry, plugins });
     const { view } = await testEditor(
       <doc>
         <para>

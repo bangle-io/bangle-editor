@@ -1,4 +1,4 @@
-import { SpecSheet } from '../../spec-sheet';
+import { SpecRegistry } from '../../spec-registry';
 import { NodeView } from '../../node-view';
 import { pluginLoader } from '../plugin-loader';
 import { Plugin, PluginGroup, PluginKey } from '../../plugin';
@@ -14,7 +14,7 @@ describe('nodeViews validation', () => {
     ];
 
     expect(() =>
-      pluginLoader(new SpecSheet(), plugins),
+      pluginLoader(new SpecRegistry(), plugins),
     ).toThrowErrorMatchingInlineSnapshot(
       `"NodeView validation failed. Duplicate nodeViews for 'todoItem' found."`,
     );
@@ -28,7 +28,7 @@ describe('nodeViews validation', () => {
       }),
     ];
 
-    expect(() => pluginLoader(new SpecSheet(), plugins)).not.toThrowError();
+    expect(() => pluginLoader(new SpecRegistry(), plugins)).not.toThrowError();
   });
 
   test('Throws error if node spec not found', () => {
@@ -40,7 +40,7 @@ describe('nodeViews validation', () => {
     ];
 
     expect(() =>
-      pluginLoader(new SpecSheet(), plugins),
+      pluginLoader(new SpecRegistry(), plugins),
     ).toThrowErrorMatchingInlineSnapshot(
       `"NodeView validation failed. Spec for 'random_thing' not found."`,
     );
@@ -65,7 +65,7 @@ describe('Flattens plugins correctly', () => {
 
     const group4 = new Plugin({ key: new PluginKey('group4.first') });
     expect(
-      pluginLoader(new SpecSheet(), [group1, group2, group3, group4]).map(
+      pluginLoader(new SpecRegistry(), [group1, group2, group3, group4]).map(
         (r) => r.key,
       ),
     ).toEqual(
@@ -93,7 +93,7 @@ describe('Flattens plugins correctly', () => {
     ];
 
     expect(() =>
-      pluginLoader(new SpecSheet(), [group1]),
+      pluginLoader(new SpecRegistry(), [group1]),
     ).toThrowErrorMatchingInlineSnapshot(
       `"Duplicate names of pluginGroups grp1_child not allowed."`,
     );
@@ -101,7 +101,7 @@ describe('Flattens plugins correctly', () => {
 
   test('Includes history if not provided', () => {
     expect(
-      pluginLoader(new SpecSheet(), []).some((r) =>
+      pluginLoader(new SpecRegistry(), []).some((r) =>
         r.key.startsWith('history$'),
       ),
     ).toBe(true);
@@ -109,7 +109,7 @@ describe('Flattens plugins correctly', () => {
 
   test('Does not include history if pluginGroup with name history exists', () => {
     expect(
-      pluginLoader(new SpecSheet(), [
+      pluginLoader(new SpecRegistry(), [
         new PluginGroup('history', []),
       ]).some((r) => r.key.startsWith('history$')),
     ).toBe(false);

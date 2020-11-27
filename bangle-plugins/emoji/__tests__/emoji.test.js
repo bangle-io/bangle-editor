@@ -14,13 +14,13 @@ import {
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 import { emoji } from '../index';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 
-const specSheet = new SpecSheet([...defaultSpecs(), emoji.spec()]);
+const specRegistry = new SpecRegistry([...defaultSpecs(), emoji.spec()]);
 const plugins = [...defaultPlugins(), emoji.plugins()];
 
 const testEditor = renderTestEditor({
-  specSheet,
+  specRegistry,
   plugins,
 });
 
@@ -76,13 +76,13 @@ describe('markdown', () => {
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
-      content = doc(specSheet.schema);
+      content = doc(specRegistry.schema);
     }
-    return markdownSerializer(specSheet).serialize(content);
+    return markdownSerializer(specRegistry).serialize(content);
   };
   const parse = async (md) =>
     markdownParser(
-      specSheet,
+      specRegistry,
       defaultMarkdownItTokenizer.use(emojiParser),
     ).parse(md);
 

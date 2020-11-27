@@ -14,7 +14,7 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 
 const START = '💚';
 const END = '🖤';
@@ -26,7 +26,10 @@ const NOOP = '_';
 const EMOJI_NOOP = '🐑';
 const ENTER = '↵';
 
-export const specSheet = new SpecSheet([...defaultSpecs(), collab.spec()]);
+export const specRegistry = new SpecRegistry([
+  ...defaultSpecs(),
+  collab.spec(),
+]);
 export const editorPlugins = defaultPlugins();
 
 export function setupDb(doc) {
@@ -56,7 +59,7 @@ export function setupDb(doc) {
 
 export function setup(db = setupDb(), { managerOpts }) {
   let disk = new LocalDisk(db, { saveDebounce: 50 });
-  const manager = new Manager(specSheet.schema, {
+  const manager = new Manager(specRegistry.schema, {
     disk,
     ...managerOpts,
   });
@@ -77,7 +80,7 @@ export function setup(db = setupDb(), { managerOpts }) {
     createEditor: async function (id, docName) {
       const editor = renderTestEditor(
         {
-          specSheet: specSheet,
+          specRegistry: specRegistry,
           plugins: [
             ...editorPlugins,
             collab.plugins({

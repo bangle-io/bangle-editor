@@ -25,7 +25,7 @@ import {
   text,
   paragraph,
 } from '../index';
-import { SpecSheet } from '../../spec-sheet';
+import { SpecRegistry } from '../../spec-registry';
 import {
   enterKeyCommand,
   toggleList,
@@ -35,7 +35,7 @@ import { defaultKeys as orderedListDefaultKeys } from '../ordered-list';
 import { defaultKeys as bulletListDefaultKeys } from '../bullet-list';
 import { NodeSelection } from 'prosemirror-state';
 
-const specSheet = new SpecSheet([
+const specRegistry = new SpecRegistry([
   doc.spec(),
   text.spec(),
   paragraph.spec(),
@@ -63,7 +63,7 @@ const plugins = [
   strike.plugins(),
 ];
 
-const testEditor = renderTestEditor({ specSheet, plugins });
+const testEditor = renderTestEditor({ specRegistry, plugins });
 
 const keybindings = listItem.defaultKeys;
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { IndexDbWorkspace } from './workspace';
 import { INDEXDB_TYPE } from './type-helpers';
 import { WorkspacesInfo } from './workspaces-info';
-import { specSheet } from '../editor/spec-sheet';
+import { specRegistry } from '../editor/spec-sheet';
 
 const LOG = false;
 
@@ -310,7 +310,7 @@ export class WorkspaceContextProvider extends React.PureComponent {
     /**@type {Workspace | undefined} */
     workspace: null,
     openedDocuments: [],
-    schema: specSheet.schema,
+    schema: specRegistry.schema,
     availableWorkspacesInfo: null,
     pendingWorkspaceInfo: null,
   };

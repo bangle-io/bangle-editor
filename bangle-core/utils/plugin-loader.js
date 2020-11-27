@@ -13,7 +13,7 @@ import { history } from '../components/index';
 
 // TODO do we need tabindex
 export function pluginLoader(
-  specSheet,
+  specRegistry,
   plugins,
   {
     editorProps,
@@ -22,11 +22,11 @@ export function pluginLoader(
     transformPlugins = (p) => p,
   } = {},
 ) {
-  const schema = specSheet.schema;
+  const schema = specRegistry.schema;
 
   let [flatPlugins, pluginGroupNames] = flatten(plugins, {
     schema,
-    specSheet,
+    specRegistry,
   });
 
   if (defaultPlugins) {
@@ -37,7 +37,7 @@ export function pluginLoader(
     }
 
     flatPlugins = flatPlugins.concat(
-      flatten(defaultPluginGroups, { schema, specSheet })[0],
+      flatten(defaultPluginGroups, { schema, specRegistry })[0],
     );
 
     flatPlugins = processInputRules(flatPlugins);
@@ -68,7 +68,7 @@ export function pluginLoader(
     throw new Error('Invalid plugin');
   }
 
-  validateNodeViews(flatPlugins, specSheet);
+  validateNodeViews(flatPlugins, specRegistry);
 
   return flatPlugins;
 }
@@ -107,17 +107,17 @@ function processInputRules(
   return plugins;
 }
 
-function validateNodeViews(plugins, specSheet) {
+function validateNodeViews(plugins, specRegistry) {
   const nodeViewPlugins = plugins.filter((p) => p.props && p.props.nodeViews);
   const nodeViewNames = new Map();
   for (const plugin of nodeViewPlugins) {
     for (const name of Object.keys(plugin.props.nodeViews)) {
-      if (!specSheet.schema.nodes[name]) {
+      if (!specRegistry.schema.nodes[name]) {
         bangleWarn(
           `When loading your plugins, we found nodeView implementation for the node '${name}' did not have a corresponding spec. Check the plugin:`,
           plugin,
-          'and your specSheet',
-          specSheet,
+          'and your specRegistry',
+          specRegistry,
         );
 
         throw new Error(

@@ -94,8 +94,8 @@ function specFactory({ nested = true, draggable = true } = {}) {
 }
 
 function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
-  return ({ schema, specSheet }) => {
-    const { nested } = specSheet.options[name];
+  return ({ schema, specRegistry }) => {
+    const { nested } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));

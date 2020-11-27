@@ -1,4 +1,4 @@
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import markdownIt from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { todoListMarkdownItPlugin } from './todo-list-markdown-it-plugin';
@@ -8,18 +8,21 @@ export const defaultMarkdownItTokenizer = markdownIt().use(
 );
 
 export function markdownParser(
-  specSheet = new SpecSheet(),
+  specRegistry = new SpecRegistry(),
   markdownItTokenizer = defaultMarkdownItTokenizer,
   { useDefaults = true } = {},
 ) {
-  const { tokens } = markdownLoader(specSheet, { useDefaults });
+  const { tokens } = markdownLoader(specRegistry, { useDefaults });
 
-  return new MarkdownParser(specSheet.schema, markdownItTokenizer, tokens);
+  return new MarkdownParser(specRegistry.schema, markdownItTokenizer, tokens);
 }
 
-export function markdownLoader(specSheet = new SpecSheet(), { useDefaults }) {
+export function markdownLoader(
+  specRegistry = new SpecRegistry(),
+  { useDefaults },
+) {
   const tokens = Object.fromEntries(
-    specSheet.spec
+    specRegistry.spec
       .filter((e) => e.markdown?.parseMarkdown)
       .flatMap((e) => {
         return Object.entries(e.markdown.parseMarkdown);
@@ -27,7 +30,7 @@ export function markdownLoader(specSheet = new SpecSheet(), { useDefaults }) {
   );
 
   const nodeSerializer = Object.fromEntries(
-    specSheet.spec
+    specRegistry.spec
       .filter((spec) => spec.type === 'node' && spec.markdown?.toMarkdown)
       .map((spec) => {
         return [spec.name, spec.markdown.toMarkdown];
@@ -35,7 +38,7 @@ export function markdownLoader(specSheet = new SpecSheet(), { useDefaults }) {
   );
 
   const markSerializer = Object.fromEntries(
-    specSheet.spec
+    specRegistry.spec
       .filter((spec) => spec.type === 'mark' && spec.markdown?.toMarkdown)
       .map((spec) => {
         return [spec.name, spec.markdown.toMarkdown];

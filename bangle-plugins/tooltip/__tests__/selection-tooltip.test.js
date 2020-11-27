@@ -13,18 +13,18 @@ import {
 import { selectionTooltip } from '../index';
 import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 
 describe('selection-tooltip', () => {
-  let testEditor, specSheet, tooltipDOMSpec;
+  let testEditor, specRegistry, tooltipDOMSpec;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
     tooltipDOMSpec = createTooltipDOM();
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
-    specSheet = new SpecSheet();
+    specRegistry = new SpecRegistry();
 
     const plugins = [
       ...defaultPlugins(),
@@ -34,7 +34,7 @@ describe('selection-tooltip', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
   });
 
   test('Correctly adds tooltip', async () => {
@@ -48,7 +48,7 @@ describe('selection-tooltip', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
 
     const { view } = await testEditor(
       <doc>
@@ -146,7 +146,7 @@ describe('selection-tooltip', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
 
     const { view } = await testEditor(
       <doc>
@@ -182,14 +182,14 @@ describe('selection-tooltip', () => {
 });
 
 describe('commands', () => {
-  let testEditor, tooltipDOMSpec, specSheet;
+  let testEditor, tooltipDOMSpec, specRegistry;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
     tooltipDOMSpec = createTooltipDOM();
 
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
-    specSheet = new SpecSheet();
+    specRegistry = new SpecRegistry();
 
     const plugins = [
       ...defaultPlugins(),
@@ -201,7 +201,7 @@ describe('commands', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
   });
   test('updateSelectionTooltipType should not trigger calculateType', async () => {
     const calculateType = jest.fn((state, prevPluginState) => {
@@ -218,7 +218,7 @@ describe('commands', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
 
     const { view } = await testEditor(
       <doc>
@@ -254,7 +254,7 @@ describe('commands', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
 
     const { view } = await testEditor(
       <doc>
@@ -328,7 +328,7 @@ describe('commands', () => {
       }),
     ];
 
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
 
     const { view } = await testEditor(
       <doc>

@@ -5,7 +5,7 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { Slice } from 'prosemirror-model';
 import { DOMSerializer } from 'prosemirror-model';
 import { dino } from 'bangle-react/dino';
@@ -30,7 +30,7 @@ function setup() {
 }
 
 function App() {
-  const specSheet = new SpecSheet([
+  const specRegistry = new SpecRegistry([
     ...defaultSpecs(),
     stopwatch.spec(),
     dino.spec(),
@@ -57,7 +57,7 @@ function App() {
   };
   return (
     <ReactEditor
-      options={{ id: 'pm-root', specSheet, plugins }}
+      options={{ id: 'pm-root', specRegistry, plugins }}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
     />

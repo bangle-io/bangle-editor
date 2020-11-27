@@ -21,9 +21,9 @@ import {
   paragraph,
 } from '../index';
 import { queryLinkMarkAtSelection, updateLinkAtSelection } from '../link';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 
-const specSheet = new SpecSheet([
+const specRegistry = new SpecRegistry([
   doc.spec(),
   text.spec(),
   paragraph.spec(),
@@ -43,7 +43,7 @@ const plugins = [
   orderedList.plugins(),
 ];
 
-const testEditor = renderTestEditor({ specSheet, plugins });
+const testEditor = renderTestEditor({ specRegistry, plugins });
 
 test('Creates a link correctly', async () => {
   const { editorView } = testEditor(

@@ -7,7 +7,7 @@ import {
 import { defaultContent } from './constants';
 import { LocalDisk } from 'bangle-plugins/collab/client/local-disk';
 import { Manager } from 'bangle-plugins/collab/server/manager';
-import { specSheet } from '../editor/spec-sheet';
+import { specRegistry } from '../editor/spec-sheet';
 import { config } from 'bangle-play/config';
 import { WorkspacesInfo } from '../workspace/workspaces-info';
 import { IndexDbWorkspace } from '../workspace/workspace';
@@ -29,7 +29,7 @@ async function findMatchingWorkspace(docName, schema) {
 export class EditorManager extends React.PureComponent {
   static contextType = WorkspaceContext;
 
-  schema = specSheet.schema;
+  schema = specRegistry.schema;
   cache = new WeakMap();
 
   disk = new LocalDisk({

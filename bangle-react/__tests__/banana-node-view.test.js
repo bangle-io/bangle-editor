@@ -1,7 +1,7 @@
 /** @jsx pjsx */
 
 import { screen } from '@testing-library/dom';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import {
   defaultPlugins,
   defaultSpecs,
@@ -19,10 +19,14 @@ const renderNodeViews = jest.fn(({ node, ...args }) => {
 describe('Inline node banana', () => {
   test('Inits banana', async () => {
     const banana = bananaComponent();
-    const specSheet = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const specRegistry = new SpecRegistry([...defaultSpecs(), banana.spec()]);
     const plugins = [...defaultPlugins(), banana.plugins()];
 
-    const testEditor = reactTestEditor({ specSheet, plugins, renderNodeViews });
+    const testEditor = reactTestEditor({
+      specRegistry,
+      plugins,
+      renderNodeViews,
+    });
 
     const { view, editor } = await testEditor(
       <doc>
@@ -48,9 +52,13 @@ describe('Inline node banana', () => {
   test('Can update attrs', async () => {
     const testId = 'Can update attrs';
     const banana = bananaComponent(testId);
-    const specSheet = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const specRegistry = new SpecRegistry([...defaultSpecs(), banana.spec()]);
     const plugins = [...defaultPlugins(), banana.plugins()];
-    const testEditor = reactTestEditor({ specSheet, plugins, renderNodeViews });
+    const testEditor = reactTestEditor({
+      specRegistry,
+      plugins,
+      renderNodeViews,
+    });
 
     const { view, posLabels } = await testEditor(
       <doc>

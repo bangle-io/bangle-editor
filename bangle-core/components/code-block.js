@@ -65,21 +65,22 @@ function pluginsFactory({
 
     return [
       markdownShortcut && textblockTypeInputRule(/^```$/, type),
-      keymap({
-        [keybindings.toCodeBlock]: setBlockType(type),
+      keybindings &&
+        keymap({
+          [keybindings.toCodeBlock]: setBlockType(type),
 
-        [keybindings.moveUp]: moveNode(type, 'UP'),
-        [keybindings.moveDown]: moveNode(type, 'DOWN'),
+          [keybindings.moveUp]: moveNode(type, 'UP'),
+          [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
-        [keybindings.insertEmptyParaAbove]: filter(
-          queryIsSelectionInCodeBlock(),
-          insertEmpty(schema.nodes.paragraph, 'above', false),
-        ),
-        [keybindings.insertEmptyParaBelow]: filter(
-          queryIsSelectionInCodeBlock(),
-          insertEmpty(schema.nodes.paragraph, 'below', false),
-        ),
-      }),
+          [keybindings.insertEmptyParaAbove]: filter(
+            queryIsSelectionInCodeBlock(),
+            insertEmpty(schema.nodes.paragraph, 'above', false),
+          ),
+          [keybindings.insertEmptyParaBelow]: filter(
+            queryIsSelectionInCodeBlock(),
+            insertEmpty(schema.nodes.paragraph, 'below', false),
+          ),
+        }),
     ];
   };
 }

@@ -53,9 +53,10 @@ function pluginsFactory({
     const type = getTypeFromSchema(schema);
     return [
       markdownShortcut && wrappingInputRule(/^\s*(\[ \])\s$/, type),
-      keymap({
-        [keybindings.toggle]: toggleList(type, schema.nodes.todoItem),
-      }),
+      keybindings &&
+        keymap({
+          [keybindings.toggle]: toggleList(type, schema.nodes.todoItem),
+        }),
     ];
   };
 }

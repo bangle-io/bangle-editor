@@ -1,10 +1,10 @@
 import { MarkType, NodeType } from 'prosemirror-model';
 import { hardBreak, doc, paragraph, text } from '../components/index';
 import { bold } from '../components/index';
-import { SpecSheet } from '../spec-sheet';
+import { SpecRegistry } from '../spec-registry';
 
 test('Loads node and marks schema correctly', () => {
-  const schema = new SpecSheet([
+  const schema = new SpecRegistry([
     doc.spec(),
     text.spec(),
     hardBreak.spec(),
@@ -26,7 +26,7 @@ test('Loads node and marks schema correctly', () => {
 });
 
 test('Loads default nodes', () => {
-  const schema = new SpecSheet([hardBreak.spec(), bold.spec()]).schema;
+  const schema = new SpecRegistry([hardBreak.spec(), bold.spec()]).schema;
   expect(schema.nodes).toMatchObject({
     doc: expect.any(NodeType),
     hardBreak: expect.any(NodeType),
