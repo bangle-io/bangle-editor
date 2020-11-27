@@ -99,7 +99,9 @@ describe('Basics', () => {
     );
   });
 
-  // TODO this is broken for some reason
+  // TODO this is broken because basic keyboard ops like
+  // these are left to be handled by the browser. PM watches them
+  // and sync them.
   test.skip('is able to backspace', async () => {
     const { view } = testEditor(
       <doc>

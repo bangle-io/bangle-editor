@@ -43,7 +43,7 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInUnderline works correctly', async () => {
+  test('queryIsUnderlineActive works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
@@ -62,8 +62,6 @@ describe('Basic', () => {
 
     setSelectionNear(view, 9);
 
-    expect(underline.commands.queryIsSelectionInUnderline()(view.state)).toBe(
-      true,
-    );
+    expect(underline.commands.queryIsUnderlineActive()(view.state)).toBe(true);
   });
 });

@@ -8,7 +8,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleCode,
-  queryIsSelectionInCode,
+  queryIsCodeActive,
 };
 export const defaultKeys = {
   toggleCode: 'Mod-`',
@@ -46,6 +46,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({
+  markdownShortcut = true,
   escapeAtEdge = true,
   keybindings = defaultKeys,
 } = {}) {
@@ -60,8 +61,8 @@ function pluginsFactory({
     ];
 
     return [
-      markPasteRule(/(?:`)([^`]+)(?:`)/g, type),
-      markInputRule(/(?:`)([^`]+)(?:`)$/, type),
+      markdownShortcut && markPasteRule(/(?:`)([^`]+)(?:`)/g, type),
+      markdownShortcut && markInputRule(/(?:`)([^`]+)(?:`)$/, type),
       keybindings &&
         keymap({
           [keybindings.toggleCode]: toggleMark(type),
@@ -256,6 +257,6 @@ export function toggleCode() {
     toggleMark(state.schema.marks[name])(state, dispatch, view);
 }
 
-export function queryIsSelectionInCode() {
+export function queryIsCodeActive() {
   return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
 }

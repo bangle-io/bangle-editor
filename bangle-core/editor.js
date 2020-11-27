@@ -1,6 +1,5 @@
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
-import { focusAtPosition } from './components/doc';
 import { pluginLoader } from './utils/plugin-loader';
 import { isTestEnv } from './utils/environment';
 import { DOMSerializer, DOMParser } from 'prosemirror-model';
@@ -89,7 +88,6 @@ export function editorStateSetup({
 }
 
 const createDocument = ({ schema, content, parseOptions }) => {
-  // TODO : this assumes a lot about schema
   const emptyDocument = {
     type: 'doc',
     content: [

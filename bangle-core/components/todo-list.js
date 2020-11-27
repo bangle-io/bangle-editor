@@ -11,7 +11,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleTodoList,
-  queryIsSelectionInsideTodoList,
+  queryIsTodoListActive,
 };
 export const defaultKeys = {
   toggle: 'Shift-Ctrl-7',
@@ -72,7 +72,7 @@ export function toggleTodoList() {
   };
 }
 
-export function queryIsSelectionInsideTodoList() {
+export function queryIsTodoListActive() {
   return (state) => {
     const { schema } = state;
     return parentHasDirectParentOfType(

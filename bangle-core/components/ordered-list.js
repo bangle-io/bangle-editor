@@ -86,7 +86,7 @@ export function toggleOrderedList() {
   };
 }
 
-export function queryIsSelectionInsideBulletList() {
+export function queryIsBulletListActive() {
   return (state) => {
     const { schema } = state;
     return parentHasDirectParentOfType(schema.nodes['listItem'], [

@@ -7,7 +7,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleUnderline,
-  queryIsSelectionInUnderline,
+  queryIsUnderlineActive,
 };
 export const defaultKeys = {
   toggleUnderline: 'Mod-u',
@@ -68,7 +68,7 @@ export function toggleUnderline() {
   };
 }
 
-export function queryIsSelectionInUnderline() {
+export function queryIsUnderlineActive() {
   return (state) => {
     return isMarkActiveInSelection(state.schema.marks[name])(state);
   };

@@ -1,14 +1,11 @@
 import React, { useContext, useRef, useState } from 'react';
-import {
-  updateLinkAtSelection,
-  queryLinkMarkAtSelection,
-} from 'bangle-core/components/link';
+import { updateLink, queryLinkAttrs } from 'bangle-core/components/link';
 import { EditorViewContext } from 'bangle-react/ReactEditor';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
 
 export function FloatingLinkMenu({ getIsTop = () => true }) {
   const view = useContext(EditorViewContext);
-  const result = queryLinkMarkAtSelection()(view.state);
+  const result = queryLinkAttrs()(view.state);
   const originalHref = (result && result.href) || '';
 
   return (
@@ -29,7 +26,7 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
   const inputRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateLinkAtSelection(href)(view.state, view.dispatch);
+    updateLink(href)(view.state, view.dispatch);
     view.focus();
   };
 
@@ -72,7 +69,7 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
       {href === originalHref ? (
         <CloseIcon
           onClick={() => {
-            updateLinkAtSelection()(view.state, view.dispatch);
+            updateLink()(view.state, view.dispatch);
             view.focus();
           }}
         />

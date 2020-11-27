@@ -44,7 +44,7 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInStrike works correctly', async () => {
+  test('queryIsStrikeActive works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
@@ -63,6 +63,6 @@ describe('Basic', () => {
 
     setSelectionNear(view, 9);
 
-    expect(strike.commands.queryIsSelectionInStrike()(view.state)).toBe(true);
+    expect(strike.commands.queryIsStrikeActive()(view.state)).toBe(true);
   });
 });

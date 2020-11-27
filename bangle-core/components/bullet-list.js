@@ -8,7 +8,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleBulletList,
-  queryIsSelectionInsideBulletList,
+  queryIsBulletListActive,
 };
 export const defaultKeys = {
   toggle: 'Shift-Ctrl-8',
@@ -67,7 +67,7 @@ export function toggleBulletList() {
   };
 }
 
-export function queryIsSelectionInsideBulletList() {
+export function queryIsBulletListActive() {
   return (state) => {
     const { schema } = state;
     return parentHasDirectParentOfType(schema.nodes['listItem'], [

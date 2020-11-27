@@ -44,7 +44,7 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInBold works correctly', async () => {
+  test('queryIsBoldActive works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
@@ -63,6 +63,6 @@ describe('Basic', () => {
 
     setSelectionNear(view, 9);
 
-    expect(bold.commands.queryIsSelectionInBold()(view.state)).toBe(true);
+    expect(bold.commands.queryIsBoldActive()(view.state)).toBe(true);
   });
 });

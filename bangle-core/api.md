@@ -1,6 +1,6 @@
 # blockquote: {link.Component}
 
-Enables blockquote in your editor.
+Enables blockquote in your editor. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -11,6 +11,9 @@ Returns a node spec, read more {text.Nodes}.
 Named parameters:
 
 - {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a blockquote. If enabled, type `>` followed by a space to create one.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -30,7 +33,7 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
-- **queryIsSelectionInBlockQuote**(): {link.QueryCommand.boolean}\
+- **queryIsBlockQuoteActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a blockquote or not.
 
 ## **Usage**
@@ -51,7 +54,7 @@ const plugins = [
 
 # bold: {link.Component}
 
-Allows text in your editor to be marked as bold. Comes with the markdown shortcut `**text**` to enable bold mark.
+Allows text in your editor to be marked as bold. {link.MarkdownSupport}
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -63,6 +66,9 @@ Named parameters:
 
 - {text.pluginsParamKeybindings}
 
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a bold mark. If enabled, type `**text**` to create the mark.
+
 ### defaultKeys: {link.Keybindings}
 
 - **toggleBold** = `Mod-b`: toggle bold mark
@@ -72,7 +78,7 @@ Named parameters:
 - **toggleBold**(): {link.Command}\
   Toggles bold mark.
 
-- **queryIsSelectionInBold**(): {link.QueryCommand.boolean}\
+- **queryIsBoldActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a bold mark or not.
 
 ## **Usage**
@@ -93,7 +99,7 @@ const plugins = [
 
 # bulletList: {link.Component}
 
-Enables bulletList `<ul/>`. **Requires node components with names `orderedList` & `listItem` to work**
+Enables bulletList `<ul/>`. **Requires node components with names `orderedList` & `listItem` to work**. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -106,7 +112,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating a bullet list. Type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
+  Enable the markdown shortcut for creating a bullet list. If enabled, type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -117,7 +123,7 @@ Named parameters:
 - **toggleBulletList**(): {link.Command}\
    Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
 
-- **queryIsSelectionInsideBulletList**(): {link.QueryCommand.boolean}\
+- **queryIsBulletListActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a bullet list.
 
 ## **Usage**
@@ -142,7 +148,7 @@ const plugins = [
 
 # code: {link.Component}
 
-Allows text in your editor to be marked as code. Comes with the markdown shortcut `` `text` `` to enable code mark.
+Allows text in your editor to be marked as code. {link.MarkdownSupport}
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -157,6 +163,9 @@ Named parameters:
 - **escapeAtEdge:** ?Boolean = true\
   Allows automatic escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
 
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a code mark. If enabled, type `` `text` `` to create a code mark.
+
 ### defaultKeys: {link.Keybindings}
 
 - **toggleCode** = `` Mod-` ``: toggle code mark
@@ -166,7 +175,7 @@ Named parameters:
 - **toggleCode**(): {link.Command}\
   Toggles code mark.
 
-- **queryIsSelectionInCode**(): {link.QueryCommand.boolean}\
+- **queryIsCodeActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a code mark or not.
 
 ## **Usage**
@@ -187,7 +196,7 @@ const plugins = [
 
 # codeBlock: {link.Component}
 
-Enables `<code/>` in your editor.
+Enables `<code/>` in your editor. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -200,7 +209,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?Boolean = true\
-  Toggle the markdown shortcut ` ``` ` to convert a paragraph into a codeBlock.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -216,7 +225,7 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
-- **queryIsSelectionInCodeBlock**(): {link.QueryCommand.boolean}\
+- **queryIsCodeActiveBlock**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a codeBlock or not.
 
 ## **Usage**
@@ -237,7 +246,7 @@ const plugins = [
 
 # doc: {link.Component}
 
-Top level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not found in not defined, Bangle will default to this one.
+Top level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not defined, Bangle will automatically default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -245,7 +254,7 @@ Returns a top level node spec, read more {text.Nodes}.
 
 # heading: {link.Component}
 
-Enables headings of various levels in your editor.
+Enables headings of various levels in your editor. {link.MarkdownSupport}
 
 ### spec({ ... }): {link.NodeSpecFactory}
 
@@ -263,7 +272,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?Boolean = `true`\
-  Toggle the markdown shortcut `#<space>` to convert a paragraph into a heading element.
+  Toggle the markdown shortcut for heading. If enabled, type `#` followed by a space to create one a level one heading.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -296,7 +305,7 @@ Named parameters:
 - **toggleItalic**(level: number = 3): {link.Command}\
   Toggles text into heading of given `level` and vice versa.
 
-- **queryIsSelectionInHeading**(level: number = 3): {link.QueryCommand.boolean}\
+- **queryIsHeadingActive**(level: number = 3): {link.QueryCommand.boolean}\
   Query if the selection is inside a heading of given `level`.
 
 ## **Usage**
@@ -378,7 +387,7 @@ const plugins = [
 
 # horizontalRule: {link.Component}
 
-Enables a horizontal (`<hr />`) rule component in your editor. Type `---` and `___` {link.InputRules} to insert a horizontal rule followed by an empty paragraph.
+Enables a horizontal (`<hr />`) rule component in your editor. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -389,6 +398,9 @@ Returns a node spec, read more {text.Nodes}.
 Named parameters:
 
 - {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a horizontalRule. Type `---` and `___` to insert a horizontal rule.
 
 ## **Usage**
 
@@ -441,7 +453,7 @@ const plugins = [
 
 # italic: {link.Component}
 
-Allows text in your editor to be marked as italic. Comes with the markdown shortcut `_text_` to enable italic mark.
+Allows text in your editor to be marked as italic. {link.MarkdownSupport}
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -453,6 +465,9 @@ Named parameters:
 
 - {text.pluginsParamKeybindings}
 
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating am italic mark. If enabled, type `_text_` to enable italic mark.
+
 ### defaultKeys: {link.Keybindings}
 
 - **toggleItalic** = `Mod-i`: toggle an italic mark
@@ -462,7 +477,7 @@ Named parameters:
 - **toggleItalic**(): {link.Command}\
   Toggles italic mark.
 
-- **queryIsSelectionInItalic**(): {link.QueryCommand.boolean}\
+- **queryIsItalicActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside an italic mark or not.
 
 ## **Usage**
@@ -498,19 +513,19 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
-- **createLinkAtSelection**(href : string): {link.Command}\
+- **createLink**(href : string): {link.Command}\
   Creates a link mark on the selection text.
 
-- **updateLinkAtSelection**(href : ?string): {link.Command}\
+- **updateLink**(href : ?string): {link.Command}\
   Updates a link mark on the selection text with `href`. Set `href` to `undefined` to clear the link mark. If selection is empty, it will update the parent text node.
 
-- **queryLinkMarkAtSelection**(): {link.QueryCommand.customStart}?{href: string, text: string}{link.QueryCommand.customEnd} \
+- **queryLinkAttrs**(): {link.QueryCommand.customStart}?{href: string, text: string}{link.QueryCommand.customEnd} \
   Returns the details of the link mark in selection.
 
-- **queryLinkAllowedInRange**(from: number, to: number): {link.QueryCommand.boolean}\
+- **queryIsLinkAllowedInRange**(from: number, to: number): {link.QueryCommand.boolean}\
   Queries if the range allows for creation of link mark.
 
-- **queryIsSelectionInLink**(): {link.QueryCommand.boolean}\
+- **queryIsLinkActive**(): {link.QueryCommand.boolean}\
   Queries if the selection is in a link mark.
 
 - **queryIsSelectionAroundLink**(): {link.QueryCommand.boolean}\
@@ -588,7 +603,7 @@ const plugins = [
 
 # orderedList: {link.Component}
 
-Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**
+Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -601,7 +616,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating an ordered list. Type `1.` followed by a space to create an ordered list on an empty paragraph.
+  Enable the markdown shortcut for creating an ordered list. Type `1.` followed by a space to create an ordered list.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -637,7 +652,7 @@ const plugins = [
 
 # paragraph: {link.Component}
 
-Enables paragraph (`<p/>` in html) nodes in your editor. The spec & plugins for this component are **required** for Bangle to function, if a spec named `paragraph` is not found in not defined, Bangle will default to this one.
+Enables paragraph (`<p/>` in html) nodes in your editor. The spec for this component are **required** for Bangle to function, if a spec with a name=`paragraph` is not specified, Bangle will automatically default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -725,7 +740,7 @@ Named parameters:
 - **toggleStrike**(): {link.Command}\
   Toggles strike mark.
 
-- **queryIsSelectionInStrike**(): {link.QueryCommand.boolean}\
+- **queryIsStrikeActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a strike mark or not.
 
 ## **Usage**
@@ -746,7 +761,7 @@ const plugins = [
 
 # text: {link.Component}
 
-The text node which the editor uses to wrap the text. The spec & plugins for this component are **required** for Bangle to function, if a spec named `text` is not found in not defined, Bangle will default to this one.
+The text node which the editor uses to wrap the text. The spec for this component are **required** for Bangle to function, if a spec named `text` is not defined, Bangle will automatically default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -836,7 +851,7 @@ const plugins = [
 
 # todoList: {link.Component}
 
-A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names `todoItem`, `bulletList`,`orderedList` & `listItem` to work**
+A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names `todoItem`, `bulletList`,`orderedList` & `listItem` to work**. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -849,7 +864,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList on an empty paragraph.
+  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -860,7 +875,7 @@ Named parameters:
 - **toggleTodoList**(): {link.Command}\
    Convert to an todoList and if already an todoList, convert it to a paragraph node.
 
-- **queryIsSelectionInsideTodoList**(): {link.QueryCommand.boolean}\
+- **queryIsTodoListActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a todo list.
 
 ## **Usage**
@@ -890,7 +905,7 @@ Named parameters:
 - **toggleUnderline**(): {link.Command}\
   Toggles underline mark.
 
-- **queryIsSelectionInUnderline**(): {link.QueryCommand.boolean}\
+- **queryIsUnderlineActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside an underline mark or not.
 
 ## **Usage**

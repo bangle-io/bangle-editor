@@ -44,7 +44,7 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInItalic works correctly', async () => {
+  test('queryIsItalicActive works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
@@ -63,6 +63,6 @@ describe('Basic', () => {
 
     setSelectionNear(view, 9);
 
-    expect(italic.commands.queryIsSelectionInItalic()(view.state)).toBe(true);
+    expect(italic.commands.queryIsItalicActive()(view.state)).toBe(true);
   });
 });

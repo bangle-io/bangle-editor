@@ -7,7 +7,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleBold,
-  queryIsSelectionInBold,
+  queryIsBoldActive,
 };
 export const defaultKeys = {
   toggleBold: 'Mod-b',
@@ -51,13 +51,18 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  markdownShortcut = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
-      markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type),
-      markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type),
+      markdownShortcut &&
+        markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type),
+      markdownShortcut &&
+        markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type),
       keybindings &&
         keymap({
           [keybindings.toggleBold]: toggleBold(),
@@ -72,6 +77,6 @@ export function toggleBold() {
   };
 }
 
-export function queryIsSelectionInBold() {
+export function queryIsBoldActive() {
   return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
 }

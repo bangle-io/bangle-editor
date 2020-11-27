@@ -10,7 +10,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleHeading,
-  queryIsSelectionInHeading,
+  queryIsHeadingActive,
 };
 export const defaultKeys = {
   toH1: 'Shift-Ctrl-1',
@@ -128,7 +128,7 @@ export function toggleHeading(level = 3) {
     })(state, dispatch, view);
 }
 
-export function queryIsSelectionInHeading(level = 3) {
+export function queryIsHeadingActive(level = 3) {
   return (state) => {
     const match = findParentNodeOfType(state.schema.nodes.heading)(
       state.selection,

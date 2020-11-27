@@ -7,7 +7,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleItalic,
-  queryIsSelectionInItalic,
+  queryIsItalicActive,
 };
 export const defaultKeys = {
   toggleItalic: 'Mod-i',
@@ -62,7 +62,7 @@ export function toggleItalic() {
   };
 }
 
-export function queryIsSelectionInItalic() {
+export function queryIsItalicActive() {
   return (state) => {
     return isMarkActiveInSelection(state.schema.marks[name])(state);
   };

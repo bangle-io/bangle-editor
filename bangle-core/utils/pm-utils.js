@@ -37,11 +37,7 @@ export const validPos = (pos, doc) =>
   Number.isInteger(pos) && pos >= 0 && pos < doc.content.size;
 
 export const validListParent = (type, schemaNodes) => {
-  const {
-    bulletList: bulletList,
-    orderedList: orderedList,
-    todoList: todoList,
-  } = schemaNodes;
+  const { bulletList, orderedList, todoList } = schemaNodes;
   return [bulletList, orderedList, todoList].includes(type);
 };
 
@@ -337,11 +333,7 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 // This will return (depth - 1) for root list parent of a list.
 export const getListLiftTarget = (type, schema, resPos) => {
   let target = resPos.depth;
-  const {
-    bulletList: bulletList,
-    orderedList: orderedList,
-    todoList: todoList,
-  } = schema.nodes;
+  const { bulletList, orderedList, todoList } = schema.nodes;
   let listItem = type;
   if (!listItem) {
     ({ listItem } = schema.nodes);
