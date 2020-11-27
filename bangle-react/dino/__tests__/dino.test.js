@@ -4,12 +4,15 @@
 /** @jsx pjsx */
 import { reactTestEditor, pjsx } from '../../__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
-import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { dino } from '../index';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 
-const specSheet = new SpecSheet([...coreSpec(), dino.spec()]);
-const plugins = [...corePlugins(), dino.plugins()];
+const specSheet = new SpecSheet([...defaultSpecs(), dino.spec()]);
+const plugins = [...defaultPlugins(), dino.plugins()];
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
   if (node.type.name === 'dino') {

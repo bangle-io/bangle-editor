@@ -10,11 +10,12 @@ import {
   renderTestEditor,
 } from 'bangle-core/test-helpers/index';
 
-import { corePlugins, coreSpec } from 'bangle-core/components';
+import { corePlugins } from 'bangle-core/utils/core-components';
 import { trailingNode } from '../index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
+import { defaultSpecs } from 'bangle-core/test-helpers/default-components';
 
-const specSheet = new SpecSheet([...coreSpec(), trailingNode.spec({})]);
+const specSheet = new SpecSheet([...defaultSpecs(), trailingNode.spec({})]);
 const plugins = [...corePlugins(), trailingNode.plugins({})];
 
 const testEditor = renderTestEditor({

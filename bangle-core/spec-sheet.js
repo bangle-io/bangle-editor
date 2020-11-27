@@ -1,20 +1,39 @@
 import { Schema } from 'prosemirror-model';
-import { coreSpec } from './components/index';
-import { bangleWarn, recursiveFlat } from './utils/js-utils';
+import { doc, paragraph, text } from './components/index';
+import { bangleWarn } from './utils/js-utils';
+import { coreSpec } from './utils/core-components';
 
 export class SpecSheet {
-  constructor(rawSpecs = coreSpec()) {
-    this._spec = recursiveFlat(rawSpecs);
+  constructor(rawSpecs = coreSpec(), { defaultSpecs = true } = {}) {
+    let flattenedSpecs = flatten(rawSpecs);
 
-    this._spec.forEach(validateSpec);
+    flattenedSpecs.forEach(validateSpec);
 
-    if (this._spec.length !== new Set(this._spec.map((r) => r.name)).size) {
+    const names = new Set(flattenedSpecs.map((r) => r.name));
+
+    if (flattenedSpecs.length !== names.size) {
       bangleWarn(
         'The specSheet has one or more specs with the same name',
-        this._spec,
+        flattenedSpecs,
       );
       throw new Error('Duplicate spec error, please check your specSheet');
     }
+
+    if (defaultSpecs) {
+      const defaultSpecsArray = [];
+      if (!names.has('paragraph')) {
+        defaultSpecsArray.unshift(paragraph.spec());
+      }
+      if (!names.has('text')) {
+        defaultSpecsArray.unshift(text.spec());
+      }
+      if (!names.has('doc')) {
+        defaultSpecsArray.unshift(doc.spec());
+      }
+      flattenedSpecs = [...flatten(defaultSpecsArray), ...flattenedSpecs];
+    }
+
+    this._spec = flattenedSpecs;
     this._schema = createSchema(this._spec);
     this._options = Object.fromEntries(
       this._spec
@@ -77,4 +96,22 @@ function validateSpec(spec) {
     );
     throw new Error('Invalid spec schema');
   }
+}
+
+function flatten(data, callbackPayload) {
+  const recurse = (d) => {
+    if (Array.isArray(d)) {
+      return d.flatMap((i) => recurse(i)).filter(Boolean);
+    }
+    if (typeof d === 'function') {
+      if (!callbackPayload) {
+        throw new Error('Found a function but no payload');
+      }
+      return recurse(d(callbackPayload));
+    }
+
+    return d;
+  };
+
+  return recurse(data);
 }

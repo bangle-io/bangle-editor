@@ -2,7 +2,10 @@
 
 import { screen } from '@testing-library/dom';
 import { SpecSheet } from 'bangle-core/spec-sheet';
-import { corePlugins, coreSpec } from 'bangle-core/index';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 import { pjsx, reactTestEditor } from './helpers/index';
 import { bananaComponent, Banana } from './setup/banana';
 
@@ -16,8 +19,8 @@ const renderNodeViews = jest.fn(({ node, ...args }) => {
 describe('Inline node banana', () => {
   test('Inits banana', async () => {
     const banana = bananaComponent();
-    const specSheet = new SpecSheet([...coreSpec(), banana.spec()]);
-    const plugins = [...corePlugins(), banana.plugins()];
+    const specSheet = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const plugins = [...defaultPlugins(), banana.plugins()];
 
     const testEditor = reactTestEditor({ specSheet, plugins, renderNodeViews });
 
@@ -45,8 +48,8 @@ describe('Inline node banana', () => {
   test('Can update attrs', async () => {
     const testId = 'Can update attrs';
     const banana = bananaComponent(testId);
-    const specSheet = new SpecSheet([...coreSpec(), banana.spec()]);
-    const plugins = [...corePlugins(), banana.plugins()];
+    const specSheet = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const plugins = [...defaultPlugins(), banana.plugins()];
     const testEditor = reactTestEditor({ specSheet, plugins, renderNodeViews });
 
     const { view, posLabels } = await testEditor(

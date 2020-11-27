@@ -5,23 +5,15 @@ import React from 'react';
 import { TextSelection } from 'prosemirror-state';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { render } from '@testing-library/react';
-import { corePlugins } from 'bangle-core/index';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
 import { ReactEditor } from '../../ReactEditor';
 
-const defaultSpecSheet = new SpecSheet();
-const defaultPlugins = corePlugins();
-
 export function reactTestEditor({
-  specSheet = defaultSpecSheet,
-  plugins = defaultPlugins,
+  specSheet,
+  plugins,
   renderNodeViews,
   id = 'test-editor',
 } = {}) {
-  if (!(specSheet instanceof SpecSheet)) {
-    throw new Error('Need to be specsheet');
-  }
-
   return async (testDoc) => {
     let editor;
     const _onReady = (_editor) => {

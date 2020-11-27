@@ -10,10 +10,12 @@ import {
   sendKeyToPm,
   renderTestEditor,
 } from 'bangle-core/test-helpers/index';
-
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from 'bangle-core/test-helpers/default-components';
 import { typeChar } from 'bangle-core/test-helpers/index';
 import { PluginKey, Selection } from 'prosemirror-state';
-import { corePlugins, coreSpec } from 'bangle-core/components';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { sleep } from 'bangle-core/utils/js-utils';
 import { suggestTooltip } from '../index';
@@ -32,11 +34,11 @@ describe('suggest basic show and hide', () => {
   let testEditor;
 
   const specSheet = new SpecSheet([
-    ...coreSpec(),
+    ...defaultSpecs(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
   const plugins = [
-    ...corePlugins(),
+    ...defaultPlugins(),
     suggestTooltip.plugins({
       key: suggestKey,
       markName: 'suggest_slash',
@@ -487,7 +489,7 @@ describe('suggest basic show and hide', () => {
 describe('keybindings test', () => {
   let testEditor;
   const specSheet = new SpecSheet([
-    ...coreSpec(),
+    ...defaultSpecs(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
 
@@ -508,7 +510,7 @@ describe('keybindings test', () => {
       onEscape: jest.fn(() => true),
     };
 
-    const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
+    const plugins = [...defaultPlugins(), suggestTooltip.plugins(opts)];
     testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
@@ -566,7 +568,7 @@ describe('keybindings test', () => {
       trigger: '/',
     };
 
-    const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
+    const plugins = [...defaultPlugins(), suggestTooltip.plugins(opts)];
     testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
@@ -609,7 +611,7 @@ describe('keybindings test', () => {
       },
     };
 
-    const plugins = [...corePlugins(), suggestTooltip.plugins(opts)];
+    const plugins = [...defaultPlugins(), suggestTooltip.plugins(opts)];
     testEditor = renderTestEditor({ specSheet, plugins });
     const { view } = await testEditor(
       <doc>
@@ -647,11 +649,11 @@ describe('replaceSuggestMarkWith', () => {
   let testEditor;
 
   const specSheet = new SpecSheet([
-    ...coreSpec(),
+    ...defaultSpecs(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
   const plugins = [
-    ...corePlugins(),
+    ...defaultPlugins(),
     suggestTooltip.plugins({
       key: suggestKey,
       markName: 'suggest_slash',

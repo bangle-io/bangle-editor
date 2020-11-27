@@ -3,7 +3,6 @@
  */
 
 /** @jsx pjsx */
-import { coreSpec } from 'bangle-core/components';
 import { link } from 'bangle-core/index';
 import { SpecSheet } from 'bangle-core/spec-sheet';
 import { reactTestEditor, pjsx } from 'bangle-react/__tests__/helpers/index';
@@ -11,7 +10,7 @@ import { PluginKey, TextSelection } from 'prosemirror-state';
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
-const specSheet = new SpecSheet([...coreSpec()]);
+const specSheet = new SpecSheet();
 const plugins = [
   link.plugins(),
   floatingMenu.plugins({
