@@ -98,10 +98,10 @@ test.each([
   [
     'heading',
     <doc>
-      <heading level="1">foo</heading>
+      <heading level={1}>foo</heading>
     </doc>,
     <doc>
-      <heading level="1">foohello</heading>
+      <heading level={1}>foohello</heading>
     </doc>,
   ],
 
@@ -381,10 +381,10 @@ test.each([
   [
     'heading level 1',
     <doc>
-      <heading level="1">f[]oo</heading>
+      <heading level={1}>f[]oo</heading>
     </doc>,
     <doc>
-      <heading level="1">fhello[]oo</heading>
+      <heading level={1}>fhello[]oo</heading>
     </doc>,
   ],
 

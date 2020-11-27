@@ -616,7 +616,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -664,7 +664,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -697,7 +697,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -838,7 +838,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -945,7 +945,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -1214,7 +1214,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -1355,7 +1355,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {
@@ -1462,7 +1462,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "level": "1",
+        "level": 1,
       },
       "content": Array [
         Object {

@@ -11,7 +11,7 @@ describe('heading', () => {
     const doc = (
       <doc>
         <para>top</para>
-        <heading level="1">hello[]</heading>
+        <heading level={1}>hello[]</heading>
       </doc>
     );
     const md = await serialize(doc);
@@ -29,7 +29,7 @@ describe('heading', () => {
     const doc = (
       <doc>
         <para>top</para>
-        <heading level="3">hello[]</heading>
+        <heading level={3}>hello[]</heading>
       </doc>
     );
     const md = await serialize(doc);

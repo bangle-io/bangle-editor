@@ -9,7 +9,8 @@ import {
   renderTestEditor,
   selectNodeAt,
 } from '../../test-helpers/index';
-import { toggleMark } from 'tiptap-commands';
+import { toggleMark } from 'prosemirror-commands';
+import { queryLinkAttrs, updateLink } from '../link';
 import {
   bulletList,
   listItem,
@@ -20,7 +21,6 @@ import {
   text,
   paragraph,
 } from '../index';
-import { queryLinkAttrs, updateLink } from '../link';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 
 const specRegistry = new SpecRegistry([

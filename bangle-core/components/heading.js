@@ -1,10 +1,9 @@
-import { toggleBlockType } from 'tiptap-commands';
 import { setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
-import { moveNode } from './list-item/commands';
-import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
+import { keymap } from '../utils/keymap';
 import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
-import { keymap } from 'bangle-core/utils/keymap';
+import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
+import { moveNode } from './list-item/commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -28,18 +27,24 @@ export const defaultKeys = {
 };
 
 const name = 'heading';
-const defaultLevels = ['1', '2', '3', '4', '5', '6'];
+const defaultLevels = [1, 2, 3, 4, 5, 6];
 const getTypeFromSchema = (schema) => schema.nodes[name];
-
+const parseLevel = (level) => {
+  level = parseInt(level, 10);
+  return Number.isNaN(level) ? undefined : level;
+};
 function specFactory({ levels = defaultLevels } = {}) {
-  levels = levels.map((r) => r + '');
+  if (levels.some((r) => typeof r !== 'number')) {
+    throw new Error('levels must be number');
+  }
+
   return {
     type: 'node',
     name,
     schema: {
       attrs: {
         level: {
-          default: '1',
+          default: 1,
         },
       },
       content: 'inline*',
@@ -49,7 +54,7 @@ function specFactory({ levels = defaultLevels } = {}) {
       parseDOM: levels.map((level) => {
         return {
           tag: `h${level}`,
-          attrs: { level },
+          attrs: { level: parseLevel(level) },
         };
       }),
       toDOM: (node) => {
@@ -64,8 +69,10 @@ function specFactory({ levels = defaultLevels } = {}) {
       },
       parseMarkdown: {
         heading: {
-          block: 'heading',
-          getAttrs: (tok) => ({ level: tok.tag.slice(1) }),
+          block: name,
+          getAttrs: (tok) => {
+            return { level: parseLevel(tok.tag.slice(1)) };
+          },
         },
       },
     },
@@ -122,15 +129,21 @@ function pluginsFactory({
 }
 
 export function toggleHeading(level = 3) {
-  return (state, dispatch, view) =>
-    toggleBlockType(state.schema.nodes.heading, state.schema.nodes.paragraph, {
-      level,
-    })(state, dispatch, view);
+  return (state, dispatch, view) => {
+    if (queryIsHeadingActive(level)(state)) {
+      return setBlockType(state.schema.nodes.paragraph)(state, dispatch, view);
+    }
+    return setBlockType(state.schema.nodes[name], { level })(
+      state,
+      dispatch,
+      view,
+    );
+  };
 }
 
 export function queryIsHeadingActive(level = 3) {
   return (state) => {
-    const match = findParentNodeOfType(state.schema.nodes.heading)(
+    const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
     );
     if (!match) {
