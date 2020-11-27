@@ -55,8 +55,8 @@ function specFactory({ nested = true, draggable = true } = {}) {
   });
 
   const content = nested
-    ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
-    : '(paragraph) (paragraph | bullet_list | ordered_list)*';
+    ? '(paragraph) (paragraph | todo_list | bulletList | orderedList)*'
+    : '(paragraph) (paragraph | bulletList | orderedList)*';
 
   return {
     type: 'node',

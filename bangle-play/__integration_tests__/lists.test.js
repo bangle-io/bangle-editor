@@ -28,7 +28,7 @@ describe('Basic typing', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        bullet_list(
+        bulletList(
           listItem(paragraph('First'))
         ),
         paragraph
@@ -42,7 +42,7 @@ describe('Basic typing', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        ordered_list(
+        orderedList(
           listItem(paragraph('First'))
         ),
         paragraph
@@ -59,10 +59,10 @@ describe('Basic typing', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        bullet_list(
+        bulletList(
           listItem(
             paragraph('First'),
-            bullet_list(
+            bulletList(
               listItem(
                 paragraph('Second')
               )

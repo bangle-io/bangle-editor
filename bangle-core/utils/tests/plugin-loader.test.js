@@ -24,7 +24,7 @@ describe('nodeViews validation', () => {
     const plugins = [
       ...corePlugins(),
       NodeView.createPlugin({
-        name: 'bullet_list',
+        name: 'bulletList',
       }),
     ];
 

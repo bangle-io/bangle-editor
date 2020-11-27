@@ -96,7 +96,7 @@ export const defaultContent = {
       ],
     },
     {
-      type: 'bullet_list',
+      type: 'bulletList',
       content: [
         {
           type: 'listItem',

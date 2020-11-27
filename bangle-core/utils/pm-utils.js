@@ -38,8 +38,8 @@ export const validPos = (pos, doc) =>
 
 export const validListParent = (type, schemaNodes) => {
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
     todo_list: todoList,
   } = schemaNodes;
   return [bulletList, orderedList, todoList].includes(type);
@@ -262,7 +262,7 @@ export function getAncestorNodesBetween(doc, $from, $to) {
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
 export function findAncestorPosition(doc, pos) {
-  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
+  const nestableBlocks = ['blockquote', 'bulletList', 'orderedList'];
 
   if (pos.depth === 1) {
     return pos;
@@ -338,8 +338,8 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 export const getListLiftTarget = (type, schema, resPos) => {
   let target = resPos.depth;
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
     todo_list: todoList,
   } = schema.nodes;
   let listItem = type;

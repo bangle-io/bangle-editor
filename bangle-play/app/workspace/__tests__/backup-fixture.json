@@ -44,7 +44,7 @@
             ]
           },
           {
-            "type": "bullet_list",
+            "type": "bulletList",
             "content": [
               {
                 "type": "listItem",
@@ -77,7 +77,7 @@
             ]
           },
           {
-            "type": "ordered_list",
+            "type": "orderedList",
             "attrs": {
               "order": 1
             },

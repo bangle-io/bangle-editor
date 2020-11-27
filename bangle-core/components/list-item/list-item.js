@@ -37,7 +37,7 @@ function specFactory(opts = {}) {
     type: 'node',
     name,
     schema: {
-      content: '(paragraph) (paragraph | bullet_list | ordered_list)*',
+      content: '(paragraph) (paragraph | bulletList | orderedList)*',
       defining: true,
       draggable: true,
       parseDOM: [{ tag: 'li' }],
@@ -58,8 +58,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const parentCheck = parentHasDirectParentOfType(type, [
-      schema.nodes['bullet_list'],
-      schema.nodes['ordered_list'],
+      schema.nodes['bulletList'],
+      schema.nodes['orderedList'],
     ]);
 
     const move = (dir) =>

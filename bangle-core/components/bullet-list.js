@@ -14,7 +14,7 @@ export const defaultKeys = {
   toggle: 'Shift-Ctrl-8',
 };
 
-const name = 'bullet_list';
+const name = 'bulletList';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
@@ -61,7 +61,7 @@ function pluginsFactory({
 export function toggleBulletList() {
   return (state, dispatch, view) => {
     return toggleList(
-      state.schema.nodes.bullet_list,
+      state.schema.nodes.bulletList,
       state.schema.nodes.listItem,
     )(state, dispatch, view);
   };
@@ -71,7 +71,7 @@ export function queryIsSelectionInsideBulletList() {
   return (state) => {
     const { schema } = state;
     return parentHasDirectParentOfType(schema.nodes['listItem'], [
-      schema.nodes['bullet_list'],
+      schema.nodes['bulletList'],
     ])(state);
   };
 }

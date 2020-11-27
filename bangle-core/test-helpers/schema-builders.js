@@ -10,8 +10,8 @@ import {
 // we can write `<para>hello world</para>`
 const nodeAlias = {
   para: 'paragraph',
-  ul: 'bullet_list',
-  ol: 'ordered_list',
+  ul: 'bulletList',
+  ol: 'orderedList',
   li: 'listItem',
   codeBlock: 'code_block',
   br: 'hard_break',

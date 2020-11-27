@@ -39,8 +39,8 @@ window.NodeSelection = NodeSelection;
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
     todo_list: todoList,
   } = nodes;
   let count = 0;
@@ -136,8 +136,8 @@ const rootListDepth = (type, pos, nodes) => {
   let listItem = type;
 
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
     todo_list: todoList,
   } = nodes;
   let depth;
@@ -164,8 +164,8 @@ const rootListDepth = (type, pos, nodes) => {
 function canToJoinToPreviousListItem(state) {
   const { $from } = state.selection;
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
     todo_list: todoList,
   } = state.schema.nodes;
   const $before = state.doc.resolve($from.pos - 1);
@@ -188,7 +188,7 @@ function canToJoinToPreviousListItem(state) {
 window.toggleList = toggleList;
 /**
  *
- * @param {Object} listType  bullet_list, ordered_list, todo_list
+ * @param {Object} listType  bulletList, orderedList, todo_list
  * @param {Object} itemType  'todo_item', 'listItem'
  */
 export function toggleList(listType, itemType) {
@@ -262,7 +262,7 @@ function toggleListCommand(listType) {
     if (isInsideList(state, listType) && isRangeOfSingleType) {
       return liftListItems()(state, dispatch);
     } else {
-      // Converts list type e.g. bullet_list -> ordered_list if needed
+      // Converts list type e.g. bulletList -> orderedList if needed
       if (!isRangeOfSingleType) {
         liftListItems()(state, dispatch);
         state = view.state;
@@ -488,8 +488,8 @@ const isParentBulletOrOrderedList = (state) => {
   const { $from } = state.selection;
   const parent = $from.node($from.depth - 2);
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
   } = state.schema.nodes;
   return [bulletList, orderedList].includes(parent.type);
 };
@@ -683,8 +683,8 @@ function joinToPreviousListItem(type) {
     const {
       paragraph,
       code_block: codeBlock,
-      bullet_list: bulletList,
-      ordered_list: orderedList,
+      bulletList: bulletList,
+      orderedList: orderedList,
       todo_list: todoList,
     } = state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
@@ -845,7 +845,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     }
 
     // If there is only one element, we need to delete the entire
-    // bullet_list/ordered_list so as not to leave any empty list behind.
+    // bulletList/orderedList so as not to leave any empty list behind.
     let nodeToRemove = grandParent.node.childCount === 1 ? grandParent : parent;
     let tr = state.tr.delete(
       nodeToRemove.pos,

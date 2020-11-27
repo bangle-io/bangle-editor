@@ -11,7 +11,7 @@ export const defaultKeys = {
   toggle: 'Shift-Ctrl-9',
 };
 
-const name = 'ordered_list';
+const name = 'orderedList';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {
@@ -80,7 +80,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
 export function toggleOrderedList() {
   return (state, dispatch, view) => {
     return toggleList(
-      state.schema.nodes.ordered_list,
+      state.schema.nodes.orderedList,
       state.schema.nodes.listItem,
     )(state, dispatch, view);
   };

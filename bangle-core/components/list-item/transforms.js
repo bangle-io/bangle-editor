@@ -113,7 +113,7 @@ const getListType = (node, schema) => {
   if (!node.text) {
     return null;
   }
-  const { bullet_list: bulletList, ordered_list: orderedList } = schema.nodes;
+  const { bulletList: bulletList, orderedList: orderedList } = schema.nodes;
   return [
     {
       node: bulletList,
@@ -134,8 +134,8 @@ const getListType = (node, schema) => {
 const extractListFromParagaph = (type, node, schema) => {
   const {
     hard_break: hardBreak,
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
     todo_list: todoList,
   } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
