@@ -10,14 +10,14 @@ import {
 // we can write `<para>hello world</para>`
 const nodeAlias = {
   para: 'paragraph',
-  ul: 'bullet_list',
-  ol: 'ordered_list',
-  li: 'list_item',
-  codeBlock: 'code_block',
-  br: 'hard_break',
-  hr: 'horizontal_rule',
-  todoList: 'todo_list',
-  todoItem: 'todo_item',
+  ul: 'bulletList',
+  ol: 'orderedList',
+  li: 'listItem',
+  codeBlock: 'codeBlock',
+  br: 'hardBreak',
+  hr: 'horizontalRule',
+  todoList: 'todoList',
+  todoItem: 'todoItem',
 };
 const markAlias = {};
 

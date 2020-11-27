@@ -105,16 +105,16 @@ hr {
 }
 
 /** TODO List*/
-.bangle-editor ul[data-bangle-name='todo_list'] {
+.bangle-editor ul[data-bangle-name='todoList'] {
   padding-left: 0.125rem;
 }
 
-.bangle-editor li[data-bangle-name='todo_item'] {
+.bangle-editor li[data-bangle-name='todoItem'] {
   display: flex;
   flex-direction: row;
 }
 
-.bangle-editor li[data-bangle-name='todo_item'] > span:first-child > input {
+.bangle-editor li[data-bangle-name='todoItem'] > span:first-child > input {
   margin-top: 0.5rem;
   margin-right: 6px;
   outline: none;

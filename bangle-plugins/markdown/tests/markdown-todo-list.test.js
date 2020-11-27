@@ -449,7 +449,7 @@ describe('Markdown todo parsing', () => {
     );
     const doc = await parse(md);
     expect(doc.toString()).toMatchInlineSnapshot(
-      `"doc(heading(\\"Test 1\\"), ordered_list(list_item(paragraph(\\"bar\\")), list_item(paragraph(\\"spam\\"))), heading(\\"Test 2\\"), bullet_list(list_item(paragraph)))"`,
+      `"doc(heading(\\"Test 1\\"), orderedList(listItem(paragraph(\\"bar\\")), listItem(paragraph(\\"spam\\"))), heading(\\"Test 2\\"), bulletList(listItem(paragraph)))"`,
     );
     const md2 = await serialize(doc);
     expect(doc).toEqual(await parse(md2));

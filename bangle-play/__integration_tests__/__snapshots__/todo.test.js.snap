@@ -21,10 +21,10 @@ Object {
                 "type": "paragraph",
               },
             ],
-            "type": "todo_item",
+            "type": "todoItem",
           },
         ],
-        "type": "todo_list",
+        "type": "todoList",
       },
       Object {
         "type": "paragraph",

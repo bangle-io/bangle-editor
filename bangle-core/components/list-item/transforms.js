@@ -8,7 +8,7 @@ function liftListItem(type, state, selection, tr) {
   let { $from, $to } = selection;
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
 
   let range = $from.blockRange(
@@ -55,7 +55,7 @@ function liftListItem(type, state, selection, tr) {
 export function liftFollowingList(type, state, from, to, rootListDepth, tr) {
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
   let lifted = false;
   tr.doc.nodesBetween(from, to, (node, pos) => {
@@ -113,7 +113,7 @@ const getListType = (node, schema) => {
   if (!node.text) {
     return null;
   }
-  const { bullet_list: bulletList, ordered_list: orderedList } = schema.nodes;
+  const { bulletList: bulletList, orderedList: orderedList } = schema.nodes;
   return [
     {
       node: bulletList,
@@ -133,10 +133,10 @@ const getListType = (node, schema) => {
 };
 const extractListFromParagaph = (type, node, schema) => {
   const {
-    hard_break: hardBreak,
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
+    hardBreak: hardBreak,
+    bulletList: bulletList,
+    orderedList: orderedList,
+    todoList: todoList,
   } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
   const listTypes = [bulletList, orderedList, todoList];
@@ -152,7 +152,7 @@ const extractListFromParagaph = (type, node, schema) => {
       const newText = child.text.substr(length);
       let listItem = type;
       if (!listItem) {
-        ({ list_item: listItem } = schema.nodes);
+        ({ listItem } = schema.nodes);
       }
 
       const listItemNode = listItem.createAndFill(
@@ -220,7 +220,7 @@ const splitIntoParagraphs = (fragment, schema) => {
   const paragraphs = [];
   let curChildren = [];
   let lastNode = null;
-  const { hard_break: hardBreak, paragraph } = schema.nodes;
+  const { hardBreak: hardBreak, paragraph } = schema.nodes;
   fragment.forEach((node) => {
     if (lastNode && lastNode.type === hardBreak && node.type === hardBreak) {
       // double hardbreak

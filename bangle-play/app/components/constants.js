@@ -56,12 +56,12 @@ export const defaultContent = {
       ],
     },
     {
-      type: 'todo_list',
+      type: 'todoList',
       content: [
         {
-          type: 'todo_item',
+          type: 'todoItem',
           attrs: {
-            'data-bangle-name': 'todo_item',
+            'data-bangle-name': 'todoItem',
             'done': false,
           },
           content: [
@@ -87,7 +87,7 @@ export const defaultContent = {
       ],
     },
     {
-      type: 'code_block',
+      type: 'codeBlock',
       content: [
         {
           type: 'text',
@@ -96,10 +96,10 @@ export const defaultContent = {
       ],
     },
     {
-      type: 'bullet_list',
+      type: 'bulletList',
       content: [
         {
-          type: 'list_item',
+          type: 'listItem',
           content: [
             {
               type: 'paragraph',
@@ -113,7 +113,7 @@ export const defaultContent = {
           ],
         },
         {
-          type: 'list_item',
+          type: 'listItem',
           content: [
             {
               type: 'paragraph',
@@ -139,7 +139,7 @@ export const defaultContent = {
               text: "It's amazing 👏 ",
             },
             {
-              type: 'hard_break',
+              type: 'hardBreak',
             },
             {
               type: 'text',

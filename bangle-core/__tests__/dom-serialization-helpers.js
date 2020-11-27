@@ -88,7 +88,7 @@ describe('domSerializationHelpers toDOM', () => {
   test('correctly serializes attrs', () => {
     const codeSpec = {
       type: 'node',
-      name: 'code_block',
+      name: 'codeBlock',
       schema: {
         attrs: {
           timer: {
@@ -108,14 +108,14 @@ describe('domSerializationHelpers toDOM', () => {
       container: 'code',
     });
 
-    const paraNode = specSheet.schema.nodes['code_block'].create({});
+    const paraNode = specSheet.schema.nodes['codeBlock'].create({});
 
     expect(toDOM(paraNode)).toMatchInlineSnapshot(`
       Array [
         "code",
         Object {
           "data-bangle-attrs": "{\\"timer\\":1}",
-          "data-bangle-id": "code_block",
+          "data-bangle-id": "codeBlock",
         },
       ]
     `);
@@ -124,7 +124,7 @@ describe('domSerializationHelpers toDOM', () => {
   test('excludes attrs', () => {
     const codeSpec = {
       type: 'node',
-      name: 'code_block',
+      name: 'codeBlock',
       schema: {
         attrs: {
           timer: {
@@ -148,14 +148,14 @@ describe('domSerializationHelpers toDOM', () => {
       allowedAttrs: ['language', 'magic'],
     });
 
-    const paraNode = specSheet.schema.nodes['code_block'].create({});
+    const paraNode = specSheet.schema.nodes['codeBlock'].create({});
 
     expect(toDOM(paraNode)).toMatchInlineSnapshot(`
       Array [
         "code",
         Object {
           "data-bangle-attrs": "{\\"language\\":\\"javascript\\",\\"magic\\":\\"1\\"}",
-          "data-bangle-id": "code_block",
+          "data-bangle-id": "codeBlock",
         },
       ]
     `);

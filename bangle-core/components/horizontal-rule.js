@@ -4,7 +4,7 @@ import { InputRule } from 'prosemirror-inputrules';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 
-const name = 'horizontal_rule';
+const name = 'horizontalRule';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 

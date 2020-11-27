@@ -11,7 +11,7 @@ export const defaultKeys = {
   toggle: 'Shift-Ctrl-9',
 };
 
-const name = 'ordered_list';
+const name = 'orderedList';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {
@@ -24,7 +24,7 @@ function specFactory(opts = {}) {
           default: 1,
         },
       },
-      content: 'list_item+',
+      content: 'listItem+',
       group: 'block',
       parseDOM: [
         {
@@ -80,8 +80,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
 export function toggleOrderedList() {
   return (state, dispatch, view) => {
     return toggleList(
-      state.schema.nodes.ordered_list,
-      state.schema.nodes.list_item,
+      state.schema.nodes.orderedList,
+      state.schema.nodes.listItem,
     )(state, dispatch, view);
   };
 }
@@ -89,7 +89,7 @@ export function toggleOrderedList() {
 export function queryIsSelectionInsideBulletList() {
   return (state) => {
     const { schema } = state;
-    return parentHasDirectParentOfType(schema.nodes['list_item'], [
+    return parentHasDirectParentOfType(schema.nodes['listItem'], [
       schema.nodes[name],
     ])(state);
   };

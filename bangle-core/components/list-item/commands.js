@@ -39,9 +39,9 @@ window.NodeSelection = NodeSelection;
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
+    bulletList: bulletList,
+    orderedList: orderedList,
+    todoList: todoList,
   } = nodes;
   let count = 0;
   for (let i = resolvedPos.depth - 1; i > 0; i--) {
@@ -72,7 +72,7 @@ const canOutdent = (type) => (state) => {
   const { parent } = state.selection.$from;
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
   const { paragraph } = state.schema.nodes;
 
@@ -119,7 +119,7 @@ export const isInsideListItem = (type) => (state) => {
 
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
   const { paragraph } = state.schema.nodes;
   if (state.selection instanceof GapCursorSelection) {
@@ -136,9 +136,9 @@ const rootListDepth = (type, pos, nodes) => {
   let listItem = type;
 
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
+    bulletList: bulletList,
+    orderedList: orderedList,
+    todoList: todoList,
   } = nodes;
   let depth;
   for (let i = pos.depth - 1; i > 0; i--) {
@@ -164,9 +164,9 @@ const rootListDepth = (type, pos, nodes) => {
 function canToJoinToPreviousListItem(state) {
   const { $from } = state.selection;
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
+    bulletList: bulletList,
+    orderedList: orderedList,
+    todoList: todoList,
   } = state.schema.nodes;
   const $before = state.doc.resolve($from.pos - 1);
   let nodeBefore = $before ? $before.nodeBefore : null;
@@ -188,8 +188,8 @@ function canToJoinToPreviousListItem(state) {
 window.toggleList = toggleList;
 /**
  *
- * @param {Object} listType  bullet_list, ordered_list, todo_list
- * @param {Object} itemType  'todo_item', 'list_item'
+ * @param {Object} listType  bulletList, orderedList, todoList
+ * @param {Object} itemType  'todoItem', 'listItem'
  */
 export function toggleList(listType, itemType) {
   return (state, dispatch, view) => {
@@ -206,7 +206,7 @@ export function toggleList(listType, itemType) {
     } else {
       // If current ListType is the same as `listType` in arg,
       // toggle the list to `p`.
-      const listItem = itemType ? itemType : state.schema.nodes.list_item;
+      const listItem = itemType ? itemType : state.schema.nodes.listItem;
 
       const depth = rootListDepth(listItem, selection.$to, state.schema.nodes);
 
@@ -262,7 +262,7 @@ function toggleListCommand(listType) {
     if (isInsideList(state, listType) && isRangeOfSingleType) {
       return liftListItems()(state, dispatch);
     } else {
-      // Converts list type e.g. bullet_list -> ordered_list if needed
+      // Converts list type e.g. bulletList -> orderedList if needed
       if (!isRangeOfSingleType) {
         liftListItems()(state, dispatch);
         state = view.state;
@@ -301,10 +301,9 @@ function liftListItems() {
 
         if (
           !range ||
-          ![
-            state.schema.nodes.list_item,
-            state.schema.nodes.todo_item,
-          ].includes(sel.$from.parent.type)
+          ![state.schema.nodes.listItem, state.schema.nodes.todoItem].includes(
+            sel.$from.parent.type,
+          )
         ) {
           return false;
         }
@@ -368,7 +367,7 @@ export function indentList(type) {
   return function indentListCommand(state, dispatch) {
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
 
     if (isInsideListItem(listItem)(state)) {
@@ -390,7 +389,7 @@ export function outdentList(type) {
   return function (state, dispatch) {
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
     const { $from, $to } = state.selection;
     if (isInsideListItem(listItem)(state)) {
@@ -481,7 +480,7 @@ function mergeLists(listItem, range) {
 const isGrandParentTodoList = (state) => {
   const { $from } = state.selection;
   const grandParent = $from.node($from.depth - 4);
-  const { todo_list: todoList } = state.schema.nodes;
+  const { todoList: todoList } = state.schema.nodes;
   return grandParent.type === todoList;
 };
 
@@ -489,8 +488,8 @@ const isParentBulletOrOrderedList = (state) => {
   const { $from } = state.selection;
   const parent = $from.node($from.depth - 2);
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
+    bulletList: bulletList,
+    orderedList: orderedList,
   } = state.schema.nodes;
   return [bulletList, orderedList].includes(parent.type);
 };
@@ -513,19 +512,19 @@ export const backspaceKeyCommand = (type) => (...args) => {
         isFirstChildOfParent,
         (state) =>
           isGrandParentTodoList(state) && isParentBulletOrOrderedList(state),
-        (state) => canOutdent(state.schema.nodes.todo_item)(state),
+        (state) => canOutdent(state.schema.nodes.todoItem)(state),
       ],
       // convert it into a todo list and then outdent it
       (state, dispatch, view) => {
         const result = toggleList(
-          state.schema.nodes.todo_list,
-          state.schema.nodes.todo_item,
+          state.schema.nodes.todoList,
+          state.schema.nodes.todoItem,
         )(state, dispatch, view);
         if (!result) {
           return false;
         }
         state = view.state;
-        return outdentList(state.schema.nodes.todo_item)(state, dispatch, view);
+        return outdentList(state.schema.nodes.todoItem)(state, dispatch, view);
       },
     ),
 
@@ -562,9 +561,9 @@ export function enterKeyCommand(type) {
       const { $from } = selection;
       let listItem = type;
       if (!listItem) {
-        ({ list_item: listItem } = state.schema.nodes);
+        ({ listItem } = state.schema.nodes);
       }
-      const { code_block: codeBlock, todo_item: todoItem } = state.schema.nodes;
+      const { codeBlock: codeBlock, todoItem: todoItem } = state.schema.nodes;
 
       const node = $from.node($from.depth);
       const wrapper = $from.node($from.depth - 1);
@@ -576,13 +575,13 @@ export function enterKeyCommand(type) {
           // pressing enter should convert that type into a todo type and outdent.
           if (isGrandParentTodoList(state) && listItem !== todoItem) {
             const result = toggleList(
-              state.schema.nodes.todo_list,
-              state.schema.nodes.todo_item,
+              state.schema.nodes.todoList,
+              state.schema.nodes.todoItem,
             )(state, dispatch, view);
             if (!result) {
               return false;
             }
-            return outdentList(state.schema.nodes.todo_item)(
+            return outdentList(state.schema.nodes.todoItem)(
               view.state, // use the updated state
               dispatch,
               view,
@@ -677,16 +676,16 @@ function joinToPreviousListItem(type) {
   return (state, dispatch) => {
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
 
     const { $from } = state.selection;
     const {
       paragraph,
-      code_block: codeBlock,
-      bullet_list: bulletList,
-      ordered_list: orderedList,
-      todo_list: todoList,
+      codeBlock: codeBlock,
+      bulletList: bulletList,
+      orderedList: orderedList,
+      todoList: todoList,
     } = state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
     const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
@@ -776,7 +775,7 @@ function deletePreviousEmptyListItem(type) {
     const { $from } = state.selection;
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
     const $cut = findCutBefore($from);
     if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
@@ -824,7 +823,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     let listItem = type;
 
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
 
     if (!state.selection.empty) {
@@ -846,7 +845,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     }
 
     // If there is only one element, we need to delete the entire
-    // bullet_list/ordered_list so as not to leave any empty list behind.
+    // bulletList/orderedList so as not to leave any empty list behind.
     let nodeToRemove = grandParent.node.childCount === 1 ? grandParent : parent;
     let tr = state.tr.delete(
       nodeToRemove.pos,
@@ -854,7 +853,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     );
 
     // - first // doing a (-1) will move us to end of 'first' hence allowing us to add an item
-    // - second  // start(-3) will give 11 which is the start of this list_item,
+    // - second  // start(-3) will give 11 which is the start of this listItem,
     //   - third{<>}
     let insertPos = state.selection.$from.before(-3);
 
@@ -879,10 +878,10 @@ export function moveEdgeListItem(type, dir = 'UP') {
     let nodeToInsert = parent.node;
 
     // if the grand parent is a todo list
-    // we can not simply insert a list_item as todo_list can
-    // only accept todo_items
+    // we can not simply insert a listItem as todoList can
+    // only accept todoItems
     if (isGrandParentTodoList(state)) {
-      nodeToInsert = state.schema.nodes.todo_item.createChecked(
+      nodeToInsert = state.schema.nodes.todoItem.createChecked(
         {},
         nodeToInsert.content,
         nodeToInsert.marks,

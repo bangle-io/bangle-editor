@@ -82,7 +82,7 @@ describe('Command: toggleList', () => {
     );
     // because togglelist requires a view to work
     // we are not using the applyCommand helper
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -99,7 +99,7 @@ describe('Command: toggleList', () => {
     );
   });
 
-  test('toggle correctly when it has hard_break in it', async () => {
+  test('toggle correctly when it has hardBreak in it', async () => {
     updateDoc(
       <doc>
         <todoList>
@@ -123,7 +123,7 @@ describe('Command: toggleList', () => {
     );
     // because togglelist requires a view to work
     // we are not using the applyCommand helper
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -165,7 +165,7 @@ describe('Command: toggleList', () => {
     // check to make sure it is node selection
     expect(editorView.state.selection.node.type.name).toEqual('paragraph');
 
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -197,9 +197,9 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -239,9 +239,9 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -287,9 +287,9 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -313,7 +313,7 @@ describe('Command: toggleList', () => {
   });
 
   // TODO the outcome of this is a bit weird and unexpected
-  test('toggles when the bullet_list node is selected ', async () => {
+  test('toggles when the bulletList node is selected ', async () => {
     const { editorView, posLabels } = testEditor(
       <doc>
         <ul>
@@ -336,9 +336,9 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('bullet_list');
+    expect(editorView.state.selection.node.type.name).toEqual('bulletList');
 
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
@@ -2897,13 +2897,13 @@ describe('Mod-x on empty selections', () => {
 
 describe('Toggling the list', () => {
   const toggleOrderedList = (editorView) =>
-    toggleList(editorView.state.schema.nodes['ordered_list'])(
+    toggleList(editorView.state.schema.nodes['orderedList'])(
       editorView.state,
       editorView.dispatch,
       editorView,
     );
   const toggleBulletList = (editorView) =>
-    toggleList(editorView.state.schema.nodes['bullet_list'])(
+    toggleList(editorView.state.schema.nodes['bulletList'])(
       editorView.state,
       editorView.dispatch,
       editorView,

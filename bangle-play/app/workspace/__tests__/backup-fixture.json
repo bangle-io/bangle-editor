@@ -44,10 +44,10 @@
             ]
           },
           {
-            "type": "bullet_list",
+            "type": "bulletList",
             "content": [
               {
-                "type": "list_item",
+                "type": "listItem",
                 "content": [
                   {
                     "type": "paragraph",
@@ -61,7 +61,7 @@
                 ]
               },
               {
-                "type": "list_item",
+                "type": "listItem",
                 "content": [
                   {
                     "type": "paragraph",
@@ -77,13 +77,13 @@
             ]
           },
           {
-            "type": "ordered_list",
+            "type": "orderedList",
             "attrs": {
               "order": 1
             },
             "content": [
               {
-                "type": "list_item",
+                "type": "listItem",
                 "content": [
                   {
                     "type": "paragraph",

@@ -28,8 +28,8 @@ describe('Basic typing', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        bullet_list(
-          list_item(paragraph('First'))
+        bulletList(
+          listItem(paragraph('First'))
         ),
         paragraph
       )
@@ -42,8 +42,8 @@ describe('Basic typing', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        ordered_list(
-          list_item(paragraph('First'))
+        orderedList(
+          listItem(paragraph('First'))
         ),
         paragraph
       )
@@ -59,11 +59,11 @@ describe('Basic typing', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        bullet_list(
-          list_item(
+        bulletList(
+          listItem(
             paragraph('First'),
-            bullet_list(
-              list_item(
+            bulletList(
+              listItem(
                 paragraph('Second')
               )
             )

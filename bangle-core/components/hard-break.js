@@ -9,7 +9,7 @@ export const defaultKeys = {
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-const name = 'hard_break';
+const name = 'hardBreak';
 
 function specFactory(opts = {}) {
   return {
@@ -31,7 +31,7 @@ function specFactory(opts = {}) {
           }
         }
       },
-      parseMarkdown: { hardbreak: { node: 'hard_break' } },
+      parseMarkdown: { hardbreak: { node: 'hardBreak' } },
     },
   };
 }

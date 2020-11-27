@@ -43,7 +43,7 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'todo-item') : () => {};
 
-const name = 'todo_item';
+const name = 'todoItem';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
@@ -55,8 +55,8 @@ function specFactory({ nested = true, draggable = true } = {}) {
   });
 
   const content = nested
-    ? '(paragraph) (paragraph | todo_list | bullet_list | ordered_list)*'
-    : '(paragraph) (paragraph | bullet_list | ordered_list)*';
+    ? '(paragraph) (paragraph | todoList | bulletList | orderedList)*'
+    : '(paragraph) (paragraph | bulletList | orderedList)*';
 
   return {
     type: 'node',
@@ -79,9 +79,9 @@ function specFactory({ nested = true, draggable = true } = {}) {
       },
       parseMarkdown: {
         todo_item: {
-          block: 'todo_item',
+          block: name,
           getAttrs: (tok) => ({
-            'data-name': 'todo_item',
+            'data-name': name,
             'done': tok.attrGet('isDone') || false,
           }),
         },
@@ -102,7 +102,7 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
 
     const parentCheck = parentHasDirectParentOfType(
       type,
-      schema.nodes['todo_list'],
+      schema.nodes['todoList'],
     );
     return [
       keybindings &&

@@ -38,9 +38,9 @@ export const validPos = (pos, doc) =>
 
 export const validListParent = (type, schemaNodes) => {
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
+    bulletList: bulletList,
+    orderedList: orderedList,
+    todoList: todoList,
   } = schemaNodes;
   return [bulletList, orderedList, todoList].includes(type);
 };
@@ -98,7 +98,7 @@ export function hasVisibleContent(node) {
   const isInlineNodeHasVisibleContent = (inlineNode) => {
     return inlineNode.isText
       ? !!inlineNode.textContent.trim()
-      : inlineNode.type.name !== 'hard_break';
+      : inlineNode.type.name !== 'hardBreak';
   };
   if (node.isInline) {
     return isInlineNodeHasVisibleContent(node);
@@ -262,7 +262,7 @@ export function getAncestorNodesBetween(doc, $from, $to) {
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
 export function findAncestorPosition(doc, pos) {
-  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
+  const nestableBlocks = ['blockquote', 'bulletList', 'orderedList'];
 
   if (pos.depth === 1) {
     return pos;
@@ -338,13 +338,13 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 export const getListLiftTarget = (type, schema, resPos) => {
   let target = resPos.depth;
   const {
-    bullet_list: bulletList,
-    ordered_list: orderedList,
-    todo_list: todoList,
+    bulletList: bulletList,
+    orderedList: orderedList,
+    todoList: todoList,
   } = schema.nodes;
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = schema.nodes);
+    ({ listItem } = schema.nodes);
   }
 
   for (let i = resPos.depth; i > 0; i--) {

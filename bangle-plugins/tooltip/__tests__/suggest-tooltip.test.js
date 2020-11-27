@@ -703,7 +703,7 @@ describe('replaceSuggestMarkWith', () => {
 
     replaceSuggestMarkWith(
       suggestKey,
-      view.state.schema.nodes.hard_break.createChecked(),
+      view.state.schema.nodes.hardBreak.createChecked(),
     )(view.state, view.dispatch, view);
 
     expect(view.state).toEqualDocAndSelection(

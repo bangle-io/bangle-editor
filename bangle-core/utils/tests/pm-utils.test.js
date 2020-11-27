@@ -163,7 +163,7 @@ describe('findCutBefore', () => {
     );
 
     const { $from } = editorView.state.selection;
-    const { list_item: listItem } = editorView.state.schema.nodes;
+    const { listItem } = editorView.state.schema.nodes;
 
     const $cut = findCutBefore($from);
     expect($cut).not.toBeNull();
@@ -195,7 +195,7 @@ describe('findCutBefore', () => {
     );
 
     const { $from } = editorView.state.selection;
-    const { list_item: listItem } = editorView.state.schema.nodes;
+    const { listItem } = editorView.state.schema.nodes;
 
     const $cut = findCutBefore($from);
     expect($cut).not.toBeNull();

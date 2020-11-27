@@ -6,11 +6,11 @@ exports[`suggest basic show and hide Case 1 different parent block 1`] = `"doc(p
 
 exports[`suggest basic show and hide Case 2 different parent block 1`] = `"doc(paragraph(\\"hello\\"), paragraph(\\"hello\\"), paragraph(\\"hello \\", suggest_slash(\\"/check\\")))"`;
 
-exports[`suggest basic show and hide Case 3 different parent block 1`] = `"doc(bullet_list(list_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 3 different parent block 1`] = `"doc(bulletList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
 
-exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(todo_list(todo_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(todoList(todoItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
 
-exports[`suggest basic show and hide Case 5 different parent block 1`] = `"doc(ordered_list(list_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 5 different parent block 1`] = `"doc(orderedList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
 
 exports[`suggest basic show and hide Case 6 different parent block 1`] = `"doc(blockquote(heading(\\"hello \\", suggest_slash(\\"/check\\"))))"`;
 
