@@ -87,7 +87,7 @@ export const defaultContent = {
       ],
     },
     {
-      type: 'code_block',
+      type: 'codeBlock',
       content: [
         {
           type: 'text',

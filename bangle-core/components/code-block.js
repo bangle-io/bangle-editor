@@ -16,7 +16,7 @@ export const defaultKeys = {
   insertEmptyParaBelow: 'Mod-Enter',
 };
 
-const name = 'code_block';
+const name = 'codeBlock';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {

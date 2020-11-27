@@ -13,7 +13,7 @@ const nodeAlias = {
   ul: 'bulletList',
   ol: 'orderedList',
   li: 'listItem',
-  codeBlock: 'code_block',
+  codeBlock: 'codeBlock',
   br: 'hard_break',
   hr: 'horizontal_rule',
   todoList: 'todoList',

@@ -563,7 +563,7 @@ export function enterKeyCommand(type) {
       if (!listItem) {
         ({ listItem } = state.schema.nodes);
       }
-      const { code_block: codeBlock, todoItem: todoItem } = state.schema.nodes;
+      const { codeBlock: codeBlock, todoItem: todoItem } = state.schema.nodes;
 
       const node = $from.node($from.depth);
       const wrapper = $from.node($from.depth - 1);
@@ -682,7 +682,7 @@ function joinToPreviousListItem(type) {
     const { $from } = state.selection;
     const {
       paragraph,
-      code_block: codeBlock,
+      codeBlock: codeBlock,
       bulletList: bulletList,
       orderedList: orderedList,
       todoList: todoList,
