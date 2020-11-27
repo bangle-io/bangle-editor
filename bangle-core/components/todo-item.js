@@ -43,7 +43,7 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'todo-item') : () => {};
 
-const name = 'todo_item';
+const name = 'todoItem';
 
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
@@ -79,9 +79,9 @@ function specFactory({ nested = true, draggable = true } = {}) {
       },
       parseMarkdown: {
         todo_item: {
-          block: 'todo_item',
+          block: name,
           getAttrs: (tok) => ({
-            'data-name': 'todo_item',
+            'data-name': name,
             'done': tok.attrGet('isDone') || false,
           }),
         },

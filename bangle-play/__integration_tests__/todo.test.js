@@ -42,7 +42,7 @@ describe('Todo test', () => {
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         todo_list(
-          todo_item(paragraph('my task'))
+          todoItem(paragraph('my task'))
         ),
         paragraph
       )
@@ -62,15 +62,14 @@ describe('Todo test', () => {
 
     expect(
       await page.evaluate(
-        () =>
-          document.querySelector('[data-bangle-name="todo_item"]').innerText,
+        () => document.querySelector('[data-bangle-name="todoItem"]').innerText,
       ),
     ).toEqual('my task');
 
     expect(
       await page.evaluate(
         () =>
-          document.querySelector('[data-bangle-name="todo_item"] input')
+          document.querySelector('[data-bangle-name="todoItem"] input')
             .outerHTML,
       ),
     ).toMatch(/<input type="checkbox">/);
@@ -79,7 +78,7 @@ describe('Todo test', () => {
   it('Clicking the task dones it', async () => {
     await page.type(PM_ID, '[ ] my task');
 
-    await page.click('[data-bangle-name="todo_item"] input');
+    await page.click('[data-bangle-name="todoItem"] input');
 
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
@@ -90,7 +89,7 @@ describe('Todo test', () => {
     expect(
       await page.evaluate(() => {
         const el = document.querySelector(
-          '[data-bangle-name="todo_item"] input',
+          '[data-bangle-name="todoItem"] input',
         );
         if (!el) {
           throw new Error('Input not found');
@@ -103,9 +102,9 @@ describe('Todo test', () => {
   it('Clicking a done task undones it', async () => {
     await page.type(PM_ID, '[ ] my task');
 
-    await page.click('[data-bangle-name="todo_item"] input');
+    await page.click('[data-bangle-name="todoItem"] input');
     await sleep(10);
-    await page.click('[data-bangle-name="todo_item"] input');
+    await page.click('[data-bangle-name="todoItem"] input');
 
     const state = await getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
@@ -116,7 +115,7 @@ describe('Todo test', () => {
     expect(
       await page.evaluate(() => {
         const el = document.querySelector(
-          '[data-bangle-name="todo_item"] input',
+          '[data-bangle-name="todoItem"] input',
         );
         if (!el) {
           throw new Error('Input not found');

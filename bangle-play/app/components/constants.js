@@ -59,9 +59,9 @@ export const defaultContent = {
       type: 'todo_list',
       content: [
         {
-          type: 'todo_item',
+          type: 'todoItem',
           attrs: {
-            'data-bangle-name': 'todo_item',
+            'data-bangle-name': 'todoItem',
             'done': false,
           },
           content: [

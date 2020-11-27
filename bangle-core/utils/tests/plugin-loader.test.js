@@ -9,14 +9,14 @@ describe('nodeViews validation', () => {
     const plugins = [
       ...corePlugins(),
       NodeView.createPlugin({
-        name: 'todo_item',
+        name: 'todoItem',
       }),
     ];
 
     expect(() =>
       pluginLoader(new SpecSheet(), plugins),
     ).toThrowErrorMatchingInlineSnapshot(
-      `"NodeView validation failed. Duplicate nodeViews for 'todo_item' found."`,
+      `"NodeView validation failed. Duplicate nodeViews for 'todoItem' found."`,
     );
   });
 

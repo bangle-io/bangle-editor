@@ -21,7 +21,7 @@ Object {
                 "type": "paragraph",
               },
             ],
-            "type": "todo_item",
+            "type": "todoItem",
           },
         ],
         "type": "todo_list",

@@ -81,11 +81,11 @@ const getPlugins = ({ docName, manager }) => {
     timestamp.plugins(),
     dino.plugins(),
     NodeView.createPlugin({
-      name: 'todo_item',
+      name: 'todoItem',
       containerDOM: [
         'li',
         {
-          'data-bangle-name': 'todo_item',
+          'data-bangle-name': 'todoItem',
         },
       ],
       contentDOM: ['span', {}],
@@ -142,7 +142,7 @@ export class Editor extends React.PureComponent {
     if (node.type.name === 'stopwatch') {
       return <stopwatch.Stopwatch node={node} updateAttrs={updateAttrs} />;
     }
-    if (node.type.name === 'todo_item') {
+    if (node.type.name === 'todoItem') {
       return (
         <TodoItem node={node} updateAttrs={updateAttrs}>
           {children}

@@ -189,7 +189,7 @@ window.toggleList = toggleList;
 /**
  *
  * @param {Object} listType  bulletList, orderedList, todo_list
- * @param {Object} itemType  'todo_item', 'listItem'
+ * @param {Object} itemType  'todoItem', 'listItem'
  */
 export function toggleList(listType, itemType) {
   return (state, dispatch, view) => {
@@ -301,7 +301,7 @@ function liftListItems() {
 
         if (
           !range ||
-          ![state.schema.nodes.listItem, state.schema.nodes.todo_item].includes(
+          ![state.schema.nodes.listItem, state.schema.nodes.todoItem].includes(
             sel.$from.parent.type,
           )
         ) {
@@ -512,19 +512,19 @@ export const backspaceKeyCommand = (type) => (...args) => {
         isFirstChildOfParent,
         (state) =>
           isGrandParentTodoList(state) && isParentBulletOrOrderedList(state),
-        (state) => canOutdent(state.schema.nodes.todo_item)(state),
+        (state) => canOutdent(state.schema.nodes.todoItem)(state),
       ],
       // convert it into a todo list and then outdent it
       (state, dispatch, view) => {
         const result = toggleList(
           state.schema.nodes.todo_list,
-          state.schema.nodes.todo_item,
+          state.schema.nodes.todoItem,
         )(state, dispatch, view);
         if (!result) {
           return false;
         }
         state = view.state;
-        return outdentList(state.schema.nodes.todo_item)(state, dispatch, view);
+        return outdentList(state.schema.nodes.todoItem)(state, dispatch, view);
       },
     ),
 
@@ -563,7 +563,7 @@ export function enterKeyCommand(type) {
       if (!listItem) {
         ({ listItem } = state.schema.nodes);
       }
-      const { code_block: codeBlock, todo_item: todoItem } = state.schema.nodes;
+      const { code_block: codeBlock, todoItem: todoItem } = state.schema.nodes;
 
       const node = $from.node($from.depth);
       const wrapper = $from.node($from.depth - 1);
@@ -576,12 +576,12 @@ export function enterKeyCommand(type) {
           if (isGrandParentTodoList(state) && listItem !== todoItem) {
             const result = toggleList(
               state.schema.nodes.todo_list,
-              state.schema.nodes.todo_item,
+              state.schema.nodes.todoItem,
             )(state, dispatch, view);
             if (!result) {
               return false;
             }
-            return outdentList(state.schema.nodes.todo_item)(
+            return outdentList(state.schema.nodes.todoItem)(
               view.state, // use the updated state
               dispatch,
               view,
@@ -879,9 +879,9 @@ export function moveEdgeListItem(type, dir = 'UP') {
 
     // if the grand parent is a todo list
     // we can not simply insert a listItem as todo_list can
-    // only accept todo_items
+    // only accept todoItems
     if (isGrandParentTodoList(state)) {
-      nodeToInsert = state.schema.nodes.todo_item.createChecked(
+      nodeToInsert = state.schema.nodes.todoItem.createChecked(
         {},
         nodeToInsert.content,
         nodeToInsert.marks,

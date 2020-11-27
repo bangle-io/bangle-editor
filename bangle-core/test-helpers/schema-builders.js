@@ -17,7 +17,7 @@ const nodeAlias = {
   br: 'hard_break',
   hr: 'horizontal_rule',
   todoList: 'todo_list',
-  todoItem: 'todo_item',
+  todoItem: 'todoItem',
 };
 const markAlias = {};
 

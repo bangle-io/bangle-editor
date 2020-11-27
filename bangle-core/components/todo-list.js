@@ -23,7 +23,7 @@ function specFactory(opts = {}) {
     name,
     schema: {
       group: 'block',
-      content: 'todo_item+',
+      content: 'todoItem+',
       toDOM: () => ['ul', { 'data-bangle-name': name }, 0],
       parseDOM: [
         {
@@ -54,7 +54,7 @@ function pluginsFactory({
     return [
       markdownShortcut && wrappingInputRule(/^\s*(\[ \])\s$/, type),
       keymap({
-        [keybindings.toggle]: toggleList(type, schema.nodes.todo_item),
+        [keybindings.toggle]: toggleList(type, schema.nodes.todoItem),
       }),
     ];
   };
@@ -63,7 +63,7 @@ function pluginsFactory({
 export function toggleTodoList() {
   return (state, dispatch, view) => {
     const { schema } = state;
-    return toggleList(schema.nodes[name], schema.nodes.todo_item)(
+    return toggleList(schema.nodes[name], schema.nodes.todoItem)(
       state,
       dispatch,
       view,
@@ -75,7 +75,7 @@ export function queryIsSelectionInsideTodoList() {
   return (state) => {
     const { schema } = state;
     return parentHasDirectParentOfType(
-      schema.nodes['todo_item'],
+      schema.nodes['todoItem'],
       schema.nodes[name],
     )(state);
   };

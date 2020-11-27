@@ -8,7 +8,7 @@ exports[`suggest basic show and hide Case 2 different parent block 1`] = `"doc(p
 
 exports[`suggest basic show and hide Case 3 different parent block 1`] = `"doc(bulletList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
 
-exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(todo_list(todo_item(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(todo_list(todoItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
 
 exports[`suggest basic show and hide Case 5 different parent block 1`] = `"doc(orderedList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
 
