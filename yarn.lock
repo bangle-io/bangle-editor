@@ -3493,7 +3493,7 @@ __metadata:
     prosemirror-commands: ^1.1.4
     prosemirror-dropcursor: ^1.1.1
     prosemirror-gapcursor: ^1.1.5
-    prosemirror-history: ^1.0.4
+    prosemirror-history: ^1.1.3
     prosemirror-inputrules: ^1.1.3
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.12.0
@@ -3541,10 +3541,9 @@ __metadata:
     prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
     prosemirror-dropcursor: ^1.1.1
     prosemirror-gapcursor: ^1.1.5
-    prosemirror-history: ^1.0.4
-    prosemirror-inputrules: ^1.0.4
+    prosemirror-history: ^1.1.3
+    prosemirror-inputrules: ^1.1.3
     prosemirror-keymap: ^1.1.4
-    prosemirror-menu: ^1.1.4
     prosemirror-model: ^1.12.0
     prosemirror-schema-list: ^1.1.3
     prosemirror-state: ^1.3.3
@@ -4751,13 +4750,6 @@ __metadata:
     path-type: ^4.0.0
     yaml: ^1.10.0
   checksum: 151fcb91773c0ae826fc801eab86f8f818605dbf63c8e5515adf0ff0fec5ede8e614f387f93c088d65527a2ea9021f0cd8c6b6e5c7fef2b77480b5e2c33700dc
-  languageName: node
-  linkType: hard
-
-"crelt@npm:^1.0.0":
-  version: 1.0.4
-  resolution: "crelt@npm:1.0.4"
-  checksum: 734c4b561d4bb492f4074cd9444604cb8f5e6dbf6893714d99ccbf6f039efba0f1a110e42318364e89c8d38739df17238473202987cf2a9fc3fa8bdfef311b43
   languageName: node
   linkType: hard
 
@@ -11115,7 +11107,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-history@npm:^1.0.0, prosemirror-history@npm:^1.0.4":
+"prosemirror-history@npm:^1.1.3":
   version: 1.1.3
   resolution: "prosemirror-history@npm:1.1.3"
   dependencies:
@@ -11153,18 +11145,6 @@ fsevents@^1.2.7:
     markdown-it: ^10.0.0
     prosemirror-model: ^1.0.0
   checksum: 084723d6f3bfb93dbc50a9f3c30b761cab9248172f4c796c7ac03cd7ac25285de9ecf75f78320a49d14e88172caa14ddde52051762739d61a0bf3123ba5d2944
-  languageName: node
-  linkType: hard
-
-"prosemirror-menu@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "prosemirror-menu@npm:1.1.4"
-  dependencies:
-    crelt: ^1.0.0
-    prosemirror-commands: ^1.0.0
-    prosemirror-history: ^1.0.0
-    prosemirror-state: ^1.0.0
-  checksum: 0953581b36bc91755a604bf40670c2a53caf19761dc1b1d43a833dfa4fffdad4540401855edcdbcf451b9166e74c0a449b86f46335880c828466dfd3ea91513f
   languageName: node
   linkType: hard
 

@@ -4756,7 +4756,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-history", "npm:1.1.3"],
             ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-keymap", "npm:1.1.4"],
-            ["prosemirror-menu", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.12.0"],
             ["prosemirror-schema-list", "npm:1.1.3"],
             ["prosemirror-state", "npm:1.3.3"],
@@ -6050,15 +6049,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["parse-json", "npm:5.1.0"],
             ["path-type", "npm:4.0.0"],
             ["yaml", "npm:1.10.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["crelt", [
-        ["npm:1.0.4", {
-          "packageLocation": "./.yarn/cache/crelt-npm-1.0.4-0fe69b952d-734c4b561d.zip/node_modules/crelt/",
-          "packageDependencies": [
-            ["crelt", "npm:1.0.4"]
           ],
           "linkType": "HARD",
         }]
@@ -13196,19 +13186,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-markdown", "npm:1.5.0"],
             ["markdown-it", "npm:10.0.0"],
             ["prosemirror-model", "npm:1.12.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["prosemirror-menu", [
-        ["npm:1.1.4", {
-          "packageLocation": "./.yarn/cache/prosemirror-menu-npm-1.1.4-f1d0b04a6c-0953581b36.zip/node_modules/prosemirror-menu/",
-          "packageDependencies": [
-            ["prosemirror-menu", "npm:1.1.4"],
-            ["crelt", "npm:1.0.4"],
-            ["prosemirror-commands", "npm:1.1.4"],
-            ["prosemirror-history", "npm:1.1.3"],
-            ["prosemirror-state", "npm:1.3.3"]
           ],
           "linkType": "HARD",
         }]
