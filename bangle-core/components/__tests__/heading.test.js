@@ -28,7 +28,7 @@ describe('Basic', () => {
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>test</para>
-        <heading level="1">Hello</heading>
+        <heading level={1}>Hello</heading>
       </doc>,
     );
   });
@@ -47,7 +47,7 @@ describe('Basic', () => {
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>test</para>
-        <heading level="2">Hello</heading>
+        <heading level={2}>Hello</heading>
       </doc>,
     );
   });
@@ -67,7 +67,7 @@ describe('Basic', () => {
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <para>test</para>
-        <heading level="3">Hello</heading>
+        <heading level={3}>Hello</heading>
       </doc>,
     );
   });
@@ -111,22 +111,22 @@ describe('Insert empty paragraph above and below', () => {
   test.each([
     [
       <doc>
-        <heading level="1">foo[]bar</heading>
+        <heading level={1}>foo[]bar</heading>
       </doc>,
       <doc>
         <para>[]</para>
-        <heading level="1">foobar</heading>
+        <heading level={1}>foobar</heading>
       </doc>,
     ],
     [
       <doc>
         <para>top</para>
-        <heading level="1">hello[]</heading>
+        <heading level={1}>hello[]</heading>
       </doc>,
       <doc>
         <para>top</para>
         <para>[]</para>
-        <heading level="1">hello</heading>
+        <heading level={1}>hello</heading>
       </doc>,
     ],
     [
@@ -136,7 +136,7 @@ describe('Insert empty paragraph above and below', () => {
             <para>top</para>
           </li>
         </ul>
-        <heading level="1">hello[]</heading>
+        <heading level={1}>hello[]</heading>
       </doc>,
       <doc>
         <ul>
@@ -145,7 +145,7 @@ describe('Insert empty paragraph above and below', () => {
           </li>
         </ul>
         <para>[]</para>
-        <heading level="1">hello</heading>
+        <heading level={1}>hello</heading>
       </doc>,
     ],
   ])('Case %# insert empty paragraph above', async (input, expected) => {
@@ -159,21 +159,21 @@ describe('Insert empty paragraph above and below', () => {
   test.each([
     [
       <doc>
-        <heading level="1">foo[]bar</heading>
+        <heading level={1}>foo[]bar</heading>
       </doc>,
       <doc>
-        <heading level="1">foobar</heading>
+        <heading level={1}>foobar</heading>
         <para>[]</para>
       </doc>,
     ],
     [
       <doc>
         <para>top</para>
-        <heading level="1">hello[]</heading>
+        <heading level={1}>hello[]</heading>
       </doc>,
       <doc>
         <para>top</para>
-        <heading level="1">hello</heading>
+        <heading level={1}>hello</heading>
         <para>[]</para>
       </doc>,
     ],
@@ -184,7 +184,7 @@ describe('Insert empty paragraph above and below', () => {
             <para>top</para>
           </li>
         </ul>
-        <heading level="1">hello[]</heading>
+        <heading level={1}>hello[]</heading>
       </doc>,
       <doc>
         <ul>
@@ -192,7 +192,7 @@ describe('Insert empty paragraph above and below', () => {
             <para>top</para>
           </li>
         </ul>
-        <heading level="1">hello</heading>
+        <heading level={1}>hello</heading>
         <para>[]</para>
       </doc>,
     ],

@@ -59,7 +59,7 @@ export const getDocLabels = weakCache((doc) => {
  * Read more about custom JSX pragma at https://www.gatsbyjs.com/blog/2019-08-02-what-is-jsx-pragma/
  *
  * For example:
- *  '<doc><heading level="1">hello</heading></doc>' will be converted by babel to
+ *  '<doc><heading level={1}>hello</heading></doc>' will be converted by babel to
  *  'psx("doc", null, psx("heading", {level: "1"}))' which will then accept a
  *   prosemirror `schema` to produce a Prosemirror Document.
  *

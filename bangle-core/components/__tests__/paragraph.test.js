@@ -550,13 +550,13 @@ describe('Commands', () => {
       await check(
         <doc>
           <para>foobar</para>
-          <heading level="1">hi</heading>
+          <heading level={1}>hi</heading>
           <para>[]lorem</para>
         </doc>,
         <doc>
           <para>foobar</para>
           <para>[]lorem</para>
-          <heading level="1">hi</heading>
+          <heading level={1}>hi</heading>
         </doc>,
       );
     });
