@@ -68,27 +68,28 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
     // Enables certain command to only work if paragraph is direct child of the `doc` node
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
     return [
-      keymap({
-        [keybindings.toggleParagraph]: convertToParagraph(),
+      keybindings &&
+        keymap({
+          [keybindings.toggleParagraph]: convertToParagraph(),
 
-        [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
-        [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
+          [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
+          [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 
-        [keybindings.jumpToStartOfParagraph]: jumpToStartOfParagraph(),
-        [keybindings.jumpToEndOfParagraph]: jumpToEndOfParagraph(),
+          [keybindings.jumpToStartOfParagraph]: jumpToStartOfParagraph(),
+          [keybindings.jumpToEndOfParagraph]: jumpToEndOfParagraph(),
 
-        [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
-        [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
+          [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
+          [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
 
-        [keybindings.insertEmptyParaAbove]: filter(
-          isTopLevel,
-          insertEmpty(type, 'above'),
-        ),
-        [keybindings.insertEmptyParaBelow]: filter(
-          isTopLevel,
-          insertEmpty(type, 'below'),
-        ),
-      }),
+          [keybindings.insertEmptyParaAbove]: filter(
+            isTopLevel,
+            insertEmpty(type, 'above'),
+          ),
+          [keybindings.insertEmptyParaBelow]: filter(
+            isTopLevel,
+            insertEmpty(type, 'below'),
+          ),
+        }),
     ];
   };
 }
