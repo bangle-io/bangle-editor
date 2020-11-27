@@ -6,11 +6,25 @@ import {
 import { EditorViewContext } from 'bangle-react/ReactEditor';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
 
-export function LinkMenu({ getIsTop = () => true }) {
+export function FloatingLinkMenu({ getIsTop = () => true }) {
   const view = useContext(EditorViewContext);
-
   const result = queryLinkMarkAtSelection()(view.state);
-  const originalHref = result?.href || '';
+  const originalHref = (result && result.href) || '';
+
+  return (
+    <LinkMenu
+      // (hackish) Using the key to unmount then mount
+      // the linkmenu so that it discards any preexisting state
+      // in its `href` and starts fresh
+      key={originalHref}
+      originalHref={originalHref}
+      view={view}
+      getIsTop={getIsTop}
+    />
+  );
+}
+
+function LinkMenu({ getIsTop, view, originalHref = '' }) {
   const [href, setHref] = useState(originalHref);
   const inputRef = useRef();
   const handleSubmit = (e) => {

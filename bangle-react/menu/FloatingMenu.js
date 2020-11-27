@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PluginKey } from 'bangle-core/index';
 
 import { usePluginState } from '../use-plugin-state';
-import { LinkMenu } from './FloatingLinkMenu';
+import { FloatingLinkMenu } from './FloatingLinkMenu';
 import { Menu } from './Menu';
 
 export function FloatingMenu({
@@ -14,7 +14,7 @@ export function FloatingMenu({
       return <Menu menuKey={menuKey} />;
     }
     if (type === 'floatingLinkMenu') {
-      return <LinkMenu />;
+      return <FloatingLinkMenu />;
     }
     return null;
   },

@@ -485,16 +485,16 @@ const plugins = [
 
 Allows text in your editor to be marked as link.
 
-### spec(): {link.MarkSpecFactory}
+### spec({ ... }): {link.MarkSpecFactory}
 
 Returns a mark spec, read more {text.Marks}.
-
-### plugins({ ... }): {link.PluginsFactory}
 
 Named parameters:
 
 - **openOnClick**: Boolean=`false`\
-  If enabled clicking a link will open the link in new tab. Is disabled, clicking a link will set the cursor on it.
+  If enabled clicking a link will open the link in new tab. If disabled, clicking a link will set the cursor on it.
+
+### plugins(): {link.PluginsFactory}
 
 ### commands: {link.CommandsObject}
 

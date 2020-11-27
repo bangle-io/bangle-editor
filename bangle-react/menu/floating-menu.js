@@ -41,9 +41,6 @@ function floatingMenu({
     if (state.selection.empty) {
       return null;
     }
-    if (prevType === 'floatingLinkMenu') {
-      return prevType;
-    }
     return 'floatingMenu';
   },
 }) {
