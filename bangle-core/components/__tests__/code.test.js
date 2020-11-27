@@ -45,7 +45,7 @@ describe('Basic', () => {
     );
   });
 
-  test('queryIsSelectionInCode works correctly', async () => {
+  test('queryIsCodeActive works correctly', async () => {
     const { view } = testEditor(
       <doc>
         <para>hello [world]</para>
@@ -64,7 +64,7 @@ describe('Basic', () => {
 
     setSelectionNear(view, 9);
 
-    expect(code.commands.queryIsSelectionInCode()(view.state)).toBe(true);
+    expect(code.commands.queryIsCodeActive()(view.state)).toBe(true);
   });
 });
 

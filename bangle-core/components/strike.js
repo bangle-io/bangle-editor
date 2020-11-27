@@ -7,7 +7,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleStrike,
-  queryIsSelectionInStrike,
+  queryIsStrikeActive,
 };
 export const defaultKeys = {
   toggleStrike: 'Mod-d',
@@ -74,7 +74,7 @@ export function toggleStrike() {
   };
 }
 
-export function queryIsSelectionInStrike() {
+export function queryIsStrikeActive() {
   return (state) => {
     return isMarkActiveInSelection(state.schema.marks[name])(state);
   };

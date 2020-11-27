@@ -30,7 +30,7 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
-- **queryIsSelectionInBlockQuote**(): {link.QueryCommand.boolean}\
+- **queryIsBlockQuoteActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a blockquote or not.
 
 ## **Usage**
@@ -72,7 +72,7 @@ Named parameters:
 - **toggleBold**(): {link.Command}\
   Toggles bold mark.
 
-- **queryIsSelectionInBold**(): {link.QueryCommand.boolean}\
+- **queryIsBoldActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a bold mark or not.
 
 ## **Usage**
@@ -117,7 +117,7 @@ Named parameters:
 - **toggleBulletList**(): {link.Command}\
    Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
 
-- **queryIsSelectionInsideBulletList**(): {link.QueryCommand.boolean}\
+- **queryIsBulletListActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a bullet list.
 
 ## **Usage**
@@ -166,7 +166,7 @@ Named parameters:
 - **toggleCode**(): {link.Command}\
   Toggles code mark.
 
-- **queryIsSelectionInCode**(): {link.QueryCommand.boolean}\
+- **queryIsCodeActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a code mark or not.
 
 ## **Usage**
@@ -216,7 +216,7 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
-- **queryIsSelectionInCodeBlock**(): {link.QueryCommand.boolean}\
+- **queryIsCodeActiveBlock**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a codeBlock or not.
 
 ## **Usage**
@@ -296,7 +296,7 @@ Named parameters:
 - **toggleItalic**(level: number = 3): {link.Command}\
   Toggles text into heading of given `level` and vice versa.
 
-- **queryIsSelectionInHeading**(level: number = 3): {link.QueryCommand.boolean}\
+- **queryIsHeadingActive**(level: number = 3): {link.QueryCommand.boolean}\
   Query if the selection is inside a heading of given `level`.
 
 ## **Usage**
@@ -462,7 +462,7 @@ Named parameters:
 - **toggleItalic**(): {link.Command}\
   Toggles italic mark.
 
-- **queryIsSelectionInItalic**(): {link.QueryCommand.boolean}\
+- **queryIsItalicActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside an italic mark or not.
 
 ## **Usage**
@@ -498,19 +498,19 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
-- **createLinkAtSelection**(href : string): {link.Command}\
+- **createLink**(href : string): {link.Command}\
   Creates a link mark on the selection text.
 
-- **updateLinkAtSelection**(href : ?string): {link.Command}\
+- **updateLink**(href : ?string): {link.Command}\
   Updates a link mark on the selection text with `href`. Set `href` to `undefined` to clear the link mark. If selection is empty, it will update the parent text node.
 
-- **queryLinkMarkAtSelection**(): {link.QueryCommand.customStart}?{href: string, text: string}{link.QueryCommand.customEnd} \
+- **queryLinkAttrs**(): {link.QueryCommand.customStart}?{href: string, text: string}{link.QueryCommand.customEnd} \
   Returns the details of the link mark in selection.
 
-- **queryLinkAllowedInRange**(from: number, to: number): {link.QueryCommand.boolean}\
+- **queryIsLinkAllowedInRange**(from: number, to: number): {link.QueryCommand.boolean}\
   Queries if the range allows for creation of link mark.
 
-- **queryIsSelectionInLink**(): {link.QueryCommand.boolean}\
+- **queryIsLinkActive**(): {link.QueryCommand.boolean}\
   Queries if the selection is in a link mark.
 
 - **queryIsSelectionAroundLink**(): {link.QueryCommand.boolean}\
@@ -725,7 +725,7 @@ Named parameters:
 - **toggleStrike**(): {link.Command}\
   Toggles strike mark.
 
-- **queryIsSelectionInStrike**(): {link.QueryCommand.boolean}\
+- **queryIsStrikeActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a strike mark or not.
 
 ## **Usage**
@@ -860,7 +860,7 @@ Named parameters:
 - **toggleTodoList**(): {link.Command}\
    Convert to an todoList and if already an todoList, convert it to a paragraph node.
 
-- **queryIsSelectionInsideTodoList**(): {link.QueryCommand.boolean}\
+- **queryIsTodoListActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside a todo list.
 
 ## **Usage**
@@ -890,7 +890,7 @@ Named parameters:
 - **toggleUnderline**(): {link.Command}\
   Toggles underline mark.
 
-- **queryIsSelectionInUnderline**(): {link.QueryCommand.boolean}\
+- **queryIsUnderlineActive**(): {link.QueryCommand.boolean}\
   Query if the selection is inside an underline mark or not.
 
 ## **Usage**

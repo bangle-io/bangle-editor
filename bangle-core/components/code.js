@@ -8,7 +8,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleCode,
-  queryIsSelectionInCode,
+  queryIsCodeActive,
 };
 export const defaultKeys = {
   toggleCode: 'Mod-`',
@@ -256,6 +256,6 @@ export function toggleCode() {
     toggleMark(state.schema.marks[name])(state, dispatch, view);
 }
 
-export function queryIsSelectionInCode() {
+export function queryIsCodeActive() {
   return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
 }

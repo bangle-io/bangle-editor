@@ -6,7 +6,7 @@ import { moveNode } from './list-item/commands';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  queryIsSelectionInCodeBlock,
+  queryIsCodeActiveBlock,
 };
 export const defaultKeys = {
   toCodeBlock: 'Shift-Ctrl-\\',
@@ -73,11 +73,11 @@ function pluginsFactory({
           [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
           [keybindings.insertEmptyParaAbove]: filter(
-            queryIsSelectionInCodeBlock(),
+            queryIsCodeActiveBlock(),
             insertEmpty(schema.nodes.paragraph, 'above', false),
           ),
           [keybindings.insertEmptyParaBelow]: filter(
-            queryIsSelectionInCodeBlock(),
+            queryIsCodeActiveBlock(),
             insertEmpty(schema.nodes.paragraph, 'below', false),
           ),
         }),
@@ -85,7 +85,7 @@ function pluginsFactory({
   };
 }
 
-export function queryIsSelectionInCodeBlock() {
+export function queryIsCodeActiveBlock() {
   return (state) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));

@@ -7,7 +7,7 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   toggleBold,
-  queryIsSelectionInBold,
+  queryIsBoldActive,
 };
 export const defaultKeys = {
   toggleBold: 'Mod-b',
@@ -72,6 +72,6 @@ export function toggleBold() {
   };
 }
 
-export function queryIsSelectionInBold() {
+export function queryIsBoldActive() {
   return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
 }

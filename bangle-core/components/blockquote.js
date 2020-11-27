@@ -9,7 +9,7 @@ import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  queryIsSelectionInBlockQuote,
+  queryIsBlockQuoteActive,
 };
 export const defaultKeys = {
   wrapIn: 'Ctrl-ArrowRight',
@@ -52,7 +52,7 @@ function specFactory(opts = {}) {
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const isInBlockquote = queryIsSelectionInBlockQuote();
+    const isInBlockquote = queryIsBlockQuoteActive();
     return [
       wrappingInputRule(/^\s*>\s$/, type),
       keybindings &&
@@ -82,7 +82,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   };
 }
 
-export function queryIsSelectionInBlockQuote() {
+export function queryIsBlockQuoteActive() {
   return (state) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));

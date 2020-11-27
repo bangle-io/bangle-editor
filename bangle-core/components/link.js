@@ -5,11 +5,11 @@ import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  createLinkAtSelection,
-  updateLinkAtSelection,
-  queryLinkMarkAtSelection,
-  queryLinkAllowedInRange,
-  queryIsSelectionInLink,
+  createLink,
+  updateLink,
+  queryLinkAttrs,
+  queryIsLinkAllowedInRange,
+  queryIsLinkActive,
   queryIsSelectionAroundLink,
 };
 
@@ -138,7 +138,7 @@ function pasteLinkify(regexp) {
         if (!singleMatch) {
           return false;
         }
-        return createLinkAtSelection(text)(state, dispatch);
+        return createLink(text)(state, dispatch);
       },
     },
   });
@@ -226,10 +226,10 @@ function setLink(from, to, href) {
  * Sets the selection to href
  * @param {*} href
  */
-export function createLinkAtSelection(href) {
+export function createLink(href) {
   return filter(
     (state) =>
-      queryLinkAllowedInRange(
+      queryIsLinkAllowedInRange(
         state.selection.$from.pos,
         state.selection.$to.pos,
       )(state),
@@ -253,7 +253,7 @@ export function createLinkAtSelection(href) {
   );
 }
 
-export function updateLinkAtSelection(href) {
+export function updateLink(href) {
   return (state, dispatch) => {
     if (!state.selection.empty) {
       return setLink(
@@ -276,7 +276,7 @@ export function updateLinkAtSelection(href) {
   };
 }
 
-export function queryLinkMarkAtSelection() {
+export function queryLinkAttrs() {
   return (state) => {
     const { $from } = state.selection;
 
@@ -303,7 +303,7 @@ export function queryLinkMarkAtSelection() {
   };
 }
 
-export function queryLinkAllowedInRange(from, to) {
+export function queryIsLinkAllowedInRange(from, to) {
   return (state) => {
     const $from = state.doc.resolve(from);
     const $to = state.doc.resolve(to);
@@ -314,7 +314,7 @@ export function queryLinkAllowedInRange(from, to) {
   };
 }
 
-export function queryIsSelectionInLink() {
+export function queryIsLinkActive() {
   return (state) =>
     !!state.doc.type.schema.marks.link.isInSet(state.selection.$from.marks());
 }

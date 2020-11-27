@@ -1,32 +1,23 @@
 import React from 'react';
 import {
-  queryIsSelectionInItalic,
+  queryIsItalicActive,
   toggleItalic,
 } from 'bangle-core/components/italic';
 import { Icon } from './Icon';
+import { queryIsBoldActive, toggleBold } from 'bangle-core/components/bold';
+import { queryIsCodeActive, toggleCode } from 'bangle-core/components/code';
 import {
-  queryIsSelectionInBold,
-  toggleBold,
-} from 'bangle-core/components/bold';
-import {
-  queryIsSelectionInCode,
-  toggleCode,
-} from 'bangle-core/components/code';
-import {
-  queryIsSelectionInsideTodoList,
+  queryIsTodoListActive,
   toggleTodoList,
 } from 'bangle-core/components/todo-list';
 import {
-  queryIsSelectionInHeading,
+  queryIsHeadingActive,
   toggleHeading,
 } from 'bangle-core/components/heading';
 import { filter } from 'bangle-core/utils/pm-utils';
+import { queryIsLinkActive, updateLink } from 'bangle-core/components/link';
 import {
-  queryIsSelectionInLink,
-  updateLinkAtSelection,
-} from 'bangle-core/components/link';
-import {
-  queryIsSelectionInsideBulletList,
+  queryIsBulletListActive,
   toggleBulletList,
 } from 'bangle-core/components/bullet-list';
 
@@ -43,7 +34,7 @@ export const boldItem = () => ({
     return false;
   },
   component: BoldIcon,
-  isActive: queryIsSelectionInBold(),
+  isActive: queryIsBoldActive(),
 });
 
 export const italicItem = () => ({
@@ -59,7 +50,7 @@ export const italicItem = () => ({
     return false;
   },
   component: ItalicIcon,
-  isActive: queryIsSelectionInItalic(),
+  isActive: queryIsItalicActive(),
 });
 
 export const codeItem = () => ({
@@ -75,7 +66,7 @@ export const codeItem = () => ({
     return false;
   },
   component: CodeIcon,
-  isActive: queryIsSelectionInCode(),
+  isActive: queryIsCodeActive(),
 });
 
 export const bulletListItem = () => ({
@@ -91,7 +82,7 @@ export const bulletListItem = () => ({
     return false;
   },
   component: BulletListIcon,
-  isActive: queryIsSelectionInsideBulletList(),
+  isActive: queryIsBulletListActive(),
 });
 
 export const todoListItem = () => ({
@@ -109,7 +100,7 @@ export const todoListItem = () => ({
     return false;
   },
   component: TodoListIcon,
-  isActive: queryIsSelectionInsideTodoList(),
+  isActive: queryIsTodoListActive(),
 });
 
 export const heading2Item = () => ({
@@ -126,7 +117,7 @@ export const heading2Item = () => ({
     return false;
   },
   component: Heading2Icon,
-  isActive: queryIsSelectionInHeading(2),
+  isActive: queryIsHeadingActive(2),
 });
 
 export const heading3Item = () => ({
@@ -143,14 +134,14 @@ export const heading3Item = () => ({
     return false;
   },
   component: Heading3Icon,
-  isActive: queryIsSelectionInHeading(3),
+  isActive: queryIsHeadingActive(3),
 });
 
 export const linkItem = (showLinkMenu) => ({
   type: 'command',
   name: 'Link',
   command: filter(
-    (state) => updateLinkAtSelection('')(state),
+    (state) => updateLink('')(state),
     (state, dispatch, view) => {
       if (dispatch) {
         showLinkMenu();
@@ -159,7 +150,7 @@ export const linkItem = (showLinkMenu) => ({
     },
   ),
   component: LinkIcon,
-  isActive: queryIsSelectionInLink(),
+  isActive: queryIsLinkActive(),
 });
 
 function BoldIcon(props) {
