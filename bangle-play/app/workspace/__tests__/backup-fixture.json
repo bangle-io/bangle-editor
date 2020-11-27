@@ -47,7 +47,7 @@
             "type": "bullet_list",
             "content": [
               {
-                "type": "list_item",
+                "type": "listItem",
                 "content": [
                   {
                     "type": "paragraph",
@@ -61,7 +61,7 @@
                 ]
               },
               {
-                "type": "list_item",
+                "type": "listItem",
                 "content": [
                   {
                     "type": "paragraph",
@@ -83,7 +83,7 @@
             },
             "content": [
               {
-                "type": "list_item",
+                "type": "listItem",
                 "content": [
                   {
                     "type": "paragraph",

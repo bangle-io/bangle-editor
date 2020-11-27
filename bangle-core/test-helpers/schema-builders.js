@@ -12,7 +12,7 @@ const nodeAlias = {
   para: 'paragraph',
   ul: 'bullet_list',
   ol: 'ordered_list',
-  li: 'list_item',
+  li: 'listItem',
   codeBlock: 'code_block',
   br: 'hard_break',
   hr: 'horizontal_rule',

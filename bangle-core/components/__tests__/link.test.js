@@ -379,7 +379,7 @@ describe('remove link', () => {
     const nodePosition = posLabels['[]'] - 2;
     selectNodeAt(editorView, nodePosition);
     // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
     updateLinkAtSelection()(editorView.state, editorView.dispatch);
 

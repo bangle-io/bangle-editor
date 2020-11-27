@@ -29,7 +29,7 @@ describe('Basic typing', () => {
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         bullet_list(
-          list_item(paragraph('First'))
+          listItem(paragraph('First'))
         ),
         paragraph
       )
@@ -43,7 +43,7 @@ describe('Basic typing', () => {
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         ordered_list(
-          list_item(paragraph('First'))
+          listItem(paragraph('First'))
         ),
         paragraph
       )
@@ -60,10 +60,10 @@ describe('Basic typing', () => {
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         bullet_list(
-          list_item(
+          listItem(
             paragraph('First'),
             bullet_list(
-              list_item(
+              listItem(
                 paragraph('Second')
               )
             )

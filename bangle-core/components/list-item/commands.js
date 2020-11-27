@@ -72,7 +72,7 @@ const canOutdent = (type) => (state) => {
   const { parent } = state.selection.$from;
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
   const { paragraph } = state.schema.nodes;
 
@@ -119,7 +119,7 @@ export const isInsideListItem = (type) => (state) => {
 
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
   const { paragraph } = state.schema.nodes;
   if (state.selection instanceof GapCursorSelection) {
@@ -189,7 +189,7 @@ window.toggleList = toggleList;
 /**
  *
  * @param {Object} listType  bullet_list, ordered_list, todo_list
- * @param {Object} itemType  'todo_item', 'list_item'
+ * @param {Object} itemType  'todo_item', 'listItem'
  */
 export function toggleList(listType, itemType) {
   return (state, dispatch, view) => {
@@ -206,7 +206,7 @@ export function toggleList(listType, itemType) {
     } else {
       // If current ListType is the same as `listType` in arg,
       // toggle the list to `p`.
-      const listItem = itemType ? itemType : state.schema.nodes.list_item;
+      const listItem = itemType ? itemType : state.schema.nodes.listItem;
 
       const depth = rootListDepth(listItem, selection.$to, state.schema.nodes);
 
@@ -301,10 +301,9 @@ function liftListItems() {
 
         if (
           !range ||
-          ![
-            state.schema.nodes.list_item,
-            state.schema.nodes.todo_item,
-          ].includes(sel.$from.parent.type)
+          ![state.schema.nodes.listItem, state.schema.nodes.todo_item].includes(
+            sel.$from.parent.type,
+          )
         ) {
           return false;
         }
@@ -368,7 +367,7 @@ export function indentList(type) {
   return function indentListCommand(state, dispatch) {
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
 
     if (isInsideListItem(listItem)(state)) {
@@ -390,7 +389,7 @@ export function outdentList(type) {
   return function (state, dispatch) {
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
     const { $from, $to } = state.selection;
     if (isInsideListItem(listItem)(state)) {
@@ -562,7 +561,7 @@ export function enterKeyCommand(type) {
       const { $from } = selection;
       let listItem = type;
       if (!listItem) {
-        ({ list_item: listItem } = state.schema.nodes);
+        ({ listItem } = state.schema.nodes);
       }
       const { code_block: codeBlock, todo_item: todoItem } = state.schema.nodes;
 
@@ -677,7 +676,7 @@ function joinToPreviousListItem(type) {
   return (state, dispatch) => {
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
 
     const { $from } = state.selection;
@@ -776,7 +775,7 @@ function deletePreviousEmptyListItem(type) {
     const { $from } = state.selection;
     let listItem = type;
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
     const $cut = findCutBefore($from);
     if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
@@ -824,7 +823,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     let listItem = type;
 
     if (!listItem) {
-      ({ list_item: listItem } = state.schema.nodes);
+      ({ listItem } = state.schema.nodes);
     }
 
     if (!state.selection.empty) {
@@ -854,7 +853,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     );
 
     // - first // doing a (-1) will move us to end of 'first' hence allowing us to add an item
-    // - second  // start(-3) will give 11 which is the start of this list_item,
+    // - second  // start(-3) will give 11 which is the start of this listItem,
     //   - third{<>}
     let insertPos = state.selection.$from.before(-3);
 
@@ -879,7 +878,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     let nodeToInsert = parent.node;
 
     // if the grand parent is a todo list
-    // we can not simply insert a list_item as todo_list can
+    // we can not simply insert a listItem as todo_list can
     // only accept todo_items
     if (isGrandParentTodoList(state)) {
       nodeToInsert = state.schema.nodes.todo_item.createChecked(

@@ -23,7 +23,7 @@ function specFactory(opts = {}) {
     type: 'node',
     name,
     schema: {
-      content: 'list_item+',
+      content: 'listItem+',
       group: 'block',
       parseDOM: [{ tag: 'ul' }],
       toDOM: () => ['ul', 0],
@@ -51,7 +51,7 @@ function pluginsFactory({
     return [
       keybindings &&
         keymap({
-          [keybindings.toggle]: toggleList(type, schema.nodes.list_item),
+          [keybindings.toggle]: toggleList(type, schema.nodes.listItem),
         }),
       markdownShortcut && wrappingInputRule(/^\s*([-+*])\s$/, type),
     ];
@@ -62,7 +62,7 @@ export function toggleBulletList() {
   return (state, dispatch, view) => {
     return toggleList(
       state.schema.nodes.bullet_list,
-      state.schema.nodes.list_item,
+      state.schema.nodes.listItem,
     )(state, dispatch, view);
   };
 }
@@ -70,7 +70,7 @@ export function toggleBulletList() {
 export function queryIsSelectionInsideBulletList() {
   return (state) => {
     const { schema } = state;
-    return parentHasDirectParentOfType(schema.nodes['list_item'], [
+    return parentHasDirectParentOfType(schema.nodes['listItem'], [
       schema.nodes['bullet_list'],
     ])(state);
   };

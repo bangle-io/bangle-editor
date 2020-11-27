@@ -29,7 +29,7 @@ export const defaultKeys = {
   insertEmptyListBelow: 'Mod-Enter',
 };
 
-const name = 'list_item';
+const name = 'listItem';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {

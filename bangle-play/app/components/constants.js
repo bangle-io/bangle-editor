@@ -99,7 +99,7 @@ export const defaultContent = {
       type: 'bullet_list',
       content: [
         {
-          type: 'list_item',
+          type: 'listItem',
           content: [
             {
               type: 'paragraph',
@@ -113,7 +113,7 @@ export const defaultContent = {
           ],
         },
         {
-          type: 'list_item',
+          type: 'listItem',
           content: [
             {
               type: 'paragraph',

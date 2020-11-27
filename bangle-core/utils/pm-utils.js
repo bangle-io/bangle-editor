@@ -344,7 +344,7 @@ export const getListLiftTarget = (type, schema, resPos) => {
   } = schema.nodes;
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = schema.nodes);
+    ({ listItem } = schema.nodes);
   }
 
   for (let i = resPos.depth; i > 0; i--) {

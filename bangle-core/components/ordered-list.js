@@ -24,7 +24,7 @@ function specFactory(opts = {}) {
           default: 1,
         },
       },
-      content: 'list_item+',
+      content: 'listItem+',
       group: 'block',
       parseDOM: [
         {
@@ -81,7 +81,7 @@ export function toggleOrderedList() {
   return (state, dispatch, view) => {
     return toggleList(
       state.schema.nodes.ordered_list,
-      state.schema.nodes.list_item,
+      state.schema.nodes.listItem,
     )(state, dispatch, view);
   };
 }
@@ -89,7 +89,7 @@ export function toggleOrderedList() {
 export function queryIsSelectionInsideBulletList() {
   return (state) => {
     const { schema } = state;
-    return parentHasDirectParentOfType(schema.nodes['list_item'], [
+    return parentHasDirectParentOfType(schema.nodes['listItem'], [
       schema.nodes[name],
     ])(state);
   };

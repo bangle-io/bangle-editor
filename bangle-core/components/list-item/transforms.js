@@ -8,7 +8,7 @@ function liftListItem(type, state, selection, tr) {
   let { $from, $to } = selection;
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
 
   let range = $from.blockRange(
@@ -55,7 +55,7 @@ function liftListItem(type, state, selection, tr) {
 export function liftFollowingList(type, state, from, to, rootListDepth, tr) {
   let listItem = type;
   if (!listItem) {
-    ({ list_item: listItem } = state.schema.nodes);
+    ({ listItem } = state.schema.nodes);
   }
   let lifted = false;
   tr.doc.nodesBetween(from, to, (node, pos) => {
@@ -152,7 +152,7 @@ const extractListFromParagaph = (type, node, schema) => {
       const newText = child.text.substr(length);
       let listItem = type;
       if (!listItem) {
-        ({ list_item: listItem } = schema.nodes);
+        ({ listItem } = schema.nodes);
       }
 
       const listItemNode = listItem.createAndFill(

@@ -197,7 +197,7 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
     toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,
@@ -239,7 +239,7 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
     toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,
@@ -287,7 +287,7 @@ describe('Command: toggleList', () => {
 
     selectNodeAt(editorView, nodePosition);
     // // check to make sure it is node selection
-    expect(editorView.state.selection.node.type.name).toEqual('list_item');
+    expect(editorView.state.selection.node.type.name).toEqual('listItem');
 
     toggleList(editorView.state.schema.nodes['bullet_list'])(
       editorView.state,

@@ -106,7 +106,7 @@ Object {
                                       "type": "paragraph",
                                     },
                                   ],
-                                  "type": "list_item",
+                                  "type": "listItem",
                                 },
                                 Object {
                                   "content": Array [
@@ -120,7 +120,7 @@ Object {
                                       "type": "paragraph",
                                     },
                                   ],
-                                  "type": "list_item",
+                                  "type": "listItem",
                                 },
                               ],
                               "type": "bullet_list",
@@ -449,7 +449,7 @@ Object {
                                       "type": "paragraph",
                                     },
                                   ],
-                                  "type": "list_item",
+                                  "type": "listItem",
                                 },
                                 Object {
                                   "content": Array [
@@ -463,7 +463,7 @@ Object {
                                       "type": "paragraph",
                                     },
                                   ],
-                                  "type": "list_item",
+                                  "type": "listItem",
                                 },
                               ],
                               "type": "bullet_list",
@@ -643,7 +643,7 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "list_item",
+          "type": "listItem",
         },
         Object {
           "content": Array [
@@ -657,7 +657,7 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "list_item",
+          "type": "listItem",
         },
       ],
       "type": "ordered_list",
@@ -682,7 +682,7 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "list_item",
+          "type": "listItem",
         },
       ],
       "type": "bullet_list",
@@ -1092,7 +1092,7 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "list_item",
+                  "type": "listItem",
                 },
                 Object {
                   "content": Array [
@@ -1106,7 +1106,7 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "list_item",
+                  "type": "listItem",
                 },
                 Object {
                   "content": Array [
@@ -1133,13 +1133,13 @@ Object {
                               "type": "paragraph",
                             },
                           ],
-                          "type": "list_item",
+                          "type": "listItem",
                         },
                       ],
                       "type": "bullet_list",
                     },
                   ],
-                  "type": "list_item",
+                  "type": "listItem",
                 },
               ],
               "type": "bullet_list",
@@ -1609,7 +1609,7 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "list_item",
+                  "type": "listItem",
                 },
                 Object {
                   "content": Array [
@@ -1623,7 +1623,7 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "list_item",
+                  "type": "listItem",
                 },
                 Object {
                   "content": Array [
@@ -1650,13 +1650,13 @@ Object {
                               "type": "paragraph",
                             },
                           ],
-                          "type": "list_item",
+                          "type": "listItem",
                         },
                       ],
                       "type": "bullet_list",
                     },
                   ],
-                  "type": "list_item",
+                  "type": "listItem",
                 },
               ],
               "type": "bullet_list",
