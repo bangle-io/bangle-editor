@@ -16,7 +16,7 @@ import {
 } from 'bangle-core/test-helpers/default-components';
 import { typeChar } from 'bangle-core/test-helpers/index';
 import { PluginKey, Selection } from 'prosemirror-state';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { sleep } from 'bangle-core/utils/js-utils';
 import { suggestTooltip } from '../index';
 import { replaceSuggestMarkWith } from '../suggest-tooltip';
@@ -33,7 +33,7 @@ const getTooltipState = (state) => {
 describe('suggest basic show and hide', () => {
   let testEditor;
 
-  const specSheet = new SpecSheet([
+  const specRegistry = new SpecRegistry([
     ...defaultSpecs(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
@@ -47,7 +47,7 @@ describe('suggest basic show and hide', () => {
   ];
 
   beforeEach(async () => {
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
   });
 
   test('when no trigger', async () => {
@@ -488,7 +488,7 @@ describe('suggest basic show and hide', () => {
 
 describe('keybindings test', () => {
   let testEditor;
-  const specSheet = new SpecSheet([
+  const specRegistry = new SpecRegistry([
     ...defaultSpecs(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
@@ -511,7 +511,7 @@ describe('keybindings test', () => {
     };
 
     const plugins = [...defaultPlugins(), suggestTooltip.plugins(opts)];
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
     const { view } = await testEditor(
       <doc>
         <para>[] foobar</para>
@@ -569,7 +569,7 @@ describe('keybindings test', () => {
     };
 
     const plugins = [...defaultPlugins(), suggestTooltip.plugins(opts)];
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
     const { view } = await testEditor(
       <doc>
         <para>[] foobar</para>
@@ -612,7 +612,7 @@ describe('keybindings test', () => {
     };
 
     const plugins = [...defaultPlugins(), suggestTooltip.plugins(opts)];
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
     const { view } = await testEditor(
       <doc>
         <para>[] foobar</para>
@@ -648,7 +648,7 @@ describe('keybindings test', () => {
 describe('replaceSuggestMarkWith', () => {
   let testEditor;
 
-  const specSheet = new SpecSheet([
+  const specRegistry = new SpecRegistry([
     ...defaultSpecs(),
     suggestTooltip.spec({ markName: 'suggest_slash', trigger: '/' }),
   ]);
@@ -662,7 +662,7 @@ describe('replaceSuggestMarkWith', () => {
   ];
 
   beforeEach(async () => {
-    testEditor = renderTestEditor({ specSheet, plugins });
+    testEditor = renderTestEditor({ specRegistry, plugins });
   });
 
   test('replaces with textnode', async () => {

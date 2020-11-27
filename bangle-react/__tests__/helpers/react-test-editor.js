@@ -3,13 +3,13 @@
  */
 import React from 'react';
 import { TextSelection } from 'prosemirror-state';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { render } from '@testing-library/react';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
 import { ReactEditor } from '../../ReactEditor';
 
 export function reactTestEditor({
-  specSheet,
+  specRegistry,
   plugins,
   renderNodeViews,
   id = 'test-editor',
@@ -27,7 +27,7 @@ export function reactTestEditor({
     const _options = {
       id,
       editorProps,
-      ...{ specSheet, plugins },
+      ...{ specRegistry, plugins },
     };
 
     const result = render(

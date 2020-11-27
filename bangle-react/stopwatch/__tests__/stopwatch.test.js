@@ -6,7 +6,7 @@ import { fireEvent } from '@testing-library/react';
 import { pjsx, reactTestEditor } from '../../__tests__/helpers/index';
 import { sendKeyToPm } from 'bangle-core/test-helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { stopwatch } from '../index';
 import { Stopwatch } from '../stopwatch';
 import {
@@ -14,7 +14,7 @@ import {
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 
-const specSheet = new SpecSheet([...defaultSpecs(), stopwatch.spec({})]);
+const specRegistry = new SpecRegistry([...defaultSpecs(), stopwatch.spec({})]);
 const plugins = [...defaultPlugins(), stopwatch.plugins({})];
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
@@ -25,7 +25,7 @@ const renderNodeViews = jest.fn(({ node, ...args }) => {
 });
 
 const testEditor = reactTestEditor({
-  specSheet,
+  specRegistry,
   plugins,
   renderNodeViews,
 });
@@ -121,9 +121,9 @@ describe('markdown', () => {
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
-      content = doc(specSheet.schema);
+      content = doc(specRegistry.schema);
     }
-    return markdownSerializer(specSheet).serialize(content);
+    return markdownSerializer(specRegistry).serialize(content);
   };
 
   test('markdown serialization', async () => {

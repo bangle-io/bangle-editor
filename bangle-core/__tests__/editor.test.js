@@ -3,7 +3,7 @@
  */
 /** @jsx psx */
 import { BangleEditor } from 'bangle-core/editor';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { psx, renderTestEditor } from 'bangle-core/test-helpers/index';
 
 const testEditor = renderTestEditor();
@@ -33,7 +33,7 @@ describe('editor serializes to html', () => {
 describe('editor from html string', () => {
   test('parses html correctly', () => {
     const editor = new BangleEditor(document.createElement('div'), {
-      specSheet: new SpecSheet(),
+      specRegistry: new SpecRegistry(),
       stateOpts: {
         content: '<h1>My document</h1><p>My favorite president is</p>',
       },

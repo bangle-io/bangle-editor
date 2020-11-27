@@ -79,8 +79,8 @@ function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema, specSheet }) => {
-    const { levels } = specSheet.options[name];
+  return ({ schema, specRegistry }) => {
+    const { levels } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
     const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
     const levelBindings = Object.fromEntries(

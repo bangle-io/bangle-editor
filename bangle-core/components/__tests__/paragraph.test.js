@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { doc, heading, paragraph, text } from 'bangle-core/components/index';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import {
   renderTestEditor,
   psx,
@@ -248,7 +248,7 @@ describe('Commands', () => {
     });
 
     it('Doesnt change selection if not in paragraph', async () => {
-      const specSheet = new SpecSheet([
+      const specRegistry = new SpecRegistry([
         doc.spec(),
         text.spec(),
         paragraph.spec(),
@@ -257,7 +257,7 @@ describe('Commands', () => {
       // Not loading heading plugins to not interfere
       const plugins = [paragraph.plugins()];
 
-      const testEditor = renderTestEditor({ specSheet, plugins });
+      const testEditor = renderTestEditor({ specRegistry, plugins });
 
       const { view } = testEditor(
         <doc>

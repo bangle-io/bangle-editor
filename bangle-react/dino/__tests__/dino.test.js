@@ -4,14 +4,14 @@
 /** @jsx pjsx */
 import { reactTestEditor, pjsx } from '../../__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { dino } from '../index';
 import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 
-const specSheet = new SpecSheet([...defaultSpecs(), dino.spec()]);
+const specRegistry = new SpecRegistry([...defaultSpecs(), dino.spec()]);
 const plugins = [...defaultPlugins(), dino.plugins()];
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
@@ -21,7 +21,7 @@ const renderNodeViews = jest.fn(({ node, ...args }) => {
   throw new Error('Unknown node');
 });
 const testEditor = reactTestEditor({
-  specSheet,
+  specRegistry,
   plugins,
   renderNodeViews,
 });
@@ -74,9 +74,9 @@ describe('markdown', () => {
   const serialize = async (doc) => {
     let content = doc;
     if (typeof doc === 'function') {
-      content = doc(specSheet.schema);
+      content = doc(specRegistry.schema);
     }
-    return markdownSerializer(specSheet).serialize(content);
+    return markdownSerializer(specRegistry).serialize(content);
   };
 
   test('markdown serialization', async () => {

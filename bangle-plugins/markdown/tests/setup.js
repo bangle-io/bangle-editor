@@ -29,9 +29,9 @@ import {
 } from 'bangle-core/components';
 
 import { markdownParser } from '../markdown-parser';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 
-const specSheet = new SpecSheet([
+const specRegistry = new SpecRegistry([
   // nodes
   doc.spec(),
   paragraph.spec(),
@@ -58,13 +58,13 @@ const specSheet = new SpecSheet([
   underline.spec(),
 ]);
 
-const serializer = markdownSerializer(specSheet);
-const parser = markdownParser(specSheet);
+const serializer = markdownSerializer(specRegistry);
+const parser = markdownParser(specRegistry);
 
 export const serialize = async (doc) => {
   let content = doc;
   if (typeof doc === 'function') {
-    content = doc(specSheet.schema);
+    content = doc(specRegistry.schema);
   }
   return serializer.serialize(content);
 };

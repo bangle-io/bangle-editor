@@ -3,7 +3,7 @@ import { doc, paragraph, text } from './components/index';
 import { bangleWarn } from './utils/js-utils';
 import { coreSpec } from './utils/core-components';
 
-export class SpecSheet {
+export class SpecRegistry {
   constructor(rawSpecs = coreSpec(), { defaultSpecs = true } = {}) {
     let flattenedSpecs = flatten(rawSpecs);
 
@@ -13,10 +13,10 @@ export class SpecSheet {
 
     if (flattenedSpecs.length !== names.size) {
       bangleWarn(
-        'The specSheet has one or more specs with the same name',
+        'The specRegistry has one or more specs with the same name',
         flattenedSpecs,
       );
-      throw new Error('Duplicate spec error, please check your specSheet');
+      throw new Error('Duplicate spec error, please check your specRegistry');
     }
 
     if (defaultSpecs) {
@@ -55,11 +55,11 @@ export class SpecSheet {
   }
 }
 
-function createSchema(specSheet) {
+function createSchema(specRegistry) {
   let nodes = [];
   let marks = [];
   let topNode;
-  for (const spec of specSheet) {
+  for (const spec of specRegistry) {
     if (spec.type === 'node') {
       nodes.push([spec.name, spec.schema]);
     } else if (spec.type === 'mark') {

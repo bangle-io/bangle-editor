@@ -1,6 +1,6 @@
 import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 import { paragraph, doc, text } from 'bangle-core/index';
-import { SpecSheet } from '../spec-sheet';
+import { SpecRegistry } from '../spec-sheet';
 
 describe('domSerializationHelpers parseDOM', () => {
   test('does not get affected by other attributes', () => {
@@ -66,13 +66,13 @@ describe('domSerializationHelpers parseDOM', () => {
 
 describe('domSerializationHelpers toDOM', () => {
   test('adds correct attribtues', () => {
-    const specSheet = new SpecSheet();
+    const specRegistry = new SpecRegistry();
 
     const { toDOM } = domSerializationHelpers(
-      specSheet.spec.find((s) => s.name === 'paragraph'),
+      specRegistry.spec.find((s) => s.name === 'paragraph'),
     );
 
-    const paraNode = specSheet.schema.nodes['paragraph'].create();
+    const paraNode = specRegistry.schema.nodes['paragraph'].create();
 
     expect(toDOM(paraNode)).toMatchInlineSnapshot(`
       Array [
@@ -97,7 +97,7 @@ describe('domSerializationHelpers toDOM', () => {
         },
       },
     };
-    const specSheet = new SpecSheet([
+    const specRegistry = new SpecRegistry([
       doc.spec(),
       text.spec(),
       paragraph.spec(),
@@ -108,7 +108,7 @@ describe('domSerializationHelpers toDOM', () => {
       container: 'code',
     });
 
-    const paraNode = specSheet.schema.nodes['codeBlock'].create({});
+    const paraNode = specRegistry.schema.nodes['codeBlock'].create({});
 
     expect(toDOM(paraNode)).toMatchInlineSnapshot(`
       Array [
@@ -136,7 +136,7 @@ describe('domSerializationHelpers toDOM', () => {
       },
     };
 
-    const specSheet = new SpecSheet([
+    const specRegistry = new SpecRegistry([
       doc.spec(),
       text.spec(),
       paragraph.spec(),
@@ -148,7 +148,7 @@ describe('domSerializationHelpers toDOM', () => {
       allowedAttrs: ['language', 'magic'],
     });
 
-    const paraNode = specSheet.schema.nodes['codeBlock'].create({});
+    const paraNode = specRegistry.schema.nodes['codeBlock'].create({});
 
     expect(toDOM(paraNode)).toMatchInlineSnapshot(`
       Array [

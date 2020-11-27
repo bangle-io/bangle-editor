@@ -5,7 +5,7 @@
 
 import { render, act } from '@testing-library/react';
 import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from 'bangle-core/index';
@@ -13,7 +13,7 @@ import { usePluginState } from 'bangle-react/use-plugin-state';
 import { useEffect, useState } from 'react';
 
 const key = new PluginKey('testPlugins');
-let specSheet, plugins, view, counterPlugin;
+let specRegistry, plugins, view, counterPlugin;
 
 const onReady = ({ _view }) => {
   view = _view;
@@ -24,7 +24,7 @@ const updateCounter = (counter) =>
 
 beforeEach(() => {
   view = undefined;
-  specSheet = new SpecSheet();
+  specRegistry = new SpecRegistry();
 
   counterPlugin = new Plugin({
     key,
@@ -56,7 +56,7 @@ test('correctly gets view', async () => {
     <ReactEditor
       options={{
         id: 'test',
-        specSheet,
+        specRegistry,
         plugins,
       }}
       onReady={onReady}
@@ -111,7 +111,7 @@ test('Mounting and Unmounting of editor', async () => {
     <ReactEditor
       options={{
         id: 'test',
-        specSheet,
+        specRegistry,
         plugins,
       }}
       onReady={onReady}
@@ -165,7 +165,7 @@ test('Unmounting just the component', async () => {
     <ReactEditor
       options={{
         id: 'test',
-        specSheet,
+        specRegistry,
         plugins,
       }}
       onReady={onReady}

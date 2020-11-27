@@ -7,12 +7,12 @@ import 'bangle-react/menu/style.css';
 import './extensions-override.css';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { dino } from 'bangle-react/dino';
 import { stopwatch } from 'bangle-react/stopwatch';
 import { emojiSuggestMenu } from 'bangle-react/menu/index';
 
-export const specSheet = new SpecSheet([
+export const specRegistry = new SpecRegistry([
   ...coreSpec(),
   collab.spec(),
   emoji.spec(),

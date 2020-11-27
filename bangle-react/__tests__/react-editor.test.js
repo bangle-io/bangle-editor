@@ -9,7 +9,7 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { getRenderHandlers } from 'bangle-core/node-view';
 import { safeInsert, removeSelectedNode } from 'bangle-core/utils/pm-utils';
@@ -35,9 +35,9 @@ const insertBananaAtSelection = (attrs = {}) => (dispatch, state) => {
 };
 
 describe('basic tests', () => {
-  let specSheet, plugins;
+  let specRegistry, plugins;
   beforeEach(() => {
-    specSheet = new SpecSheet();
+    specRegistry = new SpecRegistry();
     plugins = defaultPlugins();
   });
 
@@ -47,7 +47,7 @@ describe('basic tests', () => {
       <ReactEditor
         options={{
           id: 'test',
-          specSheet,
+          specRegistry,
           plugins,
         }}
         onReady={onReady}
@@ -83,7 +83,7 @@ describe('basic tests', () => {
       <ReactEditor
         options={{
           id: 'test',
-          specSheet,
+          specRegistry,
           plugins,
         }}
         onReady={onReady}
@@ -105,7 +105,7 @@ describe('rendering node views', () => {
       <ReactEditor
         options={{
           id: 'test',
-          specSheet: new SpecSheet([...defaultSpecs()]),
+          specRegistry: new SpecRegistry([...defaultSpecs()]),
           plugins: [...defaultPlugins()],
         }}
         onReady={onReady}
@@ -127,13 +127,13 @@ describe('rendering node views', () => {
     };
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
     expect(() =>
       render(
         <ReactEditor
           options={{
             id: 'test',
-            specSheet: spec,
+            specRegistry: spec,
             plugins: [...defaultPlugins(), banana.plugins()],
             stateOpts: {
               doc: (<doc>
@@ -167,13 +167,13 @@ describe('rendering node views', () => {
     });
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
 
     const { container } = await render(
       <ReactEditor
         options={{
           id: 'test',
-          specSheet: spec,
+          specRegistry: spec,
           plugins: [...defaultPlugins(), banana.plugins()],
           stateOpts: {
             doc: (<doc>
@@ -254,13 +254,13 @@ describe('rendering node views', () => {
     });
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
 
     const { container } = await render(
       <ReactEditor
         options={{
           id: 'test',
-          specSheet: spec,
+          specRegistry: spec,
           plugins: [...defaultPlugins(), banana.plugins()],
           stateOpts: {
             doc: (<doc>
@@ -324,13 +324,13 @@ describe('rendering node views', () => {
     });
 
     const banana = bananaComponent('react-editor-test');
-    const spec = new SpecSheet([...defaultSpecs(), banana.spec()]);
+    const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
 
     const { container } = await render(
       <ReactEditor
         options={{
           id: 'test',
-          specSheet: spec,
+          specRegistry: spec,
           plugins: [...defaultPlugins(), banana.plugins()],
           stateOpts: {
             doc: (<doc>

@@ -75,7 +75,7 @@ export class ReactEditor extends React.PureComponent {
       editorStateSetup({
         plugins: options.plugins,
         editorProps: options.editorProps,
-        specSheet: options.specSheet,
+        specRegistry: options.specRegistry,
         stateOpts: options.stateOpts,
       });
 

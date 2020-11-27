@@ -12,7 +12,7 @@ import {
 import { CollabError } from '../../collab-error';
 import { Selection } from 'prosemirror-state';
 import * as collab from '../collab-extension';
-import { SpecSheet } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-sheet';
 import { paragraph, doc, text } from 'bangle-core/components';
 const DEFAULT_SLEEP = 50;
 
@@ -46,7 +46,7 @@ function getInitialDoc(version, text = 'hello world') {
 
 async function setupCollabEditor(handlers) {
   const clientID = 'test';
-  const specSheet = new SpecSheet([
+  const specRegistry = new SpecRegistry([
     doc.spec(),
     text.spec(),
     paragraph.spec(),
@@ -63,7 +63,7 @@ async function setupCollabEditor(handlers) {
 
   return renderTestEditor(
     {
-      specSheet,
+      specRegistry,
       plugins: editorPlugins,
     },
     'data-test-' + Math.random(),

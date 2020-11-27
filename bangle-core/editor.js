@@ -9,7 +9,7 @@ export class BangleEditor {
   constructor(
     element,
     {
-      specSheet,
+      specRegistry,
       plugins = [],
       viewOpts = {},
       editorProps,
@@ -17,13 +17,13 @@ export class BangleEditor {
       state = editorStateSetup({
         plugins,
         editorProps,
-        specSheet,
+        specRegistry,
         stateOpts,
       }),
       focusOnInit = true,
     },
   ) {
-    this._specSheet = specSheet;
+    this._specRegistry = specRegistry;
 
     this._view = new EditorView(element, {
       state,
@@ -55,7 +55,7 @@ export class BangleEditor {
   toHTMLString() {
     const div = document.createElement('div');
     const fragment = DOMSerializer.fromSchema(
-      this._specSheet.schema,
+      this._specRegistry.schema,
     ).serializeFragment(this._view.state.doc.content);
 
     div.appendChild(fragment);
@@ -71,18 +71,18 @@ export class BangleEditor {
 export function editorStateSetup({
   plugins = [],
   editorProps,
-  specSheet,
+  specRegistry,
   stateOpts = {},
 }) {
   const { doc, content, ...otherStateOpts } = stateOpts;
 
-  const schema = specSheet.schema;
+  const schema = specRegistry.schema;
 
   const state = EditorState.create({
     schema,
     doc: doc ? doc : createDocument({ schema, content: content }),
     ...otherStateOpts,
-    plugins: pluginLoader(specSheet, plugins, { editorProps }),
+    plugins: pluginLoader(specRegistry, plugins, { editorProps }),
   });
 
   return state;

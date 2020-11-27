@@ -13,7 +13,7 @@ import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { stopwatch } from 'bangle-react/stopwatch';
 import { dino } from 'bangle-react/dino';
-import { specSheet } from '../editor/spec-sheet';
+import { specRegistry } from '../editor/spec-sheet';
 import {
   EmojiSuggestMenu,
   emojiSuggestMenu,
@@ -105,7 +105,7 @@ export class Editor extends React.PureComponent {
     id: 'bangle-play-' + this.props.docName + '-' + uuid(4),
     content: 'Loading document',
     devtools: this.devtools,
-    specSheet,
+    specRegistry,
     plugins: getPlugins({
       docName: this.props.docName,
       manager: this.props.manager,
