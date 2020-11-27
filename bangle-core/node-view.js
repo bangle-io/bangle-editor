@@ -160,7 +160,7 @@ export class NodeView extends BaseNodeView {
     this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
-  // Donot unset it if you donot have an implmentation.
+  // Donot unset it if you donot have an implementation.
   // Unsetting this is dangerous as it fucks up elements who have editable content inside them.
   // setSelection(...args) {
   //   console.log('hi', ...args);

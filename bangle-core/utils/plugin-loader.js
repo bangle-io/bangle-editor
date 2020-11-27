@@ -11,7 +11,6 @@ import { bangleWarn } from './js-utils';
 import { Plugin, PluginGroup } from '../plugin';
 import { history } from '../components/index';
 
-// TODO do we need tabindex
 export function pluginLoader(
   specRegistry,
   plugins,
