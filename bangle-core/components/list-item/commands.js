@@ -41,7 +41,7 @@ const numberNestedLists = (resolvedPos, nodes) => {
   const {
     bulletList: bulletList,
     orderedList: orderedList,
-    todo_list: todoList,
+    todoList: todoList,
   } = nodes;
   let count = 0;
   for (let i = resolvedPos.depth - 1; i > 0; i--) {
@@ -138,7 +138,7 @@ const rootListDepth = (type, pos, nodes) => {
   const {
     bulletList: bulletList,
     orderedList: orderedList,
-    todo_list: todoList,
+    todoList: todoList,
   } = nodes;
   let depth;
   for (let i = pos.depth - 1; i > 0; i--) {
@@ -166,7 +166,7 @@ function canToJoinToPreviousListItem(state) {
   const {
     bulletList: bulletList,
     orderedList: orderedList,
-    todo_list: todoList,
+    todoList: todoList,
   } = state.schema.nodes;
   const $before = state.doc.resolve($from.pos - 1);
   let nodeBefore = $before ? $before.nodeBefore : null;
@@ -188,7 +188,7 @@ function canToJoinToPreviousListItem(state) {
 window.toggleList = toggleList;
 /**
  *
- * @param {Object} listType  bulletList, orderedList, todo_list
+ * @param {Object} listType  bulletList, orderedList, todoList
  * @param {Object} itemType  'todoItem', 'listItem'
  */
 export function toggleList(listType, itemType) {
@@ -480,7 +480,7 @@ function mergeLists(listItem, range) {
 const isGrandParentTodoList = (state) => {
   const { $from } = state.selection;
   const grandParent = $from.node($from.depth - 4);
-  const { todo_list: todoList } = state.schema.nodes;
+  const { todoList: todoList } = state.schema.nodes;
   return grandParent.type === todoList;
 };
 
@@ -517,7 +517,7 @@ export const backspaceKeyCommand = (type) => (...args) => {
       // convert it into a todo list and then outdent it
       (state, dispatch, view) => {
         const result = toggleList(
-          state.schema.nodes.todo_list,
+          state.schema.nodes.todoList,
           state.schema.nodes.todoItem,
         )(state, dispatch, view);
         if (!result) {
@@ -575,7 +575,7 @@ export function enterKeyCommand(type) {
           // pressing enter should convert that type into a todo type and outdent.
           if (isGrandParentTodoList(state) && listItem !== todoItem) {
             const result = toggleList(
-              state.schema.nodes.todo_list,
+              state.schema.nodes.todoList,
               state.schema.nodes.todoItem,
             )(state, dispatch, view);
             if (!result) {
@@ -685,7 +685,7 @@ function joinToPreviousListItem(type) {
       code_block: codeBlock,
       bulletList: bulletList,
       orderedList: orderedList,
-      todo_list: todoList,
+      todoList: todoList,
     } = state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
     const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
@@ -878,7 +878,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     let nodeToInsert = parent.node;
 
     // if the grand parent is a todo list
-    // we can not simply insert a listItem as todo_list can
+    // we can not simply insert a listItem as todoList can
     // only accept todoItems
     if (isGrandParentTodoList(state)) {
       nodeToInsert = state.schema.nodes.todoItem.createChecked(

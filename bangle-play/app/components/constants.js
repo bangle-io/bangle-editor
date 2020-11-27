@@ -56,7 +56,7 @@ export const defaultContent = {
       ],
     },
     {
-      type: 'todo_list',
+      type: 'todoList',
       content: [
         {
           type: 'todoItem',

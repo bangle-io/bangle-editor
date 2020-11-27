@@ -4,7 +4,7 @@ import { toggleList } from './list-item/commands';
 import { keymap } from 'prosemirror-keymap';
 import { parentHasDirectParentOfType } from 'bangle-core/core-commands';
 
-const name = 'todo_list';
+const name = 'todoList';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 export const spec = specFactory;

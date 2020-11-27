@@ -40,7 +40,7 @@ export const validListParent = (type, schemaNodes) => {
   const {
     bulletList: bulletList,
     orderedList: orderedList,
-    todo_list: todoList,
+    todoList: todoList,
   } = schemaNodes;
   return [bulletList, orderedList, todoList].includes(type);
 };
@@ -340,7 +340,7 @@ export const getListLiftTarget = (type, schema, resPos) => {
   const {
     bulletList: bulletList,
     orderedList: orderedList,
-    todo_list: todoList,
+    todoList: todoList,
   } = schema.nodes;
   let listItem = type;
   if (!listItem) {

@@ -41,7 +41,7 @@ describe('Todo test', () => {
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        todo_list(
+        todoList(
           todoItem(paragraph('my task'))
         ),
         paragraph

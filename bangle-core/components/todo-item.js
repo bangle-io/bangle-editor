@@ -55,7 +55,7 @@ function specFactory({ nested = true, draggable = true } = {}) {
   });
 
   const content = nested
-    ? '(paragraph) (paragraph | todo_list | bulletList | orderedList)*'
+    ? '(paragraph) (paragraph | todoList | bulletList | orderedList)*'
     : '(paragraph) (paragraph | bulletList | orderedList)*';
 
   return {
@@ -102,7 +102,7 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
 
     const parentCheck = parentHasDirectParentOfType(
       type,
-      schema.nodes['todo_list'],
+      schema.nodes['todoList'],
     );
     return [
       keybindings &&

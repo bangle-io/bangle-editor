@@ -136,7 +136,7 @@ const extractListFromParagaph = (type, node, schema) => {
     hard_break: hardBreak,
     bulletList: bulletList,
     orderedList: orderedList,
-    todo_list: todoList,
+    todoList: todoList,
   } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
   const listTypes = [bulletList, orderedList, todoList];
