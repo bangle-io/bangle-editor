@@ -1,4 +1,4 @@
-import { SpecRegistry } from '../../spec-sheet';
+import { SpecRegistry } from '../../spec-registry';
 import { NodeView } from '../../node-view';
 import { pluginLoader } from '../plugin-loader';
 import { Plugin, PluginGroup, PluginKey } from '../../plugin';

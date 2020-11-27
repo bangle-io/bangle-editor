@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { TextSelection } from 'prosemirror-state';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { render } from '@testing-library/react';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
 import { ReactEditor } from '../../ReactEditor';

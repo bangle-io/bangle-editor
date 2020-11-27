@@ -1,6 +1,6 @@
 import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 import { paragraph, doc, text } from 'bangle-core/index';
-import { SpecRegistry } from '../spec-sheet';
+import { SpecRegistry } from '../spec-registry';
 
 describe('domSerializationHelpers parseDOM', () => {
   test('does not get affected by other attributes', () => {

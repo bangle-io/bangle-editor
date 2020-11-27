@@ -4,7 +4,7 @@
 
 /** @jsx pjsx */
 import { link } from 'bangle-core/index';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { reactTestEditor, pjsx } from 'bangle-react/__tests__/helpers/index';
 import { PluginKey, TextSelection } from 'prosemirror-state';
 import { floatingMenu } from '../index';

@@ -5,7 +5,7 @@
 
 import { render, act } from '@testing-library/react';
 import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from 'bangle-core/index';

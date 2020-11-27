@@ -4,7 +4,7 @@
 /** @jsx pjsx */
 import { reactTestEditor, pjsx } from '../../__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { dino } from '../index';
 import {
   defaultPlugins,

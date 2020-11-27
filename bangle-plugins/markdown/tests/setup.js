@@ -29,7 +29,7 @@ import {
 } from 'bangle-core/components';
 
 import { markdownParser } from '../markdown-parser';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 
 const specRegistry = new SpecRegistry([
   // nodes

@@ -12,7 +12,7 @@ import {
 
 import { corePlugins } from 'bangle-core/utils/core-components';
 import { trailingNode } from '../index';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { defaultSpecs } from 'bangle-core/test-helpers/default-components';
 
 const specRegistry = new SpecRegistry([

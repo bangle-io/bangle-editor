@@ -1,7 +1,7 @@
 /** @jsx pjsx */
 
 import { screen } from '@testing-library/dom';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import {
   defaultPlugins,
   defaultSpecs,

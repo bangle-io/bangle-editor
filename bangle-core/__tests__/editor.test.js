@@ -3,7 +3,7 @@
  */
 /** @jsx psx */
 import { BangleEditor } from 'bangle-core/editor';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { psx, renderTestEditor } from 'bangle-core/test-helpers/index';
 
 const testEditor = renderTestEditor();

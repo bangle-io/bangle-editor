@@ -9,7 +9,7 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { ReactEditor } from 'bangle-react/ReactEditor';
 import { getRenderHandlers } from 'bangle-core/node-view';
 import { safeInsert, removeSelectedNode } from 'bangle-core/utils/pm-utils';

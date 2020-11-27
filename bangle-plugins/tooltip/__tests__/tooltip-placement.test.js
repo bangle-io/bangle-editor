@@ -8,7 +8,7 @@ import { editorStateSetup } from 'bangle-core/editor';
 import { EditorView } from 'prosemirror-view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { Plugin, PluginKey } from 'bangle-core/index';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';

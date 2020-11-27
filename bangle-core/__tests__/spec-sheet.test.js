@@ -1,7 +1,7 @@
 import { MarkType, NodeType } from 'prosemirror-model';
 import { hardBreak, doc, paragraph, text } from '../components/index';
 import { bold } from '../components/index';
-import { SpecRegistry } from '../spec-sheet';
+import { SpecRegistry } from '../spec-registry';
 
 test('Loads node and marks schema correctly', () => {
   const schema = new SpecRegistry([

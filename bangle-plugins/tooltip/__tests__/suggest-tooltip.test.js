@@ -16,7 +16,7 @@ import {
 } from 'bangle-core/test-helpers/default-components';
 import { typeChar } from 'bangle-core/test-helpers/index';
 import { PluginKey, Selection } from 'prosemirror-state';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { sleep } from 'bangle-core/utils/js-utils';
 import { suggestTooltip } from '../index';
 import { replaceSuggestMarkWith } from '../suggest-tooltip';

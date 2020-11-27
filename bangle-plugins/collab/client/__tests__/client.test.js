@@ -12,7 +12,7 @@ import {
 import { CollabError } from '../../collab-error';
 import { Selection } from 'prosemirror-state';
 import * as collab from '../collab-extension';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { paragraph, doc, text } from 'bangle-core/components';
 const DEFAULT_SLEEP = 50;
 

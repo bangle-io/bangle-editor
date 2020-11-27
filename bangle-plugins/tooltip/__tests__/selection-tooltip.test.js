@@ -13,7 +13,7 @@ import {
 import { selectionTooltip } from '../index';
 import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 

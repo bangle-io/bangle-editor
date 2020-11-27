@@ -25,7 +25,7 @@ import {
   text,
   paragraph,
 } from '../index';
-import { SpecRegistry } from '../../spec-sheet';
+import { SpecRegistry } from '../../spec-registry';
 import {
   enterKeyCommand,
   toggleList,

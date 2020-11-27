@@ -14,7 +14,7 @@ import {
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 import { emoji } from '../index';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), emoji.spec()]);
 const plugins = [...defaultPlugins(), emoji.plugins()];

@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { doc, heading, paragraph, text } from 'bangle-core/components/index';
-import { SpecRegistry } from 'bangle-core/spec-sheet';
+import { SpecRegistry } from 'bangle-core/spec-registry';
 import {
   renderTestEditor,
   psx,
