@@ -49,12 +49,15 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  markdownShortcut = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const isInBlockquote = queryIsBlockQuoteActive();
     return [
-      wrappingInputRule(/^\s*>\s$/, type),
+      markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),
       keybindings &&
         keymap({
           [keybindings.wrapIn]: filter(

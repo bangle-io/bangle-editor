@@ -84,7 +84,7 @@ function pluginsFactory() {
     const { openOnClick } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
     return [
-      pasteLinkify(
+      pasteLink(
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
       ),
       markPasteRule(
@@ -110,11 +110,7 @@ function pluginsFactory() {
   };
 }
 
-/**
- * Helpers
- */
-
-function pasteLinkify(regexp) {
+function pasteLink(regexp) {
   return new Plugin({
     props: {
       handlePaste: function handlePastedLink(view, rawEvent, slice) {

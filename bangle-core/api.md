@@ -1,6 +1,6 @@
 # blockquote: {link.Component}
 
-Enables blockquote in your editor.
+Enables blockquote in your editor. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -11,6 +11,9 @@ Returns a node spec, read more {text.Nodes}.
 Named parameters:
 
 - {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a blockquote. If enabled, type `>` followed by a space to create one.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -51,7 +54,7 @@ const plugins = [
 
 # bold: {link.Component}
 
-Allows text in your editor to be marked as bold. Comes with the markdown shortcut `**text**` to enable bold mark.
+Allows text in your editor to be marked as bold. {link.MarkdownSupport}
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -62,6 +65,9 @@ Returns a mark spec, read more {text.Marks}.
 Named parameters:
 
 - {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a bold mark. If enabled, type `**text**` to create the mark.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -93,7 +99,7 @@ const plugins = [
 
 # bulletList: {link.Component}
 
-Enables bulletList `<ul/>`. **Requires node components with names `orderedList` & `listItem` to work**
+Enables bulletList `<ul/>`. **Requires node components with names `orderedList` & `listItem` to work**. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -106,7 +112,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating a bullet list. Type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
+  Enable the markdown shortcut for creating a bullet list. If enabled, type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -142,7 +148,7 @@ const plugins = [
 
 # code: {link.Component}
 
-Allows text in your editor to be marked as code. Comes with the markdown shortcut `` `text` `` to enable code mark.
+Allows text in your editor to be marked as code. {link.MarkdownSupport}
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -156,6 +162,9 @@ Named parameters:
 
 - **escapeAtEdge:** ?Boolean = true\
   Allows automatic escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a code mark. If enabled, type `` `text` `` to create a code mark.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -187,7 +196,7 @@ const plugins = [
 
 # codeBlock: {link.Component}
 
-Enables `<code/>` in your editor.
+Enables `<code/>` in your editor. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -200,7 +209,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?Boolean = true\
-  Toggle the markdown shortcut ` ``` ` to convert a paragraph into a codeBlock.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -237,7 +246,7 @@ const plugins = [
 
 # doc: {link.Component}
 
-Top level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not found in not defined, Bangle will default to this one.
+Top level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not defined, Bangle will automatically default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -245,7 +254,7 @@ Returns a top level node spec, read more {text.Nodes}.
 
 # heading: {link.Component}
 
-Enables headings of various levels in your editor.
+Enables headings of various levels in your editor. {link.MarkdownSupport}
 
 ### spec({ ... }): {link.NodeSpecFactory}
 
@@ -263,7 +272,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?Boolean = `true`\
-  Toggle the markdown shortcut `#<space>` to convert a paragraph into a heading element.
+  Toggle the markdown shortcut for heading. If enabled, type `#` followed by a space to create one a level one heading.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -378,7 +387,7 @@ const plugins = [
 
 # horizontalRule: {link.Component}
 
-Enables a horizontal (`<hr />`) rule component in your editor. Type `---` and `___` {link.InputRules} to insert a horizontal rule followed by an empty paragraph.
+Enables a horizontal (`<hr />`) rule component in your editor. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -389,6 +398,9 @@ Returns a node spec, read more {text.Nodes}.
 Named parameters:
 
 - {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating a horizontalRule. Type `---` and `___` to insert a horizontal rule.
 
 ## **Usage**
 
@@ -441,7 +453,7 @@ const plugins = [
 
 # italic: {link.Component}
 
-Allows text in your editor to be marked as italic. Comes with the markdown shortcut `_text_` to enable italic mark.
+Allows text in your editor to be marked as italic. {link.MarkdownSupport}
 
 ### spec(): {link.MarkSpecFactory}
 
@@ -452,6 +464,9 @@ Returns a mark spec, read more {text.Marks}.
 Named parameters:
 
 - {text.pluginsParamKeybindings}
+
+- **markdownShortcut**: ?boolean=`true`\
+  Toggle the markdown shortcut for creating am italic mark. If enabled, type `_text_` to enable italic mark.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -588,7 +603,7 @@ const plugins = [
 
 # orderedList: {link.Component}
 
-Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**
+Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -601,7 +616,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating an ordered list. Type `1.` followed by a space to create an ordered list on an empty paragraph.
+  Enable the markdown shortcut for creating an ordered list. Type `1.` followed by a space to create an ordered list.
 
 ### defaultKeys: {link.Keybindings}
 
@@ -637,7 +652,7 @@ const plugins = [
 
 # paragraph: {link.Component}
 
-Enables paragraph (`<p/>` in html) nodes in your editor. The spec & plugins for this component are **required** for Bangle to function, if a spec named `paragraph` is not found in not defined, Bangle will default to this one.
+Enables paragraph (`<p/>` in html) nodes in your editor. The spec for this component are **required** for Bangle to function, if a spec with a name=`paragraph` is not specified, Bangle will automatically default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -746,7 +761,7 @@ const plugins = [
 
 # text: {link.Component}
 
-The text node which the editor uses to wrap the text. The spec & plugins for this component are **required** for Bangle to function, if a spec named `text` is not found in not defined, Bangle will default to this one.
+The text node which the editor uses to wrap the text. The spec for this component are **required** for Bangle to function, if a spec named `text` is not defined, Bangle will automatically default to this one.
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -836,7 +851,7 @@ const plugins = [
 
 # todoList: {link.Component}
 
-A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names `todoItem`, `bulletList`,`orderedList` & `listItem` to work**
+A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names `todoItem`, `bulletList`,`orderedList` & `listItem` to work**. {link.MarkdownSupport}
 
 ### spec(): {link.NodeSpecFactory}
 
@@ -849,7 +864,7 @@ Named parameters:
 - {text.pluginsParamKeybindings}
 
 - **markdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList on an empty paragraph.
+  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList.
 
 ### defaultKeys: {link.Keybindings}
 

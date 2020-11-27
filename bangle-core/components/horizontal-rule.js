@@ -27,21 +27,25 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({} = {}) {
+function pluginsFactory({ markdownShortcut = true } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
-      new InputRule(/^(?:---|___\s|\*\*\*\s)$/, (state, match, start, end) => {
-        if (!match[0]) {
-          return null;
-        }
-        let tr = state.tr.replaceWith(start - 1, end, type.createChecked());
-        return safeInsert(
-          state.schema.nodes.paragraph.createChecked(),
-          tr.selection.end,
-        )(tr);
-      }),
+      markdownShortcut &&
+        new InputRule(
+          /^(?:---|___\s|\*\*\*\s)$/,
+          (state, match, start, end) => {
+            if (!match[0]) {
+              return null;
+            }
+            let tr = state.tr.replaceWith(start - 1, end, type.createChecked());
+            return safeInsert(
+              state.schema.nodes.paragraph.createChecked(),
+              tr.selection.end,
+            )(tr);
+          },
+        ),
     ];
   };
 }

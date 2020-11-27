@@ -51,13 +51,18 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  markdownShortcut = true,
+  keybindings = defaultKeys,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
-      markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type),
-      markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type),
+      markdownShortcut &&
+        markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type),
+      markdownShortcut &&
+        markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type),
       keybindings &&
         keymap({
           [keybindings.toggleBold]: toggleBold(),

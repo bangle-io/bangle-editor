@@ -46,6 +46,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({
+  markdownShortcut = true,
   escapeAtEdge = true,
   keybindings = defaultKeys,
 } = {}) {
@@ -60,8 +61,8 @@ function pluginsFactory({
     ];
 
     return [
-      markPasteRule(/(?:`)([^`]+)(?:`)/g, type),
-      markInputRule(/(?:`)([^`]+)(?:`)$/, type),
+      markdownShortcut && markPasteRule(/(?:`)([^`]+)(?:`)/g, type),
+      markdownShortcut && markInputRule(/(?:`)([^`]+)(?:`)$/, type),
       keybindings &&
         keymap({
           [keybindings.toggleCode]: toggleMark(type),
