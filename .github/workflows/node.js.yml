@@ -35,13 +35,14 @@ jobs:
       - run: npm install -g yarn@latest
       - run: yarn install --immutable --immutable-cache
       - run: yarn workspace bangle-play build
-  check-cache:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - run: npm install -g yarn@latest
-      - run: yarn install --immutable --immutable-cache --check-cache
+  # Uncommment this when public
+  # check-cache:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Build
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 14.x
+  #     - run: npm install -g yarn@latest
+  #     - run: yarn install --immutable --immutable-cache --check-cache
