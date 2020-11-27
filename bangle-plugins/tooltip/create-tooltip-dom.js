@@ -22,7 +22,7 @@ export function createTooltipDOM(
     tooltipDOMSpec,
   );
 
-  if (arrow) {
+  if (arrow && !dom.querySelector('.bangle-tooltip-arrow')) {
     const arrowElement = DOMSerializer.renderSpec(window.document, [
       'div',
       {

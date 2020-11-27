@@ -24,7 +24,7 @@ function specFactory(opts = {}) {
     type: 'mark',
     name,
     schema: {
-      excludes: '_',
+      excludes: '_', // means all marks are excluded
       parseDOM: [{ tag: name }],
       toDOM: () => [name, 0],
     },
