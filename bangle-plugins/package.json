@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {},
   "dependencies": {
-    "@popperjs/core": "^2.5.2",
+    "@popperjs/core": "^2.5.4",
     "bangle-core": "workspace:*",
     "markdown-it": "^10.0.0",
     "markdown-it-emoji": "^2.0.0",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.7",
-    "localforage": "^1.7.3",
-    "prettier": "^2.1.2"
+    "localforage": "^1.9.0",
+    "prettier": "^2.2.0"
   }
 }
