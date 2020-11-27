@@ -133,7 +133,7 @@ const getListType = (node, schema) => {
 };
 const extractListFromParagaph = (type, node, schema) => {
   const {
-    hard_break: hardBreak,
+    hardBreak: hardBreak,
     bulletList: bulletList,
     orderedList: orderedList,
     todoList: todoList,
@@ -220,7 +220,7 @@ const splitIntoParagraphs = (fragment, schema) => {
   const paragraphs = [];
   let curChildren = [];
   let lastNode = null;
-  const { hard_break: hardBreak, paragraph } = schema.nodes;
+  const { hardBreak: hardBreak, paragraph } = schema.nodes;
   fragment.forEach((node) => {
     if (lastNode && lastNode.type === hardBreak && node.type === hardBreak) {
       // double hardbreak

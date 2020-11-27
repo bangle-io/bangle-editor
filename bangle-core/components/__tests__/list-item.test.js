@@ -99,7 +99,7 @@ describe('Command: toggleList', () => {
     );
   });
 
-  test('toggle correctly when it has hard_break in it', async () => {
+  test('toggle correctly when it has hardBreak in it', async () => {
     updateDoc(
       <doc>
         <todoList>

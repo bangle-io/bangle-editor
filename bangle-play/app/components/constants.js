@@ -139,7 +139,7 @@ export const defaultContent = {
               text: "It's amazing 👏 ",
             },
             {
-              type: 'hard_break',
+              type: 'hardBreak',
             },
             {
               type: 'text',

@@ -14,7 +14,7 @@ const nodeAlias = {
   ol: 'orderedList',
   li: 'listItem',
   codeBlock: 'codeBlock',
-  br: 'hard_break',
+  br: 'hardBreak',
   hr: 'horizontal_rule',
   todoList: 'todoList',
   todoItem: 'todoItem',

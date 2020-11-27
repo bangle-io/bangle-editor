@@ -98,7 +98,7 @@ export function hasVisibleContent(node) {
   const isInlineNodeHasVisibleContent = (inlineNode) => {
     return inlineNode.isText
       ? !!inlineNode.textContent.trim()
-      : inlineNode.type.name !== 'hard_break';
+      : inlineNode.type.name !== 'hardBreak';
   };
   if (node.isInline) {
     return isInlineNodeHasVisibleContent(node);
