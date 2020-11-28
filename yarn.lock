@@ -1466,6 +1466,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@banglejs/sticker@workspace:*, @banglejs/sticker@workspace:contrib/sticker":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/sticker@workspace:contrib/sticker"
+  dependencies:
+    "@testing-library/react": ^10.4.7
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
+    prop-types: ^15.7.2
+    react: ^16.14.0
+    react-dom: ^16.14.0
+  peerDependencies:
+    bangle-core: "*"
+    bangle-plugins: "*"
+    bangle-react: "*"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/stopwatch@workspace:*, @banglejs/stopwatch@workspace:contrib/stopwatch":
   version: 0.0.0-use.local
   resolution: "@banglejs/stopwatch@workspace:contrib/stopwatch"
@@ -1477,6 +1497,9 @@ __metadata:
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
+    bangle-core: "*"
+    bangle-plugins: "*"
+    bangle-react: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
@@ -3669,6 +3692,7 @@ __metadata:
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
+    "@banglejs/sticker": "workspace:*"
     "@banglejs/stopwatch": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4

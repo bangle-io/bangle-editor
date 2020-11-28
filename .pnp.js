@@ -39,6 +39,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:bangle-react"
       },
       {
+        "name": "@banglejs/sticker",
+        "reference": "workspace:contrib/sticker"
+      },
+      {
         "name": "@banglejs/stopwatch",
         "reference": "workspace:contrib/stopwatch"
       }
@@ -46,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
+      ["@banglejs/sticker", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/sticker", "workspace:contrib/sticker"]],
       ["@banglejs/stopwatch", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/stopwatch", "workspace:contrib/stopwatch"]],
       ["bangle", ["workspace:."]],
       ["bangle-core", ["workspace:bangle-core"]],
@@ -2231,12 +2236,62 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@banglejs/sticker", [
+        ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/sticker", {
+          "packageLocation": "./.yarn/$$virtual/@banglejs-sticker-virtual-4400279aa4/1/contrib/sticker/",
+          "packageDependencies": [
+            ["@banglejs/sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/sticker"],
+            ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
+            ["@types/bangle-core", null],
+            ["@types/bangle-plugins", null],
+            ["@types/bangle-react", null],
+            ["@types/react", null],
+            ["@types/react-dom", null],
+            ["bangle-core", "workspace:bangle-core"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["bangle-react", "workspace:bangle-react"],
+            ["prop-types", "npm:15.7.2"],
+            ["react", "npm:16.14.0"],
+            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
+          ],
+          "packagePeers": [
+            "@types/bangle-core",
+            "@types/bangle-plugins",
+            "@types/bangle-react",
+            "@types/react-dom",
+            "@types/react",
+            "bangle-core",
+            "bangle-plugins",
+            "bangle-react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:contrib/sticker", {
+          "packageLocation": "./contrib/sticker/",
+          "packageDependencies": [
+            ["@banglejs/sticker", "workspace:contrib/sticker"],
+            ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
+            ["bangle-core", "workspace:bangle-core"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["bangle-react", "workspace:bangle-react"],
+            ["prop-types", "npm:15.7.2"],
+            ["react", "npm:16.14.0"],
+            ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@banglejs/stopwatch", [
         ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/stopwatch", {
           "packageLocation": "./.yarn/$$virtual/@banglejs-stopwatch-virtual-d75abb74bd/1/contrib/stopwatch/",
           "packageDependencies": [
             ["@banglejs/stopwatch", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/stopwatch"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
+            ["@types/bangle-core", null],
+            ["@types/bangle-plugins", null],
+            ["@types/bangle-react", null],
             ["@types/react", null],
             ["@types/react-dom", null],
             ["bangle-core", "workspace:bangle-core"],
@@ -2246,8 +2301,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "packagePeers": [
+            "@types/bangle-core",
+            "@types/bangle-plugins",
+            "@types/bangle-react",
             "@types/react-dom",
             "@types/react",
+            "bangle-core",
+            "bangle-plugins",
+            "bangle-react",
             "react-dom",
             "react"
           ],
@@ -4863,6 +4924,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["bangle-play", "workspace:bangle-play"],
             ["@babel/core", "npm:7.12.3"],
+            ["@banglejs/sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/sticker"],
             ["@banglejs/stopwatch", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/stopwatch"],
             ["@popperjs/core", "npm:2.5.4"],
             ["@testing-library/jest-dom", "npm:5.11.4"],

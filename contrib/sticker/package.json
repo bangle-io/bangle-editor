@@ -1,9 +1,12 @@
 {
-  "name": "@banglejs/stopwatch",
+  "name": "@banglejs/sticker",
   "version": "0.1.0",
   "main": "index.js",
   "module": "index.js",
   "scripts": {},
+  "dependencies": {
+    "prop-types": "^15.7.2"
+  },
   "peerDependencies": {
     "bangle-core": "*",
     "bangle-plugins": "*",
