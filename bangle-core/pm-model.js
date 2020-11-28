@@ -1,1 +1,1 @@
-export { Node, Mark, Fragment } from 'prosemirror-model';
+export { Node, Mark, Fragment, Slice, DOMSerializer } from 'prosemirror-model';
