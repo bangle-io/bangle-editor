@@ -19,7 +19,7 @@ import {
 } from '../core-commands';
 import { filter, insertEmpty } from '../utils/pm-utils';
 import { NodeView } from 'bangle-core/node-view';
-import { domSerializationHelpers } from '../dom-serialization-helpers';
+import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
 import { createElement } from 'bangle-core/utils/js-utils';
 
 export const spec = specFactory;

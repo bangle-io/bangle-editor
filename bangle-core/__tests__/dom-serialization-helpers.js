@@ -1,4 +1,4 @@
-import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
+import { domSerializationHelpers } from 'bangle-core/utils/dom-serialization-helpers';
 import { paragraph, doc, text } from 'bangle-core/index';
 import { SpecRegistry } from '../spec-registry';
 

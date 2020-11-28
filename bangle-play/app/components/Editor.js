@@ -11,7 +11,7 @@ import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from 'bangle-react/ReactEditor';
-import { stopwatch } from 'bangle-react/stopwatch';
+import { stopwatch } from '@banglejs/stopwatch';
 import { dino } from 'bangle-react/dino';
 import { specRegistry } from '../editor/spec-sheet';
 import {

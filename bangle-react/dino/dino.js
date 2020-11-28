@@ -7,7 +7,7 @@ import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
 import { keymap } from 'bangle-core/utils/keymap';
 import { NodeView } from 'bangle-core/node-view';
-import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
+import { domSerializationHelpers } from 'bangle-core/utils/dom-serialization-helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

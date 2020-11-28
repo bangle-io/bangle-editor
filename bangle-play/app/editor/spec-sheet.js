@@ -9,7 +9,7 @@ import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import { dino } from 'bangle-react/dino';
-import { stopwatch } from 'bangle-react/stopwatch';
+import stopwatch from '@banglejs/stopwatch';
 import { emojiSuggestMenu } from 'bangle-react/menu/index';
 
 export const specRegistry = new SpecRegistry([

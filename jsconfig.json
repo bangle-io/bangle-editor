@@ -14,6 +14,9 @@
       "bangle-react/*": [
         "./bangle-react/*"
       ],
+      "@banglejs/stopwatch": [
+        "./contrib/stopwatch/index.js"
+      ],
     },
     "module": "es2020",
     "target": "esnext"

@@ -1466,7 +1466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@banglejs/stopwatch@workspace:contrib/stopwatch":
+"@banglejs/stopwatch@workspace:*, @banglejs/stopwatch@workspace:contrib/stopwatch":
   version: 0.0.0-use.local
   resolution: "@banglejs/stopwatch@workspace:contrib/stopwatch"
   dependencies:
@@ -1474,9 +1474,11 @@ __metadata:
     bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     bangle-react: "workspace:*"
-  peerDependencies:
     react: ^16.13.0
     react-dom: ^16.14.0
+  peerDependencies:
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
   languageName: unknown
   linkType: soft
 
@@ -3667,6 +3669,7 @@ __metadata:
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
+    "@banglejs/stopwatch": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.0.4

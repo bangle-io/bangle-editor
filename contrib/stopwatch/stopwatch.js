@@ -1,15 +1,14 @@
 import React from 'react';
 
-import { serializeAtomNodeToMdLink2 } from 'bangle-plugins/markdown/markdown-serializer';
-import { keymap } from 'bangle-core/utils/keymap';
 import { NodeView } from 'bangle-core/node-view';
-import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
+import { keymap, domSerializationHelpers } from 'bangle-core/utils/index';
+import { serializeAtomNodeToMdLink2 } from 'bangle-plugins/markdown/markdown-serializer';
 
 const LOG = false;
 
 function log(...args) {
   if (LOG) {
-    console.log('stopwatch/index.js:', ...args);
+    console.log('contrib/stopwatch/index.js:', ...args);
   }
 }
 
