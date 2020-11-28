@@ -2242,7 +2242,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bangle-core", "workspace:bangle-core"],
             ["bangle-plugins", "workspace:bangle-plugins"],
             ["bangle-react", "workspace:bangle-react"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "packagePeers": [
@@ -2261,7 +2261,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bangle-core", "workspace:bangle-core"],
             ["bangle-plugins", "workspace:bangle-plugins"],
             ["bangle-react", "workspace:bangle-react"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "linkType": "SOFT",
@@ -2791,7 +2791,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/dom", "npm:7.22.0"],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "packagePeers": [
@@ -2810,7 +2810,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/dom", "npm:7.24.3"],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "packagePeers": [
@@ -2831,7 +2831,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", null],
             ["@types/react-test-renderer", null],
             ["@types/testing-library__react-hooks", "npm:3.4.1"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-test-renderer", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:17.0.1"]
           ],
           "packagePeers": [
@@ -4904,7 +4904,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-utils", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:0.9.6"],
             ["prosemirror-view", "npm:1.16.3"],
             ["punycode", "npm:2.1.1"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"],
             ["react-popper", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#npm:2.2.4"],
             ["serve", "npm:11.3.2"],
@@ -4944,7 +4944,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-utils", "virtual:844db4da769dd89d40be51b52866ce5267cc269c904ca30cb565a090ad32c27a920ef6af7e4606d3386c2db36fa2ba01639f967b729e8855640bee34c333cc6d#npm:0.9.6"],
             ["prosemirror-view", "npm:1.16.3"],
             ["punycode", "npm:2.1.1"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "linkType": "SOFT",
@@ -4974,7 +4974,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-state", "npm:1.3.3"],
             ["prosemirror-view", "npm:1.16.3"],
             ["punycode", "npm:2.1.1"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"],
             ["react-test-renderer", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:17.0.1"],
             ["style-loader", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:2.0.0"],
@@ -13381,7 +13381,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-dev-tools", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#https://github.com/kepta/prosemirror-dev-tools.git#commit=7a68a0a13a9ce6e1a0a4e1da94c2e3e51ffd3020"],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "packagePeers": [
@@ -13784,10 +13784,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["react", [
-        ["npm:16.13.1", {
-          "packageLocation": "./.yarn/cache/react-npm-16.13.1-56d408860d-13dcc9ba8a.zip/node_modules/react/",
+        ["npm:16.14.0", {
+          "packageLocation": "./.yarn/cache/react-npm-16.14.0-932446ec69-2769580b22.zip/node_modules/react/",
           "packageDependencies": [
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["loose-envify", "npm:1.4.0"],
             ["object-assign", "npm:4.1.1"],
             ["prop-types", "npm:15.7.2"]
@@ -13804,7 +13804,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["loose-envify", "npm:1.4.0"],
             ["object-assign", "npm:4.1.1"],
             ["prop-types", "npm:15.7.2"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["scheduler", "npm:0.19.1"]
           ],
           "packagePeers": [
@@ -13847,7 +13847,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@popperjs/core", "npm:2.5.4"],
             ["@types/popperjs__core", null],
             ["@types/react", null],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-fast-compare", "npm:3.2.0"],
             ["warning", "npm:4.0.3"]
           ],
@@ -13867,7 +13867,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-shallow-renderer", "virtual:b781705dafb6971eff0252823ce0e92930ed2a43be25e1f6122be0a9cf289a718caffe2c859e2ad49d3e422fc0962b6735b77b7efc3b7e56a216bc61d095a084#npm:16.14.1"],
             ["@types/react", null],
             ["object-assign", "npm:4.1.1"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-is", "npm:17.0.1"]
           ],
           "packagePeers": [
@@ -13884,7 +13884,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-test-renderer", "virtual:ecab4cac2196fb9766628d56fab4f4a9dd81263059fe61ecac67a95a0523368ed478e3fcfc01b2341e90cbcfb10e973e728877ccf21befecd132408dc056f90c#npm:17.0.1"],
             ["@types/react", null],
             ["object-assign", "npm:4.1.1"],
-            ["react", "npm:16.13.1"],
+            ["react", "npm:16.14.0"],
             ["react-is", "npm:17.0.1"],
             ["react-shallow-renderer", "virtual:b781705dafb6971eff0252823ce0e92930ed2a43be25e1f6122be0a9cf289a718caffe2c859e2ad49d3e422fc0962b6735b77b7efc3b7e56a216bc61d095a084#npm:16.14.1"],
             ["scheduler", "npm:0.20.1"]

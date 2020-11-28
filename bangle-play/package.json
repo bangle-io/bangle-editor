@@ -36,7 +36,7 @@
     "prosemirror-utils": "latest",
     "prosemirror-view": "^1.16.3",
     "punycode": "^2.1.1",
-    "react": "^16.13.0",
+    "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-popper": "^2.2.4",
     "tailwindcss": "^1.6.0",
