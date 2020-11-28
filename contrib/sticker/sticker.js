@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import brontosaurusImg from './img/brontosaurus.png';
 import stegosaurusImg from './img/stegosaurus.png';
@@ -8,15 +9,16 @@ import pterodactylImg from './img/pterodactyl.png';
 import { keymap } from 'bangle-core/utils/keymap';
 import { NodeView } from 'bangle-core/node-view';
 import { domSerializationHelpers } from 'bangle-core/utils/dom-serialization-helpers';
+import { Node } from 'bangle-core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  randomDino,
-  insertDino,
+  randomSticker,
+  insertSticker,
 };
 
-const name = 'dino';
+const name = 'sticker';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory() {
@@ -25,7 +27,7 @@ function specFactory() {
     name,
     schema: {
       attrs: {
-        'data-dinokind': {
+        'data-stickerkind': {
           default: 'brontosaurus',
         },
         'data-bangle-name': {
@@ -38,7 +40,7 @@ function specFactory() {
     },
     markdown: {
       toMarkdown: (state, node) => {
-        state.write('dino');
+        state.write('sticker');
       },
     },
   };
@@ -54,13 +56,22 @@ function specFactory() {
 function pluginsFactory() {
   return ({ schema }) => [
     keymap({
-      'Ctrl-B': randomDino(),
+      'Ctrl-B': randomSticker(),
     }),
-    NodeView.createPlugin({ name: 'dino', containerDOM: ['span'] }),
+    NodeView.createPlugin({
+      name: 'sticker',
+      // inline-block allows the span to get full height of image
+      // or else folks depending on the boundingBox get incorrect
+      // dimensions.
+      containerDOM: [
+        'span',
+        { style: 'display: inline-block;', class: 'bangle-sticker' },
+      ],
+    }),
   ];
 }
 
-export const dinoNames = [
+export const stickerNames = [
   'brontosaurus',
   'stegosaurus',
   'triceratops',
@@ -68,30 +79,29 @@ export const dinoNames = [
   'pterodactyl',
 ];
 
-export function randomDino() {
+export function randomSticker() {
   return (state, dispatch) =>
-    insertDino(dinoNames[Math.floor(Math.random() * dinoNames.length)])(
-      state,
-      dispatch,
-    );
+    insertSticker(
+      stickerNames[Math.floor(Math.random() * stickerNames.length)],
+    )(state, dispatch);
 }
 
-export function insertDino(dinoName) {
+export function insertSticker(stickerName) {
   return (state, dispatch) => {
-    const dinoType = getTypeFromSchema(state.schema);
+    const stickerType = getTypeFromSchema(state.schema);
     let { $from } = state.selection;
     let index = $from.index();
 
-    if (!$from.parent.canReplaceWith(index, index, dinoType)) {
+    if (!$from.parent.canReplaceWith(index, index, stickerType)) {
       return false;
     }
 
     if (dispatch) {
       const attr = {
-        'data-dinokind': dinoName,
+        'data-stickerkind': stickerName,
       };
 
-      dispatch(state.tr.replaceSelectionWith(dinoType.create(attr)));
+      dispatch(state.tr.replaceSelectionWith(stickerType.create(attr)));
     }
     return true;
   };
@@ -106,33 +116,28 @@ const DINO_IMAGES = {
 };
 
 // no children for this type
-export function Dino({
-  attributes = {},
-  children,
-  selected,
-  node,
-  commands,
-  view,
-}) {
+export function Sticker({ selected, node }) {
   const nodeAttrs = node.attrs;
+  const selectedStyle = selected ? { border: '4px solid pink' } : {};
   return (
-    <span
-      {...attributes}
-      style={selected ? { border: '4px solid pink' } : {}}
-      className={`bangle-dino ${selected ? 'bangle-selected' : ''}`}
-    >
-      <img
-        style={{
-          display: 'inline',
-          height: 24,
-          verticalAlign: 'bottom',
-          border: '1px solid #0ae',
-          borderRadius: 4,
-          background: '#ddf6ff',
-        }}
-        src={DINO_IMAGES[nodeAttrs['data-dinokind']]}
-        alt={nodeAttrs['data-dinokind']}
-      />
-    </span>
+    <img
+      className={`${selected ? 'bangle-selected' : ''}`}
+      style={{
+        display: 'inline',
+        height: 64,
+        verticalAlign: 'bottom',
+        border: '1px solid #0ae',
+        borderRadius: 4,
+        background: '#ddf6ff',
+        ...selectedStyle,
+      }}
+      src={DINO_IMAGES[nodeAttrs['data-stickerkind']]}
+      alt={nodeAttrs['data-stickerkind']}
+    />
   );
 }
+
+Sticker.propTypes = {
+  selected: PropTypes.bool.isRequired,
+  node: PropTypes.instanceOf(Node).isRequired,
+};

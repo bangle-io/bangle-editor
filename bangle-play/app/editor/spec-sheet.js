@@ -8,8 +8,8 @@ import './extensions-override.css';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
-import { dino } from 'bangle-react/dino';
 import stopwatch from '@banglejs/stopwatch';
+import sticker from '@banglejs/sticker';
 import { emojiSuggestMenu } from 'bangle-react/menu/index';
 
 export const specRegistry = new SpecRegistry([
@@ -20,5 +20,5 @@ export const specRegistry = new SpecRegistry([
   stopwatch.spec(),
   trailingNode.spec(),
   timestamp.spec(),
-  dino.spec(),
+  sticker.spec(),
 ]);

@@ -2,21 +2,21 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { reactTestEditor, pjsx } from '../../__tests__/helpers/index';
+import { pjsx, reactTestEditor } from 'bangle-react/__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
-import { dino } from '../index';
+import { sticker } from '../index';
 import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 
-const specRegistry = new SpecRegistry([...defaultSpecs(), dino.spec()]);
-const plugins = [...defaultPlugins(), dino.plugins()];
+const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);
+const plugins = [...defaultPlugins(), sticker.plugins()];
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
-  if (node.type.name === 'dino') {
-    return <dino.Dino node={node} {...args} />;
+  if (node.type.name === 'sticker') {
+    return <sticker.Sticker node={node} {...args} />;
   }
   throw new Error('Unknown node');
 });
@@ -32,7 +32,7 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <dino />
+        <sticker />
       </para>
     </doc>,
   );
@@ -41,20 +41,20 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <dino />
+        <sticker />
       </para>
     </doc>,
   );
-  expect(container.querySelector(`.bangle-dino`)).toMatchSnapshot();
+  expect(container.querySelector(`.bangle-sticker`)).toMatchSnapshot();
 });
 
-test('Rendering works with different type of dino', async () => {
+test('Rendering works with different type of sticker', async () => {
   Date.now = jest.fn(() => 0);
   const { container, view } = await testEditor(
     <doc>
       <para>
         foo[]bar
-        <dino data-dinokind="stegosaurus" />
+        <sticker data-stickerkind="stegosaurus" />
       </para>
     </doc>,
   );
@@ -63,11 +63,11 @@ test('Rendering works with different type of dino', async () => {
     <doc>
       <para>
         foo[]bar
-        <dino data-dinokind="stegosaurus" />
+        <sticker data-stickerkind="stegosaurus" />
       </para>
     </doc>,
   );
-  expect(container.querySelector(`.bangle-dino`)).toMatchSnapshot();
+  expect(container.querySelector(`.bangle-sticker`)).toMatchSnapshot();
 });
 
 describe('markdown', () => {
@@ -84,10 +84,10 @@ describe('markdown', () => {
       <doc>
         <para>
           hello world
-          <dino data-dinokind="stegosaurus" />
+          <sticker data-stickerkind="stegosaurus" />
         </para>
       </doc>,
     );
-    expect(md).toMatchInlineSnapshot(`"hello worlddino"`);
+    expect(md).toMatchInlineSnapshot(`"hello worldsticker"`);
   });
 });

@@ -5,3 +5,4 @@ export * from './editor';
 export { logging, browser, isChromeWithSelectionBug };
 export * from './plugin';
 export * from './node-view';
+export * from './pm-model';

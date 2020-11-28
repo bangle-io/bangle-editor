@@ -11,8 +11,8 @@ import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from 'bangle-react/ReactEditor';
-import { stopwatch } from '@banglejs/stopwatch';
-import { dino } from 'bangle-react/dino';
+import stopwatch from '@banglejs/stopwatch';
+import sticker from '@banglejs/sticker';
 import { specRegistry } from '../editor/spec-sheet';
 import {
   EmojiSuggestMenu,
@@ -79,7 +79,7 @@ const getPlugins = ({ docName, manager }) => {
     stopwatch.plugins(),
     trailingNode.plugins(),
     timestamp.plugins(),
-    dino.plugins(),
+    sticker.plugins(),
     NodeView.createPlugin({
       name: 'todoItem',
       containerDOM: [
@@ -135,9 +135,15 @@ export class Editor extends React.PureComponent {
     }
   };
 
-  renderNodeViews = ({ node, updateAttrs, children, ...args }) => {
-    if (node.type.name === 'dino') {
-      return <dino.Dino node={node} {...args} />;
+  renderNodeViews = ({ node, updateAttrs, children, selected, ...args }) => {
+    if (node.type.name === 'sticker') {
+      return (
+        <sticker.Sticker
+          node={node}
+          updateAttrs={updateAttrs}
+          selected={selected}
+        />
+      );
     }
     if (node.type.name === 'stopwatch') {
       return <stopwatch.Stopwatch node={node} updateAttrs={updateAttrs} />;
