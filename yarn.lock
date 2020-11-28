@@ -1466,9 +1466,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@banglejs/sticker@workspace:*, @banglejs/sticker@workspace:contrib/sticker":
+"@banglejs/sticker@workspace:*, @banglejs/sticker@workspace:react-contrib/sticker":
   version: 0.0.0-use.local
-  resolution: "@banglejs/sticker@workspace:contrib/sticker"
+  resolution: "@banglejs/sticker@workspace:react-contrib/sticker"
   dependencies:
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"
@@ -1486,9 +1486,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@banglejs/stopwatch@workspace:*, @banglejs/stopwatch@workspace:contrib/stopwatch":
+"@banglejs/stopwatch@workspace:*, @banglejs/stopwatch@workspace:react-contrib/stopwatch":
   version: 0.0.0-use.local
-  resolution: "@banglejs/stopwatch@workspace:contrib/stopwatch"
+  resolution: "@banglejs/stopwatch@workspace:react-contrib/stopwatch"
   dependencies:
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"

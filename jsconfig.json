@@ -15,10 +15,10 @@
         "./bangle-react/*"
       ],
       "@banglejs/stopwatch": [
-        "./contrib/stopwatch/index.js"
+        "./react-contrib/stopwatch/index.js"
       ],
       "@banglejs/sticker": [
-        "./contrib/sticker/index.js"
+        "./react-contrib/sticker/index.js"
       ],
     },
     "module": "es2020",

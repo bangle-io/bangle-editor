@@ -6,3 +6,4 @@ node_modules
 .yarn
 .pnp.js
 coverage
+integration-tests/build

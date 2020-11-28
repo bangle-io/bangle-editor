@@ -8,7 +8,7 @@ const LOG = false;
 
 function log(...args) {
   if (LOG) {
-    console.log('contrib/stopwatch/index.js:', ...args);
+    console.log('react-contrib/stopwatch/index.js:', ...args);
   }
 }
 

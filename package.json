@@ -7,12 +7,12 @@
     "bangle-play",
     "bangle-plugins",
     "bangle-react",
-    "contrib/*",
+    "react-contrib/*",
     "integration-tests"
   ],
   "scripts": {
     "start": "yarn workspace bangle-play start",
-    "test": "yarn lint && yarn unit-tests && yarn integration-tests",
+    "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
     "integration-tests": "yarn workspace integration-tests build && yarn jest --config=jest-integration.config.js",
     "lint": "yarn prettier --check . && yarn eslint .",
