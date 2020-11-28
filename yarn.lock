@@ -2421,6 +2421,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webpack@npm:^4.4.31":
+  version: 4.41.25
+  resolution: "@types/webpack@npm:4.41.25"
+  dependencies:
+    "@types/anymatch": "*"
+    "@types/node": "*"
+    "@types/tapable": "*"
+    "@types/uglify-js": "*"
+    "@types/webpack-sources": "*"
+    source-map: ^0.6.0
+  checksum: 3bf453406c6479efedfee3b847b4274f5e8e1533cda91828c0f90fe32c9e17c12c5bdbbd99b1ad983460c845776554c54c5548d3cdd5bc13d2cf47f5f85fe57a
+  languageName: node
+  linkType: hard
+
 "@types/webpack@npm:^4.41.8":
   version: 4.41.21
   resolution: "@types/webpack@npm:4.41.21"
@@ -3546,6 +3560,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-loader@npm:^8.2.2":
+  version: 8.2.2
+  resolution: "babel-loader@npm:8.2.2"
+  dependencies:
+    find-cache-dir: ^3.3.1
+    loader-utils: ^1.4.0
+    make-dir: ^3.1.0
+    schema-utils: ^2.6.5
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    webpack: ">=2"
+  checksum: 362bb715736abec0162bdf8dc2a523a09c46c7b14aef13d9c6548ff609b8cb3879129822a5096401cd955230d836bde19037d9cbebeced940d5348c64959bec3
+  languageName: node
+  linkType: hard
+
 "babel-plugin-dynamic-import-node@npm:^2.3.3":
   version: 2.3.3
   resolution: "babel-plugin-dynamic-import-node@npm:2.3.3"
@@ -3786,12 +3815,8 @@ __metadata:
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^10.4.7
     "@testing-library/react-hooks": ^3.4.2
-    babel-loader: ^8.1.0
     bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
-    css-loader: ^5.0.1
-    file-loader: ^6.0.0
-    html-webpack-plugin: ^4.5.0
     localforage: ^1.9.0
     prettier: ^2.2.0
     prop-types: ^15.7.2
@@ -3803,10 +3828,6 @@ __metadata:
     react: ^16.14.0
     react-dom: ^16.14.0
     react-test-renderer: ^17.0.1
-    style-loader: ^2.0.0
-    webpack: ^5.8.0
-    webpack-cli: ^4.2.0
-    webpack-dev-server: ^3.11.0
   languageName: unknown
   linkType: soft
 
@@ -4431,6 +4452,18 @@ __metadata:
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
   checksum: e291ce2b8c8c59e6449ac9a7a726090264bea6696e5343b21385e16d279c808ca09d73a1abea8fd23a9b7699e6ef5ce582df203511f71c8c27666bf3b2e300c5
+  languageName: node
+  linkType: hard
+
+"clean-webpack-plugin@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "clean-webpack-plugin@npm:3.0.0"
+  dependencies:
+    "@types/webpack": ^4.4.31
+    del: ^4.1.1
+  peerDependencies:
+    webpack: "*"
+  checksum: fc0fbd1c8e163b784209d51a5df4336ad359737f8b324697d33d1c484ee5c7efee9a1f9f18786860216019764f4a6e02e329e0410e3ab4d52e5e5b52a1038dfe
   languageName: node
   linkType: hard
 
@@ -6630,6 +6663,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-cache-dir@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "find-cache-dir@npm:3.3.1"
+  dependencies:
+    commondir: ^1.0.1
+    make-dir: ^3.0.2
+    pkg-dir: ^4.1.0
+  checksum: b1e23226ee89fba89646aa5f72d084c6d04bb64f6d523c9cb2d57a1b5280fcac39e92fd5be572e2fae8a83aa70bc5b797ce33a826b9a4b92373cc38e66d4aa64
+  languageName: node
+  linkType: hard
+
 "find-file-up@npm:^0.1.2":
   version: 0.1.3
   resolution: "find-file-up@npm:0.1.3"
@@ -7710,6 +7754,32 @@ fsevents@^1.2.7:
   checksum: fa0cbd9594a04e04c5c10a806e9a86b23986acdc7d07c75afdbc03412ff03b1d201efa83d9d64929afe99a901a093bfc9ae7ab13560f8e557cb98eddbe5bf37d
   languageName: node
   linkType: hard
+
+"integration-tests@workspace:integration-tests":
+  version: 0.0.0-use.local
+  resolution: "integration-tests@workspace:integration-tests"
+  dependencies:
+    "@banglejs/sticker": "workspace:*"
+    "@banglejs/stopwatch": "workspace:*"
+    "@testing-library/react": ^10.4.7
+    babel-loader: ^8.2.2
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
+    clean-webpack-plugin: ^3.0.0
+    css-loader: ^5.0.1
+    file-loader: ^6.0.0
+    html-webpack-plugin: ^4.5.0
+    prettier: ^2.2.0
+    punycode: ^2.1.1
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+    serve: ^11.3.2
+    style-loader: ^2.0.0
+    webpack: ^5.8.0
+    webpack-cli: ^4.2.0
+  languageName: unknown
+  linkType: soft
 
 "internal-ip@npm:^4.3.0":
   version: 4.3.0
@@ -9535,7 +9605,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"make-dir@npm:^3.0.0":
+"make-dir@npm:^3.0.0, make-dir@npm:^3.0.2, make-dir@npm:^3.1.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
   dependencies:
@@ -10868,7 +10938,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pkg-dir@npm:^4.2.0":
+"pkg-dir@npm:^4.1.0, pkg-dir@npm:^4.2.0":
   version: 4.2.0
   resolution: "pkg-dir@npm:4.2.0"
   dependencies:
@@ -11745,6 +11815,19 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-dom@npm:>=16.0.0":
+  version: 17.0.1
+  resolution: "react-dom@npm:17.0.1"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    scheduler: ^0.20.1
+  peerDependencies:
+    react: 17.0.1
+  checksum: 6a70028fbe3c95e0056c5e8ce065b4a9b8d4ff3bffde9b016454072bde5e4b012af7668ca45b7235ace428267d5be5237b68ea87ce8c296e54e81a8d678a4355
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^16.14.0":
   version: 16.14.0
   resolution: "react-dom@npm:16.14.0"
@@ -11816,6 +11899,16 @@ fsevents@^1.2.7:
   peerDependencies:
     react: 17.0.1
   checksum: 6ec269430beea4356180d90868a9959399781a03ae8de6a29f2edc29d6ca41432653d4103991467ebcc47be5bd2d9197789411e913da66369c2aa2f13311105f
+  languageName: node
+  linkType: hard
+
+"react@npm:>=16.0.0":
+  version: 17.0.1
+  resolution: "react@npm:17.0.1"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: a76d86ec973eb4b25a46071ac7f974adfd66ed89ad1db63043be1d976ec25417520a210e6d724b0ad937422b706afcf9962cedda9e92125992a8c0e8a95f2051
   languageName: node
   linkType: hard
 
@@ -14458,7 +14551,7 @@ resolve@^1.18.1:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:^3.11.0, webpack-dev-server@npm:latest":
+"webpack-dev-server@npm:latest":
   version: 3.11.0
   resolution: "webpack-dev-server@npm:3.11.0"
   dependencies:

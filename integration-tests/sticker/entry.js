@@ -1,67 +1,40 @@
-import './entry.css';
+import '../setup/entry.css';
 import React from 'react';
-import reactDOM from 'react-dom';
 import {
   defaultPlugins,
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 import { SpecRegistry } from 'bangle-core/spec-registry';
-import { Slice } from 'prosemirror-model';
-import { DOMSerializer } from 'prosemirror-model';
-import { dino } from 'bangle-react/dino';
-import { stopwatch } from 'bangle-react/stopwatch';
-import * as prosemirrorView from 'prosemirror-view';
-import { ReactEditor } from 'bangle-react/ReactEditor';
+import { DOMSerializer, Slice } from 'bangle-core/pm-model';
+import { sticker } from '@banglejs/sticker';
+import { stopwatch } from '@banglejs/stopwatch';
+import * as prosemirrorView from 'bangle-core/pm-view';
+import { setupReactEditor } from '../setup/entry-helpers';
 
 window.prosemirrorView = prosemirrorView;
 
 console.debug('Bangle-react entry.js');
+
 setup();
 
 function setup() {
-  const element = document.createElement('div');
-  window.document.body.appendChild(element);
-  element.setAttribute('id', 'root');
-  // const editorContainer = document.createElement('div');
-  // editorContainer.setAttribute('id', 'pm-root');
-  // element.appendChild(editorContainer);
-  // setupEditor(editorContainer);
-  reactDOM.render(<App />, element);
-}
-
-function App() {
+  window.commands = {
+    stopwatch: stopwatch.commands,
+    sticker: sticker.commands,
+  };
+  const renderNodeViews = ({ node, ...args }) => {
+    if (node.type.name === 'sticker') {
+      return <sticker.Sticker node={node} {...args} />;
+    }
+  };
   const specRegistry = new SpecRegistry([
     ...defaultSpecs(),
     stopwatch.spec(),
-    dino.spec(),
+    sticker.spec(),
   ]);
-  const plugins = [...defaultPlugins(), stopwatch.plugins(), dino.plugins()];
-  window.commands = {
-    stopwatch: stopwatch.commands,
-    dino: dino.commands,
-  };
-  const onEditorReady = (_editor) => {
-    window.editor = _editor;
-  };
-  const renderNodeViews = ({ node, ...args }) => {
-    if (node.type.name === 'dino') {
-      return <dino.Dino node={node} {...args} />;
-    }
-  };
-  window.dispatcher = (command) => {
-    return command(
-      window.editor.view.state,
-      window.editor.view.dispatch,
-      window.editor.view,
-    );
-  };
-  return (
-    <ReactEditor
-      options={{ id: 'pm-root', specRegistry, plugins }}
-      onReady={onEditorReady}
-      renderNodeViews={renderNodeViews}
-    />
-  );
+  const plugins = [...defaultPlugins(), stopwatch.plugins(), sticker.plugins()];
+
+  setupReactEditor({ specRegistry, plugins, renderNodeViews, id: 'pm-root' });
 }
 
 const createEvent = (name, options = {}) => {

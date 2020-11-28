@@ -1,14 +1,8 @@
-const {
-  mountEditor,
-  getDoc,
-  getEditorState,
-  ctrlKey,
-  sleep,
-  uniqDatabaseUrl,
-  PM_ID,
-} = require('./helpers');
+const path = require('path');
+const helpers = require('../setup/helpers');
+const url = `http://localhost:1234/${path.basename(__dirname)}`;
 
-jest.setTimeout(25 * 1000);
+const PM_ID = helpers.pmRoot;
 
 describe('Todo test', () => {
   beforeEach(async () => {
@@ -22,38 +16,41 @@ describe('Todo test', () => {
       console.log('pageerror occurred: ', pageerr);
     });
 
-    await page.goto(uniqDatabaseUrl());
-    await sleep(30);
-    await mountEditor(page);
-    await page.keyboard.down(ctrlKey);
-    await page.keyboard.press('a');
-    await page.keyboard.up(ctrlKey);
-    await page.keyboard.press('Backspace', { delay: 10 });
-  });
+    await page.goto(url);
 
-  it('Works', async () => {
-    // For some reason the first test fails, so put this dummy to fix that
+    page.on('error', (err) => {
+      console.log('error happen at the page');
+      throw err;
+    });
+
+    page.on('pageerror', (pageerr) => {
+      console.log('pageerror occurred');
+      throw pageerr;
+    });
+    await helpers.mountEditor(page);
+    await page.keyboard.down(helpers.ctrlKey);
     await page.keyboard.press('a');
+    await page.keyboard.up(helpers.ctrlKey);
+    await page.keyboard.press('Backspace', { delay: 10 });
   });
 
   it('Creates a todo task', async () => {
     await page.type(PM_ID, '[ ] my task');
-    const doc = await getDoc(page);
+    const doc = await helpers.getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         todoList(
           todoItem(paragraph('my task'))
-        ),
-        paragraph
+        )
       )
       "
     `);
-    const state = await getEditorState(page);
+    const state = await helpers.getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
-      Object {
-        "done": false,
-      }
-    `);
+        Object {
+          "done": false,
+        }
+      `);
     expect(state).toMatchSnapshot();
   });
 
@@ -80,12 +77,12 @@ describe('Todo test', () => {
 
     await page.click('[data-bangle-name="todoItem"] input');
 
-    const state = await getEditorState(page);
+    const state = await helpers.getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
-      Object {
-        "done": true,
-      }
-    `);
+        Object {
+          "done": true,
+        }
+      `);
     expect(
       await page.evaluate(() => {
         const el = document.querySelector(
@@ -103,15 +100,15 @@ describe('Todo test', () => {
     await page.type(PM_ID, '[ ] my task');
 
     await page.click('[data-bangle-name="todoItem"] input');
-    await sleep(10);
+    await helpers.sleep(10);
     await page.click('[data-bangle-name="todoItem"] input');
 
-    const state = await getEditorState(page);
+    const state = await helpers.getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
-      Object {
-        "done": false,
-      }
-    `);
+        Object {
+          "done": false,
+        }
+      `);
     expect(
       await page.evaluate(() => {
         const el = document.querySelector(

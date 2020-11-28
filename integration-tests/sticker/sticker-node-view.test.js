@@ -1,10 +1,12 @@
-const helpers = require('./helpers');
+const path = require('path');
+const helpers = require('../setup/helpers');
 jest.setTimeout(25 * 1000);
+const url = `http://localhost:1234/${path.basename(__dirname)}`;
 
 beforeEach(async () => {
   await jestPuppeteer.resetPage();
 
-  await page.goto(helpers.url);
+  await page.goto(url);
   page.on('error', (err) => {
     console.log('error happen at the page');
     throw err;
@@ -17,13 +19,15 @@ beforeEach(async () => {
   await helpers.mountEditor(page);
 });
 
-const insertDino = () =>
+const insertSticker = () =>
   page.evaluate(() => {
-    return window.dispatcher(window.commands.dino.insertDino('triceratops'));
+    return window.dispatcher(
+      window.commands.sticker.insertSticker('triceratops'),
+    );
   });
 
-test('Creates a dino correctly', async () => {
-  await insertDino();
+test('Creates a sticker correctly', async () => {
+  await insertSticker();
 
   expect(await helpers.getEditorState(page)).toMatchInlineSnapshot(`
     Object {
@@ -33,10 +37,10 @@ test('Creates a dino correctly', async () => {
             "content": Array [
               Object {
                 "attrs": Object {
-                  "data-bangle-name": "dino",
-                  "data-dinokind": "triceratops",
+                  "data-bangle-name": "sticker",
+                  "data-stickerkind": "triceratops",
                 },
-                "type": "dino",
+                "type": "sticker",
               },
             ],
             "type": "paragraph",
@@ -53,8 +57,8 @@ test('Creates a dino correctly', async () => {
   `);
 });
 
-test('select dino via key left', async () => {
-  await insertDino();
+test('select sticker via key left', async () => {
+  await insertSticker();
   await helpers.pressLeft();
   const state = await helpers.getEditorState(page);
   expect(state.selection).toMatchInlineSnapshot(`
@@ -65,8 +69,8 @@ test('select dino via key left', async () => {
   `);
 });
 
-test('typing on selected dino replaces it', async () => {
-  await insertDino();
+test('typing on selected sticker replaces it', async () => {
+  await insertSticker();
   await helpers.pressLeft();
   let state = await helpers.getEditorState(page);
   expect(state.selection).toMatchInlineSnapshot(`
@@ -93,8 +97,8 @@ test('typing on selected dino replaces it', async () => {
   `);
 });
 
-test('typing before and after dino', async () => {
-  await insertDino();
+test('typing before and after sticker', async () => {
+  await insertSticker();
   await helpers.pressLeft();
   await helpers.pressLeft();
 
@@ -115,10 +119,10 @@ test('typing before and after dino', async () => {
           },
           Object {
             "attrs": Object {
-              "data-bangle-name": "dino",
-              "data-dinokind": "triceratops",
+              "data-bangle-name": "sticker",
+              "data-stickerkind": "triceratops",
             },
-            "type": "dino",
+            "type": "sticker",
           },
           Object {
             "text": "after",
@@ -131,8 +135,8 @@ test('typing before and after dino', async () => {
   `);
 });
 
-test('clicking on dino should select it', async () => {
-  await insertDino();
+test('clicking on sticker should select it', async () => {
+  await insertSticker();
   let state = await helpers.getEditorState(page);
 
   expect(state.selection).toMatchInlineSnapshot(`
@@ -142,11 +146,11 @@ test('clicking on dino should select it', async () => {
       "type": "text",
     }
   `);
-  const dino = await page.$('.bangle-dino');
-  expect(dino).toBeTruthy();
-  expect(await page.$('.bangle-dino.bangle-selected')).toBeFalsy();
+  const sticker = await page.$('.bangle-sticker');
+  expect(sticker).toBeTruthy();
+  expect(await page.$('.bangle-sticker > .bangle-selected')).toBeFalsy();
 
-  await page.click('.bangle-dino');
+  await page.click('.bangle-sticker');
 
   state = await helpers.getEditorState(page);
   expect(state.selection).toMatchInlineSnapshot(`
@@ -156,11 +160,11 @@ test('clicking on dino should select it', async () => {
     }
   `);
 
-  expect(await page.$('.bangle-dino.bangle-selected')).toBeTruthy();
+  expect(await page.$('.bangle-sticker > .bangle-selected')).toBeTruthy();
 });
 
-test('dino should lose selection when arrow right', async () => {
-  await insertDino();
+test('sticker should lose selection when arrow right', async () => {
+  await insertSticker();
   let state = await helpers.getEditorState(page);
 
   expect(state.selection).toMatchInlineSnapshot(`
@@ -171,17 +175,17 @@ test('dino should lose selection when arrow right', async () => {
     }
   `);
 
-  await page.click('.bangle-dino');
+  await page.click('.bangle-sticker');
 
-  expect(await page.$('.bangle-dino.bangle-selected')).toBeTruthy();
+  expect(await page.$('.bangle-sticker > .bangle-selected')).toBeTruthy();
 
   await helpers.pressLeft();
 
-  expect(await page.$('.bangle-dino.bangle-selected')).toBeFalsy();
+  expect(await page.$('.bangle-sticker > .bangle-selected')).toBeFalsy();
 });
 
-test('copy pasting dino should work', async () => {
-  await insertDino();
+test('copy pasting sticker should work', async () => {
+  await insertSticker();
   let state = await helpers.getEditorState(page);
 
   expect(state.selection).toMatchInlineSnapshot(`
@@ -210,17 +214,17 @@ test('copy pasting dino should work', async () => {
             "content": Array [
               Object {
                 "attrs": Object {
-                  "data-bangle-name": "dino",
-                  "data-dinokind": "triceratops",
+                  "data-bangle-name": "sticker",
+                  "data-stickerkind": "triceratops",
                 },
-                "type": "dino",
+                "type": "sticker",
               },
               Object {
                 "attrs": Object {
-                  "data-bangle-name": "dino",
-                  "data-dinokind": "triceratops",
+                  "data-bangle-name": "sticker",
+                  "data-stickerkind": "triceratops",
                 },
-                "type": "dino",
+                "type": "sticker",
               },
             ],
             "type": "paragraph",
