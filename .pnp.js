@@ -37,11 +37,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {
         "name": "bangle-react",
         "reference": "workspace:bangle-react"
+      },
+      {
+        "name": "@banglejs/stopwatch",
+        "reference": "workspace:contrib/stopwatch"
       }
     ],
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
+      ["@banglejs/stopwatch", ["workspace:contrib/stopwatch"]],
       ["bangle", ["workspace:."]],
       ["bangle-core", ["workspace:bangle-core"]],
       ["bangle-play", ["workspace:bangle-play"]],
@@ -2226,6 +2231,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@banglejs/stopwatch", [
+        ["workspace:contrib/stopwatch", {
+          "packageLocation": "./contrib/stopwatch/",
+          "packageDependencies": [
+            ["@banglejs/stopwatch", "workspace:contrib/stopwatch"],
+            ["@testing-library/react", "virtual:a162fb737a130433bc71891f1da6529aacc57596c20726019f3a3333cf9315b737d365411f622ae9b135f02f94edba5636e8381c473b6d985d89de54a326a6b2#npm:10.4.8"],
+            ["bangle-core", "workspace:bangle-core"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["bangle-react", "workspace:bangle-react"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@bcoe/v8-coverage", [
         ["npm:0.2.3", {
           "packageLocation": "./.yarn/cache/@bcoe-v8-coverage-npm-0.2.3-9e27b3c57e-4fc6fb784b.zip/node_modules/@bcoe/v8-coverage/",
@@ -2771,6 +2789,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", null],
             ["react", "npm:16.13.1"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:a162fb737a130433bc71891f1da6529aacc57596c20726019f3a3333cf9315b737d365411f622ae9b135f02f94edba5636e8381c473b6d985d89de54a326a6b2#npm:10.4.8", {
+          "packageLocation": "./.yarn/$$virtual/@testing-library-react-virtual-1762b694bd/0/cache/@testing-library-react-npm-10.4.8-eba17ce5ed-8e725f094b.zip/node_modules/@testing-library/react/",
+          "packageDependencies": [
+            ["@testing-library/react", "virtual:a162fb737a130433bc71891f1da6529aacc57596c20726019f3a3333cf9315b737d365411f622ae9b135f02f94edba5636e8381c473b6d985d89de54a326a6b2#npm:10.4.8"],
+            ["@babel/runtime", "npm:7.11.2"],
+            ["@testing-library/dom", "npm:7.22.0"],
+            ["@types/react", null],
+            ["@types/react-dom", null],
+            ["react", null],
+            ["react-dom", null]
           ],
           "packagePeers": [
             "@types/react-dom",

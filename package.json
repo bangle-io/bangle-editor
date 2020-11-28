@@ -6,7 +6,8 @@
     "bangle-core",
     "bangle-play",
     "bangle-plugins",
-    "bangle-react"
+    "bangle-react",
+    "contrib/*"
   ],
   "scripts": {
     "start": "yarn workspace bangle-play start",

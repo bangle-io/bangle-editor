@@ -1466,6 +1466,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@banglejs/stopwatch@workspace:contrib/stopwatch":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/stopwatch@workspace:contrib/stopwatch"
+  dependencies:
+    "@testing-library/react": ^10.4.7
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
+  peerDependencies:
+    react: ^16.13.0
+    react-dom: ^16.14.0
+  languageName: unknown
+  linkType: soft
+
 "@bcoe/v8-coverage@npm:^0.2.3":
   version: 0.2.3
   resolution: "@bcoe/v8-coverage@npm:0.2.3"
