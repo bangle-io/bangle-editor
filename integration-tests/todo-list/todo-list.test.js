@@ -2,7 +2,7 @@ const path = require('path');
 const helpers = require('../setup/helpers');
 const url = `http://localhost:1234/${path.basename(__dirname)}`;
 
-const PM_ID = '#pm-root';
+const PM_ID = helpers.pmRoot;
 
 describe('Todo test', () => {
   beforeEach(async () => {

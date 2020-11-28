@@ -1,60 +1,57 @@
-const PM_ID = '.ProseMirror';
-
-const { mountEditor, getDoc, ctrlKey, uniqDatabaseUrl } = require('./helpers');
+const path = require('path');
+const { ctrlKey, getDoc, pmRoot } = require('../setup/helpers');
+const url = `http://localhost:1234/${path.basename(__dirname)}`;
 
 jest.setTimeout(25 * 1000);
-function debug() {
-  return jestPuppeteer.debug();
-}
 
 describe('Basic typing', () => {
   beforeEach(async () => {
     await jestPuppeteer.resetPage();
-    await page.goto(uniqDatabaseUrl());
-    await mountEditor(page);
+    page.on('error', (err) => {
+      console.log('error happen at the page: ', err);
+    });
+
+    page.on('pageerror', (pageerr) => {
+      console.log('pageerror occurred: ', pageerr);
+    });
+
+    await page.goto(url);
     await page.keyboard.down(ctrlKey);
     await page.keyboard.press('a');
     await page.keyboard.up(ctrlKey);
     await page.keyboard.press('Backspace', { delay: 10 });
   });
 
-  it('Works', async () => {
-    // For some reason the first test fails, so put this dummy to fix that
-    await page.keyboard.press('a');
-  });
-
   it('should expand into an unordered list', async () => {
-    await page.type(PM_ID, '- First');
+    await page.type(pmRoot, '- First');
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         bulletList(
           listItem(paragraph('First'))
-        ),
-        paragraph
+        )
       )
       "
     `);
   });
 
   it('should expand into an ordered list', async () => {
-    await page.type(PM_ID, '1. First');
+    await page.type(pmRoot, '1. First');
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
         orderedList(
           listItem(paragraph('First'))
-        ),
-        paragraph
+        )
       )
       "
     `);
   });
 
   it('nests correctly list', async () => {
-    await page.type(PM_ID, '- First');
+    await page.type(pmRoot, '- First');
     await page.keyboard.press('Enter');
-    await page.type(PM_ID, 'Second');
+    await page.type(pmRoot, 'Second');
     await page.keyboard.press('Tab');
     const doc = await getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
@@ -68,8 +65,7 @@ describe('Basic typing', () => {
               )
             )
           )
-        ),
-        paragraph
+        )
       )
       "
     `);

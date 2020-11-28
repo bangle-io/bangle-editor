@@ -60,6 +60,7 @@ module.exports = async (env, argv) => {
           new HtmlWebpackPlugin({
             inject: true,
             chunks: [entry],
+            title: 'Bangle App',
             filename: entry + '.html',
           }),
       ),
