@@ -1,4 +1,4 @@
-import { objectFilter } from './utils/js-utils';
+import { objectFilter } from './js-utils';
 
 /**
  * Creates a bare bone `toDOM` and `parseDOM` handlers for the PM schema.

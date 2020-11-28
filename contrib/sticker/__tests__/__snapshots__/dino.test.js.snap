@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rendering works 1`] = `
+<span
+  class="bangle-sticker"
+  draggable="true"
+  style="display: inline-block;"
+>
+  <img
+    alt="brontosaurus"
+    class=""
+    src="test-file-stub"
+    style="display: inline; height: 64px; vertical-align: bottom; border: 1px solid #0ae; border-radius: 4px; background: rgb(221, 246, 255);"
+  />
+</span>
+`;
+
+exports[`Rendering works with different type of sticker 1`] = `
+<span
+  class="bangle-sticker"
+  draggable="true"
+  style="display: inline-block;"
+>
+  <img
+    alt="stegosaurus"
+    class=""
+    src="test-file-stub"
+    style="display: inline; height: 64px; vertical-align: bottom; border: 1px solid #0ae; border-radius: 4px; background: rgb(221, 246, 255);"
+  />
+</span>
+`;

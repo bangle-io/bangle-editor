@@ -1,15 +1,14 @@
 import React from 'react';
 
-import { serializeAtomNodeToMdLink } from 'bangle-plugins/markdown/markdown-serializer';
-import { keymap } from 'prosemirror-keymap';
 import { NodeView } from 'bangle-core/node-view';
-import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
+import { keymap, domSerializationHelpers } from 'bangle-core/utils/index';
+import { serializeAtomNodeToMdLink2 } from 'bangle-plugins/markdown/markdown-serializer';
 
 const LOG = false;
 
 function log(...args) {
   if (LOG) {
-    console.log('stopwatch/index.js:', ...args);
+    console.log('contrib/stopwatch/index.js:', ...args);
   }
 }
 
@@ -25,14 +24,11 @@ function specFactory() {
     type: 'node',
     schema: {
       attrs: {
-        'data-stopwatch': {
-          default: {
-            startTime: 0,
-            stopTime: 0,
-          },
+        startTime: {
+          default: 0,
         },
-        'data-bangle-name': {
-          default: name,
+        stopTime: {
+          default: 0,
         },
       },
       inline: true,
@@ -42,7 +38,7 @@ function specFactory() {
     },
     markdown: {
       toMarkdown: (state, node) => {
-        const string = serializeAtomNodeToMdLink(name, node.attrs);
+        const string = serializeAtomNodeToMdLink2(name, node.attrs);
         state.write(string);
       },
     },
@@ -93,15 +89,13 @@ export class Stopwatch extends React.Component {
 
   updateAttrs({ stopTime, startTime }) {
     this.props.updateAttrs({
-      'data-stopwatch': {
-        stopTime,
-        startTime,
-      },
+      stopTime,
+      startTime,
     });
   }
 
   getAttrs() {
-    const { stopTime, startTime } = this.props.node.attrs['data-stopwatch'];
+    const { stopTime, startTime } = this.props.node.attrs;
 
     return {
       stopTime,

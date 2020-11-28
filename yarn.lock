@@ -1466,6 +1466,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@banglejs/sticker@workspace:*, @banglejs/sticker@workspace:contrib/sticker":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/sticker@workspace:contrib/sticker"
+  dependencies:
+    "@testing-library/react": ^10.4.7
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
+    prop-types: ^15.7.2
+    react: ^16.14.0
+    react-dom: ^16.14.0
+  peerDependencies:
+    bangle-core: "*"
+    bangle-plugins: "*"
+    bangle-react: "*"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@banglejs/stopwatch@workspace:*, @banglejs/stopwatch@workspace:contrib/stopwatch":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/stopwatch@workspace:contrib/stopwatch"
+  dependencies:
+    "@testing-library/react": ^10.4.7
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
+    react: ^16.14.0
+    react-dom: ^16.14.0
+  peerDependencies:
+    bangle-core: "*"
+    bangle-plugins: "*"
+    bangle-react: "*"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@bcoe/v8-coverage@npm:^0.2.3":
   version: 0.2.3
   resolution: "@bcoe/v8-coverage@npm:0.2.3"
@@ -3653,6 +3692,8 @@ __metadata:
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
+    "@banglejs/sticker": "workspace:*"
+    "@banglejs/stopwatch": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.0.4
@@ -3693,7 +3734,7 @@ __metadata:
     prosemirror-utils: latest
     prosemirror-view: ^1.16.3
     punycode: ^2.1.1
-    react: ^16.13.0
+    react: ^16.14.0
     react-dom: ^16.14.0
     react-popper: ^2.2.4
     serve: ^11.3.2
@@ -3731,7 +3772,7 @@ __metadata:
     prosemirror-utils: ^0.9.6
     prosemirror-view: ^1.16.3
     punycode: ^2.1.1
-    react: ^16.13.0
+    react: ^16.14.0
     react-dom: ^16.14.0
   languageName: unknown
   linkType: soft
@@ -3759,7 +3800,7 @@ __metadata:
     prosemirror-state: ^1.3.3
     prosemirror-view: ^1.16.3
     punycode: ^2.1.1
-    react: ^16.13.0
+    react: ^16.14.0
     react-dom: ^16.14.0
     react-test-renderer: ^17.0.1
     style-loader: ^2.0.0
@@ -11778,14 +11819,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react@npm:^16.13.0":
-  version: 16.13.1
-  resolution: "react@npm:16.13.1"
+"react@npm:^16.14.0":
+  version: 16.14.0
+  resolution: "react@npm:16.14.0"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
     prop-types: ^15.6.2
-  checksum: 13dcc9ba8a7521ecc3d7e69998dbc5703ae9515308d06a94a474ad34b42f1fc109372265e924a8c9b11d20fa1828407c290b8f61617c36734c4ca907ae7e5f45
+  checksum: 2769580b22952a52de3b5b2ea0f09cb904030b762d759739f49ab4da0b1f550e5c087ce3728c4be90f423d09481e0c075483c0c30b1ea9c549445c8b12020fd3
   languageName: node
   linkType: hard
 
