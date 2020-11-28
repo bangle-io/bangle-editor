@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { serializeAtomNodeToMdLink2 } from 'bangle-plugins/markdown/markdown-serializer';
-import { keymap } from 'prosemirror-keymap';
+import { keymap } from 'bangle-core/utils/keymap';
 import { NodeView } from 'bangle-core/node-view';
 import { domSerializationHelpers } from 'bangle-core/dom-serialization-helpers';
 

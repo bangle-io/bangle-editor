@@ -26,3 +26,9 @@ export function serializeAtomNodeToMdLink(name, attrs) {
 
   return `[$${name}](bangle://${string})`;
 }
+
+export function serializeAtomNodeToMdLink2(name, attrs) {
+  return `[$${name}](bangle://v1?data=${encodeURIComponent(
+    JSON.stringify(attrs),
+  )}`;
+}

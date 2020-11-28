@@ -55,7 +55,7 @@ test('Keyboard shortcut works', async () => {
         <li>
           <para>
             foo
-            <stopwatch data-stopwatch-time="0" />
+            <stopwatch startTime={0} />
             bar
           </para>
         </li>
@@ -87,7 +87,7 @@ test('Renders clicking correctly', async () => {
         <li>
           <para>
             foo
-            <stopwatch data-stopwatch-time="10" />
+            <stopwatch startTime={10} />
             bar
           </para>
         </li>
@@ -98,22 +98,16 @@ test('Renders clicking correctly', async () => {
   let item = await renderResult.findByText(/⏲/);
 
   expect(view.state.doc.nodeAt(6).attrs).toEqual({
-    'data-stopwatch': {
-      startTime: 0,
-      stopTime: 0,
-    },
-    'data-bangle-name': 'stopwatch',
+    startTime: 10,
+    stopTime: 0,
   });
 
   Date.now = jest.fn(() => 150);
   fireEvent.click(item);
 
   expect(view.state.doc.nodeAt(6).attrs).toEqual({
-    'data-stopwatch': {
-      startTime: 1,
-      stopTime: null,
-    },
-    'data-bangle-name': 'stopwatch',
+    startTime: 11,
+    stopTime: null,
   });
 });
 
@@ -131,12 +125,12 @@ describe('markdown', () => {
       <doc>
         <para>
           hello world
-          <stopwatch data-stopwatch-time="10" />
+          <stopwatch startTime={10} />
         </para>
       </doc>,
     );
     expect(md).toMatchInlineSnapshot(
-      `"hello world[$stopwatch](bangle://data-stopwatch=%7B%22startTime%22%3A0%2C%22stopTime%22%3A0%7D&data-bangle-name=%22stopwatch%22)"`,
+      `"hello world[$stopwatch](bangle://v1?data=%7B%22startTime%22%3A10%2C%22stopTime%22%3A0%7D"`,
     );
   });
 });
