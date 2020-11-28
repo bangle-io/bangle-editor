@@ -16,7 +16,8 @@
   },
   "search.exclude": {
     "**/.yarn": true,
-    "**/.pnp.*": true
+    "**/.pnp.*": true,
+    "**/build": true
   },
   "editor.formatOnSave": true,
   "workbench.colorCustomizations": {

@@ -7,6 +7,7 @@ module.exports = {
   modulePaths: workspaces.map((w) => `<rootDir>/${w}`),
   testPathIgnorePatterns: [
     ...workspaces.map((w) => `<rootDir>/${w}/__integration_tests__/`),
+    ...workspaces.map((w) => `<rootDir>/integration-tests/`),
   ],
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],

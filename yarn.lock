@@ -2421,6 +2421,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webpack@npm:^4.4.31":
+  version: 4.41.25
+  resolution: "@types/webpack@npm:4.41.25"
+  dependencies:
+    "@types/anymatch": "*"
+    "@types/node": "*"
+    "@types/tapable": "*"
+    "@types/uglify-js": "*"
+    "@types/webpack-sources": "*"
+    source-map: ^0.6.0
+  checksum: 3bf453406c6479efedfee3b847b4274f5e8e1533cda91828c0f90fe32c9e17c12c5bdbbd99b1ad983460c845776554c54c5548d3cdd5bc13d2cf47f5f85fe57a
+  languageName: node
+  linkType: hard
+
 "@types/webpack@npm:^4.41.8":
   version: 4.41.21
   resolution: "@types/webpack@npm:4.41.21"
@@ -3801,12 +3815,8 @@ __metadata:
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^10.4.7
     "@testing-library/react-hooks": ^3.4.2
-    babel-loader: ^8.1.0
     bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
-    css-loader: ^5.0.1
-    file-loader: ^6.0.0
-    html-webpack-plugin: next
     localforage: ^1.9.0
     prettier: ^2.2.0
     prop-types: ^15.7.2
@@ -3818,10 +3828,6 @@ __metadata:
     react: ^16.14.0
     react-dom: ^16.14.0
     react-test-renderer: ^17.0.1
-    style-loader: ^2.0.0
-    webpack: ^5.8.0
-    webpack-cli: ^4.2.0
-    webpack-dev-server: ^3.11.0
   languageName: unknown
   linkType: soft
 
@@ -4446,6 +4452,18 @@ __metadata:
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
   checksum: e291ce2b8c8c59e6449ac9a7a726090264bea6696e5343b21385e16d279c808ca09d73a1abea8fd23a9b7699e6ef5ce582df203511f71c8c27666bf3b2e300c5
+  languageName: node
+  linkType: hard
+
+"clean-webpack-plugin@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "clean-webpack-plugin@npm:3.0.0"
+  dependencies:
+    "@types/webpack": ^4.4.31
+    del: ^4.1.1
+  peerDependencies:
+    webpack: "*"
+  checksum: fc0fbd1c8e163b784209d51a5df4336ad359737f8b324697d33d1c484ee5c7efee9a1f9f18786860216019764f4a6e02e329e0410e3ab4d52e5e5b52a1038dfe
   languageName: node
   linkType: hard
 
@@ -7371,23 +7389,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:next":
-  version: 5.0.0-alpha.14
-  resolution: "html-webpack-plugin@npm:5.0.0-alpha.14"
-  dependencies:
-    "@types/html-minifier-terser": ^5.0.0
-    "@types/tapable": ^1.0.5
-    html-minifier-terser: ^5.0.1
-    loader-utils: 2.0.0
-    lodash: ^4.17.20
-    pretty-error: ^2.1.1
-    tapable: 2.0.0
-  peerDependencies:
-    webpack: ^5.1.2
-  checksum: 290ddfe63ed497072871c5a39aadd9f94f9280a9f1736c5fd3bf48f73f0f5c2a9d6c2c362982a7b9974cdf71a83e33cccbdd90017967c18ca01910336cef14c9
-  languageName: node
-  linkType: hard
-
 "htmlparser2@npm:^3.3.0":
   version: 3.10.1
   resolution: "htmlparser2@npm:3.10.1"
@@ -7765,9 +7766,11 @@ fsevents@^1.2.7:
     bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     bangle-react: "workspace:*"
+    clean-webpack-plugin: ^3.0.0
     css-loader: ^5.0.1
     file-loader: ^6.0.0
     html-webpack-plugin: ^4.5.0
+    prettier: ^2.2.0
     punycode: ^2.1.1
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
@@ -9412,17 +9415,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:2.0.0, loader-utils@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "loader-utils@npm:2.0.0"
-  dependencies:
-    big.js: ^5.2.2
-    emojis-list: ^3.0.0
-    json5: ^2.1.2
-  checksum: a1c2e48781e1501e126a32c39bc1fb1a7e2f02bd99e5aeb8853ddaf3c121fffefcc4579367f97ca6890b58369e571af1c9ec82e4e20db238d560ab359ff25c33
-  languageName: node
-  linkType: hard
-
 "loader-utils@npm:^1.1.0, loader-utils@npm:^1.2.3, loader-utils@npm:^1.4.0":
   version: 1.4.0
   resolution: "loader-utils@npm:1.4.0"
@@ -9431,6 +9423,17 @@ fsevents@^1.2.7:
     emojis-list: ^3.0.0
     json5: ^1.0.1
   checksum: 9fd690e57ad78d32ff2942383b4a7a175eba575280ba5aca3b4d03183fec34aa0db314f49bd3301adf7e60b02471644161bf53149e8f2d18fd6a52627e95a927
+  languageName: node
+  linkType: hard
+
+"loader-utils@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "loader-utils@npm:2.0.0"
+  dependencies:
+    big.js: ^5.2.2
+    emojis-list: ^3.0.0
+    json5: ^2.1.2
+  checksum: a1c2e48781e1501e126a32c39bc1fb1a7e2f02bd99e5aeb8853ddaf3c121fffefcc4579367f97ca6890b58369e571af1c9ec82e4e20db238d560ab359ff25c33
   languageName: node
   linkType: hard
 
@@ -9497,13 +9500,6 @@ fsevents@^1.2.7:
   version: 4.17.19
   resolution: "lodash@npm:4.17.19"
   checksum: ff2b7a95f0129dba9101e346d44e0eda0f159d76bbbf23721eec1969b87a32bde3de0cfef0733218c64620e9be08040a973278d46a686540233b356115f3527c
-  languageName: node
-  linkType: hard
-
-"lodash@npm:^4.17.20":
-  version: 4.17.20
-  resolution: "lodash@npm:4.17.20"
-  checksum: c62101d2500c383b5f174a7e9e6fe8098149ddd6e9ccfa85f36d4789446195f5c4afd3cfba433026bcaf3da271256566b04a2bf2618e5a39f6e67f8c12030cb6
   languageName: node
   linkType: hard
 
@@ -13662,17 +13658,17 @@ resolve@^1.18.1:
   languageName: node
   linkType: hard
 
-"tapable@npm:2.0.0, tapable@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "tapable@npm:2.0.0"
-  checksum: e6321280f9ace1043b2d2e893b998454227f27da05e5e1f7c92a67752d6a87e2ca529aeb516f31a21c1a92d2532a77518423b7df7aaf7acd3a8df925f02b4c66
-  languageName: node
-  linkType: hard
-
 "tapable@npm:^1.1.3":
   version: 1.1.3
   resolution: "tapable@npm:1.1.3"
   checksum: b2c2ab20260394b867fd249d8b6ab3e4645e00f9cce16b558b0de5a86291ef05f536f578744549d1618c9032c7f99bc1d6f68967e4aa11cb0dca4461dc4714bc
+  languageName: node
+  linkType: hard
+
+"tapable@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "tapable@npm:2.0.0"
+  checksum: e6321280f9ace1043b2d2e893b998454227f27da05e5e1f7c92a67752d6a87e2ca529aeb516f31a21c1a92d2532a77518423b7df7aaf7acd3a8df925f02b4c66
   languageName: node
   linkType: hard
 
@@ -14555,7 +14551,7 @@ resolve@^1.18.1:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:^3.11.0, webpack-dev-server@npm:latest":
+"webpack-dev-server@npm:latest":
   version: 3.11.0
   resolution: "webpack-dev-server@npm:3.11.0"
   dependencies:

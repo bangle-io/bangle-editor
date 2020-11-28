@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Todo test Creates a todo task 3`] = `
+Object {
+  "doc": Object {
+    "content": Array [
+      Object {
+        "content": Array [
+          Object {
+            "attrs": Object {
+              "done": false,
+            },
+            "content": Array [
+              Object {
+                "content": Array [
+                  Object {
+                    "text": "my task",
+                    "type": "text",
+                  },
+                ],
+                "type": "paragraph",
+              },
+            ],
+            "type": "todoItem",
+          },
+        ],
+        "type": "todoList",
+      },
+    ],
+    "type": "doc",
+  },
+  "selection": Object {
+    "anchor": 10,
+    "head": 10,
+    "type": "text",
+  },
+}
+`;

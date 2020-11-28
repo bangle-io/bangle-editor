@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "NODE_ENV=integration yarn run webpack --env development",
-    "serve-build": "yarn run serve build -l 1234 "
+    "serve-build": "yarn run serve build -l 1234"
   },
   "dependencies": {
     "@banglejs/sticker": "workspace:*",
@@ -13,9 +13,11 @@
     "bangle-core": "workspace:*",
     "bangle-plugins": "workspace:*",
     "bangle-react": "workspace:*",
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.0.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.5.0",
+    "prettier": "^2.2.0",
     "punycode": "^2.1.1",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0",
