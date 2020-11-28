@@ -1,5 +1,6 @@
 import { Plugin, PluginKey } from 'bangle-core/index';
 import { tooltipPlacement } from 'bangle-plugins/tooltip/index';
+import { NodeSelection } from 'prosemirror-state';
 import { createTooltipDOM } from './index';
 
 export const plugins = selectionTooltip;
@@ -131,9 +132,17 @@ function selectionTooltipController({ stateKey }) {
 function getSelectionReferenceElement(view) {
   return {
     getBoundingClientRect: () => {
-      let { head } = view.state.selection;
-
-      const start = view.coordsAtPos(head);
+      const { selection } = view.state;
+      let { head, from } = selection;
+      // since head is dependent on the users choice of direction,
+      // it is not always equal to `from`.
+      // For textSelections we want to show the tooltip at head of the
+      // selection.
+      // But for NodeSelection we always want `from` since, if we go with `head`
+      // coordsAtPos(head) might get the position `to` in head, resulting in
+      // incorrectly getting position of the node after the selected Node.
+      const pos = selection instanceof NodeSelection ? from : head;
+      const start = view.coordsAtPos(pos);
       let { top, bottom, left, right } = start;
 
       return {
