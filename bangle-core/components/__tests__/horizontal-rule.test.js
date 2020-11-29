@@ -10,7 +10,7 @@ import { typeText } from 'bangle-core/test-helpers/index';
 describe('Markdown shorthand works', () => {
   const testEditor = renderTestEditor();
 
-  it('test --- ', () => {
+  it('test ---', () => {
     const { view } = testEditor(
       <doc>
         <para>test</para>

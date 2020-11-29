@@ -9,7 +9,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 describe('todo list', () => {
-  test('renders', async () => {
+  test('renders 1', async () => {
     const doc = (
       <doc>
         <todoList>
@@ -84,30 +84,6 @@ describe('todo list', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
-    const doc = (
-      <doc>
-        <todoList>
-          <todoItem>
-            <para>first</para>
-          </todoItem>
-          <todoItem>
-            <para>[]second</para>
-          </todoItem>
-        </todoList>
-      </doc>
-    );
-    const md = await serialize(doc);
-
-    expect(md).toMatchInlineSnapshot(`
-      "- [ ] first
-
-      - [ ] second"
-    `);
-
-    expect(await parse(md)).toEqualDocument(doc);
-  });
-
   test('renders with nested ordered list', async () => {
     const doc = (
       <doc>
@@ -134,7 +110,7 @@ describe('todo list', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders with nested ordered list', async () => {
+  test('renders with nested todo list', async () => {
     const doc = (
       <doc>
         <todoList>
@@ -202,7 +178,7 @@ describe('todo list', () => {
 });
 
 describe('parsing', () => {
-  test('homogenizes to a todo list if it sees a bullet list ', async () => {
+  test('homogenizes to a todo list if it sees a bullet list 1', async () => {
     // - second`;
     const doc = (
       <doc>
@@ -240,7 +216,7 @@ describe('parsing', () => {
     );
   });
 
-  test('homogenizes to a todo list if it sees a bullet list ', async () => {
+  test('homogenizes to a todo list if it sees a bullet list 2', async () => {
     // - second`;
     const doc = (
       <doc>
@@ -286,7 +262,7 @@ describe('parsing', () => {
     );
   });
 
-  test('works with nested  bullet list ', async () => {
+  test('works with 2 level nested bullet list', async () => {
     const doc = (
       <doc>
         <todoList>
@@ -322,7 +298,7 @@ describe('parsing', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('works with nested  bullet list ', async () => {
+  test('works with 3 level nested bullet list', async () => {
     const doc = (
       <doc>
         <todoList>

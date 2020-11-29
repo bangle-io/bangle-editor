@@ -1,6 +1,6 @@
 /** @jsx pjsx */
 
-import { screen } from '@testing-library/dom';
+import { screen } from '@testing-library/react';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import {
   defaultPlugins,

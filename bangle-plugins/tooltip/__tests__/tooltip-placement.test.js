@@ -154,7 +154,7 @@ describe('plugin view', () => {
     );
   });
 
-  test('Mounts ', async () => {
+  test('Mounts', async () => {
     let mockPopperInstance;
 
     const statePlugin = setupStatePlugin({

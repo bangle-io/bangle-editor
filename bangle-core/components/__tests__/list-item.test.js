@@ -215,7 +215,7 @@ describe('Command: toggleList', () => {
     );
   });
 
-  test('toggles correctly when nested  li node is selected ', async () => {
+  test('toggles correctly when nested  li node is selected', async () => {
     const { editorView, posLabels } = testEditor(
       <doc>
         <ul>
@@ -263,7 +263,7 @@ describe('Command: toggleList', () => {
     );
   });
 
-  test('toggles correctly when nested empty li node is selected ', async () => {
+  test('toggles correctly when nested empty li node is selected', async () => {
     const { editorView, posLabels } = testEditor(
       <doc>
         <ul>
@@ -312,7 +312,7 @@ describe('Command: toggleList', () => {
   });
 
   // TODO the outcome of this is a bit weird and unexpected
-  test('toggles when the bulletList node is selected ', async () => {
+  test('toggles when the bulletList node is selected', async () => {
     const { editorView, posLabels } = testEditor(
       <doc>
         <ul>
@@ -680,7 +680,7 @@ describe('Markdown shortcuts Input rules', () => {
     );
   });
 
-  it.skip('should convert to a bullet list item after shift+enter ', async () => {
+  it.skip('should convert to a bullet list item after shift+enter', async () => {
     const { editorView, sel } = testEditor(
       <doc>
         <para>

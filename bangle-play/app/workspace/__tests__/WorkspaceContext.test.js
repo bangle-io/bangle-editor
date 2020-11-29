@@ -77,7 +77,7 @@ describe('index db workspace', () => {
     expect(workspace.files).toMatchSnapshot();
   });
 
-  test('getFile ', async () => {
+  test('getFile', async () => {
     const workspace = await IndexDbWorkspace.createWorkspace(
       'test_db',
       schema,
@@ -95,7 +95,7 @@ describe('index db workspace', () => {
     `);
   });
 
-  test('hasFile ', async () => {
+  test('hasFile', async () => {
     const workspace = await IndexDbWorkspace.createWorkspace(
       'test_db',
       schema,
@@ -472,7 +472,7 @@ describe('restore native-fs', () => {
 
   test.todo('Have multiple workspaces pointing to same directory');
   test.todo(
-    'Have multiple workspaces  of which one directory is a child or the other workspace ',
+    'Have multiple workspaces  of which one directory is a child or the other workspace',
   );
 
   test.todo('Handle the case when the directory backing workspace is deleted');

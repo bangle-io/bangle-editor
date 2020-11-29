@@ -231,7 +231,7 @@ describe('suggest basic show and hide', () => {
     expect(view.dom.parentNode).toMatchSnapshot();
   });
 
-  test('Selection going to other location hides the tooltip', async () => {
+  test('Selection at start going to other location hides the tooltip 1', async () => {
     const { view } = await testEditor(
       <doc>
         <para>[] hello</para>
@@ -269,7 +269,7 @@ describe('suggest basic show and hide', () => {
     ).toBe(true);
   });
 
-  test('Selection going to other location hides the tooltip', async () => {
+  test('Selection at start going to other location hides the tooltip 2', async () => {
     const { view } = await testEditor(
       <doc>
         <para>[] hello</para>

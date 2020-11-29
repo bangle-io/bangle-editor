@@ -7,7 +7,7 @@ import { psx } from 'bangle-core/test-helpers/index';
 import { serialize, parse } from './setup';
 
 describe('heading', () => {
-  test('renders', async () => {
+  test('renders 1', async () => {
     const doc = (
       <doc>
         <para>top</para>
@@ -25,7 +25,7 @@ describe('heading', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 2', async () => {
     const doc = (
       <doc>
         <para>top</para>

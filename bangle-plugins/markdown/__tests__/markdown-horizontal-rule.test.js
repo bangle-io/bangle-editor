@@ -7,7 +7,7 @@ import { psx } from 'bangle-core/test-helpers/index';
 import { serialize, parse } from './setup';
 
 describe('horizontal rule', () => {
-  test('renders', async () => {
+  test('renders 1', async () => {
     const doc = (
       <doc>
         <hr />
@@ -19,7 +19,7 @@ describe('horizontal rule', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 2', async () => {
     const doc = (
       <doc>
         <hr />
@@ -36,7 +36,7 @@ describe('horizontal rule', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 3', async () => {
     const doc = (
       <doc>
         <para>hello</para>

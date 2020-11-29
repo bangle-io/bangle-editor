@@ -73,7 +73,7 @@ describe('Basic', () => {
     );
   });
 
-  it('inside a list ', () => {
+  it('inside a list', () => {
     const { view } = testEditor(
       <doc>
         <ul>
@@ -100,7 +100,7 @@ describe('Basic', () => {
     );
   });
 
-  it('multiple hardBreaks ', () => {
+  it('multiple hardBreaks', () => {
     const { view } = testEditor(
       <doc>
         <ul>

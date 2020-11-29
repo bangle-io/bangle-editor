@@ -10,7 +10,7 @@ describe('image', () => {
   const image =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAAH0lEQVQYGWN4/fr1f1FR0f8MDAwQnJOTA+cYGRn9BwDvaAzTLxVZaQAAAABJRU5ErkJggg==';
 
-  test('renders', async () => {
+  test('renders 1', async () => {
     const doc = (
       <doc>
         <para>
@@ -28,7 +28,7 @@ describe('image', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 2', async () => {
     const doc = (
       <doc>
         <para>
@@ -46,7 +46,7 @@ describe('image', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 3', async () => {
     const doc = (
       <doc>
         <para>
@@ -64,7 +64,7 @@ describe('image', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 4', async () => {
     const doc = (
       <doc>
         <para>
