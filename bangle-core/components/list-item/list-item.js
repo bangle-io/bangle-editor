@@ -5,19 +5,22 @@ import {
   backspaceKeyCommand,
   enterKeyCommand,
   outdentList,
-  moveNode,
   moveEdgeListItem,
 } from './commands';
 import {
   cutEmptyCommand,
   copyEmptyCommand,
   parentHasDirectParentOfType,
+  moveNode,
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
-export const commands = {};
+export const commands = {
+  indentListItem,
+  outdentListItem,
+};
 export const defaultKeys = {
   indent: 'Tab',
   outdent: 'Shift-Tab',
@@ -70,8 +73,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
         keymap({
           Backspace: backspaceKeyCommand(type),
           Enter: enterKeyCommand(type),
-          [keybindings.indent]: indentList(type),
-          [keybindings.outdent]: outdentList(type),
+          [keybindings.indent]: indentListItem(),
+          [keybindings.outdent]: outdentListItem(),
           [keybindings.moveUp]: filter(parentCheck, move('UP')),
           [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
           [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
@@ -86,5 +89,19 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
           ),
         }),
     ];
+  };
+}
+
+export function indentListItem() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return indentList(type)(state, dispatch, view);
+  };
+}
+
+export function outdentListItem() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return outdentList(type)(state, dispatch, view);
   };
 }

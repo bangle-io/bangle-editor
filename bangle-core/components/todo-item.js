@@ -8,7 +8,6 @@ import {
   indentList,
   outdentList,
   updateNodeAttrs,
-  moveNode,
   moveEdgeListItem,
   queryNodeAttrs,
 } from './list-item/commands';
@@ -16,6 +15,7 @@ import {
   cutEmptyCommand,
   copyEmptyCommand,
   parentHasDirectParentOfType,
+  moveNode,
 } from '../core-commands';
 import { filter, insertEmpty } from '../utils/pm-utils';
 import { NodeView } from 'bangle-core/node-view';

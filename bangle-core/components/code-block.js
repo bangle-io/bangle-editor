@@ -2,7 +2,7 @@ import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
-import { moveNode } from './list-item/commands';
+import { moveNode } from 'bangle-core/core-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

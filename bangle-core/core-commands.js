@@ -1,6 +1,9 @@
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { NodeSelection, Selection, TextSelection } from 'prosemirror-state';
 import { arrayify } from './utils/js-utils';
+import { mapChildren } from './utils/pm-utils';
+import { Fragment, Slice } from 'prosemirror-model';
+import { ReplaceStep } from 'prosemirror-transform';
 
 function getParentTextSelection(state, currentDepth) {
   const { $from } = state.selection;
@@ -85,5 +88,71 @@ export function parentHasDirectParentOfType(parentType, parentsParentType) {
     const parentsParent = state.selection.$from.node(depth);
 
     return parentsParentType.includes(parentsParent.type);
+  };
+}
+
+/**
+ * Moves a node up and down. Please do a sanity check if the node is allowed to move or not
+ * before calling this command.
+ *
+ * @param {PMNodeType} type The items type
+ * @param {['UP', 'DOWN']} dir
+ */
+export function moveNode(type, dir = 'UP') {
+  const isDown = dir === 'DOWN';
+  return (state, dispatch) => {
+    if (!state.selection.empty) {
+      return false;
+    }
+
+    const { $from } = state.selection;
+
+    const currentResolved = findParentNodeOfType(type)(state.selection);
+
+    if (!currentResolved) {
+      return false;
+    }
+
+    const { node: currentNode } = currentResolved;
+    const parentDepth = currentResolved.depth - 1;
+    const parent = $from.node(parentDepth);
+    const parentPos = $from.start(parentDepth);
+
+    if (currentNode.type !== type) {
+      return false;
+    }
+
+    const arr = mapChildren(parent, (node) => node);
+    let index = arr.indexOf(currentNode);
+
+    let swapWith = isDown ? index + 1 : index - 1;
+
+    // If swap is out of bound
+    if (swapWith >= arr.length || swapWith < 0) {
+      return false;
+    }
+
+    const swapWithNodeSize = arr[swapWith].nodeSize;
+    [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
+
+    let tr = state.tr;
+    let replaceStart = parentPos;
+    let replaceEnd = $from.end(parentDepth);
+
+    const slice = new Slice(Fragment.fromArray(arr), 0, 0); // the zeros  lol -- are not depth they are something that represents the opening closing
+    // .toString on slice gives you an idea. for this case we want them balanced
+    tr = tr.step(new ReplaceStep(replaceStart, replaceEnd, slice, false));
+
+    tr = tr.setSelection(
+      Selection.near(
+        tr.doc.resolve(
+          isDown ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
+        ),
+      ),
+    );
+    if (dispatch) {
+      dispatch(tr.scrollIntoView());
+    }
+    return true;
   };
 }
