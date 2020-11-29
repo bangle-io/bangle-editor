@@ -3,13 +3,13 @@
  */
 
 /** @jsx psx */
-import { psx } from 'bangle-core/test-helpers/index';
-import { editorStateSetup } from 'bangle-core/editor';
+import { psx } from '@banglejs/core/test-helpers/index';
+import { editorStateSetup } from '@banglejs/core/editor';
 import { EditorView } from 'prosemirror-view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
-import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-registry';
-import { Plugin, PluginKey } from 'bangle-core/index';
+import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { Plugin, PluginKey } from '@banglejs/core/index';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
 

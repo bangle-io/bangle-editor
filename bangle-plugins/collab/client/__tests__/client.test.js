@@ -8,12 +8,12 @@ import {
   psx,
   typeText,
   renderTestEditor,
-} from 'bangle-core/test-helpers/index';
+} from '@banglejs/core/test-helpers/index';
 import { CollabError } from '../../collab-error';
 import { Selection } from 'prosemirror-state';
 import * as collab from '../collab-extension';
-import { SpecRegistry } from 'bangle-core/spec-registry';
-import { paragraph, doc, text } from 'bangle-core/components';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { paragraph, doc, text } from '@banglejs/core/components';
 const DEFAULT_SLEEP = 50;
 
 function promiseNever() {

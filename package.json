@@ -4,7 +4,7 @@
   "private": true,
   "workspaces": [
     "__integration-tests__",
-    "bangle-core",
+    "core",
     "bangle-play",
     "bangle-plugins",
     "react",

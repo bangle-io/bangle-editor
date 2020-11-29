@@ -11,9 +11,9 @@ import {
   WorkspaceContext,
   WorkspaceContextProvider,
 } from '../WorkspaceContext';
-import { sleep } from 'bangle-core/utils/js-utils';
+import { sleep } from '@banglejs/core/utils/js-utils';
 import { INDEXDB_TYPE } from 'bangle-play/app/workspace/type-helpers';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 
 jest.mock('localforage', () => {
   const instance = {

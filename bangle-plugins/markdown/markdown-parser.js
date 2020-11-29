@@ -1,4 +1,4 @@
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import markdownIt from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { todoListMarkdownItPlugin } from './todo-list-markdown-it-plugin';

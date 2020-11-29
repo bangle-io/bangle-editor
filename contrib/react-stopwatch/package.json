@@ -5,16 +5,16 @@
   "module": "index.js",
   "scripts": {},
   "peerDependencies": {
+    "@banglejs/core": "*",
     "@banglejs/react": "*",
-    "bangle-core": "*",
     "bangle-plugins": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
+    "@banglejs/core": "workspace:*",
     "@banglejs/react": "workspace:*",
     "@testing-library/react": "^10.4.7",
-    "bangle-core": "workspace:*",
     "bangle-plugins": "workspace:*",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"

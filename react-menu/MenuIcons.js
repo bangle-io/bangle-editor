@@ -2,23 +2,23 @@ import React from 'react';
 import {
   queryIsItalicActive,
   toggleItalic,
-} from 'bangle-core/components/italic';
-import { queryIsBoldActive, toggleBold } from 'bangle-core/components/bold';
-import { queryIsCodeActive, toggleCode } from 'bangle-core/components/code';
+} from '@banglejs/core/components/italic';
+import { queryIsBoldActive, toggleBold } from '@banglejs/core/components/bold';
+import { queryIsCodeActive, toggleCode } from '@banglejs/core/components/code';
 import {
   queryIsTodoListActive,
   toggleTodoList,
-} from 'bangle-core/components/todo-list';
+} from '@banglejs/core/components/todo-list';
 import {
   queryIsHeadingActive,
   toggleHeading,
-} from 'bangle-core/components/heading';
-import { filter } from 'bangle-core/utils/pm-utils';
-import { queryIsLinkActive, updateLink } from 'bangle-core/components/link';
+} from '@banglejs/core/components/heading';
+import { filter } from '@banglejs/core/utils/pm-utils';
+import { queryIsLinkActive, updateLink } from '@banglejs/core/components/link';
 import {
   queryIsBulletListActive,
   toggleBulletList,
-} from 'bangle-core/components/bullet-list';
+} from '@banglejs/core/components/bullet-list';
 
 import { Icon } from './Icon';
 

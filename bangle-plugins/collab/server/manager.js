@@ -3,7 +3,7 @@ import {
   objectMapValues,
   serialExecuteQueue,
   raceTimeout,
-} from 'bangle-core/utils/js-utils';
+} from '@banglejs/core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
 const LOG = false;

@@ -1,7 +1,7 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { PluginKey } from 'bangle-core/index';
+import { PluginKey } from '@banglejs/core/index';
 import { FloatingLinkMenu } from './FloatingLinkMenu';
 import { Menu } from './Menu';
 import { usePluginState } from '@banglejs/react';

@@ -1466,20 +1466,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@banglejs/core@workspace:*, @banglejs/core@workspace:core":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/core@workspace:core"
+  dependencies:
+    prettier: ^2.2.0
+    prosemirror-commands: ^1.1.4
+    prosemirror-dropcursor: ^1.1.1
+    prosemirror-gapcursor: ^1.1.5
+    prosemirror-history: ^1.1.3
+    prosemirror-inputrules: ^1.1.3
+    prosemirror-keymap: ^1.1.4
+    prosemirror-model: ^1.12.0
+    prosemirror-schema-list: ^1.1.4
+    prosemirror-state: ^1.3.3
+    prosemirror-tables: ^1.1.1
+    prosemirror-transform: ^1.2.7
+    prosemirror-utils: ^0.9.6
+    prosemirror-view: ^1.16.3
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/react-menu@workspace:*, @banglejs/react-menu@workspace:react-menu":
   version: 0.0.0-use.local
   resolution: "@banglejs/react-menu@workspace:react-menu"
   dependencies:
+    "@banglejs/core": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@testing-library/react": ^10.4.7
-    bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     prop-types: ^15.7.2
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
+    "@banglejs/core": "*"
     "@banglejs/react": "*"
-    bangle-core: "*"
     bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
@@ -1490,16 +1511,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@banglejs/react-sticker@workspace:contrib/react-sticker"
   dependencies:
+    "@banglejs/core": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@testing-library/react": ^10.4.7
-    bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     prop-types: ^15.7.2
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
+    "@banglejs/core": "*"
     "@banglejs/react": "*"
-    bangle-core: "*"
     bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
@@ -1510,15 +1531,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@banglejs/react-stopwatch@workspace:contrib/react-stopwatch"
   dependencies:
+    "@banglejs/core": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@testing-library/react": ^10.4.7
-    bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
+    "@banglejs/core": "*"
     "@banglejs/react": "*"
-    bangle-core: "*"
     bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
@@ -1529,11 +1550,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@banglejs/react@workspace:react"
   dependencies:
+    "@banglejs/core": "workspace:*"
     "@testing-library/dom": ^7.26.5
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^10.4.7
     "@testing-library/react-hooks": ^3.4.2
-    bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     prettier: ^2.2.0
     prop-types: ^15.7.2
@@ -1542,7 +1563,7 @@ __metadata:
     react-dom: ^16.14.0
     react-test-renderer: ^17.0.1
   peerDependencies:
-    bangle-core: "*"
+    "@banglejs/core": "*"
     bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
@@ -3838,32 +3859,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bangle-core@workspace:*, bangle-core@workspace:bangle-core":
-  version: 0.0.0-use.local
-  resolution: "bangle-core@workspace:bangle-core"
-  dependencies:
-    prettier: ^2.2.0
-    prosemirror-commands: ^1.1.4
-    prosemirror-dropcursor: ^1.1.1
-    prosemirror-gapcursor: ^1.1.5
-    prosemirror-history: ^1.1.3
-    prosemirror-inputrules: ^1.1.3
-    prosemirror-keymap: ^1.1.4
-    prosemirror-model: ^1.12.0
-    prosemirror-schema-list: ^1.1.4
-    prosemirror-state: ^1.3.3
-    prosemirror-tables: ^1.1.1
-    prosemirror-transform: ^1.2.7
-    prosemirror-utils: ^0.9.6
-    prosemirror-view: ^1.16.3
-  languageName: unknown
-  linkType: soft
-
 "bangle-play@workspace:bangle-play":
   version: 0.0.0-use.local
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
+    "@banglejs/core": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
@@ -3873,7 +3874,6 @@ __metadata:
     "@testing-library/react": ^11.0.4
     autoprefixer: ^9.8.6
     babel-loader: ^8.1.0
-    bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     case-sensitive-paths-webpack-plugin: ^2.3.0
     css-loader: ^4.2.1
@@ -3926,9 +3926,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-plugins@workspace:bangle-plugins"
   dependencies:
+    "@banglejs/core": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/react": ^10.4.7
-    bangle-core: "workspace:*"
     localforage: ^1.9.0
     markdown-it: ^10.0.0
     markdown-it-emoji: ^2.0.0
@@ -7898,12 +7898,12 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "integration-tests@workspace:__integration-tests__"
   dependencies:
+    "@banglejs/core": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"
     "@testing-library/react": ^10.4.7
     babel-loader: ^8.2.2
-    bangle-core: "workspace:*"
     bangle-plugins: "workspace:*"
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.0.1

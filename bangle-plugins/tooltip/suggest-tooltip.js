@@ -5,8 +5,8 @@ import {
   findFirstMarkPosition,
   filter,
   safeInsert,
-} from 'bangle-core/utils/pm-utils';
-import { Plugin, PluginKey, isChromeWithSelectionBug } from 'bangle-core';
+} from '@banglejs/core/utils/pm-utils';
+import { Plugin, PluginKey, isChromeWithSelectionBug } from '@banglejs/core';
 
 import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';

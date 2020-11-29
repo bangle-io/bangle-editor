@@ -4,12 +4,12 @@
 /** @jsx pjsx */
 import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { sticker } from '../index';
 import {
   defaultPlugins,
   defaultSpecs,
-} from 'bangle-core/test-helpers/default-components';
+} from '@banglejs/core/test-helpers/default-components';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);
 const plugins = [...defaultPlugins(), sticker.plugins()];

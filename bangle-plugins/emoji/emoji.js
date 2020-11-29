@@ -1,4 +1,4 @@
-import { domSerializationHelpers } from 'bangle-core/utils/dom-serialization-helpers';
+import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
 import { keymap } from 'prosemirror-keymap';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 

@@ -4,21 +4,21 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditor } from 'bangle-core/index';
+import { BangleEditor } from '@banglejs/core/index';
 import {
   defaultPlugins,
   defaultSpecs,
-} from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+} from '@banglejs/core/test-helpers/default-components';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { ReactEditor } from '@banglejs/react/ReactEditor';
-import { getRenderHandlers } from 'bangle-core/node-view';
-import { safeInsert, removeSelectedNode } from 'bangle-core/utils/pm-utils';
+import { getRenderHandlers } from '@banglejs/core/node-view';
+import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
 import { pjsx } from './helpers/index';
-import { sleep } from 'bangle-core/utils/js-utils';
-import { selectNodeAt } from 'bangle-core/test-helpers/index';
-import { Node } from 'bangle-core/prosemirror/model';
-import { EditorView } from 'bangle-core/prosemirror/view';
+import { sleep } from '@banglejs/core/utils/js-utils';
+import { selectNodeAt } from '@banglejs/core/test-helpers/index';
+import { Node } from '@banglejs/core/prosemirror/model';
+import { EditorView } from '@banglejs/core/prosemirror/view';
 const consoleError = console.error;
 
 beforeEach(() => {

@@ -6,11 +6,11 @@ import {
 } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
 import { Plugin, PluginKey, Selection } from 'prosemirror-state';
-import { getIdleCallback, sleep, uuid } from 'bangle-core/utils/js-utils';
+import { getIdleCallback, sleep, uuid } from '@banglejs/core/utils/js-utils';
 import {
   cancelablePromise,
   serialExecuteQueue,
-} from 'bangle-core/utils/js-utils';
+} from '@banglejs/core/utils/js-utils';
 import { replaceDocument } from './helpers';
 import { CollabError } from '../collab-error';
 import { Emitter } from './emitter';

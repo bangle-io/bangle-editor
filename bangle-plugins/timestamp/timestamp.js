@@ -1,4 +1,4 @@
-import { keymap } from 'bangle-core/utils/keymap';
+import { keymap } from '@banglejs/core/utils/keymap';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

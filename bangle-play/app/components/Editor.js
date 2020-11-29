@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PluginKey } from 'prosemirror-state';
 
-import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
+import { getIdleCallback, uuid } from '@banglejs/core/utils/js-utils';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
-import * as coreComps from 'bangle-core/components/index';
-import { NodeView } from 'bangle-core/node-view';
+import * as coreComps from '@banglejs/core/components/index';
+import { NodeView } from '@banglejs/core/node-view';
 import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';

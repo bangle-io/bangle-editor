@@ -1,4 +1,4 @@
-import { Plugin, PluginKey } from 'bangle-core/index';
+import { Plugin, PluginKey } from '@banglejs/core/index';
 import { tooltipPlacement } from 'bangle-plugins/tooltip/index';
 import { NodeSelection } from 'prosemirror-state';
 import { createTooltipDOM } from './index';

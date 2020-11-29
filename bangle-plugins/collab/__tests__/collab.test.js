@@ -3,8 +3,8 @@
  */
 /** @jsx psx */
 import { TextSelection } from 'prosemirror-state';
-import { psx } from 'bangle-core/test-helpers/index';
-import { sleep } from 'bangle-core/utils/js-utils';
+import { psx } from '@banglejs/core/test-helpers/index';
+import { sleep } from '@banglejs/core/utils/js-utils';
 import {
   setupDb,
   spinEditors,

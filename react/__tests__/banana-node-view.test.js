@@ -1,11 +1,11 @@
 /** @jsx pjsx */
 
 import { screen } from '@testing-library/react';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import {
   defaultPlugins,
   defaultSpecs,
-} from 'bangle-core/test-helpers/default-components';
+} from '@banglejs/core/test-helpers/default-components';
 import { pjsx, reactTestEditor } from './helpers/index';
 import { bananaComponent, Banana } from './setup/banana';
 

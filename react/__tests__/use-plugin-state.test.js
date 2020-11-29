@@ -4,11 +4,11 @@
  */
 
 import { render, act } from '@testing-library/react';
-import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { ReactEditor } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
-import { Plugin, PluginKey } from 'bangle-core/index';
+import { Plugin, PluginKey } from '@banglejs/core/index';
 import { usePluginState } from '@banglejs/react/use-plugin-state';
 import { useEffect, useState } from 'react';
 

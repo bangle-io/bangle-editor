@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { TextSelection } from 'bangle-core/prosemirror/state';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { TextSelection } from '@banglejs/core/prosemirror/state';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { render } from '@testing-library/react';
-import { getDocLabels } from 'bangle-core/test-helpers/index';
+import { getDocLabels } from '@banglejs/core/test-helpers/index';
 import { ReactEditor } from '../../ReactEditor';
 
 export function reactTestEditor({

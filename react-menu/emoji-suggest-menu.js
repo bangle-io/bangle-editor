@@ -1,14 +1,14 @@
-import { bangleWarn, rafCommandExec } from 'bangle-core/utils/js-utils';
+import { bangleWarn, rafCommandExec } from '@banglejs/core/utils/js-utils';
 import { suggestTooltip, createTooltipDOM } from 'bangle-plugins/tooltip/index';
-import { PluginKey } from 'bangle-core';
+import { PluginKey } from '@banglejs/core';
 import {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,
   removeSuggestMark,
   resetSuggestTooltipCounter,
 } from 'bangle-plugins/tooltip/suggest-tooltip';
-import { valuePlugin } from 'bangle-core/utils/pm-utils';
-import { pluginKeyStore } from 'bangle-core/utils/plugin-key-store';
+import { valuePlugin } from '@banglejs/core/utils/pm-utils';
+import { pluginKeyStore } from '@banglejs/core/utils/plugin-key-store';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

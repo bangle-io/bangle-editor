@@ -1,9 +1,9 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { objUid } from 'bangle-core/utils/object-uid';
-import { BangleEditor, editorStateSetup } from 'bangle-core/editor';
-import { saveRenderHandlers } from 'bangle-core/node-view';
+import { objUid } from '@banglejs/core/utils/object-uid';
+import { BangleEditor, editorStateSetup } from '@banglejs/core/editor';
+import { saveRenderHandlers } from '@banglejs/core/node-view';
 import { NodeViewWrapper } from './NodeViewWrapper';
 
 const LOG = false;

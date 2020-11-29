@@ -1,4 +1,4 @@
-import { Plugin, PluginKey } from 'bangle-core/index';
+import { Plugin, PluginKey } from '@banglejs/core/index';
 import { useContext, useEffect, useState } from 'react';
 import { EditorViewContext } from './ReactEditor';
 

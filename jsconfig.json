@@ -2,8 +2,11 @@
   "compiler@Optionjs/": {
     "baseUrl": "./",
     "paths": {
-      "bangle-core/*": [
-        "./bangle-core/*"
+      "@banglejs/core": [
+        "./core/index.js"
+      ],
+      "@banglejs/core/*": [
+        "./core/*"
       ],
       "bangle-play/*": [
         "./bangle-play/*"

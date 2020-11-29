@@ -9,15 +9,15 @@ import {
   typeText,
   sendKeyToPm,
   renderTestEditor,
-} from 'bangle-core/test-helpers/index';
+} from '@banglejs/core/test-helpers/index';
 import {
   defaultPlugins,
   defaultSpecs,
-} from 'bangle-core/test-helpers/default-components';
-import { typeChar } from 'bangle-core/test-helpers/index';
+} from '@banglejs/core/test-helpers/default-components';
+import { typeChar } from '@banglejs/core/test-helpers/index';
 import { PluginKey, Selection } from 'prosemirror-state';
-import { SpecRegistry } from 'bangle-core/spec-registry';
-import { sleep } from 'bangle-core/utils/js-utils';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { sleep } from '@banglejs/core/utils/js-utils';
 import { suggestTooltip } from '../index';
 import { replaceSuggestMarkWith } from '../suggest-tooltip';
 // We are using char code to differentiate between different schema

@@ -1,7 +1,7 @@
 import React from 'react';
-import { bangleWarn } from 'bangle-core/utils/js-utils';
-import { objUid } from 'bangle-core/utils/object-uid';
-import { Node, EditorView } from 'bangle-core';
+import { bangleWarn } from '@banglejs/core/utils/js-utils';
+import { objUid } from '@banglejs/core/utils/object-uid';
+import { Node, EditorView } from '@banglejs/core';
 import PropTypes from 'prop-types';
 
 const LOG = false;

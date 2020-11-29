@@ -3,11 +3,11 @@
  */
 
 /** @jsx pjsx */
-import { link } from 'bangle-core/index';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { link } from '@banglejs/core/index';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { reactTestEditor, pjsx } from '@banglejs/react/__tests__/helpers/index';
-import { TextSelection } from 'bangle-core/prosemirror/state';
-import { PluginKey } from 'bangle-core/pm-plugin';
+import { TextSelection } from '@banglejs/core/prosemirror/state';
+import { PluginKey } from '@banglejs/core/pm-plugin';
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');

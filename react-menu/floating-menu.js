@@ -1,8 +1,8 @@
 import {
   queryIsSelectionAroundLink,
   queryIsLinkActive,
-} from 'bangle-core/components/link';
-import { filter } from 'bangle-core/utils/pm-utils';
+} from '@banglejs/core/components/link';
+import { filter } from '@banglejs/core/utils/pm-utils';
 import { selectionTooltip } from 'bangle-plugins/tooltip/index';
 import {
   queryIsSelectionTooltipActive,
@@ -10,9 +10,9 @@ import {
   hideSelectionTooltip,
   updateSelectionTooltipType,
 } from 'bangle-plugins/tooltip/selection-tooltip';
-import { keymap } from 'bangle-core/utils/keymap';
-import { PluginKey } from 'bangle-core/index';
-import { rafCommandExec } from 'bangle-core/utils/js-utils';
+import { keymap } from '@banglejs/core/utils/keymap';
+import { PluginKey } from '@banglejs/core/index';
+import { rafCommandExec } from '@banglejs/core/utils/js-utils';
 
 export const plugins = floatingMenu;
 export const commands = {

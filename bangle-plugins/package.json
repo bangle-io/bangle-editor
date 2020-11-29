@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "scripts": {},
   "dependencies": {
+    "@banglejs/core": "workspace:*",
     "@popperjs/core": "^2.5.4",
-    "bangle-core": "workspace:*",
     "markdown-it": "^10.0.0",
     "markdown-it-emoji": "^2.0.0",
     "prosemirror-collab": "^1.2.2",

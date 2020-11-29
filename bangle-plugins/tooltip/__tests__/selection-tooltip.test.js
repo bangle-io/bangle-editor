@@ -8,12 +8,12 @@ import {
   psx,
   typeText,
   renderTestEditor,
-} from 'bangle-core/test-helpers/index';
+} from '@banglejs/core/test-helpers/index';
 
 import { selectionTooltip } from '../index';
-import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
+import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
-import { SpecRegistry } from 'bangle-core/spec-registry';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 

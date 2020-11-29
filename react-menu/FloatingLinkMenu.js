@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { updateLink, queryLinkAttrs } from 'bangle-core/components/link';
+import { updateLink, queryLinkAttrs } from '@banglejs/core/components/link';
 import { EditorViewContext } from '@banglejs/react/ReactEditor';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
 

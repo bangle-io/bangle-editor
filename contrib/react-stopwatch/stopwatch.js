@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { NodeView } from 'bangle-core/node-view';
-import { keymap, domSerializationHelpers } from 'bangle-core/utils/index';
+import { NodeView } from '@banglejs/core/node-view';
+import { keymap, domSerializationHelpers } from '@banglejs/core/utils/index';
 import { serializeAtomNodeToMdLink2 } from 'bangle-plugins/markdown/markdown-serializer';
 
 const LOG = false;

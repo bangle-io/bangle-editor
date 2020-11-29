@@ -3,7 +3,7 @@ import { UIContext } from 'bangle-play/app/store/UIContext';
 import PropTypes from 'prop-types';
 import { commands } from './commands';
 import { Palette } from 'bangle-play/app/ui/Palette';
-import { getIdleCallback } from 'bangle-core/utils/js-utils';
+import { getIdleCallback } from '@banglejs/core/utils/js-utils';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'play/command-palette') : () => {};

@@ -3,12 +3,12 @@ import React from 'react';
 import {
   defaultPlugins,
   defaultSpecs,
-} from 'bangle-core/test-helpers/default-components';
-import { SpecRegistry } from 'bangle-core/spec-registry';
-import { DOMSerializer, Slice } from 'bangle-core/pm-model';
+} from '@banglejs/core/test-helpers/default-components';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { DOMSerializer, Slice } from '@banglejs/core/pm-model';
 import { sticker } from '@banglejs/react-sticker';
 import { stopwatch } from '@banglejs/react-stopwatch';
-import * as prosemirrorView from 'bangle-core/pm-view';
+import * as prosemirrorView from '@banglejs/core/pm-view';
 import { setupReactEditor } from '../setup/entry-helpers';
 
 window.prosemirrorView = prosemirrorView;

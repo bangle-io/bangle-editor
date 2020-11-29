@@ -4,8 +4,8 @@ import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
 import flip from '@popperjs/core/lib/modifiers/flip';
 import arrow from '@popperjs/core/lib/modifiers/arrow';
 import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
-import { Plugin } from 'bangle-core/index';
-import { bangleWarn } from 'bangle-core/utils/js-utils';
+import { Plugin } from '@banglejs/core/index';
+import { bangleWarn } from '@banglejs/core/utils/js-utils';
 import { createTooltipDOM } from './create-tooltip-dom';
 
 export const plugins = tooltipPlacement;
