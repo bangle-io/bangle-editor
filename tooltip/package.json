@@ -1,0 +1,16 @@
+{
+  "name": "@banglejs/tooltip",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "peerDependencies": {
+    "@banglejs/core": "*"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.5.4"
+  }
+}

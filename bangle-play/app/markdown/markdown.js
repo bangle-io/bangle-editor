@@ -1,6 +1,6 @@
-import * as markdown from 'bangle-plugins/markdown/index';
-import { defaultMarkdownItTokenizer } from 'bangle-plugins/markdown/index';
-import { emojiMarkdownItPlugin } from 'bangle-plugins/emoji/index';
+import * as markdown from '@banglejs/markdown/index';
+import { defaultMarkdownItTokenizer } from '@banglejs/markdown/index';
+import { emojiMarkdownItPlugin } from '@banglejs/emoji/index';
 import { specRegistry } from 'bangle-play/app/editor/spec-sheet';
 
 const parser = markdown.markdownParser(

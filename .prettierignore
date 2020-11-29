@@ -9,5 +9,5 @@ coverage
 .vscode
 .yarnrc.yml
 jsconfig.json
-bangle-plugins/markdown/tests/fixtures/*.md
-integration-tests/build
+__integration-tests__/build
+markdown/__tests__/fixtures

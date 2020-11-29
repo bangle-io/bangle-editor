@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 import { downloadJSON } from '../misc/index';
-import { getIdleCallback } from 'bangle-core/utils/js-utils';
+import { getIdleCallback } from '@banglejs/core/utils/js-utils';
 import { FSStorage } from './native-fs-driver';
 import { IndexDbWorkspaceFile } from './workspace-file';
 import { WorkspacesInfo } from './workspaces-info';

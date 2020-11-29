@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "bangle-core",
+    "__integration-tests__",
+    "core",
+    "collab",
+    "emoji",
     "bangle-play",
-    "bangle-plugins",
-    "bangle-react",
-    "contrib/*",
-    "integration-tests"
+    "markdown",
+    "react",
+    "react-menu",
+    "tooltip",
+    "contrib/*"
   ],
   "scripts": {
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn workspace integration-tests test",
+    "integration-tests": "yarn g:integration-tests",
     "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint"
   },
@@ -33,7 +37,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "./scripts/pre-push.sh $HUSKY_GIT_PARAMS"
+      "pre-push": "./_scripts/pre-push.sh $HUSKY_GIT_PARAMS"
     }
   },
   "resolutions": {

@@ -2,23 +2,65 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "bangle-core/*": [
-        "./bangle-core/*"
+      "@banglejs/core/*": [
+        "./core/*"
+      ],
+      "@banglejs/core": [
+        "./core/index.js"
+      ],
+      "@banglejs/emoji": [
+        "./emoji/index.js"
+      ],
+      "@banglejs/emoji/*": [
+        "./emoji/*"
+      ],
+      "@banglejs/markdown": [
+        "./markdown/index.js"
+      ],
+      "@banglejs/markdown/*": [
+        "./markdown/*"
+      ],
+      "@banglejs/tooltip": [
+        "./tooltip/index.js"
+      ],
+      "@banglejs/tooltip/*": [
+        "./tooltip/*"
+      ],
+      "@banglejs/trailing-node": [
+        "./contrib/trailing-node/index.js"
+      ],
+      "@banglejs/trailing-node/*": [
+        "./contrib/trailing-node/*"
+      ],
+      "@banglejs/timestamp": [
+        "./contrib/timestamp/index.js"
+      ],
+      "@banglejs/timestamp/*": [
+        "./contrib/timestamp/*"
       ],
       "bangle-play/*": [
         "./bangle-play/*"
       ],
-      "bangle-plugins/*": [
-        "./bangle-plugins/*"
+      "@banglejs/react": [
+        "./react/index.js"
       ],
-      "bangle-react/*": [
-        "./bangle-react/*"
+      "@banglejs/react/*": [
+        "./react/*"
       ],
-      "@banglejs/stopwatch": [
-        "./react-contrib/stopwatch/index.js"
+      "@banglejs/collab": [
+        "./collab/index.js"
       ],
-      "@banglejs/sticker": [
-        "./react-contrib/sticker/index.js"
+      "@banglejs/collab/*": [
+        "./collab/*"
+      ],
+      "@banglejs/react-stopwatch": [
+        "./contrib/react-stopwatch/index.js"
+      ],
+      "@banglejs/react-sticker": [
+        "./contrib/react-sticker/index.js"
+      ],
+      "@banglejs/react-menu": [
+        "./react-menu/index.js"
       ],
     },
     "module": "es2020",
@@ -31,6 +73,7 @@
     "archive",
     "bangle-play/build",
     "bangle-play/node_modules",
+    "__integration-tests__/build",
     "public",
     ".cache",
     ".yarn",

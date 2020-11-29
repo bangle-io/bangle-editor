@@ -1,0 +1,25 @@
+{
+  "name": "@banglejs/react-menu",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "@banglejs/core": "*",
+    "@banglejs/react": "*",
+    "@banglejs/tooltip": "*",
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*",
+    "@banglejs/react": "workspace:*",
+    "@banglejs/tooltip": "workspace:*",
+    "@testing-library/react": "^10.4.7",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  }
+}

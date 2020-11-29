@@ -1,0 +1,17 @@
+{
+  "name": "@banglejs/collab",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "peerDependencies": {
+    "@banglejs/core": "*"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*"
+  },
+  "dependencies": {
+    "localforage": "^1.9.0",
+    "prosemirror-collab": "^1.2.2"
+  }
+}

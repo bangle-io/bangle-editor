@@ -5,18 +5,23 @@
     "start": "yarn webpack serve --env development",
     "build": "NODE_ENV=production yarn webpack --env production",
     "build-serve": "yarn build && yarn run serve build",
-    "snapshot": "yarn build && yarn node ./scripts/snapshot"
+    "snapshot": "yarn build && yarn node ./_scripts/snapshot"
   },
   "browserslist": [
     "last 3 chrome version"
   ],
   "dependencies": {
+    "@banglejs/collab": "workspace:*",
+    "@banglejs/core": "workspace:*",
+    "@banglejs/emoji": "workspace:*",
+    "@banglejs/markdown": "workspace:*",
+    "@banglejs/react": "workspace:*",
+    "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",
     "@banglejs/react-stopwatch": "workspace:*",
+    "@banglejs/timestamp": "workspace:*",
+    "@banglejs/trailing-node": "workspace:*",
     "@popperjs/core": "^2.5.4",
-    "bangle-core": "workspace:*",
-    "bangle-plugins": "workspace:*",
-    "bangle-react": "workspace:*",
     "css.gg": "^2.0.0",
     "date-fns": "^2.10.0",
     "localforage": "^1.9.0",

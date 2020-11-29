@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PluginKey } from 'prosemirror-state';
 
-import { getIdleCallback, uuid } from 'bangle-core/utils/js-utils';
-import * as collab from 'bangle-plugins/collab/client/collab-extension';
-import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
-import * as coreComps from 'bangle-core/components/index';
-import { NodeView } from 'bangle-core/node-view';
-import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
-import { trailingNode } from 'bangle-plugins/trailing-node/index';
-import { timestamp } from 'bangle-plugins/timestamp/index';
-import { ReactEditor } from 'bangle-react/ReactEditor';
+import { getIdleCallback, uuid } from '@banglejs/core/utils/js-utils';
+import * as collab from '@banglejs/collab/client/collab-extension';
+import { collabRequestHandlers } from '@banglejs/collab/client/collab-request-handlers';
+import * as coreComps from '@banglejs/core/components/index';
+import { NodeView } from '@banglejs/core/node-view';
+import { emoji, emojisArray } from '@banglejs/emoji/index';
+import { trailingNode } from '@banglejs/trailing-node';
+import { timestamp } from '@banglejs/timestamp';
+import { ReactEditor } from '@banglejs/react/ReactEditor';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
 import { specRegistry } from '../editor/spec-sheet';
@@ -19,7 +19,7 @@ import {
   emojiSuggestMenu,
   floatingMenu,
   FloatingMenu,
-} from 'bangle-react/menu/index';
+} from '@banglejs/react-menu';
 
 const LOG = false;
 const DEBUG = true;
@@ -135,7 +135,7 @@ export class Editor extends React.PureComponent {
     }
   };
 
-  renderNodeViews = ({ node, updateAttrs, children, selected, ...args }) => {
+  renderNodeViews = ({ node, updateAttrs, children, selected }) => {
     if (node.type.name === 'sticker') {
       return (
         <sticker.Sticker
@@ -145,9 +145,11 @@ export class Editor extends React.PureComponent {
         />
       );
     }
+
     if (node.type.name === 'stopwatch') {
       return <stopwatch.Stopwatch node={node} updateAttrs={updateAttrs} />;
     }
+
     if (node.type.name === 'todoItem') {
       return (
         <TodoItem node={node} updateAttrs={updateAttrs}>

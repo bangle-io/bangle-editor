@@ -1,0 +1,27 @@
+{
+  "name": "@banglejs/react",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "punycode": "^2.1.1"
+  },
+  "peerDependencies": {
+    "@banglejs/core": "*",
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*",
+    "@testing-library/dom": "^7.26.5",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^10.4.7",
+    "@testing-library/react-hooks": "^3.4.2",
+    "prettier": "^2.2.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-test-renderer": "^17.0.1"
+  }
+}
