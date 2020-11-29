@@ -51,6 +51,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:emoji"
       },
       {
+        "name": "@banglejs/markdown",
+        "reference": "workspace:markdown"
+      },
+      {
         "name": "@banglejs/react",
         "reference": "workspace:react"
       },
@@ -64,6 +68,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "fallbackExclusionList": [
       ["@banglejs/core", ["workspace:core"]],
       ["@banglejs/emoji", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji", "workspace:emoji"]],
+      ["@banglejs/markdown", ["virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown", "workspace:markdown"]],
       ["@banglejs/react", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", "workspace:react"]],
       ["@banglejs/react-menu", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu", "workspace:react-menu"]],
       ["@banglejs/react-sticker", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-sticker", "workspace:contrib/react-sticker"]],
@@ -2279,16 +2284,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/emoji", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji"],
             ["@banglejs/core", "workspace:core"],
-            ["@types/bangle-plugins", null],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@types/banglejs__core", null],
-            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["@types/banglejs__markdown", null],
             ["markdown-it-emoji", "npm:2.0.0"]
           ],
           "packagePeers": [
             "@banglejs/core",
-            "@types/bangle-plugins",
+            "@banglejs/markdown",
             "@types/banglejs__core",
-            "bangle-plugins"
+            "@types/banglejs__markdown"
           ],
           "linkType": "SOFT",
         }],
@@ -2297,8 +2302,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/emoji", "workspace:emoji"],
             ["@banglejs/core", "workspace:core"],
-            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["markdown-it-emoji", "npm:2.0.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@banglejs/markdown", [
+        ["virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown", {
+          "packageLocation": "./.yarn/$$virtual/@banglejs-markdown-virtual-2f3faeb093/1/markdown/",
+          "packageDependencies": [
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
+            ["@banglejs/core", "workspace:core"],
+            ["@types/banglejs__core", null],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["markdown-it", "npm:10.0.0"],
+            ["prosemirror-markdown", "npm:1.5.0"]
+          ],
+          "packagePeers": [
+            "@banglejs/core",
+            "@types/banglejs__core"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:markdown", {
+          "packageLocation": "./markdown/",
+          "packageDependencies": [
+            ["@banglejs/markdown", "workspace:markdown"],
+            ["@banglejs/core", "workspace:core"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["markdown-it", "npm:10.0.0"],
+            ["prosemirror-markdown", "npm:1.5.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -2443,10 +2477,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/react-sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
-            ["@types/bangle-plugins", null],
             ["@types/banglejs__core", null],
+            ["@types/banglejs__markdown", null],
             ["@types/banglejs__react", null],
             ["@types/react", null],
             ["@types/react-dom", null],
@@ -2457,13 +2492,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@banglejs/core",
+            "@banglejs/markdown",
             "@banglejs/react",
-            "@types/bangle-plugins",
             "@types/banglejs__core",
+            "@types/banglejs__markdown",
             "@types/banglejs__react",
             "@types/react-dom",
             "@types/react",
-            "bangle-plugins",
             "react-dom",
             "react"
           ],
@@ -2474,10 +2509,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/react-sticker", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-sticker"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:10.4.8"],
-            ["@types/bangle-plugins", null],
             ["@types/banglejs__core", null],
+            ["@types/banglejs__markdown", null],
             ["@types/banglejs__react", null],
             ["@types/react", null],
             ["@types/react-dom", null],
@@ -2489,12 +2525,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@banglejs/core",
             "@banglejs/react",
-            "@types/bangle-plugins",
             "@types/banglejs__core",
+            "@types/banglejs__markdown",
             "@types/banglejs__react",
             "@types/react-dom",
             "@types/react",
-            "bangle-plugins",
             "react-dom",
             "react"
           ],
@@ -2505,6 +2540,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/react-sticker", "workspace:contrib/react-sticker"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["bangle-plugins", "workspace:bangle-plugins"],
@@ -2521,26 +2557,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/react-stopwatch", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-stopwatch"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
-            ["@types/bangle-plugins", null],
             ["@types/banglejs__core", null],
+            ["@types/banglejs__markdown", null],
             ["@types/banglejs__react", null],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["bangle-plugins", "workspace:bangle-plugins"],
             ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
           "packagePeers": [
             "@banglejs/core",
+            "@banglejs/markdown",
             "@banglejs/react",
-            "@types/bangle-plugins",
             "@types/banglejs__core",
+            "@types/banglejs__markdown",
             "@types/banglejs__react",
             "@types/react-dom",
             "@types/react",
-            "bangle-plugins",
             "react-dom",
             "react"
           ],
@@ -2551,26 +2587,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/react-stopwatch", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-stopwatch"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:10.4.8"],
-            ["@types/bangle-plugins", null],
             ["@types/banglejs__core", null],
+            ["@types/banglejs__markdown", null],
             ["@types/banglejs__react", null],
             ["@types/react", null],
             ["@types/react-dom", null],
-            ["bangle-plugins", "workspace:bangle-plugins"],
             ["react", "npm:17.0.1"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.1"]
           ],
           "packagePeers": [
             "@banglejs/core",
             "@banglejs/react",
-            "@types/bangle-plugins",
             "@types/banglejs__core",
+            "@types/banglejs__markdown",
             "@types/banglejs__react",
             "@types/react-dom",
             "@types/react",
-            "bangle-plugins",
             "react-dom",
             "react"
           ],
@@ -2581,9 +2616,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@banglejs/react-stopwatch", "workspace:contrib/react-stopwatch"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
-            ["bangle-plugins", "workspace:bangle-plugins"],
             ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
           ],
@@ -5314,6 +5349,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/core", "npm:7.12.3"],
             ["@banglejs/core", "workspace:core"],
             ["@banglejs/emoji", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@banglejs/react-menu", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu"],
             ["@banglejs/react-sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker"],

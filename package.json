@@ -8,6 +8,7 @@
     "emoji",
     "bangle-play",
     "bangle-plugins",
+    "markdown",
     "react",
     "react-menu",
     "contrib/*"

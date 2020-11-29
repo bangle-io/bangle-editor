@@ -13,6 +13,7 @@
   "dependencies": {
     "@banglejs/core": "workspace:*",
     "@banglejs/emoji": "workspace:*",
+    "@banglejs/markdown": "workspace:*",
     "@banglejs/react": "workspace:*",
     "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",

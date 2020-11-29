@@ -3,7 +3,7 @@
  */
 /** @jsx pjsx */
 import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
-import { markdownSerializer } from 'bangle-plugins/markdown/index';
+import { markdownSerializer } from '@banglejs/markdown/index';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { sticker } from '../index';
 import {

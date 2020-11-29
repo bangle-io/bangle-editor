@@ -3,11 +3,11 @@
  */
 /** @jsx psx */
 import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
-import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import { markdownSerializer } from '@banglejs/markdown/markdown-serializer';
 import {
   defaultMarkdownItTokenizer,
   markdownParser,
-} from 'bangle-plugins/markdown/markdown-parser';
+} from '@banglejs/markdown/markdown-parser';
 import emojiParser from 'markdown-it-emoji';
 import {
   defaultPlugins,

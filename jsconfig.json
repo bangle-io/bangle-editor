@@ -14,6 +14,12 @@
       "@banglejs/emoji/*": [
         "./emoji/*"
       ],
+      "@banglejs/markdown": [
+        "./markdown/index.js"
+      ],
+      "@banglejs/markdown/*": [
+        "./markdown/*"
+      ],
       "bangle-play/*": [
         "./bangle-play/*"
       ],

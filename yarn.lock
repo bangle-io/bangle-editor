@@ -1492,11 +1492,24 @@ __metadata:
   resolution: "@banglejs/emoji@workspace:emoji"
   dependencies:
     "@banglejs/core": "workspace:*"
-    bangle-plugins: "workspace:*"
+    "@banglejs/markdown": "workspace:*"
     markdown-it-emoji: ^2.0.0
   peerDependencies:
     "@banglejs/core": "*"
-    bangle-plugins: "*"
+    "@banglejs/markdown": "*"
+  languageName: unknown
+  linkType: soft
+
+"@banglejs/markdown@workspace:*, @banglejs/markdown@workspace:markdown":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/markdown@workspace:markdown"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+    bangle-plugins: "workspace:*"
+    markdown-it: ^10.0.0
+    prosemirror-markdown: ^1.5.0
+  peerDependencies:
+    "@banglejs/core": "*"
   languageName: unknown
   linkType: soft
 
@@ -1525,6 +1538,7 @@ __metadata:
   resolution: "@banglejs/react-sticker@workspace:contrib/react-sticker"
   dependencies:
     "@banglejs/core": "workspace:*"
+    "@banglejs/markdown": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@testing-library/react": ^10.4.7
     bangle-plugins: "workspace:*"
@@ -1533,8 +1547,8 @@ __metadata:
     react-dom: ^16.14.0
   peerDependencies:
     "@banglejs/core": "*"
+    "@banglejs/markdown": "*"
     "@banglejs/react": "*"
-    bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
@@ -1545,15 +1559,15 @@ __metadata:
   resolution: "@banglejs/react-stopwatch@workspace:contrib/react-stopwatch"
   dependencies:
     "@banglejs/core": "workspace:*"
+    "@banglejs/markdown": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@testing-library/react": ^10.4.7
-    bangle-plugins: "workspace:*"
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
     "@banglejs/core": "*"
+    "@banglejs/markdown": "*"
     "@banglejs/react": "*"
-    bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
@@ -3879,6 +3893,7 @@ __metadata:
     "@babel/core": ^7.12.3
     "@banglejs/core": "workspace:*"
     "@banglejs/emoji": "workspace:*"
+    "@banglejs/markdown": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"

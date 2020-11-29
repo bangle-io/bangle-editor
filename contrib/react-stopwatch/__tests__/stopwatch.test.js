@@ -5,7 +5,7 @@
 import { fireEvent } from '@testing-library/react';
 import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
 import { sendKeyToPm } from '@banglejs/core/test-helpers/index';
-import { markdownSerializer } from 'bangle-plugins/markdown/markdown-serializer';
+import { markdownSerializer } from '@banglejs/markdown/markdown-serializer';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { stopwatch } from '../index';
 import { Stopwatch } from '../stopwatch';
