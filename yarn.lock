@@ -1466,9 +1466,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@banglejs/sticker@workspace:*, @banglejs/sticker@workspace:react-contrib/sticker":
+"@banglejs/react-sticker@workspace:*, @banglejs/react-sticker@workspace:contrib/react-sticker":
   version: 0.0.0-use.local
-  resolution: "@banglejs/sticker@workspace:react-contrib/sticker"
+  resolution: "@banglejs/react-sticker@workspace:contrib/react-sticker"
   dependencies:
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"
@@ -1486,9 +1486,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@banglejs/stopwatch@workspace:*, @banglejs/stopwatch@workspace:react-contrib/stopwatch":
+"@banglejs/react-stopwatch@workspace:*, @banglejs/react-stopwatch@workspace:contrib/react-stopwatch":
   version: 0.0.0-use.local
-  resolution: "@banglejs/stopwatch@workspace:react-contrib/stopwatch"
+  resolution: "@banglejs/react-stopwatch@workspace:contrib/react-stopwatch"
   dependencies:
     "@testing-library/react": ^10.4.7
     bangle-core: "workspace:*"
@@ -3721,8 +3721,8 @@ __metadata:
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
-    "@banglejs/sticker": "workspace:*"
-    "@banglejs/stopwatch": "workspace:*"
+    "@banglejs/react-sticker": "workspace:*"
+    "@banglejs/react-stopwatch": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.0.4
@@ -7756,8 +7756,8 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "integration-tests@workspace:integration-tests"
   dependencies:
-    "@banglejs/sticker": "workspace:*"
-    "@banglejs/stopwatch": "workspace:*"
+    "@banglejs/react-sticker": "workspace:*"
+    "@banglejs/react-stopwatch": "workspace:*"
     "@testing-library/react": ^10.4.7
     babel-loader: ^8.2.2
     bangle-core: "workspace:*"

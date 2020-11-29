@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/stopwatch",
+  "name": "@banglejs/react-stopwatch",
   "version": "0.1.0",
   "main": "index.js",
   "module": "index.js",

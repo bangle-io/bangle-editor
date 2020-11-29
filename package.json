@@ -7,7 +7,7 @@
     "bangle-play",
     "bangle-plugins",
     "bangle-react",
-    "react-contrib/*",
+    "contrib/*",
     "integration-tests"
   ],
   "scripts": {

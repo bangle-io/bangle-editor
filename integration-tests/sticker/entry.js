@@ -6,8 +6,8 @@ import {
 } from 'bangle-core/test-helpers/default-components';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import { DOMSerializer, Slice } from 'bangle-core/pm-model';
-import { sticker } from '@banglejs/sticker';
-import { stopwatch } from '@banglejs/stopwatch';
+import { sticker } from '@banglejs/react-sticker';
+import { stopwatch } from '@banglejs/react-stopwatch';
 import * as prosemirrorView from 'bangle-core/pm-view';
 import { setupReactEditor } from '../setup/entry-helpers';
 
