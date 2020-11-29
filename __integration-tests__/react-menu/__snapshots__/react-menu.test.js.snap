@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`react-menu test Shows and hides a tooltip menu when arrow keys moved in todo-list 1`] = `"<div class=\\"bangle-tooltip-content\\"></div>"`;
+
+exports[`react-menu test menu positions correctly for NodeSelections 1`] = `"<div class=\\"bangle-tooltip-content\\"></div>"`;

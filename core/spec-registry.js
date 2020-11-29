@@ -83,7 +83,7 @@ function createSchema(specRegistry) {
 function validateSpec(spec) {
   if (!spec.name) {
     bangleWarn("The spec didn't have a name field", spec);
-    throw new Error('Spec must have a name');
+    throw new Error('Invalid spec. Spec must have a name');
   }
   if (!['node', 'mark', 'component'].includes(spec.type)) {
     bangleWarn('The spec must be of type node, mark or component ', spec);
@@ -98,18 +98,11 @@ function validateSpec(spec) {
   }
 }
 
-function flatten(data, callbackPayload) {
+function flatten(data) {
   const recurse = (d) => {
     if (Array.isArray(d)) {
       return d.flatMap((i) => recurse(i)).filter(Boolean);
     }
-    if (typeof d === 'function') {
-      if (!callbackPayload) {
-        throw new Error('Found a function but no payload');
-      }
-      return recurse(d(callbackPayload));
-    }
-
     return d;
   };
 

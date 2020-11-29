@@ -152,6 +152,9 @@ function getSelectionReferenceElement(view) {
       if (selection instanceof NodeSelection) {
         const domNode = view.nodeDOM(pos);
         width = domNode ? domNode.clientWidth : width;
+        // if (domNode) {
+        //   return domNode.getBoundingClientRect();
+        // }
       }
 
       return {

@@ -36,12 +36,24 @@ async function getEditorState(page) {
   });
 }
 
-async function pressRight() {
+async function pressRight({ withShift } = {}) {
+  if (withShift) {
+    await page.keyboard.down('Shift');
+  }
   await page.keyboard.press('ArrowRight');
+  if (withShift) {
+    await page.keyboard.up('Shift');
+  }
 }
 
-async function pressLeft() {
+async function pressLeft({ withShift } = {}) {
+  if (withShift) {
+    await page.keyboard.down('Shift');
+  }
   await page.keyboard.press('ArrowLeft');
+  if (withShift) {
+    await page.keyboard.up('Shift');
+  }
 }
 
 function debug() {
