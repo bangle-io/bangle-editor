@@ -8,6 +8,12 @@
       "@banglejs/core/*": [
         "./core/*"
       ],
+      "@banglejs/emoji": [
+        "./emoji/index.js"
+      ],
+      "@banglejs/emoji/*": [
+        "./emoji/*"
+      ],
       "bangle-play/*": [
         "./bangle-play/*"
       ],

@@ -5,6 +5,7 @@
   "workspaces": [
     "__integration-tests__",
     "core",
+    "emoji",
     "bangle-play",
     "bangle-plugins",
     "react",

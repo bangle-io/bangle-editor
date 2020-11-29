@@ -1,9 +1,16 @@
 module.exports = {
   testRunner: 'jest-circus/runner',
-  testPathIgnorePatterns: [`<rootDir>/__integration-tests__/`],
+  testPathIgnorePatterns: [
+    `<rootDir>/__integration-tests__/`,
+    `<rootDir>/.yarn`,
+  ],
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
-  coveragePathIgnorePatterns: ['/node_modules/', '/test-helpers/'],
+  coveragePathIgnorePatterns: [
+    `<rootDir>/.yarn`,
+    '/node_modules/',
+    '/test-helpers/',
+  ],
   // collectCoverage: true,
   clearMocks: true,
   moduleNameMapper: {

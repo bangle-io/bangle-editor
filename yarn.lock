@@ -1487,6 +1487,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@banglejs/emoji@workspace:*, @banglejs/emoji@workspace:emoji":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/emoji@workspace:emoji"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+    bangle-plugins: "workspace:*"
+    markdown-it-emoji: ^2.0.0
+  peerDependencies:
+    "@banglejs/core": "*"
+    bangle-plugins: "*"
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/react-menu@workspace:*, @banglejs/react-menu@workspace:react-menu":
   version: 0.0.0-use.local
   resolution: "@banglejs/react-menu@workspace:react-menu"
@@ -3865,6 +3878,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.12.3
     "@banglejs/core": "workspace:*"
+    "@banglejs/emoji": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"

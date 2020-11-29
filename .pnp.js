@@ -47,6 +47,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:core"
       },
       {
+        "name": "@banglejs/emoji",
+        "reference": "workspace:emoji"
+      },
+      {
         "name": "@banglejs/react",
         "reference": "workspace:react"
       },
@@ -59,6 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
       ["@banglejs/core", ["workspace:core"]],
+      ["@banglejs/emoji", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji", "workspace:emoji"]],
       ["@banglejs/react", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", "workspace:react"]],
       ["@banglejs/react-menu", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu", "workspace:react-menu"]],
       ["@banglejs/react-sticker", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-sticker", "workspace:contrib/react-sticker"]],
@@ -2264,6 +2269,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-transform", "npm:1.2.7"],
             ["prosemirror-utils", "virtual:b8bea612b6edb805d731ebec7b2920954563e4ebe53812d6b071a7c603c16515923812d756998d8436d76bd054df792b2fdc7b84a2abf419e486f634821f27ae#npm:0.9.6"],
             ["prosemirror-view", "npm:1.16.3"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@banglejs/emoji", [
+        ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji", {
+          "packageLocation": "./.yarn/$$virtual/@banglejs-emoji-virtual-c8216f4c37/1/emoji/",
+          "packageDependencies": [
+            ["@banglejs/emoji", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji"],
+            ["@banglejs/core", "workspace:core"],
+            ["@types/bangle-plugins", null],
+            ["@types/banglejs__core", null],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["markdown-it-emoji", "npm:2.0.0"]
+          ],
+          "packagePeers": [
+            "@banglejs/core",
+            "@types/bangle-plugins",
+            "@types/banglejs__core",
+            "bangle-plugins"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:emoji", {
+          "packageLocation": "./emoji/",
+          "packageDependencies": [
+            ["@banglejs/emoji", "workspace:emoji"],
+            ["@banglejs/core", "workspace:core"],
+            ["bangle-plugins", "workspace:bangle-plugins"],
+            ["markdown-it-emoji", "npm:2.0.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -5278,6 +5313,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bangle-play", "workspace:bangle-play"],
             ["@babel/core", "npm:7.12.3"],
             ["@banglejs/core", "workspace:core"],
+            ["@banglejs/emoji", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@banglejs/react-menu", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu"],
             ["@banglejs/react-sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker"],

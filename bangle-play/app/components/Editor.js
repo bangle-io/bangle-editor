@@ -7,7 +7,7 @@ import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
 import * as coreComps from '@banglejs/core/components/index';
 import { NodeView } from '@banglejs/core/node-view';
-import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
+import { emoji, emojisArray } from '@banglejs/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from '@banglejs/react/ReactEditor';

@@ -1,8 +1,8 @@
 import '@banglejs/core/style.css';
 import { coreSpec } from '@banglejs/core/utils/core-components';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
-import { emoji } from 'bangle-plugins/emoji/index';
-import 'bangle-plugins/emoji/emoji.css';
+import { emoji } from '@banglejs/emoji/index';
+import '@banglejs/emoji/emoji.css';
 import '@banglejs/react-menu/style.css';
 import './extensions-override.css';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
