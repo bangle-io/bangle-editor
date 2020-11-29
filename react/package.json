@@ -10,7 +10,6 @@
   },
   "peerDependencies": {
     "@banglejs/core": "*",
-    "bangle-plugins": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
@@ -20,7 +19,6 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.7",
     "@testing-library/react-hooks": "^3.4.2",
-    "bangle-plugins": "workspace:*",
     "prettier": "^2.2.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

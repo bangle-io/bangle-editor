@@ -10,7 +10,7 @@ import {
   renderTestEditor,
 } from '@banglejs/core/test-helpers/index';
 import { CollabError } from '../../collab-error';
-import { Selection } from 'prosemirror-state';
+import { Selection } from '@banglejs/core/prosemirror/state';
 import * as collab from '../collab-extension';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { paragraph, doc, text } from '@banglejs/core/components';

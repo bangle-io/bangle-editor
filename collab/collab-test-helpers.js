@@ -9,7 +9,7 @@ import {
 } from '@banglejs/core/test-helpers/index';
 import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
-import { LocalDisk } from 'bangle-plugins/collab/client/local-disk';
+import { LocalDisk } from '@banglejs/collab/client/local-disk';
 import {
   defaultPlugins,
   defaultSpecs,

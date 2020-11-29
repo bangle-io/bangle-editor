@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { PluginKey } from 'prosemirror-state';
 
 import { getIdleCallback, uuid } from '@banglejs/core/utils/js-utils';
-import * as collab from 'bangle-plugins/collab/client/collab-extension';
-import { collabRequestHandlers } from 'bangle-plugins/collab/client/collab-request-handlers';
+import * as collab from '@banglejs/collab/client/collab-extension';
+import { collabRequestHandlers } from '@banglejs/collab/client/collab-request-handlers';
 import * as coreComps from '@banglejs/core/components/index';
 import { NodeView } from '@banglejs/core/node-view';
 import { emoji, emojisArray } from '@banglejs/emoji/index';

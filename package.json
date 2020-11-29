@@ -5,9 +5,9 @@
   "workspaces": [
     "__integration-tests__",
     "core",
+    "collab",
     "emoji",
     "bangle-play",
-    "bangle-plugins",
     "markdown",
     "react",
     "react-menu",

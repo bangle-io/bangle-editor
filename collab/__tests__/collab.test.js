@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { TextSelection } from 'prosemirror-state';
+import { TextSelection } from '@banglejs/core/prosemirror/state';
 import { psx } from '@banglejs/core/test-helpers/index';
 import { sleep } from '@banglejs/core/utils/js-utils';
 import {

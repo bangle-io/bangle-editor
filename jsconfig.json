@@ -41,14 +41,17 @@
       "bangle-play/*": [
         "./bangle-play/*"
       ],
-      "bangle-plugins/*": [
-        "./bangle-plugins/*"
-      ],
       "@banglejs/react": [
         "./react/index.js"
       ],
       "@banglejs/react/*": [
         "./react/*"
+      ],
+      "@banglejs/collab": [
+        "./collab/index.js"
+      ],
+      "@banglejs/collab/*": [
+        "./collab/*"
       ],
       "@banglejs/react-stopwatch": [
         "./contrib/react-stopwatch/index.js"

@@ -1,17 +1,17 @@
 {
-  "name": "@banglejs/markdown",
+  "name": "@banglejs/collab",
   "version": "0.1.0",
   "main": "index.js",
   "module": "index.js",
   "scripts": {},
-  "dependencies": {
-    "markdown-it": "^10.0.0",
-    "prosemirror-markdown": "^1.5.0"
-  },
   "peerDependencies": {
     "@banglejs/core": "*"
   },
   "devDependencies": {
     "@banglejs/core": "workspace:*"
+  },
+  "dependencies": {
+    "localforage": "^1.9.0",
+    "prosemirror-collab": "^1.2.2"
   }
 }

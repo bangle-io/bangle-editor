@@ -19,7 +19,6 @@
     "@banglejs/markdown": "workspace:*",
     "@banglejs/react": "workspace:*",
     "@testing-library/react": "^10.4.7",
-    "bangle-plugins": "workspace:*",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   }

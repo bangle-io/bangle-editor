@@ -1,4 +1,4 @@
-import { Step } from 'prosemirror-transform';
+import { Step } from '@banglejs/core/prosemirror/transform';
 import {
   objectMapValues,
   serialExecuteQueue,

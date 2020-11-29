@@ -4,8 +4,8 @@ import {
   getVersion,
   sendableSteps,
 } from 'prosemirror-collab';
-import { Step } from 'prosemirror-transform';
-import { Plugin, PluginKey, Selection } from 'prosemirror-state';
+import { Step } from '@banglejs/core/prosemirror/transform';
+import { Plugin, PluginKey, Selection } from '@banglejs/core/prosemirror/state';
 import { getIdleCallback, sleep, uuid } from '@banglejs/core/utils/js-utils';
 import {
   cancelablePromise,
