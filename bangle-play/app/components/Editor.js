@@ -9,7 +9,7 @@ import * as coreComps from '@banglejs/core/components/index';
 import { NodeView } from '@banglejs/core/node-view';
 import { emoji, emojisArray } from '@banglejs/emoji/index';
 import { trailingNode } from '@banglejs/trailing-node';
-import { timestamp } from 'bangle-plugins/timestamp/index';
+import { timestamp } from '@banglejs/timestamp';
 import { ReactEditor } from '@banglejs/react/ReactEditor';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';

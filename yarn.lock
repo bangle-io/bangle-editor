@@ -1597,6 +1597,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@banglejs/timestamp@workspace:*, @banglejs/timestamp@workspace:contrib/timestamp":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/timestamp@workspace:contrib/timestamp"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+  peerDependencies:
+    "@banglejs/core": "*"
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/tooltip@workspace:*, @banglejs/tooltip@workspace:tooltip":
   version: 0.0.0-use.local
   resolution: "@banglejs/tooltip@workspace:tooltip"
@@ -3919,6 +3929,7 @@ __metadata:
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"
+    "@banglejs/timestamp": "workspace:*"
     "@banglejs/trailing-node": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4

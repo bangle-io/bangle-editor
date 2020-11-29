@@ -18,6 +18,7 @@
     "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",
     "@banglejs/react-stopwatch": "workspace:*",
+    "@banglejs/timestamp": "workspace:*",
     "@banglejs/trailing-node": "workspace:*",
     "@popperjs/core": "^2.5.4",
     "bangle-plugins": "workspace:*",

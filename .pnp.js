@@ -43,6 +43,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:contrib/react-stopwatch"
       },
       {
+        "name": "@banglejs/timestamp",
+        "reference": "workspace:contrib/timestamp"
+      },
+      {
         "name": "@banglejs/trailing-node",
         "reference": "workspace:contrib/trailing-node"
       },
@@ -81,6 +85,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@banglejs/react-menu", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu", "workspace:react-menu"]],
       ["@banglejs/react-sticker", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-sticker", "workspace:contrib/react-sticker"]],
       ["@banglejs/react-stopwatch", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-stopwatch", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-stopwatch", "workspace:contrib/react-stopwatch"]],
+      ["@banglejs/timestamp", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/timestamp", "workspace:contrib/timestamp"]],
       ["@banglejs/tooltip", ["virtual:aa546502200d58ac4c136d37101cd8eb873a890ac863230797817625a5079df724ad606ad959e488fa50eec1db0c5c8b8ba0692a4bccffb68c1b5b23e900c8dc#workspace:tooltip", "workspace:tooltip"]],
       ["@banglejs/trailing-node", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/trailing-node", "workspace:contrib/trailing-node"]],
       ["bangle", ["workspace:."]],
@@ -2630,6 +2635,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/react", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:10.4.8"],
             ["react", "npm:16.14.0"],
             ["react-dom", "virtual:10024e3ef83874b961a54d728e655e95afe4d76d497a1ee69051690d8054946751022cf2070862f59e89091d3bb17c85790ee89185728c0a1603f65c5e9dd6e2#npm:16.14.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@banglejs/timestamp", [
+        ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/timestamp", {
+          "packageLocation": "./.yarn/$$virtual/@banglejs-timestamp-virtual-e2d6fbdf89/1/contrib/timestamp/",
+          "packageDependencies": [
+            ["@banglejs/timestamp", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/timestamp"],
+            ["@banglejs/core", "workspace:core"],
+            ["@types/banglejs__core", null]
+          ],
+          "packagePeers": [
+            "@banglejs/core",
+            "@types/banglejs__core"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:contrib/timestamp", {
+          "packageLocation": "./contrib/timestamp/",
+          "packageDependencies": [
+            ["@banglejs/timestamp", "workspace:contrib/timestamp"],
+            ["@banglejs/core", "workspace:core"]
           ],
           "linkType": "SOFT",
         }]
@@ -5411,6 +5439,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@banglejs/react-menu", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu"],
             ["@banglejs/react-sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker"],
             ["@banglejs/react-stopwatch", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-stopwatch"],
+            ["@banglejs/timestamp", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/timestamp"],
             ["@banglejs/trailing-node", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/trailing-node"],
             ["@popperjs/core", "npm:2.5.4"],
             ["@testing-library/jest-dom", "npm:5.11.4"],

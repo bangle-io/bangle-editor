@@ -32,6 +32,12 @@
       "@banglejs/trailing-node/*": [
         "./contrib/trailing-node/*"
       ],
+      "@banglejs/timestamp": [
+        "./contrib/timestamp/index.js"
+      ],
+      "@banglejs/timestamp/*": [
+        "./contrib/timestamp/*"
+      ],
       "bangle-play/*": [
         "./bangle-play/*"
       ],
