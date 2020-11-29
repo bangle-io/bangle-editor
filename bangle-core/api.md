@@ -581,6 +581,12 @@ Named parameters:
 
 ### commands: {link.CommandsObject}
 
+- **indentListItem**(): {link.Command}\
+   Indents list item one level. Can only indent 1 plus the parent's level.
+
+- **outdentListItem**(): {link.QueryCommand.boolean}\
+   Outdents list item one level. If level is root, outdents to a paragraph.
+
 ## **Usage**
 
 ```js

@@ -33,7 +33,6 @@ import {
 } from '../list-item/commands';
 import { defaultKeys as orderedListDefaultKeys } from '../ordered-list';
 import { defaultKeys as bulletListDefaultKeys } from '../bullet-list';
-import { NodeSelection } from 'prosemirror-state';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

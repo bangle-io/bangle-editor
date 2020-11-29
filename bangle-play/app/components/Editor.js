@@ -11,8 +11,8 @@ import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { ReactEditor } from 'bangle-react/ReactEditor';
-import stopwatch from '@banglejs/stopwatch';
-import sticker from '@banglejs/sticker';
+import stopwatch from '@banglejs/react-stopwatch';
+import sticker from '@banglejs/react-sticker';
 import { specRegistry } from '../editor/spec-sheet';
 import {
   EmojiSuggestMenu,

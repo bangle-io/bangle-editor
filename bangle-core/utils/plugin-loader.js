@@ -8,7 +8,7 @@ import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
 import { bangleWarn } from './js-utils';
-import { Plugin, PluginGroup } from '../plugin';
+import { Plugin, PluginGroup } from '../pm-plugin';
 import { history } from '../components/index';
 
 export function pluginLoader(

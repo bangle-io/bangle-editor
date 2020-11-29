@@ -9,7 +9,6 @@ import {
   sendKeyToPm,
 } from 'bangle-core/test-helpers/index';
 
-import { typeText } from 'bangle-core/test-helpers/index';
 import { setSelectionNear } from 'bangle-core/test-helpers/selection-helpers';
 import { italic } from '../index';
 

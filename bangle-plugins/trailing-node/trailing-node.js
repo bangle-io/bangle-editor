@@ -5,7 +5,7 @@ export const plugins = pluginsFactory;
 
 const name = 'trailing_node_addon';
 
-function specFactory({} = {}) {
+function specFactory() {
   return {
     name: name,
     type: 'component',

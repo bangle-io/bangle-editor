@@ -79,7 +79,6 @@ function pluginsFactory({
 }
 
 const posHasCode = (state, pos) => {
-  const rtl = true;
   // This logic exists because
   // in  rtl (right to left) $<code>text#</code>  (where $ and # represent possible cursor positions)
   // at the edges of code only $ and # are valid positions by default.

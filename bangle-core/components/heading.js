@@ -1,9 +1,8 @@
 import { setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
 import { keymap } from '../utils/keymap';
-import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
+import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
-import { moveNode } from './list-item/commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

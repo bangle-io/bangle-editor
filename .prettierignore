@@ -10,3 +10,4 @@ coverage
 .yarnrc.yml
 jsconfig.json
 bangle-plugins/markdown/tests/fixtures/*.md
+integration-tests/build

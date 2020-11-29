@@ -3,11 +3,7 @@
  */
 
 /** @jsx psx */
-import {
-  psx,
-  renderTestEditor,
-  sendKeyToPm,
-} from 'bangle-core/test-helpers/index';
+import { psx, renderTestEditor } from 'bangle-core/test-helpers/index';
 
 import { typeText } from 'bangle-core/test-helpers/index';
 

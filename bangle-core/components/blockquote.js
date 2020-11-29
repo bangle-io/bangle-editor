@@ -2,8 +2,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 import { wrapIn } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 
-import { moveNode } from './list-item/commands';
-import { copyEmptyCommand, cutEmptyCommand } from '../core-commands';
+import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
 import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
 
 export const spec = specFactory;

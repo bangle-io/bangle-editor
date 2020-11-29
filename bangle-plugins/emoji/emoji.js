@@ -12,7 +12,7 @@ export const commands = {
 const name = EMOJI_NODE_NAME;
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-function specFactory({} = {}) {
+function specFactory() {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'span',
     parsingPriority: 51,

@@ -1,6 +1,4 @@
-import { base, keyName } from 'w3c-keyname';
-
-// declare global: navigator
+import { keyName } from 'w3c-keyname';
 
 const mac =
   typeof navigator != 'undefined' ? /Mac/.test(navigator.platform) : false;

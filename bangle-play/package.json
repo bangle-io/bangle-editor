@@ -11,8 +11,8 @@
     "last 3 chrome version"
   ],
   "dependencies": {
-    "@banglejs/sticker": "workspace:*",
-    "@banglejs/stopwatch": "workspace:*",
+    "@banglejs/react-sticker": "workspace:*",
+    "@banglejs/react-stopwatch": "workspace:*",
     "@popperjs/core": "^2.5.4",
     "bangle-core": "workspace:*",
     "bangle-plugins": "workspace:*",

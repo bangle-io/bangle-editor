@@ -1,8 +1,4 @@
-import {
-  liftTarget,
-  ReplaceAroundStep,
-  ReplaceStep,
-} from 'prosemirror-transform';
+import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import * as pmListCommands from 'prosemirror-schema-list';
 import * as baseCommand from 'prosemirror-commands';
 import { Fragment, Slice } from 'prosemirror-model';
@@ -13,7 +9,7 @@ import {
   findPositionOfNodeBefore,
   findParentNode,
 } from 'prosemirror-utils';
-import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
+import { NodeSelection, TextSelection } from 'prosemirror-state';
 
 import { compose } from '../../utils/js-utils';
 import {
@@ -25,7 +21,6 @@ import {
   isRangeOfType,
   isEmptySelectionAtStart,
   sanitiseSelectionMarksForWrapping,
-  mapChildren,
   validPos,
   validListParent,
 } from '../../utils/pm-utils';
@@ -34,15 +29,9 @@ import { liftSelectionList, liftFollowingList } from './transforms';
 
 const maxIndentation = 4;
 
-window.NodeSelection = NodeSelection;
-
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
-  const {
-    bulletList: bulletList,
-    orderedList: orderedList,
-    todoList: todoList,
-  } = nodes;
+  const { bulletList, orderedList, todoList } = nodes;
   let count = 0;
   for (let i = resolvedPos.depth - 1; i > 0; i--) {
     const node = resolvedPos.node(i);
@@ -135,11 +124,7 @@ export const isInsideListItem = (type) => (state) => {
 const rootListDepth = (type, pos, nodes) => {
   let listItem = type;
 
-  const {
-    bulletList: bulletList,
-    orderedList: orderedList,
-    todoList: todoList,
-  } = nodes;
+  const { bulletList, orderedList, todoList } = nodes;
   let depth;
   for (let i = pos.depth - 1; i > 0; i--) {
     const node = pos.node(i);
@@ -163,11 +148,7 @@ const rootListDepth = (type, pos, nodes) => {
 
 function canToJoinToPreviousListItem(state) {
   const { $from } = state.selection;
-  const {
-    bulletList: bulletList,
-    orderedList: orderedList,
-    todoList: todoList,
-  } = state.schema.nodes;
+  const { bulletList, orderedList, todoList } = state.schema.nodes;
   const $before = state.doc.resolve($from.pos - 1);
   let nodeBefore = $before ? $before.nodeBefore : null;
   if (state.selection instanceof GapCursorSelection) {
@@ -185,7 +166,6 @@ function canToJoinToPreviousListItem(state) {
  * ------------------
  */
 
-window.toggleList = toggleList;
 /**
  *
  * @param {Object} listType  bulletList, orderedList, todoList
@@ -480,17 +460,14 @@ function mergeLists(listItem, range) {
 const isGrandParentTodoList = (state) => {
   const { $from } = state.selection;
   const grandParent = $from.node($from.depth - 4);
-  const { todoList: todoList } = state.schema.nodes;
+  const { todoList } = state.schema.nodes;
   return grandParent.type === todoList;
 };
 
 const isParentBulletOrOrderedList = (state) => {
   const { $from } = state.selection;
   const parent = $from.node($from.depth - 2);
-  const {
-    bulletList: bulletList,
-    orderedList: orderedList,
-  } = state.schema.nodes;
+  const { bulletList, orderedList } = state.schema.nodes;
   return [bulletList, orderedList].includes(parent.type);
 };
 
@@ -563,7 +540,7 @@ export function enterKeyCommand(type) {
       if (!listItem) {
         ({ listItem } = state.schema.nodes);
       }
-      const { codeBlock: codeBlock, todoItem: todoItem } = state.schema.nodes;
+      const { codeBlock, todoItem } = state.schema.nodes;
 
       const node = $from.node($from.depth);
       const wrapper = $from.node($from.depth - 1);
@@ -682,10 +659,10 @@ function joinToPreviousListItem(type) {
     const { $from } = state.selection;
     const {
       paragraph,
-      codeBlock: codeBlock,
-      bulletList: bulletList,
-      orderedList: orderedList,
-      todoList: todoList,
+      codeBlock,
+      bulletList,
+      orderedList,
+      todoList,
     } = state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
     const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
@@ -927,71 +904,5 @@ export function queryNodeAttrs(type) {
       return current.attrs;
     }
     return false;
-  };
-}
-
-/**
- * Moves a node up and down. Please do a sanity check if the node is allowed to move or not
- * before calling this command.
- *
- * @param {PMNodeType} type The items type
- * @param {['UP', 'DOWN']} dir
- */
-export function moveNode(type, dir = 'UP') {
-  const isDown = dir === 'DOWN';
-  return (state, dispatch) => {
-    if (!state.selection.empty) {
-      return false;
-    }
-
-    const { $from } = state.selection;
-
-    const currentResolved = findParentNodeOfType(type)(state.selection);
-
-    if (!currentResolved) {
-      return false;
-    }
-
-    const { node: currentNode } = currentResolved;
-    const parentDepth = currentResolved.depth - 1;
-    const parent = $from.node(parentDepth);
-    const parentPos = $from.start(parentDepth);
-
-    if (currentNode.type !== type) {
-      return false;
-    }
-
-    const arr = mapChildren(parent, (node) => node);
-    let index = arr.indexOf(currentNode);
-
-    let swapWith = isDown ? index + 1 : index - 1;
-
-    // If swap is out of bound
-    if (swapWith >= arr.length || swapWith < 0) {
-      return false;
-    }
-
-    const swapWithNodeSize = arr[swapWith].nodeSize;
-    [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
-
-    let tr = state.tr;
-    let replaceStart = parentPos;
-    let replaceEnd = $from.end(parentDepth);
-
-    const slice = new Slice(Fragment.fromArray(arr), 0, 0); // the zeros  lol -- are not depth they are something that represents the opening closing
-    // .toString on slice gives you an idea. for this case we want them balanced
-    tr = tr.step(new ReplaceStep(replaceStart, replaceEnd, slice, false));
-
-    tr = tr.setSelection(
-      Selection.near(
-        tr.doc.resolve(
-          isDown ? $from.pos + swapWithNodeSize : $from.pos - swapWithNodeSize,
-        ),
-      ),
-    );
-    if (dispatch) {
-      dispatch(tr.scrollIntoView());
-    }
-    return true;
   };
 }

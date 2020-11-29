@@ -1,12 +1,12 @@
 import { setBlockType } from 'prosemirror-commands';
 import { TextSelection } from 'prosemirror-state';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
-import { moveNode } from './list-item/commands';
 import { keymap } from '../utils/keymap';
 import {
   parentHasDirectParentOfType,
   copyEmptyCommand,
   cutEmptyCommand,
+  moveNode,
 } from '../core-commands';
 import browser from '../utils/browser';
 
