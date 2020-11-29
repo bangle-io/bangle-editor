@@ -113,7 +113,7 @@ const getListType = (node, schema) => {
   if (!node.text) {
     return null;
   }
-  const { bulletList: bulletList, orderedList: orderedList } = schema.nodes;
+  const { bulletList, orderedList } = schema.nodes;
   return [
     {
       node: bulletList,
@@ -132,12 +132,7 @@ const getListType = (node, schema) => {
   }, null);
 };
 const extractListFromParagaph = (type, node, schema) => {
-  const {
-    hardBreak: hardBreak,
-    bulletList: bulletList,
-    orderedList: orderedList,
-    todoList: todoList,
-  } = schema.nodes;
+  const { hardBreak, bulletList, orderedList, todoList } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
   const listTypes = [bulletList, orderedList, todoList];
   // wrap each line into a listItem and a containing list
@@ -220,7 +215,7 @@ const splitIntoParagraphs = (fragment, schema) => {
   const paragraphs = [];
   let curChildren = [];
   let lastNode = null;
-  const { hardBreak: hardBreak, paragraph } = schema.nodes;
+  const { hardBreak, paragraph } = schema.nodes;
   fragment.forEach((node) => {
     if (lastNode && lastNode.type === hardBreak && node.type === hardBreak) {
       // double hardbreak

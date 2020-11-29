@@ -1,8 +1,4 @@
-import {
-  liftTarget,
-  ReplaceAroundStep,
-  ReplaceStep,
-} from 'prosemirror-transform';
+import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import * as pmListCommands from 'prosemirror-schema-list';
 import * as baseCommand from 'prosemirror-commands';
 import { Fragment, Slice } from 'prosemirror-model';
@@ -13,7 +9,7 @@ import {
   findPositionOfNodeBefore,
   findParentNode,
 } from 'prosemirror-utils';
-import { Selection, NodeSelection, TextSelection } from 'prosemirror-state';
+import { NodeSelection, TextSelection } from 'prosemirror-state';
 
 import { compose } from '../../utils/js-utils';
 import {
@@ -25,7 +21,6 @@ import {
   isRangeOfType,
   isEmptySelectionAtStart,
   sanitiseSelectionMarksForWrapping,
-  mapChildren,
   validPos,
   validListParent,
 } from '../../utils/pm-utils';

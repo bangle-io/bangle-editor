@@ -8,7 +8,6 @@ import {
   renderTestEditor,
   sendKeyToPm,
   typeChar,
-  typeText,
 } from 'bangle-core/test-helpers/index';
 
 import { setSelectionNear } from 'bangle-core/test-helpers/selection-helpers';

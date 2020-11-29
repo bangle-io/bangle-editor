@@ -5,7 +5,7 @@ export const plugins = pluginsFactory;
 
 const name = 'timestamp';
 
-function specFactory({} = {}) {
+function specFactory() {
   return {
     name: name,
     type: 'component',
