@@ -5,7 +5,7 @@
 /** @jsx psx */
 import { psx } from '@banglejs/core/test-helpers/index';
 import { editorStateSetup } from '@banglejs/core/editor';
-import { EditorView } from 'prosemirror-view';
+import { EditorView } from '@banglejs/core/prosemirror/view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';

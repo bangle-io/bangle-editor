@@ -1519,15 +1519,15 @@ __metadata:
   dependencies:
     "@banglejs/core": "workspace:*"
     "@banglejs/react": "workspace:*"
+    "@banglejs/tooltip": "workspace:*"
     "@testing-library/react": ^10.4.7
-    bangle-plugins: "workspace:*"
     prop-types: ^15.7.2
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
     "@banglejs/core": "*"
     "@banglejs/react": "*"
-    bangle-plugins: "*"
+    "@banglejs/tooltip": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
@@ -1594,6 +1594,17 @@ __metadata:
     bangle-plugins: "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@banglejs/tooltip@workspace:*, @banglejs/tooltip@workspace:tooltip":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/tooltip@workspace:tooltip"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+    "@popperjs/core": ^2.5.4
+  peerDependencies:
+    "@banglejs/core": "*"
   languageName: unknown
   linkType: soft
 

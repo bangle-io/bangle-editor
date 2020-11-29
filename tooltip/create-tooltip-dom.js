@@ -1,4 +1,4 @@
-import { DOMSerializer } from 'prosemirror-model';
+import { DOMSerializer } from '@banglejs/core/prosemirror/model';
 
 export function createTooltipDOM(
   tooltipDOMSpec = [

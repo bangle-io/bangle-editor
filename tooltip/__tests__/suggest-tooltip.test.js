@@ -15,7 +15,7 @@ import {
   defaultSpecs,
 } from '@banglejs/core/test-helpers/default-components';
 import { typeChar } from '@banglejs/core/test-helpers/index';
-import { PluginKey, Selection } from 'prosemirror-state';
+import { PluginKey, Selection } from '@banglejs/core/prosemirror/state';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { sleep } from '@banglejs/core/utils/js-utils';
 import { suggestTooltip } from '../index';

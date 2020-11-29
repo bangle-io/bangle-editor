@@ -1,6 +1,6 @@
-import { Fragment, Node } from 'prosemirror-model';
-import { keymap } from 'prosemirror-keymap';
-import { Selection } from 'prosemirror-state';
+import { Fragment, Node } from '@banglejs/core/prosemirror/model';
+import { keymap } from '@banglejs/core/utils/keymap';
+import { Selection } from '@banglejs/core/prosemirror/state';
 import {
   findFirstMarkPosition,
   filter,

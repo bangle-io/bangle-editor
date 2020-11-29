@@ -1,12 +1,12 @@
 import { bangleWarn, rafCommandExec } from '@banglejs/core/utils/js-utils';
-import { suggestTooltip, createTooltipDOM } from 'bangle-plugins/tooltip/index';
+import { suggestTooltip, createTooltipDOM } from '@banglejs/tooltip/index';
 import { PluginKey } from '@banglejs/core';
 import {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,
   removeSuggestMark,
   resetSuggestTooltipCounter,
-} from 'bangle-plugins/tooltip/suggest-tooltip';
+} from '@banglejs/tooltip/suggest-tooltip';
 import { valuePlugin } from '@banglejs/core/utils/pm-utils';
 import { pluginKeyStore } from '@banglejs/core/utils/plugin-key-store';
 

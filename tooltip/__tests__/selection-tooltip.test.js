@@ -12,7 +12,11 @@ import {
 
 import { selectionTooltip } from '../index';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
-import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  PluginKey,
+  TextSelection,
+} from '@banglejs/core/prosemirror/state';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';

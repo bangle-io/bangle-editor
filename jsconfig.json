@@ -1,12 +1,12 @@
 {
-  "compiler@Optionjs/": {
+  "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@banglejs/core": [
-        "./core/index.js"
-      ],
       "@banglejs/core/*": [
         "./core/*"
+      ],
+      "@banglejs/core": [
+        "./core/index.js"
       ],
       "@banglejs/emoji": [
         "./emoji/index.js"
@@ -19,6 +19,12 @@
       ],
       "@banglejs/markdown/*": [
         "./markdown/*"
+      ],
+      "@banglejs/tooltip": [
+        "./tooltip/index.js"
+      ],
+      "@banglejs/tooltip/*": [
+        "./tooltip/*"
       ],
       "bangle-play/*": [
         "./bangle-play/*"
@@ -55,7 +61,7 @@
     "__integration-tests__/build",
     "public",
     ".cache",
-    // ".yarn",
+    ".yarn",
     "coverage",
     ".pnp.js"
   ]

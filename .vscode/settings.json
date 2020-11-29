@@ -3,6 +3,7 @@
     "INDEXDB",
     "activitybar",
     "banglejs",
+    "inputrules",
     "kushanjoshi",
     "outdent",
     "textblock",
@@ -18,6 +19,9 @@
     "**/.yarn": true,
     "**/.pnp.*": true,
     "**/build": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   },
   "editor.formatOnSave": true,
   "workbench.colorCustomizations": {

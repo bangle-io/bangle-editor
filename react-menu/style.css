@@ -1,4 +1,4 @@
-@import 'bangle-plugins/tooltip/style.css';
+@import '@banglejs/tooltip/style.css';
 
 .bangle-tooltip-content {
   color: white;

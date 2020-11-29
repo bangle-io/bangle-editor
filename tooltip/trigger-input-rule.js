@@ -1,4 +1,4 @@
-import { InputRule } from 'prosemirror-inputrules';
+import { InputRule } from '@banglejs/core/prosemirror/inputrules';
 
 // ProseMirror uses the Unicode Character 'OBJECT REPLACEMENT CHARACTER' (U+FFFC) as text representation for
 // leaf nodes, i.e. nodes that don't have any content or text property (e.g. hardBreak, emoji)

@@ -3,13 +3,13 @@ import {
   queryIsLinkActive,
 } from '@banglejs/core/components/link';
 import { filter } from '@banglejs/core/utils/pm-utils';
-import { selectionTooltip } from 'bangle-plugins/tooltip/index';
+import { selectionTooltip } from '@banglejs/tooltip/index';
 import {
   queryIsSelectionTooltipActive,
   querySelectionTooltipType,
   hideSelectionTooltip,
   updateSelectionTooltipType,
-} from 'bangle-plugins/tooltip/selection-tooltip';
+} from '@banglejs/tooltip/selection-tooltip';
 import { keymap } from '@banglejs/core/utils/keymap';
 import { PluginKey } from '@banglejs/core/index';
 import { rafCommandExec } from '@banglejs/core/utils/js-utils';

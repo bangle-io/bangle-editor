@@ -1,6 +1,6 @@
 import { Plugin, PluginKey } from '@banglejs/core/index';
-import { tooltipPlacement } from 'bangle-plugins/tooltip/index';
-import { NodeSelection } from 'prosemirror-state';
+import { tooltipPlacement } from '@banglejs/tooltip/index';
+import { NodeSelection } from '@banglejs/core/prosemirror/state';
 import { createTooltipDOM } from './index';
 
 export const plugins = selectionTooltip;
