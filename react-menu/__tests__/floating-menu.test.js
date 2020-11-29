@@ -6,7 +6,8 @@
 import { link } from 'bangle-core/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import { reactTestEditor, pjsx } from 'bangle-react/__tests__/helpers/index';
-import { PluginKey, TextSelection } from 'prosemirror-state';
+import { TextSelection } from 'bangle-core/prosemirror/state';
+import { PluginKey } from 'bangle-core/pm-plugin';
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');

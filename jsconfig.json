@@ -11,14 +11,20 @@
       "bangle-plugins/*": [
         "./bangle-plugins/*"
       ],
+      "bangle-react": [
+        "./bangle-react/index.js"
+      ],
       "bangle-react/*": [
         "./bangle-react/*"
       ],
-      "@banglejs/stopwatch": [
-        "./react-contrib/stopwatch/index.js"
+      "@banglejs/react-stopwatch": [
+        "./contrib/react-stopwatch/index.js"
       ],
-      "@banglejs/sticker": [
-        "./react-contrib/sticker/index.js"
+      "@banglejs/react-sticker": [
+        "./contrib/react-sticker/index.js"
+      ],
+      "@banglejs/react-menu": [
+        "./react-menu/index.js"
       ],
     },
     "module": "es2020",
@@ -31,6 +37,7 @@
     "archive",
     "bangle-play/build",
     "bangle-play/node_modules",
+    "__integration-tests__/build",
     "public",
     ".cache",
     ".yarn",

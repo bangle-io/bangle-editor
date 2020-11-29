@@ -1,14 +1,6 @@
-// jest.config.js
-
-const { workspaces } = require('./package.json');
-
 module.exports = {
   testRunner: 'jest-circus/runner',
-  modulePaths: workspaces.map((w) => `<rootDir>/${w}`),
-  testPathIgnorePatterns: [
-    ...workspaces.map((w) => `<rootDir>/${w}/__integration_tests__/`),
-    ...workspaces.map((w) => `<rootDir>/integration-tests/`),
-  ],
+  testPathIgnorePatterns: [`<rootDir>/__integration-tests__/`],
   transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coveragePathIgnorePatterns: ['/node_modules/', '/test-helpers/'],

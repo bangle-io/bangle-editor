@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { EditorViewContext } from 'bangle-react/ReactEditor';
-import {
-  focusFloatingMenuInput,
-  toggleFloatingLinkMenu,
-} from './floating-menu';
+import { rafCommandExec } from 'bangle-core/utils/js-utils';
+
 import {
   boldItem,
   bulletListItem,
@@ -14,7 +12,10 @@ import {
   italicItem,
   linkItem,
 } from './MenuIcons';
-import { rafCommandExec } from 'bangle-core/utils/js-utils';
+import {
+  focusFloatingMenuInput,
+  toggleFloatingLinkMenu,
+} from './floating-menu';
 
 export function Menu({ menuKey }) {
   const view = useContext(EditorViewContext);

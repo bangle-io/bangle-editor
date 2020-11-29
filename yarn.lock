@@ -1466,6 +1466,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@banglejs/react-menu@workspace:*, @banglejs/react-menu@workspace:react-menu":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/react-menu@workspace:react-menu"
+  dependencies:
+    "@testing-library/react": ^10.4.7
+    bangle-core: "workspace:*"
+    bangle-plugins: "workspace:*"
+    bangle-react: "workspace:*"
+    prop-types: ^15.7.2
+    react: ^16.14.0
+    react-dom: ^16.14.0
+  peerDependencies:
+    bangle-core: "*"
+    bangle-plugins: "*"
+    bangle-react: "*"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/react-sticker@workspace:*, @banglejs/react-sticker@workspace:contrib/react-sticker":
   version: 0.0.0-use.local
   resolution: "@banglejs/react-sticker@workspace:contrib/react-sticker"
@@ -3820,6 +3840,7 @@ __metadata:
   resolution: "bangle-play@workspace:bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
+    "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"
     "@popperjs/core": ^2.5.4
@@ -7874,9 +7895,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"integration-tests@workspace:integration-tests":
+"integration-tests@workspace:__integration-tests__":
   version: 0.0.0-use.local
-  resolution: "integration-tests@workspace:integration-tests"
+  resolution: "integration-tests@workspace:__integration-tests__"
   dependencies:
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"

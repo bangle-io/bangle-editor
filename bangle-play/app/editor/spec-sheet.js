@@ -3,14 +3,14 @@ import { coreSpec } from 'bangle-core/utils/core-components';
 import * as collab from 'bangle-plugins/collab/client/collab-extension';
 import { emoji } from 'bangle-plugins/emoji/index';
 import 'bangle-plugins/emoji/emoji.css';
-import 'bangle-react/menu/style.css';
+import '@banglejs/react-menu/style.css';
 import './extensions-override.css';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
-import { emojiSuggestMenu } from 'bangle-react/menu/index';
+import { emojiSuggestMenu } from '@banglejs/react-menu';
 
 export const specRegistry = new SpecRegistry([
   ...coreSpec(),

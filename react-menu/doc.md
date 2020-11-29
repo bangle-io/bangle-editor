@@ -21,7 +21,7 @@ This is a bangle component which helps you create floating menus. By default it 
 You add more types of tooltips by tweaking the `calculateType` parameter in the `.plugins({ ... })` .
 
 ```
-import { floatingMenu } from '@banglejs/react/menu'
+import { floatingMenu } from '@banglejs/react-menu'
 ```
 
 ## plugins({ ... }): PluginFactory
@@ -65,7 +65,7 @@ Named parameters:
 
 ```
 import {ReactEditor} from '@banglejs/react';
-import {floatingMenu} from '@banglejs/react/menu';
+import {floatingMenu} from '@banglejs/react-menu';
 
 const menuKey = new PluginKey();
 const plugins = [

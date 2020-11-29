@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { bangleWarn } from 'bangle-core/utils/js-utils';
 import { objUid } from 'bangle-core/utils/object-uid';
+import { Node, EditorView } from 'bangle-core';
+import PropTypes from 'prop-types';
 
 const LOG = false;
 
@@ -82,3 +83,21 @@ export class NodeViewWrapper extends React.PureComponent {
     return element;
   }
 }
+
+export const atomNodeViewPropTypes = {
+  selected: PropTypes.bool.isRequired,
+  node: PropTypes.instanceOf(Node).isRequired,
+  view: PropTypes.instanceOf(EditorView).isRequired,
+  getPos: PropTypes.func.isRequired,
+  decorations: PropTypes.object.isRequired,
+  attrs: PropTypes.object.isRequired,
+  updateAttrs: PropTypes.func.isRequired,
+};
+
+export const nodeViewPropTypes = {
+  ...atomNodeViewPropTypes,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
+};

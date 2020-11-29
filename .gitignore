@@ -5,7 +5,7 @@ node_modules
 coverage
 bangle-play/dist
 bangle-play/build
-integration-tests/build
+__integration-tests__/build
 
 .yarn/*
 !.yarn/cache

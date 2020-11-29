@@ -7,14 +7,15 @@
     "bangle-play",
     "bangle-plugins",
     "bangle-react",
-    "contrib/*",
-    "integration-tests"
+    "react-menu",
+    "__integration-tests__",
+    "contrib/*"
   ],
   "scripts": {
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn workspace integration-tests test",
+    "integration-tests": "yarn g:integration-tests",
     "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint"
   },

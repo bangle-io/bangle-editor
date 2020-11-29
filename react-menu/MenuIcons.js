@@ -3,7 +3,6 @@ import {
   queryIsItalicActive,
   toggleItalic,
 } from 'bangle-core/components/italic';
-import { Icon } from './Icon';
 import { queryIsBoldActive, toggleBold } from 'bangle-core/components/bold';
 import { queryIsCodeActive, toggleCode } from 'bangle-core/components/code';
 import {
@@ -20,6 +19,8 @@ import {
   queryIsBulletListActive,
   toggleBulletList,
 } from 'bangle-core/components/bullet-list';
+
+import { Icon } from './Icon';
 
 export const boldItem = () => ({
   type: 'command',

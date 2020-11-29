@@ -19,7 +19,7 @@ import {
   emojiSuggestMenu,
   floatingMenu,
   FloatingMenu,
-} from 'bangle-react/menu/index';
+} from '@banglejs/react-menu';
 
 const LOG = false;
 const DEBUG = true;
@@ -135,7 +135,7 @@ export class Editor extends React.PureComponent {
     }
   };
 
-  renderNodeViews = ({ node, updateAttrs, children, selected, ...args }) => {
+  renderNodeViews = ({ node, updateAttrs, children, selected }) => {
     if (node.type.name === 'sticker') {
       return (
         <sticker.Sticker
@@ -145,9 +145,11 @@ export class Editor extends React.PureComponent {
         />
       );
     }
+
     if (node.type.name === 'stopwatch') {
       return <stopwatch.Stopwatch node={node} updateAttrs={updateAttrs} />;
     }
+
     if (node.type.name === 'todoItem') {
       return (
         <TodoItem node={node} updateAttrs={updateAttrs}>

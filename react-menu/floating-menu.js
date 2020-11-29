@@ -10,7 +10,7 @@ import {
   hideSelectionTooltip,
   updateSelectionTooltipType,
 } from 'bangle-plugins/tooltip/selection-tooltip';
-import { keymap } from 'prosemirror-keymap';
+import { keymap } from 'bangle-core/utils/keymap';
 import { PluginKey } from 'bangle-core/index';
 import { rafCommandExec } from 'bangle-core/utils/js-utils';
 

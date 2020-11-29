@@ -6,3 +6,4 @@ export { logging, browser, isChromeWithSelectionBug };
 export * from './pm-plugin';
 export * from './node-view';
 export * from './pm-model';
+export * from './pm-view';

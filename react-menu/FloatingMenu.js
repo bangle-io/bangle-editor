@@ -2,10 +2,9 @@ import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { PluginKey } from 'bangle-core/index';
-
-import { usePluginState } from '../use-plugin-state';
 import { FloatingLinkMenu } from './FloatingLinkMenu';
 import { Menu } from './Menu';
+import { usePluginState } from 'bangle-react';
 
 export function FloatingMenu({
   menuKey,
