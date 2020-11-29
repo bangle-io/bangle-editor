@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { pjsx, reactTestEditor } from 'bangle-react/__tests__/helpers/index';
+import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
 import { markdownSerializer } from 'bangle-plugins/markdown/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import { sticker } from '../index';

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { EditorViewContext } from 'bangle-react/ReactEditor';
+import { EditorViewContext } from '@banglejs/react/ReactEditor';
 import { rafCommandExec } from 'bangle-core/utils/js-utils';
 
 import {

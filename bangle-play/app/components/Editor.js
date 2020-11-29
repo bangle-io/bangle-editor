@@ -10,7 +10,7 @@ import { NodeView } from 'bangle-core/node-view';
 import { emoji, emojisArray } from 'bangle-plugins/emoji/index';
 import { trailingNode } from 'bangle-plugins/trailing-node/index';
 import { timestamp } from 'bangle-plugins/timestamp/index';
-import { ReactEditor } from 'bangle-react/ReactEditor';
+import { ReactEditor } from '@banglejs/react/ReactEditor';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
 import { specRegistry } from '../editor/spec-sheet';

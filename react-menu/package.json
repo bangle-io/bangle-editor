@@ -8,17 +8,17 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
+    "@banglejs/react": "*",
     "bangle-core": "*",
     "bangle-plugins": "*",
-    "bangle-react": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
+    "@banglejs/react": "workspace:*",
     "@testing-library/react": "^10.4.7",
     "bangle-core": "workspace:*",
     "bangle-plugins": "workspace:*",
-    "bangle-react": "workspace:*",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   }

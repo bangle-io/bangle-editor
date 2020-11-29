@@ -6,10 +6,10 @@
 import { render, act } from '@testing-library/react';
 import { defaultPlugins } from 'bangle-core/test-helpers/default-components';
 import { SpecRegistry } from 'bangle-core/spec-registry';
-import { ReactEditor } from 'bangle-react/ReactEditor';
+import { ReactEditor } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from 'bangle-core/index';
-import { usePluginState } from 'bangle-react/use-plugin-state';
+import { usePluginState } from '@banglejs/react/use-plugin-state';
 import { useEffect, useState } from 'react';
 
 const key = new PluginKey('testPlugins');

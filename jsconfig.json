@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+  "compiler@Optionjs/": {
     "baseUrl": "./",
     "paths": {
       "bangle-core/*": [
@@ -11,11 +11,11 @@
       "bangle-plugins/*": [
         "./bangle-plugins/*"
       ],
-      "bangle-react": [
-        "./bangle-react/index.js"
+      "@banglejs/react": [
+        "./react/index.js"
       ],
-      "bangle-react/*": [
-        "./bangle-react/*"
+      "@banglejs/react/*": [
+        "./react/*"
       ],
       "@banglejs/react-stopwatch": [
         "./contrib/react-stopwatch/index.js"
@@ -40,7 +40,7 @@
     "__integration-tests__/build",
     "public",
     ".cache",
-    ".yarn",
+    // ".yarn",
     "coverage",
     ".pnp.js"
   ]

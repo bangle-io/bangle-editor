@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
+    "__integration-tests__",
     "bangle-core",
     "bangle-play",
     "bangle-plugins",
-    "bangle-react",
+    "react",
     "react-menu",
-    "__integration-tests__",
     "contrib/*"
   ],
   "scripts": {

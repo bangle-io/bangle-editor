@@ -1,6 +1,6 @@
 import React from 'react';
 import reactDOM from 'react-dom';
-import { ReactEditor } from 'bangle-react/index';
+import { ReactEditor } from '@banglejs/react/index';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import {
   defaultPlugins,

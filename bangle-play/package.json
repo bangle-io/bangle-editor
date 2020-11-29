@@ -11,13 +11,13 @@
     "last 3 chrome version"
   ],
   "dependencies": {
+    "@banglejs/react": "workspace:*",
     "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",
     "@banglejs/react-stopwatch": "workspace:*",
     "@popperjs/core": "^2.5.4",
     "bangle-core": "workspace:*",
     "bangle-plugins": "workspace:*",
-    "bangle-react": "workspace:*",
     "css.gg": "^2.0.0",
     "date-fns": "^2.10.0",
     "localforage": "^1.9.0",

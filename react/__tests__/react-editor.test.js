@@ -10,15 +10,15 @@ import {
   defaultSpecs,
 } from 'bangle-core/test-helpers/default-components';
 import { SpecRegistry } from 'bangle-core/spec-registry';
-import { ReactEditor } from 'bangle-react/ReactEditor';
+import { ReactEditor } from '@banglejs/react/ReactEditor';
 import { getRenderHandlers } from 'bangle-core/node-view';
 import { safeInsert, removeSelectedNode } from 'bangle-core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
 import { pjsx } from './helpers/index';
 import { sleep } from 'bangle-core/utils/js-utils';
 import { selectNodeAt } from 'bangle-core/test-helpers/index';
-import { Node } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
+import { Node } from 'bangle-core/prosemirror/model';
+import { EditorView } from 'bangle-core/prosemirror/view';
 const consoleError = console.error;
 
 beforeEach(() => {

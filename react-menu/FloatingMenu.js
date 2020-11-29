@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PluginKey } from 'bangle-core/index';
 import { FloatingLinkMenu } from './FloatingLinkMenu';
 import { Menu } from './Menu';
-import { usePluginState } from 'bangle-react';
+import { usePluginState } from '@banglejs/react';
 
 export function FloatingMenu({
   menuKey,

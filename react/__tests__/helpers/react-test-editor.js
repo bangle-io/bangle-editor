@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { TextSelection } from 'prosemirror-state';
+import { TextSelection } from 'bangle-core/prosemirror/state';
 import { SpecRegistry } from 'bangle-core/spec-registry';
 import { render } from '@testing-library/react';
 import { getDocLabels } from 'bangle-core/test-helpers/index';
