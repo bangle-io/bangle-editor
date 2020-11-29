@@ -1,7 +1,7 @@
 import { SpecRegistry } from '../../spec-registry';
 import { NodeView } from '../../node-view';
 import { pluginLoader } from '../plugin-loader';
-import { Plugin, PluginGroup, PluginKey } from '../../plugin';
+import { Plugin, PluginGroup, PluginKey } from '../../pm-plugin';
 import { corePlugins } from '../core-components';
 
 describe('nodeViews validation', () => {
