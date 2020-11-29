@@ -14,7 +14,7 @@
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn workspace integration-tests build && yarn jest --config=jest-integration.config.js",
+    "integration-tests": "yarn workspace integration-tests test",
     "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint"
   },
@@ -68,10 +68,7 @@
     "husky": "^4.3.0",
     "jest": "^26.6.3",
     "jest-circus": "^26.6.3",
-    "jest-environment-puppeteer": "^4.4.0",
-    "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.5.2",
-    "prettier": "^2.2.0",
-    "puppeteer": "^5.5.0"
+    "prettier": "^2.2.0"
   }
 }

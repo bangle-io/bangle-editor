@@ -93,11 +93,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:4.3.0"],
             ["jest", "npm:26.6.3"],
             ["jest-circus", "npm:26.6.3"],
-            ["jest-environment-puppeteer", "npm:4.4.0"],
-            ["jest-puppeteer", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.4.0"],
             ["lint-staged", "npm:10.5.2"],
-            ["prettier", "npm:2.2.0"],
-            ["puppeteer", "npm:5.5.0"]
+            ["prettier", "npm:2.2.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -4983,11 +4980,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:4.3.0"],
             ["jest", "npm:26.6.3"],
             ["jest-circus", "npm:26.6.3"],
-            ["jest-environment-puppeteer", "npm:4.4.0"],
-            ["jest-puppeteer", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.4.0"],
             ["lint-staged", "npm:10.5.2"],
-            ["prettier", "npm:2.2.0"],
-            ["puppeteer", "npm:5.5.0"]
+            ["prettier", "npm:2.2.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -9521,10 +9515,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bangle-react", "workspace:bangle-react"],
             ["clean-webpack-plugin", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:3.0.0"],
             ["css-loader", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:5.0.1"],
+            ["expect-puppeteer", "npm:4.4.0"],
             ["file-loader", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:6.0.0"],
             ["html-webpack-plugin", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:4.5.0"],
+            ["jest", "npm:26.6.3"],
+            ["jest-circus", "npm:26.6.3"],
+            ["jest-environment-puppeteer", "npm:4.4.0"],
+            ["jest-puppeteer", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:4.4.0"],
             ["prettier", "npm:2.2.0"],
             ["punycode", "npm:2.1.1"],
+            ["puppeteer", "npm:5.5.0"],
             ["react", "npm:17.0.1"],
             ["react-dom", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:17.0.1"],
             ["serve", "npm:11.3.2"],
@@ -10583,10 +10583,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["jest-puppeteer", [
-        ["virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.4.0", {
-          "packageLocation": "./.yarn/$$virtual/jest-puppeteer-virtual-d383364778/0/cache/jest-puppeteer-npm-4.4.0-c30c942d74-49e2b1d6c8.zip/node_modules/jest-puppeteer/",
+        ["virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:4.4.0", {
+          "packageLocation": "./.yarn/$$virtual/jest-puppeteer-virtual-70662c31f1/0/cache/jest-puppeteer-npm-4.4.0-c30c942d74-49e2b1d6c8.zip/node_modules/jest-puppeteer/",
           "packageDependencies": [
-            ["jest-puppeteer", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.4.0"],
+            ["jest-puppeteer", "virtual:fa477393f1a229410b80e68b69304c4c8806e14fd621d59c23e05b9b51eabae0372b20fed6b0503ec54ccbfe4b322de2771bb2cdd4827869edf1410aeb760432#npm:4.4.0"],
             ["@types/puppeteer", null],
             ["expect-puppeteer", "npm:4.4.0"],
             ["jest-environment-puppeteer", "npm:4.4.0"],
