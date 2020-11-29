@@ -5,7 +5,7 @@ import { emoji } from '@banglejs/emoji/index';
 import '@banglejs/emoji/emoji.css';
 import '@banglejs/react-menu/style.css';
 import './extensions-override.css';
-import { trailingNode } from 'bangle-plugins/trailing-node/index';
+import { trailingNode } from '@banglejs/trailing-node';
 import { timestamp } from 'bangle-plugins/timestamp/index';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import stopwatch from '@banglejs/react-stopwatch';

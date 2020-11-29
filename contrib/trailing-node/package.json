@@ -1,0 +1,13 @@
+{
+  "name": "@banglejs/trailing-node",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "peerDependencies": {
+    "@banglejs/core": "*"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*"
+  }
+}

@@ -1608,6 +1608,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@banglejs/trailing-node@workspace:*, @banglejs/trailing-node@workspace:contrib/trailing-node":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/trailing-node@workspace:contrib/trailing-node"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+  peerDependencies:
+    "@banglejs/core": "*"
+  languageName: unknown
+  linkType: soft
+
 "@bcoe/v8-coverage@npm:^0.2.3":
   version: 0.2.3
   resolution: "@bcoe/v8-coverage@npm:0.2.3"
@@ -3909,6 +3919,7 @@ __metadata:
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"
+    "@banglejs/trailing-node": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.0.4

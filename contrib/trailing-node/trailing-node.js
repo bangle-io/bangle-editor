@@ -1,4 +1,4 @@
-import { PluginKey, Plugin } from 'prosemirror-state';
+import { PluginKey, Plugin } from '@banglejs/core/pm-plugin';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

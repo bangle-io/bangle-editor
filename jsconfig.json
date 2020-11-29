@@ -26,6 +26,12 @@
       "@banglejs/tooltip/*": [
         "./tooltip/*"
       ],
+      "@banglejs/trailing-node": [
+        "./contrib/trailing-node/index.js"
+      ],
+      "@banglejs/trailing-node/*": [
+        "./contrib/trailing-node/*"
+      ],
       "bangle-play/*": [
         "./bangle-play/*"
       ],
