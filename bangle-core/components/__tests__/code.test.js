@@ -214,7 +214,7 @@ describe('Escaping code move left', () => {
         </para>
       </doc>,
     ],
-  ])('Case %# %s ', async (name, keys, input, expected) => {
+  ])('Case %# %s', async (name, keys, input, expected) => {
     let { view } = testEditor(input);
 
     keys.forEach((key) => {
@@ -267,7 +267,7 @@ describe('Escaping code move right', () => {
         </para>
       </doc>,
     ],
-  ])('Case %# %s ', async (name, keys, input, expected) => {
+  ])('Case %# %s', async (name, keys, input, expected) => {
     let { view } = testEditor(input);
 
     keys.forEach((key) => {

@@ -8,7 +8,7 @@ import { psx, renderTestEditor } from '../index';
 const testEditor = renderTestEditor();
 
 describe('Para empty selection', () => {
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>hello w[]orld</para>
@@ -20,7 +20,7 @@ describe('Para empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph when at end', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>hello world[]</para>
@@ -32,7 +32,7 @@ describe('Para empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph when at start', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>[]hello world</para>
@@ -45,7 +45,7 @@ describe('Para empty selection', () => {
   });
 });
 describe('Para non empty selection', () => {
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph 1', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>hello [w]orld</para>
@@ -58,7 +58,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph 2', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>hello [wo]rld</para>
@@ -71,7 +71,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph 3', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>hello [wor]ld</para>
@@ -84,7 +84,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>[hello wor]ld</para>
@@ -97,7 +97,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph with all text selected', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>[hello world]</para>
@@ -110,7 +110,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph when spanning multiple paragraph 1', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>[hello world</para>
@@ -124,7 +124,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph when spanning multiple paragraph 2', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <para>hello world[</para>
@@ -138,7 +138,7 @@ describe('Para non empty selection', () => {
     });
   });
 
-  test('Correct positions with inside paragraph', async () => {
+  test('Correct positions when inside paragraph when spanning multiple lists', async () => {
     const { posLabels } = await testEditor(
       <doc>
         <ul>

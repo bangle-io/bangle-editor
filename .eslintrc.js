@@ -2,6 +2,7 @@
 module.exports = {
   extends: [
     'react-app',
+    'react-app/jest',
 
     /*'plugin:import/errors', 'plugin:import/warnings'*/
   ],
@@ -24,5 +25,12 @@ module.exports = {
     // 'react/prop-types': ['error'],
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
-  settings: {},
+  settings: {
+    jest: {
+      version: '26',
+    },
+    react: {
+      version: '16',
+    },
+  },
 };

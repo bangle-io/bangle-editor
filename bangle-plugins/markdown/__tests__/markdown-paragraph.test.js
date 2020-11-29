@@ -7,7 +7,7 @@ import { psx } from 'bangle-core/test-helpers/index';
 import { serialize, parse } from './setup';
 
 describe('paragraphs', () => {
-  test('paragraph', async () => {
+  test('paragraph 1', async () => {
     const doc = (
       <doc>
         <para>hello world</para>
@@ -20,7 +20,7 @@ describe('paragraphs', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('paragraph', async () => {
+  test('paragraph 2', async () => {
     const doc = (
       <doc>
         <para>hello world</para>

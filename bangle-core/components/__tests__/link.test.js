@@ -45,7 +45,7 @@ const plugins = [
 
 const testEditor = renderTestEditor({ specRegistry, plugins });
 
-test('Creates a link correctly', async () => {
+test('Creates a link correctly on range 1', async () => {
   const { editorView } = testEditor(
     <doc>
       <para>[hello world]</para>
@@ -65,7 +65,7 @@ test('Creates a link correctly', async () => {
   );
 });
 
-test('Creates a link correctly', async () => {
+test('Creates a link correctly on range 2', async () => {
   const { editorView } = testEditor(
     <doc>
       <para>hello [world]</para>

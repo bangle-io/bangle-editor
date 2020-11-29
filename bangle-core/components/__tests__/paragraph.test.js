@@ -82,7 +82,7 @@ describe('Basics', () => {
     );
   });
 
-  test('is able to create a new paragraph', async () => {
+  test('is able to create a new paragraph on Enter', async () => {
     const { view } = testEditor(
       <doc>
         <para>foobar[]</para>
@@ -137,7 +137,7 @@ describe('Commands', () => {
       );
     });
 
-    it('Moves selection to the start', async () => {
+    it('Moves selection to the start from middle', async () => {
       const { view } = testEditor(
         <doc>
           <para>f[]oobar</para>
@@ -153,7 +153,7 @@ describe('Commands', () => {
       );
     });
 
-    it('Moves selection to the start', async () => {
+    it('Moves selection to the start when already at start', async () => {
       const { view } = testEditor(
         <doc>
           <para>[]foobar</para>
@@ -209,7 +209,7 @@ describe('Commands', () => {
       );
     });
 
-    it('Moves selection to the end', async () => {
+    it('Moves selection to the end from middle', async () => {
       const { view } = testEditor(
         <doc>
           <para>fooba[]r</para>
@@ -382,7 +382,7 @@ describe('Commands', () => {
       );
     });
 
-    it('works with underline ', async () => {
+    it('works with underline', async () => {
       await check(
         <doc>
           <para>foobar</para>
@@ -399,7 +399,7 @@ describe('Commands', () => {
       );
     });
 
-    it('works with hard break', async () => {
+    it('works with hard break 1', async () => {
       await check(
         <doc>
           <para>foobar</para>
@@ -420,7 +420,7 @@ describe('Commands', () => {
       );
     });
 
-    it('works with hard break', async () => {
+    it('works with hard break 2', async () => {
       await check(
         <doc>
           <para>foobar</para>
@@ -476,7 +476,7 @@ describe('Commands', () => {
       );
     });
 
-    it('swaps with ol list', async () => {
+    it('swaps with ol list 1', async () => {
       await check(
         <doc>
           <para>foobar</para>
@@ -511,7 +511,7 @@ describe('Commands', () => {
       );
     });
 
-    it('swaps with ol list', async () => {
+    it('swaps with ol list 2', async () => {
       await check(
         <doc>
           <para>foobar</para>

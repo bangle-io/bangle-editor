@@ -7,7 +7,7 @@ import { psx } from 'bangle-core/test-helpers/index';
 import { serialize, parse } from './setup';
 
 describe('codeBlock list', () => {
-  test('renders', async () => {
+  test('renders 1', async () => {
     const doc = (
       <doc>
         <codeBlock>foobar</codeBlock>
@@ -24,7 +24,7 @@ describe('codeBlock list', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 2', async () => {
     const doc = (
       <doc>
         <codeBlock>foobar`something`</codeBlock>
@@ -41,7 +41,7 @@ describe('codeBlock list', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('renders', async () => {
+  test('renders 3', async () => {
     const doc = (
       <doc>
         <codeBlock>foobar</codeBlock>

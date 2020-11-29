@@ -86,7 +86,7 @@ describe('markdown', () => {
       defaultMarkdownItTokenizer.use(emojiParser),
     ).parse(md);
 
-  test('markdown', async () => {
+  test('markdown 1', async () => {
     const doc = (
       <doc>
         <para>
@@ -101,7 +101,7 @@ describe('markdown', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('markdown', async () => {
+  test('markdown 2', async () => {
     const doc = (
       <doc>
         <para>

@@ -7,7 +7,7 @@ import { psx } from 'bangle-core/test-helpers/index';
 import { serialize, parse } from './setup';
 
 describe('marks', () => {
-  test('link ', async () => {
+  test('link', async () => {
     const doc = (
       <doc>
         <para>
@@ -125,7 +125,7 @@ describe('marks', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('test asterix', async () => {
+  test('asterix', async () => {
     const doc = (
       <doc>
         <para>*hello* world</para>
@@ -137,7 +137,7 @@ describe('marks', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('bold', async () => {
+  test('bold 1', async () => {
     const doc = (
       <doc>
         <para>
@@ -153,7 +153,7 @@ describe('marks', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('bold', async () => {
+  test('bold 2', async () => {
     const doc = (
       <doc>
         <para>
@@ -248,7 +248,7 @@ describe('marks', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('code escaping', async () => {
+  test('code escaping 1', async () => {
     const doc = (
       <doc>
         <para>
@@ -261,7 +261,7 @@ describe('marks', () => {
     expect(await parse(md)).toEqualDocument(doc);
   });
 
-  test('code escaping', async () => {
+  test('code escaping 2', async () => {
     const doc = (
       <doc>
         <para>

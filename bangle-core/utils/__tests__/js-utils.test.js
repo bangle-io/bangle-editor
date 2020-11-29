@@ -42,7 +42,7 @@ describe('matchAllPlus', () => {
     expect(result).toMatchSnapshot();
   });
 
-  test('works with multiple matches', () => {
+  test('works with multiple matches 1', () => {
     let result = matchAllPlus(
       /foo[a-z]*/g,
       'baseball  football foosball gobhi',
@@ -58,7 +58,7 @@ describe('matchAllPlus', () => {
     `);
   });
 
-  test('works with multiple matches', () => {
+  test('works with multiple matches 2', () => {
     const result = matchAllPlus(
       /foo[a-z]*/g,
       'baseball  football gobhi tamatar foosball',
@@ -123,7 +123,7 @@ describe('serialExecuteQueue', () => {
     expect(result).toEqual(Array.from({ length: 10 }, (_, k) => k));
   });
 
-  test('works sequentially for async callbacks', async () => {
+  test('works sequentially for async callbacks 1', async () => {
     expect.assertions(11);
     const q = serialExecuteQueue();
     let counter = 0;
@@ -138,7 +138,7 @@ describe('serialExecuteQueue', () => {
     expect(result).toEqual(Array.from({ length: 10 }, (_, k) => k));
   });
 
-  test('works sequentially for async callbacks', async () => {
+  test('works sequentially for async callbacks 2', async () => {
     expect.assertions(11);
     const q = serialExecuteQueue();
     let counter = 0;
@@ -182,7 +182,7 @@ describe('serialExecuteQueue', () => {
       result.push('🦆');
     });
 
-    expect(
+    await expect(
       q.add(async () => {
         await sleep(140); // <== slow item
         return Promise.reject('I borke');
@@ -210,7 +210,7 @@ describe('serialExecuteQueue', () => {
       }),
     ).rejects.toMatchInlineSnapshot(`"I borke 1"`);
 
-    expect(
+    await expect(
       q.add(async () => {
         await sleep(1); // <== slow item
         return Promise.reject('I borke 2');
@@ -318,7 +318,7 @@ describe('cancelable sleep', () => {
     window.clearTimeout = clearTimeoutBackup;
   });
 
-  it('promise wins if it finished first', async () => {
+  it('promise wins if it finished first 1', async () => {
     let p = backupSleep(15).then((r) => 'done');
     let c = await raceTimeout(p, 20);
 
@@ -327,7 +327,7 @@ describe('cancelable sleep', () => {
     expect(clearTimeout).toBeCalledTimes(1);
   });
 
-  it('promise wins if it finished first', async () => {
+  it('promise wins if it finished first 2', async () => {
     let p = backupSleep(0).then((r) => 'done');
     let c = await raceTimeout(p, 5);
 
@@ -367,7 +367,7 @@ describe('cancelable sleep', () => {
     expect(clearTimeout).toBeCalledTimes(0);
   });
 
-  it('timeout wins if it finished first', async () => {
+  it('timeout wins if it finished first 1', async () => {
     let p = backupSleep(20).then((r) => 'done');
     let c = raceTimeout(p, 15);
 
@@ -377,7 +377,7 @@ describe('cancelable sleep', () => {
     expect(clearTimeout).toBeCalledTimes(0);
   });
 
-  it('timeout wins if it finished first', async () => {
+  it('timeout wins if it finished first 2', async () => {
     let p = backupSleep(5).then((r) => 'done');
     let c = raceTimeout(p, 0);
 

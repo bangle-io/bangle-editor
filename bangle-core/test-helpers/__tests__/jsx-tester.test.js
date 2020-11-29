@@ -474,7 +474,7 @@ test.each([
       </para>
     </doc>,
   ],
-])('Empty Selection Case %# %s ', async (type, input, expected) => {
+])('Empty Selection Case %# %s', async (type, input, expected) => {
   const { view } = await testEditor(input);
   typeText(view, 'hello');
 
@@ -521,7 +521,7 @@ test('Selection range paragraph 2', async () => {
   );
 });
 
-test('Selection range spanning multiple paragraphs ', async () => {
+test('Selection range spanning multiple paragraphs', async () => {
   const { selection } = await testEditor(
     <doc>
       <para>[foo bar</para>
