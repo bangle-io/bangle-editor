@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "__integration-tests__",
+    "_bangle-website",
     "core",
     "collab",
     "emoji",
