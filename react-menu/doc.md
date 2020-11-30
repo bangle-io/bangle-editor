@@ -55,7 +55,10 @@ Named parameters:
   Toggles the `floatingLinkMenu` tooltip.
 
 - **updateFloatingTooltipType**(key: PluginKey, type: string | null): Command\
-  Sets the floating menu's current type to `type` .Set type to `null` to hide the floating menu tooltip.
+  Sets the floating menu's current type to `type`. Set type to `null` to hide the floating menu tooltip.
+
+**queryIsMenuActive**(key: PluginKey): Command\
+ Query if the menu is active.
 
 ## defaultKeys: Keybindings
 

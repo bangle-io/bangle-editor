@@ -20,6 +20,7 @@ export const commands = {
   toggleFloatingLinkMenu,
   updateFloatingTooltipType: updateSelectionTooltipType,
   hideFloatingMenu: hideSelectionTooltip,
+  queryIsMenuActive: queryIsSelectionTooltipActive,
 };
 export const defaultKeys = {
   hide: 'Escape',
@@ -40,7 +41,7 @@ function floatingMenu({
     }
     return 'floatingMenu';
   },
-}) {
+} = {}) {
   return [
     selectionTooltip.plugins({
       key,

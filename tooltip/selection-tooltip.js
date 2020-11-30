@@ -142,11 +142,23 @@ function getSelectionReferenceElement(view) {
       // coordsAtPos(head) might get the position `to` in head, resulting in
       // incorrectly getting position of the node after the selected Node.
       const pos = selection instanceof NodeSelection ? from : head;
+
       const start = view.coordsAtPos(pos);
       let { top, bottom, left, right } = start;
+      let width = right - left;
+
+      // Not sure why, but coordsAtPos does not return the correct
+      // width of the element, so doing this to override it.
+      if (selection instanceof NodeSelection) {
+        const domNode = view.nodeDOM(pos);
+        width = domNode ? domNode.clientWidth : width;
+        // if (domNode) {
+        //   return domNode.getBoundingClientRect();
+        // }
+      }
 
       return {
-        width: right - left,
+        width,
         height: bottom - top,
         top: top,
         right: right,

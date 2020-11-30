@@ -10,6 +10,7 @@
   "dependencies": {
     "@banglejs/core": "workspace:*",
     "@banglejs/react": "workspace:*",
+    "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",
     "@banglejs/react-stopwatch": "workspace:*",
     "@testing-library/react": "^10.4.7",
