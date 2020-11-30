@@ -1,19 +1,19 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'BangleJS',
+  tagline: 'Toolkit for building modern wysiwyg editors.',
+  url: 'https://kepta.github.io/bangle-play',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'bangle.io', // Usually your GitHub org/user name.
+  projectName: 'BangleJS', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'BangleJS',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'BangleJS Logo',
+        src: 'img/logo.png',
       },
       items: [
         {
@@ -24,7 +24,7 @@ module.exports = {
         },
         { to: 'blog', label: 'Blog', position: 'left' },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/kepta/bangle-play',
           label: 'GitHub',
           position: 'right',
         },
@@ -77,7 +77,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} BangleJS, Inc. Built with Docusaurus.`,
     },
   },
   presets: [

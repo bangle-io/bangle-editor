@@ -5971,9 +5971,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"bangle-site@workspace:_bangle-website":
+"bangle-website@workspace:_bangle-website":
   version: 0.0.0-use.local
-  resolution: "bangle-site@workspace:_bangle-website"
+  resolution: "bangle-website@workspace:_bangle-website"
   dependencies:
     "@docusaurus/core": 2.0.0-alpha.69
     "@docusaurus/preset-classic": 2.0.0-alpha.69

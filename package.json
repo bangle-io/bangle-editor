@@ -19,7 +19,7 @@
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn g:integration-tests",
+    "integration-tests": "yarn e2e:test",
     "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint"
   },
