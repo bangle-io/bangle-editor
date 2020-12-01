@@ -3,7 +3,7 @@ name: bangle website
 on:
   push:
     branches:
-      - docs/boilerplate
+      - master
 
 jobs:
   deploy:
