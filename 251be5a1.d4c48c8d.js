@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[8],{76:function(l){l.exports=JSON.parse('{"allTagsPath":"/bangle-play/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/bangle-play/blog/tags/hello"}')}}]);
