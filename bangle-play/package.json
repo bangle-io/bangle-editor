@@ -15,6 +15,7 @@
     "@banglejs/core": "workspace:*",
     "@banglejs/emoji": "workspace:*",
     "@banglejs/markdown": "workspace:*",
+    "@banglejs/markdown-front-matter": "workspace:*",
     "@banglejs/react": "workspace:*",
     "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "NODE_ENV=integration yarn run webpack --env development",
     "serve-build": "yarn run serve build -l 1234",
-    "g:integration-tests": "yarn build && yarn jest"
+    "test": "yarn build && yarn jest",
+    "e2e:test": "yarn test"
   },
   "dependencies": {
     "@banglejs/core": "workspace:*",

@@ -3,6 +3,13 @@ node_modules
 .cache
 .DS_Store
 coverage
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+yarn-debug.log*
+yarn-error.log*
+
 bangle-play/dist
 bangle-play/build
 __integration-tests__/build
@@ -14,3 +21,7 @@ __integration-tests__/build
 !.yarn/sdks
 !.yarn/versions
 yarn-error.log
+
+_bangle-website/build
+_bangle-website/.docusaurus
+_bangle-website/.cache-loader

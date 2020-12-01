@@ -7,3 +7,7 @@ node_modules
 .pnp.js
 coverage
 __integration-tests__/build
+
+_bangle-website/build
+_bangle-website/.docusaurus
+_bangle-website/.cache-loader

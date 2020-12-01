@@ -2,13 +2,13 @@ export const spec = specFactory;
 
 const name = 'doc';
 
-function specFactory(opts = {}) {
+function specFactory({ content = 'block+' } = {}) {
   return {
     type: 'node',
     topNode: true,
     name,
     schema: {
-      content: 'block+',
+      content: content,
     },
   };
 }

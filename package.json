@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "__integration-tests__",
+    "_bangle-website",
     "core",
     "collab",
     "emoji",
@@ -18,9 +19,10 @@
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn g:integration-tests",
+    "integration-tests": "yarn e2e:test",
     "lint": "yarn prettier --check . && yarn eslint .",
-    "root:lint": "yarn lint"
+    "root:lint": "yarn lint",
+    "build-docs": "yarn workspace bangle-website build"
   },
   "prettier": {
     "singleQuote": true,

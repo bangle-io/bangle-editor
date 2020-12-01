@@ -36,58 +36,60 @@ export function defaultPlugins(opts = {}) {
 
 function coreMarkSpec(options = {}) {
   return [
-    bold.spec(options.bold),
-    code.spec(options.code),
-    italic.spec(options.italic),
-    strike.spec(options.strike),
-    link.spec(options.link),
-    underline.spec(options.underline),
+    options.bold !== false && bold.spec(options.bold),
+    options.code !== false && code.spec(options.code),
+    options.italic !== false && italic.spec(options.italic),
+    options.strike !== false && strike.spec(options.strike),
+    options.link !== false && link.spec(options.link),
+    options.underline !== false && underline.spec(options.underline),
   ];
 }
 
 function coreMarkPlugins(options = {}) {
   return [
-    bold.plugins(options.bold),
-    code.plugins(options.code),
-    italic.plugins(options.italic),
-    strike.plugins(options.strike),
-    link.plugins(options.link),
-    underline.plugins(options.underline),
+    options.bold !== false && bold.plugins(options.bold),
+    options.code !== false && code.plugins(options.code),
+    options.italic !== false && italic.plugins(options.italic),
+    options.strike !== false && strike.plugins(options.strike),
+    options.link !== false && link.plugins(options.link),
+    options.underline !== false && underline.plugins(options.underline),
   ];
 }
 
 function coreNodeSpec(options = {}) {
   return [
-    doc.spec(options.doc),
-    text.spec(options.text),
-    paragraph.spec(options.paragraph),
-    blockquote.spec(options.blockquote),
-    bulletList.spec(options.bulletList),
-    codeBlock.spec(options.codeBlock),
-    hardBreak.spec(options.hardBreak),
-    heading.spec(options.heading),
-    horizontalRule.spec(options.horizontalRule),
-    listItem.spec(options.listItem),
-    orderedList.spec(options.orderedList),
-    todoItem.spec(options.todoItem),
-    todoList.spec(options.todoList),
-    image.spec(options.image),
+    options.doc !== false && doc.spec(options.doc),
+    options.text !== false && text.spec(options.text),
+    options.paragraph !== false && paragraph.spec(options.paragraph),
+    options.blockquote !== false && blockquote.spec(options.blockquote),
+    options.bulletList !== false && bulletList.spec(options.bulletList),
+    options.codeBlock !== false && codeBlock.spec(options.codeBlock),
+    options.hardBreak !== false && hardBreak.spec(options.hardBreak),
+    options.heading !== false && heading.spec(options.heading),
+    options.horizontalRule !== false &&
+      horizontalRule.spec(options.horizontalRule),
+    options.listItem !== false && listItem.spec(options.listItem),
+    options.orderedList !== false && orderedList.spec(options.orderedList),
+    options.todoItem !== false && todoItem.spec(options.todoItem),
+    options.todoList !== false && todoList.spec(options.todoList),
+    options.image !== false && image.spec(options.image),
   ];
 }
 
 function coreNodePlugins(options = {}) {
   return [
-    paragraph.plugins(options.paragraph),
-    blockquote.plugins(options.blockquote),
-    bulletList.plugins(options.bulletList),
-    codeBlock.plugins(options.codeBlock),
-    hardBreak.plugins(options.hardBreak),
-    heading.plugins(options.heading),
-    horizontalRule.plugins(options.horizontalRule),
-    listItem.plugins(options.listItem),
-    orderedList.plugins(options.orderedList),
-    todoItem.plugins(options.todoItem),
-    todoList.plugins(options.todoList),
-    image.plugins(options.image),
+    options.paragraph !== false && paragraph.plugins(options.paragraph),
+    options.blockquote !== false && blockquote.plugins(options.blockquote),
+    options.bulletList !== false && bulletList.plugins(options.bulletList),
+    options.codeBlock !== false && codeBlock.plugins(options.codeBlock),
+    options.hardBreak !== false && hardBreak.plugins(options.hardBreak),
+    options.heading !== false && heading.plugins(options.heading),
+    options.horizontalRule !== false &&
+      horizontalRule.plugins(options.horizontalRule),
+    options.listItem !== false && listItem.plugins(options.listItem),
+    options.orderedList !== false && orderedList.plugins(options.orderedList),
+    options.todoItem !== false && todoItem.plugins(options.todoItem),
+    options.todoList !== false && todoList.plugins(options.todoList),
+    options.image !== false && image.plugins(options.image),
   ];
 }

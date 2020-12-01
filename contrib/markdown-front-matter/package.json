@@ -1,0 +1,18 @@
+{
+  "name": "@banglejs/markdown-front-matter",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "peerDependencies": {
+    "@banglejs/core": "*"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*",
+    "@banglejs/markdown": "workspace:*"
+  },
+  "dependencies": {
+    "markdown-it-container": "^3.0.0",
+    "markdown-it-front-matter": "^0.2.3"
+  }
+}
