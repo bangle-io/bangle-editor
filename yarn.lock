@@ -5917,9 +5917,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bangle-play@workspace:bangle-play":
+"bangle-play@workspace:_bangle-play":
   version: 0.0.0-use.local
-  resolution: "bangle-play@workspace:bangle-play"
+  resolution: "bangle-play@workspace:_bangle-play"
   dependencies:
     "@babel/core": ^7.12.3
     "@banglejs/collab": "workspace:*"

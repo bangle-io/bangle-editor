@@ -1,7 +1,7 @@
 archive
 .cache
-bangle-play/dist
-bangle-play/build
+_bangle-play/dist
+_bangle-play/build
 node_modules
 .yarn
 .pnp.js
