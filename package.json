@@ -8,7 +8,7 @@
     "core",
     "collab",
     "emoji",
-    "bangle-play",
+    "_bangle-play",
     "markdown",
     "react",
     "react-menu",

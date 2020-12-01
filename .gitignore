@@ -10,8 +10,8 @@ coverage
 yarn-debug.log*
 yarn-error.log*
 
-bangle-play/dist
-bangle-play/build
+_bangle-play/dist
+_bangle-play/build
 __integration-tests__/build
 
 .yarn/*

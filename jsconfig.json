@@ -45,7 +45,7 @@
         "./contrib/markdown-it-container/*"
       ],
       "bangle-play/*": [
-        "./bangle-play/*"
+        "./_bangle-play/*"
       ],
       "@banglejs/react": [
         "./react/index.js"
@@ -77,9 +77,12 @@
     "build",
     "dist",
     "archive",
-    "bangle-play/build",
-    "bangle-play/node_modules",
+    "_bangle-play/build",
+    "_bangle-play/node_modules",
     "__integration-tests__/build",
+    "_bangle-website/build",
+    "_bangle-website/.docusaurus",
+    "_bangle-website/.cache-loader",
     "public",
     ".cache",
     ".yarn",
