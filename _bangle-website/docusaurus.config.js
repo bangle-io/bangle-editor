@@ -22,7 +22,8 @@ module.exports = {
           label: 'Docs',
           position: 'left',
         },
-        { to: 'blog', label: 'Blog', position: 'left' },
+        // { to: 'blog', label: 'Blog', position: 'left' },
+        { to: 'community/', label: 'Community', position: 'left' },
         {
           href: 'https://github.com/kepta/bangle-play',
           label: 'GitHub',
@@ -39,10 +40,6 @@ module.exports = {
             {
               label: 'Style Guide',
               to: 'docs/',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
             },
           ],
         },
@@ -85,16 +82,16 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve('./docsSidebar.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/kepta/bangle-play/edit/master/_bangle-website/docs',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/kepta/bangle-play/edit/master/_bangle-website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
