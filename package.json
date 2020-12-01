@@ -21,7 +21,8 @@
     "unit-tests": "yarn jest",
     "integration-tests": "yarn e2e:test",
     "lint": "yarn prettier --check . && yarn eslint .",
-    "root:lint": "yarn lint"
+    "root:lint": "yarn lint",
+    "build-docs": "yarn workspace bangle-website build"
   },
   "prettier": {
     "singleQuote": true,
