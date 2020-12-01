@@ -2580,6 +2580,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@banglejs/markdown-front-matter@workspace:*, @banglejs/markdown-front-matter@workspace:contrib/markdown-front-matter":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/markdown-front-matter@workspace:contrib/markdown-front-matter"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+    "@banglejs/markdown": "workspace:*"
+    markdown-it-container: ^3.0.0
+    markdown-it-front-matter: ^0.2.3
+  peerDependencies:
+    "@banglejs/core": "*"
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/markdown@workspace:*, @banglejs/markdown@workspace:markdown":
   version: 0.0.0-use.local
   resolution: "@banglejs/markdown@workspace:markdown"
@@ -5913,6 +5926,7 @@ __metadata:
     "@banglejs/core": "workspace:*"
     "@banglejs/emoji": "workspace:*"
     "@banglejs/markdown": "workspace:*"
+    "@banglejs/markdown-front-matter": "workspace:*"
     "@banglejs/react": "workspace:*"
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
@@ -14149,10 +14163,24 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"markdown-it-container@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "markdown-it-container@npm:3.0.0"
+  checksum: 7d011d1151770a80a8eb15436556fbf5b7f0579ec81a57675fa93dbde4ff3958ea87b2048f688d3e1179dfe3dcb03e80891da5f6c28fb056980d8fc7bd5bdc43
+  languageName: node
+  linkType: hard
+
 "markdown-it-emoji@npm:^2.0.0":
   version: 2.0.0
   resolution: "markdown-it-emoji@npm:2.0.0"
   checksum: e277818e1434ccbd26485993200dbf6ceed6ffe1927b2573f99c5c7490a497d4b644140648d1f0c3de082e9bc1f482438ca4641fbbe7ef0dc85ed1d5f1b81bb0
+  languageName: node
+  linkType: hard
+
+"markdown-it-front-matter@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "markdown-it-front-matter@npm:0.2.3"
+  checksum: f08812b89ce540e4726a8f012c8c1b51dd4cb90820b81137bbd3a90f57b67a5b37427f00e04d2cf571bbdf4e837fe2611ed84fdaa7f257285a6a002941c1e397
   languageName: node
   linkType: hard
 

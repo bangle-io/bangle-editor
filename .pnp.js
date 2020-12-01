@@ -39,6 +39,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:collab"
       },
       {
+        "name": "@banglejs/markdown-front-matter",
+        "reference": "workspace:contrib/markdown-front-matter"
+      },
+      {
         "name": "@banglejs/react-sticker",
         "reference": "workspace:contrib/react-sticker"
       },
@@ -86,6 +90,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@banglejs/core", ["workspace:core"]],
       ["@banglejs/emoji", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji", "workspace:emoji"]],
       ["@banglejs/markdown", ["virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown", "workspace:markdown"]],
+      ["@banglejs/markdown-front-matter", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/markdown-front-matter", "workspace:contrib/markdown-front-matter"]],
       ["@banglejs/react", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", "workspace:react"]],
       ["@banglejs/react-menu", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react-menu", "workspace:react-menu"]],
       ["@banglejs/react-sticker", ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-sticker", "workspace:contrib/react-sticker"]],
@@ -3719,6 +3724,35 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@banglejs/core", "workspace:core"],
             ["markdown-it", "npm:10.0.0"],
             ["prosemirror-markdown", "npm:1.5.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@banglejs/markdown-front-matter", [
+        ["virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/markdown-front-matter", {
+          "packageLocation": "./.yarn/$$virtual/@banglejs-markdown-front-matter-virtual-91cfe0da8f/1/contrib/markdown-front-matter/",
+          "packageDependencies": [
+            ["@banglejs/markdown-front-matter", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/markdown-front-matter"],
+            ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
+            ["@types/banglejs__core", null],
+            ["markdown-it-container", "npm:3.0.0"],
+            ["markdown-it-front-matter", "npm:0.2.3"]
+          ],
+          "packagePeers": [
+            "@banglejs/core",
+            "@types/banglejs__core"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:contrib/markdown-front-matter", {
+          "packageLocation": "./contrib/markdown-front-matter/",
+          "packageDependencies": [
+            ["@banglejs/markdown-front-matter", "workspace:contrib/markdown-front-matter"],
+            ["@banglejs/core", "workspace:core"],
+            ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
+            ["markdown-it-container", "npm:3.0.0"],
+            ["markdown-it-front-matter", "npm:0.2.3"]
           ],
           "linkType": "SOFT",
         }]
@@ -7945,6 +7979,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@banglejs/core", "workspace:core"],
             ["@banglejs/emoji", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:emoji"],
             ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
+            ["@banglejs/markdown-front-matter", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/markdown-front-matter"],
             ["@banglejs/react", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react"],
             ["@banglejs/react-menu", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:react-menu"],
             ["@banglejs/react-sticker", "virtual:5b07977b6c26298a0159650ee8d2606c7bc031ca14e98ea1a06f67b78323e968fe1acfaffc6e518fda5f1f859a726ac497524660d189edd201006f094ce3a8d0#workspace:contrib/react-sticker"],
@@ -17080,11 +17115,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["markdown-it-container", [
+        ["npm:3.0.0", {
+          "packageLocation": "./.yarn/cache/markdown-it-container-npm-3.0.0-e3348fcf77-7d011d1151.zip/node_modules/markdown-it-container/",
+          "packageDependencies": [
+            ["markdown-it-container", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["markdown-it-emoji", [
         ["npm:2.0.0", {
           "packageLocation": "./.yarn/cache/markdown-it-emoji-npm-2.0.0-f7e2c75804-e277818e14.zip/node_modules/markdown-it-emoji/",
           "packageDependencies": [
             ["markdown-it-emoji", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["markdown-it-front-matter", [
+        ["npm:0.2.3", {
+          "packageLocation": "./.yarn/cache/markdown-it-front-matter-npm-0.2.3-b5a0221d41-f08812b89c.zip/node_modules/markdown-it-front-matter/",
+          "packageDependencies": [
+            ["markdown-it-front-matter", "npm:0.2.3"]
           ],
           "linkType": "HARD",
         }]

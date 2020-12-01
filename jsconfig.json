@@ -38,6 +38,12 @@
       "@banglejs/timestamp/*": [
         "./contrib/timestamp/*"
       ],
+      "@banglejs/markdown-it-container": [
+        "./contrib/markdown-it-container/index.js"
+      ],
+      "@banglejs/markdown-it-container/*": [
+        "./contrib/markdown-it-container/*"
+      ],
       "bangle-play/*": [
         "./bangle-play/*"
       ],

@@ -15,7 +15,7 @@ import { objectFilter } from './js-utils';
  */
 export function domSerializationHelpers(
   name,
-  { tag = 'div', content, ignoreAttrs = [], parsingPriority } = {},
+  { tag = 'div', content, ignoreAttrs = [], parsingPriority = 51 } = {},
 ) {
   const serializer = (node) =>
     JSON.stringify(
