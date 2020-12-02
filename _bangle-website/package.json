@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "docs:start": "yarn start",
+    "docs:build": "yarn build",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "yarn scripts:build-api-docs && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",

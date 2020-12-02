@@ -22,7 +22,7 @@
     "integration-tests": "yarn e2e:test",
     "lint": "yarn prettier --check . && yarn eslint .",
     "root:lint": "yarn lint",
-    "build-docs": "yarn workspace bangle-website build"
+    "scripts:build-api-docs": "yarn node _scripts/docs/index.js"
   },
   "prettier": {
     "singleQuote": true,

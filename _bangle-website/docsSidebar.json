@@ -42,7 +42,8 @@
       "type": "category",
       "label": "API",
       "items": [
-        "api/papa"
+        "api/banglejs-core",
+        "api/banglejs-react-menu"
       ]
     }
   ]

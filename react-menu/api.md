@@ -1,3 +1,10 @@
+---
+title: '@banglejs/react-menu'
+sidebar_label: '@banglejs/react-menu'
+packageName: '@banglejs/react-menu'
+id: 'banglejs-react-menu'
+---
+
 # menu
 
 The menu module provides you with tools to help build flexible and powerful menu user interface.
@@ -76,7 +83,7 @@ const plugins = [
   floatingMenu.plugins({ key: menuKey })
 ]
 
-<ReactEditor options={{ plugins }}>
+<ReactEditor options=\{{ plugins }}>
   <FloatingMenu menuKey={menuKey} />
 </ReactEditor>
 
@@ -108,7 +115,7 @@ const renderMenuType = ({ type, menuKey }) => {
   },
 });
 
-<ReactEditor options={{ plugins }}>
+<ReactEditor options=\{{ plugins }}>
   <FloatingMenu menuKey={menuKey} renderMenuType={renderMenuType}/>
 </ReactEditor>
 ```
