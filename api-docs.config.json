@@ -1,7 +1,7 @@
 {
   "shorthands": {
     "link": {
-      "Component": "",
+      "Component": "Papa",
       "SpecFactory": "",
       "MarkSpecFactory": "",
       "NodeSpecFactory": "",
