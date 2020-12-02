@@ -132,6 +132,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.2.0"],
             ["eslint-plugin-testing-library", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:3.10.1"],
             ["expect-puppeteer", "npm:4.4.0"],
+            ["globby", "npm:11.0.1"],
+            ["handlebars", "npm:4.7.6"],
             ["husky", "npm:4.3.0"],
             ["jest", "npm:26.6.3"],
             ["jest-circus", "npm:26.6.3"],
@@ -7960,6 +7962,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.2.0"],
             ["eslint-plugin-testing-library", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:3.10.1"],
             ["expect-puppeteer", "npm:4.4.0"],
+            ["globby", "npm:11.0.1"],
+            ["handlebars", "npm:4.7.6"],
             ["husky", "npm:4.3.0"],
             ["jest", "npm:26.6.3"],
             ["jest-circus", "npm:26.6.3"],
@@ -13445,6 +13449,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/handle-thing-npm-2.0.1-084baca59e-7509fca9eb.zip/node_modules/handle-thing/",
           "packageDependencies": [
             ["handle-thing", "npm:2.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["handlebars", [
+        ["npm:4.7.6", {
+          "packageLocation": "./.yarn/cache/handlebars-npm-4.7.6-f64e7514e4-50276715da.zip/node_modules/handlebars/",
+          "packageDependencies": [
+            ["handlebars", "npm:4.7.6"],
+            ["minimist", "npm:1.2.5"],
+            ["neo-async", "npm:2.6.2"],
+            ["source-map", "npm:0.6.1"],
+            ["uglify-js", "npm:3.12.1"],
+            ["wordwrap", "npm:1.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -24666,6 +24684,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["uglify-js", [
+        ["npm:3.12.1", {
+          "packageLocation": "./.yarn/cache/uglify-js-npm-3.12.1-80de7809a7-1d71fbf9ef.zip/node_modules/uglify-js/",
+          "packageDependencies": [
+            ["uglify-js", "npm:3.12.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["unbzip2-stream", [
         ["npm:1.4.3", {
           "packageLocation": "./.yarn/cache/unbzip2-stream-npm-1.4.3-c5582d6a9f-779446eed1.zip/node_modules/unbzip2-stream/",
@@ -26045,6 +26072,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/word-wrap-npm-1.2.3-7fb15ab002-6526abd75d.zip/node_modules/word-wrap/",
           "packageDependencies": [
             ["word-wrap", "npm:1.2.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["wordwrap", [
+        ["npm:1.0.0", {
+          "packageLocation": "./.yarn/cache/wordwrap-npm-1.0.0-ae57a645e8-b4f3f8104a.zip/node_modules/wordwrap/",
+          "packageDependencies": [
+            ["wordwrap", "npm:1.0.0"]
           ],
           "linkType": "HARD",
         }]
