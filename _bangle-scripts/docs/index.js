@@ -14,7 +14,7 @@ const Handlebars = require('handlebars');
 const del = require('del');
 const frontmatter = require('@github-docs/frontmatter');
 const { paramCase } = require('change-case');
-const docsConfig = require('../../api-docs.config.js');
+const docsConfig = require('../../api-docs.config.js')(Handlebars);
 const rootPath = path.join(__dirname, '..', '..');
 const websitePath = path.join(rootPath, '_bangle-website');
 const apiDocsPath = path.join(websitePath, 'docs', 'api');
@@ -38,7 +38,9 @@ const templatify = (text, context) => {
 
 async function main() {
   const apiFiles = await getAPIDocs();
-  await del(apiDocsPath);
+  // doing a force since bangle-website will
+  // be outside of cwd.
+  await del(apiDocsPath, { force: true });
   await fs.mkdir(apiDocsPath);
   const processedIds = await processFiles(apiFiles);
   console.log('Done processing');

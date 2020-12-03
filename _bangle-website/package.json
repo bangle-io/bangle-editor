@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "docs:start": "yarn start",
-    "docs:build": "yarn build",
+    "website:start": "yarn start",
+    "website:build": "yarn build",
+    "website:serve": "yarn serve",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "yarn scripts:build-api-docs && docusaurus build",
