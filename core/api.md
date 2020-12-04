@@ -918,11 +918,13 @@ const plugins = [
 
 ## Component
 
-The building block of BangleJS is a component. At it's heart it just a Javascript module which exports the follow properties:
+The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the follow properties:
 
-- **?spec(opts: Object):** [Spec](#spec)
+- **?spec(opts: Object):** [Spec](#spec)\
+  The specification which defines how the component will be rendered in the Editor. If the component has nothing to render it will not export this method.
 
-- **?plugins(opts: Object):** [Plugins](#plugins)
+- **?plugins(opts: Object):** [Plugins](#plugins)\
+  This injects the superpowers :mage: to your component. Fantasy aside: you can pretty do anything to your node/mark with Plugins.
 
 - **?commands:** [CommandObject](#commandobject)
 
