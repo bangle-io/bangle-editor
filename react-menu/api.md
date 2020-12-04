@@ -2,12 +2,10 @@
 title: '@banglejs/react-menu'
 sidebar_label: '@banglejs/react-menu'
 packageName: '@banglejs/react-menu'
-id: 'banglejs-react-menu'
+id: 'react_menu'
 ---
 
-# menu
-
-The menu module provides you with tools to help build flexible and powerful menu user interface.
+This package provides you with tools to help build flexible yet powerful menus using React.
 
 ### Installation
 
@@ -15,9 +13,9 @@ The menu module provides you with tools to help build flexible and powerful menu
 npm install @banglejs/react
 ```
 
-# floatingMenu: Component
+## floatingMenu: {{core.link.Component}}
 
-This is a bangle component which helps you create floating menus. By default it contains three types of tooltips:
+This is a component which helps you create floating menus. By default it contains three types of tooltips:
 
 1. `floatingMenu` The regular tooltip showing the basic formatting options.
 
@@ -25,19 +23,15 @@ This is a bangle component which helps you create floating menus. By default it 
 
 3. `null` No menu tooltip shown.
 
-You add more types of tooltips by tweaking the `calculateType` parameter in the `.plugins({ ... })` .
+You can add more types of tooltips by tweaking the `calculateType` parameter in the `.plugins({ ... })`.
 
-```
-import { floatingMenu } from '@banglejs/react-menu'
-```
-
-## plugins({ ... }): PluginFactory
+### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- **key:** ?PluginKey
+- **key:** ?{{core.link.PluginKey}}
 
-- **keybindings:** ?Object = defaultKeys
+- {{core.text.pluginsParamKeybindings}}
 
 - **getScrollContainer:** ?fn(view: EditorView) -> dom.Node\
   The dom Node which contains the scrollbar. This will be used to prevent the tooltip from overflowing.\
@@ -53,31 +47,35 @@ Named parameters:
 
   - `floatingMenu`: If the above do not match.
 
-## commands: CommandObject
+### commands: {{core.link.CommandObject}}
 
-- **focusFloatingMenuInput**(key: PluginKey): Command\
-  Sets the focus on the `input` element in the floating menu. Ideally used to set the focus to `floatingLinkMenu`, which has an input element for updating the link.
+- **focusFloatingMenuInput**(key: {{core.link.PluginKey}}): {{core.link.Command}}\
+  Sets the focus on the `input` element in the floating menu. Bangle uses this internally to set focus on the input element when a user press keyboard shortcut to set a link.
 
-- **toggleFloatingLinkMenu**(key: PluginKey): Command\
+- **toggleFloatingLinkMenu**(key: {{core.link.PluginKey}}): {{core.link.Command}}\
   Toggles the `floatingLinkMenu` tooltip.
 
-- **updateFloatingTooltipType**(key: PluginKey, type: string | null): Command\
+- **updateFloatingTooltipType**(key: {{core.link.PluginKey}}, type: string | null): {{core.link.Command}}\
   Sets the floating menu's current type to `type`. Set type to `null` to hide the floating menu tooltip.
 
-**queryIsMenuActive**(key: PluginKey): Command\
- Query if the menu is active.
+- **queryIsMenuActive**(key: {{core.link.PluginKey}}): {{typedQueryCommand "boolean"}}\
+  Query if the menu is active.
 
-## defaultKeys: Keybindings
+### defaultKeys: {{core.link.Keybindings}}
 
-- **hide** = 'Escape'
+- **hide** = `'Escape'`
 
-- **toggleLink** = 'Meta-k'
+- **toggleLink** = `'Meta-k'`
 
-```
+**Usage**
+
+:bulb:  Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
+
+```js
 import {ReactEditor} from '@banglejs/react';
 import {floatingMenu} from '@banglejs/react-menu';
 
-const menuKey = new PluginKey();
+const menuKey = new PluginKey('menuKey');
 const plugins = [
   // otherPlugins
   floatingMenu.plugins({ key: menuKey })
@@ -93,17 +91,22 @@ updateFloatingTooltipType(menuKey, null)(state, dispatch, view)
 toggleFloatingLinkMenu(menuKey)(state, dispatch, view)
 ```
 
-# FloatingMenu: React.Element
+## FloatingMenu: [React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)
 
-## Props
+### Props
 
 - **menuKey**: The plugin key of the floatingMenu.
 
-- **renderMenuType:** ?fn({ type, menuKey}) -> React.Element. \
+- **renderMenuType:** ?fn({ type, menuKey }) -> [React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)\
   Return the type of floating menu to render based on the type.\
-  _default:_ Returns `<Menu />` for the type `floatingMenu` , `<LinkMenu />` for `floatingLinkMenu` and `null` for anything else.
+  If no value is supplied, it will default to using `<Menu />` for the type `floatingMenu` , `<LinkMenu />` for `floatingLinkMenu` and `null` for everything else.
+
+**Usage**
+
+:bulb:  Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
 
 ```js
+// customize the rendering behaviour for custom types
 const renderMenuType = ({ type, menuKey }) => {
     if (type === 'fancyMenu') {
       return <FancyMenu menuKey={menuKey} />;
@@ -119,7 +122,3 @@ const renderMenuType = ({ type, menuKey }) => {
   <FloatingMenu menuKey={menuKey} renderMenuType={renderMenuType}/>
 </ReactEditor>
 ```
-
-Helpful links:
-
-- Building a floating menu

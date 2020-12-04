@@ -1,5 +1,5 @@
 ---
-title: Editing Operations
+title: Editing commands
 sidebar_label: Editing Operation
 ---
 

@@ -12,7 +12,7 @@ export const commands = {
   queryIsCodeActive,
 };
 export const defaultKeys = {
-  toggleCode: 'Mod-`',
+  toggleCode: 'Mod-d',
 };
 
 const name = 'code';
