@@ -15,8 +15,8 @@ module.exports = {
   clearMocks: true,
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-      '<rootDir>/_scripts/fileMock.js',
-    '\\.(css)$': '<rootDir>/_scripts/styleMock.js',
+      '<rootDir>/_bangle-scripts/fileMock.js',
+    '\\.(css)$': '<rootDir>/_bangle-scripts/styleMock.js',
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
 };

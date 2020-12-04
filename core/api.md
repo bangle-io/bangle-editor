@@ -2,27 +2,37 @@
 title: '@banglejs/core'
 sidebar_label: '@banglejs/core'
 packageName: '@banglejs/core'
-id: 'banglejs-core'
+id: 'core'
 ---
 
-## blockquote: {{link.Component}}
+`@banglejs/core` is the :heart_eyes: of BangleJS. This is a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/) for most Bangle packages. To install run:
 
-Enables blockquote in your editor. {{link.MarkdownSupport}}
+```
+npm install @banglejs/core
+```
 
-### spec(): {{link.NodeSpecFactory}}
+{{global.useRightSidebar}}
 
-Returns a node spec, read more {{text.Nodes}}.
+## Components
 
-### plugins({ ... }): {{link.PluginsFactory}}
+The following is a list of components exported by this package.
+
+### blockquote: {{core.link.Component}}
+
+Enables blockquote in your editor. {{global.link.MarkdownSupport}}
+
+#### spec(): {{core.link.NodeSpec}}
+
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?boolean=true\
   Toggle the markdown shortcut for creating a blockquote. If enabled, type `>` followed by a space to create one.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **wrapIn**=`Ctrl-ArrowRight`: wrap text in blockquote.
 
@@ -30,17 +40,17 @@ Named parameters:
 
 - **moveUp**=`Alt-ArrowUp`: move blockquote up
 
-- **emptyCopy**=`Mod-c`: {{text.emptyCopy}}
+- **emptyCopy**=`Mod-c`: {{core.text.emptyCopy}}
 
-- **emptyCut**=`Mod-x`: {{text.emptyCut}}
+- **emptyCut**=`Mod-x`: {{core.text.emptyCut}}
 
-- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{text.insertEmptyParaAbove}}
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{core.text.insertEmptyParaAbove}}
 
-- **insertEmptyParaBelow**=`Mod-Enter`: {{text.insertEmptyParaBelow}}
+- **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **queryIsBlockQuoteActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsBlockQuoteActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a blockquote or not.
 
 **Usage**
@@ -59,33 +69,31 @@ const plugins = [
 ];
 ```
 
-## bold: {{link.Component}}
+### bold: {{core.link.Component}}
 
-Allows text in your editor to be marked as bold. {{link.MarkdownSupport}}
+Allows text in your editor to be marked as bold. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.MarkSpecFactory}}
+#### spec(): {{core.link.MarkSpec}}
 
-Returns a mark spec, read more {{text.Marks}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?boolean=true\
   Toggle the markdown shortcut for creating a bold mark. If enabled, type `**text**` to create the mark.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggleBold** = `Mod-b`: toggle bold mark
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleBold**(): {{link.Command}}\
+- **toggleBold**(): {{core.link.Command}}\
   Toggles bold mark.
 
-- **queryIsBoldActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsBoldActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a bold mark or not.
 
 **Usage**
@@ -104,33 +112,31 @@ const plugins = [
 ];
 ```
 
-## bulletList: {{link.Component}}
+### bulletList: {{core.link.Component}}
 
-Enables bulletList `<ul/>`. **Requires node components with names `orderedList` & `listItem` to work**. {{link.MarkdownSupport}}
+Enables bulletList `<ul/>`. **Requires node components with names** `orderedList` & `listItem` to work. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?boolean=`true`\
   Enable the markdown shortcut for creating a bullet list. If enabled, type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggle**=`Shift-Ctrl-8`: Executes `toggleBulletList` command.
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleBulletList**(): {{link.Command}}\
-   Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
+- **toggleBulletList**(): {{core.link.Command}}\
+  Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
 
-- **queryIsBulletListActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsBulletListActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a bullet list.
 
 **Usage**
@@ -153,36 +159,34 @@ const plugins = [
 ];
 ```
 
-## code: {{link.Component}}
+### code: {{core.link.Component}}
 
-Allows text in your editor to be marked as code. {{link.MarkdownSupport}}
+Allows text in your editor to be marked as code. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.MarkSpecFactory}}
+#### spec(): {{core.link.MarkSpec}}
 
-Returns a mark spec, read more {{text.Marks}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **escapeAtEdge:** ?Boolean = true\
+- **escapeAtEdge:** ?Boolean=true\
   Allows automatic escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?Boolean=true\
   Toggle the markdown shortcut for creating a code mark. If enabled, type `` `text` `` to create a code mark.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggleCode** = `` Mod-` ``: toggle code mark
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleCode**(): {{link.Command}}\
+- **toggleCode**(): {{core.link.Command}}\
   Toggles code mark.
 
-- **queryIsCodeActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsCodeActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a code mark or not.
 
 **Usage**
@@ -201,24 +205,22 @@ const plugins = [
 ];
 ```
 
-## codeBlock: {{link.Component}}
+### codeBlock: {{core.link.Component}}
 
-Enables `<code/>` in your editor. {{link.MarkdownSupport}}
+Enables `<code/>` in your editor. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?Boolean = true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
+- **markdownShortcut**: ?Boolean=true\
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toCodeBlock**=`Shift-Ctrl-\`: wraps text in codeBlock.
 
@@ -226,13 +228,13 @@ Named parameters:
 
 - **moveUp**=`Alt-ArrowUp`: move codeBlock up
 
-- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{text.insertEmptyParaAbove}}
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{core.text.insertEmptyParaAbove}}
 
-- **insertEmptyParaBelow**=`Mod-Enter`: {{text.insertEmptyParaBelow}}
+- **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **queryIsCodeActiveBlock**(): {{link.QueryCommand.boolean}}\
+- **queryIsCodeActiveBlock**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a codeBlock or not.
 
 **Usage**
@@ -251,37 +253,35 @@ const plugins = [
 ];
 ```
 
-## doc: {{link.Component}}
+### doc: {{core.link.Component}}
 
-Top level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not defined, Bangle will automatically default to this one.
+**Top** level node needed by the editor to contain every other node. The spec & plugins for this component are **required** for Bangle to function, if a spec named `doc` is not defined, Bangle will automatically default to this one.
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a top level node spec, read more {{text.Nodes}}.
+Returns a node spec with [topNode](#spec) set to `true`, read more {{global.link.UnderstandingBangleGuide}}.
 
-## heading: {{link.Component}}
+### heading: {{core.link.Component}}
 
-Enables headings of various levels in your editor. {{link.MarkdownSupport}}
+Enables headings of various levels in your editor. {{global.link.MarkdownSupport}}
 
-### spec({ ... }): {{link.NodeSpecFactory}}
-
-Returns a node spec, read more {{text.Nodes}}.
+#### spec({ ... }): {{core.link.NodeSpec}}
 
 Named parameters:
 
-- **levels**: `?Array<Number> = [1,2,3,4,5,6]` \
+- **levels**: ?number\[\]=\[1,2,3,4,5,6\] \
   The allowed levels for the heading, think `<h1/>`, `<h2/>` and so on. The array must be contiguous and the first element must be `1` and the last element must be less than or equal to `6`.
 
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?Boolean = `true`\
+- **markdownShortcut**: ?Boolean=true\
   Toggle the markdown shortcut for heading. If enabled, type `#` followed by a space to create one a level one heading.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toH1**=`Shift-Ctrl-1`: Convert a node to heading of level 1. Is a no-op if the level `1` is disallowed.
 
@@ -299,20 +299,20 @@ Named parameters:
 
 - **moveUp**=`Alt-ArrowUp`: move heading up
 
-- **emptyCopy**=`Mod-c`: {{text.emptyCopy}}
+- **emptyCopy**=`Mod-c`: {{core.text.emptyCopy}}
 
-- **emptyCut**=`Mod-x`: {{text.emptyCut}}
+- **emptyCut**=`Mod-x`: {{core.text.emptyCut}}
 
-- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{text.insertEmptyParaAbove}}
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{core.text.insertEmptyParaAbove}}
 
-- **insertEmptyParaBelow**=`Mod-Enter`: {{text.insertEmptyParaBelow}}
+- **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleItalic**(level: number = 3): {{link.Command}}\
-  Toggles text into heading of given `level` and vice versa.
+- **toggleItalic**(level: `number=3`): {{core.link.Command}}\
+  Toggles text into heading of a given `level` and vice versa.
 
-- **queryIsHeadingActive**(level: number = 3): {{link.QueryCommand.boolean}}\
+- **queryIsHeadingActive**(level:`number=3`): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a heading of given `level`.
 
 **Usage**
@@ -331,48 +331,46 @@ const plugins = [
 ];
 ```
 
-## history: {{link.Component}}
+### history: {{core.link.Component}}
 
 Enables history in your editor, this is a wrapper for the prosemirror's [history module](https://prosemirror.net/docs/ref/#history). **Unless you are overriding this component, it will be included by default.**
 
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
 - **historyOpts**: Object \
-  see the Prosemirror history `config` [docs](https://prosemirror.net/docs/ref/#history.history^config) for the API.
+  see the Prosemirror history `config` [docs](https://prosemirror.net/docs/ref/#history.history%5Econfig) for the API.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **undo**=`Mod-x`
 
 - **redo**=`Mod-y Shift-Mod-z`
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **undo**(): {{link.Command}}\
+- **undo**(): {{core.link.Command}}\
   Undoes the last step.
 
-- **redo**(): {{link.Command}}\
+- **redo**(): {{core.link.Command}}\
   Redoes the last step.
 
-## hardBreak: {{link.Component}}
+### hardBreak: {{core.link.Component}}
 
 Enables the `<br />` element in your editor.
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **insert** = `Shift-Enter`: inserts a hard break
 
@@ -392,21 +390,19 @@ const plugins = [
 ];
 ```
 
-## horizontalRule: {{link.Component}}
+### horizontalRule: {{core.link.Component}}
 
-Enables a horizontal (`<hr />`) rule component in your editor. {{link.MarkdownSupport}}
+Enables a horizontal (`<hr />`) rule component in your editor. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?boolean=true\
   Toggle the markdown shortcut for creating a horizontalRule. Type `---` and `___` to insert a horizontal rule.
 
 **Usage**
@@ -425,22 +421,20 @@ const plugins = [
 ];
 ```
 
-## image: {{link.Component}}
+### image: {{core.link.Component}}
 
 Enables images in your editor.
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **handleDragAndDrop:** Boolean=`true` \
-  Toggle the functionality of dragging-n-dropping and pasting of images into the editor.
+- **handleDragAndDrop:** ?boolean=true \
+  Toggle the functionality of dragging, dropping and pasting of images into the editor.
 
 **Usage**
 
@@ -458,33 +452,31 @@ const plugins = [
 ];
 ```
 
-## italic: {{link.Component}}
+### italic: {{core.link.Component}}
 
-Allows text in your editor to be marked as italic. {{link.MarkdownSupport}}
+Allows text in your editor to be marked as italic. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.MarkSpecFactory}}
+#### spec(): {{core.link.MarkSpec}}
 
-Returns a mark spec, read more {{text.Marks}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?boolean=true\
   Toggle the markdown shortcut for creating am italic mark. If enabled, type `_text_` to enable italic mark.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggleItalic** = `Mod-i`: toggle an italic mark
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleItalic**(): {{link.Command}}\
+- **toggleItalic**(): {{core.link.Command}}\
   Toggles italic mark.
 
-- **queryIsItalicActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsItalicActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside an italic mark or not.
 
 **Usage**
@@ -503,39 +495,37 @@ const plugins = [
 ];
 ```
 
-## link: {{link.Component}}
+### link: {{core.link.Component}}
 
 Allows text in your editor to be marked as link.
 
-### spec({ ... }): {{link.MarkSpecFactory}}
-
-Returns a mark spec, read more {{text.Marks}}.
+#### spec({ ... }): {{core.link.MarkSpec}}
 
 Named parameters:
 
-- **openOnClick**: Boolean=`false`\
+- **openOnClick**: ?boolean=false\
   If enabled clicking a link will open the link in new tab. If disabled, clicking a link will set the cursor on it.
 
-### plugins(): {{link.PluginsFactory}}
+#### plugins(): {{core.link.Plugins}}
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **createLink**(href : string): {{link.Command}}\
+- **createLink**(href : string): {{core.link.Command}}\
   Creates a link mark on the selection text.
 
-- **updateLink**(href : ?string): {{link.Command}}\
+- **updateLink**(href : ?string): {{core.link.Command}}\
   Updates a link mark on the selection text with `href`. Set `href` to `undefined` to clear the link mark. If selection is empty, it will update the parent text node.
 
-- **queryLinkAttrs**(): {{customQueryCommand "?{href: string, text: string}"}}\
+- **queryLinkAttrs**(): {{typedQueryCommand "?{href: string, text: string}"}}\
   Returns the details of the link mark in selection.
 
-- **queryIsLinkAllowedInRange**(from: number, to: number): {{link.QueryCommand.boolean}}\
+- **queryIsLinkAllowedInRange**(from: number, to: number): {{typedQueryCommand "boolean"}}\
   Queries if the range allows for creation of link mark.
 
-- **queryIsLinkActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsLinkActive**(): {{typedQueryCommand "boolean"}}\
   Queries if the selection is in a link mark.
 
-- **queryIsSelectionAroundLink**(): {{link.QueryCommand.boolean}}\
+- **queryIsSelectionAroundLink**(): {{typedQueryCommand "boolean"}}\
   Queries if the selection is around a link mark.
 
 **Usage**
@@ -554,21 +544,19 @@ const plugins = [
 ];
 ```
 
-## listItem: {{link.Component}}
+### listItem: {{core.link.Component}}
 
-Creates a listItem `<li/>`. **Requires node components with names `bulletList` and `orderedList` to work**
+Creates a listItem `<li/>`. **Requires node components with names** `bulletList` and `orderedList` to work
 
-#### spec({ ... }): {{link.NodeSpecFactory}}
+#### spec({ ... }): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **indent**=`Tab`: Indents the listItem
 
@@ -578,21 +566,21 @@ Named parameters:
 
 - **moveUp**=`Alt-ArrowUp`: move listItem up
 
-- **emptyCopy**=`Mod-c`: {{text.emptyCopy}}
+- **emptyCopy**=`Mod-c`: {{core.text.emptyCopy}}
 
-- **emptyCut**=`Mod-x`: {{text.emptyCut}}
+- **emptyCut**=`Mod-x`: {{core.text.emptyCut}}
 
 - **insertEmptyListAbove**=`Mod-Shift-Enter`: Insert a new list above the current list and move cursor to it.
 
 - **insertEmptyListBelow**=`Mod-Enter`: Insert a new list below the current list and move cursor to it.
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **indentListItem**(): {{link.Command}}\
-   Indents list item one level. Can only indent 1 plus the parent's level.
+- **indentListItem**(): {{core.link.Command}}\
+  Indents list item one level. Can only indent 1 plus the parent's level.
 
-- **outdentListItem**(): {{link.QueryCommand.boolean}}\
-   Outdents list item one level. If level is root, outdents to a paragraph.
+- **outdentListItem**(): {{typedQueryCommand "boolean"}}\
+  Outdents list item one level. If level is root, outdents to a paragraph.
 
 **Usage**
 
@@ -614,33 +602,31 @@ const plugins = [
 ];
 ```
 
-## orderedList: {{link.Component}}
+### orderedList: {{core.link.Component}}
 
-Enables orderedList `<ol/>`. **Requires node components with names `bulletList`, `listItem` to work**. {{link.MarkdownSupport}}
+Enables orderedList `<ol/>`. **Requires node components with names** `bulletList`, `listItem` to work. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?boolean=true\
   Enable the markdown shortcut for creating an ordered list. Type `1.` followed by a space to create an ordered list.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggle**=`Shift-Ctrl-9`: Executes `toggleOrderedList` command.
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleOrderedList**(): {{link.Command}}\
-   Convert to an orderedList and if already an orderedList, convert it to a paragraph node.
+- **toggleOrderedList**(): {{core.link.Command}}\
+  Convert to an orderedList and if already an orderedList, convert it to a paragraph node.
 
-- **queryIsSelectionInsideOrderedList**(): {{link.QueryCommand.boolean}}\
+- **queryIsSelectionInsideOrderedList**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside an ordered list.
 
 **Usage**
@@ -663,56 +649,56 @@ const plugins = [
 ];
 ```
 
-## paragraph: {{link.Component}}
+### paragraph: {{core.link.Component}}
 
 Enables paragraph (`<p/>` in html) nodes in your editor. The spec for this component are **required** for Bangle to function, if a spec with a name=`paragraph` is not specified, Bangle will automatically default to this one.
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a spec, read more {{text.Nodes}}.
+Returns a spec, read more {{global.link.UnderstandingBangleGuide}}.
 
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **jumpToStartOfParagraph**=`Ctrl-a (mac) Ctrl-Home (linux/pc)`: Executes the `jumpToStartOfParagraph` command (see commands below).
 
 - **jumpToEndOfParagraph**=`Ctrl-a (mac) Ctrl-Home (linux/pc)`: Executes the `jumpToEndOfParagraph` command (see commands below).
 
-- **moveDown**=`Alt-ArrowDown`: move paragraph down
+- **moveDown**=`Alt-ArrowDown`: Move paragraph down.
 
-- **moveUp**=`Alt-ArrowUp`: move paragraph up
+- **moveUp**=`Alt-ArrowUp`: Move paragraph up.
 
-- **emptyCopy**=`Mod-c`: {{text.emptyCopy}}
+- **emptyCopy**=`Mod-c`: {{core.text.emptyCopy}}
 
-- **emptyCut**=`Mod-x`: {{text.emptyCut}}
+- **emptyCut**=`Mod-x`: {{core.text.emptyCut}}
 
-- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{text.insertEmptyParaAbove}}
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{core.text.insertEmptyParaAbove}}
 
-- **insertEmptyParaBelow**=`Mod-Enter`: {{text.insertEmptyParaBelow}}
+- **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
 - **toggleParagraph**=`Ctrl-Shift-0`: Toggles a node to paragraph and vice versa.
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **jumpToStartOfParagraph**(): {{link.Command}}\
+- **jumpToStartOfParagraph**(): {{core.link.Command}}\
   Jumps the cursor to the start of paragraph.
 
-- **jumpToEndOfParagraph**(): {{link.Command}}\
+- **jumpToEndOfParagraph**(): {{core.link.Command}}\
   Jumps the cursor to the end of paragraph.
 
-- **convertToParagraph**(): {{link.Command}}\
+- **convertToParagraph**(): {{core.link.Command}}\
   Coverts the node in selection to paragraph type.
 
-- **queryIsParagraph**(): {{link.QueryCommand.boolean}}\
+- **queryIsParagraph**(): {{typedQueryCommand "boolean"}}\
   Query if it is paragraph under the selection.
 
-- **queryIsTopLevelParagraph**(): {{link.QueryCommand.boolean}}\
-  Query if it is paragraph under the selection and it is a direct descendant of the top level `doc` node.
+- **queryIsTopLevelParagraph**(): {{typedQueryCommand "boolean"}}\
+  Query if it is paragraph under the selection and it is a direct descendant of the top level node, which by default is [doc](#doc-component).
 
 **Usage**
 
@@ -730,30 +716,28 @@ const plugins = [
 ];
 ```
 
-## strike: {{link.Component}}
+### strike: {{core.link.Component}}
 
 Allows text in your editor to be marked as strike.
 
-### spec(): {{link.MarkSpecFactory}}
+#### spec(): {{core.link.MarkSpec}}
 
-Returns a mark spec, read more {{text.Marks}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggleStrike** = `Mod-d`: toggle a strike mark
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleStrike**(): {{link.Command}}\
+- **toggleStrike**(): {{core.link.Command}}\
   Toggles strike mark.
 
-- **queryIsStrikeActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsStrikeActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a strike mark or not.
 
 **Usage**
@@ -772,39 +756,38 @@ const plugins = [
 ];
 ```
 
-## text: {{link.Component}}
+### text: {{core.link.Component}}
 
 The text node which the editor uses to wrap the text. The spec for this component are **required** for Bangle to function, if a spec named `text` is not defined, Bangle will automatically default to this one.
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Creates a todoItem node spec with `done` attribute, read more {{text.Nodes}}.
+Creates a todoItem node spec with `done` attribute, read more {{global.link.UnderstandingBangleGuide}}.
 
-## todoItem: {{link.Component}}
+### todoItem: {{core.link.Component}}
 
-Creates a todoItem with a `done` attribute. **Requires node components with names `todoList`, `bulletList`,`orderedList` & `listItem` to work**
+Creates a todoItem with a `done` attribute. **Requires node components with names** `todoList`, `bulletList`,`orderedList` & `listItem` to work
 
-### spec({ ... }): {{link.NodeSpecFactory}}
-
-Returns a node spec, read more {{text.Nodes}}.
+#### spec({ ... }): {{core.link.NodeSpec}}
 
 Named parameters:
 
-- **nested**: boolean=`true`\
+- **nested**: boolean=true\
   Allows nesting of todo items.
-- **draggable**: boolean=`true`\
+
+- **draggable**: boolean=true\
   Make todo items draggable.
 
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **nodeView**: boolean=`true`\
-  If `true`, will use the default todoItem nodeView. Set it to `false` to disable the default todoItem nodeView. The typical use-case for setting it to `false` is when you want to use a custom nodeView for todoItem. See the {{link.nodeViews}} section for more details.
+- **nodeView**: boolean=true\
+  If `true`, will use the default todoItem nodeView. Set it to `false` to disable the default todoItem nodeView. The typical use-case for setting it to `false` is when you want to use a custom nodeView for todoItem. See the {{core.link.nodeViews}} section for more details.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggleDone**=`Ctrl-Enter (mac) Ctrl-I (linux/windows)`: Toggles the todo item's done status.
 
@@ -816,20 +799,20 @@ Named parameters:
 
 - **moveUp**=`Alt-ArrowUp`: move todoItem up
 
-- **emptyCopy**=`Mod-c`: {{text.emptyCopy}}
+- **emptyCopy**=`Mod-c`: {{core.text.emptyCopy}}
 
-- **emptyCut**=`Mod-x`: {{text.emptyCut}}
+- **emptyCut**=`Mod-x`: {{core.text.emptyCut}}
 
-- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{text.insertEmptyParaAbove}}
+- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{core.text.insertEmptyParaAbove}}
 
-- **insertEmptyParaBelow**=`Mod-Enter`: {{text.insertEmptyParaBelow}}
+- **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleTodoItemDone**(): {{link.Command}}\
-   Toggle the done attribute of the todo item in the selection.
+- **toggleTodoItemDone**(): {{core.link.Command}}\
+  Toggle the done attribute of the todo item in the selection.
 
-- **queryTodoItemAttrs**(): {{customQueryCommand "?{done: boolean}"}}\
+- **queryTodoItemAttrs**(): {{typedQueryCommand "?{done: boolean}"}}\
   Query the todo item attributes.
 
 **Usage**
@@ -862,63 +845,59 @@ const plugins = [
 ];
 ```
 
-## todoList: {{link.Component}}
+### todoList: {{core.link.Component}}
 
-A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names `todoItem`, `bulletList`,`orderedList` & `listItem` to work**. {{link.MarkdownSupport}}
+A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names** `todoItem`, `bulletList`,`orderedList` & `listItem` to work. {{global.link.MarkdownSupport}}
 
-### spec(): {{link.NodeSpecFactory}}
+#### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec, read more {{text.Nodes}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-- **markdownShortcut**: ?boolean=`true`\
+- **markdownShortcut**: ?boolean=true\
   Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList.
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggle**=`Shift-Ctrl-7`: Executes `toggleTodoList` command.
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleTodoList**(): {{link.Command}}\
-   Convert to an todoList and if already an todoList, convert it to a paragraph node.
+- **toggleTodoList**(): {{core.link.Command}}\
+  Convert to an todoList and if already an todoList, convert it to a paragraph node.
 
-- **queryIsTodoListActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsTodoListActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a todo list.
 
 **Usage**
 
 See `todoItem` usage.
 
-## underline: {{link.Component}}
+### underline: {{core.link.Component}}
 
 Allows text in your editor to be marked as underline.
 
-### spec(): {{link.MarkSpecFactory}}
+#### spec(): {{core.link.MarkSpec}}
 
-Returns a mark spec, read more {{text.Marks}}.
-
-### plugins({ ... }): {{link.PluginsFactory}}
+#### plugins({ ... }): {{core.link.Plugins}}
 
 Named parameters:
 
-- {{text.pluginsParamKeybindings}}
+- {{core.text.pluginsParamKeybindings}}
 
-### defaultKeys: {{link.Keybindings}}
+#### defaultKeys: {{core.link.Keybindings}}
 
 - **toggleUnderline** = `Mod-u`: toggle an underline mark
 
-### commands: {{link.CommandsObject}}
+#### commands: {{core.link.CommandObject}}
 
-- **toggleUnderline**(): {{link.Command}}\
+- **toggleUnderline**(): {{core.link.Command}}\
   Toggles underline mark.
 
-- **queryIsUnderlineActive**(): {{link.QueryCommand.boolean}}\
+- **queryIsUnderlineActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside an underline mark or not.
 
 **Usage**
@@ -936,3 +915,85 @@ const plugins = [
   underline.plugins(),
 ];
 ```
+
+## Component
+
+The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the follow properties:
+
+- **?spec(opts: Object):** [Spec](#spec)\
+  The specification which defines how the component will be rendered in the Editor. If the component has nothing to render it will not export this method.
+
+- **?plugins(opts: Object):** [Plugins](#plugins)\
+  This injects the superpowers :mage: to your component. Fantasy aside: you can pretty do anything to your node/mark with Plugins.
+
+- **?commands:** [CommandObject](#commandobject)
+
+- **?defaultKeys:** [KeybindingsObject](#keybindingsobject)
+
+### Spec
+
+Spec is an object with the following fields:
+
+- **type**: `'node'` | `'mark'`\
+  This is a Prosemirror concept which divides the spec in two groups `node` type or `mark` type. Please read {{global.link.UnderstandingBangleGuide}} guide.
+
+- **?topNode**: `?`boolean\
+  Whether the node will be the top node for the document. By default the `doc` node is the top node for Bangle. There can only be one top `node` and is only applicable for `node` types.
+
+- **name**: string\
+  The name of the node or mark.
+
+- **schema**: {{Prosemirror.NodeSpec}} | {{Prosemirror.MarkSpec}}
+
+- **?markdown**: {toMarkdown: fn(), parseMarkdown: object}\
+  Read the {{global.link.MarkdownGuide}} for more details.
+
+- **?options**: object
+
+### Plugins
+
+:brain: _Please this is a **recursive** type - it contains reference to itself!_
+
+> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | ?fn({ schema, specRegistry }) -> [Plugins](#plugins) | undefined
+
+This is designed in a way to provide flexibility and extensibility when grouping multiple plugins together to form a Component. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
+
+### KeybindingsObject
+
+> { \[string\]: string | undefined }
+
+An object which defines the keybindings that are active for a given component. Setting a key to undefined will make it a `no-op`. Please checkout the {{global.link.KeybindingsGuide}} for examples.
+
+### CommandObject
+
+> { \[string\]: fn(opts: object) -> [Command](#command) }
+
+A collection of commands exported by a component.
+
+## Command
+
+> (state: {{Prosemirror.EditorState}}, ?dispatch: {{Prosemirror.Dispatch}}, ?view: {{Prosemirror.EditorView}}) -> boolean
+
+A function that carries out a bunch of transformations in the editor. The return value indicates whether it was executed or not. For example, running a [toggleBold](#bold-component) command on a code block will return `false` to indicate command did not execute, however it will return `true` when run a pargraph.
+
+If a `dispatch` callback is **not** passed, the command will run in dry run mode -- it will pretend to do things but will actually make **no changes** to the editor.
+
+:bulb: _Bangle's API will **always** export a higher order function which then returns a Command, which means it will not export a Command directly. It is designed this way to allow for configurability of a command and to keep the command functions params predictable --_ `(state, dispatch, view)`.
+
+Please read {{global.link.EditorOperationsGuide}} guide for more details.
+
+## QueryCommand
+
+> (state: {{Prosemirror.EditorState}}) -> T
+
+This is a special type of command which makes no changes to the editor but queries the editor state and returns the value.
+
+:bulb: _BangleJS follows the convention of prefixing_ `query` _to any function which returns a QueryCommand._
+
+```js
+import { heading } from '@banglejs/core';
+
+const isActive = heading.commands.queryIsHeadingActive(3)(state); // true
+```
+
+In the example above, [queryIsHeadingActive](#heading-component) is being used to query if the current selection contains a node named `heading` with a level of `3`.

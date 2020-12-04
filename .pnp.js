@@ -31,6 +31,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:_bangle-play"
       },
       {
+        "name": "bangle-scripts",
+        "reference": "workspace:_bangle-scripts"
+      },
+      {
         "name": "bangle-website",
         "reference": "workspace:_bangle-website"
       },
@@ -100,6 +104,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@banglejs/trailing-node", ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/trailing-node", "workspace:contrib/trailing-node"]],
       ["bangle", ["workspace:."]],
       ["bangle-play", ["workspace:_bangle-play"]],
+      ["bangle-scripts", ["workspace:_bangle-scripts"]],
       ["bangle-website", ["workspace:_bangle-website"]],
       ["integration-tests", ["workspace:__integration-tests__"]]
     ],
@@ -117,14 +122,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-optional-chaining", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:7.11.0"],
             ["@babel/preset-env", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:7.11.5"],
             ["@babel/preset-react", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:7.10.4"],
-            ["@github-docs/frontmatter", "npm:1.3.1"],
             ["@typescript-eslint/eslint-plugin", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.8.2"],
             ["@typescript-eslint/parser", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.8.2"],
             ["@yarnpkg/pnpify", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:2.3.3"],
             ["babel-eslint", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:10.1.0"],
             ["babel-jest", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:26.3.0"],
-            ["change-case", "npm:4.1.2"],
-            ["del", "npm:6.0.0"],
             ["eslint", "npm:7.14.0"],
             ["eslint-config-react-app", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:6.0.0"],
             ["eslint-plugin-flowtype", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:5.2.0"],
@@ -135,8 +137,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.2.0"],
             ["eslint-plugin-testing-library", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:3.10.1"],
             ["expect-puppeteer", "npm:4.4.0"],
-            ["globby", "npm:11.0.1"],
-            ["handlebars", "npm:4.7.6"],
             ["husky", "npm:4.3.0"],
             ["jest", "npm:26.6.3"],
             ["jest-circus", "npm:26.6.3"],
@@ -7962,14 +7962,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-optional-chaining", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:7.11.0"],
             ["@babel/preset-env", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:7.11.5"],
             ["@babel/preset-react", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:7.10.4"],
-            ["@github-docs/frontmatter", "npm:1.3.1"],
             ["@typescript-eslint/eslint-plugin", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.8.2"],
             ["@typescript-eslint/parser", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.8.2"],
             ["@yarnpkg/pnpify", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:2.3.3"],
             ["babel-eslint", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:10.1.0"],
             ["babel-jest", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:26.3.0"],
-            ["change-case", "npm:4.1.2"],
-            ["del", "npm:6.0.0"],
             ["eslint", "npm:7.14.0"],
             ["eslint-config-react-app", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:6.0.0"],
             ["eslint-plugin-flowtype", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:5.2.0"],
@@ -7980,8 +7977,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:4.2.0"],
             ["eslint-plugin-testing-library", "virtual:2cc0f4cc603c1db9b6df0de0214e0a203686e93f09274657e1c82e9787a95e8b485367541b1a844d69ca542c8bc0494dbccb34895765accbc2549ed204980e19#npm:3.10.1"],
             ["expect-puppeteer", "npm:4.4.0"],
-            ["globby", "npm:11.0.1"],
-            ["handlebars", "npm:4.7.6"],
             ["husky", "npm:4.3.0"],
             ["jest", "npm:26.6.3"],
             ["jest-circus", "npm:26.6.3"],
@@ -8057,6 +8052,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webpack", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:5.8.0"],
             ["webpack-cli", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:4.2.0"],
             ["webpack-dev-server", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:3.11.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["bangle-scripts", [
+        ["workspace:_bangle-scripts", {
+          "packageLocation": "./_bangle-scripts/",
+          "packageDependencies": [
+            ["bangle-scripts", "workspace:_bangle-scripts"],
+            ["@github-docs/frontmatter", "npm:1.3.1"],
+            ["change-case", "npm:4.1.2"],
+            ["date-fns", "npm:2.15.0"],
+            ["del", "npm:6.0.0"],
+            ["globby", "npm:11.0.1"],
+            ["handlebars", "npm:4.7.6"],
+            ["surge", "npm:0.21.6"]
           ],
           "linkType": "SOFT",
         }]

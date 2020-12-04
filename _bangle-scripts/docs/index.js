@@ -13,8 +13,8 @@ const fs = require('fs/promises');
 const Handlebars = require('handlebars');
 const del = require('del');
 const frontmatter = require('@github-docs/frontmatter');
-const { paramCase } = require('change-case');
-const docsConfig = require('../../api-docs.config.js');
+const { snakeCase } = require('change-case');
+const docsConfig = require('../../api-docs.config.js')(Handlebars);
 const rootPath = path.join(__dirname, '..', '..');
 const websitePath = path.join(rootPath, '_bangle-website');
 const apiDocsPath = path.join(websitePath, 'docs', 'api');
@@ -32,13 +32,15 @@ main();
 
 const templatify = (text, context) => {
   const template = Handlebars.compile(text);
-  const obj = checkForMissingValues(context);
+  const obj = proxyLookup(context);
   return template(obj);
 };
 
 async function main() {
   const apiFiles = await getAPIDocs();
-  await del(apiDocsPath);
+  // doing a force since bangle-website will
+  // be outside of cwd.
+  await del(apiDocsPath, { force: true });
   await fs.mkdir(apiDocsPath);
   const processedIds = await processFiles(apiFiles);
   console.log('Done processing');
@@ -67,7 +69,7 @@ async function processFiles(apiFiles) {
   const processedIds = [];
   for (const [filepath, text] of apiFiles) {
     console.log('Processing ', filepath);
-    const template = await templatify(text, docsConfig.shorthands);
+    let template = await templatify(text, docsConfig.shorthands);
     const { data, errors } = frontmatter(text, { filepath });
     if (errors && errors.length > 0) {
       console.log(errors);
@@ -82,8 +84,10 @@ async function processFiles(apiFiles) {
       throw new Error('FrontMatter field "id" must be string type' + filepath);
     }
 
-    if (paramCase(data.id) !== data.id) {
-      throw new Error(`${data.id} must be in kebab-case.`);
+    if (snakeCase(data.id) !== data.id) {
+      throw new Error(
+        `${data.id} must be in snake_case ${snakeCase(data.id)}. `,
+      );
     }
 
     if (processedIds.includes(data.id)) {
@@ -91,6 +95,15 @@ async function processFiles(apiFiles) {
     }
 
     processedIds.push(data.id);
+
+    // Change the new line syntax from trailing `\`  to `  ` two trailing spaces
+    // due to differences in the engines (remark and markdownit ?) docusaurus does
+    // not understanding trailing slash way of new line.
+    template = template
+      .split('\n')
+      .map((r) => (r.endsWith('\\') ? r.slice(0, r.length - 1) + '  ' : r))
+      .join('\n');
+
     await fs.writeFile(
       path.join(apiDocsPath, data.id + '.md'),
       template,
@@ -108,7 +121,7 @@ async function getAPIDocs() {
   );
 }
 
-function checkForMissingValues(obj, parentName) {
+function proxyLookup(obj, parentName) {
   let handler = {
     get(target, propKey, receiver) {
       const path = parentName ? parentName + '.' + propKey : propKey;
@@ -118,7 +131,7 @@ function checkForMissingValues(obj, parentName) {
       }
 
       if (typeof targetValue == 'object') {
-        return checkForMissingValues(targetValue, path);
+        return proxyLookup(targetValue, path);
       }
       return targetValue;
     },

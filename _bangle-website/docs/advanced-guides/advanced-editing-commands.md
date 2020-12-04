@@ -1,5 +1,5 @@
 ---
-title: Advanced Editing Operations
+title: Advanced Editing commands
 sidebar_label: Advanced Editing Operation
 ---
 

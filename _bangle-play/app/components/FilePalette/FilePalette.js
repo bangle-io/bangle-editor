@@ -91,7 +91,7 @@ function getItems({ query, workspace }) {
   /**
    * @type {WorkspaceFile[]}
    */
-  const files = workspace.files;
+  const files = workspace ? workspace.files : [];
 
   if (!query) {
     return files;

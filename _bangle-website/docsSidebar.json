@@ -22,8 +22,9 @@
         "guides/teeny-tiny-editor",
         "guides/understanding-bangle",
         "guides/menu",
-        "guides/editing-operations",
+        "guides/editing-commands",
         "guides/keybindings",
+        "guides/images",
         "guides/exporting"
       ]
     },
@@ -35,15 +36,15 @@
         "advanced-guides/custom-rendering",
         "advanced-guides/custom-schema",
         "advanced-guides/writing-component",
-        "advanced-guides/advanced-editing-operations"
+        "advanced-guides/advanced-editing-commands"
       ]
     },
     {
       "type": "category",
       "label": "API",
       "items": [
-        "api/banglejs-core",
-        "api/banglejs-react-menu"
+        "api/core",
+        "api/react_menu"
       ]
     }
   ]
