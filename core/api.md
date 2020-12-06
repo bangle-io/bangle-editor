@@ -5,7 +5,7 @@ packageName: '@banglejs/core'
 id: 'core'
 ---
 
-`@banglejs/core` is the :heart_eyes: of BangleJS. This is a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/) for most Bangle packages. To install run:
+`@banglejs/core` as the name suggests is the core of BangleJS and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
 
 ```
 npm install @banglejs/core
@@ -218,7 +218,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
