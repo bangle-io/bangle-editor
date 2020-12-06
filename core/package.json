@@ -2,7 +2,6 @@
   "name": "@banglejs/core",
   "version": "0.1.0",
   "main": "index.js",
-  "private": false,
   "module": "index.js",
   "scripts": {
     "unit-tests": "yarn jest"
