@@ -1,0 +1,21 @@
+---
+title: 'React Floating Menu'
+id: 'react-floating-menu'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Component from './react-floating-menu';
+
+<Tabs
+  defaultValue="example"
+  values={[
+    { label: 'Example', value: 'example' },
+    { label: 'Source code', value: 'src' },
+  ]}
+>
+  <TabItem value="example">
+    <Component />
+  </TabItem>
+  <TabItem value="src">This is an src 🍊</TabItem>
+</Tabs>

@@ -1,0 +1,21 @@
+---
+title: 'React Basic Editor'
+id: 'react-basic-editor'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Component from './react-basic-editor';
+
+<Tabs
+  defaultValue="example"
+  values={[
+    { label: 'Example', value: 'example' },
+    { label: 'Source code', value: 'src' },
+  ]}
+>
+  <TabItem value="example">
+    <Component />
+  </TabItem>
+  <TabItem value="src">This is an src 🍊</TabItem>
+</Tabs>
