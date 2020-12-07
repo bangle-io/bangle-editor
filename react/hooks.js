@@ -7,9 +7,14 @@ import { EditorViewContext } from './ReactEditor';
 const LOG = true;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};
 
-export function useEditorState({ specs, plugins: _plugins, ...options }) {
+export function useEditorState({
+  specs,
+  specRegistry: _specRegistry,
+  plugins: _plugins,
+  ...options
+}) {
   const optionsRef = useRef(options);
-  const specRegistry = useSpecRegistry(specs, {
+  const specRegistry = useSpecRegistry(specs, _specRegistry, {
     defaultSpecs: optionsRef.current.defaultSpecs,
   });
   const plugins = usePlugins(_plugins);
@@ -24,9 +29,13 @@ export function useEditorState({ specs, plugins: _plugins, ...options }) {
   return { pmState, specRegistry };
 }
 
-export function useSpecRegistry(initialValue, options = {}) {
+export function useSpecRegistry(
+  initialSpecs,
+  initialSpecRegistry,
+  options = {},
+) {
   const [specRegistry] = useState(
-    () => new SpecRegistry(initialValue, options),
+    () => initialSpecRegistry || new SpecRegistry(initialSpecs, options),
   );
   return specRegistry;
 }
