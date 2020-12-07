@@ -3,6 +3,9 @@ import { doc, paragraph, text } from './components/index';
 import { bangleWarn } from './utils/js-utils';
 import { coreSpec } from './utils/core-components';
 
+const LOG = true;
+
+let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};
 export class SpecRegistry {
   constructor(rawSpecs = coreSpec(), { defaultSpecs = true } = {}) {
     let flattenedSpecs = flatten(rawSpecs);

@@ -9,7 +9,7 @@ import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { ReactEditor } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from '@banglejs/core/index';
-import { usePluginState } from '@banglejs/react/use-plugin-state';
+import { usePluginState } from '@banglejs/react/hooks';
 import { useEffect, useState } from 'react';
 
 const key = new PluginKey('testPlugins');

@@ -1,6 +1,6 @@
 import reactDOM from 'react-dom';
 import { EditorViewContext } from '@banglejs/react/ReactEditor';
-import { usePluginState } from '@banglejs/react/use-plugin-state';
+import { usePluginState } from '@banglejs/react/hooks';
 import React, {
   useCallback,
   useContext,
