@@ -6032,6 +6032,7 @@ __metadata:
     "@docusaurus/preset-classic": 2.0.0-alpha.69
     "@mdx-js/react": ^1.6.21
     clsx: ^1.1.1
+    prop-types: ^15.7.2
     react: ^16.8.4
     react-dom: ^16.8.4
   languageName: unknown

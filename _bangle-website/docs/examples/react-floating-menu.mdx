@@ -3,12 +3,14 @@ title: 'Floating Menu'
 id: 'react-floating-menu'
 ---
 
-import filePath from '!!file-loader!./react-floating-menu.js';
+import filePath from '!!file-loader!./react-floating-menu.jsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import Component from './react-floating-menu';
 import { ReactCodeExample } from '../../src/example-helpers';
+import Component from './react-floating-menu';
 
-<ReactCodeExample filePath={filePath} language="jsx">
-  <Component />
-</ReactCodeExample>
+<ReactCodeExample
+  filePath={filePath}
+  language="jsx"
+  component={() => <Component />}
+/>

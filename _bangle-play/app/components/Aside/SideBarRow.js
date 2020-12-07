@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 const PADDING_OFFSET = 16;
 const BASE_PADDING = 3;
 export function SideBarRow({

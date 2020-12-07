@@ -14,7 +14,11 @@ const LOG = false;
 let log = LOG
   ? console.log.bind(console, 'tooltip/tooltip-placement')
   : () => {};
-const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+const rem =
+  typeof window === 'undefined'
+    ? 12
+    : parseFloat(getComputedStyle(document.documentElement).fontSize);
 
 /**
  * Dispatching show: true to the plugin will also update the tooltip position

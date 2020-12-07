@@ -4,12 +4,15 @@ id: 'react-basic-editor'
 hide_title: true
 ---
 
-import filePath from '!!file-loader!./react-basic-editor.js';
+import filePath from '!!file-loader!./react-basic-editor.jsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Component from './react-basic-editor';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import { ReactCodeExample } from '../../src/example-helpers';
 
-<ReactCodeExample filePath={filePath} language="jsx">
-  <Component />
-</ReactCodeExample>
+<ReactCodeExample
+  filePath={filePath}
+  language="jsx"
+  component={() => <Component />}
+/>
