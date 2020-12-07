@@ -1,4 +1,5 @@
-@import '@banglejs/tooltip/style.css';
+/* TODO (this does not work when consuming this package as a library
+ @import '@banglejs/tooltip/style.css'; */
 
 .bangle-tooltip-content {
   color: white;

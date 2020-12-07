@@ -15,6 +15,19 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@banglejs/collab": "workspace:*",
+    "@banglejs/core": "workspace:*",
+    "@banglejs/emoji": "workspace:*",
+    "@banglejs/markdown": "workspace:*",
+    "@banglejs/markdown-front-matter": "workspace:*",
+    "@banglejs/react": "workspace:*",
+    "@banglejs/react-menu": "workspace:*",
+    "@banglejs/react-sticker": "workspace:*",
+    "@banglejs/react-stopwatch": "workspace:*",
+    "@banglejs/timestamp": "workspace:*",
+    "@banglejs/tooltip": "workspace:*",
+    "@banglejs/trailing-node": "workspace:*",
     "@docusaurus/core": "2.0.0-alpha.69",
     "@docusaurus/preset-classic": "2.0.0-alpha.69",
     "@mdx-js/react": "^1.6.21",
@@ -33,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "babel": {
+    "rootMode": "upwards"
   }
 }

@@ -32,38 +32,6 @@ export function weakCache(fn) {
   };
 }
 
-export class CachedMap extends Map {
-  #dirtyArrayValues = true;
-  #cachedArrayValues;
-  clear() {
-    this.#dirtyArrayValues = true;
-    super.clear();
-    return;
-  }
-  delete(key) {
-    this.#dirtyArrayValues = true;
-    return super.delete(key);
-  }
-  get(key) {
-    return super.get(key);
-  }
-  has(key) {
-    return super.has(key);
-  }
-  set(key, value) {
-    this.#dirtyArrayValues = true;
-    super.set(key, value);
-    return this;
-  }
-  arrayValues() {
-    if (this.#dirtyArrayValues) {
-      this.#cachedArrayValues = [...super.values()];
-      this.#dirtyArrayValues = false;
-    }
-    return this.#cachedArrayValues;
-  }
-}
-
 export function arrayify(x) {
   if (x == null) {
     throw new Error('undefined value passed');

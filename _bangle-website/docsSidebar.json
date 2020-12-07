@@ -3,16 +3,13 @@
     {
       "type": "category",
       "label": "Introduction",
-      "items": [
-        "hello",
-        "getting-started",
-        "contributing"
-      ]
+      "items": ["hello", "getting-started", "contributing"]
     },
     {
       "type": "category",
       "label": "Examples",
-      "items": []
+      "collapsed": false,
+      "items": ["examples/react-basic-editor", "examples/react-floating-menu"]
     },
     {
       "type": "category",
@@ -42,10 +39,7 @@
     {
       "type": "category",
       "label": "API",
-      "items": [
-        "api/core",
-        "api/react_menu"
-      ]
+      "items": ["api/core", "api/react_menu"]
     }
   ]
 }

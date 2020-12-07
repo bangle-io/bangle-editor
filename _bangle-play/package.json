@@ -22,6 +22,7 @@
     "@banglejs/react-sticker": "workspace:*",
     "@banglejs/react-stopwatch": "workspace:*",
     "@banglejs/timestamp": "workspace:*",
+    "@banglejs/tooltip": "workspace:*",
     "@banglejs/trailing-node": "workspace:*",
     "@popperjs/core": "^2.5.4",
     "css.gg": "^2.0.0",
