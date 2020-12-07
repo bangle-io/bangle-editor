@@ -8,19 +8,8 @@ import filePath from '!!file-loader!./react-basic-editor.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Component from './react-basic-editor';
-import { SourceCode } from '../../src/example-setup';
+import { ReactCodeExample } from '../../src/example-helpers';
 
-<Tabs
-  defaultValue="example"
-  values={[
-    { label: 'Example', value: 'example' },
-    { label: 'Source code', value: 'src' },
-  ]}
->
-  <TabItem value="example">
-    <Component />
-  </TabItem>
-  <TabItem value="src">
-    <SourceCode filePath={filePath} language="jsx" />
-  </TabItem>
-</Tabs>
+<ReactCodeExample filePath={filePath} language="jsx">
+  <Component />
+</ReactCodeExample>
