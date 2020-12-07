@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEditorState, EditorView } from '@banglejs/react';
+import { useEditorState, ReactEditorView } from '@banglejs/react';
 import { corePlugins } from '@banglejs/core/utils/core-components';
 
 import '@banglejs/core/style.css';
@@ -9,5 +9,5 @@ export default function Editor() {
     plugins: corePlugins,
     initialValue: 'Hello world!',
   });
-  return <EditorView editorState={editorState} />;
+  return <ReactEditorView editorState={editorState} />;
 }

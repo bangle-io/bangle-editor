@@ -123,7 +123,7 @@ export class ReactEditor extends React.PureComponent {
   }
 }
 
-export function EditorView({
+export function ReactEditorView({
   id,
   renderNodeViews,
   children,
@@ -138,9 +138,15 @@ export function EditorView({
   const [editor, setEditor] = useState();
 
   useEffect(() => {
+    // save the renderHandlers in the dom to decouple nodeView instantiating code
+    // from the editor. Since PM passing view when nodeView is created, the author
+    // of the component can get the handler reference from `getRenderHandlers(view)`.
+    // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     saveRenderHandlers(
       renderRef.current,
       nodeViewRenderHandlers((cb) => {
+        // use callback for of setState to avoid
+        // get fresh nodeViews
         setNodeViews((nodeViews) => cb(nodeViews));
       }),
     );
