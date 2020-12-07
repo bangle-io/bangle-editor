@@ -2,7 +2,7 @@ import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { objUid } from '@banglejs/core/utils/object-uid';
-import { BangleEditor, editorStateSetup } from '@banglejs/core/editor';
+import { BangleEditor } from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
 import { NodeViewWrapper } from './NodeViewWrapper';
 
@@ -70,19 +70,8 @@ export class ReactEditor extends React.PureComponent {
         this.setState(({ nodeViews }) => ({ nodeViews: cb(nodeViews) }));
       }),
     );
-    const initialEditorState =
-      options.state ||
-      editorStateSetup({
-        plugins: options.plugins,
-        editorProps: options.editorProps,
-        specRegistry: options.specRegistry,
-        stateOpts: options.stateOpts,
-      });
 
-    const editor = new BangleEditor(this.editorRenderTarget.current, {
-      ...options,
-      state: initialEditorState,
-    });
+    const editor = new BangleEditor(this.editorRenderTarget.current, options);
 
     editor.view._updatePluginWatcher = this.updatePluginWatcher;
 
@@ -115,6 +104,7 @@ export class ReactEditor extends React.PureComponent {
   };
 
   componentWillUnmount() {
+    console.log('unmounting');
     if (!this.destroyed) {
       this.editor && this.editor.destroy();
       this.destroyed = true;

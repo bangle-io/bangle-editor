@@ -5943,6 +5943,7 @@ __metadata:
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"
     "@banglejs/timestamp": "workspace:*"
+    "@banglejs/tooltip": "workspace:*"
     "@banglejs/trailing-node": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.4

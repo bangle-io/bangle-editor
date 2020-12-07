@@ -1,11 +1,14 @@
 ---
 title: 'React Basic Editor'
 id: 'react-basic-editor'
+hide_title: true
 ---
 
+import filePath from '!!file-loader!./react-basic-editor.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Component from './react-basic-editor';
+import { SourceCode } from '../../src/example-setup';
 
 <Tabs
   defaultValue="example"
@@ -17,5 +20,7 @@ import Component from './react-basic-editor';
   <TabItem value="example">
     <Component />
   </TabItem>
-  <TabItem value="src">This is an src 🍊</TabItem>
+  <TabItem value="src">
+    <SourceCode filePath={filePath} language="jsx" />
+  </TabItem>
 </Tabs>

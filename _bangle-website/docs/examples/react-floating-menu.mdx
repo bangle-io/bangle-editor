@@ -1,11 +1,13 @@
 ---
-title: 'React Floating Menu'
+title: 'Floating Menu'
 id: 'react-floating-menu'
 ---
 
+import filePath from '!!file-loader!./react-floating-menu.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Component from './react-floating-menu';
+import { SourceCode } from '../../src/example-setup';
 
 <Tabs
   defaultValue="example"
@@ -17,5 +19,7 @@ import Component from './react-floating-menu';
   <TabItem value="example">
     <Component />
   </TabItem>
-  <TabItem value="src">This is an src 🍊</TabItem>
+  <TabItem value="src">
+    <SourceCode filePath={filePath} language="jsx" />
+  </TabItem>
 </Tabs>

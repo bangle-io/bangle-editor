@@ -1,5 +1,6 @@
 import '@banglejs/core/style.css';
-import { coreSpec } from '@banglejs/core/utils/core-components';
+import '@banglejs/tooltip/style.css';
+
 import * as collab from '@banglejs/collab/client/collab-extension';
 import { emoji } from '@banglejs/emoji/index';
 import '@banglejs/emoji/emoji.css';

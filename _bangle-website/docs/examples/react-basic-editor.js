@@ -21,7 +21,3 @@ export default function Editor() {
     />
   );
 }
-
-function getContent() {
-  return '';
-}
