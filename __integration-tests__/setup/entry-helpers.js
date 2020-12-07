@@ -9,7 +9,7 @@ import {
 
 export function setupReactEditor({
   specRegistry,
-  plugins = defaultPlugins,
+  plugins = () => defaultPlugins,
   renderNodeViews,
   id = 'pm-root',
 } = {}) {
@@ -19,6 +19,7 @@ export function setupReactEditor({
   if (!(specRegistry instanceof SpecRegistry)) {
     specRegistry = new SpecRegistry(defaultSpecs(specRegistry));
   }
+
   reactDOM.render(
     <App opts={{ specRegistry, plugins, renderNodeViews, id }} />,
     element,

@@ -10,7 +10,7 @@ setup();
 function setup() {
   window.commands = {};
 
-  const plugins = [...defaultPlugins()];
+  const plugins = () => [...defaultPlugins()];
 
   setupReactEditor({ id: 'pm-root', plugins });
 }

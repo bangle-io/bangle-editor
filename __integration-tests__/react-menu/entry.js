@@ -27,7 +27,7 @@ function setup() {
   };
 
   const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);
-  const plugins = [
+  const plugins = () => [
     ...defaultPlugins(),
     sticker.plugins(),
     floatingMenu.plugins({

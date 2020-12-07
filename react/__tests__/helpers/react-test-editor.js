@@ -6,11 +6,31 @@ import { TextSelection } from '@banglejs/core/prosemirror/state';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { render } from '@testing-library/react';
 import { getDocLabels } from '@banglejs/core/test-helpers/index';
-import { ReactEditor } from '../../ReactEditor';
+import { ReactEditorView, useEditorState } from '../../index';
+
+function ReactEditor({
+  id,
+  onEditorReady,
+  renderNodeViews,
+  specRegistry,
+  plugins,
+  editorProps,
+}) {
+  const editorState = useEditorState({ specRegistry, plugins, editorProps });
+
+  return (
+    <ReactEditorView
+      id={id}
+      editorState={editorState}
+      onReady={onEditorReady}
+      renderNodeViews={renderNodeViews}
+    />
+  );
+}
 
 export function reactTestEditor({
   specRegistry,
-  plugins,
+  plugins: _plugins,
   renderNodeViews,
   id = 'test-editor',
 } = {}) {
@@ -24,17 +44,19 @@ export function reactTestEditor({
       attributes: { class: 'bangle-editor content' },
     };
 
-    const _options = {
-      id,
-      editorProps,
-      ...{ specRegistry, plugins },
-    };
+    // To functions, so that when using hooks plugins dont keep getting
+    //  instantiation
+    // TODO: move all the caller of reactTestEditor to use function for of `_plugins`
+    const plugins = typeof _plugins !== 'function' ? () => _plugins : _plugins;
 
     const result = render(
       <ReactEditor
-        options={_options}
-        onReady={_onReady}
+        id={id}
+        onEditorReady={_onReady}
         renderNodeViews={renderNodeViews}
+        specRegistry={specRegistry}
+        plugins={plugins}
+        editorProps={editorProps}
       />,
     );
 
