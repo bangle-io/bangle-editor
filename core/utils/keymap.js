@@ -1,6 +1,7 @@
 import { keymap as pmKeymap } from 'prosemirror-keymap';
 
-const MONITOR = window.BANGLE_DEBUG_KEYBINDINGS || true;
+const MONITOR =
+  typeof window !== 'undefined' ? window.BANGLE_DEBUG_KEYBINDINGS : true;
 
 const cache = new WeakMap();
 

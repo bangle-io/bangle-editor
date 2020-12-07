@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
-export function ReactCodeExample({ filePath, language, children }) {
+export function ReactCodeExample({ filePath, language, component }) {
   return (
     <Tabs
       defaultValue="example"
@@ -12,13 +14,21 @@ export function ReactCodeExample({ filePath, language, children }) {
         { label: 'Source code', value: 'src' },
       ]}
     >
-      <TabItem value="example">{children}</TabItem>
+      <TabItem value="example">
+        <BrowserOnly>{component}</BrowserOnly>
+      </TabItem>
       <TabItem value="src">
         <SourceCode filePath={filePath} language={language} />
       </TabItem>
     </Tabs>
   );
 }
+
+ReactCodeExample.propTypes = {
+  component: PropTypes.func.isRequired,
+  language: PropTypes.string,
+  filePath: PropTypes.string.isRequired,
+};
 
 function SourceCode({ filePath, language = 'js' }) {
   const [data, setData] = useState();

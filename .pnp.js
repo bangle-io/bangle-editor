@@ -9369,6 +9369,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@docusaurus/preset-classic", "virtual:894572e2628843ec5c970052b44cccf9fb72b8e08ee70eebd42eb8db714036822bf5f3e74693f4678919528b6e488f14c81f198cad04fc4a093c61a15399454b#npm:2.0.0-alpha.69"],
             ["@mdx-js/react", "virtual:894572e2628843ec5c970052b44cccf9fb72b8e08ee70eebd42eb8db714036822bf5f3e74693f4678919528b6e488f14c81f198cad04fc4a093c61a15399454b#npm:1.6.21"],
             ["clsx", "npm:1.1.1"],
+            ["prop-types", "npm:15.7.2"],
             ["react", "npm:16.14.0"],
             ["react-dom", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:16.14.0"]
           ],
