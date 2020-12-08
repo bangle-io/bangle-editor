@@ -1,2 +1,2 @@
 export * from './ReactEditor';
-export * from './use-plugin-state';
+export * from './hooks';

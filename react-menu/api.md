@@ -10,7 +10,7 @@ This package provides you with tools to help build flexible yet powerful menus u
 ### Installation
 
 ```
-npm install @banglejs/react
+npm install @banglejs/react @banglejs/react-menu
 ```
 
 ## floatingMenu: {{core.link.Component}}
@@ -69,7 +69,7 @@ Named parameters:
 
 **Usage**
 
-:bulb:  Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
+:bulb: Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
 
 ```js
 import {ReactEditor} from '@banglejs/react';
@@ -91,11 +91,12 @@ updateFloatingTooltipType(menuKey, null)(state, dispatch, view)
 toggleFloatingLinkMenu(menuKey)(state, dispatch, view)
 ```
 
-## FloatingMenu: [React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)
+## FloatingMenu: {{global.link.ReactElement}}
 
 ### Props
 
-- **menuKey**: The plugin key of the floatingMenu.
+- **menuKey**: ?{{core.link.PluginKey}} \
+  The plugin key of the floatingMenu.
 
 - **renderMenuType:** ?fn({ type, menuKey }) -> [React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)\
   Return the type of floating menu to render based on the type.\
@@ -103,7 +104,7 @@ toggleFloatingLinkMenu(menuKey)(state, dispatch, view)
 
 **Usage**
 
-:bulb:  Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
+:bulb: Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
 
 ```js
 // customize the rendering behaviour for custom types

@@ -6,21 +6,44 @@
 import { render, act } from '@testing-library/react';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { ReactEditor } from '@banglejs/react/ReactEditor';
+import { ReactEditorView } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from '@banglejs/core/index';
-import { usePluginState } from '@banglejs/react/use-plugin-state';
+import { useEditorState, usePluginState } from '@banglejs/react/hooks';
 import { useEffect, useState } from 'react';
 
 const key = new PluginKey('testPlugins');
 let specRegistry, plugins, view, counterPlugin;
 
-const onReady = ({ _view }) => {
-  view = _view;
+const onReady = (editor) => {
+  view = editor.view;
 };
 
 const updateCounter = (counter) =>
   view.dispatch(view.state.tr.setMeta(key, { counter }));
+
+function ReactEditor({
+  id = 'test',
+  onReady,
+  renderNodeViews,
+  specRegistry,
+  plugins,
+  editorProps,
+  children,
+}) {
+  const editorState = useEditorState({ specRegistry, plugins, editorProps });
+
+  return (
+    <ReactEditorView
+      id={id}
+      editorState={editorState}
+      onReady={onReady}
+      renderNodeViews={renderNodeViews}
+    >
+      {children}
+    </ReactEditorView>
+  );
+}
 
 beforeEach(() => {
   view = undefined;
@@ -40,7 +63,7 @@ beforeEach(() => {
       },
     },
   });
-  plugins = [...defaultPlugins(), counterPlugin];
+  plugins = () => [...defaultPlugins(), counterPlugin];
 });
 
 function TestComponent({ pluginKey, renderCounter }) {
@@ -54,11 +77,8 @@ test('correctly gets view', async () => {
 
   const result = await render(
     <ReactEditor
-      options={{
-        id: 'test',
-        specRegistry,
-        plugins,
-      }}
+      specRegistry={specRegistry}
+      plugins={plugins}
       onReady={onReady}
     >
       <TestComponent pluginKey={key} renderCounter={() => renderedTimes++} />
@@ -109,11 +129,8 @@ test('Mounting and Unmounting of editor', async () => {
 
   const result = await render(
     <ReactEditor
-      options={{
-        id: 'test',
-        specRegistry,
-        plugins,
-      }}
+      specRegistry={specRegistry}
+      plugins={plugins}
       onReady={onReady}
     >
       <TestComponent pluginKey={key} renderCounter={() => renderedTimes++} />
@@ -163,11 +180,8 @@ test('Unmounting just the component', async () => {
 
   const result = await render(
     <ReactEditor
-      options={{
-        id: 'test',
-        specRegistry,
-        plugins,
-      }}
+      specRegistry={specRegistry}
+      plugins={plugins}
       onReady={onReady}
     >
       <ParentComponent>

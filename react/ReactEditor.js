@@ -1,95 +1,109 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { objUid } from '@banglejs/core/utils/object-uid';
-import { BangleEditor } from '@banglejs/core/editor';
+import { BangleEditorView } from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
+import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { EditorState } from '@banglejs/core/prosemirror/state';
 import { NodeViewWrapper } from './NodeViewWrapper';
+import {
+  nodeViewRenderHandlers,
+  nodeViewUpdateStore,
+} from './node-view-helpers';
 
-const LOG = false;
+const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
-const nodeViewUpdateStore = new WeakMap();
-
-const renderHandlers = (updateNodeViews) => ({
-  create: (nodeView, nodeViewProps) => {
-    log('create', objUid.get(nodeView));
-    updateNodeViews((nodeViews) => [...nodeViews, nodeView]);
-  },
-  update: (nodeView, nodeViewProps) => {
-    log('update', objUid.get(nodeView));
-    const updateCallback = nodeViewUpdateStore.get(nodeView);
-    // If updateCallback is undefined (which can happen if react took long to mount),
-    // we are still okay, as the latest nodeViewProps will be accessed whenever it mounts.
-    if (updateCallback) {
-      updateCallback();
-    }
-  },
-  destroy: (nodeView) => {
-    log('destroy', objUid.get(nodeView));
-    updateNodeViews((nodeViews) => nodeViews.filter((n) => n !== nodeView));
-  },
-});
-
 export const EditorViewContext = React.createContext();
 
-export class ReactEditor extends React.PureComponent {
-  static contextType = EditorViewContext;
+ReactEditorView.propTypes = {
+  id: PropTypes.string,
+  renderNodeViews: PropTypes.func,
+  onReady: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
+  editorState: PropTypes.exact({
+    pmState: PropTypes.instanceOf(EditorState).isRequired,
+    specRegistry: PropTypes.instanceOf(SpecRegistry).isRequired,
+  }),
+  pmViewOpts: PropTypes.object,
+};
 
-  static propTypes = {
-    options: PropTypes.object.isRequired,
-    renderNodeViews: PropTypes.func,
-    onReady: PropTypes.func,
-    children: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.arrayOf(PropTypes.element),
-    ]),
-  };
+export function ReactEditorView({
+  id,
+  renderNodeViews,
+  children,
+  onReady = () => {},
+  editorState: { pmState, specRegistry },
+  pmViewOpts,
+}) {
+  const renderRef = useRef();
+  const payloadRef = useRef({ specRegistry, pmState, pmViewOpts });
+  const onReadyRef = useRef(onReady);
+  const [nodeViews, setNodeViews] = useState([]);
+  const [editor, setEditor] = useState();
 
-  editorRenderTarget = React.createRef();
-  state = { nodeViews: [], editor: null };
-
-  get editor() {
-    if (this.destroyed) {
-      return null;
-    }
-
-    return this.state.editor;
-  }
-
-  async componentDidMount() {
-    const { options } = this.props;
+  useEffect(() => {
+    let destroyed = false;
     // save the renderHandlers in the dom to decouple nodeView instantiating code
     // from the editor. Since PM passing view when nodeView is created, the author
     // of the component can get the handler reference from `getRenderHandlers(view)`.
     // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     saveRenderHandlers(
-      this.editorRenderTarget.current,
-      renderHandlers((cb) => {
-        this.setState(({ nodeViews }) => ({ nodeViews: cb(nodeViews) }));
+      renderRef.current,
+      nodeViewRenderHandlers((cb) => {
+        // use callback for of setState to avoid
+        // get fresh nodeViewss
+        if (!destroyed) {
+          setNodeViews((nodeViews) => cb(nodeViews));
+        }
       }),
     );
+    const editor = new BangleEditorView(renderRef.current, payloadRef.current);
+    editor.view._updatePluginWatcher = updatePluginWatcher(editor);
+    onReadyRef.current(editor);
+    setEditor(editor);
+    return () => {
+      destroyed = true;
+      editor.destroy();
+    };
+  }, []);
 
-    const editor = new BangleEditor(this.editorRenderTarget.current, options);
+  return (
+    <>
+      <div ref={renderRef} id={id} />
+      {nodeViews.map((nodeView) => {
+        return reactDOM.createPortal(
+          <NodeViewWrapper
+            debugKey={objUid.get(nodeView)}
+            nodeViewUpdateStore={nodeViewUpdateStore}
+            nodeView={nodeView}
+            renderNodeViews={renderNodeViews}
+          />,
+          nodeView.mountDOM,
+          objUid.get(nodeView),
+        );
+      })}
+      {editor ? (
+        <EditorViewContext.Provider value={editor.view}>
+          {children}
+        </EditorViewContext.Provider>
+      ) : null}
+    </>
+  );
+}
 
-    editor.view._updatePluginWatcher = this.updatePluginWatcher;
-
-    if (this.props.onReady) {
-      this.props.onReady(editor);
-    }
-
-    this.setState({
-      editor,
-    });
-  }
-
-  updatePluginWatcher = (watcher, remove = false) => {
-    if (!this.editor) {
+const updatePluginWatcher = (editor) => {
+  return (watcher, remove = false) => {
+    if (editor.destroyed) {
       return;
     }
 
-    let state = this.editor.view.state;
+    let state = editor.view.state;
 
     const newPlugins = remove
       ? state.plugins.filter((p) => p !== watcher)
@@ -100,43 +114,6 @@ export class ReactEditor extends React.PureComponent {
     });
 
     log('Adding watching to existing state', watcher);
-    this.editor.view.updateState(state);
+    editor.view.updateState(state);
   };
-
-  componentWillUnmount() {
-    console.log('unmounting');
-    if (!this.destroyed) {
-      this.editor && this.editor.destroy();
-      this.destroyed = true;
-    }
-  }
-
-  render() {
-    log(
-      'rendering PMEditorWrapper',
-      this.state.nodeViews.map((n) => objUid.get(n)),
-    );
-
-    return (
-      <>
-        <div ref={this.editorRenderTarget} id={this.props.options.id} />
-        {this.state.nodeViews.map((nodeView) => {
-          return reactDOM.createPortal(
-            <NodeViewWrapper
-              nodeViewUpdateStore={nodeViewUpdateStore}
-              nodeView={nodeView}
-              renderNodeViews={this.props.renderNodeViews}
-            />,
-            nodeView.mountDOM,
-            objUid.get(nodeView),
-          );
-        })}
-        {this.editor && (
-          <EditorViewContext.Provider value={this.editor.view}>
-            {this.props.children}
-          </EditorViewContext.Provider>
-        )}
-      </>
-    );
-  }
-}
+};

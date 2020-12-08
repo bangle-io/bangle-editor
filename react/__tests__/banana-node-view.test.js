@@ -20,7 +20,7 @@ describe('Inline node banana', () => {
   test('Inits banana', async () => {
     const banana = bananaComponent();
     const specRegistry = new SpecRegistry([...defaultSpecs(), banana.spec()]);
-    const plugins = [...defaultPlugins(), banana.plugins()];
+    const plugins = () => [...defaultPlugins(), banana.plugins()];
 
     const testEditor = reactTestEditor({
       specRegistry,
@@ -53,7 +53,7 @@ describe('Inline node banana', () => {
     const testId = 'Can update attrs';
     const banana = bananaComponent(testId);
     const specRegistry = new SpecRegistry([...defaultSpecs(), banana.spec()]);
-    const plugins = [...defaultPlugins(), banana.plugins()];
+    const plugins = () => [...defaultPlugins(), banana.plugins()];
     const testEditor = reactTestEditor({
       specRegistry,
       plugins,

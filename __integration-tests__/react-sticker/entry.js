@@ -32,7 +32,11 @@ function setup() {
     stopwatch.spec(),
     sticker.spec(),
   ]);
-  const plugins = [...defaultPlugins(), stopwatch.plugins(), sticker.plugins()];
+  const plugins = () => [
+    ...defaultPlugins(),
+    stopwatch.plugins(),
+    sticker.plugins(),
+  ];
 
   setupReactEditor({ specRegistry, plugins, renderNodeViews, id: 'pm-root' });
 }

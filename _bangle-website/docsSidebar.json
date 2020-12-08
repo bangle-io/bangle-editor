@@ -48,6 +48,7 @@
       "label": "API",
       "items": [
         "api/core",
+        "api/react",
         "api/react_menu"
       ]
     }

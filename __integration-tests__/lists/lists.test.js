@@ -1,5 +1,5 @@
 const path = require('path');
-const { ctrlKey, getDoc, pmRoot } = require('../setup/helpers');
+const { ctrlKey, getDoc, pmRoot, mountEditor } = require('../setup/helpers');
 const url = `http://localhost:1234/${path.basename(__dirname)}`;
 
 jest.setTimeout(25 * 1000);
@@ -14,8 +14,8 @@ describe('Basic typing', () => {
     page.on('pageerror', (pageerr) => {
       console.log('pageerror occurred: ', pageerr);
     });
-
     await page.goto(url);
+    await mountEditor(page);
     await page.keyboard.down(ctrlKey);
     await page.keyboard.press('a');
     await page.keyboard.up(ctrlKey);

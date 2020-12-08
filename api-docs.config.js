@@ -21,6 +21,7 @@ module.exports = (Handlebars) => {
     CommandObject: `[CommandObject](${basePath}/core/#commandobject)`,
     PluginKey: `[PluginKey](${basePath}/core/#pluginkey)`,
     nodeViews: '',
+    SpecRegistry: `[SpecRegistry]`,
   };
 
   return {
@@ -39,6 +40,11 @@ module.exports = (Handlebars) => {
           pluginsParamKeybindings: `**keybindings**: ?${coreLinks.Keybindings}=defaultKeys  \n For a list of allowed keys see **defaultKeys** below.`,
         },
       },
+      reactMenu: {
+        link: {
+          FloatingMenu: `[FloatingMenu](${basePath}/react_menu/#floatingmenu-reactelement)`,
+        },
+      },
       global: {
         link: {
           UnderstandingBangleGuide: `[UnderstandingBangleGuide]`,
@@ -47,7 +53,10 @@ module.exports = (Handlebars) => {
           EditorOperationsGuide: `[EditorOperationsGuide]`,
           KeybindingsGuide: `[KeybindingsGuide]`,
           MenuGuide: `[MenuGuide]`,
+          ReactElement: `[React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)`,
+          ReactCustomRenderingGuide: `[ReactCustomRenderingGuide]`,
         },
+
         useRightSidebar:
           ':bulb: _Use the right sidebar or the hamburger at bottom-right (mobile screens) to navigate quickly_.',
       },

@@ -4,13 +4,13 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditor } from '@banglejs/core/index';
+import { BangleEditorView } from '@banglejs/core/index';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { ReactEditor } from '@banglejs/react/ReactEditor';
+import { ReactEditorView } from '@banglejs/react/ReactEditor';
 import { getRenderHandlers } from '@banglejs/core/node-view';
 import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
@@ -19,11 +19,33 @@ import { sleep } from '@banglejs/core/utils/js-utils';
 import { selectNodeAt } from '@banglejs/core/test-helpers/index';
 import { Node } from '@banglejs/core/prosemirror/model';
 import { EditorView } from '@banglejs/core/prosemirror/view';
+import { useEditorState } from '../hooks';
 const consoleError = console.error;
 
 beforeEach(() => {
   console.error = consoleError;
 });
+
+function Comp({
+  plugins,
+  specRegistry,
+  onReady,
+  id = 'test',
+  renderNodeViews,
+}) {
+  const editorState = useEditorState({
+    specRegistry,
+    plugins: () => plugins,
+  });
+  return (
+    <ReactEditorView
+      editorState={editorState}
+      id={id}
+      onReady={onReady}
+      renderNodeViews={renderNodeViews}
+    />
+  );
+}
 
 const insertBananaAtSelection = (attrs = {}) => (dispatch, state) => {
   const node = state.schema.nodes.banana.create(attrs);
@@ -43,19 +65,17 @@ describe('basic tests', () => {
 
   test('mounts correctly', async () => {
     const onReady = jest.fn();
+
     const result = await render(
-      <ReactEditor
-        options={{
-          id: 'test',
-          specRegistry,
-          plugins,
-        }}
+      <Comp
+        specRegistry={specRegistry}
+        plugins={() => plugins}
         onReady={onReady}
       />,
     );
 
     expect(onReady).toBeCalledTimes(1);
-    expect(onReady).toHaveBeenNthCalledWith(1, expect.any(BangleEditor));
+    expect(onReady).toHaveBeenNthCalledWith(1, expect.any(BangleEditorView));
     expect(result.container).toMatchInlineSnapshot(`
       <div>
         <div
@@ -80,12 +100,9 @@ describe('basic tests', () => {
       editor = _editor;
     };
     const result = await render(
-      <ReactEditor
-        options={{
-          id: 'test',
-          specRegistry,
-          plugins,
-        }}
+      <Comp
+        specRegistry={specRegistry}
+        plugins={() => plugins}
         onReady={onReady}
       />,
     );
@@ -101,13 +118,11 @@ describe('rendering node views', () => {
     const onReady = (_editor) => {
       editor = _editor;
     };
+
     await render(
-      <ReactEditor
-        options={{
-          id: 'test',
-          specRegistry: new SpecRegistry([...defaultSpecs()]),
-          plugins: [...defaultPlugins()],
-        }}
+      <Comp
+        specRegistry={new SpecRegistry([...defaultSpecs()])}
+        plugins={() => defaultPlugins()}
         onReady={onReady}
       />,
     );
@@ -121,33 +136,30 @@ describe('rendering node views', () => {
 
   test('Throws error if rendering is not implemented', async () => {
     console.error = jest.fn();
-    let editor;
-    const onReady = (_editor) => {
-      editor = _editor;
-    };
 
     const banana = bananaComponent('react-editor-test');
     const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
-    expect(() =>
-      render(
-        <ReactEditor
-          options={{
-            id: 'test',
-            specRegistry: spec,
-            plugins: [...defaultPlugins(), banana.plugins()],
-            stateOpts: {
-              doc: (<doc>
-                <para>
-                  hello <banana color="brown" /> world
-                </para>
-              </doc>)(spec.schema),
-            },
-          }}
-          onReady={onReady}
+    const initialValue = (<doc>
+      <para>
+        hello <banana color="brown" /> world
+      </para>
+    </doc>)(spec.schema);
+
+    const Comp = () => {
+      const editorState = useEditorState({
+        specRegistry: spec,
+        plugins: () => [...defaultPlugins(), banana.plugins()],
+        initialValue,
+      });
+      return (
+        <ReactEditorView
           renderNodeViews={() => {}}
-        />,
-      ),
-    ).toThrowErrorMatchingInlineSnapshot(
+          editorState={editorState}
+          id={'test'}
+        />
+      );
+    };
+    expect(() => render(<Comp />)).toThrowErrorMatchingInlineSnapshot(
       `"renderNodeView must handle rendering for node of type \\"banana\\""`,
     );
   });
@@ -169,22 +181,27 @@ describe('rendering node views', () => {
     const banana = bananaComponent('react-editor-test');
     const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
 
-    const { container } = await render(
-      <ReactEditor
-        options={{
-          id: 'test',
-          specRegistry: spec,
-          plugins: [...defaultPlugins(), banana.plugins()],
-          stateOpts: {
-            doc: (<doc>
-              <para>hello world</para>
-            </doc>)(spec.schema),
-          },
-        }}
-        onReady={onReady}
-        renderNodeViews={renderNodeViews}
-      />,
-    );
+    const initialValue = (<doc>
+      <para>hello world</para>
+    </doc>)(spec.schema);
+
+    const Comp = () => {
+      const editorState = useEditorState({
+        specRegistry: spec,
+        plugins: () => [...defaultPlugins(), banana.plugins()],
+        initialValue,
+      });
+      return (
+        <ReactEditorView
+          renderNodeViews={renderNodeViews}
+          editorState={editorState}
+          id={'test'}
+          onReady={onReady}
+        />
+      );
+    };
+
+    const { container } = await render(<Comp />);
     const view = editor.view;
     insertBananaAtSelection()(view.dispatch, view.state);
     await sleep(10);
@@ -255,23 +272,27 @@ describe('rendering node views', () => {
 
     const banana = bananaComponent('react-editor-test');
     const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
+    const initialValue = (<doc>
+      <para>hello world</para>
+    </doc>)(spec.schema);
 
-    const { container } = await render(
-      <ReactEditor
-        options={{
-          id: 'test',
-          specRegistry: spec,
-          plugins: [...defaultPlugins(), banana.plugins()],
-          stateOpts: {
-            doc: (<doc>
-              <para>hello world</para>
-            </doc>)(spec.schema),
-          },
-        }}
-        onReady={onReady}
-        renderNodeViews={renderNodeViews}
-      />,
-    );
+    const Comp = () => {
+      const editorState = useEditorState({
+        specRegistry: spec,
+        plugins: () => [...defaultPlugins(), banana.plugins()],
+        initialValue,
+      });
+      return (
+        <ReactEditorView
+          renderNodeViews={renderNodeViews}
+          editorState={editorState}
+          id={'test'}
+          onReady={onReady}
+        />
+      );
+    };
+
+    const { container } = await render(<Comp />);
     const view = editor.view;
     insertBananaAtSelection({ color: 'blue' })(view.dispatch, view.state);
     insertBananaAtSelection({ color: 'red' })(view.dispatch, view.state);
@@ -326,22 +347,27 @@ describe('rendering node views', () => {
     const banana = bananaComponent('react-editor-test');
     const spec = new SpecRegistry([...defaultSpecs(), banana.spec()]);
 
-    const { container } = await render(
-      <ReactEditor
-        options={{
-          id: 'test',
-          specRegistry: spec,
-          plugins: [...defaultPlugins(), banana.plugins()],
-          stateOpts: {
-            doc: (<doc>
-              <para>hello world</para>
-            </doc>)(spec.schema),
-          },
-        }}
-        onReady={onReady}
-        renderNodeViews={renderNodeViews}
-      />,
-    );
+    const initialValue = (<doc>
+      <para>hello world</para>
+    </doc>)(spec.schema);
+
+    const Comp = () => {
+      const editorState = useEditorState({
+        specRegistry: spec,
+        plugins: () => [...defaultPlugins(), banana.plugins()],
+        initialValue,
+      });
+      return (
+        <ReactEditorView
+          renderNodeViews={renderNodeViews}
+          editorState={editorState}
+          id={'test'}
+          onReady={onReady}
+        />
+      );
+    };
+
+    const { container } = await render(<Comp />);
     const view = editor.view;
     insertBananaAtSelection({ color: 'blue' })(view.dispatch, view.state);
 

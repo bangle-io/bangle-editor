@@ -1,6 +1,6 @@
 import React from 'react';
 import reactDOM from 'react-dom';
-import { ReactEditor } from '@banglejs/react/index';
+import { ReactEditorView, useEditorState } from '@banglejs/react';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import {
   defaultPlugins,
@@ -9,7 +9,7 @@ import {
 
 export function setupReactEditor({
   specRegistry,
-  plugins = defaultPlugins,
+  plugins = () => defaultPlugins,
   renderNodeViews,
   id = 'pm-root',
 } = {}) {
@@ -19,6 +19,7 @@ export function setupReactEditor({
   if (!(specRegistry instanceof SpecRegistry)) {
     specRegistry = new SpecRegistry(defaultSpecs(specRegistry));
   }
+
   reactDOM.render(
     <App opts={{ specRegistry, plugins, renderNodeViews, id }} />,
     element,
@@ -38,9 +39,12 @@ function App({ opts: { specRegistry, plugins, renderNodeViews, id } }) {
     );
   };
 
+  const editorState = useEditorState({ specRegistry, plugins });
+
   return (
-    <ReactEditor
-      options={{ id, specRegistry, plugins }}
+    <ReactEditorView
+      id={id}
+      editorState={editorState}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
     />

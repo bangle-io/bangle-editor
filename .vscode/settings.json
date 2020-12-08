@@ -17,9 +17,9 @@
     // ".yarn/**": true
   },
   "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true,
-    "**/build": true
+    // "**/.yarn": true,
+    // "**/.pnp.*": true,
+    // "**/build": true
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
