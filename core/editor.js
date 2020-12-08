@@ -76,7 +76,10 @@ export class BangleEditor {
 
 export class BangleEditorView {
   destroyed = false;
-  constructor(element, { specRegistry, pmState, pmViewOpts = {} }) {
+  constructor(
+    element,
+    { focusOnInit = true, specRegistry, pmState, pmViewOpts = {} },
+  ) {
     if (!(specRegistry instanceof SpecRegistry)) {
       throw new Error('SpecRegistry is required');
     }
@@ -93,6 +96,17 @@ export class BangleEditorView {
       attributes: { class: 'bangle-editor' },
       ...pmViewOpts,
     });
+
+    if (focusOnInit) {
+      this.focusView();
+    }
+  }
+
+  focusView() {
+    if (isTestEnv() || this.view.focused) {
+      return;
+    }
+    this.view.focus();
   }
 
   destroy() {
