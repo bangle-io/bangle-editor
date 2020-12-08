@@ -1,6 +1,6 @@
 import { objUid } from '@banglejs/core/utils/object-uid';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view-helpers') : () => {};
 

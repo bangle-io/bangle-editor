@@ -15,7 +15,7 @@ import {
 } from '@banglejs/core/test-helpers/default-components';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), stopwatch.spec({})]);
-const plugins = [...defaultPlugins(), stopwatch.plugins({})];
+const plugins = () => [...defaultPlugins(), stopwatch.plugins({})];
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
   if (node.type.name === 'stopwatch') {

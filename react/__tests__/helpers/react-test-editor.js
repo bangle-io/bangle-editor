@@ -47,7 +47,7 @@ export function reactTestEditor({
     // To functions, so that when using hooks plugins dont keep getting
     //  instantiation
     // TODO: move all the caller of reactTestEditor to use function for of `_plugins`
-    const plugins = typeof _plugins !== 'function' ? () => _plugins : _plugins;
+    // const plugins = typeof _plugins !== 'function' ? () => _plugins : _plugins;
 
     const result = render(
       <ReactEditor
@@ -55,7 +55,7 @@ export function reactTestEditor({
         onEditorReady={_onReady}
         renderNodeViews={renderNodeViews}
         specRegistry={specRegistry}
-        plugins={plugins}
+        plugins={_plugins}
         editorProps={editorProps}
       />,
     );

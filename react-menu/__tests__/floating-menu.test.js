@@ -12,7 +12,7 @@ import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
 const specRegistry = new SpecRegistry();
-const plugins = [
+const plugins = () => [
   link.plugins(),
   floatingMenu.plugins({
     key: menuKey,

@@ -12,7 +12,7 @@ import {
 } from '@banglejs/core/test-helpers/default-components';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);
-const plugins = [...defaultPlugins(), sticker.plugins()];
+const plugins = () => [...defaultPlugins(), sticker.plugins()];
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
   if (node.type.name === 'sticker') {
