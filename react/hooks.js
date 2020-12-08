@@ -2,9 +2,10 @@ import { useRef, useState, useContext, useEffect } from 'react';
 import { editorStateSetup2 } from '@banglejs/core/editor';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { Plugin, PluginKey } from '@banglejs/core/index';
+import { corePlugins } from '@banglejs/core/utils/core-components';
 import { EditorViewContext } from './ReactEditor';
 
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};
 
 export function useEditorState({
@@ -13,6 +14,10 @@ export function useEditorState({
   plugins: _plugins,
   ...options
 }) {
+  if (specs && _specRegistry) {
+    throw new Error('Cannot have both specs and specRegistry defined');
+  }
+
   const optionsRef = useRef(options);
   const specRegistry = useSpecRegistry(specs, _specRegistry, {
     defaultSpecs: optionsRef.current.defaultSpecs,
@@ -34,13 +39,13 @@ export function useSpecRegistry(
   initialSpecRegistry,
   options = {},
 ) {
-  const [specRegistry] = useState(
-    () => initialSpecRegistry || new SpecRegistry(initialSpecs, options),
-  );
+  const [specRegistry] = useState(() => {
+    return initialSpecRegistry || new SpecRegistry(initialSpecs, options);
+  });
   return specRegistry;
 }
 
-export function usePlugins(getPlugins = () => {}) {
+export function usePlugins(getPlugins = corePlugins) {
   if (typeof getPlugins !== 'function') {
     throw new Error('usePlugins error: getPlugins must be a function');
   }

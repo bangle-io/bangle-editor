@@ -27,7 +27,6 @@ const testEditor = reactTestEditor({
 });
 
 test('Rendering works', async () => {
-  Date.now = jest.fn(() => 0);
   const { container, view } = await testEditor(
     <doc>
       <para>

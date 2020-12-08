@@ -4,6 +4,7 @@ import { pluginLoader } from './utils/plugin-loader';
 import { isTestEnv } from './utils/environment';
 import { DOMSerializer, DOMParser } from 'prosemirror-model';
 import { SpecRegistry } from './spec-registry';
+import { Node } from 'prosemirror-model';
 
 export class BangleEditor {
   destroyed = false;
@@ -94,6 +95,7 @@ export class BangleEditorView {
         this.updateState(newState);
       },
       attributes: { class: 'bangle-editor' },
+
       ...pmViewOpts,
     });
 
@@ -177,6 +179,9 @@ const createDocument = ({ schema, content, parseOptions }) => {
     return schema.nodeFromJSON(emptyDocument);
   }
 
+  if (content instanceof Node) {
+    return content;
+  }
   if (typeof content === 'object') {
     return schema.nodeFromJSON(content);
   }

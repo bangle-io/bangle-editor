@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, act } from '@testing-library/react';
+import { act as domAct } from 'react-dom/test-utils';
 import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
 import { sendKeyToPm } from '@banglejs/core/test-helpers/index';
 import { markdownSerializer } from '@banglejs/markdown/markdown-serializer';
@@ -47,7 +48,9 @@ test('Keyboard shortcut works', async () => {
     </doc>,
   );
 
-  sendKeyToPm(view, 'Shift-Ctrl-s');
+  act(() => {
+    sendKeyToPm(view, 'Shift-Ctrl-s');
+  });
 
   expect(view.state).toEqualDocAndSelection(
     <doc>
@@ -75,7 +78,9 @@ test('Renders react component correctly', async () => {
       </ul>
     </doc>,
   );
-  sendKeyToPm(view, 'Shift-Ctrl-s');
+  act(() => {
+    sendKeyToPm(view, 'Shift-Ctrl-s');
+  });
   expect(container.querySelector(`.stopwatch`)).toMatchSnapshot();
 });
 
