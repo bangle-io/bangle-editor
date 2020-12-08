@@ -15,7 +15,7 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@banglejs/collab": "workspace:*",
     "@banglejs/core": "workspace:*",
     "@banglejs/emoji": "workspace:*",
@@ -30,11 +30,11 @@
     "@banglejs/trailing-node": "workspace:*",
     "@docusaurus/core": "2.0.0-alpha.69",
     "@docusaurus/preset-classic": "2.0.0-alpha.69",
-    "@mdx-js/react": "^1.6.21",
+    "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
     "prop-types": "^15.7.2",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "browserslist": {
     "production": [
