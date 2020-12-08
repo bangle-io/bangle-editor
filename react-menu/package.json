@@ -18,7 +18,7 @@
     "@banglejs/core": "workspace:*",
     "@banglejs/react": "workspace:*",
     "@banglejs/tooltip": "workspace:*",
-    "@testing-library/react": "^10.4.7",
+    "@testing-library/react": "^11.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   }
