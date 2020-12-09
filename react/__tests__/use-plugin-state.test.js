@@ -6,7 +6,7 @@
 import { render, act } from '@testing-library/react';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { EditorView } from '@banglejs/react/ReactEditor';
+import { BangleEditorView } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from '@banglejs/core/index';
 import { useEditorState, usePluginState } from '@banglejs/react/hooks';
@@ -31,17 +31,17 @@ function ReactEditor({
   editorProps,
   children,
 }) {
-  const editorState = useEditorState({ specRegistry, plugins, editorProps });
+  const state = useEditorState({ specRegistry, plugins, editorProps });
 
   return (
-    <EditorView
+    <BangleEditorView
       id={id}
-      editorState={editorState}
+      state={state}
       onReady={onReady}
       renderNodeViews={renderNodeViews}
     >
       {children}
-    </EditorView>
+    </BangleEditorView>
   );
 }
 

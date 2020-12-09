@@ -4,13 +4,13 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditorView } from '@banglejs/core/index';
+import { BangleEditorView as CoreBangleEditorView } from '@banglejs/core/index';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { EditorView } from '@banglejs/react';
+import { BangleEditorView } from '@banglejs/react';
 import { getRenderHandlers } from '@banglejs/core/node-view';
 import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
@@ -38,8 +38,8 @@ function Comp({
     plugins: () => plugins,
   });
   return (
-    <EditorView
-      editorState={editorState}
+    <BangleEditorView
+      state={editorState}
       id={id}
       onReady={onReady}
       renderNodeViews={renderNodeViews}
@@ -75,7 +75,10 @@ describe('basic tests', () => {
     );
 
     expect(onReady).toBeCalledTimes(1);
-    expect(onReady).toHaveBeenNthCalledWith(1, expect.any(BangleEditorView));
+    expect(onReady).toHaveBeenNthCalledWith(
+      1,
+      expect.any(CoreBangleEditorView),
+    );
     expect(result.container).toMatchInlineSnapshot(`
       <div>
         <div
@@ -152,9 +155,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <EditorView
+        <BangleEditorView
           renderNodeViews={() => {}}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
         />
       );
@@ -192,9 +195,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <EditorView
+        <BangleEditorView
           renderNodeViews={renderNodeViews}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
           onReady={onReady}
         />
@@ -283,9 +286,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <EditorView
+        <BangleEditorView
           renderNodeViews={renderNodeViews}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
           onReady={onReady}
         />
@@ -358,9 +361,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <EditorView
+        <BangleEditorView
           renderNodeViews={renderNodeViews}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
           onReady={onReady}
         />
