@@ -7,7 +7,7 @@ import { getDocLabels } from './schema-builders';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { BangleEditorView } from '@banglejs/core/editor';
 import { defaultPlugins, defaultSpecs } from './default-components';
-import { editorStateSetup2 } from '../index';
+import { BangleEditorState } from '../index';
 
 const mountedEditors = new Set();
 const rootElement = document.body;
@@ -50,10 +50,8 @@ export function renderTestEditor(
     const editorProps = {
       attributes: { class: 'bangle-editor content' },
     };
-    const state = new editorStateSetup2(specRegistry, plugins, { editorProps });
     let editor = new BangleEditorView(container, {
-      specRegistry,
-      pmState: state,
+      state: new BangleEditorState({ specRegistry, plugins, editorProps }),
     });
 
     view = editor.view;

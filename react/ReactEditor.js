@@ -2,10 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { objUid } from '@banglejs/core/utils/object-uid';
-import { BangleEditorView } from '@banglejs/core/editor';
+import { BangleEditorState, BangleEditorView } from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { EditorState as PMEditorState } from '@banglejs/core/prosemirror/state';
 import { NodeViewWrapper } from './NodeViewWrapper';
 import {
   nodeViewRenderHandlers,
@@ -23,11 +21,11 @@ export function EditorView({
   renderNodeViews,
   children,
   onReady = () => {},
-  editorState: { pmState, specRegistry },
+  editorState,
   pmViewOpts,
 }) {
   const renderRef = useRef();
-  const payloadRef = useRef({ specRegistry, pmState, pmViewOpts });
+  const payloadRef = useRef({ state: editorState, pmViewOpts });
   const onReadyRef = useRef(onReady);
   const [nodeViews, setNodeViews] = useState([]);
   const [editor, setEditor] = useState();
@@ -111,9 +109,6 @@ EditorView.propTypes = {
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]),
-  editorState: PropTypes.exact({
-    pmState: PropTypes.instanceOf(PMEditorState).isRequired,
-    specRegistry: PropTypes.instanceOf(SpecRegistry).isRequired,
-  }),
+  editorState: PropTypes.instanceOf(BangleEditorState),
   pmViewOpts: PropTypes.object,
 };

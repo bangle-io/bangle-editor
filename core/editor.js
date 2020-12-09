@@ -1,32 +1,28 @@
+import { Node, DOMSerializer, DOMParser } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
+
 import { pluginLoader } from './utils/plugin-loader';
 import { isTestEnv } from './utils/environment';
-import { DOMSerializer, DOMParser } from 'prosemirror-model';
 import { SpecRegistry } from './spec-registry';
-import { Node } from 'prosemirror-model';
 
 export class BangleEditorView {
   destroyed = false;
-  constructor(
-    element,
-    { focusOnInit = true, specRegistry, pmState, pmViewOpts = {} },
-  ) {
-    if (!(specRegistry instanceof SpecRegistry)) {
-      throw new Error('SpecRegistry is required');
+  constructor(element, { focusOnInit = true, state, pmViewOpts = {} }) {
+    if (!(state instanceof BangleEditorState)) {
+      throw new Error(
+        'state is required and must be an instance of BangleEditorState',
+      );
     }
-    if (!(pmState instanceof EditorState)) {
-      throw new Error('prosemirror State is required');
-    }
-    this.specRegistry = specRegistry;
+
+    this.specRegistry = state.specRegistry;
     this.view = new EditorView(element, {
-      state: pmState,
+      state: state.pmState,
       dispatchTransaction(transaction) {
         const newState = this.state.apply(transaction);
         this.updateState(newState);
       },
       attributes: { class: 'bangle-editor' },
-
       ...pmViewOpts,
     });
 
@@ -62,18 +58,33 @@ export class BangleEditorView {
   }
 }
 
-export function editorStateSetup2(
-  specRegistry,
-  plugins = [],
-  { initialValue, editorProps, pmStateOpts = {} } = {},
-) {
-  const schema = specRegistry.schema;
-  return EditorState.create({
-    schema,
-    doc: createDocument({ schema, content: initialValue }),
-    plugins: pluginLoader(specRegistry, plugins, { editorProps }),
-    ...pmStateOpts,
-  });
+export class BangleEditorState {
+  constructor({
+    specRegistry,
+    specs,
+    plugins = [],
+    initialValue,
+    editorProps,
+    defaultSpecs = true,
+    pmStateOpts,
+  } = {}) {
+    if (specs && specRegistry) {
+      throw new Error('Cannot have both specs and specRegistry defined');
+    }
+    if (!specRegistry) {
+      specRegistry = new SpecRegistry(specs, { defaultSpecs });
+    }
+
+    this.specRegistry = specRegistry;
+    const schema = this.specRegistry.schema;
+
+    this.pmState = EditorState.create({
+      schema,
+      doc: createDocument({ schema, content: initialValue }),
+      plugins: pluginLoader(specRegistry, plugins, { editorProps }),
+      ...pmStateOpts,
+    });
+  }
 }
 
 const createDocument = ({ schema, content, parseOptions }) => {
