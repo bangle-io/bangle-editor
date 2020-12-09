@@ -16,19 +16,19 @@ npm install @banglejs/react
 ### Usage
 
 ```jsx
-import { useEditorState, ReactEditorView } from '@banglejs/react';
+import { useEditorState, EditorView } from '@banglejs/react';
 
 export default function Editor() {
   const editorState = useEditorState({
     initialValue: 'Hello world!',
   });
-  return <ReactEditorView editorState={editorState} />;
+  return <EditorView editorState={editorState} />;
 }
 ```
 
 > Do not forget to load the stylesheet at '@banglejs/core/style.css'
 
-## ReactEditorView: {{global.link.ReactElement}}
+## EditorView: {{global.link.ReactElement}}
 
 A React component for rendering a Bangle instance.
 

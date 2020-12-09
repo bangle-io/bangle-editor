@@ -5,7 +5,7 @@ import { objUid } from '@banglejs/core/utils/object-uid';
 import { BangleEditorView } from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { EditorState } from '@banglejs/core/prosemirror/state';
+import { EditorState as PMEditorState } from '@banglejs/core/prosemirror/state';
 import { NodeViewWrapper } from './NodeViewWrapper';
 import {
   nodeViewRenderHandlers,
@@ -18,22 +18,7 @@ let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
 export const EditorViewContext = React.createContext();
 
-ReactEditorView.propTypes = {
-  id: PropTypes.string,
-  renderNodeViews: PropTypes.func,
-  onReady: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
-  editorState: PropTypes.exact({
-    pmState: PropTypes.instanceOf(EditorState).isRequired,
-    specRegistry: PropTypes.instanceOf(SpecRegistry).isRequired,
-  }),
-  pmViewOpts: PropTypes.object,
-};
-
-export function ReactEditorView({
+export function EditorView({
   id,
   renderNodeViews,
   children,
@@ -116,4 +101,19 @@ const updatePluginWatcher = (editor) => {
     log('Adding watching to existing state', watcher);
     editor.view.updateState(state);
   };
+};
+
+EditorView.propTypes = {
+  id: PropTypes.string,
+  renderNodeViews: PropTypes.func,
+  onReady: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
+  editorState: PropTypes.exact({
+    pmState: PropTypes.instanceOf(PMEditorState).isRequired,
+    specRegistry: PropTypes.instanceOf(SpecRegistry).isRequired,
+  }),
+  pmViewOpts: PropTypes.object,
 };

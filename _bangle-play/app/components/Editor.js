@@ -10,7 +10,7 @@ import { NodeView } from '@banglejs/core/node-view';
 import { emoji, emojisArray } from '@banglejs/emoji/index';
 import { trailingNode } from '@banglejs/trailing-node';
 import { timestamp } from '@banglejs/timestamp';
-import { ReactEditorView } from '@banglejs/react/ReactEditor';
+import { EditorView } from '@banglejs/react';
 import { useEditorState } from '@banglejs/react';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
@@ -138,7 +138,7 @@ export function Editor({ isFirst, manager, docName }) {
   });
 
   return (
-    <ReactEditorView
+    <EditorView
       editorState={editorState}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
@@ -148,7 +148,7 @@ export function Editor({ isFirst, manager, docName }) {
         emojiSuggestKey={emojiSuggestKey}
         emojis={emojisArray}
       />
-    </ReactEditorView>
+    </EditorView>
   );
 }
 

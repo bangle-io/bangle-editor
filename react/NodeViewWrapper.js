@@ -24,8 +24,11 @@ export class NodeViewWrapper extends React.PureComponent {
   constructor(props) {
     super(props);
     // So that we can directly update the nodeView without the mess
-    // of prop forwarding. This is okay because a nodeView and ReactComponent has
-    // 1:1 mapping always.
+    // of prop forwarding.
+    // What about updating the wrong nodeView ?
+    // It is okay because a nodeView and this ReactComponent will always
+    // have a 1:1 mapping. This guaranteed because you use `nodeView` instance
+    // to generate a react key. See the usage of this component in ./Editor.js
     props.nodeViewUpdateStore.set(props.nodeView, this.update);
     this.state = { nodeViewProps: this.props.nodeView.getNodeViewProps() };
   }

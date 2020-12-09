@@ -10,7 +10,7 @@ import {
   defaultSpecs,
 } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { ReactEditorView } from '@banglejs/react/ReactEditor';
+import { EditorView } from '@banglejs/react';
 import { getRenderHandlers } from '@banglejs/core/node-view';
 import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
@@ -18,7 +18,7 @@ import { pjsx } from './helpers/index';
 import { sleep } from '@banglejs/core/utils/js-utils';
 import { selectNodeAt } from '@banglejs/core/test-helpers/index';
 import { Node } from '@banglejs/core/prosemirror/model';
-import { EditorView } from '@banglejs/core/prosemirror/view';
+import { EditorView as PMEditorView } from '@banglejs/core/prosemirror/view';
 import { useEditorState } from '../hooks';
 const consoleError = console.error;
 
@@ -38,7 +38,7 @@ function Comp({
     plugins: () => plugins,
   });
   return (
-    <ReactEditorView
+    <EditorView
       editorState={editorState}
       id={id}
       onReady={onReady}
@@ -152,7 +152,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <EditorView
           renderNodeViews={() => {}}
           editorState={editorState}
           id={'test'}
@@ -192,7 +192,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <EditorView
           renderNodeViews={renderNodeViews}
           editorState={editorState}
           id={'test'}
@@ -283,7 +283,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <EditorView
           renderNodeViews={renderNodeViews}
           editorState={editorState}
           id={'test'}
@@ -358,7 +358,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <EditorView
           renderNodeViews={renderNodeViews}
           editorState={editorState}
           id={'test'}
@@ -374,7 +374,7 @@ describe('rendering node views', () => {
     expect(renderNodeViews).toBeCalledTimes(1);
     expect(renderNodeViews).toHaveBeenNthCalledWith(1, {
       node: expect.any(Node),
-      view: expect.any(EditorView),
+      view: expect.any(PMEditorView),
       getPos: expect.any(Function),
       decorations: expect.anything(),
       selected: expect.any(Boolean),
@@ -394,7 +394,7 @@ describe('rendering node views', () => {
     expect(renderNodeViews).toBeCalledTimes(2);
     expect(renderNodeViews).toHaveBeenNthCalledWith(2, {
       node: expect.any(Node),
-      view: expect.any(EditorView),
+      view: expect.any(PMEditorView),
       getPos: expect.any(Function),
       decorations: expect.anything(),
       selected: expect.any(Boolean),
