@@ -1881,7 +1881,7 @@ __metadata:
   dependencies:
     prettier: ^2.2.1
     prosemirror-commands: ^1.1.4
-    prosemirror-dropcursor: ^1.1.1
+    prosemirror-dropcursor: ^1.3.2
     prosemirror-gapcursor: ^1.1.5
     prosemirror-history: ^1.1.3
     prosemirror-inputrules: ^1.1.3
@@ -1890,7 +1890,7 @@ __metadata:
     prosemirror-schema-list: ^1.1.4
     prosemirror-state: ^1.3.3
     prosemirror-tables: ^1.1.1
-    prosemirror-transform: ^1.2.7
+    prosemirror-transform: ^1.2.8
     prosemirror-utils: ^0.9.6
     prosemirror-view: ^1.16.3
   languageName: unknown
@@ -2001,7 +2001,7 @@ __metadata:
     "@testing-library/dom": ^7.28.1
     "@testing-library/jest-dom": ^5.11.6
     "@testing-library/react": ^11.2.2
-    "@testing-library/react-hooks": ^3.6.0
+    "@testing-library/react-hooks": ^3.7.0
     prettier: ^2.2.1
     prop-types: ^15.7.2
     punycode: ^2.1.1
@@ -2914,15 +2914,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:^1.6.22":
-  version: 1.6.22
-  resolution: "@mdx-js/react@npm:1.6.22"
-  peerDependencies:
-    react: ^16.13.1 || ^17.0.0
-  checksum: 3a0a189aa04a3b73e4846f8311573d45404c4ec74a1a4b196e7829492fedabe38b869016125620403bcf5f999f58ab75c9f54279f7557e361c239b57e5ed2267
-  languageName: node
-  linkType: hard
-
 "@mdx-js/util@npm:1.6.21":
   version: 1.6.21
   resolution: "@mdx-js/util@npm:1.6.21"
@@ -3226,16 +3217,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-hooks@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "@testing-library/react-hooks@npm:3.6.0"
+"@testing-library/react-hooks@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@testing-library/react-hooks@npm:3.7.0"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@types/testing-library__react-hooks": ^3.4.0
   peerDependencies:
     react: ">=16.9.0"
     react-test-renderer: ">=16.9.0"
-  checksum: b9c599c1df2bb13c6d823ab6907b8dfe7c96aada97ea12c57b8df47eaa750c07c9f75e1ce9223ef45f2a4c1fd8bd73a87904287bb1c23111f3a158b3e5a0a5fe
+  checksum: 0ab518489cb5a141f82cf26ddaf2e35dcdc87685ce14c2084dea3cd1734c877793a873fe75c0aa75b8b455eced58cd1eab49001194f8a9557d93b068582dfd5f
   languageName: node
   linkType: hard
 
@@ -3456,7 +3447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.6":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.5, @types/json-schema@npm:^7.0.6":
   version: 7.0.6
   resolution: "@types/json-schema@npm:7.0.6"
   checksum: 820cabe35ac915b93e38b0c01957e5c49d7d9f69251dddfbf39af0ff4fe24f6e08b39e55603e0d212dea7bcaa383b1218b58a738d1c02013dc22df06547ff238
@@ -5210,7 +5201,7 @@ __metadata:
     autoprefixer: ^9.8.6
     babel-loader: ^8.2.2
     case-sensitive-paths-webpack-plugin: ^2.3.0
-    css-loader: ^4.2.1
+    css-loader: ^4.3.0
     css.gg: ^2.0.0
     date-fns: ^2.10.0
     file-loader: ^6.2.0
@@ -5220,7 +5211,7 @@ __metadata:
     mini-css-extract-plugin: ^1.3.2
     pnp-webpack-plugin: ^1.6.4
     postcss-cli: ^7.1.2
-    postcss-custom-properties: ^9.1.1
+    postcss-custom-properties: ^9.2.0
     postcss-import: ^12.0.1
     postcss-loader: ^3.0.0
     postcss-nested: ^4.2.3
@@ -5228,7 +5219,7 @@ __metadata:
     prop-types: ^15.7.2
     prosemirror-commands: ^1.1.4
     prosemirror-dev-tools: "https://github.com/kepta/prosemirror-dev-tools#v3.3.4"
-    prosemirror-dropcursor: ^1.1.1
+    prosemirror-dropcursor: ^1.3.2
     prosemirror-gapcursor: ^1.1.5
     prosemirror-history: ^1.1.3
     prosemirror-inputrules: ^1.1.3
@@ -5237,7 +5228,7 @@ __metadata:
     prosemirror-schema-list: ^1.1.4
     prosemirror-state: ^1.3.3
     prosemirror-tables: ^1.1.0
-    prosemirror-transform: ^1.2.7
+    prosemirror-transform: ^1.2.8
     prosemirror-utils: latest
     prosemirror-view: ^1.16.3
     punycode: ^2.1.1
@@ -5245,7 +5236,7 @@ __metadata:
     react-dom: ^16.14.0
     react-popper: ^2.2.4
     serve: ^11.3.2
-    style-loader: ^1.3.0
+    style-loader: ^2.0.0
     surge: ^0.21.7
     tailwindcss: ^1.9.6
     throttle-debounce: ^2.1.0
@@ -5289,7 +5280,7 @@ __metadata:
     "@banglejs/trailing-node": "workspace:*"
     "@docusaurus/core": 2.0.0-alpha.69
     "@docusaurus/preset-classic": 2.0.0-alpha.69
-    "@mdx-js/react": ^1.6.22
+    "@mdx-js/react": ^1.6.21
     clsx: ^1.1.1
     prop-types: ^15.7.2
     react: ^16.14.0
@@ -5316,7 +5307,7 @@ __metadata:
     eslint-plugin-flowtype: ^5.2.0
     eslint-plugin-import: ^2.22.1
     eslint-plugin-jest: ^24.1.3
-    eslint-plugin-jsx-a11y: ^6.3.1
+    eslint-plugin-jsx-a11y: ^6.4.1
     eslint-plugin-react: ^7.21.5
     eslint-plugin-react-hooks: ^4.2.0
     eslint-plugin-testing-library: ^3.10.1
@@ -7222,26 +7213,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "css-loader@npm:4.2.1"
+"css-loader@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "css-loader@npm:4.3.0"
   dependencies:
     camelcase: ^6.0.0
     cssesc: ^3.0.0
     icss-utils: ^4.1.1
     loader-utils: ^2.0.0
-    normalize-path: ^3.0.0
     postcss: ^7.0.32
     postcss-modules-extract-imports: ^2.0.0
     postcss-modules-local-by-default: ^3.0.3
     postcss-modules-scope: ^2.2.0
     postcss-modules-values: ^3.0.0
     postcss-value-parser: ^4.1.0
-    schema-utils: ^2.7.0
+    schema-utils: ^2.7.1
     semver: ^7.3.2
   peerDependencies:
     webpack: ^4.27.0 || ^5.0.0
-  checksum: bd8188efac141352371d3c87e90b6c5658018fa2e9438a22ad38e7a3896e492edb535ae7fe7e56e4c14e43ccc88fbb3a235a0929d4f9302bbf12215687edc9fa
+  checksum: 1f441ac567e3c45dde1009860fcc0d2807d5af4e42e799c77070a121f91a8a8c0ce41d6aa19b664bd9fbc127c5375abefa8f871ba503e55f2ea27c3e1385f3fa
   languageName: node
   linkType: hard
 
@@ -8642,7 +8632,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsx-a11y@npm:^6.3.1":
+"eslint-plugin-jsx-a11y@npm:^6.4.1":
   version: 6.4.1
   resolution: "eslint-plugin-jsx-a11y@npm:6.4.1"
   dependencies:
@@ -15533,13 +15523,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"postcss-custom-properties@npm:^9.1.1":
-  version: 9.1.1
-  resolution: "postcss-custom-properties@npm:9.1.1"
+"postcss-custom-properties@npm:^9.2.0":
+  version: 9.2.0
+  resolution: "postcss-custom-properties@npm:9.2.0"
   dependencies:
     postcss: ^7.0.17
     postcss-values-parser: ^3.0.5
-  checksum: 1d02884b5642fbdea06122555daa580d96efa90dd8f021422872b48a4411647965ea45dc3f6e68fbbe41583a1f562df706b23ece4669c9a46aaf1307c58c4eea
+  checksum: 38f7e9363cd7150628cf6ec13ae645e0e8a33760173be6c2dd837132be3dc14baa83435c03d0ee2c689bd67a79018d278625fc4b210843c85f5d8e59d13ffcb9
   languageName: node
   linkType: hard
 
@@ -16625,7 +16615,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-dropcursor@npm:^1.1.1":
+"prosemirror-dropcursor@npm:^1.3.2":
   version: 1.3.2
   resolution: "prosemirror-dropcursor@npm:1.3.2"
   dependencies:
@@ -18280,6 +18270,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"schema-utils@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "schema-utils@npm:2.7.1"
+  dependencies:
+    "@types/json-schema": ^7.0.5
+    ajv: ^6.12.4
+    ajv-keywords: ^3.5.2
+  checksum: 3851bcc7e44a3f35d3ca96e460c598aa24cec9fe395b196395316a043dc111d25735a9a49b1a115e4b52d5ed0d8bbcfb9fe1bfd077610f192b613e020d3f3ef2
+  languageName: node
+  linkType: hard
+
 "schema-utils@npm:^3.0.0":
   version: 3.0.0
   resolution: "schema-utils@npm:3.0.0"
@@ -19360,18 +19361,6 @@ fsevents@^1.2.7:
   version: 2.0.1
   resolution: "strip-json-comments@npm:2.0.1"
   checksum: e60d99aa2849c27a04dce0620334f45822197df6b83664dd3746971e9a0a766d989dbb8d87f9cb7350725d2b5df401a2343222ad06e36a1ba7d62c6633267fcb
-  languageName: node
-  linkType: hard
-
-"style-loader@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "style-loader@npm:1.3.0"
-  dependencies:
-    loader-utils: ^2.0.0
-    schema-utils: ^2.7.0
-  peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 4654b5178cb2c32f8d35363938b8bbb2b435fcfd2f81865185e3899183a3ad1390a24da467890463a6c9d07f6785d568a269805b706c8d56086c942530d77d95
   languageName: node
   linkType: hard
 
