@@ -2,7 +2,7 @@ import '@banglejs/core/style.css';
 import '@banglejs/tooltip/style.css';
 import '@banglejs/react-menu/style.css';
 import React from 'react';
-import { ReactEditorView, useEditorState } from '@banglejs/react';
+import { BangleEditorView, useEditorState } from '@banglejs/react';
 import { PluginKey } from '@banglejs/core';
 import { corePlugins } from '@banglejs/core/utils/core-components';
 import { floatingMenu, FloatingMenu } from '@banglejs/react-menu';
@@ -21,8 +21,8 @@ export default function Editor() {
   });
 
   return (
-    <ReactEditorView editorState={editorState}>
+    <BangleEditorView state={editorState}>
       <FloatingMenu menuKey={menuKey} />
-    </ReactEditorView>
+    </BangleEditorView>
   );
 }

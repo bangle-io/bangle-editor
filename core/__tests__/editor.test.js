@@ -2,9 +2,14 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { BangleEditor } from '@banglejs/core/editor';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
+import {
+  BangleEditorState,
+  BangleEditorView,
+  blockquote,
+  heading,
+} from '../index';
 
 const testEditor = renderTestEditor();
 
@@ -30,13 +35,120 @@ describe('editor serializes to html', () => {
   });
 });
 
+describe('BangleEditorState', () => {
+  test('Takes specRegistry', () => {
+    const specRegistry = new SpecRegistry();
+    const state = new BangleEditorState({
+      specRegistry,
+      initialValue: 'Hi',
+    });
+
+    expect(state.specRegistry).toBe(specRegistry);
+    expect(state.pmState.doc.toJSON()).toMatchInlineSnapshot(`
+      Object {
+        "content": Array [
+          Object {
+            "content": Array [
+              Object {
+                "text": "Hi",
+                "type": "text",
+              },
+            ],
+            "type": "paragraph",
+          },
+        ],
+        "type": "doc",
+      }
+    `);
+  });
+
+  test('Creates specRegistry if nothing is passed', () => {
+    const state = new BangleEditorState({
+      initialValue: 'Hi',
+    });
+
+    expect(state.specRegistry).toBeInstanceOf(SpecRegistry);
+    expect(state.pmState.doc.toJSON()).toMatchInlineSnapshot(`
+      Object {
+        "content": Array [
+          Object {
+            "content": Array [
+              Object {
+                "text": "Hi",
+                "type": "text",
+              },
+            ],
+            "type": "paragraph",
+          },
+        ],
+        "type": "doc",
+      }
+    `);
+  });
+
+  test('Throws error if you pass specs and specRegistry', () => {
+    const specRegistry = new SpecRegistry();
+    expect(
+      () =>
+        new BangleEditorState({
+          specRegistry,
+          specs: [],
+          initialValue: 'Hi',
+        }),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Cannot have both specs and specRegistry defined"`,
+    );
+  });
+
+  describe('Creates specRegistry if only specs is passed', () => {
+    const initialValue =
+      '<h1>Heading</h1><blockquote><para>Blockquote</para></blockquote>';
+
+    test('Heading spec', () => {
+      const state = new BangleEditorState({
+        specs: [heading.spec()],
+        initialValue,
+      });
+
+      expect(state.specRegistry).toBeInstanceOf(SpecRegistry);
+      expect(state.pmState.doc).toEqualDocument(
+        <doc>
+          <heading>Heading</heading>
+          {/** NOTICE that blockquote did _not_ get wrapped in blockquote node*/}
+          <para>Blockquote</para>
+        </doc>,
+      );
+    });
+
+    test('Blockquote spec', () => {
+      const state = new BangleEditorState({
+        specs: [heading.spec(), blockquote.spec()],
+        initialValue,
+      });
+
+      expect(state.specRegistry).toBeInstanceOf(SpecRegistry);
+      expect(state.pmState.doc).toEqualDocument(
+        <doc>
+          <heading>Heading</heading>
+          {/** NOTICE that blockquote did get wrapped in blockquote node*/}
+          <blockquote>
+            <para>Blockquote</para>
+          </blockquote>
+        </doc>,
+      );
+    });
+  });
+});
+
 describe('editor from html string', () => {
   test('parses html correctly', () => {
-    const editor = new BangleEditor(document.createElement('div'), {
-      specRegistry: new SpecRegistry(),
-      stateOpts: {
-        content: '<h1>My document</h1><p>My favorite president is</p>',
-      },
+    const specRegistry = new SpecRegistry();
+    const state = new BangleEditorState({
+      specRegistry,
+      initialValue: '<h1>My document</h1><p>My favorite president is</p>',
+    });
+    const editor = new BangleEditorView(document.createElement('div'), {
+      state,
     });
 
     expect(editor.toHTMLString()).toMatchInlineSnapshot(

@@ -4,12 +4,11 @@
 
 /** @jsx psx */
 import { psx } from '@banglejs/core/test-helpers/index';
-import { editorStateSetup } from '@banglejs/core/editor';
-import { EditorView } from '@banglejs/core/prosemirror/view';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { Plugin, PluginKey } from '@banglejs/core/index';
+import { BangleEditorView } from '@banglejs/core';
+import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core/index';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
 
@@ -80,10 +79,10 @@ const setupEditorState = (plugin) => {
   const specRegistry = new SpecRegistry();
   const plugins = [...defaultPlugins(), plugin];
 
-  return editorStateSetup({
-    plugins,
+  return new BangleEditorState({
     specRegistry,
-    doc: (<doc>
+    plugins,
+    initialValue: (<doc>
       <para>hello world</para>
     </doc>)(specRegistry.schema),
   });
@@ -93,9 +92,7 @@ const setupEditorView = ({
   state,
   viewDOM = document.createElement('div'),
 }) => {
-  return new EditorView(viewDOM, {
-    state,
-  });
+  return new BangleEditorView(viewDOM, { state }).view;
 };
 
 const stateKey = new PluginKey('tooltipState');

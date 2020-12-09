@@ -4,13 +4,13 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditorView } from '@banglejs/core/index';
+import { BangleEditorView as CoreBangleEditorView } from '@banglejs/core/index';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { ReactEditorView } from '@banglejs/react/ReactEditor';
+import { BangleEditorView } from '@banglejs/react';
 import { getRenderHandlers } from '@banglejs/core/node-view';
 import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
@@ -18,7 +18,7 @@ import { pjsx } from './helpers/index';
 import { sleep } from '@banglejs/core/utils/js-utils';
 import { selectNodeAt } from '@banglejs/core/test-helpers/index';
 import { Node } from '@banglejs/core/prosemirror/model';
-import { EditorView } from '@banglejs/core/prosemirror/view';
+import { EditorView as PMEditorView } from '@banglejs/core/prosemirror/view';
 import { useEditorState } from '../hooks';
 const consoleError = console.error;
 
@@ -38,8 +38,8 @@ function Comp({
     plugins: () => plugins,
   });
   return (
-    <ReactEditorView
-      editorState={editorState}
+    <BangleEditorView
+      state={editorState}
       id={id}
       onReady={onReady}
       renderNodeViews={renderNodeViews}
@@ -75,7 +75,10 @@ describe('basic tests', () => {
     );
 
     expect(onReady).toBeCalledTimes(1);
-    expect(onReady).toHaveBeenNthCalledWith(1, expect.any(BangleEditorView));
+    expect(onReady).toHaveBeenNthCalledWith(
+      1,
+      expect.any(CoreBangleEditorView),
+    );
     expect(result.container).toMatchInlineSnapshot(`
       <div>
         <div
@@ -152,9 +155,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <BangleEditorView
           renderNodeViews={() => {}}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
         />
       );
@@ -192,9 +195,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <BangleEditorView
           renderNodeViews={renderNodeViews}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
           onReady={onReady}
         />
@@ -283,9 +286,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <BangleEditorView
           renderNodeViews={renderNodeViews}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
           onReady={onReady}
         />
@@ -358,9 +361,9 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <ReactEditorView
+        <BangleEditorView
           renderNodeViews={renderNodeViews}
-          editorState={editorState}
+          state={editorState}
           id={'test'}
           onReady={onReady}
         />
@@ -374,7 +377,7 @@ describe('rendering node views', () => {
     expect(renderNodeViews).toBeCalledTimes(1);
     expect(renderNodeViews).toHaveBeenNthCalledWith(1, {
       node: expect.any(Node),
-      view: expect.any(EditorView),
+      view: expect.any(PMEditorView),
       getPos: expect.any(Function),
       decorations: expect.anything(),
       selected: expect.any(Boolean),
@@ -394,7 +397,7 @@ describe('rendering node views', () => {
     expect(renderNodeViews).toBeCalledTimes(2);
     expect(renderNodeViews).toHaveBeenNthCalledWith(2, {
       node: expect.any(Node),
-      view: expect.any(EditorView),
+      view: expect.any(PMEditorView),
       getPos: expect.any(Function),
       decorations: expect.anything(),
       selected: expect.any(Boolean),

@@ -22,6 +22,7 @@ module.exports = (Handlebars) => {
     PluginKey: `[PluginKey](${basePath}/core/#pluginkey)`,
     nodeViews: '',
     SpecRegistry: `[SpecRegistry]`,
+    BangleEditorState: `[BangleEditorState]`,
   };
 
   return {

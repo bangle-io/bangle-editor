@@ -5,8 +5,9 @@
 import { TextSelection } from 'prosemirror-state';
 import { getDocLabels } from './schema-builders';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditor } from '@banglejs/core/editor';
+import { BangleEditorView } from '@banglejs/core/editor';
 import { defaultPlugins, defaultSpecs } from './default-components';
+import { BangleEditorState } from '../index';
 
 const mountedEditors = new Set();
 const rootElement = document.body;
@@ -29,7 +30,7 @@ if (typeof afterEach === 'function') {
  * @param {*} testId
  */
 export function renderTestEditor(
-  { specRegistry, plugins, ...opts } = {},
+  { specRegistry, plugins } = {},
   testId = 'test-editor',
 ) {
   if (!(specRegistry instanceof SpecRegistry)) {
@@ -49,12 +50,8 @@ export function renderTestEditor(
     const editorProps = {
       attributes: { class: 'bangle-editor content' },
     };
-
-    let editor = new BangleEditor(container, {
-      specRegistry,
-      plugins,
-      editorProps,
-      ...opts,
+    let editor = new BangleEditorView(container, {
+      state: new BangleEditorState({ specRegistry, plugins, editorProps }),
     });
 
     view = editor.view;

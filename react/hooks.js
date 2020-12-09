@@ -1,37 +1,27 @@
-import { useRef, useState, useContext, useEffect } from 'react';
-import { editorStateSetup2 } from '@banglejs/core/editor';
+import { useState, useContext, useEffect } from 'react';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { Plugin, PluginKey } from '@banglejs/core/index';
+import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core/index';
 import { corePlugins } from '@banglejs/core/utils/core-components';
 import { EditorViewContext } from './ReactEditor';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};
 
-export function useEditorState({
-  specs,
-  specRegistry: _specRegistry,
-  plugins: _plugins,
-  ...options
-}) {
-  if (specs && _specRegistry) {
-    throw new Error('Cannot have both specs and specRegistry defined');
+export function useEditorState(props) {
+  if (props.plugins && typeof props.plugins !== 'function') {
+    throw new Error('plugins error: plugins must be a function');
   }
 
-  const optionsRef = useRef(options);
-  const specRegistry = useSpecRegistry(specs, _specRegistry, {
-    defaultSpecs: optionsRef.current.defaultSpecs,
-  });
-  const plugins = usePlugins(_plugins);
-  const [pmState] = useState(() =>
-    // Instantiate the editorState once and keep using that instance
-    // on subsequent renders.
-    // Passing a callback in useState lazy calls the
-    // functions on the first render and never again.
-    editorStateSetup2(specRegistry, plugins, optionsRef.current),
+  const [state] = useState(
+    () =>
+      // Instantiate the editorState once and keep using that instance
+      // on subsequent renders.
+      // Passing a callback in useState lazy calls the
+      // functions on the first render and never again.
+      new BangleEditorState(props),
   );
 
-  return { pmState, specRegistry };
+  return state;
 }
 
 export function useSpecRegistry(

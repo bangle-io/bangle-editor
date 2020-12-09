@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { updateLink, queryLinkAttrs } from '@banglejs/core/components/link';
-import { EditorViewContext } from '@banglejs/react/ReactEditor';
+import { EditorViewContext } from '@banglejs/react';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
 
 export function FloatingLinkMenu({ getIsTop = () => true }) {

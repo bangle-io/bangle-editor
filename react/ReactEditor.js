@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { objUid } from '@banglejs/core/utils/object-uid';
-import { BangleEditorView } from '@banglejs/core/editor';
+import {
+  BangleEditorState as CoreBangleEditorState,
+  BangleEditorView as CoreBangleEditorView,
+} from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { EditorState } from '@banglejs/core/prosemirror/state';
 import { NodeViewWrapper } from './NodeViewWrapper';
 import {
   nodeViewRenderHandlers,
@@ -18,32 +19,22 @@ let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
 export const EditorViewContext = React.createContext();
 
-ReactEditorView.propTypes = {
-  id: PropTypes.string,
-  renderNodeViews: PropTypes.func,
-  onReady: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.arrayOf(PropTypes.element),
-  ]),
-  editorState: PropTypes.exact({
-    pmState: PropTypes.instanceOf(EditorState).isRequired,
-    specRegistry: PropTypes.instanceOf(SpecRegistry).isRequired,
-  }),
-  pmViewOpts: PropTypes.object,
-};
-
-export function ReactEditorView({
+export function BangleEditorView({
   id,
-  renderNodeViews,
+  state,
   children,
-  onReady = () => {},
-  editorState: { pmState, specRegistry },
+  focusOnInit = true,
   pmViewOpts,
+  renderNodeViews,
+  onReady = () => {},
 }) {
   const renderRef = useRef();
-  const payloadRef = useRef({ specRegistry, pmState, pmViewOpts });
   const onReadyRef = useRef(onReady);
+  const editorViewPayloadRef = useRef({
+    state,
+    focusOnInit,
+    pmViewOpts,
+  });
   const [nodeViews, setNodeViews] = useState([]);
   const [editor, setEditor] = useState();
 
@@ -57,13 +48,16 @@ export function ReactEditorView({
       renderRef.current,
       nodeViewRenderHandlers((cb) => {
         // use callback for of setState to avoid
-        // get fresh nodeViewss
+        // get fresh nodeViews
         if (!destroyed) {
           setNodeViews((nodeViews) => cb(nodeViews));
         }
       }),
     );
-    const editor = new BangleEditorView(renderRef.current, payloadRef.current);
+    const editor = new CoreBangleEditorView(
+      renderRef.current,
+      editorViewPayloadRef.current,
+    );
     editor.view._updatePluginWatcher = updatePluginWatcher(editor);
     onReadyRef.current(editor);
     setEditor(editor);
@@ -116,4 +110,16 @@ const updatePluginWatcher = (editor) => {
     log('Adding watching to existing state', watcher);
     editor.view.updateState(state);
   };
+};
+
+BangleEditorView.propTypes = {
+  id: PropTypes.string,
+  renderNodeViews: PropTypes.func,
+  onReady: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
+  state: PropTypes.instanceOf(CoreBangleEditorState).isRequired,
+  pmViewOpts: PropTypes.object,
 };

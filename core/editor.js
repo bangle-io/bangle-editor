@@ -1,101 +1,28 @@
+import { Node, DOMSerializer, DOMParser } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
+
 import { pluginLoader } from './utils/plugin-loader';
 import { isTestEnv } from './utils/environment';
-import { DOMSerializer, DOMParser } from 'prosemirror-model';
 import { SpecRegistry } from './spec-registry';
-import { Node } from 'prosemirror-model';
-
-export class BangleEditor {
-  destroyed = false;
-  constructor(
-    element,
-    {
-      specRegistry,
-      plugins = [],
-      viewOpts = {},
-      editorProps,
-      stateOpts = {},
-      state = editorStateSetup({
-        plugins,
-        editorProps,
-        specRegistry,
-        stateOpts,
-      }),
-      focusOnInit = true,
-    },
-  ) {
-    this._specRegistry = specRegistry;
-
-    this._view = new EditorView(element, {
-      state,
-      dispatchTransaction(transaction) {
-        const newState = this.state.apply(transaction);
-        this.updateState(newState);
-      },
-      ...viewOpts,
-      attributes: { class: 'bangle-editor' },
-    });
-
-    if (focusOnInit) {
-      this.focusView();
-    }
-  }
-
-  get view() {
-    return this._view;
-  }
-
-  focusView() {
-    const view = this._view;
-    if (isTestEnv() || view.focused) {
-      return;
-    }
-    view.focus();
-  }
-
-  toHTMLString() {
-    const div = document.createElement('div');
-    const fragment = DOMSerializer.fromSchema(
-      this._specRegistry.schema,
-    ).serializeFragment(this._view.state.doc.content);
-
-    div.appendChild(fragment);
-
-    return div.innerHTML;
-  }
-
-  destroy() {
-    if (this.destroyed) {
-      return;
-    }
-
-    this.destroyed = true;
-    this._view.destroy();
-  }
-}
 
 export class BangleEditorView {
   destroyed = false;
-  constructor(
-    element,
-    { focusOnInit = true, specRegistry, pmState, pmViewOpts = {} },
-  ) {
-    if (!(specRegistry instanceof SpecRegistry)) {
-      throw new Error('SpecRegistry is required');
+  constructor(element, { focusOnInit = true, state, pmViewOpts = {} }) {
+    if (!(state instanceof BangleEditorState)) {
+      throw new Error(
+        'state is required and must be an instance of BangleEditorState',
+      );
     }
-    if (!(pmState instanceof EditorState)) {
-      throw new Error('prosemirror State is required');
-    }
-    this.specRegistry = specRegistry;
+
+    this.specRegistry = state.specRegistry;
     this.view = new EditorView(element, {
-      state: pmState,
+      state: state.pmState,
       dispatchTransaction(transaction) {
         const newState = this.state.apply(transaction);
         this.updateState(newState);
       },
       attributes: { class: 'bangle-editor' },
-
       ...pmViewOpts,
     });
 
@@ -131,38 +58,33 @@ export class BangleEditorView {
   }
 }
 
-export function editorStateSetup({
-  plugins = [],
-  editorProps,
-  specRegistry,
-  stateOpts = {},
-}) {
-  const { doc, content, ...otherStateOpts } = stateOpts;
+export class BangleEditorState {
+  constructor({
+    specRegistry,
+    specs,
+    plugins = [],
+    initialValue,
+    editorProps,
+    defaultSpecs = true,
+    pmStateOpts,
+  } = {}) {
+    if (specs && specRegistry) {
+      throw new Error('Cannot have both specs and specRegistry defined');
+    }
+    if (!specRegistry) {
+      specRegistry = new SpecRegistry(specs, { defaultSpecs });
+    }
 
-  const schema = specRegistry.schema;
+    this.specRegistry = specRegistry;
+    const schema = this.specRegistry.schema;
 
-  const state = EditorState.create({
-    schema,
-    doc: doc ? doc : createDocument({ schema, content: content }),
-    ...otherStateOpts,
-    plugins: pluginLoader(specRegistry, plugins, { editorProps }),
-  });
-
-  return state;
-}
-
-export function editorStateSetup2(
-  specRegistry,
-  plugins = [],
-  { initialValue, editorProps, pmStateOpts = {} } = {},
-) {
-  const schema = specRegistry.schema;
-  return EditorState.create({
-    schema,
-    doc: createDocument({ schema, content: initialValue }),
-    plugins: pluginLoader(specRegistry, plugins, { editorProps }),
-    ...pmStateOpts,
-  });
+    this.pmState = EditorState.create({
+      schema,
+      doc: createDocument({ schema, content: initialValue }),
+      plugins: pluginLoader(specRegistry, plugins, { editorProps }),
+      ...pmStateOpts,
+    });
+  }
 }
 
 const createDocument = ({ schema, content, parseOptions }) => {
