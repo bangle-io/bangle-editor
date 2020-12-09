@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { BangleEditor } from '@banglejs/core/editor';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
+import { BangleEditorView, editorStateSetup2 } from '../index';
 
 const testEditor = renderTestEditor();
 
@@ -32,11 +32,13 @@ describe('editor serializes to html', () => {
 
 describe('editor from html string', () => {
   test('parses html correctly', () => {
-    const editor = new BangleEditor(document.createElement('div'), {
-      specRegistry: new SpecRegistry(),
-      stateOpts: {
-        content: '<h1>My document</h1><p>My favorite president is</p>',
-      },
+    const specRegistry = new SpecRegistry();
+    const state = new editorStateSetup2(specRegistry, [], {
+      initialValue: '<h1>My document</h1><p>My favorite president is</p>',
+    });
+    const editor = new BangleEditorView(document.createElement('div'), {
+      pmState: state,
+      specRegistry,
     });
 
     expect(editor.toHTMLString()).toMatchInlineSnapshot(
