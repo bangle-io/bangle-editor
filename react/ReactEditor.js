@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { objUid } from '@banglejs/core/utils/object-uid';
 import {
   BangleEditorState as CoreBangleEditorState,
-  BangleEditorView as CoreBangleEditorView,
+  BangleEditor as CoreBangleEditorView,
 } from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
 import { NodeViewWrapper } from './NodeViewWrapper';

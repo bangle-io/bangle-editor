@@ -918,7 +918,7 @@ const plugins = [
 
 ## Component
 
-The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the following properties:
+The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the follow properties:
 
 - **?spec(opts: Object):** [Spec](#spec)\
   The specification which defines how the component will be rendered in the Editor. If the component has nothing to render it will not export this method.
@@ -997,3 +997,5 @@ const isActive = heading.commands.queryIsHeadingActive(3)(state); // true
 ```
 
 In the example above, [queryIsHeadingActive](#heading-component) is being used to query if the current selection contains a node named `heading` with a level of `3`.
+
+##

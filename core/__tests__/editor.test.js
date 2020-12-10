@@ -4,12 +4,7 @@
 /** @jsx psx */
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
-import {
-  BangleEditorState,
-  BangleEditorView,
-  blockquote,
-  heading,
-} from '../index';
+import { BangleEditorState, BangleEditor, blockquote, heading } from '../index';
 
 const testEditor = renderTestEditor();
 
@@ -147,7 +142,7 @@ describe('editor from html string', () => {
       specRegistry,
       initialValue: '<h1>My document</h1><p>My favorite president is</p>',
     });
-    const editor = new BangleEditorView(document.createElement('div'), {
+    const editor = new BangleEditor(document.createElement('div'), {
       state,
     });
 

@@ -5,7 +5,7 @@
 import { TextSelection } from 'prosemirror-state';
 import { getDocLabels } from './schema-builders';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditorView } from '@banglejs/core/editor';
+import { BangleEditor } from '@banglejs/core/editor';
 import { defaultPlugins, defaultSpecs } from './default-components';
 import { BangleEditorState } from '../index';
 
@@ -50,7 +50,7 @@ export function renderTestEditor(
     const editorProps = {
       attributes: { class: 'bangle-editor content' },
     };
-    let editor = new BangleEditorView(container, {
+    let editor = new BangleEditor(container, {
       state: new BangleEditorState({ specRegistry, plugins, editorProps }),
     });
 

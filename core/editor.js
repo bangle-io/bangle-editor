@@ -6,7 +6,7 @@ import { pluginLoader } from './utils/plugin-loader';
 import { isTestEnv } from './utils/environment';
 import { SpecRegistry } from './spec-registry';
 
-export class BangleEditorView {
+export class BangleEditor {
   destroyed = false;
   constructor(element, { focusOnInit = true, state, pmViewOpts = {} }) {
     if (!(state instanceof BangleEditorState)) {

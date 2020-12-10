@@ -4,7 +4,7 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditorView as CoreBangleEditorView } from '@banglejs/core/index';
+import { BangleEditor as CoreBangleEditorView } from '@banglejs/core/index';
 import {
   defaultPlugins,
   defaultSpecs,

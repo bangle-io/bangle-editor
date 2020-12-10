@@ -7,7 +7,7 @@ import { psx } from '@banglejs/core/test-helpers/index';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditorView } from '@banglejs/core';
+import { BangleEditor } from '@banglejs/core';
 import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core/index';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
@@ -92,7 +92,7 @@ const setupEditorView = ({
   state,
   viewDOM = document.createElement('div'),
 }) => {
-  return new BangleEditorView(viewDOM, { state }).view;
+  return new BangleEditor(viewDOM, { state }).view;
 };
 
 const stateKey = new PluginKey('tooltipState');
