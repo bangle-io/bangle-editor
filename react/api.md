@@ -16,19 +16,19 @@ npm install @banglejs/react
 ### Usage
 
 ```jsx
-import { useEditorState, BangleEditorView } from '@banglejs/react';
+import { useEditorState, BangleEditor } from '@banglejs/react';
 
 export default function Editor() {
   const editorState = useEditorState({
     initialValue: 'Hello world!',
   });
-  return <BangleEditorView editorState={editorState} />;
+  return <BangleEditor editorState={editorState} />;
 }
 ```
 
 > :bulb: **Do not forget to load the stylesheet located at _'@banglejs/core/style.css'._ See {{global.link.StylingGuide}} for more details on how to customize styling of your editor.**
 
-## BangleEditorView: {{global.link.ReactElement}}
+## BangleEditor: {{global.link.ReactElement}}
 
 A React component for rendering a Bangle instance.
 
@@ -57,7 +57,7 @@ A React component for rendering a Bangle instance.
 
 ## useEditorState: ReactHook
 
-> fn({{ core.link.BangleEditorStateProps }}) -> {{core.link.BangleEditorState}} 
+> fn({{ core.link.BangleEditorStateProps }}) -> {{core.link.BangleEditorState}}
 
 A hook for initialing the editor state.
 
@@ -75,4 +75,4 @@ A hook for hooking to a Prosemirror plugin's state. This will re-render the Reac
 
 > fn(): {{Prosemirror.EditorView}}
 
-A hook for providing the `view` to a React component. This context is only available to children of `<BangleEditorView />`. Since it returns `view`, it will most likely never do a re-render as `view` never really changes and if it does change a new component will be mounted. Please {{global.link.ReactUsePluginStateGuide}} for more examples.
+A hook for providing the `view` to a React component. This context is only available to children the of `<BangleEditor />`. Since it returns `view`, it will never do a re-render as `view` instance is unique per Bangle editor. Please {{global.link.ReactUsePluginStateGuide}} for more examples.

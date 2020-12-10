@@ -1,6 +1,6 @@
 import React from 'react';
 import reactDOM from 'react-dom';
-import { BangleEditorView, useEditorState } from '@banglejs/react';
+import { BangleEditor, useEditorState } from '@banglejs/react';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import {
   defaultPlugins,
@@ -42,7 +42,7 @@ function App({ opts: { specRegistry, plugins, renderNodeViews, id } }) {
   const editorState = useEditorState({ specRegistry, plugins });
 
   return (
-    <BangleEditorView
+    <BangleEditor
       id={id}
       state={editorState}
       onReady={onEditorReady}

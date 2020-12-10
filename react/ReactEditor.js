@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { objUid } from '@banglejs/core/utils/object-uid';
 import {
   BangleEditorState as CoreBangleEditorState,
-  BangleEditor as CoreBangleEditorView,
+  BangleEditor as CoreBangleEditor,
 } from '@banglejs/core/editor';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
 import { NodeViewWrapper } from './NodeViewWrapper';
@@ -19,7 +19,7 @@ let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
 export const EditorViewContext = React.createContext();
 
-export function BangleEditorView({
+export function BangleEditor({
   id,
   state,
   children,
@@ -54,7 +54,7 @@ export function BangleEditorView({
         }
       }),
     );
-    const editor = new CoreBangleEditorView(
+    const editor = new CoreBangleEditor(
       renderRef.current,
       editorViewPayloadRef.current,
     );
@@ -112,7 +112,7 @@ const updatePluginWatcher = (editor) => {
   };
 };
 
-BangleEditorView.propTypes = {
+BangleEditor.propTypes = {
   id: PropTypes.string,
   renderNodeViews: PropTypes.func,
   onReady: PropTypes.func,

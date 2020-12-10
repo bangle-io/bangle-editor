@@ -10,7 +10,7 @@ import {
   defaultSpecs,
 } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditorView } from '@banglejs/react';
+import { BangleEditor } from '@banglejs/react';
 import { getRenderHandlers } from '@banglejs/core/node-view';
 import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
@@ -38,7 +38,7 @@ function Comp({
     plugins: () => plugins,
   });
   return (
-    <BangleEditorView
+    <BangleEditor
       state={editorState}
       id={id}
       onReady={onReady}
@@ -155,7 +155,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <BangleEditorView
+        <BangleEditor
           renderNodeViews={() => {}}
           state={editorState}
           id={'test'}
@@ -195,7 +195,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <BangleEditorView
+        <BangleEditor
           renderNodeViews={renderNodeViews}
           state={editorState}
           id={'test'}
@@ -286,7 +286,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <BangleEditorView
+        <BangleEditor
           renderNodeViews={renderNodeViews}
           state={editorState}
           id={'test'}
@@ -361,7 +361,7 @@ describe('rendering node views', () => {
         initialValue,
       });
       return (
-        <BangleEditorView
+        <BangleEditor
           renderNodeViews={renderNodeViews}
           state={editorState}
           id={'test'}

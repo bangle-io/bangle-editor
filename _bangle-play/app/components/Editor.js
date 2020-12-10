@@ -9,7 +9,7 @@ import { NodeView } from '@banglejs/core/node-view';
 import { emoji, emojisArray } from '@banglejs/emoji/index';
 import { trailingNode } from '@banglejs/trailing-node';
 import { timestamp } from '@banglejs/timestamp';
-import { BangleEditorView } from '@banglejs/react';
+import { BangleEditor } from '@banglejs/react';
 import { useEditorState } from '@banglejs/react';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
@@ -137,7 +137,7 @@ export function Editor({ isFirst, manager, docName }) {
   });
 
   return (
-    <BangleEditorView
+    <BangleEditor
       state={editorState}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
@@ -147,7 +147,7 @@ export function Editor({ isFirst, manager, docName }) {
         emojiSuggestKey={emojiSuggestKey}
         emojis={emojisArray}
       />
-    </BangleEditorView>
+    </BangleEditor>
   );
 }
 
