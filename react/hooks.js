@@ -44,7 +44,7 @@ export function usePlugins(getPlugins = corePlugins) {
 }
 
 export function usePluginState(pluginKey) {
-  const view = useContext(EditorViewContext);
+  const view = useEditorViewContext();
   const [state, setState] = useState(pluginKey.getState(view.state));
 
   useEffect(() => {
@@ -75,4 +75,8 @@ export function usePluginState(pluginKey) {
   }, [view, pluginKey]);
 
   return state;
+}
+
+export function useEditorViewContext() {
+  return useContext(EditorViewContext);
 }

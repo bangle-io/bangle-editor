@@ -1,10 +1,10 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { updateLink, queryLinkAttrs } from '@banglejs/core/components/link';
-import { EditorViewContext } from '@banglejs/react';
 import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
+import { useEditorViewContext } from '@banglejs/react/hooks';
 
 export function FloatingLinkMenu({ getIsTop = () => true }) {
-  const view = useContext(EditorViewContext);
+  const view = useEditorViewContext();
   const result = queryLinkAttrs()(view.state);
   const originalHref = (result && result.href) || '';
 
