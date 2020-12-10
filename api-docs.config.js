@@ -23,6 +23,7 @@ module.exports = (Handlebars) => {
     nodeViews: '',
     SpecRegistry: `[SpecRegistry]`,
     BangleEditorState: `[BangleEditorState]`,
+    BangleEditorStateProps: `[BangleEditorStateProps]`,
   };
 
   return {
@@ -56,6 +57,9 @@ module.exports = (Handlebars) => {
           MenuGuide: `[MenuGuide]`,
           ReactElement: `[React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)`,
           ReactCustomRenderingGuide: `[ReactCustomRenderingGuide]`,
+          ReactUsePluginStateGuide: `[ReactUsePluginStateGuide](https://google.com)`,
+          ReactExample: `[ReactExample]`,
+          StylingGuide: `[StylingGuide]`,
         },
 
         useRightSidebar:

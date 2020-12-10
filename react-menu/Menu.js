@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import { EditorViewContext } from '@banglejs/react';
+import React from 'react';
 import { rafCommandExec } from '@banglejs/core/utils/js-utils';
 
 import {
@@ -16,9 +15,10 @@ import {
   focusFloatingMenuInput,
   toggleFloatingLinkMenu,
 } from './floating-menu';
+import { useEditorViewContext } from '@banglejs/react/hooks';
 
 export function Menu({ menuKey }) {
-  const view = useContext(EditorViewContext);
+  const view = useEditorViewContext();
 
   const menuItems = [
     [

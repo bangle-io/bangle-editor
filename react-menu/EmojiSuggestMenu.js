@@ -1,13 +1,6 @@
 import reactDOM from 'react-dom';
-import { EditorViewContext } from '@banglejs/react';
-import { usePluginState } from '@banglejs/react/hooks';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import { useEditorViewContext, usePluginState } from '@banglejs/react/hooks';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   getActiveIndex,
   getEmojis,
@@ -16,7 +9,7 @@ import {
 } from './emoji-suggest-menu';
 
 export function EmojiSuggestMenu({ emojiSuggestKey, emojis }) {
-  const view = useContext(EditorViewContext);
+  const view = useEditorViewContext();
   const emojiPluginState = usePluginState(emojiSuggestKey);
   const { counter, triggerText } = usePluginState(
     getSuggestTooltipKey(emojiSuggestKey),
