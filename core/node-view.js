@@ -1,4 +1,4 @@
-import { Plugin, PluginKey } from './pm-plugin';
+import { Plugin, PluginKey } from './plugin';
 import { bangleWarn, createElement } from './utils/js-utils';
 const LOG = false;
 

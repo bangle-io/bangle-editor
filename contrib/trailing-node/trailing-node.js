@@ -1,4 +1,4 @@
-import { PluginKey, Plugin } from '@banglejs/core/pm-plugin';
+import { PluginKey, Plugin } from '@banglejs/core/plugin';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

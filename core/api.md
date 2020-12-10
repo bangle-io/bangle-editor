@@ -218,7 +218,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -918,7 +918,7 @@ const plugins = [
 
 ## Component
 
-The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the follow properties:
+The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the following properties:
 
 - **?spec(opts: Object):** [Spec](#spec)\
   The specification which defines how the component will be rendered in the Editor. If the component has nothing to render it will not export this method.
