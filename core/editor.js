@@ -65,14 +65,13 @@ export class BangleEditorState {
     plugins = [],
     initialValue,
     editorProps,
-    defaultSpecs = true,
     pmStateOpts,
   } = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
     }
     if (!specRegistry) {
-      specRegistry = new SpecRegistry(specs, { defaultSpecs });
+      specRegistry = new SpecRegistry(specs);
     }
 
     this.specRegistry = specRegistry;

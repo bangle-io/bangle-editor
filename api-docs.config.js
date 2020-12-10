@@ -21,9 +21,9 @@ module.exports = (Handlebars) => {
     CommandObject: `[CommandObject](${basePath}/core/#commandobject)`,
     PluginKey: `[PluginKey](${basePath}/core/#pluginkey)`,
     nodeViews: '',
-    SpecRegistry: `[SpecRegistry]`,
-    BangleEditorState: `[BangleEditorState]`,
-    BangleEditorStateProps: `[BangleEditorStateProps]`,
+    BangleEditorState: `[BangleEditorState](${basePath}/core/#bangleeditorstate)`,
+    BangleEditorStateProps: `[BangleEditorState](${basePath}/core/#bangleeditorstate)`,
+    SpecRegistry: `[SpecRegistry](${basePath}/core/#specregistry)`,
   };
 
   return {
@@ -80,8 +80,12 @@ module.exports = (Handlebars) => {
           '?⁠fn(tr: [Prosemirror.Transaction](https://prosemirror.net/docs/ref/#state.Transaction))',
         SchemaSpec:
           '[Prosemirror.SchemaSpec](https://prosemirror.net/docs/ref/#model.SchemaSpec)',
+        Schema:
+          '[Prosemirror.Schema](https://prosemirror.net/docs/ref/#model.Schema)',
         PluginKey:
           '[Prosemirror.PluginKey](https://prosemirror.net/docs/ref/#state.PluginKey)',
+        EditorProps:
+          '[Prosemirror.EditorProps](https://prosemirror.net/docs/ref/#view.EditorProps)',
       },
     },
   };

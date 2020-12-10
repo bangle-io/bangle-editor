@@ -218,7 +218,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -937,7 +937,7 @@ Spec is an object with the following fields:
 - **type**: `'node'` | `'mark'`\
   This is a Prosemirror concept which divides the spec in two groups `node` type or `mark` type. Please read {{global.link.UnderstandingBangleGuide}} guide.
 
-- **?topNode**: `?`boolean\
+- **?topNode**: boolean\
   Whether the node will be the top node for the document. By default the `doc` node is the top node for Bangle. There can only be one top `node` and is only applicable for `node` types.
 
 - **name**: string\
@@ -954,7 +954,7 @@ Spec is an object with the following fields:
 
 :brain: _Please this is a **recursive** type - it contains reference to itself!_
 
-> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | ?fn({ schema, specRegistry }) -> [Plugins](#plugins) | undefined
+> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | fn({ schema, specRegistry }) -> [Plugins](#plugins) | undefined
 
 This is designed in a way to provide flexibility and extensibility when grouping multiple plugins together to form a Component. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
 
@@ -972,7 +972,7 @@ A collection of commands exported by a component.
 
 ## Command
 
-> (state: {{Prosemirror.EditorState}}, ?dispatch: {{Prosemirror.Dispatch}}, ?view: {{Prosemirror.EditorView}}) -> boolean
+> fn(state: {{Prosemirror.EditorState}}, ?dispatch: {{Prosemirror.Dispatch}}, ?view: {{Prosemirror.EditorView}}) -> boolean
 
 A function that carries out a bunch of transformations in the editor. The return value indicates whether it was executed or not. For example, running a [toggleBold](#bold-component) command on a code block will return `false` to indicate command did not execute, however it will return `true` when run a pargraph.
 
@@ -984,7 +984,7 @@ Please read {{global.link.EditorOperationsGuide}} guide for more details.
 
 ## QueryCommand
 
-> (state: {{Prosemirror.EditorState}}) -> T
+> fn(state: {{Prosemirror.EditorState}}) -> T
 
 This is a special type of command which makes no changes to the editor but queries the editor state and returns the value.
 
@@ -998,4 +998,83 @@ const isActive = heading.commands.queryIsHeadingActive(3)(state); // true
 
 In the example above, [queryIsHeadingActive](#heading-component) is being used to query if the current selection contains a node named `heading` with a level of `3`.
 
-##
+## BangleEditor
+
+> new BangleEditor(element, options)
+
+- **element:** : [dom.Node](https://developer.mozilla.org/en-US/docs/Web/API/Node)
+
+- **options:** Object \
+  Has the following named parameters
+
+  - **state:** {{core.link.BangleEditorState}}\
+    The editor state object.
+
+  - **?focusOnInit:** boolean=true\
+    Focus the editor on initialize.
+
+  - **?pmViewOpts**: [Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps) \
+    An object containing PM's editor props.
+
+**Usage**
+
+```js
+import { BangleEditor, BangleEditorState } from '@banglejs/core';
+
+// 'editor' is the id of the dom Node on which bangle will
+// be mounted.
+const editorNode = document.queryElement('#editor');
+
+const state = new BangleEditorState({
+  initialValue: 'Hello world!',
+});
+
+const editor = new BangleEditor(editorNode, { state });
+```
+
+## BangleEditorState
+
+> new BangleEditorState(options)
+
+- **options:** Object
+
+  - **?specRegistry:** {{core.link.SpecRegistry}}\
+    The SpecRegistry of your editor. Note: you can either set `specRegistry` or `specs` but _not_ both.
+
+  - **?specs:** [Spec](#spec)\[\]\
+    A shorthand which initializes SpecRegistry for you behind the scenes. Use this if you don't care about creating and managing a SpecRegistry instance. Note: you can either set `specRegistry` or `specs` but _not_ both.
+
+  - **?plugins:** {{core.link.Plugins}}\[\]\
+    The list of plugins for your editor.
+
+  - **?initialValue:** string | htmlString \
+    The initial content of the editor.
+
+  - **editorProps:** {{Prosemirror.EditorProps}}
+
+  - **?pmStateOpts:** [Prosemirror.EditorStateCreateConfig](https://prosemirror.net/docs/ref/#state.EditorState%5Ecreate)
+
+**Usage**
+
+See usage of [BangleEditor](#bangleeditor).
+
+## SpecRegistry
+
+> new SpecRegistry(specs, options)
+
+Params:
+
+- **?specs:**  [Spec](#spec)\[\]\
+  If `undefined` defaults to using all the specs available in `@banglejs/core`.
+
+- **?options:** Object
+
+  - **?defaultSpecs:** boolean=true\
+    Automatically include critical spec`doc`, `text` & `paragraph`  if they are not provided in `specs`.
+
+SpecRegistry combines and merges all the [spec](#spec)'s of your components. This is used by the editor as a source of truth for all `nodes` and `marks`.
+
+The SpecRegistry instance exposes the following fields:
+
+- **schema:** {{Prosemirror.Schema}}\
+  The Prosemirror schema instance associated with the specRegistry. This comes in handy when dealing directly with Prosemirror libraries.
