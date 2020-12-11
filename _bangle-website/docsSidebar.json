@@ -15,7 +15,8 @@
       "collapsed": false,
       "items": [
         "examples/react-basic-editor",
-        "examples/react-floating-menu"
+        "examples/react-floating-menu",
+        "examples/react-emoji-suggest"
       ]
     },
     {
@@ -49,7 +50,8 @@
       "items": [
         "api/core",
         "api/react",
-        "api/react_menu"
+        "api/react_menu",
+        "api/emoji_suggest"
       ]
     }
   ]

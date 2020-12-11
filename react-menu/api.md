@@ -10,7 +10,7 @@ This package provides you with tools to help build flexible yet powerful menus u
 ### Installation
 
 ```
-npm install @banglejs/react @banglejs/react-menu
+npm install @banglejs/react-menu
 ```
 
 ## floatingMenu: {{core.link.Component}}

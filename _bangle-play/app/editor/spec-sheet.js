@@ -3,9 +3,9 @@ import '@banglejs/tooltip/style.css';
 
 import * as collab from '@banglejs/collab/client/collab-extension';
 import { emoji } from '@banglejs/emoji/index';
-import '@banglejs/emoji/emoji.css';
+import '@banglejs/emoji/style.css';
 import '@banglejs/react-menu/style.css';
-import '@banglejs/emoji-suggest/style.css';
+import '@banglejs/react-emoji-suggest/style.css';
 import '@banglejs/markdown-front-matter/style.css';
 import './extensions-override.css';
 import { trailingNode } from '@banglejs/trailing-node';
@@ -13,7 +13,7 @@ import { timestamp } from '@banglejs/timestamp';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
-import { emojiSuggest } from '@banglejs/emoji-suggest';
+import { emojiSuggest } from '@banglejs/react-emoji-suggest';
 import { markdownFrontMatter } from '@banglejs/markdown-front-matter';
 import {
   bold,
@@ -61,7 +61,7 @@ export const specRegistry = new SpecRegistry([
   underline.spec(),
   collab.spec(),
   emoji.spec(),
-  emojiSuggest.spec(),
+  emojiSuggest.spec({ markName: 'emojiSuggest' }),
   stopwatch.spec(),
   trailingNode.spec(),
   timestamp.spec(),

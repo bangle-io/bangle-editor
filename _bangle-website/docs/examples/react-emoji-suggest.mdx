@@ -1,0 +1,18 @@
+---
+title: 'React Emoji Suggest'
+id: 'react-emoji-suggest'
+hide_title: true
+---
+
+import filePath from '!!file-loader!./react-emoji-suggest.jsx';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Component from './react-emoji-suggest';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import { ReactCodeExample } from '../../src/example-helpers';
+
+<ReactCodeExample
+  filePath={filePath}
+  language="jsx"
+  component={() => <Component />}
+/>

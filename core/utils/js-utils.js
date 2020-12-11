@@ -77,6 +77,8 @@ export function matchAllPlus(regexp, str) {
   for (let i = 0; i < matches.length; i++) {
     let cur = matches[i];
     let curStart = cur.index;
+    // TODO there was an error saying length of undefined in this function
+    // I suspect it is coming from line below. But not sure how to reproduce it.
     let curEnd = curStart + cur[0].length;
 
     if (prevElementEnd !== curStart) {

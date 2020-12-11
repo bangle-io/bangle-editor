@@ -17,26 +17,32 @@ export const commands = {
   selectEmoji,
 };
 
-const defaultMarkName = 'emojiSuggest';
 const defaultTrigger = ':';
 
-function specFactory({
-  markName = defaultMarkName,
-  trigger = defaultTrigger,
-} = {}) {
-  return suggestTooltip.spec({ markName, trigger });
+function specFactory({ markName, trigger = defaultTrigger } = {}) {
+  const spec = suggestTooltip.spec({ markName, trigger });
+
+  return {
+    ...spec,
+    options: {
+      ...spec.options,
+      trigger,
+    },
+  };
 }
 
 const keyStore = pluginKeyStore();
 
 function pluginsFactory({
   key = new PluginKey('emojiSuggestMenu'),
-  markName = defaultMarkName,
-  trigger = defaultTrigger,
-  tooltipRenderOpts,
+  markName,
+  tooltipRenderOpts = {},
   emojis,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema, specRegistry }) => {
+    console.log(specRegistry.options);
+    const { trigger } = specRegistry.options[markName];
+
     const suggestTooltipKey = keyStore.create(key, 'suggestTooltipKey');
 
     // We are converting to DOM elements so that their instances

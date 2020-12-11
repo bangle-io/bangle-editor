@@ -15,7 +15,7 @@ import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
 import { specRegistry } from '../editor/spec-sheet';
 import { floatingMenu, FloatingMenu } from '@banglejs/react-menu';
-import { EmojiSuggest, emojiSuggest } from '@banglejs/emoji-suggest';
+import { EmojiSuggest, emojiSuggest } from '@banglejs/react-emoji-suggest';
 
 const LOG = false;
 const DEBUG = true;
@@ -48,6 +48,7 @@ export function Editor({ isFirst, manager, docName }) {
       emojiSuggest.plugins({
         key: emojiSuggestKey,
         emojis: emojisArray,
+        markName: 'emojiSuggest',
         tooltipRenderOpts: {
           getScrollContainer,
         },

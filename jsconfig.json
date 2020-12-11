@@ -14,11 +14,11 @@
       "@banglejs/emoji/*": [
         "./emoji/*"
       ],
-      "@banglejs/emoji-suggest": [
-        "./contrib/emoji-suggest/index.js"
+      "@banglejs/react-emoji-suggest": [
+        "./contrib/react-emoji-suggest/index.js"
       ],
-      "@banglejs/emoji-suggest/*": [
-        "./contrib/emoji-suggest/*"
+      "@banglejs/react-emoji-suggest/*": [
+        "./contrib/react-emoji-suggest/*"
       ],
       "@banglejs/markdown": [
         "./markdown/index.js"
