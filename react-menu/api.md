@@ -69,8 +69,6 @@ Named parameters:
 
 **Usage**
 
-:bulb: Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
-
 :book: See {{example.FloatingMenu}}
 
 ## FloatingMenu: {{global.link.ReactElement}}

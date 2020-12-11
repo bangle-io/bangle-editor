@@ -6,9 +6,9 @@ import {
   getEmojis,
   getSuggestTooltipKey,
   selectEmoji,
-} from './emoji-suggest-menu';
+} from './emoji-suggest';
 
-export function EmojiSuggestMenu({ emojiSuggestKey, emojis }) {
+export function EmojiSuggest({ emojiSuggestKey, emojis }) {
   const view = useEditorViewContext();
   const emojiPluginState = usePluginState(emojiSuggestKey);
   const { counter, triggerText } = usePluginState(
@@ -27,7 +27,7 @@ export function EmojiSuggestMenu({ emojiSuggestKey, emojis }) {
   );
 
   return reactDOM.createPortal(
-    <div className="bangle-emoji-suggest-menu">
+    <div className="bangle-emoji-suggest">
       {filteredEmojis.map(([emojiKind, emoji], i) => {
         return (
           <Row

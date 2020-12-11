@@ -14,11 +14,11 @@
   "eslint.nodePath": ".yarn/sdks",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
   "files.exclude": {
-    // ".yarn/**": true
+    ".yarn/**": true
   },
   "search.exclude": {
-    // "**/.yarn": true,
-    // "**/.pnp.*": true,
+    "**/.yarn": true,
+    "**/.pnp.*": true,
     // "**/build": true
   },
   "editor.codeActionsOnSave": {

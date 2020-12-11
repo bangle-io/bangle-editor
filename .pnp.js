@@ -43,6 +43,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:collab"
       },
       {
+        "name": "@banglejs/emoji-suggest",
+        "reference": "workspace:contrib/emoji-suggest"
+      },
+      {
         "name": "@banglejs/markdown-front-matter",
         "reference": "workspace:contrib/markdown-front-matter"
       },
@@ -93,6 +97,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@banglejs/collab", ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:collab", "workspace:collab"]],
       ["@banglejs/core", ["workspace:core"]],
       ["@banglejs/emoji", ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:emoji", "workspace:emoji"]],
+      ["@banglejs/emoji-suggest", ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/emoji-suggest", "workspace:contrib/emoji-suggest"]],
       ["@banglejs/markdown", ["virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown", "workspace:markdown"]],
       ["@banglejs/markdown-front-matter", ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/markdown-front-matter", "workspace:contrib/markdown-front-matter"]],
       ["@banglejs/react", ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", "workspace:react"]],
@@ -4603,6 +4608,51 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@banglejs/core", "workspace:core"],
             ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["markdown-it-emoji", "npm:2.0.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@banglejs/emoji-suggest", [
+        ["virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/emoji-suggest", {
+          "packageLocation": "./.yarn/$$virtual/@banglejs-emoji-suggest-virtual-0c97bbb4b1/1/contrib/emoji-suggest/",
+          "packageDependencies": [
+            ["@banglejs/emoji-suggest", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/emoji-suggest"],
+            ["@banglejs/core", "workspace:core"],
+            ["@banglejs/react", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:react"],
+            ["@banglejs/tooltip", "virtual:c6d9a67d13c7140b66adbf03b43c1debc5c4ef10bc7a0f79f233defe14ed4530757ac03c2cc8f0bae30c1c6a42770389d945a716348af7cb78814f49793578ed#workspace:tooltip"],
+            ["@testing-library/react", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:11.2.2"],
+            ["@types/banglejs__core", null],
+            ["@types/banglejs__react", null],
+            ["@types/banglejs__tooltip", null],
+            ["@types/react", null],
+            ["@types/react-dom", null],
+            ["react", "npm:16.14.0"],
+            ["react-dom", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:16.14.0"]
+          ],
+          "packagePeers": [
+            "@banglejs/core",
+            "@banglejs/react",
+            "@banglejs/tooltip",
+            "@types/banglejs__core",
+            "@types/banglejs__react",
+            "@types/banglejs__tooltip",
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:contrib/emoji-suggest", {
+          "packageLocation": "./contrib/emoji-suggest/",
+          "packageDependencies": [
+            ["@banglejs/emoji-suggest", "workspace:contrib/emoji-suggest"],
+            ["@banglejs/core", "workspace:core"],
+            ["@banglejs/react", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:react"],
+            ["@banglejs/tooltip", "virtual:c6d9a67d13c7140b66adbf03b43c1debc5c4ef10bc7a0f79f233defe14ed4530757ac03c2cc8f0bae30c1c6a42770389d945a716348af7cb78814f49793578ed#workspace:tooltip"],
+            ["@testing-library/react", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:11.2.2"],
+            ["react", "npm:16.14.0"],
+            ["react-dom", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#npm:16.14.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -9162,6 +9212,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@banglejs/collab", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:collab"],
             ["@banglejs/core", "workspace:core"],
             ["@banglejs/emoji", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:emoji"],
+            ["@banglejs/emoji-suggest", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/emoji-suggest"],
             ["@banglejs/markdown", "virtual:20ba0ad0ae5a48d200a514762dd22a331b8eb9a3f23ac9f748eb060d2994f6956d45865dd2a69976dfa986e9c1ac8334b1c4b33c15a5b7dcbf35f5c4364d9688#workspace:markdown"],
             ["@banglejs/markdown-front-matter", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/markdown-front-matter"],
             ["@banglejs/react", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:react"],

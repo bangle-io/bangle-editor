@@ -15,6 +15,7 @@
     "@banglejs/collab": "workspace:*",
     "@banglejs/core": "workspace:*",
     "@banglejs/emoji": "workspace:*",
+    "@banglejs/emoji-suggest": "workspace:*",
     "@banglejs/markdown": "workspace:*",
     "@banglejs/markdown-front-matter": "workspace:*",
     "@banglejs/react": "workspace:*",
