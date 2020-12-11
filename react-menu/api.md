@@ -71,25 +71,7 @@ Named parameters:
 
 :bulb: Please read {{global.link.MenuGuide}} for a more detailed walkthrough.
 
-```js
-import {ReactEditor} from '@banglejs/react';
-import {floatingMenu} from '@banglejs/react-menu';
-
-const menuKey = new PluginKey('menuKey');
-const plugins = [
-  // otherPlugins
-  floatingMenu.plugins({ key: menuKey })
-]
-
-<ReactEditor options=\{{ plugins }}>
-  <FloatingMenu menuKey={menuKey} />
-</ReactEditor>
-
-// to hide the tooltip
-updateFloatingTooltipType(menuKey, null)(state, dispatch, view)
-// to toggle the link menu
-toggleFloatingLinkMenu(menuKey)(state, dispatch, view)
-```
+:book: See {{example.FloatingMenu}}
 
 ## FloatingMenu: {{global.link.ReactElement}}
 

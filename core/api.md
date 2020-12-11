@@ -874,11 +874,11 @@ Named parameters:
 
 **Usage**
 
-See `todoItem` usage.
+See [todoitem](#todoitem-component) usage.
 
 ### underline: {{core.link.Component}}
 
-Allows text in your editor to be marked as underline.
+Allows text in your editor to be marked with underlined style.
 
 #### spec(): {{core.link.MarkSpec}}
 
@@ -952,17 +952,27 @@ Spec is an object with the following fields:
 
 ### Plugins
 
-:brain: _Please this is a **recursive** type - it contains reference to itself!_
+:brain: _Please note this is a **recursive** type - it contains reference to itself!_
 
 > {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | fn({ schema, specRegistry }) -> [Plugins](#plugins) | undefined
 
-This is designed in a way to provide flexibility and extensibility when grouping multiple plugins together to form a Component. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
+This is designed in a way to provide flexibility and extensibility when grouping multiple plugins under a {{core.link.Component}}. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
 
 ### KeybindingsObject
 
 > { \[string\]: string | undefined }
 
-An object which defines the keybindings that are active for a given component. Setting a key to undefined will make it a `no-op`. Please checkout the {{global.link.KeybindingsGuide}} for examples.
+An object which defines the keybindings that are active for a given component. The keys are the name given to an action and the value is valid [w3c-keyname](https://github.com/marijnh/w3c-keyname#readme). Setting a key to undefined will make it a `no-op`.
+
+In the example below, it tells that an action named `moveUp` will be executed when a user presses `Alt` and `ArrowUp` key.
+
+```
+{
+  'moveUp': 'Alt-ArrowUp'
+}
+```
+
+:book: **Please checkout the {{global.link.KeybindingsGuide}}**
 
 ### CommandObject
 
@@ -974,11 +984,11 @@ A collection of commands exported by a component.
 
 > fn(state: {{Prosemirror.EditorState}}, ?dispatch: {{Prosemirror.Dispatch}}, ?view: {{Prosemirror.EditorView}}) -> boolean
 
-A function that carries out a bunch of transformations in the editor. The return value indicates whether it was executed or not. For example, running a [toggleBold](#bold-component) command on a code block will return `false` to indicate command did not execute, however it will return `true` when run a pargraph.
+A function that carries out a bunch of transformations in the editor. The return value indicates whether it was executed or not. For example, running a [toggleBold](#bold-component) command on a code block will return `false` to indicate command did not execute, however it will return `true` when run on a paragraph.
 
 If a `dispatch` callback is **not** passed, the command will run in dry run mode -- it will pretend to do things but will actually make **no changes** to the editor.
 
-:bulb: _Bangle's API will **always** export a higher order function which then returns a Command, which means it will not export a Command directly. It is designed this way to allow for configurability of a command and to keep the command functions params predictable --_ `(state, dispatch, view)`.
+:bulb: _Bangle's API will **always** export a higher order function which then returns a Command, which means it will not export a Command directly. It is designed this way to allow for configurability and to keep the command params predictable --_ `(config) => (state, dispatch, view) => boolean`.
 
 Please read {{global.link.EditorOperationsGuide}} guide for more details.
 
@@ -988,15 +998,15 @@ Please read {{global.link.EditorOperationsGuide}} guide for more details.
 
 This is a special type of command which makes no changes to the editor but queries the editor state and returns the value.
 
-:bulb: _BangleJS follows the convention of prefixing_ `query` _to any function which returns a QueryCommand._
+:bulb: _BangleJS follows the convention of prefixing_ `query` _to **any** function that returns a QueryCommand._
 
 ```js
 import { heading } from '@banglejs/core';
 
-const isActive = heading.commands.queryIsHeadingActive(3)(state); // true
+const isActive = heading.commands.queryIsHeadingActive(3)(state); // true or false
 ```
 
-In the example above, [queryIsHeadingActive](#heading-component) is being used to query if the current selection contains a node named `heading` with a level of `3`.
+In the example above, [queryIsHeadingActive](#heading-component) queries the editor state's selection for a node with name `heading` having a level of `3`.
 
 ## BangleEditor
 
@@ -1064,13 +1074,13 @@ See usage of [BangleEditor](#bangleeditor).
 
 Params:
 
-- **?specs:**  [Spec](#spec)\[\]\
+- **?specs:** [Spec](#spec)\[\]\
   If `undefined` defaults to using all the specs available in `@banglejs/core`.
 
 - **?options:** Object
 
   - **?defaultSpecs:** boolean=true\
-    Automatically include critical spec`doc`, `text` & `paragraph`  if they are not provided in `specs`.
+    Automatically include critical spec`doc`, `text` & `paragraph` if they are not provided in `specs`.
 
 SpecRegistry combines and merges all the [spec](#spec)'s of your components. This is used by the editor as a source of truth for all `nodes` and `marks`.
 
@@ -1078,3 +1088,33 @@ The SpecRegistry instance exposes the following fields:
 
 - **schema:** {{Prosemirror.Schema}}\
   The Prosemirror schema instance associated with the specRegistry. This comes in handy when dealing directly with Prosemirror libraries.
+
+**Usage**
+
+In the example below, we are loading a bunch of specs & plugins.
+
+```js
+import { bulletList, listItem, orderedList, bold, link } from '@banglejs/core';
+
+const specRegistry = new SpecRegistry([
+  link.spec(),
+  bold.spec(),
+  bulletList.spec(),
+  listItem.spec(),
+  orderedList.spec(),
+]);
+const plugins = [
+  link.plugins(),
+  bold.plugins(),
+  bulletList.plugins(),
+  listItem.plugins(),
+  orderedList.plugins(),
+];
+const editorNode = document.queryElement('#editor');
+const state = new BangleEditorState({
+  specRegistry,
+  plugins,
+  initialValue: 'Hello world!',
+});
+const editor = new BangleEditor(editorNode, { state });
+```

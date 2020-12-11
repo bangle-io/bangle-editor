@@ -59,7 +59,7 @@ const insertBananaAtSelection = (attrs = {}) => (dispatch, state) => {
 describe('basic tests', () => {
   let specRegistry, plugins;
   beforeEach(() => {
-    specRegistry = new SpecRegistry();
+    specRegistry = new SpecRegistry(defaultSpecs());
     plugins = defaultPlugins();
   });
 

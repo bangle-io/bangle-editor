@@ -3,14 +3,26 @@ title: 'Floating Menu'
 id: 'react-floating-menu'
 ---
 
-import filePath from '!!file-loader!./react-floating-menu.jsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { ReactCodeExample } from '../../src/example-helpers';
-import Component from './react-floating-menu';
+import Example1 from './react-floating-menu.example1';
+import Example2 from './react-floating-menu.example2';
+import filePath1 from '!!file-loader!./react-floating-menu.example1.jsx';
+import filePath2 from '!!file-loader!./react-floating-menu.example2.jsx';
 
 <ReactCodeExample
-  filePath={filePath}
+  filePath={filePath1}
   language="jsx"
-  component={() => <Component />}
+  component={() => <Example1 />}
+/>
+
+### A custom floating menu
+
+In the example below we define a custom menu `headingMenu`, which gets activated when a user is inside a `heading` node type.
+
+<ReactCodeExample
+  filePath={filePath2}
+  language="jsx"
+  component={() => <Example2 />}
 />

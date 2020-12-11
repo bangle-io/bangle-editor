@@ -70,6 +70,7 @@ export class BangleEditorState {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
     }
+
     if (!specRegistry) {
       specRegistry = new SpecRegistry(specs);
     }

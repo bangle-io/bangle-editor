@@ -11,6 +11,7 @@ import { BangleEditor } from '@banglejs/core';
 import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core/index';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
+import { coreSpec } from '@banglejs/core/utils/core-components';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {
@@ -76,7 +77,7 @@ const setupTooltipPlugin = ({ stateKey, renderOpts }) => {
 };
 
 const setupEditorState = (plugin) => {
-  const specRegistry = new SpecRegistry();
+  const specRegistry = new SpecRegistry(coreSpec());
   const plugins = [...defaultPlugins(), plugin];
 
   return new BangleEditorState({

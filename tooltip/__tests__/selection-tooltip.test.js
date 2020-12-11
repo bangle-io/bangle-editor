@@ -20,15 +20,16 @@ import {
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
+import { coreSpec } from '@banglejs/core/utils/core-components';
+
+const specRegistry = new SpecRegistry(coreSpec());
 
 describe('selection-tooltip', () => {
-  let testEditor, specRegistry, tooltipDOMSpec;
+  let testEditor, tooltipDOMSpec;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
     tooltipDOMSpec = createTooltipDOM();
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
-
-    specRegistry = new SpecRegistry();
 
     const plugins = [
       ...defaultPlugins(),
@@ -192,8 +193,6 @@ describe('commands', () => {
     tooltipDOMSpec = createTooltipDOM();
 
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
-
-    specRegistry = new SpecRegistry();
 
     const plugins = [
       ...defaultPlugins(),

@@ -4,7 +4,10 @@
  */
 
 import { render, act } from '@testing-library/react';
-import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { BangleEditor } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
@@ -47,7 +50,7 @@ function ReactEditor({
 
 beforeEach(() => {
   view = undefined;
-  specRegistry = new SpecRegistry();
+  specRegistry = new SpecRegistry(defaultSpecs());
 
   counterPlugin = new Plugin({
     key,

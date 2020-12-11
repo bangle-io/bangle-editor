@@ -140,7 +140,7 @@ export function toggleHeading(level = 3) {
   };
 }
 
-export function queryIsHeadingActive(level = 3) {
+export function queryIsHeadingActive(level) {
   return (state) => {
     const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
@@ -149,6 +149,9 @@ export function queryIsHeadingActive(level = 3) {
       return false;
     }
     const { node } = match;
+    if (level == null) {
+      return true;
+    }
     return node.attrs.level === level;
   };
 }

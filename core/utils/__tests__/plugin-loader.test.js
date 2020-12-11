@@ -2,7 +2,9 @@ import { SpecRegistry } from '../../spec-registry';
 import { NodeView } from '../../node-view';
 import { pluginLoader } from '../plugin-loader';
 import { Plugin, PluginGroup, PluginKey } from '../../plugin';
-import { corePlugins } from '../core-components';
+import { corePlugins, coreSpec } from '../core-components';
+
+const specRegistry = new SpecRegistry(coreSpec());
 
 describe('nodeViews validation', () => {
   test('Throws error if duplicate nodeViews', () => {
@@ -14,7 +16,7 @@ describe('nodeViews validation', () => {
     ];
 
     expect(() =>
-      pluginLoader(new SpecRegistry(), plugins),
+      pluginLoader(specRegistry, plugins),
     ).toThrowErrorMatchingInlineSnapshot(
       `"NodeView validation failed. Duplicate nodeViews for 'todoItem' found."`,
     );
@@ -28,7 +30,7 @@ describe('nodeViews validation', () => {
       }),
     ];
 
-    expect(() => pluginLoader(new SpecRegistry(), plugins)).not.toThrowError();
+    expect(() => pluginLoader(specRegistry, plugins)).not.toThrowError();
   });
 
   test('Throws error if node spec not found', () => {
@@ -40,7 +42,7 @@ describe('nodeViews validation', () => {
     ];
 
     expect(() =>
-      pluginLoader(new SpecRegistry(), plugins),
+      pluginLoader(specRegistry, plugins),
     ).toThrowErrorMatchingInlineSnapshot(
       `"NodeView validation failed. Spec for 'random_thing' not found."`,
     );
@@ -65,7 +67,7 @@ describe('Flattens plugins correctly', () => {
 
     const group4 = new Plugin({ key: new PluginKey('group4.first') });
     expect(
-      pluginLoader(new SpecRegistry(), [group1, group2, group3, group4]).map(
+      pluginLoader(specRegistry, [group1, group2, group3, group4]).map(
         (r) => r.key,
       ),
     ).toEqual(
@@ -93,7 +95,7 @@ describe('Flattens plugins correctly', () => {
     ];
 
     expect(() =>
-      pluginLoader(new SpecRegistry(), [group1]),
+      pluginLoader(specRegistry, [group1]),
     ).toThrowErrorMatchingInlineSnapshot(
       `"Duplicate names of pluginGroups grp1_child not allowed."`,
     );
