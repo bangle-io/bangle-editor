@@ -27,20 +27,20 @@ export const defaultKeys = {
   toggleLink: 'Meta-k',
 };
 
+export const defaultCalculateType = (state, prevType) => {
+  if (queryIsSelectionAroundLink()(state) || queryIsLinkActive()(state)) {
+    return 'floatingLinkMenu';
+  }
+  if (state.selection.empty) {
+    return null;
+  }
+  return 'floatingMenu';
+};
 function floatingMenu({
   key = new PluginKey('floatingMenuPlugin'),
   tooltipRenderOpts = {},
   keybindings = defaultKeys,
-
-  calculateType = (state, prevType) => {
-    if (queryIsSelectionAroundLink()(state) || queryIsLinkActive()(state)) {
-      return 'floatingLinkMenu';
-    }
-    if (state.selection.empty) {
-      return null;
-    }
-    return 'floatingMenu';
-  },
+  calculateType = defaultCalculateType,
 } = {}) {
   return [
     selectionTooltip.plugins({

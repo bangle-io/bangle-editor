@@ -18,6 +18,7 @@
     "@banglejs/markdown": "workspace:*",
     "@banglejs/markdown-front-matter": "workspace:*",
     "@banglejs/react": "workspace:*",
+    "@banglejs/react-emoji-suggest": "workspace:*",
     "@banglejs/react-menu": "workspace:*",
     "@banglejs/react-sticker": "workspace:*",
     "@banglejs/react-stopwatch": "workspace:*",

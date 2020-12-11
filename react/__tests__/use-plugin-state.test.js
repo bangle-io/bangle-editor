@@ -4,9 +4,12 @@
  */
 
 import { render, act } from '@testing-library/react';
-import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditorView } from '@banglejs/react/ReactEditor';
+import { BangleEditor } from '@banglejs/react/ReactEditor';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from '@banglejs/core/index';
 import { useEditorState, usePluginState } from '@banglejs/react/hooks';
@@ -34,20 +37,20 @@ function ReactEditor({
   const state = useEditorState({ specRegistry, plugins, editorProps });
 
   return (
-    <BangleEditorView
+    <BangleEditor
       id={id}
       state={state}
       onReady={onReady}
       renderNodeViews={renderNodeViews}
     >
       {children}
-    </BangleEditorView>
+    </BangleEditor>
   );
 }
 
 beforeEach(() => {
   view = undefined;
-  specRegistry = new SpecRegistry();
+  specRegistry = new SpecRegistry(defaultSpecs());
 
   counterPlugin = new Plugin({
     key,

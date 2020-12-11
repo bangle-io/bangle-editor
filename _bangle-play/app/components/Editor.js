@@ -9,17 +9,13 @@ import { NodeView } from '@banglejs/core/node-view';
 import { emoji, emojisArray } from '@banglejs/emoji/index';
 import { trailingNode } from '@banglejs/trailing-node';
 import { timestamp } from '@banglejs/timestamp';
-import { BangleEditorView } from '@banglejs/react';
+import { BangleEditor } from '@banglejs/react';
 import { useEditorState } from '@banglejs/react';
 import stopwatch from '@banglejs/react-stopwatch';
 import sticker from '@banglejs/react-sticker';
 import { specRegistry } from '../editor/spec-sheet';
-import {
-  EmojiSuggestMenu,
-  emojiSuggestMenu,
-  floatingMenu,
-  FloatingMenu,
-} from '@banglejs/react-menu';
+import { floatingMenu, FloatingMenu } from '@banglejs/react-menu';
+import { EmojiSuggest, emojiSuggest } from '@banglejs/react-emoji-suggest';
 
 const LOG = false;
 const DEBUG = true;
@@ -49,9 +45,10 @@ export function Editor({ isFirst, manager, docName }) {
           getScrollContainer,
         },
       }),
-      emojiSuggestMenu.plugins({
+      emojiSuggest.plugins({
         key: emojiSuggestKey,
         emojis: emojisArray,
+        markName: 'emojiSuggest',
         tooltipRenderOpts: {
           getScrollContainer,
         },
@@ -137,17 +134,14 @@ export function Editor({ isFirst, manager, docName }) {
   });
 
   return (
-    <BangleEditorView
+    <BangleEditor
       state={editorState}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
     >
       <FloatingMenu menuKey={menuKey} />
-      <EmojiSuggestMenu
-        emojiSuggestKey={emojiSuggestKey}
-        emojis={emojisArray}
-      />
-    </BangleEditorView>
+      <EmojiSuggest emojiSuggestKey={emojiSuggestKey} emojis={emojisArray} />
+    </BangleEditor>
   );
 }
 

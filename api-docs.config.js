@@ -9,25 +9,31 @@ module.exports = (Handlebars) => {
     return new Handlebars.SafeString('<code>' + param.fn(this) + '</code>');
   });
 
-  const basePath = `/docs/api`;
+  const apiPath = `/docs/api`;
 
   const coreLinks = {
-    Component: `[Component](${basePath}/core/#component)`,
-    MarkSpec: `[MarkSpec](${basePath}/core/#spec)`,
-    NodeSpec: `[NodeSpec](${basePath}/core/#spec)`,
-    Plugins: `[Plugins](${basePath}/core/#plugins)`,
-    Keybindings: `[KeybindingsObject](${basePath}/core/#keybindingsobject)`,
-    Command: `[Command](${basePath}/core/#command)`,
-    CommandObject: `[CommandObject](${basePath}/core/#commandobject)`,
-    PluginKey: `[PluginKey](${basePath}/core/#pluginkey)`,
+    Component: `[Component](${apiPath}/core/#component)`,
+    MarkSpec: `[MarkSpec](${apiPath}/core/#spec)`,
+    NodeSpec: `[NodeSpec](${apiPath}/core/#spec)`,
+    Plugins: `[Plugins](${apiPath}/core/#plugins)`,
+    Keybindings: `[KeybindingsObject](${apiPath}/core/#keybindingsobject)`,
+    Command: `[Command](${apiPath}/core/#command)`,
+    CommandObject: `[CommandObject](${apiPath}/core/#commandobject)`,
+    PluginKey: `[PluginKey](${apiPath}/core/#pluginkey)`,
     nodeViews: '',
-    SpecRegistry: `[SpecRegistry]`,
-    BangleEditorState: `[BangleEditorState]`,
-    BangleEditorStateProps: `[BangleEditorStateProps]`,
+    BangleEditorState: `[BangleEditorState](${apiPath}/core/#bangleeditorstate)`,
+    BangleEditorStateProps: `[BangleEditorState](${apiPath}/core/#bangleeditorstate)`,
+    SpecRegistry: `[SpecRegistry](${apiPath}/core/#specregistry)`,
+  };
+
+  const example = {
+    FloatingMenu: `[FloatingMenu example](/docs/examples/react-floating-menu)`,
+    ReactEmojiSuggestExample: `[Emoji Suggest example](/docs/examples/react-emoji-suggest)`,
   };
 
   return {
     shorthands: {
+      example,
       core: {
         link: coreLinks,
         text: {
@@ -44,7 +50,12 @@ module.exports = (Handlebars) => {
       },
       reactMenu: {
         link: {
-          FloatingMenu: `[FloatingMenu](${basePath}/react_menu/#floatingmenu-reactelement)`,
+          FloatingMenu: `[FloatingMenu](${apiPath}/react_menu/#floatingmenu-reactelement)`,
+        },
+      },
+      tooltip: {
+        link: {
+          tooltipRenderOpts: `[tooltipRenderOpts]`,
         },
       },
       global: {
@@ -80,8 +91,12 @@ module.exports = (Handlebars) => {
           '?⁠fn(tr: [Prosemirror.Transaction](https://prosemirror.net/docs/ref/#state.Transaction))',
         SchemaSpec:
           '[Prosemirror.SchemaSpec](https://prosemirror.net/docs/ref/#model.SchemaSpec)',
+        Schema:
+          '[Prosemirror.Schema](https://prosemirror.net/docs/ref/#model.Schema)',
         PluginKey:
           '[Prosemirror.PluginKey](https://prosemirror.net/docs/ref/#state.PluginKey)',
+        EditorProps:
+          '[Prosemirror.EditorProps](https://prosemirror.net/docs/ref/#view.EditorProps)',
       },
     },
   };

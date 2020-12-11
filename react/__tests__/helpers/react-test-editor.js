@@ -6,7 +6,7 @@ import React from 'react';
 import { TextSelection } from '@banglejs/core/prosemirror/state';
 import { render } from '@testing-library/react';
 import { getDocLabels } from '@banglejs/core/test-helpers/index';
-import { BangleEditorView, useEditorState } from '../../index';
+import { BangleEditor, useEditorState } from '../../index';
 
 function ReactEditor({
   id,
@@ -19,7 +19,7 @@ function ReactEditor({
   const editorState = useEditorState({ specRegistry, plugins, editorProps });
 
   return (
-    <BangleEditorView
+    <BangleEditor
       id={id}
       state={editorState}
       onReady={onEditorReady}

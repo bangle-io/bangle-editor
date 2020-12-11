@@ -1,0 +1,24 @@
+{
+  "name": "@banglejs/react-emoji-suggest",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {},
+  "peerDependencies": {
+    "@banglejs/core": "*",
+    "@banglejs/emoji": "*",
+    "@banglejs/react": "*",
+    "@banglejs/tooltip": "*",
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@banglejs/core": "workspace:*",
+    "@banglejs/emoji": "workspace:*",
+    "@banglejs/react": "workspace:*",
+    "@banglejs/tooltip": "workspace:*",
+    "@testing-library/react": "^11.2.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  }
+}

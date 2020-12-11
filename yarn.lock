@@ -1934,6 +1934,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@banglejs/react-emoji-suggest@workspace:*, @banglejs/react-emoji-suggest@workspace:contrib/react-emoji-suggest":
+  version: 0.0.0-use.local
+  resolution: "@banglejs/react-emoji-suggest@workspace:contrib/react-emoji-suggest"
+  dependencies:
+    "@banglejs/core": "workspace:*"
+    "@banglejs/emoji": "workspace:*"
+    "@banglejs/react": "workspace:*"
+    "@banglejs/tooltip": "workspace:*"
+    "@testing-library/react": ^11.2.2
+    react: ^16.14.0
+    react-dom: ^16.14.0
+  peerDependencies:
+    "@banglejs/core": "*"
+    "@banglejs/emoji": "*"
+    "@banglejs/react": "*"
+    "@banglejs/tooltip": "*"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@banglejs/react-menu@workspace:*, @banglejs/react-menu@workspace:react-menu":
   version: 0.0.0-use.local
   resolution: "@banglejs/react-menu@workspace:react-menu"
@@ -5189,6 +5210,7 @@ __metadata:
     "@banglejs/markdown": "workspace:*"
     "@banglejs/markdown-front-matter": "workspace:*"
     "@banglejs/react": "workspace:*"
+    "@banglejs/react-emoji-suggest": "workspace:*"
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"
@@ -5272,6 +5294,7 @@ __metadata:
     "@banglejs/markdown": "workspace:*"
     "@banglejs/markdown-front-matter": "workspace:*"
     "@banglejs/react": "workspace:*"
+    "@banglejs/react-emoji-suggest": "workspace:*"
     "@banglejs/react-menu": "workspace:*"
     "@banglejs/react-sticker": "workspace:*"
     "@banglejs/react-stopwatch": "workspace:*"

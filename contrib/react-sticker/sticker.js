@@ -9,7 +9,7 @@ import pterodactylImg from './img/pterodactyl.png';
 import { keymap } from '@banglejs/core/utils/keymap';
 import { NodeView } from '@banglejs/core/node-view';
 import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
-import { Node } from '@banglejs/core';
+import { Node } from '@banglejs/core/prosemirror/model';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

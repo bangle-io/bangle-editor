@@ -1,6 +1,6 @@
 import * as pmHistory from 'prosemirror-history';
 import { bangleKeymap } from '@banglejs/core/utils/keymap';
-import { PluginGroup } from '@banglejs/core/pm-plugin';
+import { PluginGroup } from '@banglejs/core/plugin';
 
 export const plugins = pluginsFactory;
 export const commands = {

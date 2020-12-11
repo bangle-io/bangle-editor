@@ -6,7 +6,7 @@ import { pluginLoader } from './utils/plugin-loader';
 import { isTestEnv } from './utils/environment';
 import { SpecRegistry } from './spec-registry';
 
-export class BangleEditorView {
+export class BangleEditor {
   destroyed = false;
   constructor(element, { focusOnInit = true, state, pmViewOpts = {} }) {
     if (!(state instanceof BangleEditorState)) {
@@ -65,14 +65,14 @@ export class BangleEditorState {
     plugins = [],
     initialValue,
     editorProps,
-    defaultSpecs = true,
     pmStateOpts,
   } = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
     }
+
     if (!specRegistry) {
-      specRegistry = new SpecRegistry(specs, { defaultSpecs });
+      specRegistry = new SpecRegistry(specs);
     }
 
     this.specRegistry = specRegistry;

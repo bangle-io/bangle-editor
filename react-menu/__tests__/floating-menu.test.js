@@ -7,11 +7,12 @@ import { link } from '@banglejs/core/index';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { reactTestEditor, pjsx } from '@banglejs/react/__tests__/helpers/index';
 import { TextSelection } from '@banglejs/core/prosemirror/state';
-import { PluginKey } from '@banglejs/core/pm-plugin';
+import { PluginKey } from '@banglejs/core/plugin';
 import { floatingMenu } from '../index';
+import { coreSpec } from '@banglejs/core/utils/core-components';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
-const specRegistry = new SpecRegistry();
+const specRegistry = new SpecRegistry(coreSpec());
 const plugins = () => [
   link.plugins(),
   floatingMenu.plugins({
