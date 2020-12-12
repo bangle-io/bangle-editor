@@ -29,6 +29,7 @@ module.exports = (Handlebars) => {
   const example = {
     FloatingMenu: `[FloatingMenu example](/docs/examples/react-floating-menu)`,
     ReactEmojiSuggestExample: `[Emoji Suggest example](/docs/examples/react-emoji-suggest)`,
+    BangleEditorExample: `[Bangle Editor example](/docs/examples/bangle-editor-example)`,
   };
 
   return {

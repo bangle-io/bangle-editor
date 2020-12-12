@@ -172,7 +172,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **escapeAtEdge:** ?Boolean=true\
-  Allows automatic escaping of code mark at the edges. This particularly helps avoid the case when a user gets stuck inside a code mark and is not able to exit out of it when pressing arrow left or right.
+  Allows automatic escaping of code mark at the edges. This particularly helps to escape code mark by pressing left or right arrow key at the edges.
 
 - **markdownShortcut**: ?Boolean=true\
   Toggle the markdown shortcut for creating a code mark. If enabled, type `` `text` `` to create a code mark.
@@ -918,7 +918,7 @@ const plugins = [
 
 ## Component
 
-The building block of BangleJS is a component. At it's heart it is a vanilla Javascript module which exports the follow properties:
+The building block of BangleJS is a component. At it's heart, we have a vanilla Javascript module which exports the follow properties:
 
 - **?spec(opts: Object):** [Spec](#spec)\
   The specification which defines how the component will be rendered in the Editor. If the component has nothing to render it will not export this method.
@@ -932,7 +932,7 @@ The building block of BangleJS is a component. At it's heart it is a vanilla Jav
 
 ### Spec
 
-Spec is an object with the following fields:
+An object with the following fields:
 
 - **type**: `'node'` | `'mark'`\
   This is a Prosemirror concept which divides the spec in two groups `node` type or `mark` type. Please read {{global.link.UnderstandingBangleGuide}} guide.
@@ -948,7 +948,8 @@ Spec is an object with the following fields:
 - **?markdown**: {toMarkdown: fn(), parseMarkdown: object}\
   Read the {{global.link.MarkdownGuide}} for more details.
 
-- **?options**: object
+- **?options**: object\
+  Use this to save data in this spec. You can use this field to save some data options to make it available to anyone having access to specRegistry.
 
 ### Plugins
 
@@ -1021,7 +1022,7 @@ In the example above, [queryIsHeadingActive](#heading-component) queries the edi
     The editor state object.
 
   - **?focusOnInit:** boolean=true\
-    Focus the editor on initialize.
+    Focus the editor after initialization.
 
   - **?pmViewOpts**: [Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps) \
     An object containing PM's editor props.
@@ -1041,6 +1042,8 @@ const state = new BangleEditorState({
 
 const editor = new BangleEditor(editorNode, { state });
 ```
+
+:book: See {{example.BangleEditorExample}}
 
 ## BangleEditorState
 

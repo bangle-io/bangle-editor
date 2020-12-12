@@ -8,7 +8,7 @@ import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
 import { BangleEditor } from '@banglejs/core';
-import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core/index';
+import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
 import { coreSpec } from '@banglejs/core/utils/core-components';
