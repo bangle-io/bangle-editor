@@ -29,6 +29,7 @@ module.exports = (Handlebars) => {
   const example = {
     FloatingMenu: `[FloatingMenu example](/docs/examples/react-floating-menu)`,
     ReactEmojiSuggestExample: `[Emoji Suggest example](/docs/examples/react-emoji-suggest)`,
+    BangleMarkdownExample: `[Bangle Markdown example](/docs/examples/markdown-editor)`,
   };
 
   return {
@@ -50,7 +51,7 @@ module.exports = (Handlebars) => {
       },
       reactMenu: {
         link: {
-          FloatingMenu: `[FloatingMenu](${apiPath}/react_menu/#floatingmenu-reactelement)`,
+          FloatingMenu: `[FloatingMenu](${apiPath}/react_menu#floatingmenu-reactelement)`,
         },
       },
       tooltip: {

@@ -1,9 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+
+export function VanillaCodeExample({
+  filePath,
+  language,
+  createEditor,
+  onEditorReady,
+}) {
+  const createRef = useRef(createEditor);
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const component = useCallback(
+    () => (
+      <VanillaEditor
+        createEditor={createRef.current}
+        onReady={setEditorLoaded}
+      />
+    ),
+    [createRef, setEditorLoaded],
+  );
+  return (
+    <>
+      <ReactCodeExample
+        filePath={filePath}
+        language={language}
+        component={component}
+      />
+      {editorLoaded ? onEditorReady(editorLoaded) : null}
+    </>
+  );
+}
+
+export function VanillaEditor({ createEditor, onReady }) {
+  const editorRef = useRef();
+
+  useEffect(() => {
+    const editor = createEditor(editorRef.current);
+    onReady(editor);
+    return () => {
+      editor.destroy();
+    };
+  }, [createEditor, onReady]);
+
+  return <div ref={editorRef} />;
+}
 
 export function ReactCodeExample({ filePath, language, component }) {
   return (

@@ -79,7 +79,6 @@ class BaseNodeView {
       this.contentDOM.classList.add('bangle-content-mount');
     }
 
-    // options
     this.opts = {
       selectionSensitive,
     };

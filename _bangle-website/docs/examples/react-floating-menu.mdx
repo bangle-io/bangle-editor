@@ -11,11 +11,21 @@ import Example2 from './react-floating-menu.example2';
 import filePath1 from '!!file-loader!./react-floating-menu.example1.jsx';
 import filePath2 from '!!file-loader!./react-floating-menu.example2.jsx';
 
+Below is an example of a floating menu which gets activated when you select something.
+
 <ReactCodeExample
   filePath={filePath1}
   language="jsx"
   component={() => <Example1 />}
 />
+
+Try some of the following:
+
+- Try selecting some lines.
+- Try to Bold the text.
+- Click on the link to see a link editor.
+- Select some text and try `Command–K`(Mac) or `Ctrl-K`(PC) to add a link.
+- Copy a link and try pasting it directly on a selected text.
 
 ### A custom floating menu
 
@@ -26,3 +36,11 @@ In the example below we define a custom menu `headingMenu`, which gets activated
   language="jsx"
   component={() => <Example2 />}
 />
+
+It is totally up to you when you want to trigger a floating menu by overwriting
+the [calculateType](/docs/api/react_menu#plugins---plugins) named param and what
+to render by providing a [renderMenuType](/docs/api/react_menu#floatingmenu-reactelement) prop.
+
+**See API docs:**
+
+- [@banglejs/react-menu](/docs/api/react_menu)

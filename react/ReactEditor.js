@@ -5,7 +5,7 @@ import { objUid } from '@banglejs/core/utils/object-uid';
 import {
   BangleEditorState as CoreBangleEditorState,
   BangleEditor as CoreBangleEditor,
-} from '@banglejs/core/editor';
+} from '@banglejs/core';
 import { saveRenderHandlers } from '@banglejs/core/node-view';
 import { NodeViewWrapper } from './NodeViewWrapper';
 import {

@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core/index';
+import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core';
 import { corePlugins } from '@banglejs/core/utils/core-components';
 import { EditorViewContext } from './ReactEditor';
 
