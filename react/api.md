@@ -75,4 +75,4 @@ A hook for hooking to a Prosemirror plugin's state. This will re-render the Reac
 
 > fn(): {{Prosemirror.EditorView}}
 
-A hook for providing the `view` to a React component. This context is only available to children the of `<BangleEditor />`. Since it returns `view`, it will never do a re-render as `view` instance is unique per Bangle editor. Please {{global.link.ReactUsePluginStateGuide}} for more examples.
+A hook for providing the {{Prosemirror.EditorView}} to a React component. This context is only available to children the of `<BangleEditor />`. Since it returns `view`, it will never do a re-render as `view` instance is unique per Bangle editor. Please {{global.link.ReactUsePluginStateGuide}} for more examples.

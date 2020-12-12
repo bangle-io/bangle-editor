@@ -13,7 +13,6 @@ export class BangleEditor {
       );
     }
 
-    this.specRegistry = state.specRegistry;
     this.view = new EditorView(element, {
       state: state.pmState,
       dispatchTransaction(transaction) {
@@ -41,6 +40,12 @@ export class BangleEditor {
       return;
     }
 
+    // If view was destroyed directly
+    if (this.view.docView === null) {
+      this.destroyed = true;
+      return;
+    }
+
     this.destroyed = true;
     this.view.destroy();
   }
@@ -48,7 +53,7 @@ export class BangleEditor {
   toHTMLString() {
     const div = document.createElement('div');
     const fragment = DOMSerializer.fromSchema(
-      this.specRegistry.schema,
+      this.view.state.schema,
     ).serializeFragment(this.view.state.doc.content);
 
     div.appendChild(fragment);

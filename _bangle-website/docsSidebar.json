@@ -16,7 +16,8 @@
       "items": [
         "examples/react-basic-editor",
         "examples/react-floating-menu",
-        "examples/react-emoji-suggest"
+        "examples/react-emoji-suggest",
+        "examples/markdown-editor"
       ]
     },
     {
