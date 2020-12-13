@@ -1,30 +1,43 @@
 import React from 'react';
 import {
+  defaultKeys as italicKeys,
   queryIsItalicActive,
   toggleItalic,
 } from '@banglejs/core/components/italic';
-import { queryIsBoldActive, toggleBold } from '@banglejs/core/components/bold';
-import { queryIsCodeActive, toggleCode } from '@banglejs/core/components/code';
 import {
+  defaultKeys as boldKeys,
+  queryIsBoldActive,
+  toggleBold,
+} from '@banglejs/core/components/bold';
+import {
+  defaultKeys as codeKeys,
+  queryIsCodeActive,
+  toggleCode,
+} from '@banglejs/core/components/code';
+import {
+  defaultKeys as todoListKeys,
   queryIsTodoListActive,
   toggleTodoList,
 } from '@banglejs/core/components/todo-list';
 import {
+  defaultKeys as headingKeys,
   queryIsHeadingActive,
   toggleHeading,
 } from '@banglejs/core/components/heading';
 import { filter } from '@banglejs/core/utils/pm-utils';
 import { queryIsLinkActive, updateLink } from '@banglejs/core/components/link';
 import {
+  defaultKeys as bulletListKeys,
   queryIsBulletListActive,
   toggleBulletList,
 } from '@banglejs/core/components/bullet-list';
-
+import { defaultKeys as floatingMenuKeys } from './floating-menu';
 import { Icon } from './Icon';
 
 export const boldItem = () => ({
   type: 'command',
   name: 'Bold',
+  hint: 'Bold\n' + boldKeys.toggleBold,
   command: (state, dispatch, view) => {
     if (toggleBold()(state, dispatch, view)) {
       if (dispatch) {
@@ -41,6 +54,8 @@ export const boldItem = () => ({
 export const italicItem = () => ({
   type: 'command',
   name: 'Italic',
+  hint: 'Italic\n' + italicKeys.toggleItalic,
+
   command: (state, dispatch, view) => {
     if (toggleItalic()(state, dispatch, view)) {
       if (dispatch) {
@@ -57,6 +72,7 @@ export const italicItem = () => ({
 export const codeItem = () => ({
   type: 'command',
   name: 'Code',
+  hint: 'Code\n' + codeKeys.toggleCode,
   command: (state, dispatch, view) => {
     if (toggleCode()(state, dispatch, view)) {
       if (dispatch) {
@@ -73,6 +89,7 @@ export const codeItem = () => ({
 export const bulletListItem = () => ({
   type: 'command',
   name: 'BulletList',
+  hint: 'BulletList\n' + bulletListKeys.toggle,
   command: (state, dispatch, view) => {
     if (toggleBulletList()(state, dispatch, view)) {
       if (dispatch) {
@@ -89,6 +106,7 @@ export const bulletListItem = () => ({
 export const todoListItem = () => ({
   type: 'command',
   name: 'TodoList',
+  hint: 'TodoList\n' + todoListKeys.toggle,
   command: (state, dispatch, view) => {
     const allowed = toggleTodoList()(state, undefined, view);
     if (allowed) {
@@ -107,6 +125,7 @@ export const todoListItem = () => ({
 export const heading2Item = () => ({
   type: 'command',
   name: 'Heading2',
+  hint: 'Heading2\n' + headingKeys.toH2,
   command: (state, dispatch, view) => {
     const allowed = true;
     if (allowed) {
@@ -124,6 +143,7 @@ export const heading2Item = () => ({
 export const heading3Item = () => ({
   type: 'command',
   name: 'Heading3',
+  hint: 'Heading3\n' + headingKeys.toH3,
   command: (state, dispatch, view) => {
     const allowed = true;
     if (allowed) {
@@ -140,6 +160,7 @@ export const heading3Item = () => ({
 
 export const linkItem = (showLinkMenu) => ({
   type: 'command',
+  hint: 'link\n' + floatingMenuKeys.toggleLink,
   name: 'Link',
   command: filter(
     (state) => updateLink('')(state),
@@ -204,8 +225,7 @@ function ItalicIcon(props) {
     </Icon>
   );
 }
-
-function Heading2Icon(props) {
+function HeadingIcon({ level, ...props }) {
   return (
     <Icon {...props}>
       <text
@@ -214,27 +234,20 @@ function Heading2Icon(props) {
         stroke="currentColor"
         textAnchor="middle"
         alignmentBaseline="central"
+        dominantBaseline="middle"
       >
-        H2
+        H{level}
       </text>
     </Icon>
   );
 }
 
+function Heading2Icon(props) {
+  return <HeadingIcon level={2} {...props} />;
+}
+
 function Heading3Icon(props) {
-  return (
-    <Icon {...props}>
-      <text
-        x="12"
-        y="12"
-        stroke="currentColor"
-        textAnchor="middle"
-        alignmentBaseline="central"
-      >
-        H3
-      </text>
-    </Icon>
-  );
+  return <HeadingIcon level={3} {...props} />;
 }
 
 function LinkIcon(props) {
