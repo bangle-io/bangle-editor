@@ -41,7 +41,7 @@ export default function Example() {
 
   return (
     <BangleEditor state={editorState}>
-      <EmojiSuggest emojiSuggestKey={emojiSuggestKey} emojis={emojisArray} />
+      <EmojiSuggest emojiSuggestKey={emojiSuggestKey} />
     </BangleEditor>
   );
 }

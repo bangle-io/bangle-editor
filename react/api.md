@@ -10,7 +10,7 @@ This package provides you with a React API for integrating BangleJS in your Reac
 ### Installation
 
 ```sh
-npm install @banglejs/react
+{{npmInstallation "@banglejs/react"}}
 ```
 
 ### Usage
@@ -38,7 +38,7 @@ A React component for rendering a Bangle instance.
   The [id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id) of the DOM node bangle mounts on. Please make sure this is unique if you are having multiple editors.
 
 - **renderNodeViews**: ?fn({ children, node, view, getPos, decorations, selected, attrs, updateAttrs}) -> {{global.link.ReactElement}} \
-  Callback to render to custom NodeView. This will be called with the `node` and you are expected to exhaustively return the React rendering output of each `node.type`. See {{global.link.ReactCustomRenderingGuide}}
+  Allows customization of how a Node is rendered in the DOM. This will be called with a `node` and you are expected to return a matching React component for the `node.type`. You are also expected to correctly nest the `children` props. Note: `children` prop is not available for [atom](https://prosemirror.net/docs/ref/#model.NodeSpec.atom) nodes. See {{global.link.ReactCustomRenderingGuide}}
 
 - **focusOnInit**: ?boolean=true \
   Brings editor to focus when it loads.
@@ -47,13 +47,12 @@ A React component for rendering a Bangle instance.
   A callback which is called when the editor has mounted.
 
 - **children**: ?{{global.link.ReactElement}} \
-  React components which need the editor context but are not directly rendered inside of the `contentEditable` of the editor. A good example of what can be `children` is {{reactMenu.link.FloatingMenu}}.
+  React components which need the editor context but are not directly editable i.e. do not lie inside the [contentEditable](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content) of the editor. A good example of what can be `children` is {{reactMenu.link.FloatingMenu}}.
 
 - **state**: {{core.link.BangleEditorState}} \
   Pass in the output of [useEditorState](#useeditorstate-reacthook) hook.
 
-- **pmViewOpts**: ?[Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps) \
-  Please make sure you fully understand what you are doing when using this prop.
+- **pmViewOpts**: ?[Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps)
 
 ## useEditorState: ReactHook
 
@@ -61,18 +60,22 @@ A React component for rendering a Bangle instance.
 
 A hook for initialing the editor state.
 
-:book: **Checkout {{global.link.ReactExample}}**
+> :bulb: This hook will never trigger a re-render, if you want to react to a change in your editor consider using [usePluginState](#usepluginstate-reacthook). Read {{global.link.ReactUsePluginStateGuide}}.
+
+:book: **Checkout {{example.ReactBasicEditorExample}}**
 
 ## usePluginState: ReactHook
 
 > fn(pluginKey`<T>`): T
 
-A hook for hooking to a Prosemirror plugin's state. This will re-render the React component every-time the plugin's state changes.
+A hook for hooking to a Prosemirror plugin's state. This hook works **only** with children of `<BangleEditor />`. This **will re-render** the React component every-time the plugin's state changes.
 
-:book: **Checkout {{global.link.ReactUsePluginStateGuide}}**
+:book: **Checkout {{global.link.ReactUsePluginStateGuide}} & {{global.link.PluginsGuide}}**
 
 ## useEditorViewContext: ReactHook
 
 > fn(): {{Prosemirror.EditorView}}
 
-A hook for providing the {{Prosemirror.EditorView}} to a React component. This context is only available to children the of `<BangleEditor />`. Since it returns `view`, it will never do a re-render as `view` instance is unique per Bangle editor. Please {{global.link.ReactUsePluginStateGuide}} for more examples.
+A hook for providing the {{Prosemirror.EditorView}} to a React component. This context is **only** available to children of `<BangleEditor />`. It will **never** trigger a re-render as the hook maintains the same {{Prosemirror.EditorView}} instance throughout the editor's lifecycle.
+
+:book: **Checkout {{global.link.ReactUsePluginStateGuide}}**

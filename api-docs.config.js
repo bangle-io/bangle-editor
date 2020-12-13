@@ -1,12 +1,32 @@
+const fs = require('fs');
 // We are injecting handlebars instead of requiring it
 // since handlebars is not a defined dependency at the root
 // so yarn throws an error.
-module.exports = (Handlebars) => {
+module.exports = (Handlebars, resolvePath) => {
   Handlebars.registerHelper('typedQueryCommand', function (param) {
     return `[QueryCommand](#querycommand)<${param}>`;
   });
   Handlebars.registerHelper('t', function (param) {
     return new Handlebars.SafeString('<code>' + param.fn(this) + '</code>');
+  });
+
+  Handlebars.registerHelper('npmInstallation', function (param) {
+    let { name, peerDependencies = {} } = JSON.parse(
+      fs.readFileSync(resolvePath(param + '/package.json'), 'utf-8'),
+    );
+
+    peerDependencies = Object.keys(peerDependencies).filter((r) =>
+      r.startsWith('@banglejs/'),
+    );
+
+    const peerDependenciesStr =
+      peerDependencies.length === 0
+        ? ''
+        : `# peer deps\nnpm install ${peerDependencies.join(' ')}\n`;
+
+    return new Handlebars.SafeString(
+      peerDependenciesStr + `npm install ${name}`,
+    );
   });
 
   const apiPath = `/docs/api`;
@@ -27,6 +47,8 @@ module.exports = (Handlebars) => {
   };
 
   const example = {
+    ReactBasicEditorExample:
+      '[React example](/docs/examples/react-basic-editor)',
     FloatingMenu: `[FloatingMenu example](/docs/examples/react-floating-menu)`,
     ReactEmojiSuggestExample: `[Emoji Suggest example](/docs/examples/react-emoji-suggest)`,
     BangleMarkdownExample: `[Bangle Markdown example](/docs/examples/markdown-editor)`,
@@ -69,7 +91,10 @@ module.exports = (Handlebars) => {
           MenuGuide: `[MenuGuide]`,
           ReactElement: `[React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)`,
           ReactCustomRenderingGuide: `[ReactCustomRenderingGuide]`,
+          // TODO to explain how to listen to changes in an editor. Maybe I need a guide without
+          // react and a separate guide on
           ReactUsePluginStateGuide: `[ReactUsePluginStateGuide](https://google.com)`,
+          PluginsGuide: `[PluginsGuide](https://google.com)`,
           ReactExample: `[ReactExample]`,
           StylingGuide: `[StylingGuide]`,
         },
@@ -98,6 +123,8 @@ module.exports = (Handlebars) => {
           '[Prosemirror.PluginKey](https://prosemirror.net/docs/ref/#state.PluginKey)',
         EditorProps:
           '[Prosemirror.EditorProps](https://prosemirror.net/docs/ref/#view.EditorProps)',
+        NodeView:
+          '[Prosemirror.NodeView](https://prosemirror.net/docs/ref/#view.NodeView)',
       },
     },
   };

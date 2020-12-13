@@ -140,7 +140,7 @@ export function Editor({ isFirst, manager, docName }) {
       renderNodeViews={renderNodeViews}
     >
       <FloatingMenu menuKey={menuKey} />
-      <EmojiSuggest emojiSuggestKey={emojiSuggestKey} emojis={emojisArray} />
+      <EmojiSuggest emojiSuggestKey={emojiSuggestKey} />
     </BangleEditor>
   );
 }

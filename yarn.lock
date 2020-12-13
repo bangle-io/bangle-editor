@@ -5273,6 +5273,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-scripts@workspace:_bangle-scripts"
   dependencies:
+    "@banglejs/collab": "workspace:*"
+    "@banglejs/core": "workspace:*"
+    "@banglejs/emoji": "workspace:*"
+    "@banglejs/markdown": "workspace:*"
+    "@banglejs/markdown-front-matter": "workspace:*"
+    "@banglejs/react": "workspace:*"
+    "@banglejs/react-emoji-suggest": "workspace:*"
+    "@banglejs/react-menu": "workspace:*"
+    "@banglejs/react-sticker": "workspace:*"
+    "@banglejs/react-stopwatch": "workspace:*"
+    "@banglejs/timestamp": "workspace:*"
+    "@banglejs/tooltip": "workspace:*"
+    "@banglejs/trailing-node": "workspace:*"
     "@github-docs/frontmatter": ^1.3.1
     change-case: ^4.1.2
     date-fns: ^2.10.0

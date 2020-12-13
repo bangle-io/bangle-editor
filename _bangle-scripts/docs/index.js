@@ -14,7 +14,9 @@ const Handlebars = require('handlebars');
 const del = require('del');
 const frontmatter = require('@github-docs/frontmatter');
 const { snakeCase } = require('change-case');
-const docsConfig = require('../../api-docs.config.js')(Handlebars);
+const docsConfig = require('../../api-docs.config.js')(Handlebars, (path) =>
+  require.resolve(path),
+);
 const rootPath = path.join(__dirname, '..', '..');
 const websitePath = path.join(rootPath, '_bangle-website');
 const apiDocsPath = path.join(websitePath, 'docs', 'api');
