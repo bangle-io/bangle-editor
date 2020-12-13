@@ -41,10 +41,11 @@
 .bangle-menu-group {
   display: flex;
   padding: 0 2px;
+  border-right: 1px solid #666;
 }
 
-.bangle-menu-group.right-border {
-  border-right: 1px solid #666;
+.bangle-menu .bangle-menu-group:last-child {
+  border-right: none;
 }
 
 .bangle-menu button {

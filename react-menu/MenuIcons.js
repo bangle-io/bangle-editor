@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   defaultKeys as italicKeys,
   queryIsItalicActive,
@@ -33,147 +33,162 @@ import {
 } from '@banglejs/core/components/bullet-list';
 import { defaultKeys as floatingMenuKeys } from './floating-menu';
 import { Icon } from './Icon';
+import { useEditorViewContext } from '@banglejs/react/hooks';
 
-export const boldItem = () => ({
-  type: 'command',
-  name: 'Bold',
-  hint: 'Bold\n' + boldKeys.toggleBold,
-  command: (state, dispatch, view) => {
-    if (toggleBold()(state, dispatch, view)) {
-      if (dispatch) {
+export function BoldButton({ ...props }) {
+  const hint = 'Bold\n' + boldKeys.toggleBold;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    if (toggleBold()(view.state, view.dispatch, view)) {
+      if (view.dispatch) {
         view.focus();
       }
-      return true;
     }
-    return false;
-  },
-  component: BoldIcon,
-  isActive: queryIsBoldActive(),
-});
+  }, [view]);
+  return (
+    <BoldIcon
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsBoldActive()(view.state)}
+      {...props}
+    />
+  );
+}
 
-export const italicItem = () => ({
-  type: 'command',
-  name: 'Italic',
-  hint: 'Italic\n' + italicKeys.toggleItalic,
-
-  command: (state, dispatch, view) => {
-    if (toggleItalic()(state, dispatch, view)) {
-      if (dispatch) {
+export function ItalicButton({ ...props }) {
+  const hint = 'Italic\n' + italicKeys.toggleItalic;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    if (toggleItalic()(view.state, view.dispatch, view)) {
+      if (view.dispatch) {
         view.focus();
       }
-      return true;
     }
-    return false;
-  },
-  component: ItalicIcon,
-  isActive: queryIsItalicActive(),
-});
+  }, [view]);
+  return (
+    <ItalicIcon
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsItalicActive()(view.state)}
+      {...props}
+    />
+  );
+}
 
-export const codeItem = () => ({
-  type: 'command',
-  name: 'Code',
-  hint: 'Code\n' + codeKeys.toggleCode,
-  command: (state, dispatch, view) => {
-    if (toggleCode()(state, dispatch, view)) {
-      if (dispatch) {
+export function CodeButton({ ...props }) {
+  const hint = 'Code\n' + codeKeys.toggleCode;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    if (toggleCode()(view.state, view.dispatch, view)) {
+      if (view.dispatch) {
         view.focus();
       }
-      return true;
     }
-    return false;
-  },
-  component: CodeIcon,
-  isActive: queryIsCodeActive(),
-});
+  }, [view]);
+  return (
+    <CodeIcon
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsCodeActive()(view.state)}
+      {...props}
+    />
+  );
+}
 
-export const bulletListItem = () => ({
-  type: 'command',
-  name: 'BulletList',
-  hint: 'BulletList\n' + bulletListKeys.toggle,
-  command: (state, dispatch, view) => {
-    if (toggleBulletList()(state, dispatch, view)) {
-      if (dispatch) {
+export function BulletListButton({ ...props }) {
+  const hint = 'BulletList\n' + bulletListKeys.toggle;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    if (toggleBulletList()(view.state, view.dispatch, view)) {
+      if (view.dispatch) {
         view.focus();
       }
-      return true;
     }
-    return false;
-  },
-  component: BulletListIcon,
-  isActive: queryIsBulletListActive(),
-});
+  }, [view]);
+  return (
+    <BulletListIcon
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsBulletListActive()(view.state)}
+      {...props}
+    />
+  );
+}
 
-export const todoListItem = () => ({
-  type: 'command',
-  name: 'TodoList',
-  hint: 'TodoList\n' + todoListKeys.toggle,
-  command: (state, dispatch, view) => {
-    const allowed = toggleTodoList()(state, undefined, view);
+export function TodoListButton({ ...props }) {
+  const hint = 'TodoList\n' + todoListKeys.toggle;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    // TODO fix the undefined dispatch passing
+    const allowed = toggleTodoList()(view.state, undefined, view);
     if (allowed) {
-      if (dispatch) {
+      if (view.dispatch) {
         view.focus();
+        toggleTodoList()(view.state, view.dispatch, view);
       }
-      toggleTodoList()(state, dispatch, view);
       return true;
     }
     return false;
-  },
-  component: TodoListIcon,
-  isActive: queryIsTodoListActive(),
-});
+  }, [view]);
+  return (
+    <TodoListIcon
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsTodoListActive()(view.state)}
+      {...props}
+    />
+  );
+}
 
-export const heading2Item = () => ({
-  type: 'command',
-  name: 'Heading2',
-  hint: 'Heading2\n' + headingKeys.toH2,
-  command: (state, dispatch, view) => {
-    const allowed = true;
-    if (allowed) {
-      if (dispatch) {
+export function HeadingButton({ level, ...props }) {
+  const hint = `Heading${level}\n` + headingKeys['toH' + level];
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    if (toggleHeading(level)(view.state, view.dispatch, view)) {
+      if (view.dispatch) {
         view.focus();
       }
-      return toggleHeading(2)(state, dispatch, view);
     }
-    return false;
-  },
-  component: Heading2Icon,
-  isActive: queryIsHeadingActive(2),
-});
+  }, [view, level]);
+  return (
+    <HeadingIcon
+      level={level}
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsHeadingActive(level)(view.state)}
+      {...props}
+    />
+  );
+}
 
-export const heading3Item = () => ({
-  type: 'command',
-  name: 'Heading3',
-  hint: 'Heading3\n' + headingKeys.toH3,
-  command: (state, dispatch, view) => {
-    const allowed = true;
-    if (allowed) {
-      if (dispatch) {
+export function LinkButton({ showLinkMenu, ...props }) {
+  const hint = 'Link\n' + floatingMenuKeys.toggleLink;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(() => {
+    const command = filter(
+      (state) => updateLink('')(state),
+      (state, dispatch, view) => {
+        if (dispatch) {
+          showLinkMenu();
+        }
+        return true;
+      },
+    );
+    if (command(view.state, view.dispatch, view)) {
+      if (view.dispatch) {
         view.focus();
       }
-      return toggleHeading(3)(state, dispatch, view);
     }
-    return false;
-  },
-  component: Heading3Icon,
-  isActive: queryIsHeadingActive(3),
-});
-
-export const linkItem = (showLinkMenu) => ({
-  type: 'command',
-  hint: 'link\n' + floatingMenuKeys.toggleLink,
-  name: 'Link',
-  command: filter(
-    (state) => updateLink('')(state),
-    (state, dispatch, view) => {
-      if (dispatch) {
-        showLinkMenu();
-      }
-      return true;
-    },
-  ),
-  component: LinkIcon,
-  isActive: queryIsLinkActive(),
-});
+  }, [view, showLinkMenu]);
+  return (
+    <LinkIcon
+      hint={hint}
+      onSelect={onSelect}
+      isActive={queryIsLinkActive()(view.state)}
+      {...props}
+    />
+  );
+}
 
 function BoldIcon(props) {
   return (
@@ -240,14 +255,6 @@ function HeadingIcon({ level, ...props }) {
       </text>
     </Icon>
   );
-}
-
-function Heading2Icon(props) {
-  return <HeadingIcon level={2} {...props} />;
-}
-
-function Heading3Icon(props) {
-  return <HeadingIcon level={3} {...props} />;
 }
 
 function LinkIcon(props) {

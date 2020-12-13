@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export const Icon = ({
   children,
-  onClick,
+  onSelect,
   style = {},
   className = '',
   isActive,
@@ -10,13 +10,20 @@ export const Icon = ({
   hint,
   ...props
 }) => {
+  const onMouseDown = useCallback(
+    (e) => {
+      e.preventDefault();
+      return onSelect();
+    },
+    [onSelect],
+  );
   return (
     <button
       data-bangle-balloon-break
       aria-label={hint}
       data-bangle-balloon-pos="up"
       disabled={isDisabled}
-      onClick={onClick}
+      onMouseDown={onMouseDown}
       className={`inline-menu-icon ${isActive ? 'active' : ''}`}
     >
       <svg
