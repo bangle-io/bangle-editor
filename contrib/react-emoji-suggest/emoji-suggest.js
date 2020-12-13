@@ -18,7 +18,7 @@ export const commands = {
 };
 
 const defaultTrigger = ':';
-
+const defaultMaxItems = 200;
 function specFactory({ markName, trigger = defaultTrigger } = {}) {
   const spec = suggestTooltip.spec({ markName, trigger });
 
@@ -38,9 +38,9 @@ function pluginsFactory({
   markName,
   tooltipRenderOpts = {},
   emojis,
+  maxItems = defaultMaxItems,
 } = {}) {
   return ({ schema, specRegistry }) => {
-    console.log(specRegistry.options);
     const { trigger } = specRegistry.options[markName];
 
     const suggestTooltipKey = keyStore.create(key, 'suggestTooltipKey');
@@ -81,6 +81,8 @@ function pluginsFactory({
     };
     return [
       valuePlugin(key, {
+        emojis,
+        maxItems,
         tooltipContentDOM: tooltipDOMSpec.contentDOM,
         markName,
       }),
@@ -93,7 +95,11 @@ function pluginsFactory({
           tooltipDOMSpec,
         },
         onEnter: (state, dispatch, view) => {
-          const matchedEmojis = getEmojis(emojis, queryTriggerText(key)(state));
+          const matchedEmojis = getEmojis(
+            emojis,
+            queryTriggerText(key)(state),
+            maxItems,
+          );
           if (matchedEmojis.length === 0) {
             return removeSuggestMark(key)(state, dispatch, view);
           }
@@ -110,11 +116,13 @@ function pluginsFactory({
   };
 }
 
-export function getEmojis(emojis, queryText) {
+export function getEmojis(emojis, queryText, maxItems = defaultMaxItems) {
   if (!queryText) {
-    return emojis.slice(0, 200);
+    return emojis.slice(0, maxItems);
   } else {
-    return emojis.filter(([item]) => item.includes(queryText)).slice(0, 20);
+    return emojis
+      .filter(([item]) => item.includes(queryText))
+      .slice(0, maxItems);
   }
 }
 

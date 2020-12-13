@@ -8,16 +8,18 @@ import {
   selectEmoji,
 } from './emoji-suggest';
 
-export function EmojiSuggest({ emojiSuggestKey, emojis }) {
+export function EmojiSuggest({ emojiSuggestKey }) {
   const view = useEditorViewContext();
-  const emojiPluginState = usePluginState(emojiSuggestKey);
+  const { tooltipContentDOM, emojis, maxItems } = usePluginState(
+    emojiSuggestKey,
+  );
   const { counter, triggerText } = usePluginState(
     getSuggestTooltipKey(emojiSuggestKey),
   );
-  const filteredEmojis = useMemo(() => getEmojis(emojis, triggerText), [
-    emojis,
-    triggerText,
-  ]);
+  const filteredEmojis = useMemo(
+    () => getEmojis(emojis, triggerText, maxItems),
+    [emojis, triggerText, maxItems],
+  );
   const activeIndex = getActiveIndex(counter, filteredEmojis.length);
   const onSelectEmoji = useCallback(
     (emojiKind) => {
@@ -41,7 +43,7 @@ export function EmojiSuggest({ emojiSuggestKey, emojis }) {
         );
       })}
     </div>,
-    emojiPluginState.tooltipContentDOM,
+    tooltipContentDOM,
   );
 }
 
