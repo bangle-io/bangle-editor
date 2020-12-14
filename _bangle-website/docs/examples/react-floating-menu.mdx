@@ -8,8 +8,10 @@ import TabItem from '@theme/TabItem';
 import { ReactCodeExample } from '../../src/example-helpers';
 import Example1 from './react-floating-menu.example1';
 import Example2 from './react-floating-menu.example2';
+import Example3 from './react-floating-menu.example3';
 import filePath1 from '!!file-loader!./react-floating-menu.example1.jsx';
 import filePath2 from '!!file-loader!./react-floating-menu.example2.jsx';
+import filePath3 from '!!file-loader!./react-floating-menu.example3.jsx';
 
 Below is an example of a floating menu which gets activated when you select something. Bangle picks some reasonable default menu types, but you are free to customize it as shown in the next example.
 
@@ -42,3 +44,13 @@ and what you render for that type, see [renderMenuType](/docs/api/react_menu#flo
 **See API docs:**
 
 - [@banglejs/react-menu](/docs/api/react_menu)
+
+### Menu Dropdown
+
+Menu Dropdown
+
+<ReactCodeExample
+  filePath={filePath3}
+  language="jsx"
+  component={() => <Example3 />}
+/>

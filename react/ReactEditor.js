@@ -13,7 +13,7 @@ import {
   nodeViewUpdateStore,
 } from './node-view-helpers';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 

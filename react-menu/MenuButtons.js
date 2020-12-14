@@ -41,21 +41,26 @@ import {
   focusFloatingMenuInput,
   toggleLinkSubMenu,
 } from './floating-menu';
+import { MenuDropdown, VerticalDropdownGroup } from './MenuDropdown';
 
 export function BoldButton({ ...props }) {
   const hint = 'Bold\n' + boldKeys.toggleBold;
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    if (toggleBold()(view.state, view.dispatch, view)) {
-      if (view.dispatch) {
-        view.focus();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (toggleBold()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
       }
-    }
-  }, [view]);
+    },
+    [view],
+  );
   return (
     <Icons.BoldIcon
+      onMouseDown={onSelect}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsBoldActive()(view.state)}
       isDisabled={!toggleBold()(view.state)}
       {...props}
@@ -66,17 +71,21 @@ export function BoldButton({ ...props }) {
 export function ItalicButton({ ...props }) {
   const hint = 'Italic\n' + italicKeys.toggleItalic;
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    if (toggleItalic()(view.state, view.dispatch, view)) {
-      if (view.dispatch) {
-        view.focus();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (toggleItalic()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
       }
-    }
-  }, [view]);
+    },
+    [view],
+  );
   return (
     <Icons.ItalicIcon
+      onMouseDown={onSelect}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsItalicActive()(view.state)}
       isDisabled={!toggleItalic()(view.state)}
       {...props}
@@ -87,17 +96,21 @@ export function ItalicButton({ ...props }) {
 export function CodeButton({ ...props }) {
   const hint = 'Code\n' + codeKeys.toggleCode;
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    if (toggleCode()(view.state, view.dispatch, view)) {
-      if (view.dispatch) {
-        view.focus();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (toggleCode()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
       }
-    }
-  }, [view]);
+    },
+    [view],
+  );
   return (
     <Icons.CodeIcon
+      onMouseDown={onSelect}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsCodeActive()(view.state)}
       isDisabled={!toggleCode()(view.state)}
       {...props}
@@ -108,19 +121,23 @@ export function CodeButton({ ...props }) {
 export function BulletListButton({ ...props }) {
   const hint = 'BulletList\n' + bulletListKeys.toggle;
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    if (toggleBulletList()(view.state, view.dispatch, view)) {
-      if (view.dispatch) {
-        view.focus();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (toggleBulletList()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
       }
-    }
-  }, [view]);
+    },
+    [view],
+  );
   return (
     <Icons.BulletListIcon
+      onMouseDown={onSelect}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsBulletListActive()(view.state)}
-      isDisabled={!toggleBulletList()(view.state)}
+      isDisabled={!toggleBulletList()(view.state, undefined, view)}
       {...props}
     />
   );
@@ -129,22 +146,26 @@ export function BulletListButton({ ...props }) {
 export function TodoListButton({ ...props }) {
   const hint = 'TodoList\n' + todoListKeys.toggle;
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    // TODO fix the undefined dispatch passing
-    const allowed = toggleTodoList()(view.state, undefined, view);
-    if (allowed) {
-      if (view.dispatch) {
-        view.focus();
-        toggleTodoList()(view.state, view.dispatch, view);
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      // TODO fix the undefined dispatch passing
+      const allowed = toggleTodoList()(view.state, undefined, view);
+      if (allowed) {
+        if (view.dispatch) {
+          view.focus();
+          toggleTodoList()(view.state, view.dispatch, view);
+        }
+        return true;
       }
-      return true;
-    }
-    return false;
-  }, [view]);
+      return false;
+    },
+    [view],
+  );
   return (
     <Icons.TodoListIcon
+      onMouseDown={onSelect}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsTodoListActive()(view.state)}
       isDisabled={!toggleTodoList()(view.state, undefined, view)}
       {...props}
@@ -155,18 +176,22 @@ export function TodoListButton({ ...props }) {
 export function HeadingButton({ level, ...props }) {
   const hint = `Heading${level}\n` + headingKeys['toH' + level];
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    if (toggleHeading(level)(view.state, view.dispatch, view)) {
-      if (view.dispatch) {
-        view.focus();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (toggleHeading(level)(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
       }
-    }
-  }, [view, level]);
+    },
+    [view, level],
+  );
   return (
     <Icons.HeadingIcon
+      onMouseDown={onSelect}
       level={level}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsHeadingActive(level)(view.state)}
       isDisabled={!toggleHeading(level)(view.state)}
       {...props}
@@ -181,28 +206,32 @@ HeadingButton.propTypes = {
 export function LinkButton({ menuKey }) {
   const hint = 'Link\n' + floatingMenuKeys.toggleLink;
   const view = useEditorViewContext();
-  const onSelect = useCallback(() => {
-    const command = filter(
-      (state) => createLink('')(state),
-      (state, dispatch, view) => {
-        if (dispatch) {
-          toggleLinkSubMenu(menuKey)(view.state, view.dispatch, view);
-          rafCommandExec(view, focusFloatingMenuInput(menuKey));
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      const command = filter(
+        (state) => createLink('')(state),
+        (state, dispatch, view) => {
+          if (dispatch) {
+            toggleLinkSubMenu(menuKey)(view.state, view.dispatch, view);
+            rafCommandExec(view, focusFloatingMenuInput(menuKey));
+          }
+          return true;
+        },
+      );
+      if (command(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
         }
-        return true;
-      },
-    );
-    if (command(view.state, view.dispatch, view)) {
-      if (view.dispatch) {
-        view.focus();
       }
-    }
-  }, [view, menuKey]);
+    },
+    [view, menuKey],
+  );
 
   return (
     <Icons.LinkIcon
+      onMouseDown={onSelect}
       hint={hint}
-      onSelect={onSelect}
       isActive={queryIsLinkActive()(view.state)}
       isDisabled={!createLink('')(view.state)}
     />
@@ -211,3 +240,57 @@ export function LinkButton({ menuKey }) {
 LinkButton.propTypes = {
   menuKey: PropTypes.instanceOf(PluginKey).isRequired,
 };
+
+export function DropdownButton({ isDropdownVisible, toggleDropdown }) {
+  const hint = 'Heading';
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      toggleDropdown((show) => !show);
+    },
+    [toggleDropdown],
+  );
+  return (
+    <Icons.HeadingIcon
+      level="z"
+      onMouseDown={onSelect}
+      hint={hint}
+      isActive={isDropdownVisible}
+      isDisabled={false}
+    />
+  );
+}
+
+export function HeadingDropdownButton() {
+  return (
+    <MenuDropdown
+      parent={({ isDropdownVisible, toggleDropdown }) => (
+        <DropdownButton
+          isDropdownVisible={isDropdownVisible}
+          toggleDropdown={toggleDropdown}
+        />
+      )}
+    >
+      <div className="bangle-menu-vertical-group">
+        <TextButton>Heading 1</TextButton>
+        <TextButton>Heading 2</TextButton>
+        <TextButton>Heading 3</TextButton>
+      </div>
+    </MenuDropdown>
+  );
+}
+
+function TextButton({
+  children,
+  className = '',
+  style = {},
+  isActive,
+  isDisabled,
+  hint,
+  hintPos = 'top',
+  hintBreakWhiteSpace = true,
+  onMouseDown,
+  ...props
+}) {
+  return <span className="bangle-menu-text-button">{children}</span>;
+}

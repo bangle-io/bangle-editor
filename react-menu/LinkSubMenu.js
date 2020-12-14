@@ -70,14 +70,16 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
       {href === originalHref ? (
         <Icons.CloseIcon
           hint="Clear Link"
-          onSelect={() => {
+          onMouseDown={(e) => {
+            e.preventDefault();
             updateLink()(view.state, view.dispatch);
             view.focus();
           }}
         />
       ) : (
         <Icons.DoneIcon
-          onSelect={() => {
+          onMouseDown={(e) => {
+            e.preventDefault();
             handleSubmit();
             view.focus();
           }}
