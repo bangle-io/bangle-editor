@@ -4,38 +4,24 @@
 .bangle-tooltip-content {
   color: white;
 }
-
 .bangle-link-menu {
-  background-color: #333;
-  border-radius: 4px;
-  display: flex;
   flex-direction: row;
   padding: 4px 2px;
   align-items: center;
 }
-
 .bangle-link-menu input {
   background-color: transparent;
   margin-left: 4px;
   padding-left: 4px;
 }
-
 .bangle-link-menu a {
   display: flex;
   align-items: center;
   text-decoration: none;
 }
-
 /** The open link icon**/
 .bangle-link-menu a svg {
   transform: scale(1.1, 1.1);
-}
-
-.bangle-menu {
-  background-color: #333;
-  border-radius: 4px;
-  display: flex;
-  padding: 4px 2px;
 }
 
 .bangle-menu-group {
@@ -44,22 +30,25 @@
   border-right: 1px solid #666;
 }
 
+.bangle-menu {
+  background-color: #333;
+  border-radius: 4px;
+  display: flex;
+  padding: 4px 2px;
+}
 .bangle-menu .bangle-menu-group:last-child {
   border-right: none;
 }
-
 .bangle-menu button {
   font-size: 100%;
 }
-
-button.inline-menu-icon > svg {
+.bangle-menu button.inline-menu-icon > svg {
   display: block;
   height: 1.25rem;
   width: 1.25rem;
   fill: currentcolor;
 }
-
-button.inline-menu-icon {
+.bangle-menu button.inline-menu-icon {
   position: relative;
   cursor: pointer;
   background-color: transparent;
@@ -73,21 +62,21 @@ button.inline-menu-icon {
   margin-right: 1px;
 }
 
-button.inline-menu-icon:hover {
+.bangle-menu button.inline-menu-icon:hover {
   background-color: grey;
   border-radius: 2px;
 }
 
-button.inline-menu-icon.active {
+.bangle-menu button.inline-menu-icon.active {
   color: aquamarine;
 }
 
-button.inline-menu-icon:disabled {
+.bangle-menu button.inline-menu-icon:disabled {
   cursor: not-allowed;
   color: grey;
 }
 
-button.inline-menu-icon:disabled:hover {
+.bangle-menu button.inline-menu-icon:disabled:hover {
   background-color: transparent;
 }
 
@@ -150,10 +139,6 @@ button[aria-label][data-bangle-balloon-pos] {
   opacity: 1;
   pointer-events: none;
 }
-[aria-label][data-bangle-balloon-pos].font-awesome:after {
-  font-family: FontAwesome, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-break]:after {
   white-space: pre;
 }
@@ -165,16 +150,16 @@ button[aria-label][data-bangle-balloon-pos] {
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-blunt]:after {
   transition: none;
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='up']:hover:after,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='up'][data-bangle-balloon-visible]:after,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='down']:hover:after,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='down'][data-bangle-balloon-visible]:after {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='top']:hover:after,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='top'][data-bangle-balloon-visible]:after,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom']:hover:after,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom'][data-bangle-balloon-visible]:after {
   transform: translate(-50%, 0);
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='up']:hover:before,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='up'][data-bangle-balloon-visible]:before,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='down']:hover:before,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='down'][data-bangle-balloon-visible]:before {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='top']:hover:before,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='top'][data-bangle-balloon-visible]:before,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom']:hover:before,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom'][data-bangle-balloon-visible]:before {
   transform: translate(-50%, 0);
 }
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos*='-left']:after {
@@ -201,36 +186,36 @@ button[aria-label][data-bangle-balloon-pos] {
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos*='-right'][data-bangle-balloon-visible]:before {
   transform: translate(0, 0);
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='up']:before,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='up']:after {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='top']:before,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='top']:after {
   bottom: 100%;
   transform-origin: top;
   transform: translate(0, var(--bangle-balloon-move));
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='up']:after {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='top']:after {
   margin-bottom: 10px;
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='up']:before,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='up']:after {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='top']:before,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='top']:after {
   left: 50%;
   transform: translate(-50%, var(--bangle-balloon-move));
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='down']:before,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='down']:after {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='bottom']:before,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='bottom']:after {
   top: 100%;
   transform: translate(0, calc(var(--bangle-balloon-move) * -1));
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='down']:after {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='bottom']:after {
   margin-top: 10px;
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='down']:before {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos^='bottom']:before {
   width: 0;
   height: 0;
   border: 5px solid transparent;
   border-bottom-color: var(--bangle-balloon-color);
 }
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='down']:after,
-[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='down']:before {
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom']:after,
+[aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom']:before {
   left: 50%;
   transform: translate(-50%, calc(var(--bangle-balloon-move) * -1));
 }

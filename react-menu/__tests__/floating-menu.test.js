@@ -87,7 +87,7 @@ describe('Link menu', () => {
       calculateType: expect.any(Function),
       show: true,
       tooltipContentDOM: expect.any(window.Node),
-      type: 'floatingLinkMenu',
+      type: 'linkSubMenu',
     });
   });
 });

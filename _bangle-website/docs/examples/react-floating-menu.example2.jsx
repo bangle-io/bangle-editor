@@ -3,13 +3,17 @@ import '@banglejs/tooltip/style.css';
 import '@banglejs/react-menu/style.css';
 import React from 'react';
 import { BangleEditor, useEditorState } from '@banglejs/react';
-import { PluginKey, heading, link } from '@banglejs/core';
+import { PluginKey, heading } from '@banglejs/core';
 import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
 import {
   floatingMenu,
   FloatingMenu,
   Menu,
-  FloatingLinkMenu,
+  MenuGroup,
+  BoldButton,
+  HeadingButton,
+  BulletListButton,
+  ItalicButton,
 } from '@banglejs/react-menu';
 
 const menuKey = new PluginKey('menuKey');
@@ -22,23 +26,26 @@ export default function Example() {
       floatingMenu.plugins({
         key: menuKey,
         calculateType: (state, prevType) => {
+          // Use the 'headingSubMenu' type whenever
+          // the selection is inside a heading.
           if (heading.commands.queryIsHeadingActive()(state)) {
-            return 'headingMenu';
+            return 'headingSubMenu';
           }
-          if (link.commands.queryIsLinkActive()(state)) {
-            return 'floatingLinkMenu';
+
+          // A user has selected a range of text, lets show them
+          // the default menu.
+          if (!state.selection.empty) {
+            return 'defaultMenu';
           }
-          if (state.selection.empty) {
-            return null;
-          }
-          return 'floatingMenu';
+
+          // Set the type to null to indicate that a menu is not needed.
+          return null;
         },
       }),
     ],
     initialValue: `<div>
-      <span>Hello I am a paragraph, try selecting me too</span>
+      <p>Hello I am a paragraph, please upgrade me to a heading.</p>
       <h3>I am a heading try selecting me</h3>
-      <span>Oh don't forget this awesome <a href="https://blog.ycombinator.com/the-airbnbs/">article!</a></span>
     </div>`,
   });
 
@@ -47,19 +54,32 @@ export default function Example() {
       <FloatingMenu
         menuKey={menuKey}
         renderMenuType={({ type }) => {
-          if (type === 'headingMenu') {
+          // Use the type we earlier calculated to show
+          // some important message.
+          if (type === 'headingSubMenu') {
             return (
-              <span className="bangle-menu">
-                I get activated inside a heading
-              </span>
+              <Menu>
+                <span>This is a heading!</span>
+              </Menu>
             );
           }
-          if (type === 'floatingLinkMenu') {
-            return <FloatingLinkMenu menuKey={menuKey} />;
+
+          if (type === 'defaultMenu') {
+            return (
+              <Menu>
+                <MenuGroup>
+                  <BoldButton />
+                  <ItalicButton />
+                </MenuGroup>
+                <MenuGroup>
+                  <HeadingButton level={1} />
+                  <HeadingButton level={2} />
+                  <BulletListButton />
+                </MenuGroup>
+              </Menu>
+            );
           }
-          if (type === 'floatingMenu') {
-            return <Menu menuKey={menuKey} />;
-          }
+
           return null;
         }}
       />

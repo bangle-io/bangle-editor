@@ -19,7 +19,7 @@ A component for creating menus that float somewhere in the editor, most likely a
 
 1. `floatingMenu` Regular tooltip showing the basic formatting options.
 
-2. `floatingLinkMenu` The link menu tooltip which allows editing and visiting of the link.
+2. `linkSubMenu` The link menu tooltip which allows editing and visiting of the link.
 
 3. `null` No menu tooltip shown.
 
@@ -39,7 +39,7 @@ Named parameters:
 - **calculateType:** ?fn(state: EditorState, prevType: string | null) -> string | null\
   A function to calculate the type of floating menu to show whenever the editor's selection changes. Note that this will _not_ be called if the type is changed via the `updateFloatingTooltipType` command. The default value calculates the tooltip type based on the following conditions:
 
-  - `floatingLinkMenu`: If the the selection is inside a link mark
+  - `linkSubMenu`: If the the selection is inside a link mark
 
   - `null` : If the above do not match and the selection is empty.
 
@@ -50,8 +50,8 @@ Named parameters:
 - **focusFloatingMenuInput**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
   Sets the focus on the `input` element in the floating menu. Bangle uses this internally to set focus on the input element when a user press keyboard shortcut to set a link.
 
-- **toggleFloatingLinkMenu**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
-  Toggles the `floatingLinkMenu` tooltip.
+- **toggleLinkSubMenu**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
+  Toggles the `linkSubMenu` tooltip.
 
 - **updateFloatingTooltipType**(key: {{Prosemirror.PluginKey}}, type: string | null): {{core.link.Command}}\
   Manually set the floating menu's current type. Set type to `null` to hide the floating menu tooltip.
@@ -81,7 +81,7 @@ Named parameters:
 
   - `<Menu />` for the type `floatingMenu`
 
-  - `<LinkMenu />` for `floatingLinkMenu`
+  - `<LinkMenu />` for `linkSubMenu`
 
   - `null` for everything else which essentially hides the menu.
 
