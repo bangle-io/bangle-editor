@@ -50,13 +50,13 @@
 .bangle-menu button {
   font-size: 100%;
 }
-.bangle-menu button.inline-menu-icon > svg {
+.bangle-menu .floating-menu-button svg {
   display: block;
   height: 1.25rem;
   width: 1.25rem;
   fill: currentcolor;
 }
-.bangle-menu button.inline-menu-icon {
+.bangle-menu .floating-menu-button {
   position: relative;
   cursor: pointer;
   background-color: transparent;
@@ -68,36 +68,28 @@
   border-width: 0;
   margin-left: 1px;
   margin-right: 1px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.bangle-menu button.inline-menu-icon:hover {
+.bangle-menu .floating-menu-button:hover {
   background-color: grey;
   border-radius: 2px;
 }
 
-.bangle-menu button.inline-menu-icon.active {
+.bangle-menu .floating-menu-button.active {
   color: aquamarine;
 }
 
-.bangle-menu button.inline-menu-icon:disabled {
+.bangle-menu .floating-menu-button:disabled {
   cursor: not-allowed;
   color: grey;
 }
 
-.bangle-menu button.inline-menu-icon:disabled:hover {
+.bangle-menu .floating-menu-button:disabled:hover {
   background-color: transparent;
-}
-
-.bangle-menu-text-button {
-  cursor: pointer;
-  white-space: nowrap;
-  padding: 2px 4px;
-  margin: 2px 0px;
-}
-
-.bangle-menu-text-button:hover {
-  background-color: grey;
-  border-radius: 2px;
 }
 
 /** Dropdown */
@@ -113,7 +105,7 @@
   background-color: var(--bangle-floating-menu-bg-color);
   border-radius: 4px;
   padding: 4px 2px;
-  top: 38px;
+  top: 42px;
 }
 
 /** Dropdown END */

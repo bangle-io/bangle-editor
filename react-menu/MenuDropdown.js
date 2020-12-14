@@ -6,11 +6,9 @@ export function MenuDropdown({ className = '', parent, children }) {
   return (
     <div className={`bangle-menu-dropdown ${className}`}>
       {parent({ isDropdownVisible, toggleDropdown })}
-      {isDropdownVisible ? children : null}
+      {isDropdownVisible ? (
+        <div className="bangle-menu-vertical-group">{children}</div>
+      ) : null}
     </div>
   );
-}
-
-export function VerticalDropdownGroup({ children }) {
-  return <div className="bangle-menu-dropdown-vertical-group">{children}</div>;
 }

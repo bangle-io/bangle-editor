@@ -86,7 +86,7 @@ export function toggleOrderedList() {
   };
 }
 
-export function queryIsBulletListActive() {
+export function queryIsOrderedListActive() {
   return (state) => {
     const { schema } = state;
     return parentHasDirectParentOfType(schema.nodes['listItem'], [

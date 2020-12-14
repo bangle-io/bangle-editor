@@ -22,6 +22,11 @@ import {
   toggleTodoList,
 } from '@banglejs/core/components/todo-list';
 import {
+  defaultKeys as paragraphKeys,
+  queryIsTopLevelParagraph,
+  convertToParagraph,
+} from '@banglejs/core/components/paragraph';
+import {
   defaultKeys as headingKeys,
   queryIsHeadingActive,
   toggleHeading,
@@ -41,9 +46,18 @@ import {
   focusFloatingMenuInput,
   toggleLinkSubMenu,
 } from './floating-menu';
-import { MenuDropdown, VerticalDropdownGroup } from './MenuDropdown';
+import { MenuButton } from './Icon';
+import {
+  defaultKeys as orderedListKeys,
+  queryIsOrderedListActive,
+  toggleOrderedList,
+} from '@banglejs/core/components/ordered-list';
 
-export function BoldButton({ ...props }) {
+export function BoldButton({
+  longForm = true,
+  children = <Icons.BoldIcon />,
+  ...props
+}) {
   const hint = 'Bold\n' + boldKeys.toggleBold;
   const view = useEditorViewContext();
   const onSelect = useCallback(
@@ -58,17 +72,19 @@ export function BoldButton({ ...props }) {
     [view],
   );
   return (
-    <Icons.BoldIcon
+    <MenuButton
+      {...props}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsBoldActive()(view.state)}
       isDisabled={!toggleBold()(view.state)}
-      {...props}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 
-export function ItalicButton({ ...props }) {
+export function ItalicButton({ children = <Icons.ItalicIcon />, ...props }) {
   const hint = 'Italic\n' + italicKeys.toggleItalic;
   const view = useEditorViewContext();
   const onSelect = useCallback(
@@ -83,17 +99,19 @@ export function ItalicButton({ ...props }) {
     [view],
   );
   return (
-    <Icons.ItalicIcon
+    <MenuButton
+      {...props}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsItalicActive()(view.state)}
       isDisabled={!toggleItalic()(view.state)}
-      {...props}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 
-export function CodeButton({ ...props }) {
+export function CodeButton({ children = <Icons.CodeIcon />, ...props }) {
   const hint = 'Code\n' + codeKeys.toggleCode;
   const view = useEditorViewContext();
   const onSelect = useCallback(
@@ -108,17 +126,22 @@ export function CodeButton({ ...props }) {
     [view],
   );
   return (
-    <Icons.CodeIcon
+    <MenuButton
+      {...props}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsCodeActive()(view.state)}
       isDisabled={!toggleCode()(view.state)}
-      {...props}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 
-export function BulletListButton({ ...props }) {
+export function BulletListButton({
+  children = <Icons.BulletListIcon />,
+  ...props
+}) {
   const hint = 'BulletList\n' + bulletListKeys.toggle;
   const view = useEditorViewContext();
   const onSelect = useCallback(
@@ -133,22 +156,58 @@ export function BulletListButton({ ...props }) {
     [view],
   );
   return (
-    <Icons.BulletListIcon
+    <MenuButton
+      {...props}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsBulletListActive()(view.state)}
       isDisabled={!toggleBulletList()(view.state, undefined, view)}
-      {...props}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 
-export function TodoListButton({ ...props }) {
+export function OrderedListButton({
+  children = <Icons.OrderedListIcon />,
+  ...props
+}) {
+  const hint = 'OrderedList\n' + orderedListKeys.toggle;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (toggleOrderedList()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
+      }
+    },
+    [view],
+  );
+  return (
+    <MenuButton
+      {...props}
+      onMouseDown={onSelect}
+      hint={hint}
+      isActive={queryIsOrderedListActive()(view.state)}
+      isDisabled={!toggleOrderedList()(view.state, undefined, view)}
+    >
+      {children}
+    </MenuButton>
+  );
+}
+
+export function TodoListButton({
+  children = <Icons.TodoListIcon />,
+  ...props
+}) {
   const hint = 'TodoList\n' + todoListKeys.toggle;
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
+      console.log({ toggleTodoList });
       // TODO fix the undefined dispatch passing
       const allowed = toggleTodoList()(view.state, undefined, view);
       if (allowed) {
@@ -163,17 +222,23 @@ export function TodoListButton({ ...props }) {
     [view],
   );
   return (
-    <Icons.TodoListIcon
+    <MenuButton
+      {...props}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsTodoListActive()(view.state)}
       isDisabled={!toggleTodoList()(view.state, undefined, view)}
-      {...props}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 
-export function HeadingButton({ level, ...props }) {
+export function HeadingButton({
+  level,
+  children = <Icons.HeadingIcon level={level} />,
+  ...props
+}) {
   const hint = `Heading${level}\n` + headingKeys['toH' + level];
   const view = useEditorViewContext();
   const onSelect = useCallback(
@@ -188,14 +253,15 @@ export function HeadingButton({ level, ...props }) {
     [view, level],
   );
   return (
-    <Icons.HeadingIcon
+    <MenuButton
+      {...props}
       onMouseDown={onSelect}
-      level={level}
       hint={hint}
       isActive={queryIsHeadingActive(level)(view.state)}
       isDisabled={!toggleHeading(level)(view.state)}
-      {...props}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 
@@ -203,7 +269,37 @@ HeadingButton.propTypes = {
   level: PropTypes.number.isRequired,
 };
 
-export function LinkButton({ menuKey }) {
+export function ParagraphButton({
+  children = <Icons.ParagraphIcon />,
+  ...props
+}) {
+  const hint = `Paragraph\n` + paragraphKeys.convertToParagraph;
+  const view = useEditorViewContext();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (convertToParagraph()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
+      }
+    },
+    [view],
+  );
+  return (
+    <MenuButton
+      {...props}
+      onMouseDown={onSelect}
+      hint={hint}
+      isActive={queryIsTopLevelParagraph()(view.state)}
+      isDisabled={!convertToParagraph()(view.state)}
+    >
+      {children}
+    </MenuButton>
+  );
+}
+
+export function LinkButton({ children = <Icons.LinkIcon />, menuKey }) {
   const hint = 'Link\n' + floatingMenuKeys.toggleLink;
   const view = useEditorViewContext();
   const onSelect = useCallback(
@@ -229,68 +325,16 @@ export function LinkButton({ menuKey }) {
   );
 
   return (
-    <Icons.LinkIcon
+    <MenuButton
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsLinkActive()(view.state)}
       isDisabled={!createLink('')(view.state)}
-    />
+    >
+      {children}
+    </MenuButton>
   );
 }
 LinkButton.propTypes = {
   menuKey: PropTypes.instanceOf(PluginKey).isRequired,
 };
-
-export function DropdownButton({ isDropdownVisible, toggleDropdown }) {
-  const hint = 'Heading';
-  const onSelect = useCallback(
-    (e) => {
-      e.preventDefault();
-      toggleDropdown((show) => !show);
-    },
-    [toggleDropdown],
-  );
-  return (
-    <Icons.HeadingIcon
-      level="z"
-      onMouseDown={onSelect}
-      hint={hint}
-      isActive={isDropdownVisible}
-      isDisabled={false}
-    />
-  );
-}
-
-export function HeadingDropdownButton() {
-  return (
-    <MenuDropdown
-      parent={({ isDropdownVisible, toggleDropdown }) => (
-        <DropdownButton
-          isDropdownVisible={isDropdownVisible}
-          toggleDropdown={toggleDropdown}
-        />
-      )}
-    >
-      <div className="bangle-menu-vertical-group">
-        <TextButton>Heading 1</TextButton>
-        <TextButton>Heading 2</TextButton>
-        <TextButton>Heading 3</TextButton>
-      </div>
-    </MenuDropdown>
-  );
-}
-
-function TextButton({
-  children,
-  className = '',
-  style = {},
-  isActive,
-  isDisabled,
-  hint,
-  hintPos = 'top',
-  hintBreakWhiteSpace = true,
-  onMouseDown,
-  ...props
-}) {
-  return <span className="bangle-menu-text-button">{children}</span>;
-}

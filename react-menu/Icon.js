@@ -1,17 +1,15 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export const Icon = ({
-  children,
+export const MenuButton = ({
   className = '',
-  style = {},
+  children,
   isActive,
   isDisabled,
   hint,
   hintPos = 'top',
   hintBreakWhiteSpace = true,
   onMouseDown,
-  ...props
 }) => {
   return (
     <button
@@ -20,24 +18,19 @@ export const Icon = ({
       data-bangle-balloon-pos={hintPos}
       disabled={isDisabled}
       onMouseDown={onMouseDown}
-      className={`inline-menu-icon ${isActive ? 'active' : ''}`}
+      className={`floating-menu-button ${
+        isActive ? 'active' : ''
+      } ${className}`}
     >
-      <svg
-        style={style}
-        viewBox={'0 0 24 24'}
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-        {...props}
-      >
-        {children}
-      </svg>
+      {children}
     </button>
   );
 };
 
-Icon.propTypes = {
+MenuButton.propTypes = {
   onMouseDown: PropTypes.func,
   children: PropTypes.oneOfType([
+    PropTypes.string,
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]).isRequired,
