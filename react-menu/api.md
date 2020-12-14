@@ -17,9 +17,9 @@ This package provides you with tools to help build flexible yet powerful menus u
 
 A component for creating menus that float somewhere in the editor, most likely around the selection. By default it contains three types of menus:
 
-1. `floatingMenu` Regular tooltip showing the basic formatting options.
+1. `defaultMenu` Regular tooltip showing some basic formatting buttons.
 
-2. `floatingLinkMenu` The link menu tooltip which allows editing and visiting of the link.
+2. `linkSubMenu` The link menu tooltip which allows editing and visiting of the link.
 
 3. `null` No menu tooltip shown.
 
@@ -39,19 +39,19 @@ Named parameters:
 - **calculateType:** ?fn(state: EditorState, prevType: string | null) -> string | null\
   A function to calculate the type of floating menu to show whenever the editor's selection changes. Note that this will _not_ be called if the type is changed via the `updateFloatingTooltipType` command. The default value calculates the tooltip type based on the following conditions:
 
-  - `floatingLinkMenu`: If the the selection is inside a link mark
+  - `linkSubMenu`: If the the selection is inside a link mark
 
-  - `null` : If the above do not match and the selection is empty.
+  - `defaultMenu`: If the above do not match and selection is not empty.
 
-  - `floatingMenu`: If the above conditions do not match.
+  - `null` : anything else
 
 ### commands: {{core.link.CommandObject}}
 
 - **focusFloatingMenuInput**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
   Sets the focus on the `input` element in the floating menu. Bangle uses this internally to set focus on the input element when a user press keyboard shortcut to set a link.
 
-- **toggleFloatingLinkMenu**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
-  Toggles the `floatingLinkMenu` tooltip.
+- **toggleLinkSubMenu**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
+  Toggles the `linkSubMenu` tooltip.
 
 - **updateFloatingTooltipType**(key: {{Prosemirror.PluginKey}}, type: string | null): {{core.link.Command}}\
   Manually set the floating menu's current type. Set type to `null` to hide the floating menu tooltip.
@@ -77,14 +77,108 @@ Named parameters:
   The plugin key of the floatingMenu.
 
 - **renderMenuType:** ?fn({ type, menuKey }) -> [React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)\
-  Return the type of floating menu to render based on the type. Default to using:
+  Return the type of floating menu to render based on the type. Defaults to using a function which returns some default components for the following types:
 
-  - `<Menu />` for the type `floatingMenu`
+  - Some sensible default buttons for `'defaultMenu'`.
 
-  - `<LinkMenu />` for `floatingLinkMenu`
+  - LinkSubMenu for `'linkSubMenu'`.
 
-  - `null` for everything else which essentially hides the menu.
+  - Hide the menu for `null`.
 
 **Usage**
 
 :book: See {{example.FloatingMenu}}
+
+## Menu: {{global.link.ReactElement}}
+
+A UI wrapper component for building a menu.
+
+**Props:**
+
+- **className**: ?string\
+  Add classes to this component.
+
+- **children:** React.Children
+
+## MenuGroup: {{global.link.ReactElement}}
+
+A UI wrapper for grouping menu buttons and showing a partition to separate from other Menu groups.
+
+**Props:**
+
+- **className**: ?string\
+  Add classes to this component.
+
+- **children:** React.Children
+
+**Usage**
+Building a menu
+
+```jsx
+import {
+  Menu,
+  MenuGroup,
+  BoldButton,
+  HeadingButton,
+  BulletListButton,
+  ItalicButton,
+} from '@banglejs/react-menu';
+
+<Menu>
+  <MenuGroup>
+    <BoldButton />
+    <ItalicButton />
+  </MenuGroup>
+  <MenuGroup>
+    <HeadingButton level={1} />
+    <HeadingButton level={2} />
+    <BulletListButton />
+  </MenuGroup>
+</Menu>
+```
+
+📖 See [FloatingMenu example](http://localhost:3000/docs/examples/react-floating-menu) for more details.
+
+## MenuButton
+
+### BoldButton: {{global.link.ReactElement}}
+
+Marks text as `bold` mark.
+
+### ItalicButton: {{global.link.ReactElement}}
+
+Marks text as `italic` mark.
+
+### CodeButton: {{global.link.ReactElement}}
+
+Marks text as `code` mark.
+
+### BulletListButton: {{global.link.ReactElement}}
+
+Convert text to a `bulletList` node.
+
+### TodoListButton: {{global.link.ReactElement}}
+
+Convert text to a `todoList` node.
+
+### HeadingButton: {{global.link.ReactElement}}
+
+Convert text to a `heading` node.
+
+**Props:**
+
+- **level:** number\
+  The heading level.
+
+### LinkButton**:** {{global.link.ReactElement}}
+
+Change the type of menu to `'linkSubMenu'` . 
+
+**Props:**
+
+- **menuKey**: {{Prosemirror.PluginKey}}\
+  The menu key associated with your menu plugin.
+
+## LinkSubMenu: {{global.link.ReactElement}}
+
+A component for showing a link editor for the type `'linkSubMenu'`.

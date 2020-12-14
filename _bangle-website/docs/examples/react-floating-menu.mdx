@@ -11,7 +11,7 @@ import Example2 from './react-floating-menu.example2';
 import filePath1 from '!!file-loader!./react-floating-menu.example1.jsx';
 import filePath2 from '!!file-loader!./react-floating-menu.example2.jsx';
 
-Below is an example of a floating menu which gets activated when you select something.
+Below is an example of a floating menu which gets activated when you select something. Bangle picks some reasonable default menu types, but you are free to customize it as shown in the next example.
 
 <ReactCodeExample
   filePath={filePath1}
@@ -27,9 +27,9 @@ Try some of the following:
 - Select some text and try `Command–K`(Mac) or `Ctrl-K`(PC) to add a link.
 - Copy a link and try pasting it directly on a selected text.
 
-### A custom floating menu
+### Customizing floating menu type
 
-In the example below we define a custom menu `headingMenu`, which gets activated when a user is inside a `heading` node type.
+In the example below we define a custom menu type `headingSubMenu`, which gets activated when a user is inside a `heading` node.
 
 <ReactCodeExample
   filePath={filePath2}
@@ -37,10 +37,8 @@ In the example below we define a custom menu `headingMenu`, which gets activated
   component={() => <Example2 />}
 />
 
-It is totally up to you when you want to trigger a floating menu by overwriting
-the [calculateType](/docs/api/react_menu#plugins---plugins) named param and what
-to render by providing a [renderMenuType](/docs/api/react_menu#floatingmenu-reactelement) prop.
-
+It is totally up to you on how you define a `type` in [calculateType](/docs/api/react_menu#plugins---plugins)
+and what you render for that type, see [renderMenuType](/docs/api/react_menu#floatingmenu-reactelement).
 **See API docs:**
 
 - [@banglejs/react-menu](/docs/api/react_menu)

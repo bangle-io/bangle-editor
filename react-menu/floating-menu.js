@@ -17,7 +17,7 @@ import { rafCommandExec } from '@banglejs/core/utils/js-utils';
 export const plugins = floatingMenu;
 export const commands = {
   focusFloatingMenuInput,
-  toggleFloatingLinkMenu,
+  toggleLinkSubMenu,
   updateFloatingTooltipType: updateSelectionTooltipType,
   hideFloatingMenu: hideSelectionTooltip,
   queryIsMenuActive: queryIsSelectionTooltipActive,
@@ -29,13 +29,14 @@ export const defaultKeys = {
 
 export const defaultCalculateType = (state, prevType) => {
   if (queryIsSelectionAroundLink()(state) || queryIsLinkActive()(state)) {
-    return 'floatingLinkMenu';
+    return 'linkSubMenu';
   }
   if (state.selection.empty) {
     return null;
   }
-  return 'floatingMenu';
+  return 'defaultMenu';
 };
+
 function floatingMenu({
   key = new PluginKey('floatingMenuPlugin'),
   tooltipRenderOpts = {},
@@ -54,30 +55,30 @@ function floatingMenu({
           queryIsSelectionTooltipActive(key),
           hideSelectionTooltip(key),
         ),
-        [keybindings.toggleLink]: toggleFloatingLinkMenu(key),
+        [keybindings.toggleLink]: toggleLinkSubMenu(key),
       }),
   ];
 }
 
-export function toggleFloatingLinkMenu(key) {
+export function toggleLinkSubMenu(key) {
   return (state, dispatch, view) => {
     const type = querySelectionTooltipType(key)(state);
 
     if (state.selection.empty) {
       // Focus on link tooltip by keyboard shortcut
-      if (type === 'floatingLinkMenu') {
+      if (type === 'linkSubMenu') {
         rafCommandExec(view, focusFloatingMenuInput(key));
       }
       return false;
     }
 
-    if (type === 'floatingLinkMenu') {
+    if (type === 'linkSubMenu') {
       return hideSelectionTooltip(key)(view.state, view.dispatch, view);
     }
 
     rafCommandExec(view, focusFloatingMenuInput(key));
 
-    return updateSelectionTooltipType(key, 'floatingLinkMenu')(
+    return updateSelectionTooltipType(key, 'linkSubMenu')(
       view.state,
       view.dispatch,
       view,

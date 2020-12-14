@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { updateLink, queryLinkAttrs } from '@banglejs/core/components/link';
-import { CloseIcon, DoneIcon, ExternalIcon } from './MenuIcons';
+import * as Icons from './Icons';
 import { useEditorViewContext } from '@banglejs/react/hooks';
 
-export function FloatingLinkMenu({ getIsTop = () => true }) {
+export function LinkSubMenu({ getIsTop = () => true }) {
   const view = useEditorViewContext();
   const result = queryLinkAttrs()(view.state);
   const originalHref = (result && result.href) || '';
@@ -24,20 +24,21 @@ export function FloatingLinkMenu({ getIsTop = () => true }) {
 function LinkMenu({ getIsTop, view, originalHref = '' }) {
   const [href, setHref] = useState(originalHref);
   const inputRef = useRef();
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     updateLink(href)(view.state, view.dispatch);
     view.focus();
   };
 
   return (
-    <span className="bangle-link-menu">
+    <>
       <input
         value={href}
         ref={inputRef}
         onKeyDown={(e) => {
+          console.log(e.key);
           if (e.key === 'Enter') {
-            handleSubmit(e);
+            e.preventDefault();
+            handleSubmit();
             view.focus();
             return;
           }
@@ -64,23 +65,24 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
         }}
       />
       <a href={href} target="_blank" rel="noreferrer">
-        <ExternalIcon />
+        <Icons.ExternalIcon hint="Visit Link" />
       </a>
       {href === originalHref ? (
-        <CloseIcon
-          onClick={() => {
+        <Icons.CloseIcon
+          hint="Clear Link"
+          onSelect={() => {
             updateLink()(view.state, view.dispatch);
             view.focus();
           }}
         />
       ) : (
-        <DoneIcon
-          onClick={(e) => {
-            handleSubmit(e);
+        <Icons.DoneIcon
+          onSelect={() => {
+            handleSubmit();
             view.focus();
           }}
         />
       )}
-    </span>
+    </>
   );
 }

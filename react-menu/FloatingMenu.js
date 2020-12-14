@@ -1,19 +1,48 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { PluginKey } from '@banglejs/core/index';
-import { FloatingLinkMenu } from './FloatingLinkMenu';
-import { Menu } from './Menu';
+import { PluginKey } from '@banglejs/core';
+import { LinkSubMenu } from './LinkSubMenu';
 import { usePluginState } from '@banglejs/react';
+import {
+  CodeButton,
+  TodoListButton,
+  BoldButton,
+  ItalicButton,
+  BulletListButton,
+  HeadingButton,
+  LinkButton,
+} from './MenuButtons';
+import { Menu } from './Menu';
+import { MenuGroup } from './MenuGroup';
 
 export function FloatingMenu({
   menuKey,
   renderMenuType = ({ type, menuKey }) => {
-    if (type === 'floatingMenu') {
-      return <Menu menuKey={menuKey} />;
+    if (type === 'defaultMenu') {
+      return (
+        <Menu>
+          <MenuGroup>
+            <BoldButton />
+            <ItalicButton />
+            <CodeButton />
+            <LinkButton menuKey={menuKey} />
+          </MenuGroup>
+          <MenuGroup>
+            <HeadingButton level={2} />
+            <HeadingButton level={3} />
+            <BulletListButton />
+            <TodoListButton />
+          </MenuGroup>
+        </Menu>
+      );
     }
-    if (type === 'floatingLinkMenu') {
-      return <FloatingLinkMenu />;
+    if (type === 'linkSubMenu') {
+      return (
+        <Menu className="bangle-link-menu">
+          <LinkSubMenu />
+        </Menu>
+      );
     }
     return null;
   },

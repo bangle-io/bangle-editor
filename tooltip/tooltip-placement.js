@@ -1,12 +1,14 @@
-import { createPopper } from '@popperjs/core/lib/popper-lite';
-import offset from '@popperjs/core/lib/modifiers/offset';
-import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
-import flip from '@popperjs/core/lib/modifiers/flip';
-import arrow from '@popperjs/core/lib/modifiers/arrow';
-import popperOffsets from '@popperjs/core/lib/modifiers/popperOffsets';
 import { Plugin } from '@banglejs/core/index';
 import { bangleWarn } from '@banglejs/core/utils/js-utils';
 import { createTooltipDOM } from './create-tooltip-dom';
+import {
+  createPopper,
+  offset,
+  preventOverflow,
+  flip,
+  arrow,
+  popperOffsets,
+} from './popper';
 
 export const plugins = tooltipPlacement;
 
@@ -90,14 +92,13 @@ function tooltipPlacement({
       if (pluginState === stateKey.getState(prevState)) {
         return;
       }
-      log('here');
       if (pluginState.show) {
-        log('calling updatetoolip ');
+        log('calling update toolip');
         onUpdateTooltip.call(this, view.state, view.dispatch, view);
 
         this._showTooltip();
       } else {
-        log('calling hidetooltip');
+        log('calling hide tooltip');
         this._hideTooltip();
       }
     }
