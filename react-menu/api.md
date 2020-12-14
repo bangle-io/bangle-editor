@@ -17,7 +17,7 @@ This package provides you with tools to help build flexible yet powerful menus u
 
 A component for creating menus that float somewhere in the editor, most likely around the selection. By default it contains three types of menus:
 
-1. `floatingMenu` Regular tooltip showing the basic formatting options.
+1. `defaultMenu` Regular tooltip showing some basic formatting buttons.
 
 2. `linkSubMenu` The link menu tooltip which allows editing and visiting of the link.
 
@@ -41,9 +41,9 @@ Named parameters:
 
   - `linkSubMenu`: If the the selection is inside a link mark
 
-  - `null` : If the above do not match and the selection is empty.
+  - `defaultMenu`: If the above do not match and selection is not empty.
 
-  - `floatingMenu`: If the above conditions do not match.
+  - `null` : anything else
 
 ### commands: {{core.link.CommandObject}}
 
@@ -77,14 +77,108 @@ Named parameters:
   The plugin key of the floatingMenu.
 
 - **renderMenuType:** ?fn({ type, menuKey }) -> [React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)\
-  Return the type of floating menu to render based on the type. Default to using:
+  Return the type of floating menu to render based on the type. Defaults to using a function which returns some default components for the following types:
 
-  - `<Menu />` for the type `floatingMenu`
+  - Some sensible default buttons for `'defaultMenu'`.
 
-  - `<LinkMenu />` for `linkSubMenu`
+  - LinkSubMenu for `'linkSubMenu'`.
 
-  - `null` for everything else which essentially hides the menu.
+  - Hide the menu for `null`.
 
 **Usage**
 
 :book: See {{example.FloatingMenu}}
+
+## Menu: {{global.link.ReactElement}}
+
+A UI wrapper component for building a menu.
+
+**Props:**
+
+- **className**: ?string\
+  Add classes to this component.
+
+- **children:** React.Children
+
+## MenuGroup: {{global.link.ReactElement}}
+
+A UI wrapper for grouping menu buttons and showing a partition to separate from other Menu groups.
+
+**Props:**
+
+- **className**: ?string\
+  Add classes to this component.
+
+- **children:** React.Children
+
+**Usage**
+Building a menu
+
+```jsx
+import {
+  Menu,
+  MenuGroup,
+  BoldButton,
+  HeadingButton,
+  BulletListButton,
+  ItalicButton,
+} from '@banglejs/react-menu';
+
+<Menu>
+  <MenuGroup>
+    <BoldButton />
+    <ItalicButton />
+  </MenuGroup>
+  <MenuGroup>
+    <HeadingButton level={1} />
+    <HeadingButton level={2} />
+    <BulletListButton />
+  </MenuGroup>
+</Menu>
+```
+
+📖 See [FloatingMenu example](http://localhost:3000/docs/examples/react-floating-menu) for more details.
+
+## MenuButton
+
+### BoldButton: {{global.link.ReactElement}}
+
+Marks text as `bold` mark.
+
+### ItalicButton: {{global.link.ReactElement}}
+
+Marks text as `italic` mark.
+
+### CodeButton: {{global.link.ReactElement}}
+
+Marks text as `code` mark.
+
+### BulletListButton: {{global.link.ReactElement}}
+
+Convert text to a `bulletList` node.
+
+### TodoListButton: {{global.link.ReactElement}}
+
+Convert text to a `todoList` node.
+
+### HeadingButton: {{global.link.ReactElement}}
+
+Convert text to a `heading` node.
+
+**Props:**
+
+- **level:** number\
+  The heading level.
+
+### LinkButton**:** {{global.link.ReactElement}}
+
+Change the type of menu to `'linkSubMenu'` . 
+
+**Props:**
+
+- **menuKey**: {{Prosemirror.PluginKey}}\
+  The menu key associated with your menu plugin.
+
+## LinkSubMenu: {{global.link.ReactElement}}
+
+A component for showing a link editor for the type `'linkSubMenu'`.

@@ -19,7 +19,7 @@ import { MenuGroup } from './MenuGroup';
 export function FloatingMenu({
   menuKey,
   renderMenuType = ({ type, menuKey }) => {
-    if (type === 'floatingMenu') {
+    if (type === 'defaultMenu') {
       return (
         <Menu>
           <MenuGroup>

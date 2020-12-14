@@ -174,6 +174,10 @@ export function HeadingButton({ level, ...props }) {
   );
 }
 
+HeadingButton.propTypes = {
+  level: PropTypes.number.isRequired,
+};
+
 export function LinkButton({ menuKey }) {
   const hint = 'Link\n' + floatingMenuKeys.toggleLink;
   const view = useEditorViewContext();

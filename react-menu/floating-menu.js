@@ -34,7 +34,7 @@ export const defaultCalculateType = (state, prevType) => {
   if (state.selection.empty) {
     return null;
   }
-  return 'floatingMenu';
+  return 'defaultMenu';
 };
 
 function floatingMenu({
