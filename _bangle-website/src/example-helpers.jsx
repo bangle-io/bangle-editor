@@ -10,6 +10,7 @@ export function VanillaCodeExample({
   language,
   createEditor,
   onEditorReady = () => {},
+  SideCar,
 }) {
   const createRef = useRef(createEditor);
   const [editorLoaded, setEditorLoaded] = useState(false);
@@ -30,6 +31,7 @@ export function VanillaCodeExample({
         component={component}
       />
       {editorLoaded ? onEditorReady(editorLoaded) : null}
+      {editorLoaded && SideCar ? <SideCar editor={editorLoaded} /> : null}
     </>
   );
 }
@@ -73,7 +75,7 @@ ReactCodeExample.propTypes = {
   filePath: PropTypes.string.isRequired,
 };
 
-function SourceCode({ filePath, language = 'js' }) {
+export function SourceCode({ filePath, language = 'js' }) {
   const [data, setData] = useState();
   useEffect(() => {
     let unmounted = false;
@@ -104,4 +106,24 @@ function SourceCode({ filePath, language = 'js' }) {
 
 function loadJSCode(filePath) {
   return fetch(filePath).then((r) => r.text());
+}
+
+export function formatHTMLString(html) {
+  var tab = '  ';
+  var result = '';
+  var indent = '';
+
+  html.split(/>\s*</).forEach(function (element) {
+    if (element.match(/^\/\w/)) {
+      indent = indent.substring(tab.length);
+    }
+
+    result += indent + '<' + element + '>\r\n';
+
+    if (element.match(/^<?\w[^>]*[^\/]$/)) {
+      indent += tab;
+    }
+  });
+
+  return result.substring(1, result.length - 3);
 }

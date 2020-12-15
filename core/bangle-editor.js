@@ -1,8 +1,8 @@
-import { DOMSerializer } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { BangleEditorState } from './bangle-editor-state';
 
 import { isTestEnv } from './utils/environment';
+import { toHTMLString } from './utils/pm-utils';
 
 export class BangleEditor {
   destroyed = false;
@@ -51,12 +51,6 @@ export class BangleEditor {
   }
 
   toHTMLString() {
-    const div = document.createElement('div');
-    const fragment = DOMSerializer.fromSchema(
-      this.view.state.schema,
-    ).serializeFragment(this.view.state.doc.content);
-
-    div.appendChild(fragment);
-    return div.innerHTML;
+    return toHTMLString(this.view.state);
   }
 }
