@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import { updateLink, queryLinkAttrs } from '@banglejs/core/components/link';
 import * as Icons from './Icons';
 import { useEditorViewContext } from '@banglejs/react/hooks';
+import { MenuButton } from './Icon';
+import { MenuGroup } from './MenuGroup';
 
 export function LinkSubMenu({ getIsTop = () => true }) {
   const view = useEditorViewContext();
@@ -64,26 +66,39 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
           e.preventDefault();
         }}
       />
-      <a href={href} target="_blank" rel="noreferrer">
-        <Icons.ExternalIcon hint="Visit Link" />
-      </a>
+      <MenuGroup>
+        <MenuButton
+          hint="Visit"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            window.open(href, '_blank');
+          }}
+        >
+          <Icons.ExternalIcon />
+        </MenuButton>
+      </MenuGroup>
       {href === originalHref ? (
-        <Icons.CloseIcon
-          hint="Clear Link"
+        <MenuButton
+          hint="Clear"
           onMouseDown={(e) => {
             e.preventDefault();
             updateLink()(view.state, view.dispatch);
             view.focus();
           }}
-        />
+        >
+          <Icons.CloseIcon />
+        </MenuButton>
       ) : (
-        <Icons.DoneIcon
+        <MenuButton
+          hint="Save"
           onMouseDown={(e) => {
             e.preventDefault();
             handleSubmit();
             view.focus();
           }}
-        />
+        >
+          <Icons.DoneIcon />
+        </MenuButton>
       )}
     </>
   );

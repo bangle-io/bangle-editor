@@ -286,7 +286,7 @@ Named parameters:
 
 #### commands: {{core.link.CommandObject}}
 
-- **queryIsBlockQuoteActive**(): {{typedQueryCommand "boolean"}}\
+- **queryIsBlockquoteActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a blockquote or not.
 
 **Usage**

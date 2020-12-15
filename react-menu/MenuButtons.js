@@ -16,6 +16,7 @@ import {
   queryIsCodeActive,
   toggleCode,
 } from '@banglejs/core/components/code';
+import * as blockquote from '@banglejs/core/components/blockquote';
 import {
   defaultKeys as todoListKeys,
   queryIsTodoListActive,
@@ -79,6 +80,40 @@ export function BoldButton({
       hint={hint}
       isActive={queryIsBoldActive()(view.state)}
       isDisabled={!toggleBold()(view.state)}
+    >
+      {children}
+    </MenuButton>
+  );
+}
+
+export function BlockquoteButton({
+  hint = 'Wrap in Blockquote\n' + blockquote.defaultKeys.wrapIn,
+  hintPos = 'top',
+  children = <Icons.BlockquoteIcon />,
+  ...props
+}) {
+  const view = useEditorViewContext();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (
+        blockquote.commands.wrapInBlockquote()(view.state, view.dispatch, view)
+      ) {
+        if (view.dispatch) {
+          view.focus();
+        }
+      }
+    },
+    [view],
+  );
+  return (
+    <MenuButton
+      {...props}
+      hintPos={hintPos}
+      onMouseDown={onSelect}
+      hint={hint}
+      isActive={blockquote.commands.queryIsBlockquoteActive()(view.state)}
+      isDisabled={!blockquote.commands.wrapInBlockquote()(view.state)}
     >
       {children}
     </MenuButton>
@@ -223,7 +258,6 @@ export function TodoListButton({
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
-      console.log({ toggleTodoList });
       // TODO fix the undefined dispatch passing
       const allowed = toggleTodoList()(view.state, undefined, view);
       if (allowed) {

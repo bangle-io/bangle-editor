@@ -222,6 +222,19 @@ Marks text as `code` mark.
 - **children**: ?{{global.link.ReactElement}}\
   The content to render inside the button, but default it will render an Icon for the button.
 
+### BlockquoteButton: {{global.link.ReactElement}}
+
+Wrap's inside a Blockquote.
+
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
+
 ### BulletListButton: {{global.link.ReactElement}}
 
 Convert text to a `bulletList` node.
