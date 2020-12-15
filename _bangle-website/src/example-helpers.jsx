@@ -9,7 +9,7 @@ export function VanillaCodeExample({
   filePath,
   language,
   createEditor,
-  onEditorReady,
+  onEditorReady = () => {},
 }) {
   const createRef = useRef(createEditor);
   const [editorLoaded, setEditorLoaded] = useState(false);
