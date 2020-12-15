@@ -286,7 +286,7 @@ Named parameters:
 
 #### commands: {{core.link.CommandObject}}
 
-- **queryIsBlockQuoteActive**(): {{typedQueryCommand "boolean"}}\
+- **queryIsBlockquoteActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a blockquote or not.
 
 **Usage**
@@ -454,7 +454,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -917,7 +917,7 @@ Named parameters:
 
 - **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
-- **toggleParagraph**=`Ctrl-Shift-0`: Toggles a node to paragraph and vice versa.
+- **convertToParagraph**=`Ctrl-Shift-0`: Toggles a node to paragraph and vice versa.
 
 #### commands: {{core.link.CommandObject}}
 

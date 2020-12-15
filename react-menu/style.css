@@ -1,8 +1,20 @@
 /* TODO (this does not work when consuming this package as a library
  @import '@banglejs/tooltip/style.css'; */
 
+:root {
+  --bangle-floating-menu-bg-color: #333;
+  --bangle-floating-menu-text-color: #fff;
+  --bangle-floating-menu-button-hover-color: grey;
+  --bangle-floating-menu-button-disabled-color: grey;
+  --bangle-floating-menu-separator-color: grey;
+  --bangle-floating-menu-button-active-color: aquamarine;
+  --bangle-balloon-border-radius: 4px;
+  --bangle-balloon-font-size: 12px;
+  --bangle-balloon-move: 4px;
+}
+
 .bangle-tooltip-content {
-  color: white;
+  color: var(--bangle-floating-menu-text-color);
 }
 .bangle-link-menu {
   flex-direction: row;
@@ -27,11 +39,11 @@
 .bangle-menu-group {
   display: flex;
   padding: 0 2px;
-  border-right: 1px solid #666;
+  border-right: 1px solid var(--bangle-floating-menu-separator-color);
 }
 
 .bangle-menu {
-  background-color: #333;
+  background-color: var(--bangle-floating-menu-bg-color);
   border-radius: 4px;
   display: flex;
   padding: 4px 2px;
@@ -42,13 +54,13 @@
 .bangle-menu button {
   font-size: 100%;
 }
-.bangle-menu button.inline-menu-icon > svg {
+.bangle-menu .floating-menu-button svg {
   display: block;
   height: 1.25rem;
   width: 1.25rem;
   fill: currentcolor;
 }
-.bangle-menu button.inline-menu-icon {
+.bangle-menu .floating-menu-button {
   position: relative;
   cursor: pointer;
   background-color: transparent;
@@ -60,34 +72,49 @@
   border-width: 0;
   margin-left: 1px;
   margin-right: 1px;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.bangle-menu button.inline-menu-icon:hover {
-  background-color: grey;
+.bangle-menu .floating-menu-button:hover {
+  background-color: var(--bangle-floating-menu-button-hover-color);
   border-radius: 2px;
 }
 
-.bangle-menu button.inline-menu-icon.active {
-  color: aquamarine;
+.bangle-menu .floating-menu-button.active {
+  color: var(--bangle-floating-menu-button-active-color);
 }
 
-.bangle-menu button.inline-menu-icon:disabled {
+.bangle-menu .floating-menu-button:disabled {
   cursor: not-allowed;
-  color: grey;
+  color: var(--bangle-floating-menu-button-disabled-color);
 }
 
-.bangle-menu button.inline-menu-icon:disabled:hover {
+.bangle-menu .floating-menu-button:disabled:hover {
   background-color: transparent;
 }
 
-/** TooltipHints */
-:root {
-  --bangle-balloon-border-radius: 4px;
-  --bangle-balloon-color: #333;
-  --bangle-balloon-text-color: #fff;
-  --bangle-balloon-font-size: 12px;
-  --bangle-balloon-move: 4px;
+/** Dropdown */
+.bangle-menu-dropdown {
+  display: flex;
+  align-items: center;
 }
+
+.bangle-menu-vertical-group {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  background-color: var(--bangle-floating-menu-bg-color);
+  border-radius: 4px;
+  padding: 4px 2px;
+  top: 2.8rem;
+}
+
+/** Dropdown END */
+
+/** TooltipHints */
 
 button[aria-label][data-bangle-balloon-pos] {
   overflow: visible;
@@ -108,9 +135,9 @@ button[aria-label][data-bangle-balloon-pos] {
   font-style: normal;
   text-shadow: none;
   font-size: var(--bangle-balloon-font-size);
-  background: var(--bangle-balloon-color);
+  background: var(--bangle-floating-menu-bg-color);
   border-radius: 2px;
-  color: var(--bangle-balloon-text-color);
+  color: var(--bangle-floating-menu-text-color);
   border-radius: var(--bangle-balloon-border-radius);
   content: attr(aria-label);
   padding: 0.2rem 0.5rem;
@@ -122,7 +149,7 @@ button[aria-label][data-bangle-balloon-pos] {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  border-top-color: var(--bangle-balloon-color);
+  border-top-color: var(--bangle-floating-menu-bg-color);
   opacity: 0;
   pointer-events: none;
   /* transition: all 0.1s ease-in-out 0.1s; */
@@ -212,7 +239,7 @@ button[aria-label][data-bangle-balloon-pos] {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  border-bottom-color: var(--bangle-balloon-color);
+  border-bottom-color: var(--bangle-floating-menu-bg-color);
 }
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom']:after,
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='bottom']:before {
@@ -244,7 +271,7 @@ button[aria-label][data-bangle-balloon-pos] {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  border-left-color: var(--bangle-balloon-color);
+  border-left-color: var(--bangle-floating-menu-bg-color);
 }
 
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-pos='right']:after,
@@ -260,6 +287,6 @@ button[aria-label][data-bangle-balloon-pos] {
   width: 0;
   height: 0;
   border: 5px solid transparent;
-  border-right-color: var(--bangle-balloon-color);
+  border-right-color: var(--bangle-floating-menu-bg-color);
 }
 /** TooltipHints End*/

@@ -13,9 +13,11 @@ import browser from '../utils/browser';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  setParagraph: convertToParagraph,
+  convertToParagraph,
   jumpToStartOfParagraph,
   jumpToEndOfParagraph,
+  queryIsParagraph,
+  queryIsTopLevelParagraph,
 };
 
 export const defaultKeys = {
@@ -27,7 +29,7 @@ export const defaultKeys = {
   emptyCut: 'Mod-x',
   insertEmptyParaAbove: 'Mod-Shift-Enter',
   insertEmptyParaBelow: 'Mod-Enter',
-  toggleParagraph: 'Ctrl-Shift-0',
+  convertToParagraph: 'Ctrl-Shift-0',
 };
 
 const name = 'paragraph';
@@ -70,7 +72,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
     return [
       keybindings &&
         keymap({
-          [keybindings.toggleParagraph]: convertToParagraph(),
+          [keybindings.convertToParagraph]: convertToParagraph(),
 
           [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
           [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
@@ -131,15 +133,15 @@ export function jumpToEndOfParagraph() {
 }
 
 export function queryIsTopLevelParagraph() {
-  return (state, dispatch, view) => {
+  return (state) => {
     const type = getTypeFromSchema(state.schema);
-    return parentHasDirectParentOfType(type, state.schema.nodes.doc);
+    return parentHasDirectParentOfType(type, state.schema.nodes.doc)(state);
   };
 }
 
 export function queryIsParagraph() {
-  return (state, dispatch, view) => {
+  return (state) => {
     const type = getTypeFromSchema(state.schema);
-    return parentHasDirectParentOfType(type, state.schema.nodes.doc);
+    return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }

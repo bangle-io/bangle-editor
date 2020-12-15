@@ -6,3 +6,4 @@ export * from './MenuGroup';
 export * from './Icons';
 export * from './Icon';
 export * from './MenuButtons';
+export * from './MenuDropdown';

@@ -52,8 +52,8 @@
         "api/core",
         "api/react",
         "api/react_menu",
-        "api/markdown_front_matter",
-        "api/react_emoji_suggest"
+        "api/react_emoji_suggest",
+        "api/markdown_front_matter"
       ]
     }
   ]

@@ -8,7 +8,8 @@ import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  queryIsBlockQuoteActive,
+  queryIsBlockquoteActive,
+  wrapInBlockquote,
 };
 export const defaultKeys = {
   wrapIn: 'Ctrl-ArrowRight',
@@ -54,17 +55,12 @@ function pluginsFactory({
 } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const isInBlockquote = queryIsBlockQuoteActive();
+    const isInBlockquote = queryIsBlockquoteActive();
     return [
       markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),
       keybindings &&
         keymap({
-          [keybindings.wrapIn]: filter(
-            (state) => !isInBlockquote(state),
-            (state, dispatch, view) => {
-              return wrapIn(type)(state, dispatch, view);
-            },
-          ),
+          [keybindings.wrapIn]: wrapInBlockquote(),
           [keybindings.moveUp]: moveNode(type, 'UP'),
           [keybindings.moveDown]: moveNode(type, 'DOWN'),
 
@@ -84,9 +80,19 @@ function pluginsFactory({
   };
 }
 
-export function queryIsBlockQuoteActive() {
+export function queryIsBlockquoteActive() {
   return (state) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };
+}
+
+export function wrapInBlockquote() {
+  return filter(
+    (state) => !queryIsBlockquoteActive()(state),
+    (state, dispatch, view) => {
+      const type = getTypeFromSchema(state.schema);
+      return wrapIn(type)(state, dispatch, view);
+    },
+  );
 }
