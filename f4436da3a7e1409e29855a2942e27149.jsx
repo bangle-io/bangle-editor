@@ -55,7 +55,7 @@ export default function Example() {
         menuKey={menuKey}
         renderMenuType={({ type }) => {
           // Use the type we earlier calculated to show
-          // some important message.
+          // our custom menu
           if (type === 'headingSubMenu') {
             return (
               <Menu>
