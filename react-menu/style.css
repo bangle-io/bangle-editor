@@ -3,8 +3,12 @@
 
 :root {
   --bangle-floating-menu-bg-color: #333;
-  --bangle-balloon-border-radius: 4px;
   --bangle-floating-menu-text-color: #fff;
+  --bangle-floating-menu-button-hover-color: grey;
+  --bangle-floating-menu-button-disabled-color: grey;
+  --bangle-floating-menu-separator-color: grey;
+  --bangle-floating-menu-button-active-color: aquamarine;
+  --bangle-balloon-border-radius: 4px;
   --bangle-balloon-font-size: 12px;
   --bangle-balloon-move: 4px;
 }
@@ -35,7 +39,7 @@
 .bangle-menu-group {
   display: flex;
   padding: 0 2px;
-  border-right: 1px solid #666;
+  border-right: 1px solid var(--bangle-floating-menu-separator-color);
 }
 
 .bangle-menu {
@@ -75,17 +79,17 @@
 }
 
 .bangle-menu .floating-menu-button:hover {
-  background-color: grey;
+  background-color: var(--bangle-floating-menu-button-hover-color);
   border-radius: 2px;
 }
 
 .bangle-menu .floating-menu-button.active {
-  color: aquamarine;
+  color: var(--bangle-floating-menu-button-active-color);
 }
 
 .bangle-menu .floating-menu-button:disabled {
   cursor: not-allowed;
-  color: grey;
+  color: var(--bangle-floating-menu-button-disabled-color);
 }
 
 .bangle-menu .floating-menu-button:disabled:hover {
@@ -105,7 +109,7 @@
   background-color: var(--bangle-floating-menu-bg-color);
   border-radius: 4px;
   padding: 4px 2px;
-  top: 42px;
+  top: 2.8rem;
 }
 
 /** Dropdown END */

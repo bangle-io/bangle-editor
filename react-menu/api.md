@@ -45,6 +45,8 @@ Named parameters:
 
   - `null` : anything else
 
+- **tooltipRenderOpts**: ?{{tooltip.link.tooltipRenderOpts}}
+
 ### commands: {{core.link.CommandObject}}
 
 - **focusFloatingMenuInput**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
@@ -112,7 +114,7 @@ A UI wrapper for grouping menu buttons and showing a partition to separate from 
 - **children:** React.Children
 
 **Usage**
-Building a menu
+Building a menu:
 
 ```jsx
 import {
@@ -134,32 +136,117 @@ import {
     <HeadingButton level={2} />
     <BulletListButton />
   </MenuGroup>
-</Menu>
+</Menu>;
 ```
 
-📖 See [FloatingMenu example](http://localhost:3000/docs/examples/react-floating-menu) for more details.
+📖 See [FloatingMenu example](/docs/examples/react-floating-menu) for more details.
 
-## MenuButton
+## LinkSubMenu: {{global.link.ReactElement}}
+
+A React component for showing a link editor for the type `'linkSubMenu'`.
+
+## MenuDropdown: {{global.link.ReactElement}}
+
+A React component for rendering dropdowns.
+
+**Props:**
+
+- **parent:** fn({ isDropdownVisible, toggleDropdown }) -> {{global.link.ReactElement}}\
+  A render prop to show the button that allows toggling of the dropdown. Ideally you would wanna put in `MenuButton` in this.
+- **children:** {{global.link.ReactElement}}\
+  React children that are showed inside the dropdown. Ideally you would wanna put in `MenuButton`s in this.
+
+📖 See [FloatingMenu example](/docs/examples/react-floating-menu) for a dropdown.
+
+## MenuButton: {{global.link.ReactElement}}
+
+A button for your menu.
+
+**Props**:
+
+- **className**: ?string\
+  Add CSS classes to the `<button>` DOM node.
+- **children**: ?{{global.link.ReactElement}}\
+  The content of the button. Ideally some string or an SVG icon.
+- **isActive**: ?boolean\
+  Whether the button is active.
+- **isDisabled**: ?boolean\
+  Whether the button is disabled.
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **onMouseDown**: ?fn(event)\
+  The mouse down handler of the button. You are expected to `event.preventDefault()` to prevent the editor from losing the focus.
+
+## MenuButtons
+
+Bangle comes with following button:
 
 ### BoldButton: {{global.link.ReactElement}}
 
 Marks text as `bold` mark.
 
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
+
 ### ItalicButton: {{global.link.ReactElement}}
 
 Marks text as `italic` mark.
+
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
 
 ### CodeButton: {{global.link.ReactElement}}
 
 Marks text as `code` mark.
 
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
+
 ### BulletListButton: {{global.link.ReactElement}}
 
 Convert text to a `bulletList` node.
 
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
+
 ### TodoListButton: {{global.link.ReactElement}}
 
 Convert text to a `todoList` node.
+
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
 
 ### HeadingButton: {{global.link.ReactElement}}
 
@@ -169,16 +256,24 @@ Convert text to a `heading` node.
 
 - **level:** number\
   The heading level.
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.
 
 ### LinkButton**:** {{global.link.ReactElement}}
 
-Change the type of menu to `'linkSubMenu'` . 
+Change the type of menu to `'linkSubMenu'` .
 
 **Props:**
 
 - **menuKey**: {{Prosemirror.PluginKey}}\
   The menu key associated with your menu plugin.
-
-## LinkSubMenu: {{global.link.ReactElement}}
-
-A component for showing a link editor for the type `'linkSubMenu'`.
+- **hint**: ?string\
+  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, but default it will render an Icon for the button.

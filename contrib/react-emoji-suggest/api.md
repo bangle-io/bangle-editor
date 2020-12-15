@@ -44,7 +44,7 @@ Named parameters:
 - **maxItems:** ?number=200\
   The maximum number of items that can be shown at a time.
 
-- **tooltipRenderOpts**: {{tooltip.link.tooltipRenderOpts}}
+- **tooltipRenderOpts**: ?{{tooltip.link.tooltipRenderOpts}}
 
 ### commands: {{core.link.CommandObject}}
 

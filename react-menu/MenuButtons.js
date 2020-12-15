@@ -54,11 +54,11 @@ import {
 } from '@banglejs/core/components/ordered-list';
 
 export function BoldButton({
-  longForm = true,
+  hint = 'Bold\n' + boldKeys.toggleBold,
+  hintPos = 'top',
   children = <Icons.BoldIcon />,
   ...props
 }) {
-  const hint = 'Bold\n' + boldKeys.toggleBold;
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -74,6 +74,7 @@ export function BoldButton({
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsBoldActive()(view.state)}
@@ -84,8 +85,12 @@ export function BoldButton({
   );
 }
 
-export function ItalicButton({ children = <Icons.ItalicIcon />, ...props }) {
-  const hint = 'Italic\n' + italicKeys.toggleItalic;
+export function ItalicButton({
+  hint = 'Italic\n' + italicKeys.toggleItalic,
+  hintPos = 'top',
+  children = <Icons.ItalicIcon />,
+  ...props
+}) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -101,6 +106,7 @@ export function ItalicButton({ children = <Icons.ItalicIcon />, ...props }) {
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsItalicActive()(view.state)}
@@ -111,8 +117,12 @@ export function ItalicButton({ children = <Icons.ItalicIcon />, ...props }) {
   );
 }
 
-export function CodeButton({ children = <Icons.CodeIcon />, ...props }) {
-  const hint = 'Code\n' + codeKeys.toggleCode;
+export function CodeButton({
+  hint = 'Code\n' + codeKeys.toggleCode,
+  hintPos = 'top',
+  children = <Icons.CodeIcon />,
+  ...props
+}) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -128,6 +138,7 @@ export function CodeButton({ children = <Icons.CodeIcon />, ...props }) {
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsCodeActive()(view.state)}
@@ -139,10 +150,11 @@ export function CodeButton({ children = <Icons.CodeIcon />, ...props }) {
 }
 
 export function BulletListButton({
+  hint = 'BulletList\n' + bulletListKeys.toggle,
+  hintPos = 'top',
   children = <Icons.BulletListIcon />,
   ...props
 }) {
-  const hint = 'BulletList\n' + bulletListKeys.toggle;
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -158,6 +170,7 @@ export function BulletListButton({
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsBulletListActive()(view.state)}
@@ -169,10 +182,11 @@ export function BulletListButton({
 }
 
 export function OrderedListButton({
+  hint = 'OrderedList\n' + orderedListKeys.toggle,
+  hintPos = 'top',
   children = <Icons.OrderedListIcon />,
   ...props
 }) {
-  const hint = 'OrderedList\n' + orderedListKeys.toggle;
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -188,6 +202,7 @@ export function OrderedListButton({
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsOrderedListActive()(view.state)}
@@ -199,10 +214,11 @@ export function OrderedListButton({
 }
 
 export function TodoListButton({
+  hint = 'TodoList\n' + todoListKeys.toggle,
+  hintPos = 'top',
   children = <Icons.TodoListIcon />,
   ...props
 }) {
-  const hint = 'TodoList\n' + todoListKeys.toggle;
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -224,6 +240,7 @@ export function TodoListButton({
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsTodoListActive()(view.state)}
@@ -236,10 +253,11 @@ export function TodoListButton({
 
 export function HeadingButton({
   level,
+  hint = `Heading${level}\n` + headingKeys['toH' + level],
+  hintPos = 'top',
   children = <Icons.HeadingIcon level={level} />,
   ...props
 }) {
-  const hint = `Heading${level}\n` + headingKeys['toH' + level];
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -255,6 +273,7 @@ export function HeadingButton({
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsHeadingActive(level)(view.state)}
@@ -270,10 +289,11 @@ HeadingButton.propTypes = {
 };
 
 export function ParagraphButton({
+  hint = `Paragraph\n` + paragraphKeys.convertToParagraph,
+  hintPos = 'top',
   children = <Icons.ParagraphIcon />,
   ...props
 }) {
-  const hint = `Paragraph\n` + paragraphKeys.convertToParagraph;
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -289,6 +309,7 @@ export function ParagraphButton({
   return (
     <MenuButton
       {...props}
+      hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsTopLevelParagraph()(view.state)}
@@ -299,10 +320,15 @@ export function ParagraphButton({
   );
 }
 
-export function LinkButton({ children = <Icons.LinkIcon />, menuKey }) {
-  const hint = 'Link\n' + floatingMenuKeys.toggleLink;
+export function LinkButton({
+  hint = 'Link\n' + floatingMenuKeys.toggleLink,
+  hintPos = 'top',
+  children = <Icons.LinkIcon />,
+  menuKey,
+}) {
   const view = useEditorViewContext();
-  const onSelect = useCallback(
+
+  const onMouseDown = useCallback(
     (e) => {
       e.preventDefault();
       const command = filter(
@@ -326,8 +352,9 @@ export function LinkButton({ children = <Icons.LinkIcon />, menuKey }) {
 
   return (
     <MenuButton
-      onMouseDown={onSelect}
+      onMouseDown={onMouseDown}
       hint={hint}
+      hintPos={hintPos}
       isActive={queryIsLinkActive()(view.state)}
       isDisabled={!createLink('')(view.state)}
     >

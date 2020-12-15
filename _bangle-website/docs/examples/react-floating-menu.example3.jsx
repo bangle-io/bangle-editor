@@ -26,6 +26,8 @@ import {
   TodoListButton,
   OrderedListButton,
   ParagraphButton,
+  ChevronDown,
+  ChevronUp,
 } from '@banglejs/react-menu';
 
 const menuKey = new PluginKey('menuKey');
@@ -37,6 +39,9 @@ export default function Example() {
       ...corePlugins(),
       floatingMenu.plugins({
         key: menuKey,
+        tooltipRenderOpts: {
+          placement: 'bottom',
+        },
         calculateType: (state) =>
           !state.selection.empty ? 'defaultMenu' : null,
       }),
@@ -62,11 +67,17 @@ export default function Example() {
                     />
                   )}
                 >
-                  <ParagraphButton>Paragraph</ParagraphButton>
-                  <HeadingButton level={1}>Heading 1</HeadingButton>
-                  <BulletListButton>Bullet List</BulletListButton>
-                  <OrderedListButton>Ordered List</OrderedListButton>
-                  <TodoListButton>Todo List</TodoListButton>
+                  <ParagraphButton hintPos="right">Paragraph</ParagraphButton>
+                  <HeadingButton hintPos="right" level={1}>
+                    Heading 1
+                  </HeadingButton>
+                  <BulletListButton hintPos="right">
+                    Bullet List
+                  </BulletListButton>
+                  <OrderedListButton hintPos="right">
+                    Ordered List
+                  </OrderedListButton>
+                  <TodoListButton hintPos="right">Todo List</TodoListButton>
                 </MenuDropdown>
               </Menu>
             );
@@ -78,9 +89,11 @@ export default function Example() {
   );
 }
 
-function NodeTypeButton({ toggleDropdown }) {
+function NodeTypeButton({ isDropdownVisible, toggleDropdown }) {
   const view = useEditorViewContext();
-  const onSelect = useCallback(
+  // using onMouseDown instead of onClick
+  // helps preserve the editors selection.
+  const onMouseDown = useCallback(
     (e) => {
       e.preventDefault();
       toggleDropdown((show) => !show);
@@ -98,8 +111,9 @@ function NodeTypeButton({ toggleDropdown }) {
     name = 'Heading 1';
   }
   return (
-    <MenuButton onMouseDown={onSelect} isDisabled={false}>
+    <MenuButton onMouseDown={onMouseDown} isDisabled={false}>
       <span>{name}</span>
+      {isDropdownVisible ? <ChevronUp /> : <ChevronDown />}
     </MenuButton>
   );
 }

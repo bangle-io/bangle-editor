@@ -39,8 +39,8 @@ export const defaultCalculateType = (state, prevType) => {
 
 function floatingMenu({
   key = new PluginKey('floatingMenuPlugin'),
-  tooltipRenderOpts = {},
   keybindings = defaultKeys,
+  tooltipRenderOpts = {},
   calculateType = defaultCalculateType,
 } = {}) {
   return [
