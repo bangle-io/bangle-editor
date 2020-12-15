@@ -1,0 +1,43 @@
+---
+title: 'Lists & TodoLists'
+id: 'todo-list'
+hide_title: true
+---
+
+import filePath1 from '!!file-loader!./todo-list.example1.jsx';
+import filePath2 from '!!file-loader!./todo-list.example2.jsx';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import example1 from './todo-list.example1';
+import example2 from './todo-list.example2';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import { VanillaCodeExample } from '../../src/example-helpers';
+
+## Todo Lists
+
+In this example we use the TodoList component to allow creation of todo lists.
+
+<VanillaCodeExample
+  filePath={filePath1}
+  language="js"
+  createEditor={example1}
+/>
+
+Try some of the following:
+
+- Type `[]` followed by a space to create a todo List.
+- Press `Cmd-Enter` (mac) or `Ctrl-Enter` (PC) to mark as task done.
+- `Ctrl-Shift-7` also creates a todo list.
+- Drag the todo square to move things around.
+
+## Ordered and Unordered Lists
+
+<VanillaCodeExample
+  filePath={filePath2}
+  language="js"
+  createEditor={example2}
+/>
+
+**See API docs:**
+
+- [@banglejs/core](/docs/api/core#components)

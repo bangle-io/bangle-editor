@@ -3,21 +3,22 @@
     {
       "type": "category",
       "label": "Introduction",
-      "items": [
-        "hello",
-        "getting-started",
-        "contributing"
-      ]
+      "items": ["hello", "getting-started", "contributing"]
     },
     {
       "type": "category",
       "label": "Examples",
       "collapsed": false,
+      "items": ["examples/markdown-editor", "examples/todo-list"]
+    },
+    {
+      "type": "category",
+      "label": "React Examples",
+      "collapsed": false,
       "items": [
         "examples/react-basic-editor",
         "examples/react-floating-menu",
-        "examples/react-emoji-suggest",
-        "examples/markdown-editor"
+        "examples/react-emoji-suggest"
       ]
     },
     {

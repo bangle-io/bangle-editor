@@ -1076,7 +1076,7 @@ const plugins = [
   listItem.plugins(),
   todoItem.plugins(),
   orderedList.plugins(),
-  bulletList.spec(),
+  bulletList.plugins(),
   todoList.plugins(),
 ];
 ```
