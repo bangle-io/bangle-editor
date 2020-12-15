@@ -32,7 +32,7 @@ export default function Example() {
         },
         calculateType: (state) => {
           const parent = state.selection.$from.parent;
-          // Trigger the menu when empty and the parent node is empty.
+          // Trigger the menu when selection is empty and the parent node is empty.
           return state.selection.empty && parent && parent.content.size === 0
             ? 'defaultMenu'
             : null;

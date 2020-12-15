@@ -9,7 +9,11 @@
       "type": "category",
       "label": "Examples",
       "collapsed": false,
-      "items": ["examples/markdown-editor", "examples/todo-list"]
+      "items": [
+        "examples/markdown-editor",
+        "examples/todo-list",
+        "examples/exporting-data"
+      ]
     },
     {
       "type": "category",

@@ -56,6 +56,10 @@ An object with the following fields:
 
 This is designed in a way to provide flexibility and extensibility when grouping multiple plugins under a {{core.link.Component}}. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
 
+### Plugin
+
+> {{Prosemirror.PluginSpec}}
+
 ### KeybindingsObject
 
 > { \[string\]: string | undefined }

@@ -8,6 +8,7 @@ import {
 import { Fragment, Slice } from 'prosemirror-model';
 import { GapCursorSelection } from '../gap-cursor';
 import { Plugin } from '@banglejs/core/index';
+import { DOMSerializer } from 'prosemirror-model';
 
 export function safeInsert(...args) {
   return _safeInsert(...args);
@@ -505,4 +506,14 @@ export function valuePlugin(key, value) {
       },
     },
   });
+}
+
+export function toHTMLString(state) {
+  const div = document.createElement('div');
+  const fragment = DOMSerializer.fromSchema(state.schema).serializeFragment(
+    state.doc.content,
+  );
+
+  div.appendChild(fragment);
+  return div.innerHTML;
 }
