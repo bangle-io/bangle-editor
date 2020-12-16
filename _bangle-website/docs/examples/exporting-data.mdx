@@ -1,14 +1,17 @@
 ---
 title: 'Exporting Data'
 id: 'exporting-data'
+hide_title: true
 ---
 
 import { useEffect, useState } from 'react';
-import filePath from '!!file-loader!./exporting-data.jsx';
+import filePath1 from '!!file-loader!./exporting-data.example1.jsx';
+import filePath2 from '!!file-loader!./exporting-data.example2.jsx';
 import Tabs from '@theme/Tabs';
 import CodeBlock from '@theme/CodeBlock';
 import TabItem from '@theme/TabItem';
-import createEditor from './exporting-data';
+import createEditor1 from './exporting-data.example1';
+import createEditor2 from './exporting-data.example2';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import {
   formatHTMLString,
@@ -23,16 +26,18 @@ Bangle allows exporting the editor state in different ways:
 - HTML
 - JSON
 
-I know a menu would have been great to make some quick changes, but currently I only have it for [React](/docs/examples/react-floating-menu). But you can try some of the following:
+I know a menu would have been great to make some quick changes, but currently I
+only have it for [React](/docs/examples/react-floating-menu).
+But you can try some of the following:
 
 - Use markdown shortcuts like `# `, `- `, `1. `, `> `, `[ ] ` to trigger new blocks.
 - Use keyboard shortcuts like `Command-b` or `Command-i` to enable marks, see [core components](/docs/api/core#components) docs for more keyboard shortcuts.
 - Try pasting rich text from some other place.
 
 <VanillaCodeExample
-  filePath={filePath}
+  filePath={filePath1}
   language="js"
-  createEditor={createEditor}
+  createEditor={createEditor1}
   SideCar={({ editor }) => {
     const [data, setState] = useState({
       htmlString: toHTMLString(editor.view.state),
@@ -64,5 +69,16 @@ I know a menu would have been great to make some quick changes, but currently I 
         </TabItem>
       </Tabs>
     );
+  }}
+/>
+
+## Persisting to Local Storage
+
+<VanillaCodeExample
+  filePath={filePath2}
+  language="js"
+  createEditor={createEditor2}
+  onEditorReady={(editor) => {
+    return;
   }}
 />
