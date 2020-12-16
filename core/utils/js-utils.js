@@ -324,7 +324,6 @@ export function rafSchedule(fn) {
     if (!frameId) {
       return;
     }
-
     cancelAnimationFrame(frameId);
     frameId = null;
   };

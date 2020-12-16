@@ -60,10 +60,10 @@ export default function Example() {
             return (
               <Menu>
                 <MenuDropdown
-                  parent={({ isDropdownVisible, toggleDropdown }) => (
+                  parent={({ isDropdownVisible, updateDropdown }) => (
                     <NodeTypeButton
                       isDropdownVisible={isDropdownVisible}
-                      toggleDropdown={toggleDropdown}
+                      updateDropdown={updateDropdown}
                     />
                   )}
                 >
@@ -89,16 +89,16 @@ export default function Example() {
   );
 }
 
-function NodeTypeButton({ isDropdownVisible, toggleDropdown }) {
+function NodeTypeButton({ isDropdownVisible, updateDropdown }) {
   const view = useEditorViewContext();
   // using onMouseDown instead of onClick
   // helps preserve the editors selection.
   const onMouseDown = useCallback(
     (e) => {
       e.preventDefault();
-      toggleDropdown((show) => !show);
+      updateDropdown((show) => !show);
     },
-    [toggleDropdown],
+    [updateDropdown],
   );
   let name = 'paragraph';
   if (orderedList.queryIsOrderedListActive()(view.state)) {

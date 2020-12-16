@@ -293,6 +293,7 @@ export function HeadingButton({
   ...props
 }) {
   const view = useEditorViewContext();
+
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
@@ -340,6 +341,7 @@ export function ParagraphButton({
     },
     [view],
   );
+
   return (
     <MenuButton
       {...props}
@@ -354,7 +356,7 @@ export function ParagraphButton({
   );
 }
 
-export function LinkButton({
+export function FloatingLinkButton({
   hint = 'Link\n' + floatingMenuKeys.toggleLink,
   hintPos = 'top',
   children = <Icons.LinkIcon />,
@@ -396,6 +398,6 @@ export function LinkButton({
     </MenuButton>
   );
 }
-LinkButton.propTypes = {
+FloatingLinkButton.propTypes = {
   menuKey: PropTypes.instanceOf(PluginKey).isRequired,
 };

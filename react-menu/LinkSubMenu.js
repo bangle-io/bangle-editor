@@ -32,12 +32,11 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
   };
 
   return (
-    <>
+    <span className="bangle-link-menu">
       <input
         value={href}
         ref={inputRef}
         onKeyDown={(e) => {
-          console.log(e.key);
           if (e.key === 'Enter') {
             e.preventDefault();
             handleSubmit();
@@ -100,6 +99,6 @@ function LinkMenu({ getIsTop, view, originalHref = '' }) {
           <Icons.DoneIcon />
         </MenuButton>
       )}
-    </>
+    </span>
   );
 }

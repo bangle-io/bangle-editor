@@ -18,9 +18,9 @@ export default function Example() {
         key: menuKey,
       }),
     ],
-    initialValue: `<div>Hi there, try selecting me to see a floating menu.
-    <br/>
-    <span>Also, checkout this awesome <a href="https://blog.ycombinator.com/the-airbnbs/">article!</a></span>
+    initialValue: `<div>
+    <p>Hi there, try selecting me to see a floating menu</p>
+    <p>Also, checkout this awesome <a href="https://blog.ycombinator.com/the-airbnbs/">article!</a></p>
     </div>`,
   });
 

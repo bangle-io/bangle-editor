@@ -24,3 +24,4 @@ export * as image from './image';
 
 // components
 export * as history from './history';
+export * as editorStateCounter from './editor-state-counter';

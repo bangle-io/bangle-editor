@@ -3,7 +3,11 @@
     {
       "type": "category",
       "label": "Introduction",
-      "items": ["hello", "getting-started", "contributing"]
+      "items": [
+        "hello",
+        "getting-started",
+        "contributing"
+      ]
     },
     {
       "type": "category",
@@ -22,6 +26,7 @@
       "items": [
         "examples/react-basic-editor",
         "examples/react-floating-menu",
+        "examples/react-static-menu",
         "examples/react-emoji-suggest"
       ]
     },
@@ -57,8 +62,8 @@
         "api/core",
         "api/react",
         "api/react_menu",
-        "api/react_emoji_suggest",
-        "api/markdown_front_matter"
+        "api/markdown_front_matter",
+        "api/react_emoji_suggest"
       ]
     }
   ]

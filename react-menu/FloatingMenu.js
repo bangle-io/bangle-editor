@@ -11,7 +11,7 @@ import {
   ItalicButton,
   BulletListButton,
   HeadingButton,
-  LinkButton,
+  FloatingLinkButton,
 } from './MenuButtons';
 import { Menu } from './Menu';
 import { MenuGroup } from './MenuGroup';
@@ -26,7 +26,7 @@ export function FloatingMenu({
             <BoldButton />
             <ItalicButton />
             <CodeButton />
-            <LinkButton menuKey={menuKey} />
+            <FloatingLinkButton menuKey={menuKey} />
           </MenuGroup>
           <MenuGroup>
             <HeadingButton level={2} />
@@ -39,7 +39,7 @@ export function FloatingMenu({
     }
     if (type === 'linkSubMenu') {
       return (
-        <Menu className="bangle-link-menu">
+        <Menu>
           <LinkSubMenu />
         </Menu>
       );
@@ -57,4 +57,5 @@ export function FloatingMenu({
 
 FloatingMenu.propTypes = {
   menuKey: PropTypes.instanceOf(PluginKey).isRequired,
+  renderMenuType: PropTypes.func,
 };

@@ -3,7 +3,7 @@ import '@banglejs/tooltip/style.css';
 import '@banglejs/react-menu/style.css';
 import React from 'react';
 import { BangleEditor, useEditorState } from '@banglejs/react';
-import { PluginKey, heading } from '@banglejs/core';
+import { PluginKey } from '@banglejs/core';
 import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
 import {
   floatingMenu,
@@ -15,7 +15,10 @@ import {
   BulletListButton,
   ItalicButton,
   FloatingLinkButton,
+  LinkSubMenu,
+  MenuButton,
 } from '@banglejs/react-menu';
+import { queryIsLinkActive } from '@banglejs/core/components/link';
 
 const menuKey = new PluginKey('menuKey');
 
@@ -27,20 +30,13 @@ export default function Example() {
       floatingMenu.plugins({
         key: menuKey,
         calculateType: (state, prevType) => {
-          // Use the 'headingSubMenu' type whenever
-          // the selection is inside a heading.
-          if (heading.commands.queryIsHeadingActive()(state)) {
-            return 'headingSubMenu';
+          if (queryIsLinkActive()(state)) {
+            return 'linkSubMenu';
           }
-
-          // A user has selected a range of text, lets show them
-          // the default menu.
-          if (!state.selection.empty) {
-            return 'defaultMenu';
+          if (state.selection.empty) {
+            return null;
           }
-
-          // Set the type to null to indicate that a menu is not needed.
-          return null;
+          return 'defaultMenu';
         },
       }),
     ],
@@ -55,16 +51,6 @@ export default function Example() {
       <FloatingMenu
         menuKey={menuKey}
         renderMenuType={({ type }) => {
-          // Use the type we earlier calculated to show
-          // our custom menu
-          if (type === 'headingSubMenu') {
-            return (
-              <Menu>
-                <span>This is a heading!</span>
-              </Menu>
-            );
-          }
-
           if (type === 'defaultMenu') {
             return (
               <Menu>
@@ -72,19 +58,52 @@ export default function Example() {
                   <BoldButton />
                   <ItalicButton />
                   <FloatingLinkButton menuKey={menuKey} />
+                  <MyCustomButton />
                 </MenuGroup>
                 <MenuGroup>
-                  <HeadingButton level={1} />
                   <HeadingButton level={2} />
+                  <HeadingButton level={3} />
                   <BulletListButton />
                 </MenuGroup>
               </Menu>
             );
           }
-
+          if (type === 'linkSubMenu') {
+            return (
+              <Menu>
+                <LinkSubMenu />
+              </Menu>
+            );
+          }
           return null;
         }}
       />
     </BangleEditor>
+  );
+}
+
+function MyCustomButton() {
+  return (
+    <MenuButton
+      hintPos="top"
+      hint="Hola"
+      onMouseDown={(e) => {
+        e.preventDefault();
+      }}
+      isActive={true}
+    >
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <text
+          x="12"
+          y="12"
+          stroke="currentColor"
+          textAnchor="middle"
+          alignmentBaseline="central"
+          dominantBaseline="middle"
+        >
+          Hi
+        </text>
+      </svg>
+    </MenuButton>
   );
 }
