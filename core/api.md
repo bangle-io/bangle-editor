@@ -52,7 +52,7 @@ An object with the following fields:
 
 :brain: _Please note this is a **recursive** type - it contains reference to itself!_
 
-> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | fn({ schema, specRegistry }) -> [Plugins](#plugins) | undefined
+> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | (fn({ schema, specRegistry }) -> [Plugins](#plugins)) | undefined
 
 This is designed in a way to provide flexibility and extensibility when grouping multiple plugins under a {{core.link.Component}}. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
 
