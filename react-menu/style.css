@@ -4,21 +4,19 @@
 :root {
   --bangle-floating-menu-bg-color: #333;
   --bangle-floating-menu-text-color: #fff;
-  --bangle-floating-menu-button-hover-color: grey;
-  --bangle-floating-menu-button-disabled-color: grey;
+  --bangle-menu-button-hover-color: grey;
+  --bangle-menu-button-disabled-color: grey;
   --bangle-floating-menu-separator-color: grey;
-  --bangle-floating-menu-button-active-color: aquamarine;
+  --bangle-menu-button-active-color: aquamarine;
   --bangle-balloon-border-radius: 4px;
   --bangle-balloon-font-size: 12px;
   --bangle-balloon-move: 4px;
 }
 
-.bangle-tooltip-content {
-  color: var(--bangle-floating-menu-text-color);
-}
 .bangle-link-menu {
+  display: flex;
   flex-direction: row;
-  padding: 4px 2px;
+  padding: 2px 1px;
   align-items: center;
 }
 .bangle-link-menu input {
@@ -44,6 +42,7 @@
 
 .bangle-menu {
   background-color: var(--bangle-floating-menu-bg-color);
+  color: var(--bangle-floating-menu-text-color);
   border-radius: 4px;
   display: flex;
   padding: 4px 2px;
@@ -54,13 +53,13 @@
 .bangle-menu button {
   font-size: 100%;
 }
-.bangle-menu .floating-menu-button svg {
+.bangle-menu .bangle-menu-button svg {
   display: block;
   height: 1.25rem;
   width: 1.25rem;
   fill: currentcolor;
 }
-.bangle-menu .floating-menu-button {
+.bangle-menu .bangle-menu-button {
   position: relative;
   cursor: pointer;
   background-color: transparent;
@@ -78,21 +77,21 @@
   align-items: center;
 }
 
-.bangle-menu .floating-menu-button:hover {
-  background-color: var(--bangle-floating-menu-button-hover-color);
+.bangle-menu .bangle-menu-button:hover {
+  background-color: var(--bangle-menu-button-hover-color);
   border-radius: 2px;
 }
 
-.bangle-menu .floating-menu-button.active {
-  color: var(--bangle-floating-menu-button-active-color);
+.bangle-menu .bangle-menu-button.active {
+  color: var(--bangle-menu-button-active-color);
 }
 
-.bangle-menu .floating-menu-button:disabled {
+.bangle-menu .bangle-menu-button:disabled {
   cursor: not-allowed;
-  color: var(--bangle-floating-menu-button-disabled-color);
+  color: var(--bangle-menu-button-disabled-color);
 }
 
-.bangle-menu .floating-menu-button:disabled:hover {
+.bangle-menu .bangle-menu-button:disabled:hover {
   background-color: transparent;
 }
 
@@ -100,16 +99,17 @@
 .bangle-menu-dropdown {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .bangle-menu-vertical-group {
   display: flex;
-  position: fixed;
+  position: absolute;
   flex-direction: column;
   background-color: var(--bangle-floating-menu-bg-color);
   border-radius: 4px;
   padding: 4px 2px;
-  top: 2.8rem;
+  top: 2.7rem;
 }
 
 /** Dropdown END */

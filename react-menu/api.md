@@ -151,7 +151,7 @@ A React component for rendering dropdowns.
 
 **Props:**
 
-- **parent:** fn({ isDropdownVisible, toggleDropdown }) -> {{global.link.ReactElement}}\
+- **parent:** fn({ isDropdownVisible, updateDropdown }) -> {{global.link.ReactElement}}\
   A render prop to show the button that allows toggling of the dropdown. Ideally you would wanna put in `MenuButton` in this.
 - **children:** {{global.link.ReactElement}}\
   React children that are showed inside the dropdown. Ideally you would wanna put in `MenuButton`s in this.
@@ -276,9 +276,9 @@ Convert text to a `heading` node.
 - **children**: ?{{global.link.ReactElement}}\
   The content to render inside the button, but default it will render an Icon for the button.
 
-### LinkButton**:** {{global.link.ReactElement}}
+### FloatingLinkButton**:** {{global.link.ReactElement}}
 
-Change the type of menu to `'linkSubMenu'` .
+Upon mouse down changes floating menu type to `'linkSubMenu'`. **Note:** this is meant to be used only inside [FloatingMenu](#floatingmenu-component).
 
 **Props:**
 

@@ -9,7 +9,7 @@ import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
 import { bangleWarn } from './js-utils';
 import { Plugin, PluginGroup } from '../plugin';
-import { history } from '../components/index';
+import { history, editorStateCounter } from '../components/index';
 
 export function pluginLoader(
   specRegistry,
@@ -33,6 +33,10 @@ export function pluginLoader(
 
     if (!pluginGroupNames.has('history')) {
       defaultPluginGroups.push(history.plugins());
+    }
+
+    if (!pluginGroupNames.has('editorStateCounter')) {
+      defaultPluginGroups.push(editorStateCounter.plugins());
     }
 
     flatPlugins = flatPlugins.concat(

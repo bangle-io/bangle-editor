@@ -11,7 +11,7 @@ import {
   updateSelectionTooltipType,
 } from '@banglejs/tooltip/selection-tooltip';
 import { keymap } from '@banglejs/core/utils/keymap';
-import { PluginKey } from '@banglejs/core/index';
+import { PluginKey } from '@banglejs/core';
 import { rafCommandExec } from '@banglejs/core/utils/js-utils';
 
 export const plugins = floatingMenu;

@@ -18,9 +18,7 @@ export const MenuButton = ({
       data-bangle-balloon-pos={hintPos}
       disabled={isDisabled}
       onMouseDown={onMouseDown}
-      className={`floating-menu-button ${
-        isActive ? 'active' : ''
-      } ${className}`}
+      className={`bangle-menu-button ${isActive ? 'active' : ''} ${className}`}
     >
       {children}
     </button>

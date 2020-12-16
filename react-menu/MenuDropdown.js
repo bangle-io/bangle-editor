@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 
 export function MenuDropdown({ className = '', parent, children }) {
-  const [isDropdownVisible, toggleDropdown] = useState(false);
+  const [isDropdownVisible, updateDropdown] = useState(false);
 
   return (
     <div className={`bangle-menu-dropdown ${className}`}>
-      {parent({ isDropdownVisible, toggleDropdown })}
+      {parent({
+        isDropdownVisible,
+        updateDropdown,
+      })}
       {isDropdownVisible ? (
         <div className="bangle-menu-vertical-group">{children}</div>
       ) : null}
