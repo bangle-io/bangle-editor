@@ -9,6 +9,7 @@ export function VanillaCodeExample({
   filePath,
   language,
   createEditor,
+  defaultTab = 'example',
   onEditorReady = () => {},
   SideCar,
 }) {
@@ -29,6 +30,7 @@ export function VanillaCodeExample({
         filePath={filePath}
         language={language}
         component={component}
+        defaultTab={defaultTab}
       />
       {editorLoaded ? onEditorReady(editorLoaded) : null}
       {editorLoaded && SideCar ? <SideCar editor={editorLoaded} /> : null}
@@ -50,10 +52,15 @@ export function VanillaEditor({ createEditor, onReady }) {
   return <div ref={editorRef} />;
 }
 
-export function ReactCodeExample({ filePath, language, component }) {
+export function ReactCodeExample({
+  filePath,
+  language,
+  component,
+  defaultTab = 'example',
+}) {
   return (
     <Tabs
-      defaultValue="example"
+      defaultValue={defaultTab}
       values={[
         { label: 'Example', value: 'example' },
         { label: 'Source code', value: 'src' },
