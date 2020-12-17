@@ -141,7 +141,7 @@ The class exposes the following fields/methods:
 - **toHTMLString():** string\
   Returns the HTML representation of editors content.
 
-- **view:** Prosemirror.EditorView
+- **view:** {{Prosemirror.EditorView}}
 
 **Usage**
 
