@@ -40,7 +40,6 @@ class BaseNodeView {
       decorations,
       containerDOM,
       contentDOM,
-      mountDOM,
       // Defaults to whatever is set by the rendering framework which ideally
       // would have called the method `saveRenderHandlers` before this gets
       // executed.
@@ -71,12 +70,19 @@ class BaseNodeView {
     // by the implementor
     this.containerDOM = containerDOM;
     this.contentDOM = contentDOM;
-    this.mountDOM = mountDOM || containerDOM; // for ui libraries to mount
 
     if (this.contentDOM) {
       // This css rule makes sure the content dom has non-zero width
       // so that folks can type inside it
-      this.contentDOM.classList.add('bangle-content-mount');
+      this.contentDOM.classList.add('bangle-nv-content');
+    }
+
+    if (this.containerDOM) {
+      this.containerDOM.classList.add('bangle-nv-container');
+    }
+
+    if (this._node.type.isAtom && this.contentDOM) {
+      throw new Error('An atom node cannot have a contentDOM');
     }
 
     this.opts = {
@@ -165,16 +171,34 @@ export class NodeView extends BaseNodeView {
   //   console.log('hi', ...args);
   // }
 
+  // PM essentially works by watching mutation and then syncing the two states: its own and the DOM.
   ignoreMutation(mutation) {
-    // TODO do we need this
-    // allow leaf nodes to be selected
+    // For PM an atom node is a black box, what happens inside it are of no concern to PM
+    // and should be ignored.
+    if (this._node.type.isAtom) {
+      return true;
+    }
+
+    // donot ignore a selection type mutation
     if (mutation.type === 'selection') {
       return false;
     }
-    if (!this.contentDOM) {
-      return true;
+
+    // if a child of containerDOM (the one handled by PM)
+    // has any mutation, do not ignore it
+    if (this.containerDOM.contains(mutation.target)) {
+      return false;
     }
-    return !this.contentDOM.contains(mutation.target);
+
+    // if the containerDOM itself was the target
+    // do not ignore it. This is important for schema where
+    // content: 'inline*' and you end up delete all the content with backspace,
+    // PM needs to step in and create an empty node.
+    if (mutation.target === this.contentDOM) {
+      return false;
+    }
+
+    return true;
   }
 
   // stopEvent() {
@@ -183,7 +207,6 @@ export class NodeView extends BaseNodeView {
 
   destroy() {
     this.renderHandlers.destroy(this, this.getNodeViewProps());
-    // TODO do we need to cleanup mountDOM
     this.containerDOM = undefined;
     this.contentDOM = undefined;
   }

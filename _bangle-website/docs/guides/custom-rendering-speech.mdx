@@ -1,0 +1,166 @@
+---
+title: Custom Rendering
+---
+
+import filePath from '!!file-loader!./custom-rendering-speech.jsx';
+import Component from './custom-rendering-speech';
+import { ReactCodeExample } from '../../src/example-helpers';
+
+Up untill this point you might be wondering what is the best way if you want
+to change the way a particular node is rendered in the browser. You should definitely
+try to see if you can achieve the results you want by just changing some CSS in your
+stylesheet, but if that is not enough NodeView is just the right tool.
+
+In this guide we will create a component that speaks the words written in it with the help of the node view API.
+
+<ReactCodeExample
+  filePath={filePath}
+  language="jsx"
+  component={() => <Component />}
+/>
+
+### Spec
+
+We create a spec named `speech` having the following fields:
+
+```js
+{
+  type: 'node',
+  name: 'speech',
+  schema: {
+    attrs: {
+      lang: {
+        default: '',
+      },
+    },
+    content: 'inline*',
+    group: 'block',
+    draggable: false,
+    toDOM,
+    parseDOM,
+  },
+}
+```
+
+The schema defines that this component can have 0 or more content of group `inline` (see [Prosemirror.Schema](https://prosemirror.net/docs/guide/#schema)).
+
+Next we define the `toDOM` and `parseDOM` fields of the schema. They control how editor serializes and parses
+your node. For node views, these fields dictate the exporting of HTML, copy pasting and dragging.
+
+```js
+const { toDOM, parseDOM } = domSerializationHelpers(name, {
+  tag: 'div',
+  content: 0, // '0' in Prosemirror world is a convention for tell its a hole -- content can be put in it
+});
+```
+
+:bulb: `'0'` in Prosemirror world is what `props.children` is in React i.e. dom content can be put in it. See [Proseemirror.DOMOutputSpec](https://prosemirror.net/docs/ref/#model.DOMOutputSpec) for more details
+
+Since we donot really care about the semantics of the output, we use the helper function `domSerializationHelpers`
+which generates a good enough pair of `toDOM` and `parseDOM`.
+
+### Plugins
+
+```js
+plugins() {
+  return [
+    keymap({
+      'Ctrl-d': createSpeechNode(),
+    }),
+    NodeView.createPlugin({
+      name: 'speech',
+      containerDOM: ['div'],
+      contentDOM: ['span'],
+    }),
+  ];
+}
+```
+
+In the plugins, we define a keyboard shortcut which allows us to create a new speech node whenever
+user presses `Ctrl-d`. Here, `createSpeechNode()` is a command which will insert a new `speech` node for us.
+
+In the second plugin, we tell Bangle to use a NodeView plugin for rendering the `speech` node. With this
+we are on our own on deciding the rendering of this node.
+
+The `contentDOM` and `containerDOM` (Prosemirror calls this `dom`) are names you will hear often in the docs:
+
+- `contentDOM`: Is the dom node which will be the parent of the content. As you know, in our spec
+  we defined our node to have any content which is of the group `inline`. So anything that you type
+  in the speech node, will be directly housed by this dom node.
+
+- `containerDOM`: This is the outermost node of `speech` node.
+
+The bangle editor will directly interface with these two nodes and leave the things in between for you.
+You can visualize this relationship something like this,
+where you only control the part demarcated as `YOUR LAND`.
+
+```html
+<DOC>
+  || EDITOR LAND ||
+  <containerDOM>
+    || YOUR LAND ||
+    <contentDOM> || EDITOR LAND || </contentDOM>
+  </containerDOM>
+  || EDITOR LAND ||
+</DOC>
+```
+
+## Rendering
+
+Fully aborbing the visualization above, we create a React component:
+
+```jsx
+<div>
+  <div className="your-land" contentEditable={false}>
+    <select
+      onChange={(e) => {
+        setLang(e.target.value);
+      }}
+    >
+      <option>some option</option>
+    </select>
+    <button onClick={onPlay}>Play</button>
+  </div>
+  {children}
+</div>
+```
+
+We put all our customization under the div `.your-land`. Bangle will automatically insert `contentDOM` in the `children` to allow for typing in our speech component.
+
+As you notice we have marked just a part of the UI as `contentEditable=false`, this
+tells the browser that unlike the rest, this content is not meant to be editable.
+
+:bulb: When creating NodeView UI make sure that all the dom
+ancestors of `{children}` are free of `contentEditable=true` or `contentEditable=false`. This helps prevent
+`contentEditable` islands, which hamper the free flow of the cursor in your document. Like the example above, tuck
+all the custom UI in a single `div` or `span`.
+
+```jsx
+// 🚫 donot do this as it creates `contentEditable` islands
+<div contentEditable={true}>
+  <div className="your-land" contentEditable={false}>
+    <button onClick={onPlay}>Play</button>
+  </div>
+  {children}
+</div>
+
+// 🚫 donot do this as it creates `contentEditable` islands
+<div contentEditable={true}>
+  <div className="your-land" contentEditable={false}>
+    <button onClick={onPlay}>Play</button>
+    <div contentEditable={true}>
+      {children}
+    </div>
+  </div>
+</div>
+
+// 👍 this is good
+<div>
+  <div className="your-land" contentEditable={false}>
+    <button onClick={onPlay}>Play</button>
+  </div>
+  <div>
+   {children}
+  </div>
+</div>
+```

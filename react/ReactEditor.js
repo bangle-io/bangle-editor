@@ -78,7 +78,7 @@ export function BangleEditor({
             nodeView={nodeView}
             renderNodeViews={renderNodeViews}
           />,
-          nodeView.mountDOM,
+          nodeView.containerDOM,
           objUid.get(nodeView),
         );
       })}
