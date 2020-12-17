@@ -16,6 +16,7 @@
       "items": [
         "examples/markdown-editor",
         "examples/todo-list",
+        "examples/images",
         "examples/exporting-data"
       ]
     },
