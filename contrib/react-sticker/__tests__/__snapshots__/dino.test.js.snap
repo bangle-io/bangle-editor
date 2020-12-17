@@ -2,7 +2,7 @@
 
 exports[`Rendering works 1`] = `
 <span
-  class="bangle-sticker"
+  class="bangle-sticker bangle-nv-container"
   draggable="true"
   style="display: inline-block;"
 >
@@ -17,7 +17,7 @@ exports[`Rendering works 1`] = `
 
 exports[`Rendering works with different type of sticker 1`] = `
 <span
-  class="bangle-sticker"
+  class="bangle-sticker bangle-nv-container"
   draggable="true"
   style="display: inline-block;"
 >
