@@ -36,7 +36,7 @@
       "label": "Guides",
       "collapsed": false,
       "items": [
-        "guides/teeny-tiny-editor",
+        "guides/first-editor",
         "guides/understanding-bangle",
         "guides/menu",
         "guides/editing-commands",
