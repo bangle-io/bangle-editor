@@ -12,6 +12,7 @@ export function StaticMenu({ editor, renderMenu }) {
 }
 
 function StaticMenuContainer({ renderMenu }) {
-  usePluginState(editorStateCounter.key, true);
+  usePluginState(editorStateCounter.docChangedKey, true);
+  usePluginState(editorStateCounter.selectionChangedKey, true);
   return renderMenu();
 }
