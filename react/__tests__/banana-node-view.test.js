@@ -83,6 +83,7 @@ describe('Inline node banana', () => {
     const el = await screen.findByTestId(testId);
     await expect(el).toMatchInlineSnapshot(`
             <span
+              class="bangle-nv-container"
               data-bangle-container=""
               data-testid="Can update attrs"
               draggable="true"
@@ -114,6 +115,7 @@ describe('Inline node banana', () => {
 
     await expect(el).toMatchInlineSnapshot(`
             <span
+              class="bangle-nv-container"
               data-bangle-container=""
               data-testid="Can update attrs"
               draggable="true"

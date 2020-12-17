@@ -192,7 +192,7 @@ export class NodeView extends BaseNodeView {
 
     // if the containerDOM itself was the target
     // do not ignore it. This is important for schema where
-    // content: 'inline*' and you end up delete all the content with backspace,
+    // content: 'inline*' and you end up delete all the content with backspace
     // PM needs to step in and create an empty node.
     if (mutation.target === this.contentDOM) {
       return false;
