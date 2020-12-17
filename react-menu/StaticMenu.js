@@ -3,15 +3,15 @@ import { EditorViewContext } from '@banglejs/react/ReactEditor';
 import { editorStateCounter } from '@banglejs/core/index';
 import { usePluginState } from '@banglejs/react/hooks';
 
-export function StaticMenu({ editor, render }) {
+export function StaticMenu({ editor, renderMenu }) {
   return editor ? (
     <EditorViewContext.Provider value={editor.view}>
-      <StaticMenuContainer render={render}></StaticMenuContainer>
+      <StaticMenuContainer renderMenu={renderMenu}></StaticMenuContainer>
     </EditorViewContext.Provider>
   ) : null;
 }
 
-function StaticMenuContainer({ render }) {
+function StaticMenuContainer({ renderMenu }) {
   usePluginState(editorStateCounter.key, true);
-  return render();
+  return renderMenu();
 }

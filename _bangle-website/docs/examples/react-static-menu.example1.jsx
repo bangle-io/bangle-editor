@@ -18,11 +18,6 @@ import {
   BoldButton,
   ItalicButton,
   MenuGroup,
-  MenuDropdown,
-  LinkIcon,
-  FloatingLinkButton,
-  MenuButton,
-  LinkSubMenu,
 } from '@banglejs/react-menu';
 
 const menuKey = new PluginKey('menuKey');
@@ -49,7 +44,7 @@ export default function Example() {
         editor={editor}
         // We have a render prop to allow for updating
         // menu whenever editors state changes
-        render={() => (
+        renderMenu={() => (
           <Menu
             style={{
               backgroundColor: 'transparent',
