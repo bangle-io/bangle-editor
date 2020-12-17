@@ -58,14 +58,20 @@ export class NodeViewWrapper extends React.PureComponent {
 
     if (this.state.nodeViewProps.node.isInline) {
       return (
-        // The bangle-content-mount is needed to keep the content take space
+        // The bangle-nv-content is needed to keep the content take space
         // or else browsers will collapse it, making it hard to type
-        <span className="bangle-content-mount" ref={this.attachToContentDOM} />
+        <span
+          className="bangle-nv-child-container"
+          ref={this.attachToContentDOM}
+        />
       );
     }
 
     return (
-      <div className="bangle-content-mount" ref={this.attachToContentDOM} />
+      <div
+        className="bangle-nv-child-container"
+        ref={this.attachToContentDOM}
+      />
     );
   }
 

@@ -37,13 +37,11 @@
       "collapsed": false,
       "items": [
         "guides/first-editor",
-        "guides/how-do-i",
+        "guides/custom-rendering-speech",
         "guides/understanding-bangle",
-        "guides/menu",
-        "guides/editing-commands",
+        "guides/commands",
         "guides/keybindings",
-        "guides/images",
-        "guides/exporting"
+        "guides/how-do-i"
       ]
     },
     {
