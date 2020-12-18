@@ -59,20 +59,22 @@ export function ReactCodeExample({
   defaultTab = 'example',
 }) {
   return (
-    <Tabs
-      defaultValue={defaultTab}
-      values={[
-        { label: 'Example', value: 'example' },
-        { label: 'Source code', value: 'src' },
-      ]}
-    >
-      <TabItem value="example">
-        <BrowserOnly>{component}</BrowserOnly>
-      </TabItem>
-      <TabItem value="src">
-        <SourceCode filePath={filePath} language={language} />
-      </TabItem>
-    </Tabs>
+    <HandleError>
+      <Tabs
+        defaultValue={defaultTab}
+        values={[
+          { label: 'Example', value: 'example' },
+          { label: 'Source code', value: 'src' },
+        ]}
+      >
+        <TabItem value="example">
+          <BrowserOnly>{component}</BrowserOnly>
+        </TabItem>
+        <TabItem value="src">
+          <SourceCode filePath={filePath} language={language} />
+        </TabItem>
+      </Tabs>
+    </HandleError>
   );
 }
 
@@ -133,4 +135,31 @@ export function formatHTMLString(html) {
   });
 
   return result.substring(1, result.length - 3);
+}
+
+class HandleError extends React.PureComponent {
+  state = { hasError: false };
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  render() {
+    return this.state.hasError ? (
+      <div
+        style={{
+          margin: '2rem 2rem',
+          padding: '1rem 2rem',
+          backgroundColor: 'red',
+          color: 'white',
+        }}
+      >
+        Whoops! There was an error loading this example, please file a github
+        issue to report it
+      </div>
+    ) : (
+      this.props.children
+    );
+  }
 }
