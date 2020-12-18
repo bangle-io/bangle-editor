@@ -4,6 +4,7 @@ import '@banglejs/react-menu/style.css';
 import React from 'react';
 import { BangleEditor, useEditorState } from '@banglejs/react';
 import { PluginKey } from '@banglejs/core';
+import { setSelectionAtEnd } from '@banglejs/core/core-commands';
 import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
 import {
   floatingMenu,
@@ -41,11 +42,17 @@ export default function Example() {
     ],
     initialValue: `<div>
       <p>Hey this example is cool, ain't it?</p>
+      <p></p>
     </div>`,
   });
 
   return (
-    <BangleEditor state={editorState}>
+    <BangleEditor
+      state={editorState}
+      onReady={({ view }) => {
+        setSelectionAtEnd(view.state.doc)(view.state, view.dispatch);
+      }}
+    >
       <FloatingMenu
         menuKey={menuKey}
         renderMenuType={({ type }) => {

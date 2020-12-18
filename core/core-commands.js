@@ -156,3 +156,17 @@ export function moveNode(type, dir = 'UP') {
     return true;
   };
 }
+
+export const setSelectionAtEnd = (node) => {
+  return (state, dispatch, view) => {
+    let pos = node.nodeSize - 1;
+    if (node.type.name === 'doc') {
+      pos = node.content.size - 1;
+    }
+    const tr = state.tr.setSelection(TextSelection.create(state.doc, pos));
+    if (dispatch) {
+      dispatch(tr);
+    }
+    return true;
+  };
+};
