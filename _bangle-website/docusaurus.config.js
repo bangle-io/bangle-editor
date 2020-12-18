@@ -1,12 +1,12 @@
 module.exports = {
   title: 'BangleJS',
   tagline: 'Toolkit for building modern wysiwyg editors.',
-  url: 'https://bangle-io.github.io/banglejs/',
-  baseUrl: process.env.CI ? '/banglejs/' : '/',
+  url: 'https://banglejs.dev',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'bangle.io', // Usually your GitHub org/user name.
+  organizationName: 'bangle-io', // Usually your GitHub org/user name.
   projectName: 'BangleJS', // Usually your repo name.
   themeConfig: {
     navbar: {
