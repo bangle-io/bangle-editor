@@ -1,8 +1,8 @@
 module.exports = {
   title: 'BangleJS',
   tagline: 'Toolkit for building modern wysiwyg editors.',
-  url: 'https://kepta.github.io/bangle-play',
-  baseUrl: process.env.CI ? '/bangle-play/' : '/',
+  url: 'https://bangle-io.github.io/banglejs/',
+  baseUrl: process.env.CI ? '/banglejs/' : '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',

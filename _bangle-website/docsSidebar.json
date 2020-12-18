@@ -41,17 +41,7 @@
         "guides/how-do-i"
       ]
     },
-    {
-      "type": "category",
-      "label": "Advanced Guides",
-      "items": [
-        "advanced-guides/prosemirror",
-        "advanced-guides/custom-rendering",
-        "advanced-guides/custom-schema",
-        "advanced-guides/writing-component",
-        "advanced-guides/advanced-editing-commands"
-      ]
-    },
+
     {
       "type": "category",
       "label": "API",
