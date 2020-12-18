@@ -119,9 +119,11 @@ function Speech({ node, children }) {
   };
 
   useEffect(() => {
-    speechSynthesis.addEventListener('voiceschanged', () => {
-      setVoices(speechSynthesis.getVoices());
-    });
+    if (speechSynthesis.addEventListener) {
+      speechSynthesis.addEventListener('voiceschanged', () => {
+        setVoices(speechSynthesis.getVoices());
+      });
+    }
   }, []);
 
   return (
