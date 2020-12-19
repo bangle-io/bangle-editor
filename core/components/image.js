@@ -193,7 +193,7 @@ function getFileData(data, accept, multiple) {
   const files = [];
 
   dragDataItems.forEach((item) => {
-    const file = item?.getAsFile();
+    const file = item && item.getAsFile();
     if (file == null) {
       return;
     }

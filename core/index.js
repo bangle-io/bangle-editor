@@ -1,6 +1,6 @@
 import * as logging from './utils/logging';
 import browser, { isChromeWithSelectionBug } from './utils/browser';
-
+export * as utils from './utils';
 export * from './components/index';
 export * from './bangle-editor';
 export * from './bangle-editor-state';

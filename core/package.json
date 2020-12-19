@@ -1,8 +1,9 @@
 {
   "name": "@banglejs/core",
   "version": "0.1.0",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "style": "style.css",
   "scripts": {
     "unit-tests": "yarn jest"
   },
@@ -22,6 +23,7 @@
     "prosemirror-view": "^1.16.3"
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^5.2.2",
     "prettier": "^2.2.1"
   }
 }

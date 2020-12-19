@@ -787,7 +787,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     const currentNode = currentResolved.node;
     const { $from } = state.selection;
     const parent = $from.node(currentResolved.depth - 1);
-    const matchedChild = parent?.[isDown ? 'lastChild' : 'firstChild'];
+    const matchedChild = parent && parent[isDown ? 'lastChild' : 'firstChild'];
 
     if (currentNode && matchedChild === currentNode) {
       return true;
@@ -812,7 +812,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     )(state.selection);
     const parent = findParentNodeOfType(listItem)(state.selection);
 
-    if (!grandParent?.node || !parent?.node) {
+    if (!(grandParent && grandParent.node) || !(parent && parent.node)) {
       return false;
     }
 
