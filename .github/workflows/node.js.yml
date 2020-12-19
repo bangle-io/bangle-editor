@@ -32,7 +32,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - run: npm install -g yarn@latest
       - run: yarn install --immutable --immutable-cache
       - run: yarn workspace bangle-play build
       - run: yarn website:build
