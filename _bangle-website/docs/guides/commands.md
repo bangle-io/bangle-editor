@@ -3,9 +3,9 @@ title: Commands
 sidebar_label: Commands and Interactivty
 ---
 
-Bangle uses the concept of [Commands](/docs/api/core#command) borrowed from [Prosemirror](https://prosemirror.net/docs/guide/#commands) to allow for making changes to your editor.
+Bangle uses the concept of [Commands](/docs/api/core#command) which is borrowed from [Prosemirror](https://prosemirror.net/docs/guide/#commands) to allow for making controlled changes to your editor.
 
-In the example below we try out some [heading](/docs/api/core#heading-component) commands.
+In the example below we try out a [heading](/docs/api/core#heading-component) command.
 
 ```js
 import { heading } from '@banglejs/core';
@@ -14,12 +14,12 @@ import { heading } from '@banglejs/core';
 const command = heading.commands.toggleHeading(3);
 
 // Execute the command
-command(state, dispatch, view);
+command(state, dispatch);
 ```
 
 ### Executing a command
 
-In the example below we show how to access the view ([Prosemirror.EditorView](https://prosemirror.net/docs/ref/#view.EditorView)) and then execute a command:
+To get access to `state, dispatch`, you can save the editor in your applications state management and access it like this:
 
 ```js
 const editor =  new BangleEditor({ ... })
@@ -30,9 +30,11 @@ const dispatch = view.dispatch
 // dry run a command
 const success = toggleBold()(view.state);
 // execute the command
-toggleBold()(view.state, view.dispatch, view);
+toggleBold()(state, dispatch);
 ```
 
 :bulb: Bangle will always export a higher order function which returns a command.
 
-:book: Please read the Prosemirror [guide](https://prosemirror.net/docs/guide/#commands) on command for more details.
+:book: [API](/docs/api/core#command) docs for commands.
+
+:book: Please read the Prosemirror [guide](https://prosemirror.net/docs/guide/#commands) on commands for more details.

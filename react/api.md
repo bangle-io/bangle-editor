@@ -16,6 +16,8 @@ This package provides you with a React API for integrating BangleJS in your Reac
 ### Usage
 
 ```jsx
+import '@banglejs/core/style.css';
+
 import { useEditorState, BangleEditor } from '@banglejs/react';
 
 export default function Editor() {
@@ -26,7 +28,7 @@ export default function Editor() {
 }
 ```
 
-> :bulb: **Do not forget to load the stylesheet located at _'@banglejs/core/style.css'._ See {{global.link.StylingGuide}} for more details on how to customize styling of your editor.**
+:bulb: **Do not forget to load the stylesheet located at '@banglejs/core/style.css'.**
 
 ## BangleEditor: {{global.link.ReactElement}}
 
@@ -60,7 +62,7 @@ A React component for rendering a Bangle instance.
 
 A hook for initialing the editor state.
 
-> :bulb: This hook will never trigger a re-render, if you want to react to a change in your editor consider using [usePluginState](#usepluginstate-reacthook). Read {{global.link.ReactUsePluginStateGuide}}.
+:bulb: This hook will never trigger a re-render, if you want to react to a change in your editor consider using [usePluginState](#usepluginstate-reacthook). Read {{global.link.ReactBasicExample}}.
 
 :book: **Checkout {{example.ReactBasicEditorExample}}**
 
@@ -70,12 +72,10 @@ A hook for initialing the editor state.
 
 A hook for hooking to a Prosemirror plugin's state. This hook works **only** with children of `<BangleEditor />`. This **will re-render** the React component every-time the plugin's state changes.
 
-:book: **Checkout {{global.link.ReactUsePluginStateGuide}} & {{global.link.PluginsGuide}}**
-
 ## useEditorViewContext: ReactHook
 
 > fn(): {{Prosemirror.EditorView}}
 
 A hook for providing the {{Prosemirror.EditorView}} to a React component. This context is **only** available to children of `<BangleEditor />`. It will **never** trigger a re-render as the hook maintains the same {{Prosemirror.EditorView}} instance throughout the editor's lifecycle.
 
-:book: **Checkout {{global.link.ReactUsePluginStateGuide}}**
+:book: **Checkout [Floating menu dropdown](/docs/examples/react-floating-menu#menu-dropdown) example.**

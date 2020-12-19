@@ -27,7 +27,7 @@ export default function Example() {
   const editorState = useEditorState({
     specs: coreSpec(),
     plugins: () => [
-      ...corePlugins(),
+      corePlugins(),
       floatingMenu.plugins({
         key: menuKey,
       }),

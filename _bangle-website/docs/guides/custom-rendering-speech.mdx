@@ -7,11 +7,17 @@ import Component from './custom-rendering-speech';
 import { ReactCodeExample } from '../../src/example-helpers';
 
 Up untill this point you might be wondering what is the best way if you want
-to change the way a particular node is rendered in the browser. You should definitely
-try to see if you can achieve the results you want by just changing some CSS in your
-stylesheet, but if that is not enough NodeView is just the right tool.
+to change the way a particular node is rendered in the browser. Bangle provides you with few options
 
-In this guide we will create a component that speaks the words written in it with the help of the node view API.
+- The simplest option is to look at the `style.css` of a component and override it with your own.
+- If you only care about the HTML semantics you can modify the
+  [toDOM](https://prosemirror.net/docs/ref/#model.NodeSpec.toDOM) and [parseDOM](https://prosemirror.net/docs/ref/#model.NodeSpec.parseDOM)
+  in your [spec.schema](/docs/api/core#spec). Checkout this cute Prosemirror [example](https://prosemirror.net/examples/dino/) for details.
+- If you want all the bells and whistles read on :sunglasses:!
+
+In this guide we will create a component that speaks the words written inside of it with the help of the NodeView API.
+
+Below is the finished product:
 
 <ReactCodeExample
   filePath={filePath}
@@ -42,7 +48,7 @@ We create a spec named `speech` having the following fields:
 }
 ```
 
-The schema defines that this component can have 0 or more content of group `inline` (see [Prosemirror.Schema](https://prosemirror.net/docs/guide/#schema)).
+The schema defines that this component can have 0 or more content of group `inline`.
 
 Next we define the `toDOM` and `parseDOM` fields of the schema. They control how editor serializes and parses
 your node. For node views, these fields dictate the exporting of HTML, copy pasting and dragging.
@@ -58,6 +64,8 @@ const { toDOM, parseDOM } = domSerializationHelpers(name, {
 
 Since we donot really care about the semantics of the output, we use the helper function `domSerializationHelpers`
 which generates a good enough pair of `toDOM` and `parseDOM`.
+
+:book: Reed the [Prosemirror.Schema](https://prosemirror.net/docs/guide/#schema) guide if you want to dig deeper on what each of the fields in the schema mean.
 
 ### Plugins
 
@@ -163,4 +171,39 @@ all the custom UI in a single `div` or `span`.
    {children}
   </div>
 </div>
+```
+
+### Wiring it all up
+
+In your React component we expect a render prop which will be called whenever
+there is an update for any of your node view and based on the type of your node
+you can decide what component to render.
+
+```jsx
+<BangleEditor
+  state={editorState}
+  renderNodeViews={({ node, updateAttrs, children }) => {
+    if (node.type.name === 'speech') {
+      return (
+        <Speech node={node} updateAttrs={updateAttrs}>
+          {children}
+        </Speech>
+      );
+    }
+  }}
+/>
+```
+
+And in the list of your plugins we add a plugin which tells Bangle
+what `dom.Node` to render, which internally will be used by `@banglejs/react`
+to mount your Speech component.
+
+```js
+NodeView.createPlugin({
+  name: 'speech',
+  // The speech component will be mounted on this
+  containerDOM: ['div', { class: 'speech-container' }],
+  // The dom.Node which Bangle will control to allow for typing of things to speak.
+  contentDOM: ['span', { class: 'speech-text' }],
+});
 ```

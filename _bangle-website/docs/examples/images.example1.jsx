@@ -9,7 +9,7 @@ export default function Editor(domNode) {
     initialValue: `<div><p>Hey there!</p>
         <p>Let us see an image of cat</p>
         <img src="https://media.giphy.com/media/7xkxbhryQO7hm/giphy.gif" />
-        <p>I know thats not a cat, its Bender!</p>
+        <p>Thats not a cat, its Bender!</p>
         </div>`,
   });
 

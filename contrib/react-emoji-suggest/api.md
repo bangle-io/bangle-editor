@@ -15,6 +15,14 @@ This package provides you suggestions for picking your favourite emojis :sunglas
 {{npmInstallation "@banglejs/react-emoji-suggest"}}
 ```
 
+## Styling
+
+Please use the stylesheet `style.css` like:
+
+```js
+import '@banglejs/react-emoji-suggest/style.css';
+```
+
 ## emojiSuggest: {{core.link.Component}}
 
 Shows a suggestion tooltip next to the trigger. Use `ArrowUp` and `ArrowDown` to change selection. Use `Enter` or `MouseClick` to insert a selected emoji. Pressing `Escape` will dismiss the suggestion tooltip.

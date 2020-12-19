@@ -13,6 +13,14 @@ This package provides you with tools to help build flexible yet powerful menus u
 {{npmInstallation "@banglejs/react-menu"}}
 ```
 
+## Styling
+
+Please use the stylesheet `style.css` like:
+
+```js
+import '@banglejs/react-menu/style.css';
+```
+
 ## floatingMenu: {{core.link.Component}}
 
 A component for creating menus that float somewhere in the editor, most likely around a selection. By default it contains three types of menus:

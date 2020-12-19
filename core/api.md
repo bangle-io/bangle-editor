@@ -32,7 +32,7 @@ The building block of BangleJS is a component. At it's heart, we have a vanilla 
 An object with the following fields:
 
 - **type**: `'node'` | `'mark'`\
-  This is a Prosemirror concept which divides the spec in two groups `node` type or `mark` type. Please read {{global.link.UnderstandingBangleGuide}} guide.
+  This is a Prosemirror concept which divides the spec in two groups `node` type or `mark` type. Please checkout {{global.link.YourFirstEditorGuide}} guide.
 
 - **?topNode**: boolean\
   Whether the node will be the top node for the document. By default the `doc` node is the top node for Bangle. There can only be one top `node` and is only applicable for `node` types.
@@ -43,7 +43,6 @@ An object with the following fields:
 - **schema**: {{Prosemirror.NodeSpec}} | {{Prosemirror.MarkSpec}}
 
 - **?markdown**: {toMarkdown: fn(), parseMarkdown: object}\
-  Read the {{global.link.MarkdownGuide}} for more details.
 
 - **?options**: object\
   Use this to save data in this spec. You can use this field to save some data options to make it available to anyone having access to specRegistry.
@@ -54,7 +53,7 @@ An object with the following fields:
 
 > {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | (fn({ schema, specRegistry }) -> [Plugins](#plugins)) | undefined
 
-This is designed in a way to provide flexibility and extensibility when grouping multiple plugins under a {{core.link.Component}}. Please checkout the {{global.link.EditorOperationsGuide}} for a more hands on guide.
+This is designed in a way to provide flexibility and extensibility when grouping multiple plugins under a {{core.link.Component}}. Please checkout this [example](/docs/examples/exporting-data#persisting-to-local-storage) on how to create a small plugin or read the source code of some of the core components.
 
 ### Plugin
 
@@ -92,7 +91,7 @@ If a `dispatch` callback is **not** passed, the command will run in dry run mode
 
 :bulb: _Bangle's API will **always** export a higher order function which then returns a Command, which means it will not export a Command directly. It is designed this way to allow for configurability and to keep the command params predictable --_ `(config) => (state, dispatch, view) => boolean`.
 
-Please read {{global.link.EditorOperationsGuide}} guide for more details.
+Please read {{global.link.EditorOperationsGuide}} for more details.
 
 ## QueryCommand
 
@@ -499,7 +498,7 @@ const plugins = [
 
 #### spec(): {{core.link.NodeSpec}}
 
-Returns a node spec with [topNode](#spec) set to `true`, read more {{global.link.UnderstandingBangleGuide}}.
+Returns a node spec with [topNode](#spec) set to `true`, read more {{global.link.YourFirstEditorGuide}}.
 
 ### heading: {{core.link.Component}}
 
@@ -895,7 +894,7 @@ Enables paragraph (`<p/>` in html) nodes in your editor. The spec for this compo
 
 #### spec(): {{core.link.NodeSpec}}
 
-Returns a spec, read more {{global.link.UnderstandingBangleGuide}}.
+Returns a spec, read more {{global.link.YourFirstEditorGuide}}.
 
 #### plugins({ ... }): {{core.link.Plugins}}
 
@@ -1002,7 +1001,7 @@ The text node which the editor uses to wrap the text. The spec for this componen
 
 #### spec(): {{core.link.NodeSpec}}
 
-Creates a todoItem node spec with `done` attribute, read more {{global.link.UnderstandingBangleGuide}}.
+Creates a todoItem node spec with `done` attribute, read more {{global.link.YourFirstEditorGuide}}.
 
 ### todoItem: {{core.link.Component}}
 

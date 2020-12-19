@@ -22,25 +22,6 @@ const rem =
     ? 12
     : parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-/**
- * Dispatching show: true to the plugin will also update the tooltip position
- * Note: the state is interesting as it maintains the reference to the same state object if state is and was false
- * however any {show:true} dispatches will generate a new state object for easier reference checks. In a way
- * the state ref can be used to see if the position of tooltip has updated.
- *
- * To show a tooltip appendChild a div element to tooltipDOM with [data-popper-arrow] attribute
- *
- * @param {Object} options
- * @param {Element} options.tooltipDOM
- * @param {(view: any) => Element} options.getScrollContainer
- * @param {(view: any, tooltipDOM: Element, scrollContainerDOM: Element) => {getBoundingClientRect: Function}} options.getReferenceElement
- * @param {string} options.placement
- * @param {(state: any, dispatch: any, view) => [number, number]} options.tooltipOffset
- * @param {(state: any, dispatch: any, view) => void} options.onUpdateTooltip - Called whenever tooltip is updated, will also be called when tooltip mounts for the first time
- * @param {(state: any, dispatch: any, view)  => void} options.onHideTooltip
- * @param {(view: any) => Array} options.customPopperModifiers
- * @param {Array} options.fallbackPlacement
- */
 function tooltipPlacement({
   stateKey,
   renderOpts: {

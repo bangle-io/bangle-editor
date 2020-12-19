@@ -3,9 +3,9 @@ import '@banglejs/core/style.css';
 import {
   BangleEditor,
   BangleEditorState,
+  SpecRegistry,
   heading,
   bold,
-  SpecRegistry,
 } from '@banglejs/core';
 
 export default function createEditor(
