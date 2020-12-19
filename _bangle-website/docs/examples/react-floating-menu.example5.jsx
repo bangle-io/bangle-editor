@@ -12,75 +12,12 @@ import {
   MenuGroup,
   BoldButton,
   HeadingButton,
-  BulletListButton,
   ItalicButton,
-  FloatingLinkButton,
-  LinkSubMenu,
   MenuButton,
 } from '@banglejs/react-menu';
 import { queryIsLinkActive } from '@banglejs/core/components/link';
 
 const menuKey = new PluginKey('menuKey');
-
-export default function Example() {
-  const editorState = useEditorState({
-    specs: coreSpec(),
-    plugins: () => [
-      ...corePlugins(),
-      floatingMenu.plugins({
-        key: menuKey,
-        calculateType: (state, prevType) => {
-          if (queryIsLinkActive()(state)) {
-            return 'linkSubMenu';
-          }
-          if (state.selection.empty) {
-            return null;
-          }
-          return 'defaultMenu';
-        },
-      }),
-    ],
-    initialValue: `<div>
-      <p>Hello I am a paragraph, please upgrade me to a heading.</p>
-      <h3>I am a heading try selecting me</h3>
-    </div>`,
-  });
-
-  return (
-    <BangleEditor state={editorState}>
-      <FloatingMenu
-        menuKey={menuKey}
-        renderMenuType={({ type }) => {
-          if (type === 'defaultMenu') {
-            return (
-              <Menu>
-                <MenuGroup>
-                  <BoldButton />
-                  <ItalicButton />
-                  <FloatingLinkButton menuKey={menuKey} />
-                  <MyCustomButton />
-                </MenuGroup>
-                <MenuGroup>
-                  <HeadingButton level={2} />
-                  <HeadingButton level={3} />
-                  <BulletListButton />
-                </MenuGroup>
-              </Menu>
-            );
-          }
-          if (type === 'linkSubMenu') {
-            return (
-              <Menu>
-                <LinkSubMenu />
-              </Menu>
-            );
-          }
-          return null;
-        }}
-      />
-    </BangleEditor>
-  );
-}
 
 function MyCustomButton() {
   return (
@@ -105,5 +42,56 @@ function MyCustomButton() {
         </text>
       </svg>
     </MenuButton>
+  );
+}
+
+export default function Example() {
+  const editorState = useEditorState({
+    specs: coreSpec(),
+    plugins: () => [
+      corePlugins(),
+      floatingMenu.plugins({
+        key: menuKey,
+        calculateType: (state, prevType) => {
+          if (queryIsLinkActive()(state)) {
+            return 'linkSubMenu';
+          }
+          if (state.selection.empty) {
+            return null;
+          }
+          return 'defaultMenu';
+        },
+      }),
+    ],
+    initialValue: `<div>
+      <p>Hello I am a paragraph.</p>
+    </div>`,
+  });
+
+  return (
+    <BangleEditor state={editorState}>
+      <FloatingMenu
+        menuKey={menuKey}
+        renderMenuType={({ type }) => {
+          if (type === 'defaultMenu') {
+            return (
+              <Menu>
+                <MenuGroup>
+                  <BoldButton />
+                  <ItalicButton />
+                  <MyCustomButton />
+                </MenuGroup>
+                <MenuGroup>
+                  <HeadingButton level={2} />
+                  <HeadingButton level={3} />
+                </MenuGroup>
+              </Menu>
+            );
+          }
+
+          return null;
+        }}
+      />
+    </BangleEditor>
   );
 }

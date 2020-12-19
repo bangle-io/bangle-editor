@@ -34,8 +34,8 @@ const speech = {
       }),
       NodeView.createPlugin({
         name: 'speech',
-        containerDOM: ['div'],
-        contentDOM: ['span'],
+        containerDOM: ['div', { class: 'speech-container' }],
+        contentDOM: ['span', { class: 'speech-text' }],
       }),
     ];
   },
@@ -53,7 +53,7 @@ export default function Example() {
           content: [
             {
               type: 'text',
-              text: 'Let us play some sound',
+              text: 'Let us play some sound 🎶',
             },
           ],
         },

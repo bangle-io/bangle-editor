@@ -1,5 +1,5 @@
 const fs = require('fs');
-// We are injecting handlebars instead of requiring it
+// We are injecting handlebarsinstead of requiring it
 // since handlebars is not a defined dependency at the root
 // so yarn throws an error.
 module.exports = (Handlebars, resolvePath) => {
@@ -83,20 +83,17 @@ module.exports = (Handlebars, resolvePath) => {
       },
       global: {
         link: {
-          UnderstandingBangleGuide: `[UnderstandingBangleGuide]`,
-          MarkdownSupport: `[MarkdownSupport]`,
-          MarkdownGuide: `[MarkdownGuide]`,
-          EditorOperationsGuide: `[EditorOperationsGuide]`,
-          KeybindingsGuide: `[KeybindingsGuide]`,
-          MenuGuide: `[MenuGuide]`,
+          YourFirstEditorGuide: `[Your first editor guide](/docs/guides/first-editor)`,
+          MarkdownSupport: ``,
+          MarkdownExample: `[Markdown example](/docs/examples/markdown-editor)`,
+          EditorOperationsGuide: `[commands guide](/docs/guides/commands)`,
+          KeybindingsGuide: `[Keybindings Guide](/docs/guides/keybindings)`,
           ReactElement: `[React.Element](https://reactjs.org/docs/react-api.html#reactcomponent)`,
-          ReactCustomRenderingGuide: `[ReactCustomRenderingGuide]`,
+          ReactCustomRenderingGuide: `[React custom rendering guide](/docs/guides/custom-rendering-speech)`,
           // TODO to explain how to listen to changes in an editor. Maybe I need a guide without
           // react and a separate guide on
-          ReactUsePluginStateGuide: `[ReactUsePluginStateGuide](https://google.com)`,
-          PluginsGuide: `[PluginsGuide](https://google.com)`,
-          ReactExample: `[ReactExample]`,
-          StylingGuide: `[StylingGuide]`,
+          ReactBasicExample: `[React Basic example](/docs/examples/react-basic-editor)`,
+          ReactFloatingMenuExample: `[React Floating Menu example](/docs/examples/react-floating-menu)`,
         },
 
         useRightSidebar:

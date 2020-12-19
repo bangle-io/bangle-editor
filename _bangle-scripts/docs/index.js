@@ -44,13 +44,13 @@ async function main() {
   // be outside of cwd.
   await del(apiDocsPath, { force: true });
   await fs.mkdir(apiDocsPath);
-  const processedIds = await processFiles(apiFiles);
+  const processedFiles = await processFiles(apiFiles);
   console.log('Done processing');
-  await updateDocsSidebar(processedIds);
+  await updateDocsSidebar(processedFiles);
   console.log('done :thumbsup!');
 }
 
-async function updateDocsSidebar(processedIds) {
+async function updateDocsSidebar(processedFiles) {
   const docsSidebar = JSON.parse(await fs.readFile(docsSidebarPath, 'utf-8'));
   let apiItem = docsSidebar.docs.find((r) => r.label === 'API');
 
@@ -58,7 +58,20 @@ async function updateDocsSidebar(processedIds) {
     throw new Error('Missing API label in docsSidebar');
   }
 
-  apiItem.items = processedIds.map((id) => `api/${id}`);
+  apiItem.items = processedFiles
+    .sort((a, b) => {
+      const aWip = a.sidebar_label.includes('wip');
+      const bWip = b.sidebar_label.includes('wip');
+      if (aWip && !bWip) {
+        return 1;
+      }
+      if (bWip && !aWip) {
+        return -1;
+      }
+
+      return a.sidebar_label.localeCompare(b.sidebar_label);
+    })
+    .map((p) => `api/${p.id}`);
 
   await fs.writeFile(
     docsSidebarPath,
@@ -68,7 +81,7 @@ async function updateDocsSidebar(processedIds) {
 }
 
 async function processFiles(apiFiles) {
-  const processedIds = [];
+  const processed = [];
   for (const [filepath, text] of apiFiles) {
     console.log('Processing ', filepath);
     let template = await templatify(text, docsConfig.shorthands);
@@ -92,11 +105,11 @@ async function processFiles(apiFiles) {
       );
     }
 
-    if (processedIds.includes(data.id)) {
+    if (processed.find((p) => p.id === data.id)) {
       throw new Error(`${data.id} is already in use`);
     }
 
-    processedIds.push(data.id);
+    processed.push(data);
 
     // Change the new line syntax from trailing `\`  to `  ` two trailing spaces
     // due to differences in the engines (remark and markdownit ?) docusaurus does
@@ -113,7 +126,7 @@ async function processFiles(apiFiles) {
     );
   }
 
-  return processedIds;
+  return processed;
 }
 
 async function getAPIDocs() {

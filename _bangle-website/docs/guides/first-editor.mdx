@@ -7,7 +7,7 @@ import filePath1 from '!!file-loader!./first-editor.example1.jsx';
 import createEditor1 from './first-editor.example1';
 import { VanillaCodeExample } from '../../src/example-helpers';
 
-To get started with your first Bangle Editor lets look at a basic Bangle setup.
+To get started with your first Bangle Editor let us buld an editor which supports `bold` and `headings`.
 
 <VanillaCodeExample
   filePath={filePath1}
@@ -25,11 +25,11 @@ There is a lot going on in the above example, so lets distill it down into small
 
 ## Bangle component
 
-A [component](/docs/api/core#component) is an object which forms building block of a Bangle editor. Let us look at high level overview of the `bold` component:
+A [component](/docs/api/core#component) is an object which hold smaller related things to form the building block of your editor. Let us look at high level overview of the `bold` component:
 
 ```js
 export const bold = {
-    spec() {
+    spec(opts) {
         type: 'mark',
         name: 'bold',
         schema: {
@@ -39,7 +39,7 @@ export const bold = {
             ...
         }
     },
-    plugins() {
+    plugins(opts) {
         return [ ... ]
     },
     commands: {
@@ -49,13 +49,10 @@ export const bold = {
 }
 ```
 
-As you can see the bold component is a collection of functionalities needed by your Editor to
-allow your users to **bold** things.
-
-### SpecRegistry or specs
+### SpecRegistry
 
 Short for specification, is an object that declaratively defines how your editor behaves, looks, its relationship with other entities and the parsing/serialization aspect of it.
-You can either create a SpecRegistry instance yourself or pass an array of specs and let Bangle create it for you internally.
+You can either create a [SpecRegistry](/docs/api/core#specregistry) instance yourself or pass an array of specs and let Bangle create it for you internally.
 
 ```js
 const specs = [bold.spec()];
@@ -67,20 +64,20 @@ const state2 = new BangleEditorState({
     specs: specs
     ...
 });
-// state1 and state2 are essentially the same thing
+// state1 and state2 are essentially different
+// ways to do the same thing
 ```
 
-:bulb: Using the `specs: [...]` should fit majority of use cases. The `new SpecRegistry` syntax comes in handy when dealing with multiple syncronized editors which need to rely on a single instance of specRegistry
+:bulb: The `specs: [...]` style should fit majority of use cases. The `new SpecRegistry` syntax comes in handy when dealing with multiple syncronized editors which need to rely on a single instance of specRegistry
 or if your application needs access to {{core.links.Prosemirror.Schema}}.
 
-You might have noticed that we are using a array to order the specs. For most use cases the order doesn't matter,
+You might have noticed that we are using an array to order the specs. For most use cases the order doesn't matter,
 however if two or more specs are competing, for example, a link spec vs bold spec, putting link spec before bold ensures
 that your output will look like `<bold>will wrap <a href="hola">a link tag</a>`.
 
 :book: Handy links:
 
 - [SpecRegistry API](/docs/api/core#specregistry)
-- Creating a custom spec with {{Prosemirror.Schema}}.
 
 ### Plugins
 
@@ -93,8 +90,8 @@ Plugins allow you to add interactivity to your editor. They allow for things lik
 :book: Creating a custom component is a slightly complex topic, as you can pretty much do anything with plugins.
 **Only** dig deeper into plugin API if you want to build your own plugins, here are some handy links:
 
-- {{Prosemirror.PluginSpec}}: Simply put, plugins are just an array of {{Prosemirror.PluginSpec}}.
 - [Plugins API](/docs/api/core#plugins)
+- Simply put, plugins are just an array of [Prosemirror.Plugin](https://prosemirror.net/docs/ref/#state.PluginSpec).
 
 ### initialValue
 

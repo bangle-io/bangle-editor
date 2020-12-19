@@ -3,7 +3,11 @@
     {
       "type": "category",
       "label": "Introduction",
-      "items": ["hello", "getting-started", "contributing"]
+      "items": [
+        "hello",
+        "getting-started",
+        "contributing"
+      ]
     },
     {
       "type": "category",
@@ -35,22 +39,24 @@
       "items": [
         "guides/first-editor",
         "guides/custom-rendering-speech",
-        "guides/understanding-bangle",
         "guides/commands",
         "guides/keybindings",
         "guides/how-do-i"
       ]
     },
-
     {
       "type": "category",
       "label": "API",
       "items": [
         "api/core",
         "api/react",
+        "api/react_emoji_suggest",
         "api/react_menu",
+        "api/collab",
+        "api/emoji",
+        "api/markdown",
         "api/markdown_front_matter",
-        "api/react_emoji_suggest"
+        "api/tooltip"
       ]
     }
   ]
