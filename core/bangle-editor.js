@@ -5,8 +5,8 @@ import { isTestEnv } from './utils/environment';
 import { toHTMLString } from './utils/pm-utils';
 
 export class BangleEditor {
-  destroyed = false;
   constructor(element, { focusOnInit = true, state, pmViewOpts = {} }) {
+    this.destroyed = false;
     if (!(state instanceof BangleEditorState)) {
       throw new Error(
         'state is required and must be an instance of BangleEditorState',
