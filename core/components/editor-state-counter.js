@@ -1,4 +1,4 @@
-import { Plugin, PluginKey, PluginGroup } from '@banglejs/core/plugin';
+import { Plugin, PluginKey, PluginGroup } from '../plugin';
 
 const name = 'editorStateCounter';
 export const plugins = pluginsFactory;

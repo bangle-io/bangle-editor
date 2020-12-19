@@ -1,8 +1,8 @@
-import { markInputRule } from '@banglejs/core/utils/mark-input-rule';
-import { markPasteRule } from '@banglejs/core/utils/mark-paste-rule';
 import { toggleMark } from 'prosemirror-commands';
-import { isMarkActiveInSelection } from '@banglejs/core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
+import { markInputRule } from '../utils/mark-input-rule';
+import { markPasteRule } from '../utils/mark-paste-rule';
+import { isMarkActiveInSelection } from '../utils/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

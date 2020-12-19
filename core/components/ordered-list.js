@@ -2,7 +2,7 @@ import { toggleList } from './list-item/commands';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { keymap } from 'prosemirror-keymap';
-import { parentHasDirectParentOfType } from '@banglejs/core/core-commands';
+import { parentHasDirectParentOfType } from '../core-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

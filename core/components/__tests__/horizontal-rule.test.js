@@ -3,9 +3,9 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
+import { psx, renderTestEditor } from '../../test-helpers/index';
 
-import { typeText } from '@banglejs/core/test-helpers/index';
+import { typeText } from '../../test-helpers/index';
 
 describe('Markdown shorthand works', () => {
   const testEditor = renderTestEditor();

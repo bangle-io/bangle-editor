@@ -3,11 +3,7 @@
  */
 
 /** @jsx psx */
-import {
-  psx,
-  renderTestEditor,
-  sendKeyToPm,
-} from '@banglejs/core/test-helpers/index';
+import { psx, renderTestEditor, sendKeyToPm } from '../../test-helpers/index';
 
 import { hardBreak } from '../index';
 const keybindings = hardBreak.defaultKeys;

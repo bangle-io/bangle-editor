@@ -18,9 +18,9 @@ import {
   moveNode,
 } from '../core-commands';
 import { filter, insertEmpty } from '../utils/pm-utils';
-import { NodeView } from '@banglejs/core/node-view';
+import { NodeView } from '../node-view';
 import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
-import { createElement } from '@banglejs/core/utils/js-utils';
+import { createElement } from '../utils/js-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

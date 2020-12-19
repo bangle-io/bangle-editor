@@ -1,4 +1,4 @@
-import browser from '@banglejs/core/utils/browser';
+import browser from '../utils/browser';
 // So the basic editing operations are not handled
 // by PM actively and instead it waits for the browser
 // to do its thing and then sync it with its view.

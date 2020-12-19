@@ -2,7 +2,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { toggleList } from './list-item/commands';
 import { keymap } from 'prosemirror-keymap';
-import { parentHasDirectParentOfType } from '@banglejs/core/core-commands';
+import { parentHasDirectParentOfType } from '../core-commands';
 
 const name = 'todoList';
 const getTypeFromSchema = (schema) => schema.nodes[name];

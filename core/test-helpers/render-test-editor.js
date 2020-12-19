@@ -4,8 +4,8 @@
 
 import { TextSelection } from 'prosemirror-state';
 import { getDocLabels } from './schema-builders';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditor } from '@banglejs/core/bangle-editor';
+import { SpecRegistry } from '../spec-registry';
+import { BangleEditor } from '../bangle-editor';
 import { defaultPlugins, defaultSpecs } from './default-components';
 import { BangleEditorState } from '../index';
 

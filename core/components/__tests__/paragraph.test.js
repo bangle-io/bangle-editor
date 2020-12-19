@@ -3,14 +3,14 @@
  */
 
 /** @jsx psx */
-import { doc, heading, paragraph, text } from '@banglejs/core/components/index';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { doc, heading, paragraph, text } from '../../components/index';
+import { SpecRegistry } from '../../spec-registry';
 import {
   renderTestEditor,
   psx,
   typeText,
   sendKeyToPm,
-} from '@banglejs/core/test-helpers/index';
+} from '../../test-helpers/index';
 import {
   convertToParagraph,
   jumpToEndOfParagraph,

@@ -20,7 +20,7 @@ import {
   todoItem,
   todoList,
   image,
-} from '@banglejs/core/components/index';
+} from '../components/index';
 
 export function defaultSpecs(opts = {}) {
   return [...coreMarkSpec(opts), ...coreNodeSpec(opts)];

@@ -1,4 +1,4 @@
-import browser from '@banglejs/core/utils/browser';
+import browser from '../utils/browser';
 import { createEvent } from './create-event';
 
 /**
