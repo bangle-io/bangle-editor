@@ -50,7 +50,7 @@ export class Manager {
   _stopInstance(docName) {
     const instance = this.instances[docName];
     log(
-      'stopping instances',
+      'stopping instancess',
       instance.docName,
       instance.doc.firstChild && instance.doc.firstChild.textContent,
     );
