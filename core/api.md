@@ -549,7 +549,7 @@ Named parameters:
 
 #### commands: {{core.link.CommandObject}}
 
-- **toggleItalic**(level: `number=3`): {{core.link.Command}}\
+- **toggleHeading**(level: `number=3`): {{core.link.Command}}\
   Toggles text into heading of a given `level` and vice versa.
 
 - **queryIsHeadingActive**(level:`number=3`): {{typedQueryCommand "boolean"}}\

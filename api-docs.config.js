@@ -1,5 +1,5 @@
 const fs = require('fs');
-// We are injecting handlebars instead of requiring it
+// We are injecting handlebarsinstead of requiring it
 // since handlebars is not a defined dependency at the root
 // so yarn throws an error.
 module.exports = (Handlebars, resolvePath) => {
