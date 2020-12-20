@@ -8,7 +8,7 @@ import {
   sendKeyToPm,
   typeChar,
   typeText,
-} from '@banglejs/core/test-helpers/index';
+} from '../../test-helpers/index';
 import { heading } from '../index';
 
 const testEditor = renderTestEditor();

@@ -13,7 +13,7 @@ import { WorkspacesInfo } from '../workspace/workspaces-info';
 import { IndexDbWorkspace } from '../workspace/workspace';
 
 const DEBUG = true;
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'EditorManager') : () => {};
 
 async function findMatchingWorkspace(docName, schema) {

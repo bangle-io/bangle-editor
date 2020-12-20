@@ -1,4 +1,4 @@
-import { safeInsert } from '@banglejs/core/utils/pm-utils';
+import { safeInsert } from '../utils/pm-utils';
 import { InputRule } from 'prosemirror-inputrules';
 
 export const spec = specFactory;

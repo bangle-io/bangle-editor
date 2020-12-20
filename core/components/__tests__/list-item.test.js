@@ -9,7 +9,7 @@ import {
   sendKeyToPm,
   typeText,
   selectNodeAt,
-} from '@banglejs/core/test-helpers/index';
+} from '../../test-helpers/index';
 import {
   bulletList,
   listItem,

@@ -7,7 +7,7 @@ import {
 } from 'prosemirror-utils';
 import { Fragment, Slice } from 'prosemirror-model';
 import { GapCursorSelection } from '../gap-cursor';
-import { Plugin } from '@banglejs/core/index';
+import { Plugin } from '../plugin';
 import { DOMSerializer } from 'prosemirror-model';
 
 export function safeInsert(...args) {

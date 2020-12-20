@@ -1,8 +1,9 @@
 {
   "name": "@banglejs/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "module": "index.js",
+  "style": "style.css",
   "scripts": {
     "unit-tests": "yarn jest"
   },

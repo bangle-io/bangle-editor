@@ -22,7 +22,7 @@ export function markdownLoader(
 ) {
   const tokens = Object.fromEntries(
     specRegistry.spec
-      .filter((e) => e.markdown?.parseMarkdown)
+      .filter((e) => e.markdown && e.markdown.parseMarkdown)
       .flatMap((e) => {
         return Object.entries(e.markdown.parseMarkdown);
       }),
@@ -30,7 +30,10 @@ export function markdownLoader(
 
   const nodeSerializer = Object.fromEntries(
     specRegistry.spec
-      .filter((spec) => spec.type === 'node' && spec.markdown?.toMarkdown)
+      .filter(
+        (spec) =>
+          spec.type === 'node' && spec.markdown && spec.markdown.toMarkdown,
+      )
       .map((spec) => {
         return [spec.name, spec.markdown.toMarkdown];
       }),
@@ -38,7 +41,10 @@ export function markdownLoader(
 
   const markSerializer = Object.fromEntries(
     specRegistry.spec
-      .filter((spec) => spec.type === 'mark' && spec.markdown?.toMarkdown)
+      .filter(
+        (spec) =>
+          spec.type === 'mark' && spec.markdown && spec.markdown.toMarkdown,
+      )
       .map((spec) => {
         return [spec.name, spec.markdown.toMarkdown];
       }),

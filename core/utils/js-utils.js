@@ -96,7 +96,8 @@ export function matchAllPlus(regexp, str) {
     prevElementEnd = curEnd;
   }
 
-  const lastItemEnd = result[result.length - 1]?.end;
+  const lastItemEnd =
+    result[result.length - 1] && result[result.length - 1].end;
 
   if (lastItemEnd && lastItemEnd !== str.length) {
     result.push({

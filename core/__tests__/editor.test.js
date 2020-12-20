@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
+import { SpecRegistry } from '../spec-registry';
+import { psx, renderTestEditor } from '../test-helpers/index';
 import { BangleEditorState, BangleEditor, blockquote, heading } from '../index';
 import { coreSpec } from '../utils/core-components';
 

@@ -7,7 +7,7 @@ import {
   renderTestEditor,
   typeText,
   sendKeyToPm,
-} from '@banglejs/core/test-helpers/index';
+} from '../../test-helpers/index';
 import { todoItem } from '../index';
 
 const testEditor = renderTestEditor();

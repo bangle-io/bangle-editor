@@ -1,4 +1,4 @@
-import { bangleWarn } from '@banglejs/core/utils/js-utils';
+import { bangleWarn } from './js-utils';
 import { PluginKey } from '../plugin';
 
 export function pluginKeyStore() {

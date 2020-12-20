@@ -11,7 +11,7 @@ import { Plugin, PluginKey, isChromeWithSelectionBug } from '@banglejs/core';
 import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';
 
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};
 
 export const spec = specFactory;
@@ -335,7 +335,7 @@ export function queryTriggerText(key) {
 
 export function queryIsSuggestTooltipActive(key) {
   return (state) => {
-    return key.getState(state)?.show;
+    return key.getState(state) && key.getState(state).show;
   };
 }
 

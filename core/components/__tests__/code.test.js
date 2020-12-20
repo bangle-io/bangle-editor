@@ -8,9 +8,9 @@ import {
   renderTestEditor,
   sendKeyToPm,
   typeChar,
-} from '@banglejs/core/test-helpers/index';
+} from '../../test-helpers/index';
 
-import { setSelectionNear } from '@banglejs/core/test-helpers/selection-helpers';
+import { setSelectionNear } from '../../test-helpers/selection-helpers';
 import { code } from '../index';
 
 const keybindings = code.defaultKeys;

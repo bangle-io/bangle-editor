@@ -1,5 +1,5 @@
-import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
-import { paragraph, doc, text } from '@banglejs/core/index';
+import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
+import { paragraph, doc, text } from '../index';
 import { SpecRegistry } from '../spec-registry';
 
 describe('domSerializationHelpers parseDOM', () => {

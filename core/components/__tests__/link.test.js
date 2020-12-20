@@ -21,7 +21,7 @@ import {
   text,
   paragraph,
 } from '../index';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { SpecRegistry } from '../../spec-registry';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),
