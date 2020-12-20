@@ -744,7 +744,7 @@ describe('Nesting heterogenous lists', () => {
     );
   });
 
-  // TODO I think this blocked by the bug described by a test in list item https://github.com/kepta/bangle-play/blob/ee3305892fbe46e1217b28045b14955e94f24430/bangle-play/utilsnodes/__tests__/list-item.test.js#L553
+  // TODO I think this blocked by the bug described by a test in list item https://github.com/bangle-io/banglejs/blob/ee3305892fbe46e1217b28045b14955e94f24430/bangle-play/utilsnodes/__tests__/list-item.test.js#L553
   it.skip('pressing enter on empty nested li should outdent and take the type of the parent when their are other sibblings', async () => {
     const { view } = await testEditor(
       <doc>

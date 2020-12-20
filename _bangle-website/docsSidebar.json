@@ -3,11 +3,7 @@
     {
       "type": "category",
       "label": "Introduction",
-      "items": [
-        "hello",
-        "getting-started",
-        "contributing"
-      ]
+      "items": ["hello", "getting-started"]
     },
     {
       "type": "category",

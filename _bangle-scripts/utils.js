@@ -45,3 +45,31 @@ async function mapPackages(cb, { filter } = {}) {
     }),
   );
 }
+
+mapPackages(([filePath, packageObj]) => {
+  delete packageObj.homepage;
+  delete packageObj.license;
+  delete packageObj.repository;
+  delete packageObj.bugs;
+  return {
+    name: packageObj.name,
+    version: packageObj.version,
+    homepage: 'https://banglejs.dev',
+    authors: [
+      {
+        name: 'Kushan Joshi',
+        email: '0o3ko0@gmail.com',
+        web: 'http://github.com/kepta',
+      },
+    ],
+    license: 'MIT',
+    repository: {
+      type: 'git',
+      url: 'git+https://github.com/bangle-io/banglejs.git',
+    },
+    bugs: {
+      url: 'https://github.com/bangle-io/banglejs/issues',
+    },
+    ...packageObj,
+  };
+});
