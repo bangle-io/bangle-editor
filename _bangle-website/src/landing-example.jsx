@@ -8,7 +8,6 @@ import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
 import { floatingMenu, FloatingMenu } from '@banglejs/react-menu';
 
 const menuKey = new PluginKey('menuKey');
-
 export default function Example() {
   const editorState = useEditorState({
     specs: coreSpec(),

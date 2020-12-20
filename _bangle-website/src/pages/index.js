@@ -5,7 +5,9 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import Example from './landing-example';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import Example from '../landing-example';
+
 const features = [
   {
     title: '🔋Batteries included',
@@ -71,7 +73,7 @@ function Home() {
         }}
       >
         <div style={{ width: 'max(70vw, 200px)', margin: '1rem' }}>
-          <Example />
+          <BrowserOnly>{() => <Example />}</BrowserOnly>
         </div>
         {/* {features && features.length > 0 && (
           <section className={styles.features}>
