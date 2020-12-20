@@ -15,3 +15,5 @@ markdown/__tests__/fixtures
 _bangle-website/build
 _bangle-website/.docusaurus
 _bangle-website/.cache-loader
+
+build

@@ -1,6 +1,6 @@
 {
   "name": "bangle-play",
-  "version": "0.1.0",
+  "version": "0.1.12",
   "private": true,
   "scripts": {
     "start": "yarn webpack serve --env development",

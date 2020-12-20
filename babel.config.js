@@ -20,11 +20,11 @@ module.exports = (api) => {
     };
   }
 
-  let envOptions = { debug: DEBUG };
+  let envOptions = { debug: DEBUG, targets: { esmodules: true } };
 
   // browserslist is not configured when running integration tests
   if (api.env('integration')) {
-    envOptions.targets = 'last 3 chrome version';
+    envOptions.targets = 'last 2 chrome version';
   }
 
   return {
