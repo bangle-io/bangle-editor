@@ -1,6 +1,6 @@
 // babel.config.js
 
-const DEBUG = true;
+const DEBUG = false;
 
 module.exports = (api) => {
   if (api.env('test')) {
@@ -20,11 +20,16 @@ module.exports = (api) => {
     };
   }
 
-  let envOptions = { debug: DEBUG };
+  let envOptions = {
+    debug: DEBUG,
+    targets: {
+      browsers: ['last 4 Chrome versions', 'last 4 Firefox versions'],
+    },
+  };
 
-  // browserslist is not configured when running integration tests
+  // // browserslist is not configured when running integration tests
   if (api.env('integration')) {
-    envOptions.targets = 'last 3 chrome version';
+    envOptions.targets = 'last 2 chrome version';
   }
 
   return {

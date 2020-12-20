@@ -1,6 +1,6 @@
 {
   "name": "@banglejs/core",
-  "version": "0.1.1",
+  "version": "0.1.11",
   "main": "index.js",
   "module": "index.js",
   "style": "style.css",
@@ -24,5 +24,8 @@
   },
   "devDependencies": {
     "prettier": "^2.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

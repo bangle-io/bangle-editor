@@ -1,9 +1,11 @@
 {
   "name": "@banglejs/react-stopwatch",
-  "version": "0.1.0",
+  "version": "0.1.11",
   "main": "index.js",
   "module": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepack": "PKG_PATH=contrib/react-sticker yarn g:build-react"
+  },
   "peerDependencies": {
     "@banglejs/core": "*",
     "@banglejs/markdown": "*",
@@ -18,5 +20,8 @@
     "@testing-library/react": "^11.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

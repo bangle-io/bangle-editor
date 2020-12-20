@@ -1,6 +1,6 @@
 {
   "name": "@banglejs/react",
-  "version": "0.1.0",
+  "version": "0.1.11",
   "main": "index.js",
   "module": "index.js",
   "scripts": {
@@ -25,5 +25,8 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-test-renderer": "^17.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

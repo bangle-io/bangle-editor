@@ -9480,6 +9480,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@banglejs/tooltip", "virtual:c6d9a67d13c7140b66adbf03b43c1debc5c4ef10bc7a0f79f233defe14ed4530757ac03c2cc8f0bae30c1c6a42770389d945a716348af7cb78814f49793578ed#workspace:tooltip"],
             ["@banglejs/trailing-node", "virtual:3e216271b15957dfaed766c6b3986fe29dbc933178651a7a698e3a5e9d6c0f2b6b2c5843449bc1647bf213465340d45dedbfcbbda28257ffa31a51e55eaf7248#workspace:contrib/trailing-node"],
             ["@github-docs/frontmatter", "npm:1.3.1"],
+            ["@yarnpkg/core", "npm:2.4.0"],
             ["change-case", "npm:4.1.2"],
             ["date-fns", "npm:2.15.0"],
             ["del", "npm:6.0.0"],

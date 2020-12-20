@@ -1,0 +1,20 @@
+declined:
+  - bangle-scripts
+  - bangle-website
+  - "@banglejs/react-stopwatch"
+
+undecided:
+  - banglejs
+  - integration-tests
+  - bangle-play
+  - "@banglejs/collab"
+  - "@banglejs/markdown-front-matter"
+  - "@banglejs/react-emoji-suggest"
+  - "@banglejs/react-sticker"
+  - "@banglejs/timestamp"
+  - "@banglejs/trailing-node"
+  - "@banglejs/emoji"
+  - "@banglejs/markdown"
+  - "@banglejs/react"
+  - "@banglejs/react-menu"
+  - "@banglejs/tooltip"
