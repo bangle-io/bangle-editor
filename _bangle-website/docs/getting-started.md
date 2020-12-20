@@ -17,11 +17,21 @@ BangleJS at its heart is framework agnostic, but it comes with first party suppo
 npm install @banglejs/react
 ```
 
-## Vue ?
+:heart: Support for **Vue** is coming soon. Meanwhile you can either use vanilla BangleJS Components _or_ consider [tiptap](https://github.com/ueberdosis/tiptap) an awesome library which runs the same [Prosemirror](https://prosemirror.net) blood in its veins!
 
-:heart: _Support for **Vue** is coming soon_
+## Stability
 
-Meanwhile you can either use vanilla BangleJS Components _or_ consider [tiptap](https://github.com/ueberdosis/tiptap) an awesome library which runs the same [Prosemirror](https://prosemirror.net) blood in its veins!
+**Current**:
+
+- Bangle is currently in `alpha` phase and we plan to iterate fast, bug fixes and many breaking changes. I would request you to try it out and use it in yoru side projects but avoid using it in **production**.
+
+**Next Month**:
+
+- I think by mid January, I will have solicited enough feedback from folks that we can move to `beta` and address the feedback. Focus will be on stability and building a project roadmap.
+
+**Short term**:
+
+- Once we achieve a good stable month with `beta` with some community adoption, we can move to general release. I expect this to come around March or April.
 
 ## The Bangle eco-system
 
@@ -31,10 +41,4 @@ The BangleJS project is made up of smaller individual packages to fit a particul
 
 - Certain packages have a peer dependency on other Bangle packages, your package manager should help you install them.
 
-- If a package has a stylesheet, it will always under a file named `style.css` and can be imported by doing `import @banglejs/xyz-module/style.css`. Please refer to the styling guide for more info.
-
-  - TODO styling guide link
-
-- Majority of Bangle packages export a Component. Please refer to the API of each package on how to consume them.
-
-  - TODO add a link to component
+- If a package has a stylesheet, it will always under a file named `style.css` and can be imported by doing `import @banglejs/xyz-module/style.css`.

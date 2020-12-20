@@ -16,7 +16,7 @@ export default function Editor(domNode) {
   });
 
   const editor = new BangleEditor(domNode, { state });
-
+  window.editor = editor;
   return editor;
 }
 

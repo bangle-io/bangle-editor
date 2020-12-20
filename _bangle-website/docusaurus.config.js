@@ -25,7 +25,7 @@ module.exports = {
         // { to: 'blog', label: 'Blog', position: 'left' },
         { to: 'community/', label: 'Community', position: 'left' },
         {
-          href: 'https://github.com/kepta/bangle-play',
+          href: 'https://github.com/bangle-io/banglejs',
           label: 'GitHub',
           position: 'right',
         },
@@ -47,26 +47,18 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
               label: 'Discord',
               href: 'https://discordapp.com/invite/docusaurus',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/kepta',
             },
           ],
         },
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: 'blog',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/facebook/docusaurus',
@@ -85,13 +77,13 @@ module.exports = {
           sidebarPath: require.resolve('./docsSidebar.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/kepta/bangle-play/edit/master/_bangle-website/docs',
+            'https://github.com/bangle-io/banglejs/edit/master/_bangle-website/docs',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/kepta/bangle-play/edit/master/_bangle-website/blog/',
+            'https://github.com/bangle-io/banglejs/edit/master/_bangle-website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
