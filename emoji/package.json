@@ -1,6 +1,6 @@
 {
   "name": "@banglejs/emoji",
-  "version": "0.1.0",
+  "version": "0.1.12",
   "main": "index.js",
   "module": "index.js",
   "scripts": {},
@@ -14,5 +14,8 @@
   "devDependencies": {
     "@banglejs/core": "workspace:*",
     "@banglejs/markdown": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

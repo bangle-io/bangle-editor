@@ -1,9 +1,12 @@
 {
   "name": "@banglejs/react-stopwatch",
-  "version": "0.1.0",
+  "version": "0.1.12",
   "main": "index.js",
   "module": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepack": "yarn g:babel",
+    "postpack": "rm -r $INIT_CWD/dist"
+  },
   "peerDependencies": {
     "@banglejs/core": "*",
     "@banglejs/markdown": "*",
@@ -18,5 +21,10 @@
     "@testing-library/react": "^11.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "module": null
   }
 }

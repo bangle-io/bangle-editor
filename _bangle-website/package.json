@@ -1,6 +1,6 @@
 {
   "name": "bangle-website",
-  "version": "0.0.0",
+  "version": "0.1.12",
   "private": true,
   "scripts": {
     "website:start": "yarn start",

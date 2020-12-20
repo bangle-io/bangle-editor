@@ -3,7 +3,7 @@ const globby = require('globby');
 const fs = require('fs/promises');
 const rootPath = path.resolve(__dirname, '..');
 
-module.exports = { getPackages };
+module.exports = { getPackages, mapPackages };
 
 async function getPackages({ filter = 'all' } = {}) {
   const globResults = await globby([path.join(rootPath, '**/package.json')]);
@@ -39,7 +39,7 @@ async function mapPackages(cb, { filter } = {}) {
     result.map(([packagePath, packageObj]) => {
       return fs.writeFile(
         packagePath,
-        JSON.stringify(packageObj, null, 2),
+        JSON.stringify(packageObj, null, 2) + '\n',
         'utf-8',
       );
     }),

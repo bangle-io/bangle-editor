@@ -1,6 +1,6 @@
 {
   "name": "@banglejs/collab",
-  "version": "0.1.0",
+  "version": "0.1.12",
   "main": "index.js",
   "module": "index.js",
   "scripts": {},
@@ -13,5 +13,8 @@
   "dependencies": {
     "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
