@@ -48,7 +48,7 @@ module.exports = {
           items: [
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: 'https://discord.gg/hFPnbPy8nK',
             },
             {
               label: 'Twitter',
@@ -61,7 +61,7 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/bangle-io/banglejs',
             },
           ],
         },
