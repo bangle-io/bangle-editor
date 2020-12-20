@@ -26,3 +26,5 @@ _bangle-website/build
 _bangle-website/.docusaurus
 _bangle-website/.cache-loader
 _bangle-website/docs/api
+
+/dist
