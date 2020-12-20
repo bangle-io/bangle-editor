@@ -11,7 +11,7 @@ import { Plugin, PluginKey, isChromeWithSelectionBug } from '@banglejs/core';
 import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';
 
-const LOG = true;
+const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};
 
 export const spec = specFactory;
