@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "main": "index.js",
   "module": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepack": "yarn g:babel"
+  },
   "dependencies": {
     "prop-types": "^15.7.2",
     "punycode": "^2.1.1"

@@ -17,6 +17,7 @@
     "contrib/*"
   ],
   "scripts": {
+    "g:babel": "yarn babel $INIT_CWD --out-dir $INIT_CWD/dist --ignore \"$INIT_CWD/**/__tests__,$INIT_CWD/dist\"",
     "start": "yarn workspace bangle-play start",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
@@ -53,6 +54,7 @@
     "prosemirror-utils/prosemirror-tables": "0.9.6"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
