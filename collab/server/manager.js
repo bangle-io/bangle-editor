@@ -6,27 +6,28 @@ import {
 } from '@banglejs/core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
-const LOG = false;
+const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 export class Manager {
-  instanceCount = 0;
-  maxCount = 20;
-  instances = {};
-  getDocumentQueue = serialExecuteQueue();
-  defaultOpts = {
-    disk: {
-      load: async () => {},
-      update: async () => {},
-      flush: async () => {},
-    },
-    // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
-    userWaitTimeout: 7 * 1000,
-    collectUsersTimeout: 5 * 1000,
-    instanceCleanupTimeout: 10 * 1000,
-    interceptRequests: undefined, // useful for testing or debugging
-  };
   constructor(schema, opts = {}) {
+    this._getInstanceQueued = this._getInstanceQueued.bind(this);
+    this.instanceCount = 0;
+    this.maxCount = 20;
+    this.instances = {};
+    this.getDocumentQueue = serialExecuteQueue();
+    this.defaultOpts = {
+      disk: {
+        load: async () => {},
+        update: async () => {},
+        flush: async () => {},
+      },
+      // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
+      userWaitTimeout: 7 * 1000,
+      collectUsersTimeout: 5 * 1000,
+      instanceCleanupTimeout: 10 * 1000,
+      interceptRequests: undefined, // useful for testing or debugging
+    };
     this.opts = { ...this.defaultOpts, ...opts };
     this.schema = schema;
     this.disk = this.opts.disk;
@@ -40,7 +41,7 @@ export class Manager {
 
     if (this.opts.instanceCleanupTimeout > 0) {
       this.cleanUpInterval = setInterval(
-        this._cleanup,
+        () => this._cleanup(),
         this.opts.instanceCleanupTimeout,
       );
     }
@@ -51,21 +52,22 @@ export class Manager {
     log(
       'stopping instances',
       instance.docName,
-      instance.doc.firstChild?.textContent,
+      instance.doc.firstChild && instance.doc.firstChild.textContent,
     );
     this.instances[docName].stop();
     delete this.instances[docName];
     --this.instanceCount;
   }
 
-  _cleanup = () => {
+  _cleanup() {
+    log('Cleaning up');
     const instances = Object.values(this.instances);
     for (const i of instances) {
       if (i.userCount === 0) {
         this._stopInstance(i.docName);
       }
     }
-  };
+  }
 
   destroy() {
     log('destroy called');
@@ -132,7 +134,7 @@ export class Manager {
     return this.routes[path](payload);
   }
 
-  _getInstanceQueued = async (docName, userId) => {
+  async _getInstanceQueued(docName, userId) {
     if (!userId) {
       throw new Error('userId is required');
     }
@@ -144,7 +146,7 @@ export class Manager {
       inst.lastActive = Date.now();
       return inst;
     });
-  };
+  }
 }
 
 function nonNegInteger(str) {

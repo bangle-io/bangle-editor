@@ -335,7 +335,7 @@ export function queryTriggerText(key) {
 
 export function queryIsSuggestTooltipActive(key) {
   return (state) => {
-    return key.getState(state)?.show;
+    return key.getState(state) && key.getState(state).show;
   };
 }
 

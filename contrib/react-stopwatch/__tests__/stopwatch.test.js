@@ -3,7 +3,6 @@
  */
 /** @jsx pjsx */
 import { fireEvent, act } from '@testing-library/react';
-import { act as domAct } from 'react-dom/test-utils';
 import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
 import { sendKeyToPm } from '@banglejs/core/test-helpers/index';
 import { markdownSerializer } from '@banglejs/markdown/markdown-serializer';

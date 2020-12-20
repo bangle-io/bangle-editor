@@ -47,9 +47,9 @@ function tooltipPlacement({
   });
 
   class TooltipPlacementView {
-    popperInstance = null;
-
     constructor(view) {
+      this.popperInstance = null;
+
       this._view = view;
 
       const { dom: tooltipDOM } = createTooltipDOM(tooltipDOMSpec);
@@ -93,7 +93,7 @@ function tooltipPlacement({
       this._view.dom.parentNode.removeChild(this._tooltip);
     }
 
-    _hideTooltip = () => {
+    _hideTooltip() {
       log('hiding');
       if (this.popperInstance) {
         this._tooltip.removeAttribute('data-show');
@@ -106,13 +106,13 @@ function tooltipPlacement({
           this._view,
         );
       }
-    };
+    }
 
-    _showTooltip = () => {
+    _showTooltip() {
       this._tooltip.setAttribute('data-show', '');
       this._createPopperInstance(this._view);
       this.popperInstance.update();
-    };
+    }
 
     _createPopperInstance(view) {
       if (this.popperInstance) {

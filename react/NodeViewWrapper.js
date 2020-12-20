@@ -16,14 +16,31 @@ export class NodeViewWrapper extends React.PureComponent {
     nodeViewUpdateStore: PropTypes.instanceOf(WeakMap).isRequired,
   };
 
-  update = () => {
-    this.setState((state, props) => ({
-      nodeViewProps: props.nodeView.getNodeViewProps(),
-    }));
-  };
-
   constructor(props) {
     super(props);
+
+    this.update = () => {
+      this.setState((state, props) => ({
+        nodeViewProps: props.nodeView.getNodeViewProps(),
+      }));
+    };
+
+    this.attachToContentDOM = (reactElement) => {
+      if (!reactElement) {
+        return;
+      }
+      const { contentDOM } = this.props.nodeView;
+      // Since we do not control how many times this callback is called
+      // make sure it is not already mounted.
+      if (!reactElement.contains(contentDOM)) {
+        // If contentDOM happens to be mounted to someone else
+        // remove it from there.
+        if (contentDOM.parentNode) {
+          contentDOM.parentNode.removeChild(contentDOM);
+        }
+        reactElement.appendChild(contentDOM);
+      }
+    };
     // So that we can directly update the nodeView without the mess
     // of prop forwarding.
     // What about updating the wrong nodeView ?
@@ -33,23 +50,6 @@ export class NodeViewWrapper extends React.PureComponent {
     props.nodeViewUpdateStore.set(props.nodeView, this.update);
     this.state = { nodeViewProps: this.props.nodeView.getNodeViewProps() };
   }
-
-  attachToContentDOM = (reactElement) => {
-    if (!reactElement) {
-      return;
-    }
-    const { contentDOM } = this.props.nodeView;
-    // Since we do not control how many times this callback is called
-    // make sure it is not already mounted.
-    if (!reactElement.contains(contentDOM)) {
-      // If contentDOM happens to be mounted to someone else
-      // remove it from there.
-      if (contentDOM.parentNode) {
-        contentDOM.parentNode.removeChild(contentDOM);
-      }
-      reactElement.appendChild(contentDOM);
-    }
-  };
 
   getChildren() {
     if (!this.props.nodeView.contentDOM) {

@@ -40,7 +40,7 @@ import {
   toggleBulletList,
 } from '@banglejs/core/components/bullet-list';
 import * as Icons from './Icons';
-import { useEditorViewContext } from '@banglejs/react/hooks';
+import { useEditorViewContext } from '@banglejs/react';
 import { PluginKey } from '@banglejs/core';
 import {
   defaultKeys as floatingMenuKeys,

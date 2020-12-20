@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { updateLink, queryLinkAttrs } from '@banglejs/core/components/link';
 import * as Icons from './Icons';
-import { useEditorViewContext } from '@banglejs/react/hooks';
+import { useEditorViewContext } from '@banglejs/react';
 import { MenuButton } from './Icon';
 import { MenuGroup } from './MenuGroup';
 

@@ -68,7 +68,7 @@ export function BangleEditor({
   }, []);
 
   return (
-    <>
+    <React.Fragment>
       <div ref={renderRef} id={id} />
       {nodeViews.map((nodeView) => {
         return reactDOM.createPortal(
@@ -87,7 +87,7 @@ export function BangleEditor({
           {children}
         </EditorViewContext.Provider>
       ) : null}
-    </>
+    </React.Fragment>
   );
 }
 

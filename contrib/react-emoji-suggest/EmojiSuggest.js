@@ -1,6 +1,6 @@
 import reactDOM from 'react-dom';
-import { useEditorViewContext, usePluginState } from '@banglejs/react/hooks';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useEditorViewContext, usePluginState } from '@banglejs/react';
 import {
   getActiveIndex,
   getEmojis,

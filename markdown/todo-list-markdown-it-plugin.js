@@ -60,11 +60,14 @@ export function todoListMarkdownItPlugin(md, options = {}) {
         const inlineTokenChild = inlineToken.children[0];
 
         let isDone = false;
+
         if (startsWithTodoMarkdown(inlineTokenChild)) {
-          if (
-            inlineTokenChild.content?.charAt(1) === 'x' ||
-            inlineTokenChild.content?.charAt(1) === 'X'
-          ) {
+          const charAt1 =
+            typeof inlineTokenChild.content === 'string'
+              ? inlineTokenChild.content.charAt(1)
+              : null;
+
+          if (['x', 'X'].includes(charAt1)) {
             isDone = true;
           }
         }

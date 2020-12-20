@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { BangleEditor } from '@banglejs/core';
-import { EditorViewContext } from '@banglejs/react';
+import { usePluginState, EditorViewContext } from '@banglejs/react';
 import { editorStateCounter } from '@banglejs/core/index';
-import { usePluginState } from '@banglejs/react/hooks';
 
 export function StaticMenu({ editor, renderMenu }) {
   return editor ? (

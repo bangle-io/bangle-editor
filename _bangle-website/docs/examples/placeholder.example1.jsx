@@ -1,5 +1,5 @@
 import '@banglejs/core/style.css';
-
+import '@banglejs/tooltip/style.css';
 import {
   BangleEditor,
   BangleEditorState,
