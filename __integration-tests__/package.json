@@ -1,7 +1,7 @@
 {
   "name": "integration-tests",
   "private": true,
-  "version": "0.1.12",
+  "version": "0.1.13",
   "scripts": {
     "build": "NODE_ENV=integration yarn run webpack --env development",
     "serve-build": "yarn run serve build -l 1234",

@@ -1,6 +1,6 @@
 {
   "name": "@banglejs/react",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "main": "index.js",
   "module": "index.js",
   "scripts": {
@@ -30,6 +30,6 @@
   "publishConfig": {
     "access": "public",
     "main": "./dist/index.js",
-    "module": null
+    "module": "./dist/index.js"
   }
 }
