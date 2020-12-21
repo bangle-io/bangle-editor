@@ -34,7 +34,7 @@ An object with the following fields:
 - **type**: `'node'` | `'mark'`\
   This is a Prosemirror concept which divides the spec in two groups `node` type or `mark` type. Please checkout {{global.link.YourFirstEditorGuide}} guide.
 
-- **?topNode**: boolean\
+- **topNode**: ?boolean\
   Whether the node will be the top node for the document. By default the `doc` node is the top node for Bangle. There can only be one top `node` and is only applicable for `node` types.
 
 - **name**: string\
@@ -42,9 +42,9 @@ An object with the following fields:
 
 - **schema**: {{Prosemirror.NodeSpec}} | {{Prosemirror.MarkSpec}}
 
-- **?markdown**: {toMarkdown: fn(), parseMarkdown: object}\
+- **markdown**: ?{toMarkdown: fn(), parseMarkdown: object}\
 
-- **?options**: object\
+- **options**: ?object\
   Use this to save data in this spec. You can use this field to save some data options to make it available to anyone having access to specRegistry.
 
 ### Plugins
@@ -123,10 +123,10 @@ Initializes and mounts the editor in your application. Create an editor instance
   - **state:** {{core.link.BangleEditorState}}\
     The editor state object.
 
-  - **?focusOnInit:** boolean=true\
+  - **focusOnInit:** ?boolean=true\
     Focus the editor after initialization.
 
-  - **?pmViewOpts**: [Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps) \
+  - **pmViewOpts**: ?[Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps) \
     An object containing PM's editor props.
 
 The class exposes the following fields/methods:
@@ -172,21 +172,21 @@ Create an editor state instance with following params:
 
 - **options:** Object
 
-  - **?specRegistry:** {{core.link.SpecRegistry}}\
+  - **specRegistry:** ?{{core.link.SpecRegistry}}\
     The SpecRegistry of your editor. Note: you can either set `specRegistry` or `specs` but _not_ both.
 
-  - **?specs:** [Spec](#spec)\[\]\
+  - **specs:** ?[Spec](#spec)\[\]\
     A shorthand which initializes SpecRegistry for you behind the scenes. Use this if you don't care about creating and managing a SpecRegistry instance. Note: you can either set `specRegistry` or `specs` but _not_ both.
 
-  - **?plugins:** {{core.link.Plugins}}\[\]\
+  - **plugins:** ?{{core.link.Plugins}}\[\]\
     The list of plugins for your editor.
 
-  - **?initialValue:** string | htmlString \
+  - **initialValue:** string | htmlString | undefined \
     The initial content of the editor.
 
   - **editorProps:** {{Prosemirror.EditorProps}}
 
-  - **?pmStateOpts:** [Prosemirror.EditorStateCreateConfig](https://prosemirror.net/docs/ref/#state.EditorState%5Ecreate)
+  - **pmStateOpts:** ?[Prosemirror.EditorStateCreateConfig](https://prosemirror.net/docs/ref/#state.EditorState%5Ecreate)
 
 The class exposes the following fields/methods:
 
@@ -206,12 +206,12 @@ A wrapper class which sets up the {{Prosemirror.Schema}}. SpecRegistry combines 
 
 Params:
 
-- **?specs:** [Spec](#spec)\[\]\
+- **specs:** ?[Spec](#spec)\[\]\
   An array containing the specs. Note: the order of specs matters.
 
-- **?options:** Object
+- **options:** ?Object
 
-  - **?defaultSpecs:** boolean=true\
+  - **defaultSpecs:** ?boolean=true\
     Automatically include critical spec`doc`, `text` & `paragraph` if they are **not** already provided in the `specs` param.
 
 The class exposes the following fields/methods:
