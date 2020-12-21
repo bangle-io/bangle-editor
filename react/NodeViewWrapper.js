@@ -1,9 +1,9 @@
 import React from 'react';
-import { bangleWarn } from '@banglejs/core/utils/js-utils';
-import { objUid } from '@banglejs/core/utils/object-uid';
+import { bangleWarn } from '@bangle.dev/core/utils/js-utils';
+import { objUid } from '@bangle.dev/core/utils/object-uid';
 import PropTypes from 'prop-types';
-import { Node } from '@banglejs/core/prosemirror/model';
-import { EditorView } from '@banglejs/core/prosemirror/view';
+import { Node } from '@bangle.dev/core/prosemirror/model';
+import { EditorView } from '@bangle.dev/core/prosemirror/view';
 
 const LOG = false;
 

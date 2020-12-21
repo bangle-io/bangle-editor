@@ -1,11 +1,11 @@
 import React from 'react';
 import reactDOM from 'react-dom';
-import { BangleEditor, useEditorState } from '@banglejs/react';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { BangleEditor, useEditorState } from '@bangle.dev/react';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
+} from '@bangle.dev/core/test-helpers/default-components';
 
 export function setupReactEditor({
   specRegistry,

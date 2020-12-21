@@ -1,6 +1,6 @@
 {
-  "name": "@banglejs/react-stopwatch",
-  "version": "0.1.13",
+  "name": "@bangle.dev/react-stopwatch",
+  "version": "0.1.14",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -12,10 +12,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bangle-io/banglejs.git"
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
   },
   "bugs": {
-    "url": "https://github.com/bangle-io/banglejs/issues"
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
   "main": "index.js",
   "module": "index.js",
@@ -24,16 +24,16 @@
     "postpack": "rm -r $INIT_CWD/dist"
   },
   "peerDependencies": {
-    "@banglejs/core": "*",
-    "@banglejs/markdown": "*",
-    "@banglejs/react": "*",
+    "@bangle.dev/core": "*",
+    "@bangle.dev/markdown": "*",
+    "@bangle.dev/react": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*",
-    "@banglejs/markdown": "workspace:*",
-    "@banglejs/react": "workspace:*",
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/markdown": "workspace:*",
+    "@bangle.dev/react": "workspace:*",
     "@testing-library/react": "^11.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"

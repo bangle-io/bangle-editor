@@ -1,7 +1,7 @@
 ---
-title: '@banglejs/react-menu'
-sidebar_label: '@banglejs/react-menu'
-packageName: '@banglejs/react-menu'
+title: '@bangle.dev/react-menu'
+sidebar_label: '@bangle.dev/react-menu'
+packageName: '@bangle.dev/react-menu'
 id: 'react_menu'
 ---
 
@@ -10,7 +10,7 @@ This package provides you with tools to help build flexible yet powerful menus u
 ### Installation
 
 ```
-{{npmInstallation "@banglejs/react-menu"}}
+{{npmInstallation "@bangle.dev/react-menu"}}
 ```
 
 ## Styling
@@ -18,7 +18,7 @@ This package provides you with tools to help build flexible yet powerful menus u
 Please use the stylesheet `style.css` like:
 
 ```js
-import '@banglejs/react-menu/style.css';
+import '@bangle.dev/react-menu/style.css';
 ```
 
 ## floatingMenu: {{core.link.Component}}
@@ -132,7 +132,7 @@ import {
   HeadingButton,
   BulletListButton,
   ItalicButton,
-} from '@banglejs/react-menu';
+} from '@bangle.dev/react-menu';
 
 <Menu>
   <MenuGroup>

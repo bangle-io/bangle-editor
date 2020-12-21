@@ -1,5 +1,5 @@
-import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
-import { keymap } from '@banglejs/core/utils/keymap';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
+import { keymap } from '@bangle.dev/core/utils/keymap';
 import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 
 export const spec = specFactory;

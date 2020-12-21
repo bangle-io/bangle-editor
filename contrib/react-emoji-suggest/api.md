@@ -1,7 +1,7 @@
 ---
-title: '@banglejs/react-emoji-suggest'
-sidebar_label: '@banglejs/react-emoji-suggest'
-packageName: '@banglejs/react-emoji-suggest'
+title: '@bangle.dev/react-emoji-suggest'
+sidebar_label: '@bangle.dev/react-emoji-suggest'
+packageName: '@bangle.dev/react-emoji-suggest'
 id: 'react_emoji_suggest'
 ---
 
@@ -12,7 +12,7 @@ This package provides you suggestions for picking your favourite emojis :sunglas
 ### Installation
 
 ```
-{{npmInstallation "@banglejs/react-emoji-suggest"}}
+{{npmInstallation "@bangle.dev/react-emoji-suggest"}}
 ```
 
 ## Styling
@@ -20,7 +20,7 @@ This package provides you suggestions for picking your favourite emojis :sunglas
 Please use the stylesheet `style.css` like:
 
 ```js
-import '@banglejs/react-emoji-suggest/style.css';
+import '@bangle.dev/react-emoji-suggest/style.css';
 ```
 
 ## emojiSuggest: {{core.link.Component}}

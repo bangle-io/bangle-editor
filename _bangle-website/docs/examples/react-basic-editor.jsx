@@ -1,7 +1,7 @@
 import React from 'react';
-import { useEditorState, BangleEditor } from '@banglejs/react';
+import { useEditorState, BangleEditor } from '@bangle.dev/react';
 
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 
 export default function Editor() {
   const editorState = useEditorState({

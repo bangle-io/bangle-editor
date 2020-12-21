@@ -1,4 +1,4 @@
-import { domSerializationHelpers } from '@banglejs/core/utils/index';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/index';
 
 export const spec = specFactory;
 

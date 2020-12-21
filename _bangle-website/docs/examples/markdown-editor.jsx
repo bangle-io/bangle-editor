@@ -1,8 +1,12 @@
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 
-import { BangleEditor, BangleEditorState, SpecRegistry } from '@banglejs/core';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
-import * as markdown from '@banglejs/markdown';
+import {
+  BangleEditor,
+  BangleEditorState,
+  SpecRegistry,
+} from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import * as markdown from '@bangle.dev/markdown';
 
 const specRegistry = new SpecRegistry(coreSpec());
 const parser = markdown.markdownParser(specRegistry);

@@ -65,10 +65,10 @@ mapPackages(([filePath, packageObj]) => {
     license: 'MIT',
     repository: {
       type: 'git',
-      url: 'git+https://github.com/bangle-io/banglejs.git',
+      url: 'git+https://github.com/bangle-io/bangle.dev.git',
     },
     bugs: {
-      url: 'https://github.com/bangle-io/banglejs/issues',
+      url: 'https://github.com/bangle-io/bangle.dev/issues',
     },
     ...packageObj,
   };

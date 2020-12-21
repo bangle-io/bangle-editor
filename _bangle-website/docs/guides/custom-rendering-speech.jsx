@@ -1,11 +1,11 @@
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 import React, { useEffect, useState } from 'react';
-import { BangleEditor, useEditorState } from '@banglejs/react';
-import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
-import { safeInsert } from '@banglejs/core/utils/pm-utils';
-import { keymap } from '@banglejs/core/utils/keymap';
-import { NodeView } from '@banglejs/core';
+import { BangleEditor, useEditorState } from '@bangle.dev/react';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { safeInsert } from '@bangle.dev/core/utils/pm-utils';
+import { keymap } from '@bangle.dev/core/utils/keymap';
+import { NodeView } from '@bangle.dev/core';
 
 const speech = {
   spec() {

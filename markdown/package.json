@@ -1,6 +1,6 @@
 {
-  "name": "@banglejs/markdown",
-  "version": "0.1.13",
+  "name": "@bangle.dev/markdown",
+  "version": "0.1.14",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -12,10 +12,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bangle-io/banglejs.git"
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
   },
   "bugs": {
-    "url": "https://github.com/bangle-io/banglejs/issues"
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
   "main": "index.js",
   "module": "index.js",
@@ -25,10 +25,10 @@
     "prosemirror-markdown": "^1.5.0"
   },
   "peerDependencies": {
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

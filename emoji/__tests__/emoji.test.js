@@ -2,19 +2,19 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
-import { markdownSerializer } from '@banglejs/markdown/markdown-serializer';
+import { psx, renderTestEditor } from '@bangle.dev/core/test-helpers/index';
+import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
 import {
   defaultMarkdownItTokenizer,
   markdownParser,
-} from '@banglejs/markdown/markdown-parser';
+} from '@bangle.dev/markdown/markdown-parser';
 import emojiParser from 'markdown-it-emoji';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
+} from '@bangle.dev/core/test-helpers/default-components';
 import { emoji } from '../index';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), emoji.spec()]);
 const plugins = [...defaultPlugins(), emoji.plugins()];

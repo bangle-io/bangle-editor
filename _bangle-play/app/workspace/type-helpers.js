@@ -1,4 +1,4 @@
-import { uuid } from '@banglejs/core/utils/js-utils';
+import { uuid } from '@bangle.dev/core/utils/js-utils';
 
 export const INDEXDB_TYPE = 'indexdb';
 export const NATIVE_FS_TYPE = 'native';

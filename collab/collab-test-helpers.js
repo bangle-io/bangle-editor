@@ -6,15 +6,15 @@ import {
   sendKeyToPm,
   sleep,
   typeChar,
-} from '@banglejs/core/test-helpers/index';
+} from '@bangle.dev/core/test-helpers/index';
 import * as collab from './client/collab-extension';
 import { collabRequestHandlers } from './client/collab-request-handlers';
-import { LocalDisk } from '@banglejs/collab/client/local-disk';
+import { LocalDisk } from '@bangle.dev/collab/client/local-disk';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+} from '@bangle.dev/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 
 const START = '💚';
 const END = '🖤';

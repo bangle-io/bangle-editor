@@ -1,5 +1,5 @@
-import { Plugin } from '@banglejs/core/index';
-import { bangleWarn } from '@banglejs/core/utils/js-utils';
+import { Plugin } from '@bangle.dev/core/index';
+import { bangleWarn } from '@bangle.dev/core/utils/js-utils';
 import { createTooltipDOM } from './create-tooltip-dom';
 import {
   createPopper,

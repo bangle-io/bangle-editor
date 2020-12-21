@@ -1,7 +1,7 @@
 ---
-title: '@banglejs/collab'
-sidebar_label: '(wip) @banglejs/collab'
-packageName: '@banglejs/collab'
+title: '@bangle.dev/collab'
+sidebar_label: '(wip) @bangle.dev/collab'
+packageName: '@bangle.dev/collab'
 id: 'collab'
 ---
 
@@ -10,5 +10,5 @@ Docs coming soon
 ### Installation
 
 ```
-{{npmInstallation "@banglejs/collab"}}
+{{npmInstallation "@bangle.dev/collab"}}
 ```

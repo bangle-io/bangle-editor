@@ -1891,21 +1891,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@banglejs/collab@workspace:*, @banglejs/collab@workspace:collab":
+"@bangle.dev/collab@workspace:*, @bangle.dev/collab@workspace:collab":
   version: 0.0.0-use.local
-  resolution: "@banglejs/collab@workspace:collab"
+  resolution: "@bangle.dev/collab@workspace:collab"
   dependencies:
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
-"@banglejs/core@workspace:*, @banglejs/core@workspace:core":
+"@bangle.dev/core@workspace:*, @bangle.dev/core@workspace:core":
   version: 0.0.0-use.local
-  resolution: "@banglejs/core@workspace:core"
+  resolution: "@bangle.dev/core@workspace:core"
   dependencies:
     prettier: ^2.2.1
     prosemirror-commands: ^1.1.4
@@ -1924,129 +1924,129 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@banglejs/emoji@workspace:*, @banglejs/emoji@workspace:emoji":
+"@bangle.dev/emoji@workspace:*, @bangle.dev/emoji@workspace:emoji":
   version: 0.0.0-use.local
-  resolution: "@banglejs/emoji@workspace:emoji"
+  resolution: "@bangle.dev/emoji@workspace:emoji"
   dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
     markdown-it-emoji: ^2.0.0
   peerDependencies:
-    "@banglejs/core": "*"
-    "@banglejs/markdown": "*"
+    "@bangle.dev/core": "*"
+    "@bangle.dev/markdown": "*"
   languageName: unknown
   linkType: soft
 
-"@banglejs/markdown-front-matter@workspace:*, @banglejs/markdown-front-matter@workspace:contrib/markdown-front-matter":
+"@bangle.dev/markdown-front-matter@workspace:*, @bangle.dev/markdown-front-matter@workspace:contrib/markdown-front-matter":
   version: 0.0.0-use.local
-  resolution: "@banglejs/markdown-front-matter@workspace:contrib/markdown-front-matter"
+  resolution: "@bangle.dev/markdown-front-matter@workspace:contrib/markdown-front-matter"
   dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
     markdown-it-container: ^3.0.0
     markdown-it-front-matter: ^0.2.3
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
-"@banglejs/markdown@workspace:*, @banglejs/markdown@workspace:markdown":
+"@bangle.dev/markdown@workspace:*, @bangle.dev/markdown@workspace:markdown":
   version: 0.0.0-use.local
-  resolution: "@banglejs/markdown@workspace:markdown"
+  resolution: "@bangle.dev/markdown@workspace:markdown"
   dependencies:
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
     markdown-it: ^10.0.0
     prosemirror-markdown: ^1.5.0
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
-"@banglejs/react-emoji-suggest@workspace:*, @banglejs/react-emoji-suggest@workspace:contrib/react-emoji-suggest":
+"@bangle.dev/react-emoji-suggest@workspace:*, @bangle.dev/react-emoji-suggest@workspace:contrib/react-emoji-suggest":
   version: 0.0.0-use.local
-  resolution: "@banglejs/react-emoji-suggest@workspace:contrib/react-emoji-suggest"
+  resolution: "@bangle.dev/react-emoji-suggest@workspace:contrib/react-emoji-suggest"
   dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/emoji": "workspace:*"
-    "@banglejs/react": "workspace:*"
-    "@banglejs/tooltip": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/emoji": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.2
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
-    "@banglejs/core": "*"
-    "@banglejs/emoji": "*"
-    "@banglejs/react": "*"
-    "@banglejs/tooltip": "*"
+    "@bangle.dev/core": "*"
+    "@bangle.dev/emoji": "*"
+    "@bangle.dev/react": "*"
+    "@bangle.dev/tooltip": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
   linkType: soft
 
-"@banglejs/react-menu@workspace:*, @banglejs/react-menu@workspace:react-menu":
+"@bangle.dev/react-menu@workspace:*, @bangle.dev/react-menu@workspace:react-menu":
   version: 0.0.0-use.local
-  resolution: "@banglejs/react-menu@workspace:react-menu"
+  resolution: "@bangle.dev/react-menu@workspace:react-menu"
   dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/react": "workspace:*"
-    "@banglejs/tooltip": "workspace:*"
-    "@testing-library/react": ^11.2.2
-    prop-types: ^15.7.2
-    react: ^16.14.0
-    react-dom: ^16.14.0
-  peerDependencies:
-    "@banglejs/core": "*"
-    "@banglejs/react": "*"
-    "@banglejs/tooltip": "*"
-    react: ">=16.0.0"
-    react-dom: ">=16.0.0"
-  languageName: unknown
-  linkType: soft
-
-"@banglejs/react-sticker@workspace:*, @banglejs/react-sticker@workspace:contrib/react-sticker":
-  version: 0.0.0-use.local
-  resolution: "@banglejs/react-sticker@workspace:contrib/react-sticker"
-  dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
-    "@banglejs/react": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.2
     prop-types: ^15.7.2
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
-    "@banglejs/core": "*"
-    "@banglejs/markdown": "*"
-    "@banglejs/react": "*"
+    "@bangle.dev/core": "*"
+    "@bangle.dev/react": "*"
+    "@bangle.dev/tooltip": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
   linkType: soft
 
-"@banglejs/react-stopwatch@workspace:*, @banglejs/react-stopwatch@workspace:contrib/react-stopwatch":
+"@bangle.dev/react-sticker@workspace:*, @bangle.dev/react-sticker@workspace:contrib/react-sticker":
   version: 0.0.0-use.local
-  resolution: "@banglejs/react-stopwatch@workspace:contrib/react-stopwatch"
+  resolution: "@bangle.dev/react-sticker@workspace:contrib/react-sticker"
   dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
-    "@banglejs/react": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@testing-library/react": ^11.2.2
+    prop-types: ^15.7.2
+    react: ^16.14.0
+    react-dom: ^16.14.0
+  peerDependencies:
+    "@bangle.dev/core": "*"
+    "@bangle.dev/markdown": "*"
+    "@bangle.dev/react": "*"
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@bangle.dev/react-stopwatch@workspace:*, @bangle.dev/react-stopwatch@workspace:contrib/react-stopwatch":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/react-stopwatch@workspace:contrib/react-stopwatch"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
     "@testing-library/react": ^11.2.2
     react: ^16.14.0
     react-dom: ^16.14.0
   peerDependencies:
-    "@banglejs/core": "*"
-    "@banglejs/markdown": "*"
-    "@banglejs/react": "*"
+    "@bangle.dev/core": "*"
+    "@bangle.dev/markdown": "*"
+    "@bangle.dev/react": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
   linkType: soft
 
-"@banglejs/react@workspace:*, @banglejs/react@workspace:react":
+"@bangle.dev/react@workspace:*, @bangle.dev/react@workspace:react":
   version: 0.0.0-use.local
-  resolution: "@banglejs/react@workspace:react"
+  resolution: "@bangle.dev/react@workspace:react"
   dependencies:
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
     "@testing-library/dom": ^7.28.1
     "@testing-library/jest-dom": ^5.11.6
     "@testing-library/react": ^11.2.2
@@ -2058,40 +2058,40 @@ __metadata:
     react-dom: ^16.14.0
     react-test-renderer: ^17.0.1
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   languageName: unknown
   linkType: soft
 
-"@banglejs/timestamp@workspace:*, @banglejs/timestamp@workspace:contrib/timestamp":
+"@bangle.dev/timestamp@workspace:*, @bangle.dev/timestamp@workspace:contrib/timestamp":
   version: 0.0.0-use.local
-  resolution: "@banglejs/timestamp@workspace:contrib/timestamp"
+  resolution: "@bangle.dev/timestamp@workspace:contrib/timestamp"
   dependencies:
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
-"@banglejs/tooltip@workspace:*, @banglejs/tooltip@workspace:tooltip":
+"@bangle.dev/tooltip@workspace:*, @bangle.dev/tooltip@workspace:tooltip":
   version: 0.0.0-use.local
-  resolution: "@banglejs/tooltip@workspace:tooltip"
+  resolution: "@bangle.dev/tooltip@workspace:tooltip"
   dependencies:
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
     "@popperjs/core": ^2.5.4
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
-"@banglejs/trailing-node@workspace:*, @banglejs/trailing-node@workspace:contrib/trailing-node":
+"@bangle.dev/trailing-node@workspace:*, @bangle.dev/trailing-node@workspace:contrib/trailing-node":
   version: 0.0.0-use.local
-  resolution: "@banglejs/trailing-node@workspace:contrib/trailing-node"
+  resolution: "@bangle.dev/trailing-node@workspace:contrib/trailing-node"
   dependencies:
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
   peerDependencies:
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
@@ -5251,19 +5251,19 @@ __metadata:
   resolution: "bangle-play@workspace:_bangle-play"
   dependencies:
     "@babel/core": ^7.12.9
-    "@banglejs/collab": "workspace:*"
-    "@banglejs/core": "workspace:*"
-    "@banglejs/emoji": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
-    "@banglejs/markdown-front-matter": "workspace:*"
-    "@banglejs/react": "workspace:*"
-    "@banglejs/react-emoji-suggest": "workspace:*"
-    "@banglejs/react-menu": "workspace:*"
-    "@banglejs/react-sticker": "workspace:*"
-    "@banglejs/react-stopwatch": "workspace:*"
-    "@banglejs/timestamp": "workspace:*"
-    "@banglejs/tooltip": "workspace:*"
-    "@banglejs/trailing-node": "workspace:*"
+    "@bangle.dev/collab": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/emoji": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/markdown-front-matter": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@bangle.dev/react-emoji-suggest": "workspace:*"
+    "@bangle.dev/react-menu": "workspace:*"
+    "@bangle.dev/react-sticker": "workspace:*"
+    "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/timestamp": "workspace:*"
+    "@bangle.dev/tooltip": "workspace:*"
+    "@bangle.dev/trailing-node": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@testing-library/jest-dom": ^5.11.6
     "@testing-library/react": ^11.2.2
@@ -5320,19 +5320,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-scripts@workspace:_bangle-scripts"
   dependencies:
-    "@banglejs/collab": "workspace:*"
-    "@banglejs/core": "workspace:*"
-    "@banglejs/emoji": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
-    "@banglejs/markdown-front-matter": "workspace:*"
-    "@banglejs/react": "workspace:*"
-    "@banglejs/react-emoji-suggest": "workspace:*"
-    "@banglejs/react-menu": "workspace:*"
-    "@banglejs/react-sticker": "workspace:*"
-    "@banglejs/react-stopwatch": "workspace:*"
-    "@banglejs/timestamp": "workspace:*"
-    "@banglejs/tooltip": "workspace:*"
-    "@banglejs/trailing-node": "workspace:*"
+    "@bangle.dev/collab": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/emoji": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/markdown-front-matter": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@bangle.dev/react-emoji-suggest": "workspace:*"
+    "@bangle.dev/react-menu": "workspace:*"
+    "@bangle.dev/react-sticker": "workspace:*"
+    "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/timestamp": "workspace:*"
+    "@bangle.dev/tooltip": "workspace:*"
+    "@bangle.dev/trailing-node": "workspace:*"
     "@github-docs/frontmatter": ^1.3.1
     change-case: ^4.1.2
     date-fns: ^2.10.0
@@ -5348,19 +5348,19 @@ __metadata:
   resolution: "bangle-website@workspace:_bangle-website"
   dependencies:
     "@babel/plugin-proposal-class-properties": ^7.12.1
-    "@banglejs/collab": "workspace:*"
-    "@banglejs/core": "workspace:*"
-    "@banglejs/emoji": "workspace:*"
-    "@banglejs/markdown": "workspace:*"
-    "@banglejs/markdown-front-matter": "workspace:*"
-    "@banglejs/react": "workspace:*"
-    "@banglejs/react-emoji-suggest": "workspace:*"
-    "@banglejs/react-menu": "workspace:*"
-    "@banglejs/react-sticker": "workspace:*"
-    "@banglejs/react-stopwatch": "workspace:*"
-    "@banglejs/timestamp": "workspace:*"
-    "@banglejs/tooltip": "workspace:*"
-    "@banglejs/trailing-node": "workspace:*"
+    "@bangle.dev/collab": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/emoji": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/markdown-front-matter": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@bangle.dev/react-emoji-suggest": "workspace:*"
+    "@bangle.dev/react-menu": "workspace:*"
+    "@bangle.dev/react-sticker": "workspace:*"
+    "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/timestamp": "workspace:*"
+    "@bangle.dev/tooltip": "workspace:*"
+    "@bangle.dev/trailing-node": "workspace:*"
     "@docusaurus/core": 2.0.0-alpha.69
     "@docusaurus/preset-classic": 2.0.0-alpha.69
     "@mdx-js/react": ^1.6.21
@@ -11224,11 +11224,11 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "integration-tests@workspace:__integration-tests__"
   dependencies:
-    "@banglejs/core": "workspace:*"
-    "@banglejs/react": "workspace:*"
-    "@banglejs/react-menu": "workspace:*"
-    "@banglejs/react-sticker": "workspace:*"
-    "@banglejs/react-stopwatch": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/react": "workspace:*"
+    "@bangle.dev/react-menu": "workspace:*"
+    "@bangle.dev/react-sticker": "workspace:*"
+    "@bangle.dev/react-stopwatch": "workspace:*"
     "@testing-library/react": ^11.2.2
     babel-loader: ^8.2.2
     clean-webpack-plugin: ^3.0.0

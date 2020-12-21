@@ -1,9 +1,9 @@
-import { Step } from '@banglejs/core/prosemirror/transform';
+import { Step } from '@bangle.dev/core/prosemirror/transform';
 import {
   objectMapValues,
   serialExecuteQueue,
   raceTimeout,
-} from '@banglejs/core/utils/js-utils';
+} from '@bangle.dev/core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
 const LOG = false;

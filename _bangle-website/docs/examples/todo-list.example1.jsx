@@ -1,13 +1,13 @@
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 
-import { BangleEditor, BangleEditorState } from '@banglejs/core';
+import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
 import {
   todoList,
   todoItem,
   listItem,
   bulletList,
   orderedList,
-} from '@banglejs/core';
+} from '@bangle.dev/core';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({
@@ -32,7 +32,7 @@ export default function Editor(domNode) {
     <ul data-bangle-name="todoList">
         <li data-bangle-name="todoItem">Buy milk</li>
         <li data-bangle-name="todoItem">Clean the room</li>
-        <li data-bangle-name="todoItem">Star BangleJS on Github</li>
+        <li data-bangle-name="todoItem">Star bangle.dev on Github</li>
     </ul>
     </div>`,
   });

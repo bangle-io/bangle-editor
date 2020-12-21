@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { psx } from '@banglejs/core/test-helpers/index';
+import { psx } from '@bangle.dev/core/test-helpers/index';
 import { serialize, parse } from './setup';
 
 describe('codeBlock list', () => {

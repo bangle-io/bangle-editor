@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { objUid } from '@banglejs/core/utils/object-uid';
+import { objUid } from '@bangle.dev/core/utils/object-uid';
 import {
   BangleEditorState as CoreBangleEditorState,
   BangleEditor as CoreBangleEditor,
-} from '@banglejs/core';
-import { saveRenderHandlers } from '@banglejs/core/node-view';
+} from '@bangle.dev/core';
+import { saveRenderHandlers } from '@bangle.dev/core/node-view';
 import { NodeViewWrapper } from './NodeViewWrapper';
 import {
   nodeViewRenderHandlers,

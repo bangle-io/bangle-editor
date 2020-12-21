@@ -3,9 +3,9 @@
  */
 import { act } from '@testing-library/react';
 import React from 'react';
-import { TextSelection } from '@banglejs/core/prosemirror/state';
+import { TextSelection } from '@bangle.dev/core/prosemirror/state';
 import { render } from '@testing-library/react';
-import { getDocLabels } from '@banglejs/core/test-helpers/index';
+import { getDocLabels } from '@bangle.dev/core/test-helpers/index';
 import { BangleEditor, useEditorState } from '../../index';
 
 function ReactEditor({

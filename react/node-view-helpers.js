@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { objUid } from '@banglejs/core/utils/object-uid';
-import { saveRenderHandlers } from '@banglejs/core/node-view';
+import { objUid } from '@bangle.dev/core/utils/object-uid';
+import { saveRenderHandlers } from '@bangle.dev/core/node-view';
 
 const LOG = false;
 

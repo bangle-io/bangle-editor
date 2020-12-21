@@ -8,19 +8,19 @@ import {
   psx,
   typeText,
   renderTestEditor,
-} from '@banglejs/core/test-helpers/index';
+} from '@bangle.dev/core/test-helpers/index';
 
 import { selectionTooltip } from '../index';
-import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
+import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import {
   EditorState,
   PluginKey,
   TextSelection,
-} from '@banglejs/core/prosemirror/state';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+} from '@bangle.dev/core/prosemirror/state';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import { createTooltipDOM } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
-import { coreSpec } from '@banglejs/core/utils/core-components';
+import { coreSpec } from '@bangle.dev/core/utils/core-components';
 
 const specRegistry = new SpecRegistry(coreSpec());
 

@@ -1,20 +1,20 @@
-import '@banglejs/core/style.css';
-import '@banglejs/tooltip/style.css';
+import '@bangle.dev/core/style.css';
+import '@bangle.dev/tooltip/style.css';
 
-import * as collab from '@banglejs/collab/client/collab-extension';
-import { emoji } from '@banglejs/emoji/index';
-import '@banglejs/emoji/style.css';
-import '@banglejs/react-menu/style.css';
-import '@banglejs/react-emoji-suggest/style.css';
-import '@banglejs/markdown-front-matter/style.css';
+import * as collab from '@bangle.dev/collab/client/collab-extension';
+import { emoji } from '@bangle.dev/emoji/index';
+import '@bangle.dev/emoji/style.css';
+import '@bangle.dev/react-menu/style.css';
+import '@bangle.dev/react-emoji-suggest/style.css';
+import '@bangle.dev/markdown-front-matter/style.css';
 import './extensions-override.css';
-import { trailingNode } from '@banglejs/trailing-node';
-import { timestamp } from '@banglejs/timestamp';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import stopwatch from '@banglejs/react-stopwatch';
-import sticker from '@banglejs/react-sticker';
-import { emojiSuggest } from '@banglejs/react-emoji-suggest';
-import { markdownFrontMatter } from '@banglejs/markdown-front-matter';
+import { trailingNode } from '@bangle.dev/trailing-node';
+import { timestamp } from '@bangle.dev/timestamp';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import stopwatch from '@bangle.dev/react-stopwatch';
+import sticker from '@bangle.dev/react-sticker';
+import { emojiSuggest } from '@bangle.dev/react-emoji-suggest';
+import { markdownFrontMatter } from '@bangle.dev/markdown-front-matter';
 import {
   bold,
   code,
@@ -36,7 +36,7 @@ import {
   todoItem,
   todoList,
   image,
-} from '@banglejs/core/components/index';
+} from '@bangle.dev/core/components/index';
 
 export const specRegistry = new SpecRegistry([
   doc.spec({ content: 'frontMatter? block+' }),

@@ -1,6 +1,6 @@
 {
   "name": "integration-tests",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -12,10 +12,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bangle-io/banglejs.git"
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
   },
   "bugs": {
-    "url": "https://github.com/bangle-io/banglejs/issues"
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
   "private": true,
   "scripts": {
@@ -25,11 +25,11 @@
     "e2e:test": "yarn test"
   },
   "dependencies": {
-    "@banglejs/core": "workspace:*",
-    "@banglejs/react": "workspace:*",
-    "@banglejs/react-menu": "workspace:*",
-    "@banglejs/react-sticker": "workspace:*",
-    "@banglejs/react-stopwatch": "workspace:*",
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/react": "workspace:*",
+    "@bangle.dev/react-menu": "workspace:*",
+    "@bangle.dev/react-sticker": "workspace:*",
+    "@bangle.dev/react-stopwatch": "workspace:*",
     "@testing-library/react": "^11.2.2",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",

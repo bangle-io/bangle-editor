@@ -4,21 +4,24 @@
  */
 
 import { render, fireEvent } from '@testing-library/react';
-import { BangleEditor as CoreBangleEditorView } from '@banglejs/core/index';
+import { BangleEditor as CoreBangleEditorView } from '@bangle.dev/core/index';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditor } from '@banglejs/react';
-import { getRenderHandlers } from '@banglejs/core/node-view';
-import { safeInsert, removeSelectedNode } from '@banglejs/core/utils/pm-utils';
+} from '@bangle.dev/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { BangleEditor } from '@bangle.dev/react';
+import { getRenderHandlers } from '@bangle.dev/core/node-view';
+import {
+  safeInsert,
+  removeSelectedNode,
+} from '@bangle.dev/core/utils/pm-utils';
 import { bananaComponent, Banana } from './setup/banana';
 import { pjsx } from './helpers/index';
-import { sleep } from '@banglejs/core/utils/js-utils';
-import { selectNodeAt } from '@banglejs/core/test-helpers/index';
-import { Node } from '@banglejs/core/prosemirror/model';
-import { EditorView as PMEditorView } from '@banglejs/core/prosemirror/view';
+import { sleep } from '@bangle.dev/core/utils/js-utils';
+import { selectNodeAt } from '@bangle.dev/core/test-helpers/index';
+import { Node } from '@bangle.dev/core/prosemirror/model';
+import { EditorView as PMEditorView } from '@bangle.dev/core/prosemirror/view';
 import { useEditorState } from '../hooks';
 const consoleError = console.error;
 

@@ -1,4 +1,4 @@
-import { uuid } from '@banglejs/core/utils/js-utils';
+import { uuid } from '@bangle.dev/core/utils/js-utils';
 
 export class WorkspaceFile {
   static fromJSON() {}

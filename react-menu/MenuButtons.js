@@ -1,47 +1,50 @@
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { rafCommandExec } from '@banglejs/core/utils/js-utils';
+import { rafCommandExec } from '@bangle.dev/core/utils/js-utils';
 import {
   defaultKeys as italicKeys,
   queryIsItalicActive,
   toggleItalic,
-} from '@banglejs/core/components/italic';
+} from '@bangle.dev/core/components/italic';
 import {
   defaultKeys as boldKeys,
   queryIsBoldActive,
   toggleBold,
-} from '@banglejs/core/components/bold';
+} from '@bangle.dev/core/components/bold';
 import {
   defaultKeys as codeKeys,
   queryIsCodeActive,
   toggleCode,
-} from '@banglejs/core/components/code';
-import * as blockquote from '@banglejs/core/components/blockquote';
+} from '@bangle.dev/core/components/code';
+import * as blockquote from '@bangle.dev/core/components/blockquote';
 import {
   defaultKeys as todoListKeys,
   queryIsTodoListActive,
   toggleTodoList,
-} from '@banglejs/core/components/todo-list';
+} from '@bangle.dev/core/components/todo-list';
 import {
   defaultKeys as paragraphKeys,
   queryIsTopLevelParagraph,
   convertToParagraph,
-} from '@banglejs/core/components/paragraph';
+} from '@bangle.dev/core/components/paragraph';
 import {
   defaultKeys as headingKeys,
   queryIsHeadingActive,
   toggleHeading,
-} from '@banglejs/core/components/heading';
-import { filter } from '@banglejs/core/utils/pm-utils';
-import { createLink, queryIsLinkActive } from '@banglejs/core/components/link';
+} from '@bangle.dev/core/components/heading';
+import { filter } from '@bangle.dev/core/utils/pm-utils';
+import {
+  createLink,
+  queryIsLinkActive,
+} from '@bangle.dev/core/components/link';
 import {
   defaultKeys as bulletListKeys,
   queryIsBulletListActive,
   toggleBulletList,
-} from '@banglejs/core/components/bullet-list';
+} from '@bangle.dev/core/components/bullet-list';
 import * as Icons from './Icons';
-import { useEditorViewContext } from '@banglejs/react';
-import { PluginKey } from '@banglejs/core';
+import { useEditorViewContext } from '@bangle.dev/react';
+import { PluginKey } from '@bangle.dev/core';
 import {
   defaultKeys as floatingMenuKeys,
   focusFloatingMenuInput,
@@ -52,7 +55,7 @@ import {
   defaultKeys as orderedListKeys,
   queryIsOrderedListActive,
   toggleOrderedList,
-} from '@banglejs/core/components/ordered-list';
+} from '@bangle.dev/core/components/ordered-list';
 
 export function BoldButton({
   hint = 'Bold\n' + boldKeys.toggleBold,

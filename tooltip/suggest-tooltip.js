@@ -1,12 +1,12 @@
-import { Fragment, Node } from '@banglejs/core/prosemirror/model';
-import { keymap } from '@banglejs/core/utils/keymap';
-import { Selection } from '@banglejs/core/prosemirror/state';
+import { Fragment, Node } from '@bangle.dev/core/prosemirror/model';
+import { keymap } from '@bangle.dev/core/utils/keymap';
+import { Selection } from '@bangle.dev/core/prosemirror/state';
 import {
   findFirstMarkPosition,
   filter,
   safeInsert,
-} from '@banglejs/core/utils/pm-utils';
-import { Plugin, PluginKey, isChromeWithSelectionBug } from '@banglejs/core';
+} from '@bangle.dev/core/utils/pm-utils';
+import { Plugin, PluginKey, isChromeWithSelectionBug } from '@bangle.dev/core';
 
 import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';

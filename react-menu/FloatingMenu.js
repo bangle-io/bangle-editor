@@ -1,9 +1,9 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { PluginKey } from '@banglejs/core';
+import { PluginKey } from '@bangle.dev/core';
 import { LinkSubMenu } from './LinkSubMenu';
-import { usePluginState } from '@banglejs/react';
+import { usePluginState } from '@bangle.dev/react';
 import {
   CodeButton,
   TodoListButton,
