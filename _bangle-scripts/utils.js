@@ -54,7 +54,7 @@ mapPackages(([filePath, packageObj]) => {
   return {
     name: packageObj.name,
     version: packageObj.version,
-    homepage: 'https://banglejs.dev',
+    homepage: 'https://bangle.dev',
     authors: [
       {
         name: 'Kushan Joshi',

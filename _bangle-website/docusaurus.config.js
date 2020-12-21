@@ -1,7 +1,7 @@
 module.exports = {
   title: 'BangleJS',
   tagline: 'Toolkit for building modern wysiwyg editors.',
-  url: 'https://banglejs.dev',
+  url: 'https://bangle.dev',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',

@@ -1,6 +1,6 @@
 ![Node.js CI](https://github.com/bangle-io/banglejs/workflows/Node.js%20CI/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/6d032d9e-c63a-44e6-ae6d-d36a4905a147/deploy-status)](https://app.netlify.com/sites/bangle/deploys)
 
-## psst we have great documentation at https://banglejs.dev
+## psst we have great documentation at https://bangle.dev
 
 ## What is BangleJS ?
 
@@ -27,4 +27,4 @@ BangleJS is a collection components for building powerful editing experiences fo
 npm install @banglejs/core
 ```
 
-Read the docs at https://banglejs.dev/docs/getting-started for more details.
+Read the docs at https://bangle.dev/docs/getting-started for more details.
