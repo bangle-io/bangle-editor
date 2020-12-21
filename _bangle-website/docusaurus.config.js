@@ -38,8 +38,16 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Style Guide',
-              to: 'docs/',
+              label: 'Getting Started',
+              to: 'docs/getting-started',
+            },
+            {
+              label: 'API',
+              to: 'docs/api/core',
+            },
+            {
+              label: 'Examples',
+              to: 'docs/examples/markdown-editor',
             },
           ],
         },
@@ -70,13 +78,11 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./docsSidebar.js'),
-          // Please change this to your repo.
           editUrl:
-            'https://github.com/bangle-io/banglejs/edit/master/_bangle-website/docs',
+            'https://github.com/bangle-io/banglejs/edit/master/_bangle-website/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
           editUrl:
             'https://github.com/bangle-io/banglejs/edit/master/_bangle-website/blog/',
         },

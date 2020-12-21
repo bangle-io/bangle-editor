@@ -10,7 +10,7 @@ hide_title: true
 BangleJS is a collection components for building powerful editing experiences for the web.
 
 - :battery: **Batteries included**  
-  We expose plenty of components to help you get started with your Editor and
+  We expose plenty of components to help you quickly started with your Editor.
 
 - **Insanely powerful API**  
   Bangle uses [Prosemirror](https://prosemirror.net/) to provide API which can help you build the next google docs including [collboration](https://prosemirror.net/examples/collab/#edit-Example).
