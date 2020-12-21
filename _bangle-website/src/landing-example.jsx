@@ -175,7 +175,7 @@ function getContent() {
                 content: [
                   {
                     type: 'text',
-                    text: 'Check out BangleJS',
+                    text: 'Check out bangle.dev',
                   },
                 ],
               },

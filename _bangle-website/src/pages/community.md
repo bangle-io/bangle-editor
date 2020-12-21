@@ -8,7 +8,7 @@ slug: /
 
 We use [discord](https://discord.gg/hFPnbPy8nK) for syncronous communication.
 
-Come say hi to us, we are happy to help you out with BangleJS or if you want to provide feedback. Click [here](https://discord.gg/hFPnbPy8nK) to join.
+Come say hi to us, we are happy to help you out with Bangle or if you want to provide feedback. Click [here](https://discord.gg/hFPnbPy8nK) to join.
 
 ## 🐞 Bugs/Features
 

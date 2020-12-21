@@ -5,7 +5,7 @@ packageName: '@bangle.dev/react'
 id: 'react'
 ---
 
-This package provides you with a React API for integrating BangleJS in your React app.
+This package provides you with a React API for integrating Bangle in your React app.
 
 ### Installation
 
