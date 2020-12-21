@@ -34,11 +34,6 @@ We create a spec named `speech` having the following fields:
   type: 'node',
   name: 'speech',
   schema: {
-    attrs: {
-      lang: {
-        default: '',
-      },
-    },
     content: 'inline*',
     group: 'block',
     draggable: false,
@@ -56,7 +51,7 @@ your node. For node views, these fields dictate the exporting of HTML, copy past
 ```js
 const { toDOM, parseDOM } = domSerializationHelpers(name, {
   tag: 'div',
-  content: 0, // '0' in Prosemirror world is a convention for tell its a hole -- content can be put in it
+  content: 0,
 });
 ```
 
@@ -65,7 +60,7 @@ const { toDOM, parseDOM } = domSerializationHelpers(name, {
 Since we donot really care about the semantics of the output, we use the helper function `domSerializationHelpers`
 which generates a good enough pair of `toDOM` and `parseDOM`.
 
-:book: Reed the [Prosemirror.Schema](https://prosemirror.net/docs/guide/#schema) guide if you want to dig deeper on what each of the fields in the schema mean.
+:book: Read the [Prosemirror.Schema](https://prosemirror.net/docs/guide/#schema) guide if you want to dig deeper on what each of the fields in the schema mean.
 
 ### Plugins
 
@@ -75,32 +70,13 @@ plugins() {
     keymap({
       'Ctrl-d': createSpeechNode(),
     }),
-    NodeView.createPlugin({
-      name: 'speech',
-      containerDOM: ['div'],
-      contentDOM: ['span'],
-    }),
+    ...
   ];
 }
 ```
 
 In the plugins, we define a keyboard shortcut which allows us to create a new speech node whenever
 user presses `Ctrl-d`. Here, `createSpeechNode()` is a command which will insert a new `speech` node for us.
-
-In the second plugin, we tell Bangle to use a NodeView plugin for rendering the `speech` node. With this
-we are on our own on deciding the rendering of this node.
-
-The `contentDOM` and `containerDOM` (Prosemirror calls this `dom`) are names you will hear often in the docs:
-
-- `contentDOM`: Is the dom node which will be the parent of the content. As you know, in our spec
-  we defined our node to have any content which is of the group `inline`. So anything that you type
-  in the speech node, will be directly housed by this dom node.
-
-- `containerDOM`: This is the outermost node of `speech` node.
-
-The bangle editor will directly interface with these two nodes and leave the things in between for you.
-You can visualize this relationship something like this,
-where you only control the part demarcated as `YOUR LAND`.
 
 ```html
 <DOC>
@@ -194,9 +170,20 @@ you can decide what component to render.
 />
 ```
 
-And in the list of your plugins we add a plugin which tells Bangle
-what `dom.Node` to render, which internally will be used by `@banglejs/react`
-to mount your Speech component.
+In the second plugin, we tell Bangle to use a NodeView plugin for rendering the `speech` node. With this
+we are on our own on deciding the rendering of this node.
+
+The `contentDOM` and `containerDOM` are names you will hear often in the docs:
+
+- `contentDOM`: Is the dom node which will be the parent of the content. As you know, in our spec
+  we defined our node to have any content which is of the group `inline`. So anything that you type
+  in the speech node, will be directly housed by this dom node.
+
+- `containerDOM`: This is the outermost node of `speech` node.
+
+The bangle editor will directly interface with these two nodes and leave the things in between for you.
+You can visualize this relationship something like this,
+where you only control the part demarcated as `YOUR LAND`.
 
 ```js
 NodeView.createPlugin({
