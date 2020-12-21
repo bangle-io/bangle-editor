@@ -30,7 +30,7 @@ new Plugin({
 
 ### How do I add a keyboard shortcut ?
 
-:book: See {{global.link.KeybindingsGuide}}
+:book: See [Keybindings Guide](/docs/guides/keybindings)
 
 ### How do I execute a command ?
 
@@ -49,7 +49,7 @@ toggleBold()(view.state, view.dispatch, view);
 ```
 
 In a React setup you can get the `view` from the hook [useEditorViewContext](/docs/api/react#useeditorviewcontext-reacthook) for components rendered inside the `<BangleEditor />`. For components
-outside `<BangleEditor />`, save the `editor` in your applications state management for retrieval and access. Don't forget to clean it up when you editor is destroyed.
+outside `<BangleEditor />`, save the `editor` in your applications state management for retrieval and access. Don't forget to clean it up when your editor is destroyed.
 
 ### How do I get access to the `view`, `state`, `dispatch` for a command?
 
@@ -63,6 +63,24 @@ If you are using `specs:[ ... ]` notation, switch to using [SpecRegistry](/docs/
 const specRegistry = new SpecRegistry([]);
 const schema = specRegistry.schema;
 ```
+
+### How do I access `prosemirror-*` module ?
+
+You can either npm install them:
+
+```
+npm i -S prosemirror-view prosemirror-state
+```
+
+or use the ones provided in bangle core which follow the path of `@banglejs/core/prosemirror/<name_of_module>`:
+
+```js
+import { EditorView } from '@banglejs/core/prosemirror/view';
+import { TextSelection } from '@banglejs/core/prosemirror/state';
+import { Slice } from '@banglejs/core/prosemirror/model';
+```
+
+I recommend the later approach to avoid problems with different versions of Prosemirror existing in your application.
 
 ### How do I change the selection ?
 

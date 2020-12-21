@@ -54,11 +54,6 @@ module.exports = {
               label: 'Twitter',
               href: 'https://twitter.com/kepta',
             },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
             {
               label: 'GitHub',
               href: 'https://github.com/bangle-io/banglejs',
