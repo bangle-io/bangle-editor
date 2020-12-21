@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/markdown",
+  "name": "@bangle.dev/markdown",
   "version": "0.1.13",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -25,10 +25,10 @@
     "prosemirror-markdown": "^1.5.0"
   },
   "peerDependencies": {
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

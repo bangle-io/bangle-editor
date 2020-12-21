@@ -3,15 +3,15 @@
  */
 
 /** @jsx psx */
-import { psx } from '@banglejs/core/test-helpers/index';
+import { psx } from '@bangle.dev/core/test-helpers/index';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
-import { defaultPlugins } from '@banglejs/core/test-helpers/default-components';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditor } from '@banglejs/core';
-import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core';
+import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { BangleEditor } from '@bangle.dev/core';
+import { BangleEditorState, Plugin, PluginKey } from '@bangle.dev/core';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
-import { coreSpec } from '@banglejs/core/utils/core-components';
+import { coreSpec } from '@bangle.dev/core/utils/core-components';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {

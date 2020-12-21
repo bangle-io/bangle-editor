@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/emoji",
+  "name": "@bangle.dev/emoji",
   "version": "0.1.13",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -24,12 +24,12 @@
     "markdown-it-emoji": "^2.0.0"
   },
   "peerDependencies": {
-    "@banglejs/core": "*",
-    "@banglejs/markdown": "*"
+    "@bangle.dev/core": "*",
+    "@bangle.dev/markdown": "*"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*",
-    "@banglejs/markdown": "workspace:*"
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/markdown": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

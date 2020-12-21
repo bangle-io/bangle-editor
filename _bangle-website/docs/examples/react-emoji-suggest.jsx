@@ -1,13 +1,13 @@
-import '@banglejs/core/style.css';
-import '@banglejs/tooltip/style.css';
-import '@banglejs/emoji/style.css';
-import '@banglejs/react-emoji-suggest/style.css';
+import '@bangle.dev/core/style.css';
+import '@bangle.dev/tooltip/style.css';
+import '@bangle.dev/emoji/style.css';
+import '@bangle.dev/react-emoji-suggest/style.css';
 import React from 'react';
-import { BangleEditor, useEditorState } from '@banglejs/react';
-import { PluginKey } from '@banglejs/core';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
-import { emoji } from '@banglejs/emoji';
-import { emojiSuggest, EmojiSuggest } from '@banglejs/react-emoji-suggest';
+import { BangleEditor, useEditorState } from '@bangle.dev/react';
+import { PluginKey } from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { emoji } from '@bangle.dev/emoji';
+import { emojiSuggest, EmojiSuggest } from '@bangle.dev/react-emoji-suggest';
 
 const emojiSuggestKey = new PluginKey('emojiSuggestKey');
 const emojisArray = [

@@ -8,12 +8,12 @@ import {
   typeText,
   sendKeyToPm,
   renderTestEditor,
-} from '@banglejs/core/test-helpers/index';
+} from '@bangle.dev/core/test-helpers/index';
 
-import { corePlugins } from '@banglejs/core/utils/core-components';
+import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { trailingNode } from '../index';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { defaultSpecs } from '@banglejs/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
 
 const specRegistry = new SpecRegistry([
   ...defaultSpecs(),

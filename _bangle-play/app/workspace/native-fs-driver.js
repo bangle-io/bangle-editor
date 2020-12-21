@@ -1,4 +1,4 @@
-import { uuid } from '@banglejs/core/utils/js-utils';
+import { uuid } from '@bangle.dev/core/utils/js-utils';
 import { markdownParser, markdownSerializer } from '../markdown/index';
 import { readFile } from '../misc/index';
 const DIR_IGNORE_LIST = ['node_modules', '.git'];

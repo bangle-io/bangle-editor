@@ -3,13 +3,16 @@
  */
 
 /** @jsx pjsx */
-import { link } from '@banglejs/core/index';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { reactTestEditor, pjsx } from '@banglejs/react/__tests__/helpers/index';
-import { TextSelection } from '@banglejs/core/prosemirror/state';
-import { PluginKey } from '@banglejs/core/plugin';
+import { link } from '@bangle.dev/core/index';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import {
+  reactTestEditor,
+  pjsx,
+} from '@bangle.dev/react/__tests__/helpers/index';
+import { TextSelection } from '@bangle.dev/core/prosemirror/state';
+import { PluginKey } from '@bangle.dev/core/plugin';
 import { floatingMenu } from '../index';
-import { coreSpec } from '@banglejs/core/utils/core-components';
+import { coreSpec } from '@bangle.dev/core/utils/core-components';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
 const specRegistry = new SpecRegistry(coreSpec());

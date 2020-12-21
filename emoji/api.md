@@ -1,7 +1,7 @@
 ---
-title: '@banglejs/emoji'
-sidebar_label: '(wip) @banglejs/emoji'
-packageName: '@banglejs/emoji'
+title: '@bangle.dev/emoji'
+sidebar_label: '(wip) @bangle.dev/emoji'
+packageName: '@bangle.dev/emoji'
 id: 'emoji'
 ---
 
@@ -10,5 +10,5 @@ Docs coming soon
 ### Installation
 
 ```
-{{npmInstallation "@banglejs/emoji"}}
+{{npmInstallation "@bangle.dev/emoji"}}
 ```

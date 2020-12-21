@@ -16,7 +16,7 @@ BangleJS is a collection components for building powerful editing experiences fo
   BangleJS is written in a framework agnostic way, so that you can focus on building the editor and not learning a new framework. That said, we have support for React and I have plans to add Vue support in the coming months.
 
 - **Customize UI with React (more frameworks to come)**  
-  Doing UI in vanilla Javascript is not fun, Bangle comes with first party React support and React components (the ones starting with `@banglejs/react-`) to add some extra :nail_care: oomph to your Editor.
+  Doing UI in vanilla Javascript is not fun, Bangle comes with first party React support and React components (the ones starting with `@bangle.dev/react-`) to add some extra :nail_care: oomph to your Editor.
 
 - **:car: Fast as a racing car**  
   Bangle is as fast as a rich text editor can be, try pasting a really long document in one of its example (:wink: don't forget to compare it with your current favourite editor).
@@ -24,7 +24,7 @@ BangleJS is a collection components for building powerful editing experiences fo
 ## Getting started
 
 ```sh
-npm install @banglejs/core
+npm install @bangle.dev/core
 ```
 
 Read the docs at https://bangle.dev/docs/getting-started for more details.

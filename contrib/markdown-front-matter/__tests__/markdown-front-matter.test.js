@@ -2,17 +2,17 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor } from '@banglejs/core/test-helpers/index';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { psx, renderTestEditor } from '@bangle.dev/core/test-helpers/index';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
-import { markdownSerializer } from '@banglejs/markdown';
+} from '@bangle.dev/core/test-helpers/default-components';
+import { markdownSerializer } from '@bangle.dev/markdown';
 import {
   defaultMarkdownItTokenizer,
   markdownParser,
-} from '@banglejs/markdown/markdown-parser';
+} from '@bangle.dev/markdown/markdown-parser';
 import { frontMatterPlugin } from '../markdown-it-plugin';
 import { markdownFrontMatter } from '../index';
 

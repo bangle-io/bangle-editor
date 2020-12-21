@@ -1,11 +1,11 @@
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 import {
   Plugin,
   BangleEditor,
   BangleEditorState,
   SpecRegistry,
-} from '@banglejs/core';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
+} from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 
 function getItemFromStorage() {
   try {

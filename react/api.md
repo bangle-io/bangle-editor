@@ -1,7 +1,7 @@
 ---
-title: '@banglejs/react'
-sidebar_label: '@banglejs/react'
-packageName: '@banglejs/react'
+title: '@bangle.dev/react'
+sidebar_label: '@bangle.dev/react'
+packageName: '@bangle.dev/react'
 id: 'react'
 ---
 
@@ -10,15 +10,15 @@ This package provides you with a React API for integrating BangleJS in your Reac
 ### Installation
 
 ```sh
-{{npmInstallation "@banglejs/react"}}
+{{npmInstallation "@bangle.dev/react"}}
 ```
 
 ### Usage
 
 ```jsx
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 
-import { useEditorState, BangleEditor } from '@banglejs/react';
+import { useEditorState, BangleEditor } from '@bangle.dev/react';
 
 export default function Editor() {
   const editorState = useEditorState({
@@ -28,7 +28,7 @@ export default function Editor() {
 }
 ```
 
-:bulb: **Do not forget to load the stylesheet located at '@banglejs/core/style.css'.**
+:bulb: **Do not forget to load the stylesheet located at '@bangle.dev/core/style.css'.**
 
 ## BangleEditor: {{global.link.ReactElement}}
 

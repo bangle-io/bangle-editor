@@ -2,76 +2,76 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@banglejs/core/*": [
+      "@bangle.dev/core/*": [
         "./core/*"
       ],
-      "@banglejs/core": [
+      "@bangle.dev/core": [
         "./core/index.js"
       ],
-      "@banglejs/emoji": [
+      "@bangle.dev/emoji": [
         "./emoji/index.js"
       ],
-      "@banglejs/emoji/*": [
+      "@bangle.dev/emoji/*": [
         "./emoji/*"
       ],
-      "@banglejs/react-emoji-suggest": [
+      "@bangle.dev/react-emoji-suggest": [
         "./contrib/react-emoji-suggest/index.js"
       ],
-      "@banglejs/react-emoji-suggest/*": [
+      "@bangle.dev/react-emoji-suggest/*": [
         "./contrib/react-emoji-suggest/*"
       ],
-      "@banglejs/markdown": [
+      "@bangle.dev/markdown": [
         "./markdown/index.js"
       ],
-      "@banglejs/markdown/*": [
+      "@bangle.dev/markdown/*": [
         "./markdown/*"
       ],
-      "@banglejs/tooltip": [
+      "@bangle.dev/tooltip": [
         "./tooltip/index.js"
       ],
-      "@banglejs/tooltip/*": [
+      "@bangle.dev/tooltip/*": [
         "./tooltip/*"
       ],
-      "@banglejs/trailing-node": [
+      "@bangle.dev/trailing-node": [
         "./contrib/trailing-node/index.js"
       ],
-      "@banglejs/trailing-node/*": [
+      "@bangle.dev/trailing-node/*": [
         "./contrib/trailing-node/*"
       ],
-      "@banglejs/timestamp": [
+      "@bangle.dev/timestamp": [
         "./contrib/timestamp/index.js"
       ],
-      "@banglejs/timestamp/*": [
+      "@bangle.dev/timestamp/*": [
         "./contrib/timestamp/*"
       ],
-      "@banglejs/markdown-it-container": [
+      "@bangle.dev/markdown-it-container": [
         "./contrib/markdown-it-container/index.js"
       ],
-      "@banglejs/markdown-it-container/*": [
+      "@bangle.dev/markdown-it-container/*": [
         "./contrib/markdown-it-container/*"
       ],
       "bangle-play/*": [
         "./_bangle-play/*"
       ],
-      "@banglejs/react": [
+      "@bangle.dev/react": [
         "./react/index.js"
       ],
-      "@banglejs/react/*": [
+      "@bangle.dev/react/*": [
         "./react/*"
       ],
-      "@banglejs/collab": [
+      "@bangle.dev/collab": [
         "./collab/index.js"
       ],
-      "@banglejs/collab/*": [
+      "@bangle.dev/collab/*": [
         "./collab/*"
       ],
-      "@banglejs/react-stopwatch": [
+      "@bangle.dev/react-stopwatch": [
         "./contrib/react-stopwatch/index.js"
       ],
-      "@banglejs/react-sticker": [
+      "@bangle.dev/react-sticker": [
         "./contrib/react-sticker/index.js"
       ],
-      "@banglejs/react-menu": [
+      "@bangle.dev/react-menu": [
         "./react-menu/index.js"
       ],
       "bangle-website/*": [

@@ -1,14 +1,14 @@
-import '@banglejs/core/style.css';
-import '@banglejs/tooltip/style.css';
+import '@bangle.dev/core/style.css';
+import '@bangle.dev/tooltip/style.css';
 import {
   BangleEditor,
   BangleEditorState,
   PluginKey,
   Plugin,
-} from '@banglejs/core';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
-import { setSelectionAtEnd } from '@banglejs/core/core-commands';
-import { selectionTooltip } from '@banglejs/tooltip';
+} from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
+import { selectionTooltip } from '@bangle.dev/tooltip';
 
 const placeholderKey = new PluginKey('placeholder');
 

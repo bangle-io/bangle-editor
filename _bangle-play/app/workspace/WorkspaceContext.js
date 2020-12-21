@@ -1,5 +1,5 @@
-import { uuid } from '@banglejs/core/utils/js-utils';
-import browser from '@banglejs/core/utils/browser';
+import { uuid } from '@bangle.dev/core/utils/js-utils';
+import browser from '@bangle.dev/core/utils/browser';
 import React from 'react';
 import { IndexDbWorkspace } from './workspace';
 import { INDEXDB_TYPE } from './type-helpers';

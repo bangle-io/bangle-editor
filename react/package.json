@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/react",
+  "name": "@bangle.dev/react",
   "version": "0.1.13",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -28,12 +28,12 @@
     "punycode": "^2.1.1"
   },
   "peerDependencies": {
-    "@banglejs/core": "*",
+    "@bangle.dev/core": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*",
+    "@bangle.dev/core": "workspace:*",
     "@testing-library/dom": "^7.28.1",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",

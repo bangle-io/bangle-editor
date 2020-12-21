@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { BangleEditorState, Plugin, PluginKey } from '@banglejs/core';
-import { corePlugins } from '@banglejs/core/utils/core-components';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { BangleEditorState, Plugin, PluginKey } from '@bangle.dev/core';
+import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { EditorViewContext } from './ReactEditor';
-import { rafSchedule } from '@banglejs/core/utils/js-utils';
+import { rafSchedule } from '@bangle.dev/core/utils/js-utils';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};

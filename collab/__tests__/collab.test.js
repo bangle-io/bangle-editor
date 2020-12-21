@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { TextSelection } from '@banglejs/core/prosemirror/state';
-import { psx } from '@banglejs/core/test-helpers/index';
-import { sleep } from '@banglejs/core/utils/js-utils';
+import { TextSelection } from '@bangle.dev/core/prosemirror/state';
+import { psx } from '@bangle.dev/core/test-helpers/index';
+import { sleep } from '@bangle.dev/core/utils/js-utils';
 import {
   setupDb,
   spinEditors,

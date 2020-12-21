@@ -1,6 +1,6 @@
 import React from 'react';
-import { NodeView } from '@banglejs/core/node-view';
-import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
+import { NodeView } from '@bangle.dev/core/node-view';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
 export class Banana extends React.Component {
   render() {
     const { attrs, updateAttrs } = this.props;

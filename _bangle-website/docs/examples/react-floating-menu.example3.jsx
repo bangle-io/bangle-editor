@@ -1,20 +1,20 @@
-import '@banglejs/core/style.css';
-import '@banglejs/tooltip/style.css';
-import '@banglejs/react-menu/style.css';
+import '@bangle.dev/core/style.css';
+import '@bangle.dev/tooltip/style.css';
+import '@bangle.dev/react-menu/style.css';
 import React, { useCallback } from 'react';
 import {
   BangleEditor,
   useEditorState,
   useEditorViewContext,
-} from '@banglejs/react';
+} from '@bangle.dev/react';
 import {
   PluginKey,
   orderedList,
   bulletList,
   todoList,
   heading,
-} from '@banglejs/core';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
+} from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 import {
   floatingMenu,
   FloatingMenu,
@@ -28,7 +28,7 @@ import {
   ParagraphButton,
   ChevronDown,
   ChevronUp,
-} from '@banglejs/react-menu';
+} from '@bangle.dev/react-menu';
 
 const menuKey = new PluginKey('menuKey');
 

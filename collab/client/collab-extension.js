@@ -4,13 +4,17 @@ import {
   getVersion,
   sendableSteps,
 } from 'prosemirror-collab';
-import { Step } from '@banglejs/core/prosemirror/transform';
-import { Plugin, PluginKey, Selection } from '@banglejs/core/prosemirror/state';
-import { getIdleCallback, sleep, uuid } from '@banglejs/core/utils/js-utils';
+import { Step } from '@bangle.dev/core/prosemirror/transform';
+import {
+  Plugin,
+  PluginKey,
+  Selection,
+} from '@bangle.dev/core/prosemirror/state';
+import { getIdleCallback, sleep, uuid } from '@bangle.dev/core/utils/js-utils';
 import {
   cancelablePromise,
   serialExecuteQueue,
-} from '@banglejs/core/utils/js-utils';
+} from '@bangle.dev/core/utils/js-utils';
 import { replaceDocument } from './helpers';
 import { CollabError } from '../collab-error';
 import { Emitter } from './emitter';

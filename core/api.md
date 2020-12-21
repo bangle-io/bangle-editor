@@ -1,14 +1,14 @@
 ---
-title: '@banglejs/core'
-sidebar_label: '@banglejs/core'
-packageName: '@banglejs/core'
+title: '@bangle.dev/core'
+sidebar_label: '@bangle.dev/core'
+packageName: '@bangle.dev/core'
 id: 'core'
 ---
 
-`@banglejs/core` as the name suggests is the core of BangleJS and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
+`@bangle.dev/core` as the name suggests is the core of BangleJS and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
 
 ```
-{{npmInstallation "@banglejs/core"}}
+{{npmInstallation "@bangle.dev/core"}}
 ```
 
 {{global.useRightSidebar}}
@@ -102,7 +102,7 @@ This is a special type of command which makes no changes to the editor but queri
 :bulb: _BangleJS follows the convention of prefixing_ `query` _to **any** function that returns a QueryCommand._
 
 ```js
-import { heading } from '@banglejs/core';
+import { heading } from '@bangle.dev/core';
 
 const isActive = heading.commands.queryIsHeadingActive(3)(state); // true or false
 ```
@@ -145,7 +145,7 @@ The class exposes the following fields/methods:
 **Usage**
 
 ```js
-import { BangleEditor, BangleEditorState } from '@banglejs/core';
+import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
 
 // 'editor' is the id of the dom Node on which bangle will
 // be mounted.
@@ -227,7 +227,13 @@ The class exposes the following fields/methods:
 In the example below, we are loading a bunch of specs & plugins.
 
 ```js
-import { bulletList, listItem, orderedList, bold, link } from '@banglejs/core';
+import {
+  bulletList,
+  listItem,
+  orderedList,
+  bold,
+  link,
+} from '@bangle.dev/core';
 
 const specRegistry = new SpecRegistry([
   link.spec(),
@@ -295,7 +301,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { blockquote } from '@banglejs/core';
+import { blockquote } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -338,7 +344,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { bold } from '@banglejs/core';
+import { bold } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -381,7 +387,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { bulletList, listItem } from '@banglejs/core';
+import { bulletList, listItem } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -431,7 +437,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { code } from '@banglejs/core';
+import { code } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -479,7 +485,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { codeBlock } from '@banglejs/core';
+import { codeBlock } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -557,7 +563,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { heading } from '@banglejs/core';
+import { heading } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -616,7 +622,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { hardBreak } from '@banglejs/core';
+import { hardBreak } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -647,7 +653,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { horizontalRule } from '@banglejs/core';
+import { horizontalRule } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -678,7 +684,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { image } from '@banglejs/core';
+import { image } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -721,7 +727,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { italic } from '@banglejs/core';
+import { italic } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -770,7 +776,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { link } from '@banglejs/core';
+import { link } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -824,7 +830,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { orderedList, bulletList, listItem } from '@banglejs/core';
+import { orderedList, bulletList, listItem } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -871,7 +877,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { orderedList, bulletList, listItem } from '@banglejs/core';
+import { orderedList, bulletList, listItem } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -942,7 +948,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { blockquote } from '@banglejs/core';
+import { blockquote } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -982,7 +988,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { strike } from '@banglejs/core';
+import { strike } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -1063,7 +1069,7 @@ import {
   orderedList,
   bulletList,
   listItem,
-} from '@banglejs/core';
+} from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
@@ -1142,7 +1148,7 @@ Named parameters:
 **Usage**
 
 ```js
-import { underline } from '@banglejs/core';
+import { underline } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs

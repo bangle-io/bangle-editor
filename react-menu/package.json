@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/react-menu",
+  "name": "@bangle.dev/react-menu",
   "version": "0.1.13",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -27,16 +27,16 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "@banglejs/core": "*",
-    "@banglejs/react": "*",
-    "@banglejs/tooltip": "*",
+    "@bangle.dev/core": "*",
+    "@bangle.dev/react": "*",
+    "@bangle.dev/tooltip": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*",
-    "@banglejs/react": "workspace:*",
-    "@banglejs/tooltip": "workspace:*",
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/react": "workspace:*",
+    "@bangle.dev/tooltip": "workspace:*",
     "@testing-library/react": "^11.2.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"

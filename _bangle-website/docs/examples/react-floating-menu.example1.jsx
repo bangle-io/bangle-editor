@@ -1,11 +1,11 @@
-import '@banglejs/core/style.css';
-import '@banglejs/tooltip/style.css';
-import '@banglejs/react-menu/style.css';
+import '@bangle.dev/core/style.css';
+import '@bangle.dev/tooltip/style.css';
+import '@bangle.dev/react-menu/style.css';
 import React from 'react';
-import { BangleEditor, useEditorState } from '@banglejs/react';
-import { PluginKey } from '@banglejs/core';
-import { corePlugins, coreSpec } from '@banglejs/core/utils/core-components';
-import { floatingMenu, FloatingMenu } from '@banglejs/react-menu';
+import { BangleEditor, useEditorState } from '@bangle.dev/react';
+import { PluginKey } from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { floatingMenu, FloatingMenu } from '@bangle.dev/react-menu';
 
 const menuKey = new PluginKey('menuKey');
 

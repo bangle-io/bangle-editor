@@ -6,10 +6,10 @@ import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
 import pterodactylImg from './img/pterodactyl.png';
-import { keymap } from '@banglejs/core/utils/keymap';
-import { NodeView } from '@banglejs/core/node-view';
-import { domSerializationHelpers } from '@banglejs/core/utils/dom-serialization-helpers';
-import { Node } from '@banglejs/core/prosemirror/model';
+import { keymap } from '@bangle.dev/core/utils/keymap';
+import { NodeView } from '@bangle.dev/core/node-view';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
+import { Node } from '@bangle.dev/core/prosemirror/model';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

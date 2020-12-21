@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/timestamp",
+  "name": "@bangle.dev/timestamp",
   "version": "0.1.13",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -21,10 +21,10 @@
   "module": "index.js",
   "scripts": {},
   "peerDependencies": {
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

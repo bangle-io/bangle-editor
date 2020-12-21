@@ -1,5 +1,5 @@
 {
-  "name": "@banglejs/markdown-front-matter",
+  "name": "@bangle.dev/markdown-front-matter",
   "version": "0.1.13",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -21,11 +21,11 @@
   "module": "index.js",
   "scripts": {},
   "peerDependencies": {
-    "@banglejs/core": "*"
+    "@bangle.dev/core": "*"
   },
   "devDependencies": {
-    "@banglejs/core": "workspace:*",
-    "@banglejs/markdown": "workspace:*"
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/markdown": "workspace:*"
   },
   "dependencies": {
     "markdown-it-container": "^3.0.0",

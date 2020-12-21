@@ -1,21 +1,21 @@
 import React from 'react';
 import { PluginKey } from 'prosemirror-state';
 
-import { getIdleCallback, uuid } from '@banglejs/core/utils/js-utils';
-import * as collab from '@banglejs/collab/client/collab-extension';
-import { collabRequestHandlers } from '@banglejs/collab/client/collab-request-handlers';
-import * as coreComps from '@banglejs/core/components/index';
-import { NodeView } from '@banglejs/core/node-view';
-import { emoji, emojisArray } from '@banglejs/emoji/index';
-import { trailingNode } from '@banglejs/trailing-node';
-import { timestamp } from '@banglejs/timestamp';
-import { BangleEditor } from '@banglejs/react';
-import { useEditorState } from '@banglejs/react';
-import stopwatch from '@banglejs/react-stopwatch';
-import sticker from '@banglejs/react-sticker';
+import { getIdleCallback, uuid } from '@bangle.dev/core/utils/js-utils';
+import * as collab from '@bangle.dev/collab/client/collab-extension';
+import { collabRequestHandlers } from '@bangle.dev/collab/client/collab-request-handlers';
+import * as coreComps from '@bangle.dev/core/components/index';
+import { NodeView } from '@bangle.dev/core/node-view';
+import { emoji, emojisArray } from '@bangle.dev/emoji/index';
+import { trailingNode } from '@bangle.dev/trailing-node';
+import { timestamp } from '@bangle.dev/timestamp';
+import { BangleEditor } from '@bangle.dev/react';
+import { useEditorState } from '@bangle.dev/react';
+import stopwatch from '@bangle.dev/react-stopwatch';
+import sticker from '@bangle.dev/react-sticker';
 import { specRegistry } from '../editor/spec-sheet';
-import { floatingMenu, FloatingMenu } from '@banglejs/react-menu';
-import { EmojiSuggest, emojiSuggest } from '@banglejs/react-emoji-suggest';
+import { floatingMenu, FloatingMenu } from '@bangle.dev/react-menu';
+import { EmojiSuggest, emojiSuggest } from '@bangle.dev/react-emoji-suggest';
 
 const LOG = false;
 const DEBUG = true;

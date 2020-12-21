@@ -26,10 +26,10 @@ import {
   todoList,
   image,
   horizontalRule,
-} from '@banglejs/core/components';
+} from '@bangle.dev/core/components';
 
 import { markdownParser } from '../markdown-parser';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 
 const specRegistry = new SpecRegistry([
   // nodes

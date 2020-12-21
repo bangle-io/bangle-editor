@@ -1,7 +1,7 @@
 ---
-title: '@banglejs/markdown-front-matter'
-sidebar_label: '(wip) @banglejs/markdown-front-matter'
-packageName: '@banglejs/markdown-front-matter'
+title: '@bangle.dev/markdown-front-matter'
+sidebar_label: '(wip) @bangle.dev/markdown-front-matter'
+packageName: '@bangle.dev/markdown-front-matter'
 id: 'markdown_front_matter'
 ---
 
@@ -12,5 +12,5 @@ Docs coming soon
 ### Installation
 
 ```
-{{npmInstallation "@banglejs/markdown-front-matter"}}
+{{npmInstallation "@bangle.dev/markdown-front-matter"}}
 ```

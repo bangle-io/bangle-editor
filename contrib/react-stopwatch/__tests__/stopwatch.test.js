@@ -3,16 +3,19 @@
  */
 /** @jsx pjsx */
 import { fireEvent, act } from '@testing-library/react';
-import { pjsx, reactTestEditor } from '@banglejs/react/__tests__/helpers/index';
-import { sendKeyToPm } from '@banglejs/core/test-helpers/index';
-import { markdownSerializer } from '@banglejs/markdown/markdown-serializer';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
+import {
+  pjsx,
+  reactTestEditor,
+} from '@bangle.dev/react/__tests__/helpers/index';
+import { sendKeyToPm } from '@bangle.dev/core/test-helpers/index';
+import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import { stopwatch } from '../index';
 import { Stopwatch } from '../stopwatch';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
+} from '@bangle.dev/core/test-helpers/default-components';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), stopwatch.spec({})]);
 const plugins = () => [...defaultPlugins(), stopwatch.plugins({})];

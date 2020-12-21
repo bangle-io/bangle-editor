@@ -1,4 +1,4 @@
-import '@banglejs/core/style.css';
+import '@bangle.dev/core/style.css';
 
 import {
   BangleEditor,
@@ -6,7 +6,7 @@ import {
   SpecRegistry,
   heading,
   bold,
-} from '@banglejs/core';
+} from '@bangle.dev/core';
 
 export default function createEditor(
   domNode = document.getElementById('#editor'),

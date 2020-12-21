@@ -3,12 +3,12 @@ import React from 'react';
 import {
   defaultPlugins,
   defaultSpecs,
-} from '@banglejs/core/test-helpers/default-components';
-import { SpecRegistry } from '@banglejs/core/spec-registry';
-import { sticker } from '@banglejs/react-sticker';
+} from '@bangle.dev/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { sticker } from '@bangle.dev/react-sticker';
 import { setupReactEditor } from '../setup/entry-helpers';
-import { floatingMenu } from '@banglejs/react-menu';
-import { PluginKey } from '@banglejs/core/index';
+import { floatingMenu } from '@bangle.dev/react-menu';
+import { PluginKey } from '@bangle.dev/core/index';
 
 setup();
 

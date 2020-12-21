@@ -1,4 +1,4 @@
-import { Selection } from '@banglejs/core/prosemirror/state';
+import { Selection } from '@bangle.dev/core/prosemirror/state';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
