@@ -3,7 +3,7 @@ title: Getting started
 sidebar_label: Getting Started
 ---
 
-To get started with BangleJS you need to install the core module:
+To get started with bangle.dev you need to install the core module:
 
 ```
 npm install @bangle.dev/core
@@ -11,13 +11,13 @@ npm install @bangle.dev/core
 
 ## With React
 
-BangleJS at its heart is framework agnostic, but it comes with first party support for React. To get started, run the follow command:
+Bangle at its heart is framework agnostic, but it comes with first party support for React. To get started, run the follow command:
 
 ```
 npm install @bangle.dev/react
 ```
 
-:heart: Support for **Vue** is coming soon. Meanwhile you can either use vanilla BangleJS Components _or_ consider [tiptap](https://github.com/ueberdosis/tiptap) an awesome library which runs the same [Prosemirror](https://prosemirror.net) blood in its veins!
+:heart: Support for **Vue** is coming soon. Meanwhile you can either use vanilla Bangle Components _or_ consider [tiptap](https://github.com/ueberdosis/tiptap) an awesome library which runs the same [Prosemirror](https://prosemirror.net) blood in its veins!
 
 ## Stability
 
@@ -35,7 +35,7 @@ npm install @bangle.dev/react
 
 ## The Bangle eco-system
 
-The BangleJS project is made up of smaller individual packages to fit a particular scoped need. You can find their documentation under the API section of the sidebar. Please keep the following things in mind when consuming any of the Bangle packages:
+The Bangle project is made up of smaller individual packages to fit a particular scoped need. You can find their documentation under the API section of the sidebar. Please keep the following things in mind when consuming any of the Bangle packages:
 
 - Only the packages with names starting `@bangle.dev/react-` require a React dependency.
 

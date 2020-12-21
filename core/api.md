@@ -5,7 +5,7 @@ packageName: '@bangle.dev/core'
 id: 'core'
 ---
 
-`@bangle.dev/core` as the name suggests is the core of BangleJS and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
+`@bangle.dev/core` as the name suggests is the core of Bangle and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
 
 ```
 {{npmInstallation "@bangle.dev/core"}}
@@ -15,7 +15,7 @@ id: 'core'
 
 ## Component
 
-The building block of BangleJS is a component. At it's heart, we have a vanilla Javascript module which exports the follow properties:
+The building block of Bangle is a component. At it's heart, we have a vanilla Javascript module which exports the follow properties:
 
 - **?spec(opts: Object):** [Spec](#spec)\
   The specification which defines how the component will be rendered in the Editor. If the component has nothing to render it will not export this method.
@@ -99,7 +99,7 @@ Please read {{global.link.EditorOperationsGuide}} for more details.
 
 This is a special type of command which makes no changes to the editor but queries the editor state and returns the value.
 
-:bulb: _BangleJS follows the convention of prefixing_ `query` _to **any** function that returns a QueryCommand._
+:bulb: _Bangle follows the convention of prefixing_ `query` _to **any** function that returns a QueryCommand._
 
 ```js
 import { heading } from '@bangle.dev/core';

@@ -12,13 +12,13 @@ export default function Editor(domNode) {
     <ul>
         <li>Buy milk</li>
         <li>Clean the room</li>
-        <li>Star BangleJS on Github</li>
+        <li>Star bangle.dev on Github</li>
     </ul>
     <p>And ofcourse ordered lists:</p>
     <ol>
         <li>Buy milk</li>
         <li>Clean the room</li>
-        <li>Star BangleJS on Github</li>
+        <li>Star bangle.dev on Github</li>
     </ol>
     </div>`,
   });

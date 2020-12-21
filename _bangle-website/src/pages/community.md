@@ -12,4 +12,4 @@ Come say hi to us, we are happy to help you out with BangleJS or if you want to 
 
 ## 🐞 Bugs/Features
 
-If you found a bug or would like to request a feature please open a github ticket at https://github.com/bangle-io/banglejs.
+If you found a bug or would like to request a feature please open a github ticket at https://github.com/bangle-io/bangle.dev.

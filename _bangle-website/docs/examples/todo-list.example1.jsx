@@ -32,7 +32,7 @@ export default function Editor(domNode) {
     <ul data-bangle-name="todoList">
         <li data-bangle-name="todoItem">Buy milk</li>
         <li data-bangle-name="todoItem">Clean the room</li>
-        <li data-bangle-name="todoItem">Star BangleJS on Github</li>
+        <li data-bangle-name="todoItem">Star bangle.dev on Github</li>
     </ul>
     </div>`,
   });

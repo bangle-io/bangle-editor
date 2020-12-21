@@ -5,9 +5,9 @@ slug: /
 hide_title: true
 ---
 
-## What is BangleJS ?
+## What is bangle.dev ?
 
-BangleJS is a collection components for building powerful editing experiences for the web.
+Bangle is a collection components for building powerful editing experiences for the web.
 
 - :battery: **Batteries included**  
   We expose plenty of components to help you quickly started with your Editor.
@@ -16,7 +16,7 @@ BangleJS is a collection components for building powerful editing experiences fo
   Bangle uses [Prosemirror](https://prosemirror.net/) to provide API which can help you build the next google docs including [collboration](https://prosemirror.net/examples/collab/#edit-Example).
 
 - **Vanilla JS**  
-  BangleJS is written in a framework agnostic way, so that you can focus on building the editor and not learning a new framework. That said, we have support for React and I have plans to add Vue support in the coming months.
+  Bangle is written in a framework agnostic way, so that you can focus on building the editor and not learning a new framework. That said, we have support for React and I have plans to add Vue support in the coming months.
 
 - **Customize UI with React (more frameworks to come)**  
   Doing UI in vanilla Javascript is not fun, Bangle comes with first party React support and React components (the ones starting with `@bangle.dev/react-`) to add some extra :nail_care: oomph to your Editor.
@@ -28,7 +28,7 @@ BangleJS is a collection components for building powerful editing experiences fo
 
 ## How does it compare with ?
 
-Before I jump into nitty gritty, please know that BangleJS is in **beta** stage and if you are looking for a more mature product, the libraries below will help. But hey, do give BangleJS a try.
+Before I jump into nitty gritty, please know that Bangle is in **beta** stage and if you are looking for a more mature product, the libraries below will help. But hey, do give Bangle a try.
 
 - **[Quill](https://quilljs.com/):**
 
