@@ -60,7 +60,7 @@ module.exports = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/kepta',
+              href: 'https://twitter.com/kushan2020',
             },
             {
               label: 'GitHub',

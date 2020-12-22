@@ -2064,6 +2064,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@bangle.dev/text-formatting@workspace:*, @bangle.dev/text-formatting@workspace:contrib/text-formatting":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/text-formatting@workspace:contrib/text-formatting"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+  peerDependencies:
+    "@bangle.dev/core": "*"
+  languageName: unknown
+  linkType: soft
+
 "@bangle.dev/timestamp@workspace:*, @bangle.dev/timestamp@workspace:contrib/timestamp":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/timestamp@workspace:contrib/timestamp"
@@ -5261,6 +5271,7 @@ __metadata:
     "@bangle.dev/react-menu": "workspace:*"
     "@bangle.dev/react-sticker": "workspace:*"
     "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/text-formatting": "workspace:*"
     "@bangle.dev/timestamp": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/trailing-node": "workspace:*"
@@ -5330,6 +5341,7 @@ __metadata:
     "@bangle.dev/react-menu": "workspace:*"
     "@bangle.dev/react-sticker": "workspace:*"
     "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/text-formatting": "workspace:*"
     "@bangle.dev/timestamp": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/trailing-node": "workspace:*"
@@ -5358,6 +5370,7 @@ __metadata:
     "@bangle.dev/react-menu": "workspace:*"
     "@bangle.dev/react-sticker": "workspace:*"
     "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/text-formatting": "workspace:*"
     "@bangle.dev/timestamp": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/trailing-node": "workspace:*"
