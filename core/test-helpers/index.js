@@ -7,6 +7,7 @@ export * from './render-test-editor';
 export * from './schema-builders';
 export * from './dispatch-paste-event';
 export * from './create-event';
+export * from './selection-helpers';
 
 export const selectNodeAt = (view, pos) => {
   const tr = view.state.tr;

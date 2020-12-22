@@ -38,6 +38,12 @@
       "@bangle.dev/trailing-node/*": [
         "./contrib/trailing-node/*"
       ],
+      "@bangle.dev/text-formatting": [
+        "./contrib/text-formatting/index.js"
+      ],
+      "@bangle.dev/text-formatting/*": [
+        "./contrib/text-formatting/*"
+      ],
       "@bangle.dev/timestamp": [
         "./contrib/timestamp/index.js"
       ],
