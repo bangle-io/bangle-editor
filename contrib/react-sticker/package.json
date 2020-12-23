@@ -20,7 +20,7 @@
   "main": "index.js",
   "module": "index.js",
   "scripts": {
-    "prepack": "yarn g:babel",
+    "prepack": "yarn g:babel && cp -r $INIT_CWD/img $INIT_CWD/dist/",
     "postpack": "rm -r $INIT_CWD/dist"
   },
   "dependencies": {
