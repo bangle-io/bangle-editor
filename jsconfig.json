@@ -56,9 +56,6 @@
       "@bangle.dev/markdown-it-container/*": [
         "./contrib/markdown-it-container/*"
       ],
-      "bangle-play/*": [
-        "./_bangle-play/*"
-      ],
       "@bangle.dev/react": [
         "./react/index.js"
       ],
@@ -92,8 +89,6 @@
     "build",
     "dist",
     "archive",
-    "_bangle-play/build",
-    "_bangle-play/node_modules",
     "__integration-tests__/build",
     "_bangle-website/build",
     "_bangle-website/.docusaurus",

@@ -25,7 +25,6 @@ const docsGlob = [
   // Read any `api.md` file in the workspace packages
   path.join(rootPath, '**/api.md'),
   '!' + path.join(rootPath, '_bangle-website/**'),
-  '!' + path.join(rootPath, '_bangle-play/**'),
   '!' + path.join(rootPath, '.yarn/**'),
   `!**/__tests__/**`,
 ];

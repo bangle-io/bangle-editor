@@ -23,17 +23,6 @@ jobs:
           node-version: 14.x
       - run: yarn install --immutable --immutable-cache
       - run: yarn ${{ matrix.test-kind }}
-  build-bangle-play:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - run: yarn install --immutable --immutable-cache
-      - run: yarn workspace bangle-play build
-      - run: yarn website:build
   check-cache:
     runs-on: ubuntu-latest
     steps:
