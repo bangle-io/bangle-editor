@@ -23,7 +23,7 @@ npm install @bangle.dev/react
 
 **Current**:
 
-- Bangle is currently in `alpha` phase and we plan to iterate fast, bug fixes and many breaking changes. I would request you to try it out and use it in yoru side projects but avoid using it in **production**.
+- Bangle is currently in `alpha` phase and we plan to iterate fast, bug fixes and many breaking changes. I would request you to try it out and use it in your side projects but avoid using it in **production**.
 
 **Next Month**:
 
