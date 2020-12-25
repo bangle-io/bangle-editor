@@ -71,6 +71,15 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Bangle.dev, Inc. Built with Docusaurus.`,
     },
+    algolia: {
+      apiKey: '17284b4121110575d7dedf56e2c02a62',
+      indexName: 'bangle',
+
+      // Optional: see doc section bellow
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+    },
   },
   presets: [
     [
