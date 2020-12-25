@@ -1,5 +1,5 @@
 import { DOMSerializer } from 'prosemirror-model';
-
+import { isProdEnv, isTestEnv } from './environment';
 const LOG = false;
 
 function log(...args) {
@@ -333,7 +333,7 @@ export function rafSchedule(fn) {
 }
 
 export const bangleWarn =
-  process.env.NODE_ENV === 'test'
+  isTestEnv || isProdEnv
     ? () => {}
     : console.warn.bind(console, 'Warning in bangle.js:');
 
