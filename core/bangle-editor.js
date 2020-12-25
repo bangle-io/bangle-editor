@@ -29,7 +29,7 @@ export class BangleEditor {
   }
 
   focusView() {
-    if (isTestEnv() || this.view.focused) {
+    if (isTestEnv || this.view.focused) {
       return;
     }
     this.view.focus();
