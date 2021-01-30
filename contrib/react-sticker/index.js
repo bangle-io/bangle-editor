@@ -1,2 +1,4 @@
-export * as sticker from './sticker';
-export * as default from './sticker';
+import * as sticker from './sticker';
+
+export { sticker };
+export default sticker;

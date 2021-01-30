@@ -1,1 +1,3 @@
-export * as timestamp from './timestamp';
+import * as timestamp from './timestamp';
+
+export { timestamp };

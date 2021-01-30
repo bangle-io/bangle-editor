@@ -1,2 +1,4 @@
-export * as superscript from './superscript';
-export * as subscript from './subscript';
+import * as superscript from './superscript';
+
+export { superscript };
+export default superscript;
