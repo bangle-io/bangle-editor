@@ -33,6 +33,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@bangle.dev/collab": "workspace:*",
+    "@bangle.dev/collapsible": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
