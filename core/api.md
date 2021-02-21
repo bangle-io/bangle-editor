@@ -42,7 +42,7 @@ An object with the following fields:
 
 - **schema**: {{Prosemirror.NodeSpec}} | {{Prosemirror.MarkSpec}}
 
-- **markdown**: ?{toMarkdown: fn(), parseMarkdown: object}\
+- **markdown**: ?{toMarkdown: fn(), parseMarkdown: object}\\
 
 - **options**: ?object\
   Use this to save data in this spec. You can use this field to save some data options to make it available to anyone having access to specRegistry.
@@ -463,7 +463,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -508,7 +508,7 @@ Returns a node spec with [topNode](#spec) set to `true`, read more {{global.link
 
 ### heading: {{core.link.Component}}
 
-Enables headings of various levels in your editor. {{global.link.MarkdownSupport}}
+Enables headings of various levels in your editor {{global.link.MarkdownSupport}}. This component also allows you to collapse and uncollapse any content, after the current heading, that is not heading or has a heading of level greater than the current heading. A collapsed heading will have a class name of `bangle-heading-collapsed` to allow for styling.
 
 #### spec({ ... }): {{core.link.NodeSpec}}
 
@@ -552,6 +552,8 @@ Named parameters:
 
 - **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
+- **toggleCollapse:** `-`: Toggle collapsing of heading.
+
 #### commands: {{core.link.CommandObject}}
 
 - **toggleHeading**(level: `number=3`): {{core.link.Command}}\
@@ -559,6 +561,21 @@ Named parameters:
 
 - **queryIsHeadingActive**(level:`number=3`): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a heading of given `level`.
+
+- **queryIsCollapseActive**(): {{core.link.Command}}\
+  Query if the current heading is collapsed.
+
+- **collapseHeading**(): {{core.link.Command}}\
+  Hides every node below that is not heading or has a heading `level` less than that of the current heading.
+
+- **uncollapseHeading**(): {{core.link.Command}}\
+  Brings back all the hidden nodes of a collapsed heading. Will only uncollapse one level.
+
+- **toggleHeadingCollapse**(): {{core.link.Command}}\
+  Collapses an uncollapsed heading and vice versa.
+
+- **uncollapseAllHeadings**(): {{core.link.Command}}\
+  Uncollapses all headings in the `doc`. Will also recursively uncollapse every heading.
 
 **Usage**
 

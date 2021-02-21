@@ -82,6 +82,7 @@ function specFactory({ levels = defaultLevels } = {}) {
           result[1]['data-bangle-attrs'] = JSON.stringify({
             collapseContent: node.attrs.collapseContent,
           });
+          result[1]['class'] = 'bangle-heading-collapsed';
         }
 
         return result;
