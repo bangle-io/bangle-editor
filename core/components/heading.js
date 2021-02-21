@@ -27,6 +27,7 @@ export const defaultKeys = {
   emptyCut: 'Mod-x',
   insertEmptyParaAbove: 'Mod-Shift-Enter',
   insertEmptyParaBelow: 'Mod-Enter',
+  toggleCollapse: null,
 };
 
 const name = 'heading';
@@ -139,6 +140,7 @@ function pluginsFactory({
             isInHeading,
             insertEmpty(schema.nodes.paragraph, 'below', false),
           ),
+          [keybindings.toggleCollapse]: toggleHeadingCollapse(),
         }),
       ...(markdownShortcut ? levels : []).map((level) =>
         textblockTypeInputRule(
