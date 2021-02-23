@@ -463,7 +463,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -579,9 +579,13 @@ Named parameters:
 
 **On Heading collapse**
 
-The heading component also allows you to collapse and uncollapse any content, after the current heading, that is not of type heading or has a heading of level greater than the current heading. A collapsed heading will have a class name of `bangle-heading-collapsed` to allow for styling. A collapsed heading will save the collapsed data in a JSON string under the dom attribute `data-bangle-attrs`.
+The heading component also allows you to collapse and uncollapse any content, after the current heading, that is not of type heading or has a heading of level greater than the current heading. 
 
-:warning: For serializing to Markdown you will have to uncollapse your document, since markdown doesn't support collapsing. You can run the command`uncollapseAllHeadings` before serializing to markdown to avoid this problem.
+:bulb: The collapsed data is saved in the node attribute `collapseContent`, it is also accessible inside the DOM data attribute by accessing `data-bangle-attrs`.
+
+:bulb:  A collapsed heading will have a class name of `bangle-heading-collapsed` to allow for styling.
+
+:warning: For serializing to Markdown you will have to uncollapse your document, since markdown doesn't support collapsing. You should run the command`uncollapseAllHeadings` before serializing to markdown.
 
 On top of the collapse commands, the component also exports the following helper functions to help with collapse functionality:
 
@@ -590,6 +594,9 @@ On top of the collapse commands, the component also exports the following helper
 
 - **listCollapsedHeading**(state: {{Prosemirror.EditorState}}): \[{node: {{Prosemirror.Node}}, pos: number}\]\
   Lists all the headings that are currently collapsed.
+
+- **flattenFragmentJSON**(fragmentJSON: Object): Object\
+  Deep flattens any nested collapsed heading in the object. Bangle internally uses this to implement `uncollapseAllHeadings` command. Example `flattenFragmentJSON(node.attrs.collapseContent)`.
 
 **Usage**
 

@@ -313,27 +313,6 @@ export function toggleHeadingCollapse() {
 }
 
 export function uncollapseAllHeadings() {
-  const flattenFragmentJSON = (fragJSON) => {
-    let result = [];
-    fragJSON.forEach((nodeJSON) => {
-      if (nodeJSON.type === 'heading' && nodeJSON.attrs.collapseContent) {
-        const collapseContent = nodeJSON.attrs.collapseContent;
-        result.push({
-          ...nodeJSON,
-          attrs: {
-            ...nodeJSON.attrs,
-            collapseContent: null,
-          },
-        });
-        result.push(...flattenFragmentJSON(collapseContent));
-      } else {
-        result.push(nodeJSON);
-      }
-    });
-
-    return result;
-  };
-
   return (state, dispatch) => {
     const collapsibleNodes = listCollapsedHeading(state);
 
@@ -392,6 +371,27 @@ export function listCollapsibleHeading(state) {
     false,
   );
 }
+
+export const flattenFragmentJSON = (fragJSON) => {
+  let result = [];
+  fragJSON.forEach((nodeJSON) => {
+    if (nodeJSON.type === 'heading' && nodeJSON.attrs.collapseContent) {
+      const collapseContent = nodeJSON.attrs.collapseContent;
+      result.push({
+        ...nodeJSON,
+        attrs: {
+          ...nodeJSON.attrs,
+          collapseContent: null,
+        },
+      });
+      result.push(...flattenFragmentJSON(collapseContent));
+    } else {
+      result.push(nodeJSON);
+    }
+  });
+
+  return result;
+};
 
 // TODO
 /**
