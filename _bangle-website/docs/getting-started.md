@@ -25,13 +25,10 @@ npm install @bangle.dev/react
 
 - Bangle is currently in `alpha` phase and we plan to iterate fast, bug fixes and many breaking changes. I would request you to try it out and use it in your side projects but avoid using it in **production**.
 
-**Next Month**:
-
-- I think by mid January, I will have solicited enough feedback from folks that we can move to `beta` and address the feedback. Focus will be on stability and building a project roadmap.
-
 **Short term**:
 
 - Once we achieve a good stable month with `beta` with some community adoption, we can move to general release. I expect this to come around March or April.
+
 
 ## The Bangle eco-system
 
