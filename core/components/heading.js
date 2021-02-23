@@ -1,5 +1,9 @@
 import { setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
+import { findChildren } from 'prosemirror-utils';
+import { Fragment } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
+
 import { keymap } from '../utils/keymap';
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
@@ -23,6 +27,7 @@ export const defaultKeys = {
   emptyCut: 'Mod-x',
   insertEmptyParaAbove: 'Mod-Shift-Enter',
   insertEmptyParaBelow: 'Mod-Enter',
+  toggleCollapse: null,
 };
 
 const name = 'heading';
@@ -45,6 +50,9 @@ function specFactory({ levels = defaultLevels } = {}) {
         level: {
           default: 1,
         },
+        collapseContent: {
+          default: null,
+        },
       },
       content: 'inline*',
       group: 'block',
@@ -53,11 +61,31 @@ function specFactory({ levels = defaultLevels } = {}) {
       parseDOM: levels.map((level) => {
         return {
           tag: `h${level}`,
-          attrs: { level: parseLevel(level) },
+          getAttrs: (dom) => {
+            const result = { level: parseLevel(level) };
+            const attrs = dom.getAttribute('data-bangle-attrs');
+
+            if (!attrs) {
+              return result;
+            }
+
+            const obj = JSON.parse(attrs);
+
+            return Object.assign({}, result, obj);
+          },
         };
       }),
       toDOM: (node) => {
-        return [`h${node.attrs.level}`, {}, 0];
+        const result = [`h${node.attrs.level}`, {}, 0];
+
+        if (node.attrs.collapseContent) {
+          result[1]['data-bangle-attrs'] = JSON.stringify({
+            collapseContent: node.attrs.collapseContent,
+          });
+          result[1]['class'] = 'bangle-heading-collapsed';
+        }
+
+        return result;
       },
     },
     markdown: {
@@ -113,6 +141,7 @@ function pluginsFactory({
             isInHeading,
             insertEmpty(schema.nodes.paragraph, 'below', false),
           ),
+          [keybindings.toggleCollapse]: toggleHeadingCollapse(),
         }),
       ...(markdownShortcut ? levels : []).map((level) =>
         textblockTypeInputRule(
@@ -153,5 +182,292 @@ export function queryIsHeadingActive(level) {
       return true;
     }
     return node.attrs.level === level;
+  };
+}
+
+export function queryIsCollapseActive() {
+  return (state) => {
+    const match = findParentNodeOfType(state.schema.nodes[name])(
+      state.selection,
+    );
+
+    if (!match || !isCollapsible(match)) {
+      return false;
+    }
+
+    return Boolean(match.node.attrs.collapseContent);
+  };
+}
+
+export function collapseHeading() {
+  return (state, dispatch) => {
+    const match = findParentNodeOfType(state.schema.nodes[name])(
+      state.selection,
+    );
+
+    if (!match || !isCollapsible(match)) {
+      return false;
+    }
+
+    const isCollapsed = queryIsCollapseActive()(state, dispatch);
+
+    if (isCollapsed) {
+      return false;
+    }
+
+    const result = findCollapseFragment(match.node, state.doc);
+
+    if (!result) {
+      return false;
+    }
+
+    const { fragment, start, end } = result;
+
+    let tr = state.tr.replaceWith(
+      start,
+      end,
+      state.schema.nodes[name].createChecked(
+        {
+          ...match.node.attrs,
+          collapseContent: fragment.toJSON(),
+        },
+        match.node.content,
+      ),
+    );
+
+    if (state.selection instanceof TextSelection) {
+      tr = tr.setSelection(TextSelection.create(tr.doc, state.selection.from));
+    }
+
+    if (dispatch) {
+      dispatch(tr);
+    }
+
+    return true;
+  };
+}
+
+export function uncollapseHeading() {
+  return (state, dispatch) => {
+    const match = findParentNodeOfType(state.schema.nodes[name])(
+      state.selection,
+    );
+
+    if (!match || !isCollapsible(match)) {
+      return false;
+    }
+
+    const isCollapsed = queryIsCollapseActive()(state, dispatch);
+
+    if (!isCollapsed) {
+      return false;
+    }
+
+    const frag = Fragment.fromJSON(
+      state.schema,
+      match.node.attrs.collapseContent,
+    );
+
+    let tr = state.tr.replaceWith(
+      match.pos,
+      match.pos + match.node.nodeSize,
+      Fragment.fromArray([
+        state.schema.nodes[name].createChecked(
+          {
+            ...match.node.attrs,
+            collapseContent: null,
+          },
+          match.node.content,
+        ),
+      ]).append(frag),
+    );
+
+    if (state.selection instanceof TextSelection) {
+      tr = tr.setSelection(TextSelection.create(tr.doc, state.selection.from));
+    }
+
+    if (dispatch) {
+      dispatch(tr);
+    }
+
+    return true;
+  };
+}
+
+export function toggleHeadingCollapse() {
+  return (state, dispatch) => {
+    const match = findParentNodeOfType(state.schema.nodes[name])(
+      state.selection,
+    );
+
+    if (!match || match.depth !== 1) {
+      return null;
+    }
+
+    const isCollapsed = queryIsCollapseActive()(state, dispatch);
+
+    return isCollapsed
+      ? uncollapseHeading()(state, dispatch)
+      : collapseHeading()(state, dispatch);
+  };
+}
+
+export function uncollapseAllHeadings() {
+  const flattenFragmentJSON = (fragJSON) => {
+    let result = [];
+    fragJSON.forEach((nodeJSON) => {
+      if (nodeJSON.type === 'heading' && nodeJSON.attrs.collapseContent) {
+        const collapseContent = nodeJSON.attrs.collapseContent;
+        result.push({
+          ...nodeJSON,
+          attrs: {
+            ...nodeJSON.attrs,
+            collapseContent: null,
+          },
+        });
+        result.push(...flattenFragmentJSON(collapseContent));
+      } else {
+        result.push(nodeJSON);
+      }
+    });
+
+    return result;
+  };
+
+  return (state, dispatch) => {
+    const collapsibleNodes = listCollapsedHeading(state);
+
+    let tr = state.tr;
+    let offset = 0;
+
+    for (const { node, pos } of collapsibleNodes) {
+      let baseFrag = Fragment.fromJSON(
+        state.schema,
+        flattenFragmentJSON(node.attrs.collapseContent),
+      );
+
+      tr = tr.replaceWith(
+        offset + pos,
+        offset + pos + node.nodeSize,
+        Fragment.fromArray([
+          state.schema.nodes[name].createChecked(
+            {
+              ...node.attrs,
+              collapseContent: null,
+            },
+            node.content,
+          ),
+        ]).append(baseFrag),
+      );
+
+      offset += baseFrag.size;
+    }
+
+    if (state.selection instanceof TextSelection) {
+      tr = tr.setSelection(TextSelection.create(tr.doc, state.selection.from));
+    }
+
+    if (dispatch) {
+      dispatch(tr);
+    }
+
+    return true;
+  };
+}
+
+export function listCollapsedHeading(state) {
+  return findChildren(
+    state.doc,
+    (node) =>
+      node.type === state.schema.nodes[name] &&
+      Boolean(node.attrs.collapseContent),
+    false,
+  );
+}
+
+export function listCollapsibleHeading(state) {
+  return findChildren(
+    state.doc,
+    (node) => node.type === state.schema.nodes[name],
+    false,
+  );
+}
+
+// TODO
+/**
+ *
+ * collapse all headings of given level
+ */
+// export function collapseHeadings(level) {}
+
+/**
+ * Collapsible headings are only allowed at depth of 1
+ */
+function isCollapsible(match) {
+  if (match.depth !== 1) {
+    return false;
+  }
+  return true;
+}
+
+function findCollapseFragment(matchNode, doc) {
+  // Find the last child that will be inside of the collapse
+  let start = undefined;
+  let end = undefined;
+  let isDone = false;
+
+  const breakCriteria = (node) => {
+    if (node.type !== matchNode.type) {
+      return false;
+    }
+
+    if (node.attrs.level <= matchNode.attrs.level) {
+      return true;
+    }
+
+    return false;
+  };
+
+  doc.forEach((node, offset, index) => {
+    if (isDone) {
+      return;
+    }
+
+    if (node === matchNode) {
+      start = { index, offset, node };
+      return;
+    }
+
+    if (start) {
+      if (breakCriteria(node)) {
+        isDone = true;
+        return;
+      }
+
+      // Avoid including trailing empty nodes
+      // (like empty paragraphs inserted by trailing-node-plugins)
+      // This is done to prevent trailing-node from inserting a new empty node
+      // every time we toggle on off the collapse.
+      if (node.content.size !== 0) {
+        end = { index, offset, node };
+      }
+    }
+  });
+
+  if (!end) {
+    return null;
+  }
+
+  // We are not adding parents position (doc will be parent always) to
+  // the offsets since it will be 0
+  const slice = doc.slice(
+    start.offset + start.node.nodeSize,
+    end.offset + end.node.nodeSize,
+  );
+
+  return {
+    fragment: slice.content,
+    start: start.offset,
+    end: end.offset + end.node.nodeSize,
   };
 }

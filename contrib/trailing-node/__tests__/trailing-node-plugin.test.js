@@ -14,6 +14,7 @@ import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { trailingNode } from '../index';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
+import { toggleHeadingCollapse } from '@bangle.dev/core/components/heading';
 
 const specRegistry = new SpecRegistry([
   ...defaultSpecs(),
@@ -62,4 +63,29 @@ test('creates an empty para below Heading', async () => {
       <para></para>
     </doc>,
   );
+});
+
+test('Trailing node and collapsible heading', async () => {
+  const original = (
+    <doc>
+      <heading level={2}>a[]b</heading>
+      <para>hello</para>
+      <para>abcd</para>
+      <heading level={3}>bye</heading>
+      <para>end</para>
+      <para></para>
+    </doc>
+  );
+  const { view } = testEditor(original);
+  toggleHeadingCollapse()(view.state, view.dispatch);
+  toggleHeadingCollapse()(view.state, view.dispatch);
+  expect(view.state).toEqualDocAndSelection(original);
+
+  toggleHeadingCollapse()(view.state, view.dispatch);
+  toggleHeadingCollapse()(view.state, view.dispatch);
+  expect(view.state).toEqualDocAndSelection(original);
+
+  toggleHeadingCollapse()(view.state, view.dispatch);
+  toggleHeadingCollapse()(view.state, view.dispatch);
+  expect(view.state).toEqualDocAndSelection(original);
 });

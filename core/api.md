@@ -42,7 +42,7 @@ An object with the following fields:
 
 - **schema**: {{Prosemirror.NodeSpec}} | {{Prosemirror.MarkSpec}}
 
-- **markdown**: ?{toMarkdown: fn(), parseMarkdown: object}\
+- **markdown**: ?{toMarkdown: fn(), parseMarkdown: object}\\
 
 - **options**: ?object\
   Use this to save data in this spec. You can use this field to save some data options to make it available to anyone having access to specRegistry.
@@ -508,7 +508,7 @@ Returns a node spec with [topNode](#spec) set to `true`, read more {{global.link
 
 ### heading: {{core.link.Component}}
 
-Enables headings of various levels in your editor. {{global.link.MarkdownSupport}}
+Enables headings of various levels in your editor {{global.link.MarkdownSupport}}.
 
 #### spec({ ... }): {{core.link.NodeSpec}}
 
@@ -552,6 +552,8 @@ Named parameters:
 
 - **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
 
+- **toggleCollapse:** `-`: Toggle collapsing of heading.
+
 #### commands: {{core.link.CommandObject}}
 
 - **toggleHeading**(level: `number=3`): {{core.link.Command}}\
@@ -559,6 +561,35 @@ Named parameters:
 
 - **queryIsHeadingActive**(level:`number=3`): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a heading of given `level`.
+
+- **queryIsCollapseActive**(): {{core.link.Command}}\
+  Query if the current heading is collapsed.
+
+- **collapseHeading**(): {{core.link.Command}}\
+  Hides every node below that is not heading or has a heading `level` less than that of the current heading.
+
+- **uncollapseHeading**(): {{core.link.Command}}\
+  Brings back all the hidden nodes of a collapsed heading. Will only uncollapse shallowly i.e a collapse heading inside of a collapsed heading will not be uncollapsed.
+
+- **toggleHeadingCollapse**(): {{core.link.Command}}\
+  Collapses an uncollapsed heading and vice versa.
+
+- **uncollapseAllHeadings**(): {{core.link.Command}}\
+  Uncollapses all headings in the `doc`. Will also deep uncollapse every heading that was inside of a collapsed heading.
+
+**On Heading collapse**
+
+The heading component also allows you to collapse and uncollapse any content, after the current heading, that is not of type heading or has a heading of level greater than the current heading. A collapsed heading will have a class name of `bangle-heading-collapsed` to allow for styling. A collapsed heading will save the collapsed data in a JSON string under the dom attribute `data-bangle-attrs`.
+
+:warning: For serializing to Markdown you will have to uncollapse your document, since markdown doesn't support collapsing. You can run the command`uncollapseAllHeadings` before serializing to markdown to avoid this problem.
+
+On top of the collapse commands, the component also exports the following helper functions to help with collapse functionality:
+
+- **listCollapsibleHeading**(state: {{Prosemirror.EditorState}}): \[{node: {{Prosemirror.Node}}, pos: number}\] \
+  Lists all the headings that can be collapsed or uncollapsed.
+
+- **listCollapsedHeading**(state: {{Prosemirror.EditorState}}): \[{node: {{Prosemirror.Node}}, pos: number}\]\
+  Lists all the headings that are currently collapsed.
 
 **Usage**
 

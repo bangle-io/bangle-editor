@@ -18,7 +18,7 @@
   },
   "search.exclude": {
     "**/.yarn": true,
-    "**/.pnp.*": true,
+    "**/.pnp.*": true
     // "**/build": true
   },
   "editor.codeActionsOnSave": {
