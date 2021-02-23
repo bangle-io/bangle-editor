@@ -1,6 +1,6 @@
 {
   "name": "banglejs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -29,39 +29,6 @@
     "react",
     "react-menu",
     "tooltip",
-    "contrib/*",
-    "__integration-tests__",
-    "_bangle-website",
-    "_bangle-scripts",
-    "core",
-    "collab",
-    "emoji",
-    "markdown",
-    "react",
-    "react-menu",
-    "tooltip",
-    "contrib/*",
-    "__integration-tests__",
-    "_bangle-website",
-    "_bangle-scripts",
-    "core",
-    "collab",
-    "emoji",
-    "markdown",
-    "react",
-    "react-menu",
-    "tooltip",
-    "contrib/*",
-    "__integration-tests__",
-    "_bangle-website",
-    "_bangle-scripts",
-    "core",
-    "collab",
-    "emoji",
-    "markdown",
-    "react",
-    "react-menu",
-    "tooltip",
     "contrib/*"
   ],
   "scripts": {
@@ -71,7 +38,8 @@
     "unit-tests": "yarn jest",
     "integration-tests": "yarn e2e:test",
     "lint": "yarn prettier --check . && yarn eslint .",
-    "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js"
+    "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
+    "release-packages": "yarn workspaces foreach -v --all --no-private npm publish"
   },
   "prettier": {
     "singleQuote": true,

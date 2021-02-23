@@ -26,3 +26,11 @@ The API documentation for each package is expected in to be inside an `api.md` f
 The script `yarn run scripts:build-docs` takes care of finding all the `api.md` file, running them through our templating engine and then putting the generated `.md` files in the `_bangle-website/docs` directory.
 
 For templating we use [handlebars](https://handlebarsjs.com) and a configuration file `api-docs.config.js`. The config includes a bunch of shorthands & helper functions which are used by [handlebars](https://handlebarsjs.com) to generate the final product.
+
+### Steps to do a release
+
+- Bump up the version in the file `constraints.pro`.
+- Run `yarn update-versions`.
+- Due to a bug in yarn there might be redundant items added in the `package.json` `workspaces` field -- Remove them.
+- Update the changelog.
+- Run `yarn release-packages`.

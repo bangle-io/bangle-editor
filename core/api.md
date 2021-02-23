@@ -463,7 +463,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -579,11 +579,11 @@ Named parameters:
 
 **On Heading collapse**
 
-The heading component also allows you to collapse and uncollapse any content, after the current heading, that is not of type heading or has a heading of level greater than the current heading. 
+The heading component also allows you to collapse and uncollapse any content, after the current heading, that is not of type heading or has a heading of level greater than the current heading.
 
 :bulb: The collapsed data is saved in the node attribute `collapseContent`, it is also accessible inside the DOM data attribute by accessing `data-bangle-attrs`.
 
-:bulb:  A collapsed heading will have a class name of `bangle-heading-collapsed` to allow for styling.
+:bulb: A collapsed heading will have a class name of `bangle-heading-collapsed` to allow for styling.
 
 :warning: For serializing to Markdown you will have to uncollapse your document, since markdown doesn't support collapsing. You should run the command`uncollapseAllHeadings` before serializing to markdown.
 
