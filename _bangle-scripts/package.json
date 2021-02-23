@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@bangle.dev/collab": "workspace:*",
-    "@bangle.dev/collapsible": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",

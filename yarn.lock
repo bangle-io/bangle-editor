@@ -1903,16 +1903,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/collapsible@workspace:*, @bangle.dev/collapsible@workspace:contrib/collapsible":
-  version: 0.0.0-use.local
-  resolution: "@bangle.dev/collapsible@workspace:contrib/collapsible"
-  dependencies:
-    "@bangle.dev/core": "workspace:*"
-  peerDependencies:
-    "@bangle.dev/core": "*"
-  languageName: unknown
-  linkType: soft
-
 "@bangle.dev/core@workspace:*, @bangle.dev/core@workspace:core":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/core@workspace:core"
@@ -5250,7 +5240,6 @@ __metadata:
   resolution: "bangle-scripts@workspace:_bangle-scripts"
   dependencies:
     "@bangle.dev/collab": "workspace:*"
-    "@bangle.dev/collapsible": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -5280,7 +5269,6 @@ __metadata:
   dependencies:
     "@babel/plugin-proposal-class-properties": ^7.12.1
     "@bangle.dev/collab": "workspace:*"
-    "@bangle.dev/collapsible": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"

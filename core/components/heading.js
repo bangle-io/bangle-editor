@@ -335,13 +335,7 @@ export function uncollapseAllHeadings() {
   };
 
   return (state, dispatch) => {
-    const collapsibleNodes = findChildren(
-      state.doc,
-      (node) =>
-        node.type === state.schema.nodes[name] &&
-        Boolean(node.attrs.collapseContent),
-      false,
-    );
+    const collapsibleNodes = listCollapsedHeading(state);
 
     let tr = state.tr;
     let offset = 0;
@@ -379,6 +373,24 @@ export function uncollapseAllHeadings() {
 
     return true;
   };
+}
+
+export function listCollapsedHeading(state) {
+  return findChildren(
+    state.doc,
+    (node) =>
+      node.type === state.schema.nodes[name] &&
+      Boolean(node.attrs.collapseContent),
+    false,
+  );
+}
+
+export function listCollapsibleHeading(state) {
+  return findChildren(
+    state.doc,
+    (node) => node.type === state.schema.nodes[name],
+    false,
+  );
 }
 
 // TODO
