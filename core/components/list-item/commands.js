@@ -138,7 +138,8 @@ const rootListDepth = (type, pos, nodes) => {
     if (
       node.type !== bulletList &&
       node.type !== orderedList &&
-      node.type !== listItem
+      node.type !== listItem &&
+      node.type !== todoList
     ) {
       break;
     }
@@ -202,14 +203,16 @@ export function toggleList(listType, itemType) {
         liftFrom = selection.$from.pos + selection.node.firstChild.content.size;
       }
 
+      let baseTr = state.tr;
       let tr = liftFollowingList(
         listItem,
         state,
         liftFrom,
         selection.$to.end(depth),
         depth || 0,
-        state.tr,
+        baseTr,
       );
+
       tr = liftSelectionList(listItem, state, tr);
       if (dispatch) {
         dispatch(tr);
