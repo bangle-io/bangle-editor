@@ -1,6 +1,7 @@
 import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { toggleList } from './list-item/commands';
+import * as bulletList from './bullet-list';
 import { keymap } from 'prosemirror-keymap';
 import { parentHasDirectParentOfType } from '../core-commands';
 
@@ -70,6 +71,7 @@ export function toggleTodoList() {
       view,
     );
   };
+  // return bulletList.toggleTodoList();
 }
 
 export function queryIsTodoListActive() {

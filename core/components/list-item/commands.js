@@ -172,7 +172,7 @@ function canToJoinToPreviousListItem(state) {
  * @param {Object} listType  bulletList, orderedList, todoList
  * @param {Object} itemType  'todoItem', 'listItem'
  */
-export function toggleList(listType, itemType) {
+export function toggleList(listType, itemType, attrs) {
   return (state, dispatch, view) => {
     const { selection } = state;
     const fromNode = selection.$from.node(selection.$from.depth - 2);
@@ -183,7 +183,7 @@ export function toggleList(listType, itemType) {
       !endNode ||
       endNode.type.name !== listType.name
     ) {
-      return toggleListCommand(listType)(state, dispatch, view);
+      return toggleListCommand(listType, attrs)(state, dispatch, view);
     } else {
       // If current ListType is the same as `listType` in arg,
       // toggle the list to `p`.
@@ -222,7 +222,7 @@ export function toggleList(listType, itemType) {
   };
 }
 
-function toggleListCommand(listType) {
+function toggleListCommand(listType, attrs) {
   return function (state, dispatch, view) {
     if (dispatch) {
       dispatch(
@@ -258,14 +258,14 @@ function toggleListCommand(listType) {
         state = view.state;
       }
       // Wraps selection in list
-      return wrapInList(listType)(state, dispatch);
+      return wrapInList(listType, attrs)(state, dispatch);
     }
   };
 }
 
-function wrapInList(nodeType) {
+function wrapInList(nodeType, attrs) {
   return baseCommand.autoJoin(
-    pmListCommands.wrapInList(nodeType),
+    pmListCommands.wrapInList(nodeType, attrs),
     (before, after) => before.type === after.type && before.type === nodeType,
   );
 }

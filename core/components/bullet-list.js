@@ -67,6 +67,15 @@ export function toggleBulletList() {
   };
 }
 
+export function toggleTodoList() {
+  return (state, dispatch, view) => {
+    return toggleList(
+      state.schema.nodes.bulletList,
+      state.schema.nodes.listItem,
+    )(state, dispatch, view);
+  };
+}
+
 export function queryIsBulletListActive() {
   return (state) => {
     const { schema } = state;

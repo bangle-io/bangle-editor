@@ -121,6 +121,10 @@ dd {
   position: relative;
 }
 
+.bangle-editor li span {
+  display: block;
+}
+
 .bangle-editor li.ProseMirror-selectednode {
   outline: none;
 }
@@ -142,6 +146,19 @@ dd {
 }
 
 .bangle-editor li[data-bangle-name='todoItem'] > span:first-child > input {
+  margin-top: 0.5rem;
+  margin-right: 6px;
+  outline: none;
+}
+
+.bangle-editor li[data-bangle-is-todo] {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  left: -1.2rem;
+}
+
+.bangle-editor li[data-bangle-is-todo] > span:first-child > input {
   margin-top: 0.5rem;
   margin-right: 6px;
   outline: none;
