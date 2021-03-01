@@ -883,6 +883,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
 
 export function updateNodeAttrs(type, cb) {
   return (state, dispatch) => {
+    console.log({ here: 1 });
     const { $from } = state.selection;
     const current = $from.node(-1);
     if (current && current.type === type) {

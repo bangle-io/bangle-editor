@@ -92,7 +92,9 @@ class BaseNodeView {
     this.renderHandlers.create(this, this.getNodeViewProps());
   }
 }
-
+// TODO this is adds unneeded abstraction
+//    maybe we can lessen the amount of things it is doing
+//    and the abstraction.
 export class NodeView extends BaseNodeView {
   /**
    * The idea here is to figure out whether your component
@@ -198,7 +200,7 @@ export class NodeView extends BaseNodeView {
       return false;
     }
 
-    // if the containerDOM itself was the target
+    // if the contentDOM itself was the target
     // do not ignore it. This is important for schema where
     // content: 'inline*' and you end up delete all the content with backspace
     // PM needs to step in and create an empty node.

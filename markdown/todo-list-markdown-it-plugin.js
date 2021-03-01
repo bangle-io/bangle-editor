@@ -59,7 +59,7 @@ export function todoListMarkdownItPlugin(md, options = {}) {
         const inlineToken = tokens[todoItemIndex + 2];
         const inlineTokenChild = inlineToken.children[0];
 
-        let isDone = false;
+        let isDone = null;
 
         if (startsWithTodoMarkdown(inlineTokenChild)) {
           const charAt1 =
@@ -69,6 +69,8 @@ export function todoListMarkdownItPlugin(md, options = {}) {
 
           if (['x', 'X'].includes(charAt1)) {
             isDone = true;
+          } else {
+            isDone = false;
           }
         }
 

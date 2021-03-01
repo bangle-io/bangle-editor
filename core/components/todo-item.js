@@ -101,17 +101,24 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
     const parentCheck = parentHasDirectParentOfType(
-      type,
-      schema.nodes['todoList'],
+      schema.nodes['listItem'],
+      schema.nodes['bulletList'],
     );
+
     return [
       keybindings &&
         keymap({
           [keybindings.toggleDone]: filter(
             parentCheck,
-            updateNodeAttrs(type, (attrs) => ({
+            updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
               ...attrs,
-              done: !attrs['done'],
+              todoChecked:
+                // cycle through null -> false -> true -> null
+                attrs['todoChecked'] == null
+                  ? false
+                  : attrs['todoChecked'] === false
+                  ? true
+                  : null,
             })),
           ),
 
