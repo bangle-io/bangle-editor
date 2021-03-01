@@ -95,12 +95,20 @@ class BaseNodeView {
 
 export class NodeView extends BaseNodeView {
   /**
+   * The idea here is to figure out whether your component
+   * will be hole-y (will let pm put in contents) or be opaque (example emoji).
+   * NOTE: if  passing contentDOM, it is your responsibility to insert it into
+   * containerDOM.
+   * NOTE: when dealing with renderHandlers like .create or .update
+   * donot assume anything about the current state of dom elements. For
+   * example, the dom you created in .create handler, may or may not exist,
+   * when the .update is called.
    *
    */
   static createPlugin({
     name,
     containerDOM: containerDOMSpec,
-    contentDOM: contentDOMSpec,
+    contentDOM: contentDOMSpec, // only for components which need to have editable content
     renderHandlers,
   }) {
     return new Plugin({

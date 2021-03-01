@@ -1,9 +1,9 @@
 export function todoListMarkdownItPlugin(md, options = {}) {
   const {
-    todoListOpenType = 'todo_list_open',
-    todoListCloseType = 'todo_list_close',
-    todoItemCloseType = 'todo_item_close',
-    todoItemOpenName = 'todo_item_open',
+    todoListOpenType = 'bullet_list_open',
+    todoListCloseType = 'bullet_list_close',
+    todoItemCloseType = 'list_item_close',
+    todoItemOpenName = 'list_item_open',
     isDoneAttrName = 'isDone',
   } = options;
 

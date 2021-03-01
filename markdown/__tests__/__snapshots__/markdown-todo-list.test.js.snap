@@ -1,23 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Markdown todo parsing todo1.md: an incorrectly indented doc results in empyt list 1`] = `
+exports[`Markdown todo parsing todo1.md: an incorrectly indented doc results in empty list 1`] = `
 Object {
   "content": Array [
     Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": null,
           },
           "content": Array [
             Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",
@@ -31,7 +31,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -47,7 +47,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -63,7 +63,7 @@ Object {
                       "content": Array [
                         Object {
                           "attrs": Object {
-                            "done": false,
+                            "todoChecked": false,
                           },
                           "content": Array [
                             Object {
@@ -76,11 +76,11 @@ Object {
                               "type": "paragraph",
                             },
                           ],
-                          "type": "todoItem",
+                          "type": "listItem",
                         },
                         Object {
                           "attrs": Object {
-                            "done": false,
+                            "todoChecked": false,
                           },
                           "content": Array [
                             Object {
@@ -95,6 +95,9 @@ Object {
                             Object {
                               "content": Array [
                                 Object {
+                                  "attrs": Object {
+                                    "todoChecked": null,
+                                  },
                                   "content": Array [
                                     Object {
                                       "content": Array [
@@ -109,6 +112,9 @@ Object {
                                   "type": "listItem",
                                 },
                                 Object {
+                                  "attrs": Object {
+                                    "todoChecked": null,
+                                  },
                                   "content": Array [
                                     Object {
                                       "content": Array [
@@ -126,17 +132,17 @@ Object {
                               "type": "bulletList",
                             },
                           ],
-                          "type": "todoItem",
+                          "type": "listItem",
                         },
                       ],
-                      "type": "todoList",
+                      "type": "bulletList",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -149,16 +155,16 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",
@@ -188,7 +194,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -201,11 +207,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -218,11 +224,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -235,11 +241,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -252,11 +258,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -269,11 +275,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -286,11 +292,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": true,
+            "todoChecked": true,
           },
           "content": Array [
             Object {
@@ -303,10 +309,10 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",
@@ -340,7 +346,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -356,7 +362,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -369,11 +375,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -386,11 +392,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -406,7 +412,7 @@ Object {
                       "content": Array [
                         Object {
                           "attrs": Object {
-                            "done": false,
+                            "todoChecked": false,
                           },
                           "content": Array [
                             Object {
@@ -419,11 +425,11 @@ Object {
                               "type": "paragraph",
                             },
                           ],
-                          "type": "todoItem",
+                          "type": "listItem",
                         },
                         Object {
                           "attrs": Object {
-                            "done": false,
+                            "todoChecked": false,
                           },
                           "content": Array [
                             Object {
@@ -438,6 +444,9 @@ Object {
                             Object {
                               "content": Array [
                                 Object {
+                                  "attrs": Object {
+                                    "todoChecked": null,
+                                  },
                                   "content": Array [
                                     Object {
                                       "content": Array [
@@ -452,6 +461,9 @@ Object {
                                   "type": "listItem",
                                 },
                                 Object {
+                                  "attrs": Object {
+                                    "todoChecked": null,
+                                  },
                                   "content": Array [
                                     Object {
                                       "content": Array [
@@ -469,17 +481,17 @@ Object {
                               "type": "bulletList",
                             },
                           ],
-                          "type": "todoItem",
+                          "type": "listItem",
                         },
                       ],
-                      "type": "todoList",
+                      "type": "bulletList",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -492,16 +504,16 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",
@@ -525,7 +537,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -538,11 +550,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -555,11 +567,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": true,
+            "todoChecked": true,
           },
           "content": Array [
             Object {
@@ -572,11 +584,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -589,10 +601,10 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",
@@ -602,13 +614,31 @@ Object {
 exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 2`] = `
 "# Test 1
 
-1. bar
+1. foo
 
-2. spam
+   - [ ] nested unchecked item 1
+
+   - [ ] not a todo item 2
+
+   - [ ] not a todo item 3
+
+   - [x] nested checked item 4
+
+2. bar
+
+3. spam
 
 # Test 2
 
--"
+- foo
+
+  - [ ] nested unchecked item 1
+
+  - [ ] nested unchecked item 2
+
+  - [x] nested checked item 3
+
+  - [x] nested checked item 4"
 `;
 
 exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 3`] = `
@@ -633,6 +663,99 @@ Object {
       },
       "content": Array [
         Object {
+          "attrs": Object {
+            "todoChecked": null,
+          },
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "todoChecked": false,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+                Object {
+                  "attrs": Object {
+                    "todoChecked": false,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+                Object {
+                  "attrs": Object {
+                    "todoChecked": false,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "not a todo item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+                Object {
+                  "attrs": Object {
+                    "todoChecked": true,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+              ],
+              "type": "bulletList",
+            },
+          ],
+          "type": "listItem",
+        },
+        Object {
+          "attrs": Object {
+            "todoChecked": null,
+          },
           "content": Array [
             Object {
               "content": Array [
@@ -647,6 +770,9 @@ Object {
           "type": "listItem",
         },
         Object {
+          "attrs": Object {
+            "todoChecked": null,
+          },
           "content": Array [
             Object {
               "content": Array [
@@ -679,9 +805,91 @@ Object {
     Object {
       "content": Array [
         Object {
+          "attrs": Object {
+            "todoChecked": null,
+          },
           "content": Array [
             Object {
+              "content": Array [
+                Object {
+                  "text": "foo",
+                  "type": "text",
+                },
+              ],
               "type": "paragraph",
+            },
+            Object {
+              "content": Array [
+                Object {
+                  "attrs": Object {
+                    "todoChecked": false,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 1",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+                Object {
+                  "attrs": Object {
+                    "todoChecked": false,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested unchecked item 2",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+                Object {
+                  "attrs": Object {
+                    "todoChecked": true,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 3",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+                Object {
+                  "attrs": Object {
+                    "todoChecked": true,
+                  },
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "text": "nested checked item 4",
+                          "type": "text",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "type": "listItem",
+                },
+              ],
+              "type": "bulletList",
             },
           ],
           "type": "listItem",
@@ -714,7 +922,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -730,7 +938,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -743,11 +951,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -760,11 +968,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -777,11 +985,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -794,17 +1002,17 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -817,11 +1025,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -834,10 +1042,10 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
     Object {
       "attrs": Object {
@@ -856,7 +1064,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -872,7 +1080,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -885,11 +1093,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -902,11 +1110,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -919,11 +1127,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -936,16 +1144,16 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
     Object {
       "attrs": Object {
@@ -964,7 +1172,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -980,7 +1188,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -993,11 +1201,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1010,11 +1218,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1027,11 +1235,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -1044,17 +1252,17 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1067,11 +1275,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1086,6 +1294,9 @@ Object {
             Object {
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "todoChecked": null,
+                  },
                   "content": Array [
                     Object {
                       "content": Array [
@@ -1100,6 +1311,9 @@ Object {
                   "type": "listItem",
                 },
                 Object {
+                  "attrs": Object {
+                    "todoChecked": null,
+                  },
                   "content": Array [
                     Object {
                       "content": Array [
@@ -1114,6 +1328,9 @@ Object {
                   "type": "listItem",
                 },
                 Object {
+                  "attrs": Object {
+                    "todoChecked": null,
+                  },
                   "content": Array [
                     Object {
                       "content": Array [
@@ -1127,6 +1344,9 @@ Object {
                     Object {
                       "content": Array [
                         Object {
+                          "attrs": Object {
+                            "todoChecked": null,
+                          },
                           "content": Array [
                             Object {
                               "content": Array [
@@ -1150,10 +1370,10 @@ Object {
               "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",
@@ -1234,7 +1454,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1250,7 +1470,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1263,11 +1483,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1280,11 +1500,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1297,11 +1517,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -1314,17 +1534,17 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1337,11 +1557,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1354,10 +1574,10 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
     Object {
       "attrs": Object {
@@ -1376,7 +1596,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1392,7 +1612,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1405,11 +1625,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1422,11 +1642,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -1439,11 +1659,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -1456,16 +1676,16 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
     Object {
       "attrs": Object {
@@ -1484,7 +1704,7 @@ Object {
       "content": Array [
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1500,7 +1720,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1513,11 +1733,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1530,11 +1750,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": false,
+                    "todoChecked": false,
                   },
                   "content": Array [
                     Object {
@@ -1547,11 +1767,11 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
                 Object {
                   "attrs": Object {
-                    "done": true,
+                    "todoChecked": true,
                   },
                   "content": Array [
                     Object {
@@ -1564,17 +1784,17 @@ Object {
                       "type": "paragraph",
                     },
                   ],
-                  "type": "todoItem",
+                  "type": "listItem",
                 },
               ],
-              "type": "todoList",
+              "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1587,11 +1807,11 @@ Object {
               "type": "paragraph",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
         Object {
           "attrs": Object {
-            "done": false,
+            "todoChecked": false,
           },
           "content": Array [
             Object {
@@ -1606,6 +1826,9 @@ Object {
             Object {
               "content": Array [
                 Object {
+                  "attrs": Object {
+                    "todoChecked": null,
+                  },
                   "content": Array [
                     Object {
                       "content": Array [
@@ -1620,6 +1843,9 @@ Object {
                   "type": "listItem",
                 },
                 Object {
+                  "attrs": Object {
+                    "todoChecked": null,
+                  },
                   "content": Array [
                     Object {
                       "content": Array [
@@ -1634,6 +1860,9 @@ Object {
                   "type": "listItem",
                 },
                 Object {
+                  "attrs": Object {
+                    "todoChecked": null,
+                  },
                   "content": Array [
                     Object {
                       "content": Array [
@@ -1647,6 +1876,9 @@ Object {
                     Object {
                       "content": Array [
                         Object {
+                          "attrs": Object {
+                            "todoChecked": null,
+                          },
                           "content": Array [
                             Object {
                               "content": Array [
@@ -1670,10 +1902,10 @@ Object {
               "type": "bulletList",
             },
           ],
-          "type": "todoItem",
+          "type": "listItem",
         },
       ],
-      "type": "todoList",
+      "type": "bulletList",
     },
   ],
   "type": "doc",

@@ -30,7 +30,7 @@ function specFactory(opts = {}) {
     },
     markdown: {
       toMarkdown(state, node) {
-        state.renderList(node, '  ', () => (node.attrs.bullet || '-') + ' ');
+        state.renderList(node, '  ', () => '- ');
       },
       parseMarkdown: {
         bullet_list: {
@@ -72,6 +72,9 @@ export function toggleTodoList() {
     return toggleList(
       state.schema.nodes.bulletList,
       state.schema.nodes.listItem,
+      {
+        todoChecked: false,
+      },
     )(state, dispatch, view);
   };
 }

@@ -57,6 +57,14 @@ function pluginsFactory({
       keybindings &&
         keymap({
           [keybindings.toggle]: toggleList(type, schema.nodes.todoItem),
+
+          // [keybindings.toggle]: toggleList(
+          //   schema.nodes.bulletList,
+          //   schema.nodes.listItem,
+          //   {
+          //     todoChecked: false,
+          //   },
+          // ),
         }),
     ];
   };

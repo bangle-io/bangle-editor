@@ -12,14 +12,14 @@ describe('todo list', () => {
   test('renders 1', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -36,17 +36,17 @@ describe('todo list', () => {
   test('renders done check list', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>
               first
               <link href="https://example.com">https://example.com</link>
             </para>
-          </todoItem>
-          <todoItem done={true}>
+          </listItem>
+          <listItem todoChecked={true}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -63,14 +63,14 @@ describe('todo list', () => {
   test('renders not done check list', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem done={false}>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -87,16 +87,16 @@ describe('todo list', () => {
   test('renders with nested ordered list', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
                 <para>[]second</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -113,16 +113,16 @@ describe('todo list', () => {
   test('renders with nested todo list', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <bulletList>
+              <listItem todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </listItem>
+            </bulletList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -139,12 +139,12 @@ describe('todo list', () => {
   test('renders with multiple para', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
             <para>second</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -158,12 +158,12 @@ describe('todo list', () => {
   test('br follows', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
             <para>second</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -182,11 +182,11 @@ describe('parsing', () => {
     // - second`;
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
         <ul>
           <li>
             <para>second</para>
@@ -198,20 +198,21 @@ describe('parsing', () => {
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
 
+
       - second"
     `);
 
     // It converts
     expect(await parse(md)).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>second</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>,
     );
   });
@@ -228,11 +229,11 @@ describe('parsing', () => {
             <para>second</para>
           </li>
         </ul>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>third</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -241,23 +242,24 @@ describe('parsing', () => {
 
       - second
 
+
       - [ ] third"
     `);
 
     // It converts
     expect(await parse(md)).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>second</para>
-          </todoItem>
-          <todoItem>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>third</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>,
     );
   });
@@ -265,11 +267,11 @@ describe('parsing', () => {
   test('works with 2 level nested bullet list', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>top</para>
-          </todoItem>
-          <todoItem>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>parent</para>
             <ul>
               <li>
@@ -279,8 +281,8 @@ describe('parsing', () => {
                 <para>second</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -301,17 +303,17 @@ describe('parsing', () => {
   test('works with 3 level nested bullet list', async () => {
     const doc = (
       <doc>
-        <todoList>
-          <todoItem>
+        <bulletList>
+          <listItem todoChecked={false}>
             <para>top</para>
-          </todoItem>
-          <todoItem>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>parent</para>
-            <todoList>
-              <todoItem>
+            <bulletList>
+              <listItem todoChecked={false}>
                 <para>top</para>
-              </todoItem>
-              <todoItem>
+              </listItem>
+              <listItem todoChecked={false}>
                 <para>parent</para>
                 <ul>
                   <li>
@@ -321,13 +323,13 @@ describe('parsing', () => {
                     <para>second</para>
                   </li>
                 </ul>
-              </todoItem>
-            </todoList>
-          </todoItem>
-          <todoItem>
+              </listItem>
+            </bulletList>
+          </listItem>
+          <listItem todoChecked={false}>
             <para>bottom</para>
-          </todoItem>
-        </todoList>
+          </listItem>
+        </bulletList>
       </doc>
     );
     const md = await serialize(doc);
@@ -353,14 +355,14 @@ describe('parsing', () => {
 });
 
 describe('Markdown todo parsing', () => {
-  test('todo1.md: an incorrectly indented doc results in empyt list', async () => {
+  test('todo1.md: an incorrectly indented doc results in empty list', async () => {
     const md = await fs.readFile(
       path.join(__dirname, './fixtures/todo1.md'),
       'utf-8',
     );
     const doc = await parse(md);
     const md2 = await serialize(doc);
-    expect(md2.trim()).toEqual('- [ ]');
+    expect(md2.trim()).toEqual('-');
     expect(doc).toMatchSnapshot();
   });
 
@@ -425,7 +427,7 @@ describe('Markdown todo parsing', () => {
     );
     const doc = await parse(md);
     expect(doc.toString()).toMatchInlineSnapshot(
-      `"doc(heading(\\"Test 1\\"), orderedList(listItem(paragraph(\\"bar\\")), listItem(paragraph(\\"spam\\"))), heading(\\"Test 2\\"), bulletList(listItem(paragraph)))"`,
+      `"doc(heading(\\"Test 1\\"), orderedList(listItem(paragraph(\\"foo\\"), bulletList(listItem(paragraph(\\"nested unchecked item 1\\")), listItem(paragraph(\\"not a todo item 2\\")), listItem(paragraph(\\"not a todo item 3\\")), listItem(paragraph(\\"nested checked item 4\\")))), listItem(paragraph(\\"bar\\")), listItem(paragraph(\\"spam\\"))), heading(\\"Test 2\\"), bulletList(listItem(paragraph(\\"foo\\"), bulletList(listItem(paragraph(\\"nested unchecked item 1\\")), listItem(paragraph(\\"nested unchecked item 2\\")), listItem(paragraph(\\"nested checked item 3\\")), listItem(paragraph(\\"nested checked item 4\\"))))))"`,
     );
     const md2 = await serialize(doc);
     expect(doc).toEqual(await parse(md2));

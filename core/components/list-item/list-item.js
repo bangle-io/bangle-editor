@@ -64,10 +64,20 @@ function specFactory(opts = {}) {
     },
     markdown: {
       toMarkdown(state, node) {
+        if (node.attrs.todoChecked != null) {
+          state.write(node.attrs.todoChecked ? '[x] ' : '[ ] ');
+        }
         state.renderContent(node);
       },
       parseMarkdown: {
-        list_item: { block: name },
+        list_item: {
+          block: name,
+          getAttrs: (tok) => {
+            return {
+              todoChecked: tok.attrGet('isDone'),
+            };
+          },
+        },
       },
     },
   };
