@@ -65,9 +65,8 @@ export function liftFollowingList(type, state, from, to, rootListDepth, tr) {
       while (listDepth > rootListDepth + 2) {
         const start = tr.doc.resolve(tr.mapping.map(pos));
         listDepth = start.depth;
-        const end = tr.doc.resolve(
-          tr.mapping.map(pos + node.textContent.length),
-        );
+
+        const end = tr.doc.resolve(tr.mapping.map(pos + node.content.size));
         const sel = new TextSelection(start, end);
         tr = liftListItem(listItem, state, sel, tr);
       }

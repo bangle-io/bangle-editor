@@ -355,6 +355,96 @@ describe('Command: toggleList', () => {
       </doc>,
     );
   });
+
+  test('toggles when empty listItem is a sibbling', async () => {
+    const { editorView } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+            <ul>
+              <li>
+                <para>f[]irst</para>
+              </li>
+              <li>
+                <para></para>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    toggleList(editorView.state.schema.nodes['bulletList'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+        <para>f[]irst</para>
+        <ul>
+          <li>
+            <para></para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  test('toggles when empty listItem is a sibbling 2', async () => {
+    const { editorView } = testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+            <ul>
+              <li>
+                <para>f[]irst</para>
+              </li>
+              <li>
+                <para></para>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <para>second</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    toggleList(editorView.state.schema.nodes['bulletList'])(
+      editorView.state,
+      editorView.dispatch,
+      editorView,
+    );
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>hey</para>
+          </li>
+        </ul>
+        <para>f[]irst</para>
+        <ul>
+          <li>
+            <para></para>
+          </li>
+          <li>
+            <para>second</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
 });
 
 describe('Command: backspaceKeyCommand', () => {
