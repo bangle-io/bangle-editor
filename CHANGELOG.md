@@ -1,3 +1,9 @@
+## HEAD
+
+_@bangle.dev/core\_
+
+- bug: Fixed an issue when toggling a nested list item with empty sibbling caused errors.
+
 ## 0.2.1
 
 _@bangle.dev/core\_
