@@ -3535,6 +3535,98 @@ describe('Toggling the list', () => {
       toggleBulletList(editorView);
       expect(editorView.state.doc).toEqualDocument(expectedOutput);
     });
+
+    it('should convert nested ul inside ul to ol', async () => {
+      const expectedOutput = (
+        <doc>
+          <ul>
+            <li>
+              <para>One</para>
+            </li>
+            <li>
+              <para>Two</para>
+              <ol>
+                <li>
+                  <para>Three</para>
+                </li>
+                <li>
+                  <para>Four</para>
+                </li>
+              </ol>
+            </li>
+          </ul>
+        </doc>
+      );
+      const { editorView } = testEditor(
+        <doc>
+          <ul>
+            <li>
+              <para>One</para>
+            </li>
+            <li>
+              <para>Two</para>
+              <ul>
+                <li>
+                  <para>[Three</para>
+                </li>
+                <li>
+                  <para>Four]</para>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </doc>,
+      );
+
+      toggleOrderedList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it('should convert nested old inside ul to ul', async () => {
+      const expectedOutput = (
+        <doc>
+          <ul>
+            <li>
+              <para>One</para>
+            </li>
+            <li>
+              <para>Two</para>
+              <ul>
+                <li>
+                  <para>Three</para>
+                </li>
+                <li>
+                  <para>Four</para>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </doc>
+      );
+      const { editorView } = testEditor(
+        <doc>
+          <ul>
+            <li>
+              <para>One</para>
+            </li>
+            <li>
+              <para>Two</para>
+              <ol>
+                <li>
+                  <para>[Three</para>
+                </li>
+                <li>
+                  <para>Four]</para>
+                </li>
+              </ol>
+            </li>
+          </ul>
+        </doc>,
+      );
+
+      toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
   });
 
   describe('joining lists', () => {
@@ -4943,6 +5035,7 @@ describe('Insert empty list above and below', () => {
 
   test.each([
     [
+      'basic',
       <doc>
         <ul>
           <li>
@@ -4961,8 +5054,8 @@ describe('Insert empty list above and below', () => {
         </ul>
       </doc>,
     ],
-    // empty
     [
+      'empty',
       <doc>
         <ul>
           <li>
@@ -4981,8 +5074,9 @@ describe('Insert empty list above and below', () => {
         </ul>
       </doc>,
     ],
-    // nested
+
     [
+      'nested',
       <doc>
         <ul>
           <li>
@@ -5011,8 +5105,8 @@ describe('Insert empty list above and below', () => {
         </ul>
       </doc>,
     ],
-    // nested but selection in parent
     [
+      'nested but selection in parent',
       <doc>
         <ul>
           <li>
@@ -5041,7 +5135,7 @@ describe('Insert empty list above and below', () => {
         </ul>
       </doc>,
     ],
-  ])('Case %# insert below', async (input, expected) => {
+  ])('Case %# insert below: %s', async (str, input, expected) => {
     const { view } = testEditor(input);
 
     sendKeyToPm(view, keybindings.insertEmptyListBelow);

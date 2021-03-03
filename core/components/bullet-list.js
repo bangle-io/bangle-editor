@@ -12,6 +12,7 @@ export const commands = {
 };
 export const defaultKeys = {
   toggle: 'Shift-Ctrl-8',
+  toggleTodo: 'Shift-Ctrl-7',
 };
 
 const name = 'bulletList';
@@ -43,6 +44,7 @@ function specFactory(opts = {}) {
 
 function pluginsFactory({
   markdownShortcut = true,
+  todoMarkdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
   return ({ schema }) => {
@@ -52,8 +54,17 @@ function pluginsFactory({
       keybindings &&
         keymap({
           [keybindings.toggle]: toggleList(type, schema.nodes.listItem),
+          [keybindings.toggleTodo]: toggleList(
+            schema.nodes.bulletList,
+            schema.nodes.listItem,
+            true,
+          ),
         }),
       markdownShortcut && wrappingInputRule(/^\s*([-+*])\s$/, type),
+      todoMarkdownShortcut &&
+        wrappingInputRule(/^\s*(\[ \])\s$/, schema.nodes.listItem, {
+          todoChecked: false,
+        }),
     ];
   };
 }
@@ -69,13 +80,13 @@ export function toggleBulletList() {
 
 export function toggleTodoList() {
   return (state, dispatch, view) => {
-    return toggleList(
+    const result = toggleList(
       state.schema.nodes.bulletList,
       state.schema.nodes.listItem,
-      {
-        todoChecked: false,
-      },
+      true,
     )(state, dispatch, view);
+    console.log({ result });
+    return result;
   };
 }
 
@@ -85,5 +96,18 @@ export function queryIsBulletListActive() {
     return parentHasDirectParentOfType(schema.nodes['listItem'], [
       schema.nodes['bulletList'],
     ])(state);
+  };
+}
+
+export function queryIsTodoListActive() {
+  return (state) => {
+    const { schema } = state;
+
+    return (
+      parentHasDirectParentOfType(schema.nodes['listItem'], [
+        schema.nodes['bulletList'],
+      ])(state) &&
+      typeof state.selection.$from.node(-1).attrs.todoChecked === 'boolean'
+    );
   };
 }

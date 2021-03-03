@@ -79,7 +79,6 @@ export function toggleTodoList() {
       view,
     );
   };
-  // return bulletList.toggleTodoList();
 }
 
 export function queryIsTodoListActive() {

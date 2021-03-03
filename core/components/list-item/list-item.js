@@ -17,7 +17,7 @@ import {
 import { filter, insertEmpty } from '../../utils/pm-utils';
 import { createElement, domSerializationHelpers } from '../../utils/index';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'list-item') : () => {};
 
@@ -86,10 +86,17 @@ function specFactory(opts = {}) {
 function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const parentCheck = parentHasDirectParentOfType(type, [
+    const isBulletList = parentHasDirectParentOfType(type, [
       schema.nodes['bulletList'],
       schema.nodes['orderedList'],
     ]);
+
+    const isATodo = (state) => {
+      return (
+        isBulletList(state) &&
+        typeof state.selection.$from.node(-1).attrs.todoChecked === 'boolean'
+      );
+    };
 
     const move = (dir) =>
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
@@ -101,17 +108,25 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
           Enter: enterKeyCommand(type),
           [keybindings.indent]: indentListItem(),
           [keybindings.outdent]: outdentListItem(),
-          [keybindings.moveUp]: filter(parentCheck, move('UP')),
-          [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
-          [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
-          [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
-          [keybindings.insertEmptyListAbove]: filter(
-            parentCheck,
-            insertEmpty(type, 'above', true),
+          [keybindings.moveUp]: filter(isBulletList, move('UP')),
+          [keybindings.moveDown]: filter(isBulletList, move('DOWN')),
+          [keybindings.emptyCut]: filter(isBulletList, cutEmptyCommand(type)),
+          [keybindings.emptyCopy]: filter(isBulletList, copyEmptyCommand(type)),
+          [keybindings.insertEmptyListAbove]: chainCommands(
+            // create a todoChecked if we are in one
+            filter(
+              isATodo,
+              insertEmpty(type, 'above', true, { todoChecked: false }),
+            ),
+            filter(isBulletList, insertEmpty(type, 'above', true)),
           ),
-          [keybindings.insertEmptyListBelow]: filter(
-            parentCheck,
-            insertEmpty(type, 'below', true),
+
+          [keybindings.insertEmptyListBelow]: chainCommands(
+            filter(
+              isATodo,
+              insertEmpty(type, 'below', true, { todoChecked: false }),
+            ),
+            filter(isBulletList, insertEmpty(type, 'below', true)),
           ),
         }),
 

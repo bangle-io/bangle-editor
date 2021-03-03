@@ -121,7 +121,7 @@ dd {
   position: relative;
 }
 
-.bangle-editor li span {
+.bangle-editor li > span {
   display: block;
 }
 

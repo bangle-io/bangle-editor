@@ -101,8 +101,8 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
       chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
 
     const parentCheck = parentHasDirectParentOfType(
-      schema.nodes['listItem'],
-      schema.nodes['bulletList'],
+      type,
+      schema.nodes['todoList'],
     );
 
     return [
@@ -123,7 +123,7 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
           ),
 
           Enter: enterKeyCommand(type),
-          Backspace: backspaceKeyCommand(type),
+          // Backspace: backspaceKeyCommand(type),
 
           [keybindings.indent]: nested ? indentList(type) : () => {},
           [keybindings.outdent]: outdentList(type),

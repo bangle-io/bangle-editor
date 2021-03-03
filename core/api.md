@@ -372,6 +372,9 @@ Named parameters:
 - **markdownShortcut**: ?boolean=`true`\
   Enable the markdown shortcut for creating a bullet list. If enabled, type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
 
+- **todoMarkdownShortcut**: ?boolean=`true`\
+  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList.
+
 #### defaultKeys: {{core.link.Keybindings}}
 
 - **toggle**=`Shift-Ctrl-8`: Executes `toggleBulletList` command.

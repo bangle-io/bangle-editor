@@ -16,11 +16,11 @@ const keybindings = todoItem.defaultKeys;
 test('Typing works', async () => {
   const { view } = await testEditor(
     <doc>
-      <todoList>
-        <todoItem>
+      <ul>
+        <li todoChecked={false}>
           <para>foo[]bar</para>
-        </todoItem>
-      </todoList>
+        </li>
+      </ul>
     </doc>,
   );
 
@@ -28,11 +28,11 @@ test('Typing works', async () => {
 
   expect(view.state).toEqualDocAndSelection(
     <doc>
-      <todoList>
-        <todoItem>
+      <ul>
+        <li todoChecked={false}>
           <para>foohello[]bar</para>
-        </todoItem>
-      </todoList>
+        </li>
+      </ul>
     </doc>,
   );
 });
@@ -40,11 +40,11 @@ test('Typing works', async () => {
 test('Pressing Enter', async () => {
   const { view } = await testEditor(
     <doc>
-      <todoList>
-        <todoItem>
+      <ul>
+        <li todoChecked={false}>
           <para>foo[]</para>
-        </todoItem>
-      </todoList>
+        </li>
+      </ul>
     </doc>,
   );
 
@@ -54,14 +54,14 @@ test('Pressing Enter', async () => {
 
   expect(view.state).toEqualDocAndSelection(
     <doc>
-      <todoList>
-        <todoItem>
+      <ul>
+        <li todoChecked={false}>
           <para>foohello</para>
-        </todoItem>
-        <todoItem>
+        </li>
+        <li todoChecked={false}>
           <para>second[]</para>
-        </todoItem>
-      </todoList>
+        </li>
+      </ul>
     </doc>,
   );
 });
@@ -70,11 +70,11 @@ describe('Pressing Tab', () => {
   test('first list has no effect', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>foo[]bar</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -82,25 +82,25 @@ describe('Pressing Tab', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>foo[]bar</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
   test('second list nests', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -108,16 +108,16 @@ describe('Pressing Tab', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -125,14 +125,14 @@ describe('Pressing Tab', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -149,30 +149,65 @@ describe('Markdown shortcuts', () => {
     typeText(editorView, '[ ] my day', sel);
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>my day</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
 });
 
 describe('Heterogenous toggle', () => {
-  it('Toggles todo to ordered list', async () => {
+  it('Toggles todo to orderedList', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    sendKeyToPm(editorView, 'Ctrl-Shift-9');
+
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>first</para>
+            <ol>
+              <li>
+                <para>[]second</para>
+              </li>
+            </ol>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  // TODO make it more intuitive
+  it('when calling toggleTodo on bulletList it converts to paragraph', async () => {
+    const { editorView } = await testEditor(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>first</para>
+            <ul>
+              <li todoChecked={false}>
+                <para>[]second</para>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -180,33 +215,29 @@ describe('Heterogenous toggle', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <ul>
-              <li>
-                <para>[]second</para>
-              </li>
-            </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
+        <para>[]second</para>
       </doc>,
     );
   });
 
-  it('Toggles ordered list to todo item', async () => {
+  it.skip('Toggles ordered list to todo item', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ul>
               <li>
                 <para>[]second</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -214,44 +245,44 @@ describe('Heterogenous toggle', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
   });
 });
 
-describe('Pressing Backspace', () => {
+describe.only('Pressing Backspace', () => {
   it('Backspacing works', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>foohello</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
     sendKeyToPm(editorView, 'Backspace');
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>foohello</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
         <para>[]second</para>
       </doc>,
     );
@@ -260,16 +291,16 @@ describe('Pressing Backspace', () => {
   it('Backspacing nested todo outdents', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -277,14 +308,14 @@ describe('Pressing Backspace', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -292,14 +323,14 @@ describe('Pressing Backspace', () => {
   it('Backspacing nested todo outdents to para', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -307,11 +338,11 @@ describe('Pressing Backspace', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
         <para>[]second</para>
       </doc>,
     );
@@ -320,16 +351,16 @@ describe('Pressing Backspace', () => {
   it('Backspacing a ul inside a todo outdents', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ul>
               <li>
                 <para>[]second</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -337,14 +368,14 @@ describe('Pressing Backspace', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -352,16 +383,16 @@ describe('Pressing Backspace', () => {
   it('Backspacing an ol inside a todo outdents', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
                 <para>[]second</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -369,14 +400,14 @@ describe('Pressing Backspace', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]second</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -384,8 +415,8 @@ describe('Pressing Backspace', () => {
   it('Backspacing an ol inside ol inside a todo outdents to ol', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
@@ -397,8 +428,8 @@ describe('Pressing Backspace', () => {
                 </ol>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -406,8 +437,8 @@ describe('Pressing Backspace', () => {
 
     expect(editorView.state.doc).toEqualDocument(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
@@ -417,8 +448,8 @@ describe('Pressing Backspace', () => {
                 <para>[]deep</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -436,24 +467,24 @@ describe('Pressing Alt-Up / Down to move list', () => {
   it('if item above exists and selection is at end', async () => {
     await check(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>second[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>second[]</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -461,64 +492,64 @@ describe('Pressing Alt-Up / Down to move list', () => {
   it('if first item is empty', async () => {
     await check(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para></para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>sec[]ond</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>sec[]ond</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para></para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
   it('works for nested todo list', async () => {
     await check(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>second</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>nested:1</para>
-              </todoItem>
-              <todoItem>
+              </li>
+              <li todoChecked={false}>
                 <para>nested:2[]</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>second</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>nested:2[]</para>
-              </todoItem>
-              <todoItem>
+              </li>
+              <li todoChecked={false}>
                 <para>nested:1</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -528,8 +559,8 @@ describe('Alt-up/down of nesting ol/ul list', () => {
   it('works for nested ul', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top</para>
             <ul>
               <li>
@@ -539,27 +570,27 @@ describe('Alt-up/down of nesting ol/ul list', () => {
                 <para>nested 2</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
     sendKeyToPm(editorView, 'Alt-Up');
 
     expect(editorView.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>[]nested 1</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>top</para>
             <ul>
               <li>
                 <para>nested 2</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -567,8 +598,8 @@ describe('Alt-up/down of nesting ol/ul list', () => {
   it.skip('works for nested ul with selection in middle', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top</para>
             <ul>
               <li>
@@ -578,27 +609,27 @@ describe('Alt-up/down of nesting ol/ul list', () => {
                 <para>nested 2</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
     sendKeyToPm(editorView, 'Alt-Up');
 
     expect(editorView.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>nested[] 1</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>top</para>
             <ul>
               <li>
                 <para>nested 2</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -606,8 +637,8 @@ describe('Alt-up/down of nesting ol/ul list', () => {
   it('works for nested ul going down', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top</para>
             <ul>
               <li>
@@ -617,27 +648,27 @@ describe('Alt-up/down of nesting ol/ul list', () => {
                 <para>nested[] 2</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
     sendKeyToPm(editorView, 'Alt-Down');
 
     expect(editorView.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top</para>
             <ul>
               <li>
                 <para>nested 1</para>
               </li>
             </ul>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]nested 2</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -647,16 +678,16 @@ describe('Nesting heterogenous lists', () => {
   it('converts to ol', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -664,16 +695,16 @@ describe('Nesting heterogenous lists', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
                 <para>[]second</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -681,16 +712,16 @@ describe('Nesting heterogenous lists', () => {
   it('converts to ul', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -698,16 +729,16 @@ describe('Nesting heterogenous lists', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ul>
               <li>
                 <para>[]second</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -715,16 +746,16 @@ describe('Nesting heterogenous lists', () => {
   it('pressing enter on empty nested li should outdent and take the type of the parent', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
                 <para>[]</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -732,14 +763,14 @@ describe('Nesting heterogenous lists', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -748,8 +779,8 @@ describe('Nesting heterogenous lists', () => {
   it.skip('pressing enter on empty nested li should outdent and take the type of the parent when their are other sibblings', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
@@ -759,8 +790,8 @@ describe('Nesting heterogenous lists', () => {
                 <para>last</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -768,19 +799,19 @@ describe('Nesting heterogenous lists', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
+          </li>
           <ol>
             <li>
               <para>last</para>
             </li>
           </ol>
-        </todoList>
+        </ul>
       </doc>,
     );
   });
@@ -788,21 +819,21 @@ describe('Nesting heterogenous lists', () => {
   it('pressing enter on empty double nested li should outdent and take the type of the parent', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>first</para>
                 <ol>
                   <li>
                     <para>[]</para>
                   </li>
                 </ol>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -810,19 +841,19 @@ describe('Nesting heterogenous lists', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>first</para>
-              </todoItem>
-              <todoItem>
+              </li>
+              <li todoChecked={false}>
                 <para>[]</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -832,19 +863,19 @@ describe('Nesting heterogenous lists', () => {
   it.skip('converts every sibbling to ol', async () => {
     const { view } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>nested1</para>
-              </todoItem>
-              <todoItem>
+              </li>
+              <li todoChecked={false}>
                 <para>[]nested2</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -852,8 +883,8 @@ describe('Nesting heterogenous lists', () => {
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
             <ol>
               <li>
@@ -863,8 +894,8 @@ describe('Nesting heterogenous lists', () => {
                 <para>[]nested2</para>
               </li>
             </ol>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
   });
@@ -874,16 +905,16 @@ describe('Toggle todo list with keyboard shortcut', () => {
   it('toggles the todo with the command', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top[]</para>
             <ul>
               <li>
                 <para>nested 1</para>
               </li>
             </ul>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -909,16 +940,16 @@ describe('Toggle todo list with keyboard shortcut', () => {
   it('handles nested todo', async () => {
     const { editorView } = await testEditor(
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>nested 1 []</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     );
 
@@ -953,101 +984,101 @@ describe('Insert empty todo above and below', () => {
   test.each([
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>top</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     ],
     // empty
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para></para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     ],
     // nested
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]</para>
-              </todoItem>
-              <todoItem>
+              </li>
+              <li todoChecked={false}>
                 <para>second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     ],
     // nested but selection in parent
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first[]</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     ],
   ])('Case %# insert above', async (input, expected) => {
@@ -1061,101 +1092,101 @@ describe('Insert empty todo above and below', () => {
   test.each([
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>top</para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     ],
     // empty
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para></para>
-          </todoItem>
-          <todoItem>
+          </li>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     ],
     // nested
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>[]second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>second</para>
-              </todoItem>
-              <todoItem>
+              </li>
+              <li todoChecked={false}>
                 <para>[]</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
     ],
     // nested but selection in parent
     [
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first[]</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-        </todoList>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </doc>,
       <doc>
-        <todoList>
-          <todoItem>
+        <ul>
+          <li todoChecked={false}>
             <para>first</para>
-            <todoList>
-              <todoItem>
+            <ul>
+              <li todoChecked={false}>
                 <para>second</para>
-              </todoItem>
-            </todoList>
-          </todoItem>
-          <todoItem>
+              </li>
+            </ul>
+          </li>
+          <li todoChecked={false}>
             <para>[]</para>
-          </todoItem>
-        </todoList>
+          </li>
+        </ul>
       </doc>,
     ],
   ])('Case %# insert below', async (input, expected) => {
