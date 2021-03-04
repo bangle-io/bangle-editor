@@ -137,8 +137,7 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
             updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
               ...attrs,
               todoChecked:
-                // cycle through null -> false -> true -> null
-                !attrs['todoChecked'],
+                attrs['todoChecked'] == null ? false : !attrs['todoChecked'],
             })),
           ),
 
