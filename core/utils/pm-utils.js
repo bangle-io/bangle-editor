@@ -38,8 +38,8 @@ export const validPos = (pos, doc) =>
   Number.isInteger(pos) && pos >= 0 && pos < doc.content.size;
 
 export const validListParent = (type, schemaNodes) => {
-  const { bulletList, orderedList, todoList } = schemaNodes;
-  return [bulletList, orderedList, todoList].includes(type);
+  const { bulletList, orderedList } = schemaNodes;
+  return [bulletList, orderedList].includes(type);
 };
 
 // TODO document this, probably gets the attributes of the mark of the current selection
@@ -336,7 +336,7 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 // This will return (depth - 1) for root list parent of a list.
 export const getListLiftTarget = (type, schema, resPos) => {
   let target = resPos.depth;
-  const { bulletList, orderedList, todoList } = schema.nodes;
+  const { bulletList, orderedList } = schema.nodes;
   let listItem = type;
   if (!listItem) {
     ({ listItem } = schema.nodes);
@@ -344,17 +344,12 @@ export const getListLiftTarget = (type, schema, resPos) => {
 
   for (let i = resPos.depth; i > 0; i--) {
     const node = resPos.node(i);
-    if (
-      node.type === bulletList ||
-      node.type === orderedList ||
-      node.type === todoList
-    ) {
+    if (node.type === bulletList || node.type === orderedList) {
       target = i;
     }
     if (
       node.type !== bulletList &&
       node.type !== orderedList &&
-      node.type !== todoList &&
       node.type !== listItem
     ) {
       break;

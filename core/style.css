@@ -206,11 +206,6 @@ dd {
   margin-bottom: 0.5rem;
 }
 
-/** TODO List*/
-.bangle-editor ul[data-bangle-name='todoList'] {
-  padding-left: 0.125rem;
-}
-
 /** Component-Styling-END */
 
 /** 

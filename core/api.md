@@ -375,7 +375,7 @@ Named parameters:
   Enable the markdown shortcut for creating a bullet list. If enabled, type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
 
 - **todoMarkdownShortcut**: ?boolean=`true`\
-  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList.
+  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todo.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -387,7 +387,7 @@ Named parameters:
   Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
 
 - **toggleTodoList**(): {{core.link.Command}}\
-  Convert to a todoList but if already a todoList or bulletList, convert it to a paragraph node.
+  Convert to a bulletList with todoChecked attribute but if already a bulletList, convert it to a paragraph node.
 
 - **queryIsBulletListActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a bullet list.
