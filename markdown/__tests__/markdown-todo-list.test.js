@@ -209,7 +209,7 @@ describe('parsing', () => {
           <listItem todoChecked={false}>
             <para>first</para>
           </listItem>
-          <listItem todoChecked={false}>
+          <listItem>
             <para>second</para>
           </listItem>
         </bulletList>
@@ -218,7 +218,6 @@ describe('parsing', () => {
   });
 
   test('homogenizes to a todo list if it sees a bullet list 2', async () => {
-    // - second`;
     const doc = (
       <doc>
         <ul>
@@ -250,10 +249,10 @@ describe('parsing', () => {
     expect(await parse(md)).toEqualDocument(
       <doc>
         <bulletList>
-          <listItem todoChecked={false}>
+          <listItem>
             <para>first</para>
           </listItem>
-          <listItem todoChecked={false}>
+          <listItem>
             <para>second</para>
           </listItem>
           <listItem todoChecked={false}>
@@ -354,7 +353,7 @@ describe('parsing', () => {
   });
 });
 
-describe.only('Markdown todo parsing', () => {
+describe('Markdown todo parsing', () => {
   test('todo1.md: an incorrectly indented doc results in empty list', async () => {
     const md = await fs.readFile(
       path.join(__dirname, './fixtures/todo1.md'),

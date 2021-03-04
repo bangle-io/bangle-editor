@@ -266,7 +266,6 @@ function listItemNodePlugin() {
         }
 
         // if parent is not bulletList i.e. it is orderedList
-        // unset the todoChecked attribute as it has no meaning for ol's
         if (!checkParentBulletList(view.state, getPos())) {
           return;
         }
