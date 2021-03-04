@@ -10,7 +10,7 @@ module.exports = {
   projectName: 'bangle.dev', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'bangle.dev',
+      title: 'bangle.dev (beta)',
       logo: {
         alt: 'bangle.dev Logo',
         src: 'img/logo.png',
