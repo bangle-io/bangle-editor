@@ -167,6 +167,8 @@ function canToJoinToPreviousListItem(state) {
  *
  * @param {Object} listType  bulletList, orderedList,
  * @param {Object} itemType   'listItem'
+ * @param {boolean} todo if toggling into a bulletList switch on todoChecked attr for
+ *                      each listItem.
  */
 export function toggleList(listType, itemType, todo) {
   return (state, dispatch, view) => {
@@ -592,7 +594,7 @@ export function enterKeyCommand(type) {
         if (isNodeEmpty(node) && !wrapperHasContent) {
           const grandParent = $from.node($from.depth - 3);
           // To allow for cases where a non-todo item is nested inside a todo item
-          // pressing enter should convert that type into a todo type and outdent.
+          // pressing enter should convert that type into a todo listItem and outdent.
           if (
             isNodeTodo(grandParent, state.schema) &&
             !isNodeTodo(wrapper, state.schema)

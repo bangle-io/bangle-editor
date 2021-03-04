@@ -212,7 +212,6 @@ export function BulletListButton({
         queryIsBulletListActive()(view.state) &&
         !queryIsTodoListActive()(view.state)
       }
-      // isDisabled={!toggleBulletList()(view.state, undefined, view)}
     >
       {children}
     </MenuButton>

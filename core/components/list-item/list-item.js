@@ -58,13 +58,13 @@ function specFactory(opts = {}) {
       content: '(paragraph) (paragraph | bulletList | orderedList)*',
       defining: true,
       draggable: true,
-      parseDOM,
       attrs: {
         todoChecked: {
           default: null,
         },
       },
       toDOM,
+      parseDOM,
     },
     markdown: {
       toMarkdown(state, node) {
@@ -96,10 +96,7 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
     ]);
 
     const isATodo = (state) => {
-      return (
-        isBulletList(state) &&
-        typeof state.selection.$from.node(-1).attrs.todoChecked === 'boolean'
-      );
+      return isNodeTodo(state.selection.$from.node(-1), state.schema);
     };
 
     const move = (dir) =>
@@ -150,7 +147,6 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
           [keybindings.emptyCut]: filter(isBulletList, cutEmptyCommand(type)),
           [keybindings.emptyCopy]: filter(isBulletList, copyEmptyCommand(type)),
           [keybindings.insertEmptyListAbove]: chainCommands(
-            // create a todoChecked if we are in one
             filter(
               isATodo,
               insertEmpty(type, 'above', true, { todoChecked: false }),
