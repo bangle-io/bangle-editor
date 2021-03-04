@@ -29,7 +29,6 @@ npm install @bangle.dev/react
 
 - Once we achieve a good stable month with `beta` with some community adoption, we can move to general release. I expect this to come around March or April.
 
-
 ## The Bangle eco-system
 
 The Bangle project is made up of smaller individual packages to fit a particular scoped need. You can find their documentation under the API section of the sidebar. Please keep the following things in mind when consuming any of the Bangle packages:
