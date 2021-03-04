@@ -95,6 +95,9 @@ function specFactory({ nested = true, draggable = true } = {}) {
 
 function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
   return ({ schema, specRegistry }) => {
+    if (!specRegistry.options[name]) {
+      console.log(name);
+    }
     const { nested } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
     const move = (dir) =>
@@ -102,7 +105,7 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
 
     const parentCheck = parentHasDirectParentOfType(
       type,
-      schema.nodes['todoList'],
+      schema.nodes['bulletList'],
     );
 
     return [

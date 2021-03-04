@@ -174,15 +174,15 @@ Object {
 exports[`Markdown todo parsing todo3.md: malformed with multiple confused square braces 1`] = `
 "- [ ] unchecked todo item 1
 
-- [ ] \\\\[ \\\\]
+- \\\\[ \\\\]
 
-- [ ] \\\\[  \\\\] not a todo item 2
+- \\\\[  \\\\] not a todo item 2
 
-- [ ] \\\\[ x\\\\] not a todo item 3
+- \\\\[ x\\\\] not a todo item 3
 
-- [ ] \\\\[x \\\\] not a todo item 4
+- \\\\[x \\\\] not a todo item 4
 
-- [ ] \\\\[ x \\\\] not a todo item 5
+- \\\\[ x \\\\] not a todo item 5
 
 - [x] todo item 6"
 `;
@@ -211,7 +211,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "todoChecked": false,
+            "todoChecked": null,
           },
           "content": Array [
             Object {
@@ -228,7 +228,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "todoChecked": false,
+            "todoChecked": null,
           },
           "content": Array [
             Object {
@@ -245,7 +245,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "todoChecked": false,
+            "todoChecked": null,
           },
           "content": Array [
             Object {
@@ -262,7 +262,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "todoChecked": false,
+            "todoChecked": null,
           },
           "content": Array [
             Object {
@@ -279,7 +279,7 @@ Object {
         },
         Object {
           "attrs": Object {
-            "todoChecked": false,
+            "todoChecked": null,
           },
           "content": Array [
             Object {
@@ -618,9 +618,9 @@ exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 2`
 
    - [ ] nested unchecked item 1
 
-   - [ ] not a todo item 2
+   - not a todo item 2
 
-   - [ ] not a todo item 3
+   - not a todo item 3
 
    - [x] nested checked item 4
 
@@ -697,7 +697,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -714,7 +714,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -955,7 +955,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -972,7 +972,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -1205,7 +1205,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -1222,7 +1222,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -1387,9 +1387,9 @@ exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 2`
 
   - [ ] nested unchecked item 1
 
-  - [ ] not a todo item 2
+  - not a todo item 2
 
-  - [ ] not a todo item 3
+  - not a todo item 3
 
   - [x] nested checked item 4
 
@@ -1415,9 +1415,9 @@ exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 2`
 
   - [ ] nested unchecked item 1
 
-  - [ ] not a todo item 2
+  - not a todo item 2
 
-  - [ ] not a todo item 3
+  - not a todo item 3
 
   - [x] nested checked item 4
 
@@ -1487,7 +1487,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -1504,7 +1504,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -1737,7 +1737,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {
@@ -1754,7 +1754,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "todoChecked": false,
+                    "todoChecked": null,
                   },
                   "content": Array [
                     Object {

@@ -354,7 +354,7 @@ describe('parsing', () => {
   });
 });
 
-describe('Markdown todo parsing', () => {
+describe.only('Markdown todo parsing', () => {
   test('todo1.md: an incorrectly indented doc results in empty list', async () => {
     const md = await fs.readFile(
       path.join(__dirname, './fixtures/todo1.md'),

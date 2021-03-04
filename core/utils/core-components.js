@@ -17,8 +17,6 @@ import {
   horizontalRule,
   listItem,
   orderedList,
-  todoItem,
-  todoList,
   image,
 } from '../components/index';
 
@@ -43,8 +41,6 @@ export function corePlugins() {
     horizontalRule.plugins(),
     listItem.plugins(),
     orderedList.plugins(),
-    todoItem.plugins(),
-    todoList.plugins(),
     image.plugins(),
     history.plugins(),
   ];
@@ -74,8 +70,6 @@ function coreNodeSpec() {
     horizontalRule.spec(),
     listItem.spec(),
     orderedList.spec(),
-    todoItem.spec(),
-    todoList.spec(),
     image.spec(),
   ];
 }
