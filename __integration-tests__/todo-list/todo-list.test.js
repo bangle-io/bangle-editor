@@ -39,8 +39,8 @@ describe('Todo test', () => {
     const doc = await helpers.getDoc(page);
     expect(doc).toMatchInlineSnapshot(`
       "doc(
-        todoList(
-          todoItem(paragraph('my task'))
+        bulletList(
+          listItem(paragraph('my task'))
         )
       )
       "
@@ -48,7 +48,7 @@ describe('Todo test', () => {
     const state = await helpers.getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
         Object {
-          "done": false,
+          "todoChecked": false,
         }
       `);
     expect(state).toMatchSnapshot();
@@ -59,15 +59,13 @@ describe('Todo test', () => {
 
     expect(
       await page.evaluate(
-        () => document.querySelector('[data-bangle-name="todoItem"]').innerText,
+        () => document.querySelector('[data-bangle-is-todo]').innerText,
       ),
     ).toEqual('my task');
 
     expect(
       await page.evaluate(
-        () =>
-          document.querySelector('[data-bangle-name="todoItem"] input')
-            .outerHTML,
+        () => document.querySelector('[data-bangle-is-todo] input').outerHTML,
       ),
     ).toMatch(/<input type="checkbox">/);
   });
@@ -75,19 +73,17 @@ describe('Todo test', () => {
   it('Clicking the task dones it', async () => {
     await page.type(PM_ID, '[ ] my task');
 
-    await page.click('[data-bangle-name="todoItem"] input');
+    await page.click('[data-bangle-is-todo] input');
 
     const state = await helpers.getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
         Object {
-          "done": true,
+          "todoChecked": true,
         }
       `);
     expect(
       await page.evaluate(() => {
-        const el = document.querySelector(
-          '[data-bangle-name="todoItem"] input',
-        );
+        const el = document.querySelector('[data-bangle-is-todo] input');
         if (!el) {
           throw new Error('Input not found');
         }
@@ -99,26 +95,70 @@ describe('Todo test', () => {
   it('Clicking a done task undones it', async () => {
     await page.type(PM_ID, '[ ] my task');
 
-    await page.click('[data-bangle-name="todoItem"] input');
+    await page.click('[data-bangle-is-todo] input');
     await helpers.sleep(10);
-    await page.click('[data-bangle-name="todoItem"] input');
+    await page.click('[data-bangle-is-todo] input');
 
     const state = await helpers.getEditorState(page);
     expect(state.doc.content[0].content[0].attrs).toMatchInlineSnapshot(`
         Object {
-          "done": false,
+          "todoChecked": false,
         }
       `);
     expect(
       await page.evaluate(() => {
-        const el = document.querySelector(
-          '[data-bangle-name="todoItem"] input',
-        );
+        const el = document.querySelector('[data-bangle-is-todo] input');
         if (!el) {
           throw new Error('Input not found');
         }
         return el.checked === false;
       }),
     ).toBe(true);
+  });
+
+  it('Backspace a todo item', async () => {
+    await page.type(PM_ID, '[ ] a');
+
+    await helpers.sleep(10);
+
+    await page.keyboard.press('Backspace', { delay: 10 });
+    await page.keyboard.press('Backspace', { delay: 10 });
+
+    const doc = await helpers.getDoc(page);
+
+    expect(doc).toMatchInlineSnapshot(`
+      "doc(paragraph)
+      "
+    `);
+  });
+
+  it('Entering a todo item', async () => {
+    await page.type(PM_ID, '[ ] a');
+
+    await helpers.sleep(10);
+
+    await page.keyboard.press('Enter', { delay: 10 });
+    let doc = await helpers.getDoc(page);
+    expect(doc).toMatchInlineSnapshot(`
+      "doc(
+        bulletList(
+          listItem(paragraph('a')),
+          listItem(paragraph)
+        )
+      )
+      "
+    `);
+    // pressing enter on empty todo list unindents
+    await page.keyboard.press('Enter', { delay: 10 });
+    doc = await helpers.getDoc(page);
+    expect(doc).toMatchInlineSnapshot(`
+      "doc(
+        bulletList(
+          listItem(paragraph('a'))
+        ),
+        paragraph
+      )
+      "
+    `);
   });
 });

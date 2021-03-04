@@ -140,17 +140,6 @@ dd {
   pointer-events: none;
 }
 
-.bangle-editor li[data-bangle-name='todoItem'] {
-  display: flex;
-  flex-direction: row;
-}
-
-.bangle-editor li[data-bangle-name='todoItem'] > span:first-child > input {
-  margin-top: 0.5rem;
-  margin-right: 6px;
-  outline: none;
-}
-
 .bangle-editor li[data-bangle-is-todo] {
   display: flex;
   flex-direction: row;

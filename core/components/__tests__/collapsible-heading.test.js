@@ -9,7 +9,6 @@ import {
   listItem,
   orderedList,
   hardBreak,
-  todoItem,
   underline,
   codeBlock,
   doc,

@@ -155,15 +155,14 @@ const rootListDepth = (type, pos, nodes) => {
 
 function canToJoinToPreviousListItem(state) {
   const { $from } = state.selection;
-  const { bulletList, orderedList, todoList } = state.schema.nodes;
+  const { bulletList, orderedList } = state.schema.nodes;
   const $before = state.doc.resolve($from.pos - 1);
   let nodeBefore = $before ? $before.nodeBefore : null;
   if (state.selection instanceof GapCursorSelection) {
     nodeBefore = $from.nodeBefore;
   }
   return (
-    !!nodeBefore &&
-    [bulletList, orderedList, todoList].indexOf(nodeBefore.type) > -1
+    !!nodeBefore && [bulletList, orderedList].indexOf(nodeBefore.type) > -1
   );
 }
 
@@ -175,8 +174,8 @@ function canToJoinToPreviousListItem(state) {
 
 /**
  *
- * @param {Object} listType  bulletList, orderedList, todoList
- * @param {Object} itemType  'todoItem', 'listItem'
+ * @param {Object} listType  bulletList, orderedList,
+ * @param {Object} itemType   'listItem'
  */
 export function toggleList(listType, itemType, todo) {
   return (state, dispatch, view) => {
@@ -339,9 +338,7 @@ function liftListItems() {
 
         if (
           !range ||
-          ![state.schema.nodes.listItem, state.schema.nodes.todoItem].includes(
-            sel.$from.parent.type,
-          )
+          ![state.schema.nodes.listItem].includes(sel.$from.parent.type)
         ) {
           return false;
         }
@@ -932,16 +929,6 @@ export function moveEdgeListItem(type, dir = 'UP') {
 
     let nodeToInsert = parent.node;
 
-    // if the grand parent is a todo list
-    // we can not simply insert a listItem as todoList can
-    // only accept todoItems
-    if (isGrandParentTodoList(state)) {
-      nodeToInsert = state.schema.nodes.todoItem.createChecked(
-        {},
-        nodeToInsert.content,
-        nodeToInsert.marks,
-      );
-    }
     const newTr = safeInsert(nodeToInsert, insertPos)(tr);
     // no change hence dont mutate anything
     if (newTr === tr) {
