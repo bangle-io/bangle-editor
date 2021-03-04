@@ -80,11 +80,11 @@ describe('suggest basic show and hide', () => {
       </ul>
     </doc>,
     <doc>
-      <todoList>
-        <todoItem>
+      <bulletList>
+        <listItem todoChecked={false}>
           <para>hello []</para>
-        </todoItem>
-      </todoList>
+        </listItem>
+      </bulletList>
     </doc>,
     <doc>
       <ol>

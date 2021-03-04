@@ -54,11 +54,7 @@ function pluginsFactory({
       keybindings &&
         keymap({
           [keybindings.toggle]: toggleList(type, schema.nodes.listItem),
-          [keybindings.toggleTodo]: toggleList(
-            schema.nodes.bulletList,
-            schema.nodes.listItem,
-            true,
-          ),
+          [keybindings.toggleTodo]: toggleTodoList(),
         }),
       markdownShortcut && wrappingInputRule(/^\s*([-+*])\s$/, type),
       todoMarkdownShortcut &&
@@ -78,15 +74,85 @@ export function toggleBulletList() {
   };
 }
 
-export function toggleTodoList() {
+export function toggleTodoList2() {
   return (state, dispatch, view) => {
     const result = toggleList(
       state.schema.nodes.bulletList,
       state.schema.nodes.listItem,
       true,
     )(state, dispatch, view);
-    console.log({ result });
     return result;
+  };
+}
+
+export function toggleTodoList() {
+  return (state, dispatch, view) => {
+    const result = toggleBulletList()(state, dispatch, view);
+
+    if (!result) {
+      return false;
+    }
+
+    state = view.state;
+    const { selection } = state;
+
+    const fromNode = selection.$from.node(-2);
+    const endNode = selection.$to.node(-2);
+
+    // make sure the current selection is now bulletList
+    if (
+      !fromNode ||
+      fromNode.type.name !== state.schema.nodes.bulletList.name ||
+      !endNode ||
+      endNode.type.name !== state.schema.nodes.bulletList.name
+    ) {
+      // returning true as toggling was still successful
+      return true;
+    }
+
+    // at this point we have bulletList and we want to set every direct child
+    // to todoChecked
+
+    // NOTE: On start end depths start  point to the start of listItems and end points to end of listItems
+    // in the current selections parent bulletList.
+    // example:  even though selection is between A & B,
+    //           the start and end will be * and ~.
+    //            <ul>
+    //                *<li>[A</li>
+    //                <li><B]></li>
+    //                <li><C></li>~
+    //            </ul>
+    const start = selection.$from.start(-2);
+    const end = selection.$to.end(-2);
+
+    const parent = selection.$from.node(-2);
+    let tr = state.tr;
+
+    tr.doc.nodesBetween(start, end, (node, pos) => {
+      // since we only need to iterate through
+      // the direct children of bulletList
+      if (parent === node) {
+        return true;
+      }
+
+      if (node.type.name === 'listItem') {
+        if (node.attrs.todoChecked == null) {
+          tr = tr.setNodeMarkup(
+            pos,
+            undefined,
+            Object.assign({}, node.attrs, { todoChecked: false }),
+          );
+        }
+      }
+      // don't dig deeper for any other node
+      return false;
+    });
+
+    if (dispatch) {
+      dispatch(tr);
+    }
+
+    return true;
   };
 }
 

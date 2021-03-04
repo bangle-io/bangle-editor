@@ -108,20 +108,6 @@ function pluginsFactory({ nodeView = true, keybindings = defaultKeys } = {}) {
     return [
       keybindings &&
         keymap({
-          [keybindings.toggleDone]: filter(
-            parentCheck,
-            updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
-              ...attrs,
-              todoChecked:
-                // cycle through null -> false -> true -> null
-                attrs['todoChecked'] == null
-                  ? false
-                  : attrs['todoChecked'] === false
-                  ? true
-                  : null,
-            })),
-          ),
-
           Enter: enterKeyCommand(type),
           // Backspace: backspaceKeyCommand(type),
 

@@ -8,10 +8,10 @@ import {
   typeText,
   sendKeyToPm,
 } from '../../test-helpers/index';
-import { todoItem } from '../index';
+import { listItem } from '../index';
 
 const testEditor = renderTestEditor();
-const keybindings = todoItem.defaultKeys;
+const keybindings = listItem.defaultKeys;
 
 test('Typing works', async () => {
   const { view } = await testEditor(
@@ -260,7 +260,7 @@ describe('Heterogenous toggle', () => {
   });
 });
 
-describe.only('Pressing Backspace', () => {
+describe('Pressing Backspace', () => {
   it('Backspacing works', async () => {
     const { editorView } = await testEditor(
       <doc>
@@ -709,7 +709,7 @@ describe('Nesting heterogenous lists', () => {
     );
   });
 
-  it('converts to ul', async () => {
+  it.skip('converts to ul', async () => {
     const { view } = await testEditor(
       <doc>
         <ul>
@@ -924,7 +924,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
     let node = $from.node(-1);
 
     expect(node.attrs).toEqual({
-      done: true,
+      todoChecked: true,
     });
 
     sendKeyToPm(editorView, keybindings.toggleDone);
@@ -933,7 +933,7 @@ describe('Toggle todo list with keyboard shortcut', () => {
     node = $from.node(-1);
 
     expect(node.attrs).toEqual({
-      done: false,
+      todoChecked: false,
     });
   });
 
@@ -959,10 +959,10 @@ describe('Toggle todo list with keyboard shortcut', () => {
     let node = $from.node(-1);
     let ancestorTodo = $from.node(-3);
     expect(node.attrs).toEqual({
-      done: true,
+      todoChecked: true,
     });
     expect(ancestorTodo.attrs).toEqual({
-      done: false,
+      todoChecked: false,
     });
 
     sendKeyToPm(editorView, keybindings.toggleDone);
@@ -972,10 +972,10 @@ describe('Toggle todo list with keyboard shortcut', () => {
     ancestorTodo = $from.node(-3);
 
     expect(node.attrs).toEqual({
-      done: false,
+      todoChecked: false,
     });
     expect(ancestorTodo.attrs).toEqual({
-      done: false,
+      todoChecked: false,
     });
   });
 });
@@ -1084,7 +1084,7 @@ describe('Insert empty todo above and below', () => {
   ])('Case %# insert above', async (input, expected) => {
     const { view } = await testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyTodoAbove);
+    sendKeyToPm(view, keybindings.insertEmptyListAbove);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });
@@ -1192,7 +1192,7 @@ describe('Insert empty todo above and below', () => {
   ])('Case %# insert below', async (input, expected) => {
     const { view } = await testEditor(input);
 
-    sendKeyToPm(view, keybindings.insertEmptyTodoBelow);
+    sendKeyToPm(view, keybindings.insertEmptyListBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
   });

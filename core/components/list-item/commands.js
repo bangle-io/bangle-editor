@@ -548,7 +548,6 @@ export const backspaceKeyCommand = (type) => (...args) => {
         (state) => canOutdent(state.schema.nodes.listItem)(state),
         (state) => {
           const parentListItem = state.selection.$from.node(-3);
-
           return isNodeTodo(parentListItem, state.schema);
         },
       ],
@@ -609,7 +608,7 @@ export function enterKeyCommand(type) {
       if (!listItem) {
         ({ listItem } = state.schema.nodes);
       }
-      const { codeBlock, todoItem } = state.schema.nodes;
+      const { codeBlock } = state.schema.nodes;
 
       const node = $from.node($from.depth);
       const wrapper = $from.node($from.depth - 1);
@@ -617,17 +616,27 @@ export function enterKeyCommand(type) {
         /** Check if the wrapper has any visible content */
         const wrapperHasContent = hasVisibleContent(wrapper);
         if (isNodeEmpty(node) && !wrapperHasContent) {
+          const grandParent = $from.node($from.depth - 3);
           // To allow for cases where a non-todo item is nested inside a todo item
           // pressing enter should convert that type into a todo type and outdent.
-          if (isGrandParentTodoList(state) && listItem !== todoItem) {
-            const result = toggleList(
-              state.schema.nodes.todoList,
-              state.schema.nodes.todoItem,
-            )(state, dispatch, view);
-            if (!result) {
-              return false;
+          if (
+            isNodeTodo(grandParent, state.schema) &&
+            !isNodeTodo(wrapper, state.schema)
+          ) {
+            if (dispatch) {
+              dispatch(
+                state.tr.setNodeMarkup(
+                  state.selection.$from.before(-1),
+                  undefined,
+                  {
+                    ...wrapper.attrs,
+                    todoChecked: false,
+                  },
+                ),
+              );
             }
-            return outdentList(state.schema.nodes.todoItem)(
+
+            return outdentList(state.schema.nodes.listItem)(
               view.state, // use the updated state
               dispatch,
               view,

@@ -7,6 +7,8 @@ import {
   enterKeyCommand,
   outdentList,
   moveEdgeListItem,
+  isNodeTodo,
+  updateNodeAttrs,
 } from './commands';
 import {
   cutEmptyCommand,
@@ -16,6 +18,7 @@ import {
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
 import { createElement, domSerializationHelpers } from '../../utils/index';
+import browser from '../../utils/browser';
 
 const LOG = false;
 
@@ -28,6 +31,7 @@ export const commands = {
   outdentListItem,
 };
 export const defaultKeys = {
+  toggleDone: browser.mac ? 'Ctrl-Enter' : 'Ctrl-I',
   indent: 'Tab',
   outdent: 'Shift-Tab',
   moveDown: 'Alt-ArrowDown',
@@ -99,11 +103,45 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
     };
 
     const move = (dir) =>
-      chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
+      chainCommands(moveNode(type, dir), (state, dispatch, view) => {
+        const node = state.selection.$from.node(-3);
+        const parentTodo = isNodeTodo(node, state.schema);
+        let result = moveEdgeListItem(type, dir)(state, dispatch, view);
+        if (!result) {
+          return false;
+        }
+
+        // if parent was a todo convert the moved edge node
+        // to todo bullet item
+        if (parentTodo && dispatch) {
+          const state = view.state;
+          dispatch(
+            state.tr.setNodeMarkup(
+              state.selection.$from.before(-1),
+              undefined,
+              {
+                ...node.attrs,
+                todoChecked: false,
+              },
+            ),
+          );
+        }
+        return true;
+      });
 
     return [
       keybindings &&
         keymap({
+          [keybindings.toggleDone]: filter(
+            isBulletList,
+            updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
+              ...attrs,
+              todoChecked:
+                // cycle through null -> false -> true -> null
+                !attrs['todoChecked'],
+            })),
+          ),
+
           Backspace: backspaceKeyCommand(type),
           Enter: enterKeyCommand(type),
           [keybindings.indent]: indentListItem(),
@@ -214,14 +252,6 @@ function listItemNodePlugin() {
           // todo only makes sense if parent is bullet list
           if (checkParentBulletList(view.state, getPos())) {
             setupCheckbox(attrs, updateAttrs, instance);
-          } else {
-            // if parent is not bulletList i.e. it is orderedList
-            // unset the todoChecked attribute as it has no meaning for ol's
-            setTimeout(() => {
-              updateAttrs({
-                todoChecked: null,
-              });
-            }, 0);
           }
         }
 
@@ -243,12 +273,6 @@ function listItemNodePlugin() {
         // if parent is not bulletList i.e. it is orderedList
         // unset the todoChecked attribute as it has no meaning for ol's
         if (!checkParentBulletList(view.state, getPos())) {
-          log('clearing shit', getPos());
-          setTimeout(() => {
-            updateAttrs({
-              todoChecked: null,
-            });
-          }, 0);
           return;
         }
 
@@ -290,5 +314,43 @@ export function outdentListItem() {
   return (state, dispatch, view) => {
     const type = getTypeFromSchema(state.schema);
     return outdentList(type)(state, dispatch, view);
+  };
+}
+
+export function queryIsTodoListActive() {
+  return (state) => {
+    const { schema, selection } = state;
+    if (
+      !parentHasDirectParentOfType(
+        schema.nodes['listItem'],
+        schema.nodes['bulletList'],
+      )(state)
+    ) {
+      return false;
+    }
+
+    const start = selection.$from.pos;
+    const end = selection.$to.pos;
+
+    let tr = state.tr;
+    let found = false;
+
+    tr.doc.nodesBetween(start, end, (node, pos) => {
+      if (found) {
+        return true;
+      }
+
+      if (tr.doc.resolve(pos).depth >= selection.$from.depth - 2) {
+        if (node.type.name === 'listItem') {
+          if (node.attrs.todoChecked != null) {
+            found = true;
+          }
+        }
+      }
+
+      return true;
+    });
+
+    return found;
   };
 }
