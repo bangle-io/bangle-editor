@@ -225,7 +225,7 @@ describe('Heterogenous toggle', () => {
     );
   });
 
-  it.skip('Toggles ordered list to todo item', async () => {
+  it.skip('Toggles nested ordered list to todo item', async () => {
     const { editorView } = await testEditor(
       <doc>
         <ul>
