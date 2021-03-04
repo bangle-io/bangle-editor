@@ -16,8 +16,6 @@ const nodeAlias = {
   codeBlock: 'codeBlock',
   br: 'hardBreak',
   hr: 'horizontalRule',
-  todoList: 'todoList',
-  todoItem: 'todoItem',
 };
 const markAlias = {};
 

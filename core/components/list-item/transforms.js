@@ -131,9 +131,9 @@ const getListType = (node, schema) => {
   }, null);
 };
 const extractListFromParagaph = (type, node, schema) => {
-  const { hardBreak, bulletList, orderedList, todoList } = schema.nodes;
+  const { hardBreak, bulletList, orderedList } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
-  const listTypes = [bulletList, orderedList, todoList];
+  const listTypes = [bulletList, orderedList];
   // wrap each line into a listItem and a containing list
   const listified = content
     .map((child) => {

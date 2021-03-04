@@ -162,12 +162,12 @@ function getContent() {
         ],
       },
       {
-        type: 'todoList',
+        type: 'bulletList',
         content: [
           {
-            type: 'todoItem',
+            type: 'listItem',
             attrs: {
-              done: true,
+              todoChecked: true,
             },
             content: [
               {
@@ -182,9 +182,9 @@ function getContent() {
             ],
           },
           {
-            type: 'todoItem',
+            type: 'listItem',
             attrs: {
-              done: false,
+              todoChecked: false,
             },
             content: [
               {
@@ -199,9 +199,9 @@ function getContent() {
             ],
           },
           {
-            type: 'todoItem',
+            type: 'listItem',
             attrs: {
-              done: false,
+              todoChecked: false,
             },
             content: [
               {
@@ -216,9 +216,9 @@ function getContent() {
             ],
           },
           {
-            type: 'todoItem',
+            type: 'listItem',
             attrs: {
-              done: false,
+              todoChecked: false,
             },
             content: [
               {

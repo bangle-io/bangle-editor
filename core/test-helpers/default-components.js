@@ -17,8 +17,6 @@ import {
   horizontalRule,
   listItem,
   orderedList,
-  todoItem,
-  todoList,
   image,
 } from '../components/index';
 
@@ -70,8 +68,6 @@ function coreNodeSpec(options = {}) {
       horizontalRule.spec(options.horizontalRule),
     options.listItem !== false && listItem.spec(options.listItem),
     options.orderedList !== false && orderedList.spec(options.orderedList),
-    options.todoItem !== false && todoItem.spec(options.todoItem),
-    options.todoList !== false && todoList.spec(options.todoList),
     options.image !== false && image.spec(options.image),
   ];
 }
@@ -88,8 +84,6 @@ function coreNodePlugins(options = {}) {
       horizontalRule.plugins(options.horizontalRule),
     options.listItem !== false && listItem.plugins(options.listItem),
     options.orderedList !== false && orderedList.plugins(options.orderedList),
-    options.todoItem !== false && todoItem.plugins(options.todoItem),
-    options.todoList !== false && todoList.plugins(options.todoList),
     options.image !== false && image.plugins(options.image),
   ];
 }

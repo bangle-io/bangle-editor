@@ -22,8 +22,6 @@ import {
   hardBreak,
   listItem,
   orderedList,
-  todoItem,
-  todoList,
   image,
   horizontalRule,
 } from '@bangle.dev/core/components';
@@ -44,8 +42,6 @@ const specRegistry = new SpecRegistry([
   hardBreak.spec(),
   listItem.spec(),
   orderedList.spec(),
-  todoItem.spec(),
-  todoList.spec(),
   image.spec(),
   horizontalRule.spec(),
 

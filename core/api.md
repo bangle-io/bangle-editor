@@ -361,6 +361,8 @@ const plugins = [
 
 Enables bulletList `<ul/>`. **Requires node components with names** `orderedList` & `listItem` to work. {{global.link.MarkdownSupport}}
 
+This component implements todo lists by having an attribute `todoChecked` in any of its children `listItem`.
+
 #### spec(): {{core.link.NodeSpec}}
 
 #### plugins({ ... }): {{core.link.Plugins}}
@@ -372,6 +374,9 @@ Named parameters:
 - **markdownShortcut**: ?boolean=`true`\
   Enable the markdown shortcut for creating a bullet list. If enabled, type `-`, `*` or `+` followed by a space to create a bullet list on an empty paragraph.
 
+- **todoMarkdownShortcut**: ?boolean=`true`\
+  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todo.
+
 #### defaultKeys: {{core.link.Keybindings}}
 
 - **toggle**=`Shift-Ctrl-8`: Executes `toggleBulletList` command.
@@ -381,8 +386,14 @@ Named parameters:
 - **toggleBulletList**(): {{core.link.Command}}\
   Convert to a bulletList and if already a bulletList, convert it to a paragraph node.
 
+- **toggleTodoList**(): {{core.link.Command}}\
+  Convert to a bulletList with todoChecked attribute but if already a bulletList, convert it to a paragraph node.
+
 - **queryIsBulletListActive**(): {{typedQueryCommand "boolean"}}\
   Query if the selection is inside a bullet list.
+
+- **queryIsTodoListActive**(): {{typedQueryCommand "boolean"}}\
+  Query if the selection has a list item that has `todoChecked` attribute.
 
 **Usage**
 
@@ -1042,122 +1053,6 @@ const plugins = [
 ### text: {{core.link.Component}}
 
 The text node which the editor uses to wrap the text. The spec for this component are **required** for Bangle to function, if a spec named `text` is not defined, Bangle will automatically default to this one.
-
-#### spec(): {{core.link.NodeSpec}}
-
-Creates a todoItem node spec with `done` attribute, read more {{global.link.YourFirstEditorGuide}}.
-
-### todoItem: {{core.link.Component}}
-
-Creates a todoItem with a `done` attribute. **Requires node components with names** `todoList`, `bulletList`,`orderedList` & `listItem` to work
-
-#### spec({ ... }): {{core.link.NodeSpec}}
-
-Named parameters:
-
-- **nested**: boolean=true\
-  Allows nesting of todo items.
-
-- **draggable**: boolean=true\
-  Make todo items draggable.
-
-#### plugins({ ... }): {{core.link.Plugins}}
-
-Named parameters:
-
-- {{core.text.pluginsParamKeybindings}}
-
-- **nodeView**: boolean=true\
-  If `true`, will use the default todoItem nodeView. Set it to `false` to disable the default todoItem nodeView. The typical use-case for setting it to `false` is when you want to use a custom nodeView for todoItem. See the {{core.link.nodeViews}} section for more details.
-
-#### defaultKeys: {{core.link.Keybindings}}
-
-- **toggleDone**=`Ctrl-Enter (mac) Ctrl-I (linux/windows)`: Toggles the todo item's done status.
-
-- **indent**=`Tab`: Indents the todo item
-
-- **outdent**=`Shift-Tab`: Outdents the todo item
-
-- **moveDown**=`Alt-ArrowDown`: move todoItem down
-
-- **moveUp**=`Alt-ArrowUp`: move todoItem up
-
-- **emptyCopy**=`Mod-c`: {{core.text.emptyCopy}}
-
-- **emptyCut**=`Mod-x`: {{core.text.emptyCut}}
-
-- **insertEmptyParaAbove**=`Mod-Shift-Enter`: {{core.text.insertEmptyParaAbove}}
-
-- **insertEmptyParaBelow**=`Mod-Enter`: {{core.text.insertEmptyParaBelow}}
-
-#### commands: {{core.link.CommandObject}}
-
-- **toggleTodoItemDone**(): {{core.link.Command}}\
-  Toggle the done attribute of the todo item in the selection.
-
-- **queryTodoItemAttrs**(): {{typedQueryCommand "?{done: boolean}"}}\
-  Query the todo item attributes.
-
-**Usage**
-
-```js
-import {
-  todoList,
-  todoItem,
-  orderedList,
-  bulletList,
-  listItem,
-} from '@bangle.dev/core';
-
-const specFactory = [
-  // other specs
-  listItem.spec(),
-  todoItem.spec(),
-  orderedList.spec(),
-  bulletList.spec(),
-  todoList.spec(),
-];
-
-const plugins = [
-  // other plugins
-  listItem.plugins(),
-  todoItem.plugins(),
-  orderedList.plugins(),
-  bulletList.plugins(),
-  todoList.plugins(),
-];
-```
-
-### todoList: {{core.link.Component}}
-
-A wrapper node component for `todoItem`, similar to how `orderedList` is a wrapper for `listItem`. **Requires node components with names** `todoItem`, `bulletList`,`orderedList` & `listItem` to work. {{global.link.MarkdownSupport}}
-
-#### spec(): {{core.link.NodeSpec}}
-
-#### plugins({ ... }): {{core.link.Plugins}}
-
-Named parameters:
-
-- {{core.text.pluginsParamKeybindings}}
-
-- **markdownShortcut**: ?boolean=true\
-  Enable the markdown shortcut for creating a todo list. Type `[ ]` or `[]` followed by a space to create an unchecked todoList.
-
-#### defaultKeys: {{core.link.Keybindings}}
-
-- **toggle**=`Shift-Ctrl-7`: Executes `toggleTodoList` command.
-
-#### commands: {{core.link.CommandObject}}
-
-- **toggleTodoList**(): {{core.link.Command}}\
-  Convert to an todoList and if already an todoList, convert it to a paragraph node.
-
-- **queryIsTodoListActive**(): {{typedQueryCommand "boolean"}}\
-  Query if the selection is inside a todo list.
-
-**Usage**
-
-See [todoitem](#todoitem-component) usage.
 
 ### underline: {{core.link.Component}}
 

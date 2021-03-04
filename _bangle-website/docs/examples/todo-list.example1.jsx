@@ -1,13 +1,7 @@
 import '@bangle.dev/core/style.css';
 
 import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
-import {
-  todoList,
-  todoItem,
-  listItem,
-  bulletList,
-  orderedList,
-} from '@bangle.dev/core';
+import { listItem, bulletList, orderedList } from '@bangle.dev/core';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({
@@ -17,22 +11,14 @@ export default function Editor(domNode) {
       bulletList.spec(),
       // The above list specs are needed
       // for todo lists to work
-      todoItem.spec(),
-      todoList.spec(),
     ],
-    plugins: [
-      listItem.plugins(),
-      orderedList.plugins(),
-      bulletList.plugins(),
-      todoItem.plugins(),
-      todoList.plugins(),
-    ],
+    plugins: [listItem.plugins(), orderedList.plugins(), bulletList.plugins()],
     initialValue: `<div>
     <p>Let us check off some lists:</p>
-    <ul data-bangle-name="todoList">
-        <li data-bangle-name="todoItem">Buy milk</li>
-        <li data-bangle-name="todoItem">Clean the room</li>
-        <li data-bangle-name="todoItem">Star bangle.dev on Github</li>
+    <ul>
+      <li data-bangle-name="listItem" data-bangle-attrs="{&quot;todoChecked&quot;:false}"><p>Buy milk</p></li>
+      <li data-bangle-name="listItem" data-bangle-attrs="{&quot;todoChecked&quot;:false}"><p>Clean the room</p></li>
+      <li data-bangle-name="listItem" data-bangle-attrs="{&quot;todoChecked&quot;:false}"><p>Star bangle.dev on Github</p></li>
     </ul>
     </div>`,
   });

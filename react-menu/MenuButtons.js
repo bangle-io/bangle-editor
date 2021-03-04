@@ -18,11 +18,6 @@ import {
 } from '@bangle.dev/core/components/code';
 import * as blockquote from '@bangle.dev/core/components/blockquote';
 import {
-  defaultKeys as todoListKeys,
-  queryIsTodoListActive,
-  toggleTodoList,
-} from '@bangle.dev/core/components/todo-list';
-import {
   defaultKeys as paragraphKeys,
   queryIsTopLevelParagraph,
   convertToParagraph,
@@ -40,7 +35,9 @@ import {
 import {
   defaultKeys as bulletListKeys,
   queryIsBulletListActive,
+  queryIsTodoListActive,
   toggleBulletList,
+  toggleTodoList,
 } from '@bangle.dev/core/components/bullet-list';
 import * as Icons from './Icons';
 import { useEditorViewContext } from '@bangle.dev/react';
@@ -211,8 +208,10 @@ export function BulletListButton({
       hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
-      isActive={queryIsBulletListActive()(view.state)}
-      isDisabled={!toggleBulletList()(view.state, undefined, view)}
+      isActive={
+        queryIsBulletListActive()(view.state) &&
+        !queryIsTodoListActive()(view.state)
+      }
     >
       {children}
     </MenuButton>
@@ -244,7 +243,6 @@ export function OrderedListButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsOrderedListActive()(view.state)}
-      isDisabled={!toggleOrderedList()(view.state, undefined, view)}
     >
       {children}
     </MenuButton>
@@ -252,7 +250,7 @@ export function OrderedListButton({
 }
 
 export function TodoListButton({
-  hint = 'TodoList\n' + todoListKeys.toggle,
+  hint = 'TodoList\n' + bulletListKeys.toggleTodo,
   hintPos = 'top',
   children = <Icons.TodoListIcon />,
   ...props
@@ -261,16 +259,12 @@ export function TodoListButton({
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
-      // TODO fix the undefined dispatch passing
-      const allowed = toggleTodoList()(view.state, undefined, view);
-      if (allowed) {
+
+      if (toggleTodoList()(view.state, view.dispatch, view)) {
         if (view.dispatch) {
           view.focus();
-          toggleTodoList()(view.state, view.dispatch, view);
         }
-        return true;
       }
-      return false;
     },
     [view],
   );
@@ -281,7 +275,6 @@ export function TodoListButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsTodoListActive()(view.state)}
-      isDisabled={!toggleTodoList()(view.state, undefined, view)}
     >
       {children}
     </MenuButton>

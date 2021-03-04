@@ -275,7 +275,7 @@ Convert text to a `bulletList` node.
 
 ### TodoListButton: {{global.link.ReactElement}}
 
-Convert text to a `todoList` node.
+Convert paragraph to a `todoList` node.
 
 **Props:**
 

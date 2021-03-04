@@ -1,11 +1,14 @@
 import { chainCommands } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { NodeView } from '../../node-view';
 import {
   indentList,
   backspaceKeyCommand,
   enterKeyCommand,
   outdentList,
   moveEdgeListItem,
+  isNodeTodo,
+  updateNodeAttrs,
 } from './commands';
 import {
   cutEmptyCommand,
@@ -14,6 +17,12 @@ import {
   moveNode,
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
+import { createElement, domSerializationHelpers } from '../../utils/index';
+import browser from '../../utils/browser';
+
+const LOG = false;
+
+let log = LOG ? console.log.bind(console, 'list-item') : () => {};
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -22,6 +31,7 @@ export const commands = {
   outdentListItem,
 };
 export const defaultKeys = {
+  toggleDone: browser.mac ? 'Ctrl-Enter' : 'Ctrl-I',
   indent: 'Tab',
   outdent: 'Shift-Tab',
   moveDown: 'Alt-ArrowDown',
@@ -36,6 +46,11 @@ const name = 'listItem';
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
 function specFactory(opts = {}) {
+  const { toDOM, parseDOM } = domSerializationHelpers(name, {
+    tag: 'li',
+    content: 0,
+  });
+
   return {
     type: 'node',
     name,
@@ -43,53 +58,243 @@ function specFactory(opts = {}) {
       content: '(paragraph) (paragraph | bulletList | orderedList)*',
       defining: true,
       draggable: true,
-      parseDOM: [{ tag: 'li' }],
-      toDOM: () => ['li', 0],
+      attrs: {
+        todoChecked: {
+          default: null,
+        },
+      },
+      toDOM,
+      parseDOM,
     },
     markdown: {
       toMarkdown(state, node) {
+        if (node.attrs.todoChecked != null) {
+          state.write(node.attrs.todoChecked ? '[x] ' : '[ ] ');
+        }
         state.renderContent(node);
       },
       parseMarkdown: {
-        list_item: { block: name },
+        list_item: {
+          block: name,
+          getAttrs: (tok) => {
+            return {
+              todoChecked: tok.attrGet('isDone'),
+            };
+          },
+        },
       },
     },
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const parentCheck = parentHasDirectParentOfType(type, [
+    const isBulletList = parentHasDirectParentOfType(type, [
       schema.nodes['bulletList'],
       schema.nodes['orderedList'],
     ]);
 
+    const isATodo = (state) => {
+      return isNodeTodo(state.selection.$from.node(-1), state.schema);
+    };
+
     const move = (dir) =>
-      chainCommands(moveNode(type, dir), moveEdgeListItem(type, dir));
+      chainCommands(moveNode(type, dir), (state, dispatch, view) => {
+        const node = state.selection.$from.node(-3);
+        const parentTodo = isNodeTodo(node, state.schema);
+        let result = moveEdgeListItem(type, dir)(state, dispatch, view);
+        if (!result) {
+          return false;
+        }
+
+        // if parent was a todo convert the moved edge node
+        // to todo bullet item
+        if (parentTodo && dispatch) {
+          const state = view.state;
+          dispatch(
+            state.tr.setNodeMarkup(
+              state.selection.$from.before(-1),
+              undefined,
+              {
+                ...node.attrs,
+                todoChecked: false,
+              },
+            ),
+          );
+        }
+        return true;
+      });
 
     return [
       keybindings &&
         keymap({
+          [keybindings.toggleDone]: filter(
+            isBulletList,
+            updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
+              ...attrs,
+              todoChecked:
+                attrs['todoChecked'] == null ? false : !attrs['todoChecked'],
+            })),
+          ),
+
           Backspace: backspaceKeyCommand(type),
           Enter: enterKeyCommand(type),
           [keybindings.indent]: indentListItem(),
           [keybindings.outdent]: outdentListItem(),
-          [keybindings.moveUp]: filter(parentCheck, move('UP')),
-          [keybindings.moveDown]: filter(parentCheck, move('DOWN')),
-          [keybindings.emptyCut]: filter(parentCheck, cutEmptyCommand(type)),
-          [keybindings.emptyCopy]: filter(parentCheck, copyEmptyCommand(type)),
-          [keybindings.insertEmptyListAbove]: filter(
-            parentCheck,
-            insertEmpty(type, 'above', true),
+          [keybindings.moveUp]: filter(isBulletList, move('UP')),
+          [keybindings.moveDown]: filter(isBulletList, move('DOWN')),
+          [keybindings.emptyCut]: filter(isBulletList, cutEmptyCommand(type)),
+          [keybindings.emptyCopy]: filter(isBulletList, copyEmptyCommand(type)),
+          [keybindings.insertEmptyListAbove]: chainCommands(
+            filter(
+              isATodo,
+              insertEmpty(type, 'above', true, { todoChecked: false }),
+            ),
+            filter(isBulletList, insertEmpty(type, 'above', true)),
           ),
-          [keybindings.insertEmptyListBelow]: filter(
-            parentCheck,
-            insertEmpty(type, 'below', true),
+
+          [keybindings.insertEmptyListBelow]: chainCommands(
+            filter(
+              isATodo,
+              insertEmpty(type, 'below', true, { todoChecked: false }),
+            ),
+            filter(isBulletList, insertEmpty(type, 'below', true)),
           ),
         }),
+
+      nodeView && listItemNodePlugin(),
     ];
   };
+}
+
+function listItemNodePlugin() {
+  const checkParentBulletList = (state, pos) => {
+    return state.doc.resolve(pos).parent.type.name === 'bulletList';
+  };
+
+  const removeCheckbox = (instance) => {
+    // already removed
+    if (!instance.containerDOM.hasAttribute('data-bangle-is-todo')) {
+      return;
+    }
+    instance.containerDOM.removeAttribute('data-bangle-is-todo');
+    instance.containerDOM.removeChild(instance.containerDOM.firstChild);
+  };
+
+  const setupCheckbox = (attrs, updateAttrs, instance) => {
+    // no need to create as it is already created
+    if (instance.containerDOM.hasAttribute('data-bangle-is-todo')) {
+      return;
+    }
+
+    const checkbox = createCheckbox(attrs.todoChecked, (newValue) => {
+      updateAttrs({
+        // Fetch latest attrs as the one in outer
+        // closure can be stale.
+        todoChecked: newValue,
+      });
+    });
+
+    instance.containerDOM.setAttribute('data-bangle-is-todo', '');
+    instance.containerDOM.prepend(checkbox);
+  };
+
+  const createCheckbox = (todoChecked, onUpdate) => {
+    const checkBox = createElement([
+      'span',
+      { contentEditable: false },
+      [
+        'input',
+        {
+          type: 'checkbox',
+        },
+      ],
+    ]);
+    const inputElement = checkBox.querySelector('input');
+
+    if (todoChecked) {
+      inputElement.setAttribute('checked', '');
+    }
+
+    inputElement.addEventListener('input', (e) => {
+      log('change event', inputElement.checked);
+      onUpdate(
+        // note:  inputElement.checked is a bool
+        inputElement.checked,
+      );
+    });
+
+    return checkBox;
+  };
+
+  return NodeView.createPlugin({
+    name,
+    containerDOM: [
+      'li',
+      {
+        // To style our todo friend different than a regular li
+        'data-bangle-name': name,
+      },
+    ],
+    contentDOM: ['span', {}],
+    renderHandlers: {
+      create: (instance, { attrs, updateAttrs, getPos, view }) => {
+        const todoChecked = attrs['todoChecked'];
+
+        // branch if todo needs to be created
+        if (todoChecked != null) {
+          // todo only makes sense if parent is bullet list
+          if (checkParentBulletList(view.state, getPos())) {
+            setupCheckbox(attrs, updateAttrs, instance);
+          }
+        }
+
+        // Connect the two contentDOM and containerDOM for pm to write to
+        instance.containerDOM.appendChild(instance.contentDOM);
+      },
+
+      // We need to achieve a two way binding of the todoChecked state.
+      // First binding: dom -> editor : done by  inputElement's `input` event listener
+      // Second binding: editor -> dom: Done by the `update` handler below
+      update: (instance, { attrs, view, getPos, updateAttrs }) => {
+        const { todoChecked } = attrs;
+
+        if (todoChecked == null) {
+          removeCheckbox(instance);
+          return;
+        }
+
+        // if parent is not bulletList i.e. it is orderedList
+        if (!checkParentBulletList(view.state, getPos())) {
+          return;
+        }
+
+        // assume nothing about the dom elements state.
+        // for example it is possible that the checkbox is not created
+        // when a regular list is converted to todo list only update handler
+        // will be called. The create handler was called in the past
+        // but without the checkbox element, hence the checkbox wont be there
+        setupCheckbox(attrs, updateAttrs, instance);
+
+        const checkbox = instance.containerDOM.firstChild.firstChild;
+
+        const hasAttribute = checkbox.hasAttribute('checked');
+        if (todoChecked === hasAttribute) {
+          log('skipping update', todoChecked, hasAttribute);
+          return;
+        }
+        log('updating inputElement');
+        if (todoChecked) {
+          checkbox.setAttribute('checked', 'true');
+        } else {
+          checkbox.removeAttribute('checked');
+        }
+      },
+
+      destroy: () => {},
+    },
+  });
 }
 
 export function indentListItem() {

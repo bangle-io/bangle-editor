@@ -7,13 +7,7 @@ import {
   useEditorState,
   useEditorViewContext,
 } from '@bangle.dev/react';
-import {
-  PluginKey,
-  orderedList,
-  bulletList,
-  todoList,
-  heading,
-} from '@bangle.dev/core';
+import { PluginKey, orderedList, bulletList, heading } from '@bangle.dev/core';
 import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 import {
   floatingMenu,
@@ -105,7 +99,7 @@ function NodeTypeButton({ isDropdownVisible, updateDropdown }) {
     name = 'Ordered List';
   } else if (bulletList.queryIsBulletListActive()(view.state)) {
     name = 'Bullet List';
-  } else if (todoList.queryIsTodoListActive()(view.state)) {
+  } else if (bulletList.queryIsTodoListActive()(view.state)) {
     name = 'Todo List';
   } else if (heading.queryIsHeadingActive(1)(view.state)) {
     name = 'Heading 1';

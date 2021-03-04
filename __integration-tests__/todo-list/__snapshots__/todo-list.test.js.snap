@@ -8,7 +8,7 @@ Object {
         "content": Array [
           Object {
             "attrs": Object {
-              "done": false,
+              "todoChecked": false,
             },
             "content": Array [
               Object {
@@ -21,10 +21,10 @@ Object {
                 "type": "paragraph",
               },
             ],
-            "type": "todoItem",
+            "type": "listItem",
           },
         ],
-        "type": "todoList",
+        "type": "bulletList",
       },
     ],
     "type": "doc",

@@ -18,8 +18,6 @@ export * as heading from './heading';
 export * as horizontalRule from './horizontal-rule';
 export * as listItem from './list-item/list-item';
 export * as orderedList from './ordered-list';
-export * as todoItem from './todo-item';
-export * as todoList from './todo-list';
 export * as image from './image';
 
 // components

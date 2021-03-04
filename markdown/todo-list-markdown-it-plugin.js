@@ -1,9 +1,9 @@
 export function todoListMarkdownItPlugin(md, options = {}) {
   const {
-    todoListOpenType = 'todo_list_open',
-    todoListCloseType = 'todo_list_close',
-    todoItemCloseType = 'todo_item_close',
-    todoItemOpenName = 'todo_item_open',
+    todoListOpenType = 'bullet_list_open',
+    todoListCloseType = 'bullet_list_close',
+    todoItemCloseType = 'list_item_close',
+    todoItemOpenName = 'list_item_open',
     isDoneAttrName = 'isDone',
   } = options;
 
@@ -59,7 +59,7 @@ export function todoListMarkdownItPlugin(md, options = {}) {
         const inlineToken = tokens[todoItemIndex + 2];
         const inlineTokenChild = inlineToken.children[0];
 
-        let isDone = false;
+        let isDone = null;
 
         if (startsWithTodoMarkdown(inlineTokenChild)) {
           const charAt1 =
@@ -69,6 +69,8 @@ export function todoListMarkdownItPlugin(md, options = {}) {
 
           if (['x', 'X'].includes(charAt1)) {
             isDone = true;
+          } else {
+            isDone = false;
           }
         }
 

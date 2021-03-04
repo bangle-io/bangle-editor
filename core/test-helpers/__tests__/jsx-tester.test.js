@@ -56,18 +56,18 @@ test.each([
   [
     'todo list',
     <doc>
-      <todoList>
-        <todoItem>
+      <bulletList>
+        <listItem todoChecked={false}>
           <para>foo</para>
-        </todoItem>
-      </todoList>
+        </listItem>
+      </bulletList>
     </doc>,
     <doc>
-      <todoList>
-        <todoItem>
+      <bulletList>
+        <listItem todoChecked={false}>
           <para>foohello</para>
-        </todoItem>
-      </todoList>
+        </listItem>
+      </bulletList>
     </doc>,
   ],
 

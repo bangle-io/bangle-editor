@@ -38,8 +38,8 @@ export const validPos = (pos, doc) =>
   Number.isInteger(pos) && pos >= 0 && pos < doc.content.size;
 
 export const validListParent = (type, schemaNodes) => {
-  const { bulletList, orderedList, todoList } = schemaNodes;
-  return [bulletList, orderedList, todoList].includes(type);
+  const { bulletList, orderedList } = schemaNodes;
+  return [bulletList, orderedList].includes(type);
 };
 
 // TODO document this, probably gets the attributes of the mark of the current selection
@@ -171,6 +171,8 @@ export function isEmptyParagraph(node) {
   );
 }
 
+// Run predicates: Array<fn(state) -> boolean> and if all
+// true, run the command.
 export function filter(predicates, cmd) {
   return function (state, dispatch, view) {
     if (!Array.isArray(predicates)) {
@@ -334,7 +336,7 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 // This will return (depth - 1) for root list parent of a list.
 export const getListLiftTarget = (type, schema, resPos) => {
   let target = resPos.depth;
-  const { bulletList, orderedList, todoList } = schema.nodes;
+  const { bulletList, orderedList } = schema.nodes;
   let listItem = type;
   if (!listItem) {
     ({ listItem } = schema.nodes);
@@ -342,17 +344,12 @@ export const getListLiftTarget = (type, schema, resPos) => {
 
   for (let i = resPos.depth; i > 0; i--) {
     const node = resPos.node(i);
-    if (
-      node.type === bulletList ||
-      node.type === orderedList ||
-      node.type === todoList
-    ) {
+    if (node.type === bulletList || node.type === orderedList) {
       target = i;
     }
     if (
       node.type !== bulletList &&
       node.type !== orderedList &&
-      node.type !== todoList &&
       node.type !== listItem
     ) {
       break;
@@ -435,7 +432,7 @@ export function getFragmentBackingArray(fragment) {
  *
  * @param {*} type The schema type of object to create
  * @param {*} placement The placement of the node - above or below
- * @param {*} nested putting this true will create the
+ * @param {*} nestable putting this true will create the
  *            empty node at -1. Set this to true   for nodes
  *             which are nested, for example in:
  *              `<ul> p1 <li> p2 <p>abc</p> p7 </li> p8 <ul>`
@@ -443,15 +440,20 @@ export function getFragmentBackingArray(fragment) {
  *            will  insert it at pos p1 and not p2. If nested was false,
  *            the function would hav inserted at p2.
  */
-export function insertEmpty(type, placement = 'above', nested = false) {
+export function insertEmpty(
+  type,
+  placement = 'above',
+  nestable = false,
+  attrs,
+) {
   const isAbove = placement === 'above';
-  const depth = nested ? -1 : undefined;
+  const depth = nestable ? -1 : undefined;
   return (state, dispatch) => {
     const insertPos = isAbove
       ? state.selection.$from.before(depth)
       : state.selection.$from.after(depth);
 
-    const nodeToInsert = type.createAndFill();
+    const nodeToInsert = type.createAndFill(attrs);
 
     const tr = state.tr;
     let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
