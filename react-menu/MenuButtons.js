@@ -17,7 +17,6 @@ import {
   toggleCode,
 } from '@bangle.dev/core/components/code';
 import * as blockquote from '@bangle.dev/core/components/blockquote';
-import { defaultKeys as todoListKeys } from '@bangle.dev/core/components/todo-list';
 import {
   defaultKeys as paragraphKeys,
   queryIsTopLevelParagraph,
@@ -252,7 +251,7 @@ export function OrderedListButton({
 }
 
 export function TodoListButton({
-  hint = 'TodoList\n' + todoListKeys.toggle,
+  hint = 'TodoList\n' + bulletListKeys.toggleTodo,
   hintPos = 'top',
   children = <Icons.TodoListIcon />,
   ...props

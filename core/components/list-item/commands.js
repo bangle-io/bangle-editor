@@ -37,15 +37,11 @@ export const isNodeTodo = (node, schema) => {
 };
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
-  const { bulletList, orderedList, todoList } = nodes;
+  const { bulletList, orderedList } = nodes;
   let count = 0;
   for (let i = resolvedPos.depth - 1; i > 0; i--) {
     const node = resolvedPos.node(i);
-    if (
-      node.type === bulletList ||
-      node.type === orderedList ||
-      node.type === todoList
-    ) {
+    if (node.type === bulletList || node.type === orderedList) {
       count += 1;
     }
   }
@@ -130,22 +126,17 @@ export const isInsideListItem = (type) => (state) => {
 const rootListDepth = (type, pos, nodes) => {
   let listItem = type;
 
-  const { bulletList, orderedList, todoList } = nodes;
+  const { bulletList, orderedList } = nodes;
   let depth;
   for (let i = pos.depth - 1; i > 0; i--) {
     const node = pos.node(i);
-    if (
-      node.type === bulletList ||
-      node.type === orderedList ||
-      node.type === todoList
-    ) {
+    if (node.type === bulletList || node.type === orderedList) {
       depth = i;
     }
     if (
       node.type !== bulletList &&
       node.type !== orderedList &&
-      node.type !== listItem &&
-      node.type !== todoList
+      node.type !== listItem
     ) {
       break;
     }
@@ -512,20 +503,6 @@ function mergeLists(listItem, range) {
   };
 }
 
-const isGrandParentTodoList = (state) => {
-  const { $from } = state.selection;
-  const grandParent = $from.node($from.depth - 4);
-  const { todoList } = state.schema.nodes;
-  return grandParent.type === todoList;
-};
-
-const isParentBulletOrOrderedList = (state) => {
-  const { $from } = state.selection;
-  const parent = $from.node($from.depth - 2);
-  const { bulletList, orderedList } = state.schema.nodes;
-  return [bulletList, orderedList].includes(parent.type);
-};
-
 // Chaining runs each command until one of them returns true
 export const backspaceKeyCommand = (type) => (...args) => {
   return baseCommand.chainCommands(
@@ -737,7 +714,6 @@ function joinToPreviousListItem(type) {
       codeBlock,
       bulletList,
       orderedList,
-      todoList,
     } = state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
     const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
@@ -749,7 +725,7 @@ function joinToPreviousListItem(type) {
     // see if the containing node is a list
     if (
       $cut.nodeBefore &&
-      [bulletList, orderedList, todoList].indexOf($cut.nodeBefore.type) > -1
+      [bulletList, orderedList].indexOf($cut.nodeBefore.type) > -1
     ) {
       // and the node after this is a paragraph or a codeBlock
       if (
@@ -804,9 +780,7 @@ function joinToPreviousListItem(type) {
           $postCut.nodeBefore &&
           $postCut.nodeAfter &&
           $postCut.nodeBefore.type === $postCut.nodeAfter.type &&
-          [bulletList, orderedList, todoList].indexOf(
-            $postCut.nodeBefore.type,
-          ) > -1
+          [bulletList, orderedList].indexOf($postCut.nodeBefore.type) > -1
         ) {
           tr = tr.join($postCut.pos);
         }

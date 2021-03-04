@@ -74,6 +74,8 @@ export function toggleBulletList() {
   };
 }
 
+// TODO: implemeted two different ways to toggle
+// todos, none of them convert bulletList -> todoList directly
 export function toggleTodoList2() {
   return (state, dispatch, view) => {
     const result = toggleList(
