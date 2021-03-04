@@ -1,8 +1,10 @@
-## HEAD
+## 0.3.0
 
 _@bangle.dev/core\_
 
 - bug: Fixed an issue when toggling a nested list item with empty sibbling caused errors.
+
+- breaking: todoList and todoItem no longer exist and now have been implemented with bulletList and listItem with the node attribute `todoChecked`.
 
 ## 0.2.1
 
