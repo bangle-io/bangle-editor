@@ -1,3 +1,9 @@
+## HEAD
+
+_@bangle.dev/core\_
+
+- bug: Fixed some bugs which cause non-intuitive toggling between todo bullet lists and regular bullet lists.
+
 ## 0.3.0
 
 _@bangle.dev/core\_
