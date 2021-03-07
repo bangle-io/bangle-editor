@@ -117,7 +117,7 @@ const isSelectionParentBulletList = (state) => {
 };
 
 export function toggleTodoList() {
-  // The job of this command is to see if the selection
+  // The job of the command below is to see if the selection
   // has some todo list-items, if yes, convert all list-items
   // to todo.
   const handleTodos = filter(
@@ -212,15 +212,6 @@ export function smartNodesBetween($from, $to, doc, callback) {
   const start = $from.start(-2);
   const end = $to.end(-2);
   const depth = Math.min(doc.resolve(start).depth, doc.resolve(end).depth);
-  // NOTE: On start end depths start  point to the start of listItems and end points to end of listItems
-  // in the current selections parent bulletList.
-  // example:  even though selection is between A & B,
-  //           the start and end will be * and ~.
-  //            <ul>
-  //                *<li>[A</li>
-  //                <li><B]></li>
-  //                <li><C></li>~
-  //            </ul>
 
   doc.nodesBetween(start, end, (node, pos) => {
     if (pos >= start) {
