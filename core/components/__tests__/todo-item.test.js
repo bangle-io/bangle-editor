@@ -8,6 +8,7 @@ import {
   typeText,
   sendKeyToPm,
 } from '../../test-helpers/index';
+import { smartNodesBetween } from '../bullet-list';
 import { listItem } from '../index';
 
 const testEditor = renderTestEditor();
@@ -194,8 +195,7 @@ describe('Heterogenous toggle', () => {
     );
   });
 
-  // TODO make it more intuitive
-  it('when calling toggleTodo on bulletList it converts to paragraph', async () => {
+  it('nested todo list to plain li', async () => {
     const { editorView } = await testEditor(
       <doc>
         <ul>
@@ -218,19 +218,6 @@ describe('Heterogenous toggle', () => {
         <ul>
           <li todoChecked={false}>
             <para>first</para>
-          </li>
-        </ul>
-        <para>[]second</para>
-      </doc>,
-    );
-  });
-
-  it.skip('Toggles nested ordered list to todo item', async () => {
-    const { editorView } = await testEditor(
-      <doc>
-        <ul>
-          <li todoChecked={false}>
-            <para>first</para>
             <ul>
               <li>
                 <para>[]second</para>
@@ -240,24 +227,451 @@ describe('Heterogenous toggle', () => {
         </ul>
       </doc>,
     );
-
-    sendKeyToPm(editorView, 'Ctrl-Shift-7');
-
-    expect(editorView.state.doc).toEqualDocument(
-      <doc>
-        <ul>
-          <li todoChecked={false}>
-            <para>first</para>
-            <ul>
-              <li todoChecked={false}>
-                <para>[]second</para>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </doc>,
-    );
   });
+});
+
+test.each([
+  [
+    'plain  list',
+    <doc>
+      <ul>
+        <li>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'plain todo list ',
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <para>[] first</para>
+    </doc>,
+  ],
+
+  [
+    'plain nested list',
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li>
+              <para>[]second</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>[]second</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'plain nested list 2',
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li>
+              <para>mango</para>
+            </li>
+            <li>
+              <para>[]second</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+            <li todoChecked={false}>
+              <para>[]second</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'Single todo item with many vanilla lists',
+    <doc>
+      <ul>
+        <li>
+          <para>first</para>
+          <ul>
+            <li todoChecked={true}>
+              <para>alpha</para>
+            </li>
+            <li>
+              <para>[]mango</para>
+            </li>
+            <li>
+              <para>charlie</para>
+            </li>
+            <li>
+              <para>tango</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li>
+          <para>first</para>
+          <ul>
+            <li todoChecked={true}>
+              <para>[]alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+            <li todoChecked={false}>
+              <para>charlie</para>
+            </li>
+            <li todoChecked={false}>
+              <para>tango</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'toggling parent doesnt affect children',
+    <doc>
+      <ul>
+        <li>
+          <para>first[]</para>
+          <ul>
+            <li>
+              <para>alpha</para>
+            </li>
+            <li>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first[]</para>
+          <ul>
+            <li>
+              <para>alpha</para>
+            </li>
+            <li>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li todoChecked={false}>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'todo item',
+
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[]first</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li todoChecked={false}>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+
+    <doc>
+      <para>first[]</para>
+      <ul>
+        <li todoChecked={false}>
+          <para>alpha</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li todoChecked={false}>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'nested todo item',
+
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>[]alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li todoChecked={false}>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+        </li>
+      </ul>
+      <para>alpha[]</para>
+      <ul>
+        <li todoChecked={false}>
+          <para>mango</para>
+        </li>
+        <li todoChecked={false}>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'toggling nested list with selection inside the nested lists',
+
+    <doc>
+      <ul>
+        <li>
+          <para>first</para>
+          <ul>
+            <li>
+              <para>[alpha</para>
+            </li>
+            <li>
+              <para>mang]o</para>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+
+    <doc>
+      <ul>
+        <li>
+          <para>first</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+  // TODO this is  not intuitive
+  [
+    'toggling nested list with selection spanning parent and child lists',
+
+    <doc>
+      <ul>
+        <li>
+          <para>f[irst</para>
+          <ul>
+            <li>
+              <para>alpha</para>
+            </li>
+            <li>
+              <para>mang]o</para>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        {/** the item below should have had todoChecked */}
+        <li>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+])('toggleTodoList: Case %# %s', async (name, input, expected) => {
+  const { editorView } = await testEditor(input);
+
+  sendKeyToPm(editorView, 'Ctrl-Shift-7');
+
+  expect(editorView.state.doc).toEqualDocument(expected);
+});
+
+test.each([
+  [
+    'todo list',
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'plain nested list',
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+          <ul>
+            <li>
+              <para>[]second</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>first</para>
+        </li>
+      </ul>
+      <para>[]second</para>
+    </doc>,
+  ],
+
+  [
+    "toggling parent doesn't affect children",
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>firs[]t</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li todoChecked={false}>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+
+    <doc>
+      <ul>
+        <li>
+          <para>first[]</para>
+          <ul>
+            <li todoChecked={false}>
+              <para>alpha</para>
+            </li>
+            <li todoChecked={false}>
+              <para>mango</para>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <para>distant</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+])('toggleBulletList: Case %# %s', async (name, input, expected) => {
+  const { editorView } = await testEditor(input);
+
+  sendKeyToPm(editorView, 'Ctrl-Shift-8');
+
+  expect(editorView.state.doc).toEqualDocument(expected);
 });
 
 describe('Pressing Backspace', () => {
@@ -1195,5 +1609,62 @@ describe('Insert empty todo above and below', () => {
     sendKeyToPm(view, keybindings.insertEmptyListBelow);
 
     expect(view.state).toEqualDocAndSelection(expected);
+  });
+});
+
+describe('smartNodesBetween', () => {
+  test('works', async () => {
+    const { view } = await testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>firs[]t</para>
+            <ul>
+              <li>
+                <para>alpha</para>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <para>distant</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    const state = view.state;
+    const nodes = [];
+    smartNodesBetween(
+      state.selection.$from,
+      state.selection.$to,
+      state.doc,
+      (node, pos) => {
+        if (
+          ['listItem', 'bulletList', 'orderedItem'].includes(node.type.name)
+        ) {
+          nodes.push([node.type.name, node.textContent, pos]);
+        }
+      },
+    );
+
+    expect(nodes).toMatchInlineSnapshot(`
+      Array [
+        Array [
+          "listItem",
+          "firstalpha",
+          1,
+        ],
+        Array [
+          "bulletList",
+          "alpha",
+          9,
+        ],
+        Array [
+          "listItem",
+          "distant",
+          21,
+        ],
+      ]
+    `);
   });
 });

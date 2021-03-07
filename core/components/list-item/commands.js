@@ -167,8 +167,8 @@ function canToJoinToPreviousListItem(state) {
  *
  * @param {Object} listType  bulletList, orderedList,
  * @param {Object} itemType   'listItem'
- * @param {boolean} todo if toggling into a bulletList switch on todoChecked attr for
- *                      each listItem.
+ * @param {boolean} todo if true and the final result of toggle is a bulletList
+ *                      set `todoChecked` attr for each listItem.
  */
 export function toggleList(listType, itemType, todo) {
   return (state, dispatch, view) => {

@@ -3577,7 +3577,7 @@ describe('Toggling the list', () => {
     });
 
     // TODO: I dont know why this is not working
-    it.skip('should convert nested old inside ul to ul', async () => {
+    it.skip('should convert nested ol inside ul to ul', async () => {
       const expectedOutput = (
         <doc>
           <ul>
@@ -3620,6 +3620,46 @@ describe('Toggling the list', () => {
       );
 
       toggleBulletList(editorView);
+      expect(editorView.state.doc).toEqualDocument(expectedOutput);
+    });
+
+    it.skip('should convert a nested ul inside of an ol to ol', async () => {
+      const expectedOutput = (
+        <doc>
+          <ol>
+            <li>
+              <para>One</para>
+            </li>
+            <li>
+              <para>Two</para>
+              <ul>
+                <li>
+                  <para>Three[]</para>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </doc>
+      );
+      const { editorView } = testEditor(
+        <doc>
+          <ol>
+            <li>
+              <para>One</para>
+            </li>
+            <li>
+              <para>Two</para>
+              <ul>
+                <li>
+                  <para>Three[]</para>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </doc>,
+      );
+
+      toggleOrderedList(editorView);
       expect(editorView.state.doc).toEqualDocument(expectedOutput);
     });
   });
