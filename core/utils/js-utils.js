@@ -345,7 +345,7 @@ export function createElement(spec) {
   return dom;
 }
 
-export function fNot(func) {
+export function complement(func) {
   return (...args) => !func(...args);
 }
 
