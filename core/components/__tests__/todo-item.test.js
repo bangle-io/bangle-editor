@@ -162,7 +162,6 @@ describe('Pressing Tab', () => {
     );
 
     sendKeyToPm(view, 'Shift-Tab');
-
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
@@ -175,6 +174,113 @@ describe('Pressing Tab', () => {
         </ul>
       </doc>,
     );
+  });
+
+  test('remove todo if existing listItem is regular', async () => {
+    const original = (
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>first</para>
+            <ul>
+              <li>
+                <para>existing</para>
+              </li>
+            </ul>
+          </li>
+          <li todoChecked={false}>
+            <para>[]second</para>
+          </li>
+        </ul>
+      </doc>
+    );
+    const { view } = await testEditor(original);
+
+    sendKeyToPm(view, 'Tab');
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>first</para>
+            <ul>
+              <li>
+                <para>existing</para>
+              </li>
+              <li>
+                <para>[]second</para>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    sendKeyToPm(view, 'Shift-Tab');
+    expect(view.state).toEqualDocAndSelection(original);
+  });
+
+  test('multiselect make it todo if existing listItem is todo', async () => {
+    const original = (
+      <doc>
+        <ul>
+          <li>
+            <para>first</para>
+            <ul>
+              <li todoChecked={false}>
+                <para>existing</para>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <para>[second</para>
+          </li>
+          <li>
+            <para>third</para>
+          </li>
+          <li>
+            <para>fou]rth</para>
+          </li>
+          <li>
+            <para>fifth</para>
+          </li>
+        </ul>
+      </doc>
+    );
+
+    const { view } = await testEditor(original);
+
+    sendKeyToPm(view, 'Tab');
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <ul>
+          <li>
+            <para>first</para>
+            <ul>
+              <li todoChecked={false}>
+                <para>existing</para>
+              </li>
+              <li todoChecked={false}>
+                <para>[second</para>
+              </li>
+              <li todoChecked={false}>
+                <para>third</para>
+              </li>
+              <li todoChecked={false}>
+                <para>fou]rth</para>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <para>fifth</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    sendKeyToPm(view, 'Shift-Tab');
+    expect(view.state).toEqualDocAndSelection(original);
   });
 });
 
@@ -1341,7 +1447,7 @@ describe('Nesting heterogenous lists', () => {
   });
 
   // TODO I think this blocked by the bug described by a test in list item https://github.com/bangle-io/bangle.dev/blob/ee3305892fbe46e1217b28045b14955e94f24430/bangle-play/utilsnodes/__tests__/list-item.test.js#L553
-  it.skip('pressing enter on empty nested li should outdent and take the type of the parent when their are other sibblings', async () => {
+  it.skip('pressing enter on empty nested li should outdent and take the type of the parent when there are other sibblings', async () => {
     const { view } = await testEditor(
       <doc>
         <ul>

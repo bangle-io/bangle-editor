@@ -398,6 +398,7 @@ export function indentList(type) {
       ({ listItem } = state.schema.nodes);
     }
 
+    const schema = state.schema;
     if (isInsideListItem(listItem)(state)) {
       // Record initial list indentation
       const initialIndentationLevel = numberNestedLists(
@@ -405,7 +406,60 @@ export function indentList(type) {
         state.schema.nodes,
       );
       if (canSink(initialIndentationLevel, state)) {
-        pmListCommands.sinkListItem(listItem)(state, dispatch);
+        const toggleTodoIfNeeded = (tr) => {
+          if (!tr.isGeneric) {
+            dispatch(tr);
+            return;
+          }
+
+          const range = tr.selection.$from.blockRange(
+            tr.selection.$to,
+            (node) =>
+              node.childCount && node.firstChild.type === schema.nodes.listItem,
+          );
+
+          if (
+            !range ||
+            // we donot have an existing node to check if todo is needed or not
+            range.startIndex === 0
+          ) {
+            dispatch(tr);
+            return;
+          }
+
+          const isNodeBeforeTodo = isNodeTodo(
+            range.parent.child(range.startIndex - 1),
+            schema,
+          );
+
+          // nodeBefore is todo so make all others also todo
+          const { parent, startIndex, endIndex } = range;
+
+          let offset = 0;
+          for (let i = startIndex; i < endIndex; i++) {
+            const child = parent.child(i);
+            let attrs = { ...child.attrs };
+
+            if (isNodeBeforeTodo) {
+              attrs.todoChecked = isNodeTodo(child, schema)
+                ? attrs.todoChecked
+                : false;
+            } else {
+              attrs.todoChecked = null;
+            }
+
+            tr = tr.setNodeMarkup(range.start + offset, undefined, attrs);
+
+            offset += child.nodeSize;
+          }
+          dispatch(tr);
+          return;
+        };
+
+        pmListCommands.sinkListItem(listItem)(
+          state,
+          dispatch ? toggleTodoIfNeeded : null,
+        );
       }
       return true;
     }
