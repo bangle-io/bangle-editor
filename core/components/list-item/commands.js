@@ -10,7 +10,7 @@ import {
   findParentNode,
 } from 'prosemirror-utils';
 import { NodeSelection, TextSelection } from 'prosemirror-state';
-
+import { flatten } from 'prosemirror-utils';
 import { compose } from '../../utils/js-utils';
 import {
   hasVisibleContent,
@@ -23,18 +23,14 @@ import {
   sanitiseSelectionMarksForWrapping,
   validPos,
   validListParent,
+  extendDispatch,
 } from '../../utils/pm-utils';
 import { GapCursorSelection } from '../../gap-cursor';
 import { liftSelectionList, liftFollowingList } from './transforms';
+import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
 
 const maxIndentation = 4;
 
-export const isNodeTodo = (node, schema) => {
-  return (
-    node.type === schema.nodes.listItem &&
-    typeof node.attrs.todoChecked === 'boolean'
-  );
-};
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
   const { bulletList, orderedList } = nodes;
@@ -221,6 +217,46 @@ export function toggleList(listType, itemType, todo) {
 }
 
 function toggleListCommand(listType, todo = false) {
+  /**
+   * A function which will set todoChecked attribute
+   * in any of the nodes that have modified on the tr
+   */
+  const setTodoListTr = (schema) => (tr) => {
+    if (!tr.isGeneric) {
+      return tr;
+    }
+    // The following code gets a list of ranges that were changed
+    // From wrapDispatchForJoin: https://github.com/prosemirror/prosemirror-commands/blob/e5f8c303be55147086bfe4521cf7419e6effeb8f/src%2Fcommands.js#L495
+    // and https://discuss.prosemirror.net/t/finding-out-what-changed-in-a-transaction/2372
+    let ranges = [];
+    for (let i = 0; i < tr.mapping.maps.length; i++) {
+      let map = tr.mapping.maps[i];
+      for (let j = 0; j < ranges.length; j++) {
+        ranges[j] = map.map(ranges[j]);
+      }
+      map.forEach((_s, _e, from, to) => {
+        ranges.push(from, to);
+      });
+    }
+
+    const canBeTodo = (node, parentNode) =>
+      node.type === schema.nodes.listItem &&
+      parentNode.type === schema.nodes.bulletList;
+
+    for (let i = 0; i < ranges.length; i += 2) {
+      let from = ranges[i],
+        to = ranges[i + 1];
+
+      tr.doc.nodesBetween(from, to, (node, pos, parentNode) => {
+        if (pos >= from && pos < to && canBeTodo(node, parentNode)) {
+          setTodoCheckedAttr(tr, schema, node, pos);
+        }
+      });
+    }
+
+    return tr;
+  };
+
   return function (state, dispatch, view) {
     if (dispatch) {
       dispatch(
@@ -229,8 +265,7 @@ function toggleListCommand(listType, todo = false) {
         ),
       );
     }
-    // TODO this is unacceptable, a command should be able to return
-    // true or false without view
+
     if (!view) {
       return false;
     }
@@ -256,57 +291,12 @@ function toggleListCommand(listType, todo = false) {
         state = view.state;
       }
 
-      if (dispatch && todo) {
-        dispatch = toggleTodoList(dispatch, state.schema);
-      }
-
       // Wraps selection in list
-      return wrapInList(listType)(state, dispatch);
+      return wrapInList(listType)(
+        state,
+        todo ? extendDispatch(dispatch, setTodoListTr(state.schema)) : dispatch,
+      );
     }
-  };
-}
-
-/**
- *
- * @param {*} tr
- * @param {fn(node) -> object} update the attribute of the node. return null if
- *         no update needed for the node.
- */
-function toggleTodoList(dispatch, schema) {
-  return (tr) => {
-    // The following code gets a list of ranges that were changed
-    // From wrapDispatchForJoin: https://github.com/prosemirror/prosemirror-commands/blob/e5f8c303be55147086bfe4521cf7419e6effeb8f/src%2Fcommands.js#L495
-    // and https://discuss.prosemirror.net/t/finding-out-what-changed-in-a-transaction/2372
-    let ranges = [];
-    for (let i = 0; i < tr.mapping.maps.length; i++) {
-      let map = tr.mapping.maps[i];
-      for (let j = 0; j < ranges.length; j++) {
-        ranges[j] = map.map(ranges[j]);
-      }
-      map.forEach((_s, _e, from, to) => {
-        ranges.push(from, to);
-      });
-    }
-
-    const canBeTodo = (node, parentNode) =>
-      node.type === schema.nodes.listItem &&
-      parentNode.type === schema.nodes.bulletList;
-
-    for (let i = 0; i < ranges.length; i += 2) {
-      let from = ranges[i],
-        to = ranges[i + 1];
-
-      tr.doc.nodesBetween(from, to, (node, pos, parentNode) => {
-        if (pos >= from && pos < to && canBeTodo(node, parentNode)) {
-          tr.setNodeMarkup(pos, undefined, {
-            ...node.attrs,
-            todoChecked: false,
-          });
-        }
-      });
-    }
-
-    dispatch(tr);
   };
 }
 
@@ -392,6 +382,47 @@ function adjustSelectionInList(doc, selection) {
 }
 
 export function indentList(type) {
+  const handleTodo = (schema) => (tr) => {
+    if (!tr.isGeneric) {
+      return tr;
+    }
+
+    const range = tr.selection.$from.blockRange(
+      tr.selection.$to,
+      (node) =>
+        node.childCount && node.firstChild.type === schema.nodes.listItem,
+    );
+
+    if (
+      !range ||
+      // we donot have an existing node to check if todo is needed or not
+      range.startIndex === 0
+    ) {
+      return tr;
+    }
+
+    const isNodeBeforeATodo = isNodeTodo(
+      range.parent.child(range.startIndex - 1),
+      schema,
+    );
+
+    const { parent, startIndex, endIndex } = range;
+
+    let offset = 0;
+    for (let i = startIndex; i < endIndex; i++) {
+      const child = parent.child(i);
+
+      const pos = range.start + offset;
+
+      tr = isNodeBeforeATodo
+        ? setTodoCheckedAttr(tr, schema, child, pos)
+        : removeTodoCheckedAttr(tr, schema, child, pos);
+
+      offset += child.nodeSize;
+    }
+    return tr;
+  };
+
   return function indentListCommand(state, dispatch) {
     let listItem = type;
     if (!listItem) {
@@ -405,7 +436,10 @@ export function indentList(type) {
         state.schema.nodes,
       );
       if (canSink(initialIndentationLevel, state)) {
-        pmListCommands.sinkListItem(listItem)(state, dispatch);
+        pmListCommands.sinkListItem(listItem)(
+          state,
+          extendDispatch(dispatch, handleTodo(state.schema)),
+        );
       }
       return true;
     }
@@ -414,34 +448,66 @@ export function indentList(type) {
 }
 
 export function outdentList(type) {
-  return function (state, dispatch) {
+  return function (state, dispatch, view) {
     let listItem = type;
     if (!listItem) {
       ({ listItem } = state.schema.nodes);
     }
     const { $from, $to } = state.selection;
-    if (isInsideListItem(listItem)(state)) {
-      // if we're backspacing at the start of a list item, unindent it
-      // take the the range of nodes we might be lifting
+    if (!isInsideListItem(listItem)(state)) {
+      return false;
+    }
+    // if we're backspacing at the start of a list item, unindent it
+    // take the the range of nodes we might be lifting
 
-      // the predicate is for when you're backspacing a top level list item:
-      // we don't want to go up past the doc node, otherwise the range
-      // to clear will include everything
-      let range = $from.blockRange(
-        $to,
-        (node) => node.childCount > 0 && node.firstChild.type === listItem,
-      );
-      if (!range) {
-        return false;
-      }
+    // the predicate is for when you're backspacing a top level list item:
+    // we don't want to go up past the doc node, otherwise the range
+    // to clear will include everything
+    let range = $from.blockRange(
+      $to,
+      (node) => node.childCount > 0 && node.firstChild.type === listItem,
+    );
 
-      return compose(
-        mergeLists(listItem, range), // 2. Check if I need to merge nearest list
-        pmListCommands.liftListItem, // 1. First lift list item
-      )(listItem)(state, dispatch);
+    if (!range) {
+      return false;
     }
 
-    return false;
+    const isGreatGrandTodo = isNodeTodo(
+      state.selection.$from.node(-3),
+      state.schema,
+    );
+
+    // TODO this is not quite as lean as the indent approach of todo
+    // check if we need to set todoCheck attribute
+    if (dispatch && view) {
+      const grandParent = state.selection.$from.node(-2);
+      const grandParentPos = state.selection.$from.start(-2);
+      let tr = state.tr;
+      for (const { node, pos } of flatten(grandParent, false)) {
+        const absPos = pos + grandParentPos;
+
+        // -1 so that we cover the entire list item
+        if (
+          absPos >= state.selection.$from.before(-1) &&
+          absPos < state.selection.$to.after(-1)
+        ) {
+          if (isGreatGrandTodo) {
+            setTodoCheckedAttr(tr, state.schema, node, absPos);
+          } else {
+            removeTodoCheckedAttr(tr, state.schema, node, absPos);
+          }
+        }
+      }
+      dispatch(tr);
+      state = view.state;
+    }
+
+    const composedCommand = compose(
+      mergeLists(listItem, range), // 2. Check if I need to merge nearest list
+      pmListCommands.liftListItem, // 1. First lift list item
+    )(listItem);
+
+    return composedCommand(state, dispatch, view);
   };
 }
 
@@ -454,8 +520,8 @@ export function outdentList(type) {
  */
 function mergeLists(listItem, range) {
   return (command) => {
-    return (state, dispatch) =>
-      command(state, (tr) => {
+    return (state, dispatch, view) => {
+      const newDispatch = (tr) => {
         /* we now need to handle the case that we lifted a sublist out,
          * and any listItems at the current level get shifted out to
          * their own new list; e.g.:
@@ -501,54 +567,15 @@ function mergeLists(listItem, range) {
         if (dispatch) {
           dispatch(tr.scrollIntoView());
         }
-      });
+      };
+      return command(state, newDispatch, view);
+    };
   };
 }
 
 // Chaining runs each command until one of them returns true
 export const backspaceKeyCommand = (type) => (...args) => {
   return baseCommand.chainCommands(
-    // check the possibility if a user is backspacing
-    // inside a list which is directly nested under a todo list.
-    // Input:
-    // - [ ] A todo list
-    //      1.{<>} First
-    // Output:
-    // - [ ] A todo list
-    // - [ ] {<>} First
-    filter(
-      [
-        isInsideListItem(type),
-        isEmptySelectionAtStart,
-        isFirstChildOfParent,
-        (state) => canOutdent(state.schema.nodes.listItem)(state),
-        (state) => {
-          const parentListItem = state.selection.$from.node(-3);
-          return isNodeTodo(parentListItem, state.schema);
-        },
-      ],
-      // convert it into a todo list and then outdent it
-      (state, dispatch, view) => {
-        const item = state.selection.$from.node(-1);
-        if (dispatch) {
-          dispatch(
-            state.tr.setNodeMarkup(
-              state.selection.$from.before(-1),
-              undefined,
-              {
-                ...item.attrs,
-                todoChecked: false,
-              },
-            ),
-          );
-        }
-
-        state = view.state;
-
-        return outdentList(state.schema.nodes.listItem)(state, dispatch, view);
-      },
-    ),
-
     // if we're at the start of a list item, we need to either backspace
     // directly to an empty list item above, or outdent this node
     filter(
@@ -599,29 +626,24 @@ export function enterKeyCommand(type) {
             isNodeTodo(grandParent, state.schema) &&
             !isNodeTodo(wrapper, state.schema)
           ) {
-            if (dispatch) {
-              dispatch(
-                state.tr.setNodeMarkup(
-                  state.selection.$from.before(-1),
-                  undefined,
-                  {
-                    ...wrapper.attrs,
-                    todoChecked: false,
-                  },
-                ),
-              );
-            }
-
             return outdentList(state.schema.nodes.listItem)(
-              view.state, // use the updated state
+              state,
               dispatch,
               view,
             );
           } else {
-            return outdentList(listItem)(state, dispatch);
+            return outdentList(listItem)(state, dispatch, view);
           }
         } else if (!hasParentNodeOfType(codeBlock)(selection)) {
-          return splitListItem(listItem)(state, dispatch);
+          return splitListItem(listItem, (node) => {
+            if (!isNodeTodo(node, state.schema)) {
+              return node.attrs;
+            }
+            return {
+              ...node.attrs,
+              todoChecked: false,
+            };
+          })(state, dispatch);
         }
       }
     }
@@ -632,8 +654,11 @@ export function enterKeyCommand(type) {
 /***
  * Implementation taken from PM and mk-2
  * Splits the list items, specific implementation take from PM
+ *
+ * splitAttrs(node): attrs - if defined the new split item will get attrs returned by this.
+ *                        where node is the currently active node.
  */
-function splitListItem(itemType) {
+function splitListItem(itemType, splitAttrs) {
   return function (state, dispatch) {
     const ref = state.selection;
     const $from = ref.$from;
@@ -695,7 +720,12 @@ function splitListItem(itemType) {
         ? grandParent.contentMatchAt(0).defaultType
         : undefined;
     const tr = state.tr.delete($from.pos, $to.pos);
-    const types = nextType && [undefined, { type: nextType }];
+    const types = nextType && [
+      splitAttrs
+        ? { type: itemType, attrs: splitAttrs(grandParent) }
+        : undefined,
+      { type: nextType },
+    ];
     if (dispatch) {
       dispatch(tr.split($from.pos, 2, types).scrollIntoView());
     }
@@ -847,7 +877,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     return false;
   };
 
-  const command = (state, dispatch) => {
+  const command = (state, dispatch, view) => {
     let listItem = type;
 
     if (!listItem) {
@@ -869,7 +899,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
 
     // outdent if the not nested list item i.e. top level
     if (state.selection.$from.depth === 3) {
-      return outdentList(listItem)(state, dispatch);
+      return outdentList(listItem)(state, dispatch, view);
     }
 
     // If there is only one element, we need to delete the entire

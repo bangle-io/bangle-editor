@@ -519,3 +519,15 @@ export function toHTMLString(state) {
   div.appendChild(fragment);
   return div.innerHTML;
 }
+
+export function extendDispatch(dispatch, tapTr) {
+  return (
+    dispatch &&
+    ((tr) => {
+      if (tr.isGeneric) {
+        tapTr(tr);
+      }
+      dispatch(tr);
+    })
+  );
+}

@@ -8,7 +8,7 @@ import {
   typeText,
   sendKeyToPm,
 } from '../../test-helpers/index';
-import { smartNodesBetween } from '../bullet-list';
+import { siblingsAndNodesBetween } from '../list-item/todo';
 import { listItem } from '../index';
 
 const testEditor = renderTestEditor();
@@ -42,7 +42,7 @@ test('Pressing Enter', async () => {
   const { view } = await testEditor(
     <doc>
       <ul>
-        <li todoChecked={false}>
+        <li todoChecked={true}>
           <para>foo[]</para>
         </li>
       </ul>
@@ -56,11 +56,50 @@ test('Pressing Enter', async () => {
   expect(view.state).toEqualDocAndSelection(
     <doc>
       <ul>
-        <li todoChecked={false}>
+        <li todoChecked={true}>
           <para>foohello</para>
         </li>
         <li todoChecked={false}>
           <para>second[]</para>
+        </li>
+      </ul>
+    </doc>,
+  );
+});
+
+test('Pressing Enter on nested', async () => {
+  const { view } = await testEditor(
+    <doc>
+      <ul>
+        <li todoChecked={true}>
+          <para>foo</para>
+          <ul>
+            <li todoChecked={true}>
+              <para>nested[]</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+  );
+
+  typeText(view, 'hello');
+  sendKeyToPm(view, 'Enter');
+  typeText(view, 'second');
+
+  expect(view.state).toEqualDocAndSelection(
+    <doc>
+      <ul>
+        <li todoChecked={true}>
+          <para>foo</para>
+          <ul>
+            <li todoChecked={true}>
+              <para>nestedhello</para>
+            </li>
+            <li todoChecked={false}>
+              <para>second[]</para>
+            </li>
+          </ul>
         </li>
       </ul>
     </doc>,
@@ -123,7 +162,6 @@ describe('Pressing Tab', () => {
     );
 
     sendKeyToPm(view, 'Shift-Tab');
-
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <ul>
@@ -136,6 +174,113 @@ describe('Pressing Tab', () => {
         </ul>
       </doc>,
     );
+  });
+
+  test('remove todo if existing listItem is regular', async () => {
+    const original = (
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>first</para>
+            <ul>
+              <li>
+                <para>existing</para>
+              </li>
+            </ul>
+          </li>
+          <li todoChecked={false}>
+            <para>[]second</para>
+          </li>
+        </ul>
+      </doc>
+    );
+    const { view } = await testEditor(original);
+
+    sendKeyToPm(view, 'Tab');
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>first</para>
+            <ul>
+              <li>
+                <para>existing</para>
+              </li>
+              <li>
+                <para>[]second</para>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    sendKeyToPm(view, 'Shift-Tab');
+    expect(view.state).toEqualDocAndSelection(original);
+  });
+
+  test('multiselect make it todo if existing listItem is todo', async () => {
+    const original = (
+      <doc>
+        <ul>
+          <li>
+            <para>first</para>
+            <ul>
+              <li todoChecked={false}>
+                <para>existing</para>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <para>[second</para>
+          </li>
+          <li>
+            <para>third</para>
+          </li>
+          <li>
+            <para>fou]rth</para>
+          </li>
+          <li>
+            <para>fifth</para>
+          </li>
+        </ul>
+      </doc>
+    );
+
+    const { view } = await testEditor(original);
+
+    sendKeyToPm(view, 'Tab');
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <ul>
+          <li>
+            <para>first</para>
+            <ul>
+              <li todoChecked={false}>
+                <para>existing</para>
+              </li>
+              <li todoChecked={false}>
+                <para>[second</para>
+              </li>
+              <li todoChecked={false}>
+                <para>third</para>
+              </li>
+              <li todoChecked={false}>
+                <para>fou]rth</para>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <para>fifth</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+
+    sendKeyToPm(view, 'Shift-Tab');
+    expect(view.state).toEqualDocAndSelection(original);
   });
 });
 
@@ -152,6 +297,118 @@ describe('Markdown shortcuts', () => {
       <doc>
         <ul>
           <li todoChecked={false}>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('Joins below bulletList of todos joins', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '[ ] my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+          <li todoChecked={false}>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('Does not join if bulletList before is not a todo', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '[ ] my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+        </ul>
+        <ul>
+          <li todoChecked={false}>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('creating a plain listItem does not join is above is todo listItem', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '- my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('creating a plain listItem joins if above is plain listItem', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '- my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+          <li>
             <para>my day</para>
           </li>
         </ul>
@@ -231,6 +488,42 @@ describe('Heterogenous toggle', () => {
 });
 
 test.each([
+  [
+    'plain  paragraph',
+    <doc>
+      <para>[] first</para>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'plain paragraph and lists',
+    <doc>
+      <para>[first</para>
+      <ul>
+        <li>
+          <para>se]cond</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[first</para>
+        </li>
+        <li todoChecked={false}>
+          <para>second</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
   [
     'plain  list',
     <doc>
@@ -560,16 +853,15 @@ test.each([
         <li todoChecked={false}>
           <para>first</para>
           <ul>
-            <li todoChecked={false}>
+            <li>
               <para>alpha</para>
             </li>
-            <li todoChecked={false}>
+            <li>
               <para>mango</para>
             </li>
           </ul>
         </li>
-        {/** the item below should have had todoChecked */}
-        <li>
+        <li todoChecked={false}>
           <para>distant</para>
         </li>
       </ul>
@@ -1190,7 +1482,7 @@ describe('Nesting heterogenous lists', () => {
   });
 
   // TODO I think this blocked by the bug described by a test in list item https://github.com/bangle-io/bangle.dev/blob/ee3305892fbe46e1217b28045b14955e94f24430/bangle-play/utilsnodes/__tests__/list-item.test.js#L553
-  it.skip('pressing enter on empty nested li should outdent and take the type of the parent when their are other sibblings', async () => {
+  it.skip('pressing enter on empty nested li should outdent and take the type of the parent when there are other sibblings', async () => {
     const { view } = await testEditor(
       <doc>
         <ul>
@@ -1612,7 +1904,7 @@ describe('Insert empty todo above and below', () => {
   });
 });
 
-describe('smartNodesBetween', () => {
+describe('siblingsAndNodesBetween', () => {
   test('works', async () => {
     const { view } = await testEditor(
       <doc>
@@ -1634,18 +1926,11 @@ describe('smartNodesBetween', () => {
 
     const state = view.state;
     const nodes = [];
-    smartNodesBetween(
-      state.selection.$from,
-      state.selection.$to,
-      state.doc,
-      (node, pos) => {
-        if (
-          ['listItem', 'bulletList', 'orderedItem'].includes(node.type.name)
-        ) {
-          nodes.push([node.type.name, node.textContent, pos]);
-        }
-      },
-    );
+    siblingsAndNodesBetween(state, (node, pos) => {
+      if (['listItem', 'bulletList', 'orderedItem'].includes(node.type.name)) {
+        nodes.push([node.type.name, node.textContent, pos]);
+      }
+    });
 
     expect(nodes).toMatchInlineSnapshot(`
       Array [
@@ -1653,11 +1938,6 @@ describe('smartNodesBetween', () => {
           "listItem",
           "firstalpha",
           1,
-        ],
-        Array [
-          "bulletList",
-          "alpha",
-          9,
         ],
         Array [
           "listItem",
