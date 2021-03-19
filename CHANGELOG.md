@@ -4,6 +4,7 @@ _@bangle.dev/core\_
 
 - bug: Fixed bugs related todo list joining and working with list items.
 - bug: Fixed when pressing an enter on a checked todo created another checked todo list.
+- bug: Fixed issue in collab by checking the position when restarting.
 
 ## 0.3.1
 
