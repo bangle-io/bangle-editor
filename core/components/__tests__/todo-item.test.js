@@ -8,7 +8,7 @@ import {
   typeText,
   sendKeyToPm,
 } from '../../test-helpers/index';
-import { smartNodesBetween } from '../bullet-list';
+import { siblingsAndNodesBetween } from '../list-item/todo';
 import { listItem } from '../index';
 
 const testEditor = renderTestEditor();
@@ -489,6 +489,42 @@ describe('Heterogenous toggle', () => {
 
 test.each([
   [
+    'plain  paragraph',
+    <doc>
+      <para>[] first</para>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[] first</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
+    'plain paragraph and lists',
+    <doc>
+      <para>[first</para>
+      <ul>
+        <li>
+          <para>se]cond</para>
+        </li>
+      </ul>
+    </doc>,
+    <doc>
+      <ul>
+        <li todoChecked={false}>
+          <para>[first</para>
+        </li>
+        <li todoChecked={false}>
+          <para>second</para>
+        </li>
+      </ul>
+    </doc>,
+  ],
+
+  [
     'plain  list',
     <doc>
       <ul>
@@ -817,16 +853,15 @@ test.each([
         <li todoChecked={false}>
           <para>first</para>
           <ul>
-            <li todoChecked={false}>
+            <li>
               <para>alpha</para>
             </li>
-            <li todoChecked={false}>
+            <li>
               <para>mango</para>
             </li>
           </ul>
         </li>
-        {/** the item below should have had todoChecked */}
-        <li>
+        <li todoChecked={false}>
           <para>distant</para>
         </li>
       </ul>
@@ -1869,7 +1904,7 @@ describe('Insert empty todo above and below', () => {
   });
 });
 
-describe('smartNodesBetween', () => {
+describe('siblingsAndNodesBetween', () => {
   test('works', async () => {
     const { view } = await testEditor(
       <doc>
@@ -1891,18 +1926,11 @@ describe('smartNodesBetween', () => {
 
     const state = view.state;
     const nodes = [];
-    smartNodesBetween(
-      state.selection.$from,
-      state.selection.$to,
-      state.doc,
-      (node, pos) => {
-        if (
-          ['listItem', 'bulletList', 'orderedItem'].includes(node.type.name)
-        ) {
-          nodes.push([node.type.name, node.textContent, pos]);
-        }
-      },
-    );
+    siblingsAndNodesBetween(state, (node, pos) => {
+      if (['listItem', 'bulletList', 'orderedItem'].includes(node.type.name)) {
+        nodes.push([node.type.name, node.textContent, pos]);
+      }
+    });
 
     expect(nodes).toMatchInlineSnapshot(`
       Array [
@@ -1910,11 +1938,6 @@ describe('smartNodesBetween', () => {
           "listItem",
           "firstalpha",
           1,
-        ],
-        Array [
-          "bulletList",
-          "alpha",
-          9,
         ],
         Array [
           "listItem",

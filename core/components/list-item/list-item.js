@@ -1,13 +1,11 @@
 import { chainCommands } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
-import { NodeView } from '../../node-view';
 import {
   indentList,
   backspaceKeyCommand,
   enterKeyCommand,
   outdentList,
   moveEdgeListItem,
-  isNodeTodo,
   updateNodeAttrs,
 } from './commands';
 import {
@@ -17,8 +15,10 @@ import {
   moveNode,
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
-import { createElement, domSerializationHelpers } from '../../utils/index';
+import { domSerializationHelpers } from '../../utils/index';
 import browser from '../../utils/browser';
+import { isNodeTodo, setTodoCheckedAttr } from './todo';
+import { listItemNodeViewPlugin } from './list-item-node-view-plugin';
 
 const LOG = false;
 
@@ -95,33 +95,28 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
       schema.nodes['orderedList'],
     ]);
 
-    const isATodo = (state) => {
-      return isNodeTodo(state.selection.$from.node(-1), state.schema);
-    };
-
     const move = (dir) =>
       chainCommands(moveNode(type, dir), (state, dispatch, view) => {
         const node = state.selection.$from.node(-3);
-        const parentTodo = isNodeTodo(node, state.schema);
-        let result = moveEdgeListItem(type, dir)(state, dispatch, view);
+        const isParentTodo = isNodeTodo(node, state.schema);
+        const result = moveEdgeListItem(type, dir)(state, dispatch, view);
+
         if (!result) {
           return false;
         }
 
         // if parent was a todo convert the moved edge node
         // to todo bullet item
-        if (parentTodo && dispatch) {
+        if (isParentTodo && dispatch) {
           const state = view.state;
-          dispatch(
-            state.tr.setNodeMarkup(
-              state.selection.$from.before(-1),
-              undefined,
-              {
-                ...node.attrs,
-                todoChecked: false,
-              },
-            ),
+          let { tr, schema } = state;
+          tr = setTodoCheckedAttr(
+            tr,
+            schema,
+            state.selection.$from.node(-1),
+            state.selection.$from.before(-1),
           );
+          dispatch(tr);
         }
         return true;
       });
@@ -134,7 +129,7 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
             updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
               ...attrs,
               todoChecked:
-                attrs['todoChecked'] == null ? false : !attrs['todoChecked'],
+                attrs.todoChecked == null ? false : !attrs.todoChecked,
             })),
           ),
 
@@ -148,7 +143,7 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
           [keybindings.emptyCopy]: filter(isBulletList, copyEmptyCommand(type)),
           [keybindings.insertEmptyListAbove]: chainCommands(
             filter(
-              isATodo,
+              isSelectionInsideTodo,
               insertEmpty(type, 'above', true, { todoChecked: false }),
             ),
             filter(isBulletList, insertEmpty(type, 'above', true)),
@@ -156,145 +151,16 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
 
           [keybindings.insertEmptyListBelow]: chainCommands(
             filter(
-              isATodo,
+              isSelectionInsideTodo,
               insertEmpty(type, 'below', true, { todoChecked: false }),
             ),
             filter(isBulletList, insertEmpty(type, 'below', true)),
           ),
         }),
 
-      nodeView && listItemNodePlugin(),
+      nodeView && listItemNodeViewPlugin(name),
     ];
   };
-}
-
-function listItemNodePlugin() {
-  const checkParentBulletList = (state, pos) => {
-    return state.doc.resolve(pos).parent.type.name === 'bulletList';
-  };
-
-  const removeCheckbox = (instance) => {
-    // already removed
-    if (!instance.containerDOM.hasAttribute('data-bangle-is-todo')) {
-      return;
-    }
-    instance.containerDOM.removeAttribute('data-bangle-is-todo');
-    instance.containerDOM.removeChild(instance.containerDOM.firstChild);
-  };
-
-  const setupCheckbox = (attrs, updateAttrs, instance) => {
-    // no need to create as it is already created
-    if (instance.containerDOM.hasAttribute('data-bangle-is-todo')) {
-      return;
-    }
-
-    const checkbox = createCheckbox(attrs.todoChecked, (newValue) => {
-      updateAttrs({
-        // Fetch latest attrs as the one in outer
-        // closure can be stale.
-        todoChecked: newValue,
-      });
-    });
-
-    instance.containerDOM.setAttribute('data-bangle-is-todo', '');
-    instance.containerDOM.prepend(checkbox);
-  };
-
-  const createCheckbox = (todoChecked, onUpdate) => {
-    const checkBox = createElement([
-      'span',
-      { contentEditable: false },
-      [
-        'input',
-        {
-          type: 'checkbox',
-        },
-      ],
-    ]);
-    const inputElement = checkBox.querySelector('input');
-
-    if (todoChecked) {
-      inputElement.setAttribute('checked', '');
-    }
-
-    inputElement.addEventListener('input', (e) => {
-      log('change event', inputElement.checked);
-      onUpdate(
-        // note:  inputElement.checked is a bool
-        inputElement.checked,
-      );
-    });
-
-    return checkBox;
-  };
-
-  return NodeView.createPlugin({
-    name,
-    containerDOM: [
-      'li',
-      {
-        // To style our todo friend different than a regular li
-        'data-bangle-name': name,
-      },
-    ],
-    contentDOM: ['span', {}],
-    renderHandlers: {
-      create: (instance, { attrs, updateAttrs, getPos, view }) => {
-        const todoChecked = attrs['todoChecked'];
-
-        // branch if todo needs to be created
-        if (todoChecked != null) {
-          // todo only makes sense if parent is bullet list
-          if (checkParentBulletList(view.state, getPos())) {
-            setupCheckbox(attrs, updateAttrs, instance);
-          }
-        }
-
-        // Connect the two contentDOM and containerDOM for pm to write to
-        instance.containerDOM.appendChild(instance.contentDOM);
-      },
-
-      // We need to achieve a two way binding of the todoChecked state.
-      // First binding: dom -> editor : done by  inputElement's `input` event listener
-      // Second binding: editor -> dom: Done by the `update` handler below
-      update: (instance, { attrs, view, getPos, updateAttrs }) => {
-        const { todoChecked } = attrs;
-
-        if (todoChecked == null) {
-          removeCheckbox(instance);
-          return;
-        }
-
-        // if parent is not bulletList i.e. it is orderedList
-        if (!checkParentBulletList(view.state, getPos())) {
-          return;
-        }
-
-        // assume nothing about the dom elements state.
-        // for example it is possible that the checkbox is not created
-        // when a regular list is converted to todo list only update handler
-        // will be called. The create handler was called in the past
-        // but without the checkbox element, hence the checkbox wont be there
-        setupCheckbox(attrs, updateAttrs, instance);
-
-        const checkbox = instance.containerDOM.firstChild.firstChild;
-
-        const hasAttribute = checkbox.hasAttribute('checked');
-        if (todoChecked === hasAttribute) {
-          log('skipping update', todoChecked, hasAttribute);
-          return;
-        }
-        log('updating inputElement');
-        if (todoChecked) {
-          checkbox.setAttribute('checked', 'true');
-        } else {
-          checkbox.removeAttribute('checked');
-        }
-      },
-
-      destroy: () => {},
-    },
-  });
 }
 
 export function indentListItem() {
@@ -310,3 +176,7 @@ export function outdentListItem() {
     return outdentList(type)(state, dispatch, view);
   };
 }
+
+const isSelectionInsideTodo = (state) => {
+  return isNodeTodo(state.selection.$from.node(-1), state.schema);
+};

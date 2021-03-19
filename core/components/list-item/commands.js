@@ -23,18 +23,14 @@ import {
   sanitiseSelectionMarksForWrapping,
   validPos,
   validListParent,
+  extendDispatch,
 } from '../../utils/pm-utils';
 import { GapCursorSelection } from '../../gap-cursor';
 import { liftSelectionList, liftFollowingList } from './transforms';
+import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
 
 const maxIndentation = 4;
 
-export const isNodeTodo = (node, schema) => {
-  return (
-    node.type === schema.nodes.listItem &&
-    typeof node.attrs.todoChecked === 'boolean'
-  );
-};
 // Returns the number of nested lists that are ancestors of the given selection
 const numberNestedLists = (resolvedPos, nodes) => {
   const { bulletList, orderedList } = nodes;
@@ -221,6 +217,46 @@ export function toggleList(listType, itemType, todo) {
 }
 
 function toggleListCommand(listType, todo = false) {
+  /**
+   * A function which will set todoChecked attribute
+   * in any of the nodes that have modified on the tr
+   */
+  const setTodoListTr = (schema) => (tr) => {
+    if (!tr.isGeneric) {
+      return tr;
+    }
+    // The following code gets a list of ranges that were changed
+    // From wrapDispatchForJoin: https://github.com/prosemirror/prosemirror-commands/blob/e5f8c303be55147086bfe4521cf7419e6effeb8f/src%2Fcommands.js#L495
+    // and https://discuss.prosemirror.net/t/finding-out-what-changed-in-a-transaction/2372
+    let ranges = [];
+    for (let i = 0; i < tr.mapping.maps.length; i++) {
+      let map = tr.mapping.maps[i];
+      for (let j = 0; j < ranges.length; j++) {
+        ranges[j] = map.map(ranges[j]);
+      }
+      map.forEach((_s, _e, from, to) => {
+        ranges.push(from, to);
+      });
+    }
+
+    const canBeTodo = (node, parentNode) =>
+      node.type === schema.nodes.listItem &&
+      parentNode.type === schema.nodes.bulletList;
+
+    for (let i = 0; i < ranges.length; i += 2) {
+      let from = ranges[i],
+        to = ranges[i + 1];
+
+      tr.doc.nodesBetween(from, to, (node, pos, parentNode) => {
+        if (pos >= from && pos < to && canBeTodo(node, parentNode)) {
+          setTodoCheckedAttr(tr, schema, node, pos);
+        }
+      });
+    }
+
+    return tr;
+  };
+
   return function (state, dispatch, view) {
     if (dispatch) {
       dispatch(
@@ -229,8 +265,7 @@ function toggleListCommand(listType, todo = false) {
         ),
       );
     }
-    // TODO this is unacceptable, a command should be able to return
-    // true or false without view
+
     if (!view) {
       return false;
     }
@@ -256,57 +291,12 @@ function toggleListCommand(listType, todo = false) {
         state = view.state;
       }
 
-      if (dispatch && todo) {
-        dispatch = toggleTodoList(dispatch, state.schema);
-      }
-
       // Wraps selection in list
-      return wrapInList(listType)(state, dispatch);
+      return wrapInList(listType)(
+        state,
+        todo ? extendDispatch(dispatch, setTodoListTr(state.schema)) : dispatch,
+      );
     }
-  };
-}
-
-/**
- *
- * @param {*} tr
- * @param {fn(node) -> object} update the attribute of the node. return null if
- *         no update needed for the node.
- */
-function toggleTodoList(dispatch, schema) {
-  return (tr) => {
-    // The following code gets a list of ranges that were changed
-    // From wrapDispatchForJoin: https://github.com/prosemirror/prosemirror-commands/blob/e5f8c303be55147086bfe4521cf7419e6effeb8f/src%2Fcommands.js#L495
-    // and https://discuss.prosemirror.net/t/finding-out-what-changed-in-a-transaction/2372
-    let ranges = [];
-    for (let i = 0; i < tr.mapping.maps.length; i++) {
-      let map = tr.mapping.maps[i];
-      for (let j = 0; j < ranges.length; j++) {
-        ranges[j] = map.map(ranges[j]);
-      }
-      map.forEach((_s, _e, from, to) => {
-        ranges.push(from, to);
-      });
-    }
-
-    const canBeTodo = (node, parentNode) =>
-      node.type === schema.nodes.listItem &&
-      parentNode.type === schema.nodes.bulletList;
-
-    for (let i = 0; i < ranges.length; i += 2) {
-      let from = ranges[i],
-        to = ranges[i + 1];
-
-      tr.doc.nodesBetween(from, to, (node, pos, parentNode) => {
-        if (pos >= from && pos < to && canBeTodo(node, parentNode)) {
-          tr.setNodeMarkup(pos, undefined, {
-            ...node.attrs,
-            todoChecked: false,
-          });
-        }
-      });
-    }
-
-    dispatch(tr);
   };
 }
 
@@ -392,13 +382,53 @@ function adjustSelectionInList(doc, selection) {
 }
 
 export function indentList(type) {
+  const handleTodo = (schema) => (tr) => {
+    if (!tr.isGeneric) {
+      return tr;
+    }
+
+    const range = tr.selection.$from.blockRange(
+      tr.selection.$to,
+      (node) =>
+        node.childCount && node.firstChild.type === schema.nodes.listItem,
+    );
+
+    if (
+      !range ||
+      // we donot have an existing node to check if todo is needed or not
+      range.startIndex === 0
+    ) {
+      return tr;
+    }
+
+    const isNodeBeforeATodo = isNodeTodo(
+      range.parent.child(range.startIndex - 1),
+      schema,
+    );
+
+    const { parent, startIndex, endIndex } = range;
+
+    let offset = 0;
+    for (let i = startIndex; i < endIndex; i++) {
+      const child = parent.child(i);
+
+      const pos = range.start + offset;
+
+      tr = isNodeBeforeATodo
+        ? setTodoCheckedAttr(tr, schema, child, pos)
+        : removeTodoCheckedAttr(tr, schema, child, pos);
+
+      offset += child.nodeSize;
+    }
+    return tr;
+  };
+
   return function indentListCommand(state, dispatch) {
     let listItem = type;
     if (!listItem) {
       ({ listItem } = state.schema.nodes);
     }
 
-    const schema = state.schema;
     if (isInsideListItem(listItem)(state)) {
       // Record initial list indentation
       const initialIndentationLevel = numberNestedLists(
@@ -406,59 +436,9 @@ export function indentList(type) {
         state.schema.nodes,
       );
       if (canSink(initialIndentationLevel, state)) {
-        const toggleTodoIfNeeded = (tr) => {
-          if (!tr.isGeneric) {
-            dispatch(tr);
-            return;
-          }
-
-          const range = tr.selection.$from.blockRange(
-            tr.selection.$to,
-            (node) =>
-              node.childCount && node.firstChild.type === schema.nodes.listItem,
-          );
-
-          if (
-            !range ||
-            // we donot have an existing node to check if todo is needed or not
-            range.startIndex === 0
-          ) {
-            dispatch(tr);
-            return;
-          }
-
-          const isNodeBeforeTodo = isNodeTodo(
-            range.parent.child(range.startIndex - 1),
-            schema,
-          );
-
-          // nodeBefore is todo so make all others also todo
-          const { parent, startIndex, endIndex } = range;
-
-          let offset = 0;
-          for (let i = startIndex; i < endIndex; i++) {
-            const child = parent.child(i);
-            let attrs = { ...child.attrs };
-
-            if (isNodeBeforeTodo) {
-              attrs.todoChecked = isNodeTodo(child, schema)
-                ? attrs.todoChecked
-                : false;
-            } else {
-              attrs.todoChecked = null;
-            }
-
-            tr = tr.setNodeMarkup(range.start + offset, undefined, attrs);
-
-            offset += child.nodeSize;
-          }
-          dispatch(tr);
-          return;
-        };
-
         pmListCommands.sinkListItem(listItem)(
           state,
-          dispatch ? toggleTodoIfNeeded : null,
+          extendDispatch(dispatch, handleTodo(state.schema)),
         );
       }
       return true;
@@ -497,6 +477,7 @@ export function outdentList(type) {
       state.schema,
     );
 
+    // TODO this is not quite as lean as the indent approach of todo
     // check if we need to set todoCheck attribute
     if (dispatch && view) {
       const grandParent = state.selection.$from.node(-2);
@@ -510,16 +491,11 @@ export function outdentList(type) {
           absPos >= state.selection.$from.before(-1) &&
           absPos < state.selection.$to.after(-1)
         ) {
-          let todoChecked;
           if (isGreatGrandTodo) {
-            todoChecked = todoChecked == null ? false : node.attrs.todoChecked;
+            setTodoCheckedAttr(tr, state.schema, node, absPos);
           } else {
-            todoChecked = null;
+            removeTodoCheckedAttr(tr, state.schema, node, absPos);
           }
-          tr = tr.setNodeMarkup(absPos, undefined, {
-            ...node.attrs,
-            todoChecked,
-          });
         }
       }
       dispatch(tr);
@@ -650,21 +626,8 @@ export function enterKeyCommand(type) {
             isNodeTodo(grandParent, state.schema) &&
             !isNodeTodo(wrapper, state.schema)
           ) {
-            if (dispatch) {
-              dispatch(
-                state.tr.setNodeMarkup(
-                  state.selection.$from.before(-1),
-                  undefined,
-                  {
-                    ...wrapper.attrs,
-                    todoChecked: false,
-                  },
-                ),
-              );
-            }
-
             return outdentList(state.schema.nodes.listItem)(
-              view.state, // use the updated state
+              state,
               dispatch,
               view,
             );
@@ -673,7 +636,7 @@ export function enterKeyCommand(type) {
           }
         } else if (!hasParentNodeOfType(codeBlock)(selection)) {
           return splitListItem(listItem, (node) => {
-            if (node.attrs.todoChecked == null) {
+            if (!isNodeTodo(node, state.schema)) {
               return node.attrs;
             }
             return {
