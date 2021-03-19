@@ -10,7 +10,7 @@ import {
   findParentNode,
 } from 'prosemirror-utils';
 import { NodeSelection, TextSelection } from 'prosemirror-state';
-
+import { flatten } from 'prosemirror-utils';
 import { compose } from '../../utils/js-utils';
 import {
   hasVisibleContent,
@@ -414,34 +414,70 @@ export function indentList(type) {
 }
 
 export function outdentList(type) {
-  return function (state, dispatch) {
+  return function (state, dispatch, view) {
     let listItem = type;
     if (!listItem) {
       ({ listItem } = state.schema.nodes);
     }
     const { $from, $to } = state.selection;
-    if (isInsideListItem(listItem)(state)) {
-      // if we're backspacing at the start of a list item, unindent it
-      // take the the range of nodes we might be lifting
+    if (!isInsideListItem(listItem)(state)) {
+      return false;
+    }
+    // if we're backspacing at the start of a list item, unindent it
+    // take the the range of nodes we might be lifting
 
-      // the predicate is for when you're backspacing a top level list item:
-      // we don't want to go up past the doc node, otherwise the range
-      // to clear will include everything
-      let range = $from.blockRange(
-        $to,
-        (node) => node.childCount > 0 && node.firstChild.type === listItem,
-      );
-      if (!range) {
-        return false;
-      }
+    // the predicate is for when you're backspacing a top level list item:
+    // we don't want to go up past the doc node, otherwise the range
+    // to clear will include everything
+    let range = $from.blockRange(
+      $to,
+      (node) => node.childCount > 0 && node.firstChild.type === listItem,
+    );
 
-      return compose(
-        mergeLists(listItem, range), // 2. Check if I need to merge nearest list
-        pmListCommands.liftListItem, // 1. First lift list item
-      )(listItem)(state, dispatch);
+    if (!range) {
+      return false;
     }
 
-    return false;
+    const isGreatGrandTodo = isNodeTodo(
+      state.selection.$from.node(-3),
+      state.schema,
+    );
+
+    // check if we need to set todoCheck attribute
+    if (dispatch && view) {
+      const grandParent = state.selection.$from.node(-2);
+      const grandParentPos = state.selection.$from.start(-2);
+      let tr = state.tr;
+      for (const { node, pos } of flatten(grandParent, false)) {
+        const absPos = pos + grandParentPos;
+
+        // -1 so that we cover the entire list item
+        if (
+          absPos >= state.selection.$from.before(-1) &&
+          absPos < state.selection.$to.after(-1)
+        ) {
+          let todoChecked;
+          if (isGreatGrandTodo) {
+            todoChecked = todoChecked == null ? false : node.attrs.todoChecked;
+          } else {
+            todoChecked = null;
+          }
+          tr = tr.setNodeMarkup(absPos, undefined, {
+            ...node.attrs,
+            todoChecked,
+          });
+        }
+      }
+      dispatch(tr);
+      state = view.state;
+    }
+
+    const composedCommand = compose(
+      mergeLists(listItem, range), // 2. Check if I need to merge nearest list
+      pmListCommands.liftListItem, // 1. First lift list item
+    )(listItem);
+
+    return composedCommand(state, dispatch, view);
   };
 }
 
@@ -454,8 +490,8 @@ export function outdentList(type) {
  */
 function mergeLists(listItem, range) {
   return (command) => {
-    return (state, dispatch) =>
-      command(state, (tr) => {
+    return (state, dispatch, view) => {
+      const newDispatch = (tr) => {
         /* we now need to handle the case that we lifted a sublist out,
          * and any listItems at the current level get shifted out to
          * their own new list; e.g.:
@@ -501,54 +537,15 @@ function mergeLists(listItem, range) {
         if (dispatch) {
           dispatch(tr.scrollIntoView());
         }
-      });
+      };
+      return command(state, newDispatch, view);
+    };
   };
 }
 
 // Chaining runs each command until one of them returns true
 export const backspaceKeyCommand = (type) => (...args) => {
   return baseCommand.chainCommands(
-    // check the possibility if a user is backspacing
-    // inside a list which is directly nested under a todo list.
-    // Input:
-    // - [ ] A todo list
-    //      1.{<>} First
-    // Output:
-    // - [ ] A todo list
-    // - [ ] {<>} First
-    filter(
-      [
-        isInsideListItem(type),
-        isEmptySelectionAtStart,
-        isFirstChildOfParent,
-        (state) => canOutdent(state.schema.nodes.listItem)(state),
-        (state) => {
-          const parentListItem = state.selection.$from.node(-3);
-          return isNodeTodo(parentListItem, state.schema);
-        },
-      ],
-      // convert it into a todo list and then outdent it
-      (state, dispatch, view) => {
-        const item = state.selection.$from.node(-1);
-        if (dispatch) {
-          dispatch(
-            state.tr.setNodeMarkup(
-              state.selection.$from.before(-1),
-              undefined,
-              {
-                ...item.attrs,
-                todoChecked: false,
-              },
-            ),
-          );
-        }
-
-        state = view.state;
-
-        return outdentList(state.schema.nodes.listItem)(state, dispatch, view);
-      },
-    ),
-
     // if we're at the start of a list item, we need to either backspace
     // directly to an empty list item above, or outdent this node
     filter(
@@ -618,7 +615,7 @@ export function enterKeyCommand(type) {
               view,
             );
           } else {
-            return outdentList(listItem)(state, dispatch);
+            return outdentList(listItem)(state, dispatch, view);
           }
         } else if (!hasParentNodeOfType(codeBlock)(selection)) {
           return splitListItem(listItem)(state, dispatch);
@@ -847,7 +844,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
     return false;
   };
 
-  const command = (state, dispatch) => {
+  const command = (state, dispatch, view) => {
     let listItem = type;
 
     if (!listItem) {
@@ -869,7 +866,7 @@ export function moveEdgeListItem(type, dir = 'UP') {
 
     // outdent if the not nested list item i.e. top level
     if (state.selection.$from.depth === 3) {
-      return outdentList(listItem)(state, dispatch);
+      return outdentList(listItem)(state, dispatch, view);
     }
 
     // If there is only one element, we need to delete the entire
