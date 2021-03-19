@@ -158,6 +158,118 @@ describe('Markdown shortcuts', () => {
       </doc>,
     );
   });
+
+  it('Joins below bulletList of todos joins', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '[ ] my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+          <li todoChecked={false}>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('Does not join if bulletList before is not a todo', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '[ ] my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+        </ul>
+        <ul>
+          <li todoChecked={false}>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('creating a plain listItem does not join is above is todo listItem', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '- my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li todoChecked={false}>
+            <para>First</para>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
+
+  it('creating a plain listItem joins if above is plain listItem', async () => {
+    const { editorView, sel } = await testEditor(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+        </ul>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '- my day', sel);
+    expect(editorView.state.doc).toEqualDocument(
+      <doc>
+        <ul>
+          <li>
+            <para>First</para>
+          </li>
+          <li>
+            <para>my day</para>
+          </li>
+        </ul>
+      </doc>,
+    );
+  });
 });
 
 describe('Heterogenous toggle', () => {

@@ -1514,6 +1514,72 @@ describe('Pressing Shift-Tab', () => {
       </doc>,
     );
   });
+
+  it('should outdent a nested selection', async () => {
+    await check(
+      <doc>
+        <ol>
+          <li>
+            <para>One</para>
+            <ul>
+              <li>
+                <para>T[wo</para>
+              </li>
+              <li>
+                <para>Thi]rd</para>
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </doc>,
+      <doc>
+        <ol>
+          <li>
+            <para>One</para>
+          </li>
+          <li>
+            <para>T[wo</para>
+          </li>
+          <li>
+            <para>Thi]rd</para>
+          </li>
+        </ol>
+      </doc>,
+    );
+  });
+
+  it('outdent a nested selection should remove todo attribute', async () => {
+    await check(
+      <doc>
+        <ol>
+          <li>
+            <para>One</para>
+            <ul>
+              <li todoChecked={false}>
+                <para>T[wo</para>
+              </li>
+              <li todoChecked={true}>
+                <para>Thi]rd</para>
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </doc>,
+      <doc>
+        <ol>
+          <li>
+            <para>One</para>
+          </li>
+          <li>
+            <para>T[wo</para>
+          </li>
+          <li>
+            <para>Thi]rd</para>
+          </li>
+        </ol>
+      </doc>,
+    );
+  });
 });
 
 describe('Pressing bulletListDefaultKeys.toggle', () => {

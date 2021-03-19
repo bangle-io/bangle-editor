@@ -1,9 +1,10 @@
 import { keymap } from 'prosemirror-keymap';
-import { wrappingInputRule } from 'prosemirror-inputrules';
+import { InputRule, wrappingInputRule } from 'prosemirror-inputrules';
 import { parentHasDirectParentOfType } from '../core-commands';
-import { toggleList } from './list-item/commands';
+import { isNodeTodo, toggleList } from './list-item/commands';
 import { chainCommands } from 'prosemirror-commands';
 import { filter } from '../utils/index';
+import { canJoin, findWrapping } from 'prosemirror-transform';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -57,9 +58,15 @@ function pluginsFactory({
           [keybindings.toggle]: toggleBulletList(),
           [keybindings.toggleTodo]: toggleTodoList(),
         }),
-      markdownShortcut && wrappingInputRule(/^\s*([-+*])\s$/, type),
+      markdownShortcut &&
+        wrappingInputRule(/^\s*([-+*])\s$/, type, undefined, (str, node) => {
+          if (node.lastChild && isNodeTodo(node.lastChild, schema)) {
+            return false;
+          }
+          return true;
+        }),
       todoMarkdownShortcut &&
-        wrappingInputRule(/^\s*(\[ \])\s$/, schema.nodes.listItem, {
+        wrappingInputRuleForTodo(/^\s*(\[ \])\s$/, {
           todoChecked: false,
         }),
     ];
@@ -251,4 +258,31 @@ function todoCount(state) {
     lists: lists,
     todos: todos,
   };
+}
+
+// Alteration of PM's wrappingInputRule
+function wrappingInputRuleForTodo(regexp, getAttrs) {
+  return new InputRule(regexp, function (state, match, start, end) {
+    const nodeType = state.schema.nodes.listItem;
+    var attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
+    var tr = state.tr.delete(start, end);
+    var $start = tr.doc.resolve(start),
+      range = $start.blockRange(),
+      wrapping = range && findWrapping(range, nodeType, attrs);
+    if (!wrapping) {
+      return null;
+    }
+    tr.wrap(range, wrapping);
+    var before = tr.doc.resolve(start - 1).nodeBefore;
+    if (
+      before &&
+      before.type === state.schema.nodes.bulletList &&
+      canJoin(tr.doc, start - 1) &&
+      before.lastChild &&
+      isNodeTodo(before.lastChild, state.schema)
+    ) {
+      tr.join(start - 1);
+    }
+    return tr;
+  });
 }
