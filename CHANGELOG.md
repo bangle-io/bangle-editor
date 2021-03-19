@@ -1,3 +1,10 @@
+## HEAD
+
+_@bangle.dev/core\_
+
+- bug: Fixed bugs related todo list joining and working with list items.
+- bug: Fixed when pressing an enter on a checked todo created another checked todo list.
+
 ## 0.3.1
 
 _@bangle.dev/core\_
