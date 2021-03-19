@@ -618,7 +618,15 @@ export function enterKeyCommand(type) {
             return outdentList(listItem)(state, dispatch, view);
           }
         } else if (!hasParentNodeOfType(codeBlock)(selection)) {
-          return splitListItem(listItem)(state, dispatch);
+          return splitListItem(listItem, (node) => {
+            if (node.attrs.todoChecked == null) {
+              return node.attrs;
+            }
+            return {
+              ...node.attrs,
+              todoChecked: false,
+            };
+          })(state, dispatch);
         }
       }
     }
@@ -629,8 +637,11 @@ export function enterKeyCommand(type) {
 /***
  * Implementation taken from PM and mk-2
  * Splits the list items, specific implementation take from PM
+ *
+ * splitAttrs(node): attrs - if defined the new split item will get attrs returned by this.
+ *                        where node is the currently active node.
  */
-function splitListItem(itemType) {
+function splitListItem(itemType, splitAttrs) {
   return function (state, dispatch) {
     const ref = state.selection;
     const $from = ref.$from;
@@ -692,7 +703,12 @@ function splitListItem(itemType) {
         ? grandParent.contentMatchAt(0).defaultType
         : undefined;
     const tr = state.tr.delete($from.pos, $to.pos);
-    const types = nextType && [undefined, { type: nextType }];
+    const types = nextType && [
+      splitAttrs
+        ? { type: itemType, attrs: splitAttrs(grandParent) }
+        : undefined,
+      { type: nextType },
+    ];
     if (dispatch) {
       dispatch(tr.split($from.pos, 2, types).scrollIntoView());
     }

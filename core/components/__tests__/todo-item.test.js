@@ -42,7 +42,7 @@ test('Pressing Enter', async () => {
   const { view } = await testEditor(
     <doc>
       <ul>
-        <li todoChecked={false}>
+        <li todoChecked={true}>
           <para>foo[]</para>
         </li>
       </ul>
@@ -56,11 +56,50 @@ test('Pressing Enter', async () => {
   expect(view.state).toEqualDocAndSelection(
     <doc>
       <ul>
-        <li todoChecked={false}>
+        <li todoChecked={true}>
           <para>foohello</para>
         </li>
         <li todoChecked={false}>
           <para>second[]</para>
+        </li>
+      </ul>
+    </doc>,
+  );
+});
+
+test('Pressing Enter on nested', async () => {
+  const { view } = await testEditor(
+    <doc>
+      <ul>
+        <li todoChecked={true}>
+          <para>foo</para>
+          <ul>
+            <li todoChecked={true}>
+              <para>nested[]</para>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </doc>,
+  );
+
+  typeText(view, 'hello');
+  sendKeyToPm(view, 'Enter');
+  typeText(view, 'second');
+
+  expect(view.state).toEqualDocAndSelection(
+    <doc>
+      <ul>
+        <li todoChecked={true}>
+          <para>foo</para>
+          <ul>
+            <li todoChecked={true}>
+              <para>nestedhello</para>
+            </li>
+            <li todoChecked={false}>
+              <para>second[]</para>
+            </li>
+          </ul>
         </li>
       </ul>
     </doc>,
