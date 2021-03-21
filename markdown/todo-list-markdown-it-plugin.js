@@ -58,7 +58,7 @@ export function todoListMarkdownItPlugin(md, options = {}) {
         // we add a +2 since the check works on the inline para node
         const inlineToken = tokens[todoItemIndex + 2];
 
-        if (!inlineToken.children) {
+        if (inlineToken.children == null) {
           return;
         }
 
