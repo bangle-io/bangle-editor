@@ -1,4 +1,4 @@
-## HEAD
+## 0.3.2
 
 _@bangle.dev/core\_
 
