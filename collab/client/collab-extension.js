@@ -387,7 +387,12 @@ function collabInitEmitter(view, getDocument) {
       let tr = replaceDocument(view.state, doc, version);
 
       if (oldSelection) {
-        tr = tr.setSelection(Selection.near(tr.doc.resolve(oldSelection.from)));
+        let { from } = oldSelection;
+        if (from >= tr.doc.content.size) {
+          tr = tr.setSelection(Selection.atEnd(tr.doc));
+        } else {
+          tr = tr.setSelection(Selection.near(tr.doc.resolve(from)));
+        }
       }
 
       const newState = view.state.apply(
