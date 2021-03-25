@@ -1,5 +1,13 @@
 ## 0.3.2
 
+## HEAD
+
+_@bangle.dev/core\_
+
+- bug: Fixed issue in collab by checking the position when restarting.
+
+## 0.3.2
+
 _@bangle.dev/core\_
 
 - bug: Fixed bugs related todo list joining and working with list items.
