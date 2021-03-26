@@ -1,6 +1,6 @@
 ## 0.3.2
 
-## HEAD
+## 0.3.3
 
 _@bangle.dev/core\_
 
