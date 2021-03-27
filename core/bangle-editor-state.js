@@ -8,7 +8,7 @@ export class BangleEditorState {
   constructor({
     specRegistry,
     specs,
-    plugins = [],
+    plugins = () => [],
     initialValue,
     editorProps,
     pmStateOpts,
@@ -21,6 +21,11 @@ export class BangleEditorState {
       specRegistry = new SpecRegistry(specs);
     }
 
+    if (Array.isArray(plugins)) {
+      console.warn(
+        'The use plugins as an array is deprecated, please pass a function which returns an array of plugins. Refer: https://bangle.dev/docs/api/core#bangleeditorstate',
+      );
+    }
     this.specRegistry = specRegistry;
     const schema = this.specRegistry.schema;
 

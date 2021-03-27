@@ -5,7 +5,7 @@ import { BangleEditor, BangleEditorState, image } from '@bangle.dev/core';
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specs: [image.spec()],
-    plugins: [image.plugins()],
+    plugins: () => [image.plugins()],
     initialValue: `<div><p>Hey there!</p>
         <p>Let us see an image of cat</p>
         <img src="https://media.giphy.com/media/7xkxbhryQO7hm/giphy.gif" />

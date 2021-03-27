@@ -48,7 +48,7 @@ function placeholder() {
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specs: [coreSpec()],
-    plugins: [corePlugins(), placeholder()],
+    plugins: () => [corePlugins(), placeholder()],
     initialValue: `<p>Let us show the word count on every new line!</p>
     <p></p>`,
   });

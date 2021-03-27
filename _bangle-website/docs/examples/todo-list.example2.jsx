@@ -1,12 +1,21 @@
 import '@bangle.dev/core/style.css';
 
-import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
-import { listItem, bulletList, orderedList } from '@bangle.dev/core';
+import {
+  BangleEditor,
+  BangleEditorState,
+  listItem,
+  bulletList,
+  orderedList,
+} from '@bangle.dev/core';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specs: [listItem.spec(), orderedList.spec(), bulletList.spec()],
-    plugins: [listItem.plugins(), orderedList.plugins(), bulletList.plugins()],
+    plugins: () => [
+      listItem.plugins(),
+      orderedList.plugins(),
+      bulletList.plugins(),
+    ],
     initialValue: `<div>
     <p>We also have unordered lists:</p>
     <ul>

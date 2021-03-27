@@ -18,7 +18,7 @@ function getItemFromStorage() {
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specRegistry: new SpecRegistry(coreSpec()),
-    plugins: [
+    plugins: () => [
       ...corePlugins(),
       new Plugin({
         view: () => ({

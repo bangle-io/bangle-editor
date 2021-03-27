@@ -178,7 +178,7 @@ Create an editor state instance with following params:
   - **specs:** ?[Spec](#spec)\[\]\
     A shorthand which initializes SpecRegistry for you behind the scenes. Use this if you don't care about creating and managing a SpecRegistry instance. Note: you can either set `specRegistry` or `specs` but _not_ both.
 
-  - **plugins:** ?{{core.link.Plugins}}\[\]\
+  - **plugins:** ?({ schema, specRegistry }) -> {{core.link.Plugins}}\[\]\
     The list of plugins for your editor.
 
   - **initialValue:** string | htmlString | undefined \

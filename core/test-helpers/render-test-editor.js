@@ -41,6 +41,9 @@ export function renderTestEditor(
     plugins = defaultPlugins(plugins);
   }
 
+  let newPlugins = plugins;
+  // To bypass the deprecation of plugin being a function
+  plugins = () => newPlugins;
   const container = rootElement.appendChild(document.createElement('div'));
   container.setAttribute('data-testid', testId);
 
