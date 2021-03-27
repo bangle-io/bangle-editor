@@ -1,12 +1,13 @@
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import clsx from 'clsx';
+import styles from './styles.module.css';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
 import BrowserOnly from '@docusaurus/BrowserOnly';
-import Example from '../landing-example';
+import Example from '../landing-example.jsx';
 
 const features = [
   {

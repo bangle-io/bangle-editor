@@ -8,10 +8,14 @@ import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import { DOMSerializer, Slice } from '@bangle.dev/core/prosemirror/model';
 import { sticker } from '@bangle.dev/react-sticker';
 import { stopwatch } from '@bangle.dev/react-stopwatch';
-import * as prosemirrorView from '@bangle.dev/core/prosemirror/view';
 import { setupReactEditor } from '../setup/entry-helpers';
+import {
+  __serializeForClipboard,
+  __parseFromClipboard,
+} from '@bangle.dev/core/prosemirror/view';
 
-window.prosemirrorView = prosemirrorView;
+window.__serializeForClipboard = __serializeForClipboard;
+window.__parseFromClipboard = __parseFromClipboard;
 
 console.debug('Bangle-react entry.js');
 
@@ -67,7 +71,7 @@ window.manualPaste = function manualPaste(htmlStr) {
   }
 
   function doPaste(view, text, html, e) {
-    let slice = prosemirrorView.__parseFromClipboard(
+    let slice = __parseFromClipboard(
       view,
       text,
       html,

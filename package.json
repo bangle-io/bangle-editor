@@ -37,7 +37,7 @@
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
     "integration-tests": "yarn e2e:test",
-    "lint": "yarn prettier --check . && yarn eslint .",
+    "lint": "yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
     "release-packages": "yarn workspaces foreach -v --all --no-private npm publish"
   },
