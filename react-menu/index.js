@@ -1,4 +1,4 @@
-export * as floatingMenu from './floating-menu';
+import * as floatingMenu from './floating-menu';
 export * from './LinkSubMenu';
 export * from './FloatingMenu';
 export * from './Menu';
@@ -8,3 +8,4 @@ export * from './Icons';
 export * from './Icon';
 export * from './MenuButtons';
 export * from './MenuDropdown';
+export { floatingMenu };

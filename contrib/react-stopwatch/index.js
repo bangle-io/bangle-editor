@@ -1,2 +1,4 @@
-export * as stopwatch from './stopwatch';
-export * as default from './stopwatch';
+import * as stopwatch from './stopwatch';
+
+export { stopwatch };
+export default stopwatch;

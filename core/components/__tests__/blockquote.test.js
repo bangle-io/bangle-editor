@@ -3,9 +3,13 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from '../../test-helpers/index';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+  typeText,
+} from '../../test-helpers/index';
 
-import { typeText } from '../../test-helpers/index';
 import { blockquote } from '../index';
 
 const keybindings = blockquote.defaultKeys;

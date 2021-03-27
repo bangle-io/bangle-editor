@@ -197,7 +197,7 @@ test('copy pasting sticker should work', async () => {
   `);
 
   await page.evaluate(() => {
-    const { dom } = window.prosemirrorView.__serializeForClipboard(
+    const { dom } = window.__serializeForClipboard(
       window.editor.view,
       window.editor.view.state.doc.slice(1, 2),
     );

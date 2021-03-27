@@ -1,9 +1,13 @@
 import '../setup/entry.css';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
-import * as prosemirrorView from '@bangle.dev/core/prosemirror/view';
+import {
+  __serializeForClipboard,
+  __parseFromClipboard,
+} from '@bangle.dev/core/prosemirror/view';
 import { setupReactEditor } from '../setup/entry-helpers';
 
-window.prosemirrorView = prosemirrorView;
+window.__serializeForClipboard = __serializeForClipboard;
+window.__parseFromClipboard = __parseFromClipboard;
 
 setup();
 

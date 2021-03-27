@@ -9,10 +9,14 @@ import {
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { BangleEditor } from '@bangle.dev/react';
+import {
+  BangleEditor,
+  useEditorState,
+  usePluginState,
+} from '@bangle.dev/react';
 import { pjsx, Span } from './helpers/index';
 import { Plugin, PluginKey } from '@bangle.dev/core/index';
-import { useEditorState, usePluginState } from '@bangle.dev/react';
+
 import { useEffect, useState } from 'react';
 
 const key = new PluginKey('testPlugins');

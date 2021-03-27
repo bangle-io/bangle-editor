@@ -1,1 +1,3 @@
-export * as trailingNode from './trailing-node';
+import * as trailingNode from './trailing-node';
+
+export { trailingNode };

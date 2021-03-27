@@ -10,11 +10,14 @@ import {
   PluginKey,
   Selection,
 } from '@bangle.dev/core/prosemirror/state';
-import { getIdleCallback, sleep, uuid } from '@bangle.dev/core/utils/js-utils';
 import {
+  getIdleCallback,
+  sleep,
+  uuid,
   cancelablePromise,
   serialExecuteQueue,
 } from '@bangle.dev/core/utils/js-utils';
+
 import { replaceDocument } from './helpers';
 import { CollabError } from '../collab-error';
 import { Emitter } from './emitter';

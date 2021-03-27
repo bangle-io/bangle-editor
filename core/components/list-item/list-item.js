@@ -15,7 +15,7 @@ import {
   moveNode,
 } from '../../core-commands';
 import { filter, insertEmpty } from '../../utils/pm-utils';
-import { domSerializationHelpers } from '../../utils/index';
+import { domSerializationHelpers } from '../../utils/dom-serialization-helpers';
 import browser from '../../utils/browser';
 import { isNodeTodo, setTodoCheckedAttr } from './todo';
 import { listItemNodeViewPlugin } from './list-item-node-view-plugin';

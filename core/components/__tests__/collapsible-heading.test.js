@@ -15,6 +15,7 @@ import {
   strike,
   text,
   paragraph,
+  heading,
 } from '@bangle.dev/core/components';
 import {
   psx,
@@ -22,7 +23,6 @@ import {
   createPSXFragment,
 } from '@bangle.dev/core/test-helpers/index';
 import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
-import { heading } from '../index';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

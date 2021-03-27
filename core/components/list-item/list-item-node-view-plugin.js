@@ -1,4 +1,4 @@
-import { createElement } from '../../utils/index';
+import { createElement } from '../../utils/js-utils';
 import { NodeView } from '../../node-view';
 
 const LOG = false;

@@ -7,9 +7,8 @@ import {
   safeInsert,
 } from '@bangle.dev/core/utils/pm-utils';
 import { Plugin, PluginKey, isChromeWithSelectionBug } from '@bangle.dev/core';
-
-import { tooltipPlacement } from './index';
 import { triggerInputRule } from './trigger-input-rule';
+import * as tooltipPlacement from './tooltip-placement';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};
