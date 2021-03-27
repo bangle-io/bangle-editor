@@ -5,10 +5,9 @@ import {
   findSelectedNodeOfType,
   findParentNodeOfType as _findParentNodeOfType,
 } from 'prosemirror-utils';
-import { Fragment, Slice , DOMSerializer } from 'prosemirror-model';
+import { Fragment, Slice, DOMSerializer } from 'prosemirror-model';
 import { GapCursorSelection } from '../gap-cursor';
 import { Plugin } from '../plugin';
-
 
 export function safeInsert(...args) {
   return _safeInsert(...args);

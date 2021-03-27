@@ -15,14 +15,14 @@ import {
   strike,
   text,
   paragraph,
- heading } from '@bangle.dev/core/components';
+  heading,
+} from '@bangle.dev/core/components';
 import {
   psx,
   renderTestEditor,
   createPSXFragment,
 } from '@bangle.dev/core/test-helpers/index';
 import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
-
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

@@ -1,4 +1,5 @@
-import { InputRule ,
+import {
+  InputRule,
   inputRules as pmInputRules,
   undoInputRule as pmUndoInputRule,
 } from 'prosemirror-inputrules';
@@ -9,7 +10,8 @@ import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
 import { bangleWarn } from './js-utils';
 import { Plugin, PluginGroup } from '../plugin';
-import { history, editorStateCounter } from '../components/index';
+import * as history from '../components/history';
+import * as editorStateCounter from '../components/editor-state-counter';
 
 export function pluginLoader(
   specRegistry,

@@ -23,7 +23,8 @@ module.exports = {
   rules: {
     'curly': 'error',
     'no-process-env': 'error',
-    'import/no-cycle': [2, { maxDepth: 3 }],
+    // eslint-disable-next-line no-process-env
+    'import/no-cycle': [2, { maxDepth: process.env.CI ? 5 : 2 }],
     // 'react/prop-types': ['error'],
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },
