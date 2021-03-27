@@ -1,3 +1,5 @@
+**NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
+
 ## 0.4.0
 
 - bug: Fix cyclic dependencies across the project.
@@ -29,7 +31,7 @@
 
 - bug: Fixed an issue when toggling a nested list item with empty sibbling caused errors.
 
-- breaking: todoList and todoItem no longer exist and now have been implemented with bulletList and listItem with the node attribute `todoChecked`.
+- **breaking**: todoList and todoItem no longer exist and now have been implemented with bulletList and listItem with the node attribute `todoChecked`.
 
 ## 0.2.1
 
