@@ -7,12 +7,11 @@ import {
   safeInsert,
 } from '@bangle.dev/core/utils/pm-utils';
 import { Plugin, PluginKey, isChromeWithSelectionBug } from '@bangle.dev/core';
-
-import * as tooltipPlacement from './tooltip-placement';
 import { triggerInputRule } from './trigger-input-rule';
+import * as tooltipPlacement from './tooltip-placement';
 
 const LOG = false;
-let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => { };
+let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -152,14 +151,14 @@ function pluginsFactory({
         key,
       }),
       keybindings &&
-      keymap({
-        [keybindings.select]: (state, dispatch, view) => {
-          return filter(isActiveCheck, onEnter)(state, dispatch, view);
-        },
-        [keybindings.up]: filter(isActiveCheck, onArrowUp),
-        [keybindings.down]: filter(isActiveCheck, onArrowDown),
-        [keybindings.hide]: filter(isActiveCheck, onEscape),
-      }),
+        keymap({
+          [keybindings.select]: (state, dispatch, view) => {
+            return filter(isActiveCheck, onEnter)(state, dispatch, view);
+          },
+          [keybindings.up]: filter(isActiveCheck, onArrowUp),
+          [keybindings.down]: filter(isActiveCheck, onArrowDown),
+          [keybindings.hide]: filter(isActiveCheck, onEscape),
+        }),
     ];
   };
 }
@@ -374,8 +373,8 @@ export function replaceSuggestMarkWith(key, maybeNode) {
           maybeNode instanceof Node || isInputFragment
             ? maybeNode
             : typeof maybeNode === 'string'
-              ? state.schema.text(maybeNode)
-              : Node.fromJSON(state.schema, maybeNode);
+            ? state.schema.text(maybeNode)
+            : Node.fromJSON(state.schema, maybeNode);
       } catch (e) {
         console.error(e);
         return tr;

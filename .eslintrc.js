@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     'curly': 'error',
     'no-process-env': 'error',
+    'import/no-cycle': [2, { maxDepth: 3 }],
     // 'react/prop-types': ['error'],
     // 'import/no-unused-modules': [1, { unusedExports: true }],
   },

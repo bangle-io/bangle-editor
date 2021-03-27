@@ -9,12 +9,13 @@ import {
   typeText,
   sendKeyToPm,
   renderTestEditor,
+  typeChar,
 } from '@bangle.dev/core/test-helpers/index';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { typeChar } from '@bangle.dev/core/test-helpers/index';
+
 import { PluginKey, Selection } from '@bangle.dev/core/prosemirror/state';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import { sleep } from '@bangle.dev/core/utils/js-utils';

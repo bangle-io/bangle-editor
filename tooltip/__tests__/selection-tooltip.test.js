@@ -10,7 +10,7 @@ import {
   renderTestEditor,
 } from '@bangle.dev/core/test-helpers/index';
 
-import { selectionTooltip } from '../index';
+import { selectionTooltip, createTooltipDOM } from '../index';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import {
   EditorState,
@@ -18,7 +18,7 @@ import {
   TextSelection,
 } from '@bangle.dev/core/prosemirror/state';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { createTooltipDOM } from '../index';
+
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 import { coreSpec } from '@bangle.dev/core/utils/core-components';
 

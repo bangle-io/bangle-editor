@@ -7,8 +7,13 @@ import { psx } from '@bangle.dev/core/test-helpers/index';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { BangleEditor } from '@bangle.dev/core';
-import { BangleEditorState, Plugin, PluginKey } from '@bangle.dev/core';
+import {
+  BangleEditor,
+  BangleEditorState,
+  Plugin,
+  PluginKey,
+} from '@bangle.dev/core';
+
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
 import { coreSpec } from '@bangle.dev/core/utils/core-components';
