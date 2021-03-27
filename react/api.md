@@ -39,6 +39,11 @@ A React component for rendering a Bangle instance.
 - **id**: ?string\
   The [id](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id) of the DOM node bangle mounts on. Please make sure this is unique if you are having multiple editors.
 
+- **className**: ?string\
+  The CSS class names for the container div of the editor. (The editor div has the class `.bangle-editor` ).
+- **style** ?Object\
+  The style object for the container div of the editor.
+
 - **renderNodeViews**: ?fn({ children, node, view, getPos, decorations, selected, attrs, updateAttrs}) -> {{global.link.ReactElement}} \
   Allows customization of how a Node is rendered in the DOM. This will be called with a `node` and you are expected to return a matching React component for the `node.type`. You are also expected to correctly nest the `children` props. Note: `children` prop is not available for [atom](https://prosemirror.net/docs/ref/#model.NodeSpec.atom) nodes. See {{global.link.ReactCustomRenderingGuide}}
 
