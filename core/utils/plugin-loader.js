@@ -1,8 +1,8 @@
-import { InputRule } from 'prosemirror-inputrules';
-import {
+import { InputRule ,
   inputRules as pmInputRules,
   undoInputRule as pmUndoInputRule,
 } from 'prosemirror-inputrules';
+
 import { keymap } from 'prosemirror-keymap';
 import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';

@@ -4,7 +4,8 @@ module.exports = {
     'react-app',
     'react-app/jest',
 
-    /*'plugin:import/errors', 'plugin:import/warnings'*/
+    'plugin:import/errors',
+    'plugin:import/warnings',
   ],
   env: {
     jest: true,

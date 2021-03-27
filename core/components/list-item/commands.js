@@ -8,9 +8,10 @@ import {
   hasParentNodeOfType,
   findPositionOfNodeBefore,
   findParentNode,
+  flatten,
 } from 'prosemirror-utils';
 import { NodeSelection, TextSelection } from 'prosemirror-state';
-import { flatten } from 'prosemirror-utils';
+
 import { compose } from '../../utils/js-utils';
 import {
   hasVisibleContent,
