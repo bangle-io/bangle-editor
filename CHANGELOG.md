@@ -2,7 +2,9 @@
 
 ## 0.4.1
 
-- deprecation: `BangleEditorState` expects `plugins` named parameter to be a function. Previous usage of an array of plugins is not deprecated.
+**@bangle.dev/core**
+
+- deprecation: `BangleEditorState` expects `plugins` named parameter to be a function. Previous usage of an array of plugins is now deprecated.
 
 ## 0.4.0
 
