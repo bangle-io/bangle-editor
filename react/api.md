@@ -24,7 +24,7 @@ export default function Editor() {
   const editorState = useEditorState({
     initialValue: 'Hello world!',
   });
-  return <BangleEditor editorState={editorState} />;
+  return <BangleEditor state={editorState} />;
 }
 ```
 
