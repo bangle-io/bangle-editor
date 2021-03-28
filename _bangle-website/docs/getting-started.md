@@ -19,13 +19,13 @@ npm install @bangle.dev/react
 
 ## Build tools
 
-I have created repository to showcase how to use with various contemprary bundlers, because frontend setup is a nightmare and the last thing is someone fiddling with Webpack or Babel config:
+I have setup a repo to showcase how to use Bangle.dev with various contemporary bundlers. Lets be honest, frontend setup is a nightmare 🧟‍♀️ and the last thing I want is someone fiddling with Webpack or Babel config:
 
 - [create-react-app-v4](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/create-react-app-v4)
 - [create-react-app-v3](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/create-react-app-v3)
 - [webpack-v4](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/webpack-v4)
 
-Feel free to send a Pull Request for your favourite build tool.
+Feel free to send a Pull Request for your favorite build tool. If setup looks good, head over to the [examples](https://bangle.dev/docs/examples/markdown-editor)!
 
 :heart: Support for **Vue** is coming soon. Meanwhile you can either use vanilla Bangle Components _or_ consider [tiptap](https://github.com/ueberdosis/tiptap) an awesome library which runs the same [Prosemirror](https://prosemirror.net) blood in its veins!
 
