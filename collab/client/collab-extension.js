@@ -22,7 +22,7 @@ import { replaceDocument } from './helpers';
 import { CollabError } from '../collab-error';
 import { Emitter } from './emitter';
 
-const LOG = false;
+const LOG = true;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
 
 export const spec = specFactory;
@@ -220,12 +220,14 @@ function connectionManager({
     });
 
   const onError = (error) => {
-    const { errorCode, from } = error;
-    if (!(error instanceof CollabError)) {
+    const { from } = error;
+
+    if (error.name !== 'CollabError') {
       console.error(error);
       throw error;
     }
-    log('received error', errorCode, error.message, error.from);
+
+    log('received error', error.message, error.from);
 
     // If initialization failed, regardless of error code
     // we will need to restart setting up the initial state
@@ -233,6 +235,14 @@ function connectionManager({
       restart(view);
       return;
     }
+
+    const errorCode = parseInt(/(\d+)/.exec(error.message)[0], 10);
+
+    if (Number.isNaN(errorCode)) {
+      console.error(error);
+      throw error;
+    }
+
     switch (errorCode) {
       // invalid version
       case 400:

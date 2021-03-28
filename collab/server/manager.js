@@ -6,7 +6,7 @@ import {
 } from '@bangle.dev/core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
-const LOG = false;
+const LOG = true;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 export class Manager {
@@ -24,8 +24,8 @@ export class Manager {
       },
       // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
       userWaitTimeout: 7 * 1000,
-      collectUsersTimeout: 5 * 1000,
-      instanceCleanupTimeout: 10 * 1000,
+      collectUsersTimeout: 50 * 1000,
+      instanceCleanupTimeout: 60 * 1000,
       interceptRequests: undefined, // useful for testing or debugging
     };
     this.opts = { ...this.defaultOpts, ...opts };
