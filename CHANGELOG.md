@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.5.0
+
+**@bangle.dev/react-menu**
+
+- feat: Added an undo and redo button.
+
 ## 0.4.1
 
 **@bangle.dev/core**
