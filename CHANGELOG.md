@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.4.1
+
+**@bangle.dev/core**
+
+- deprecation: `BangleEditorState` expects `plugins` named parameter to be a function. Previous usage of an array of plugins is now deprecated.
+
 ## 0.4.0
 
 - bug: Fix cyclic dependencies across the project.

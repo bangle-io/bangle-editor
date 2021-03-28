@@ -50,7 +50,7 @@ import { keymap } from '@bangle.dev/core/utils/keymap';
 import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 
 const state = new BangleEditorState({
-  plugins: [
+  plugins: () => [
     keymap({
       'Ctrl-s': (state, dispatch, view) => {
         alert(state.doc.textContent);

@@ -26,6 +26,8 @@ export function BangleEditor({
   focusOnInit = true,
   pmViewOpts,
   renderNodeViews,
+  className,
+  style,
   onReady = () => {},
 }) {
   const renderRef = useRef();
@@ -69,7 +71,7 @@ export function BangleEditor({
 
   return (
     <React.Fragment>
-      <div ref={renderRef} id={id} />
+      <div ref={renderRef} id={id} className={className} style={style} />
       {nodeViews.map((nodeView) => {
         return reactDOM.createPortal(
           <NodeViewWrapper
@@ -122,4 +124,6 @@ BangleEditor.propTypes = {
   ]),
   state: PropTypes.instanceOf(CoreBangleEditorState).isRequired,
   pmViewOpts: PropTypes.object,
+  className: PropTypes.string,
+  style: PropTypes.object,
 };

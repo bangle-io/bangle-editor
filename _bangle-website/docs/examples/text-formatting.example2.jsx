@@ -6,7 +6,7 @@ import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specs: [subscript.spec()],
-    plugins: [
+    plugins: () => [
       subscript.plugins({
         keybindings: { toggleSuperscript: 'Ctrl-s' },
       }),

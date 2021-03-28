@@ -1,7 +1,12 @@
 import '@bangle.dev/core/style.css';
 
-import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
-import { listItem, bulletList, orderedList } from '@bangle.dev/core';
+import {
+  BangleEditor,
+  BangleEditorState,
+  listItem,
+  bulletList,
+  orderedList,
+} from '@bangle.dev/core';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({
@@ -12,7 +17,11 @@ export default function Editor(domNode) {
       // The above list specs are needed
       // for todo lists to work
     ],
-    plugins: [listItem.plugins(), orderedList.plugins(), bulletList.plugins()],
+    plugins: () => [
+      listItem.plugins(),
+      orderedList.plugins(),
+      bulletList.plugins(),
+    ],
     initialValue: `<div>
     <p>Let us check off some lists:</p>
     <ul>
