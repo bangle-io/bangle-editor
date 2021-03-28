@@ -17,7 +17,7 @@ import {
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specRegistry: new SpecRegistry(coreSpec()),
-    plugins: [...corePlugins(), collapsePlugin],
+    plugins: () => [...corePlugins(), collapsePlugin],
     initialValue: `<div>
     <h2>Philosophy</h2>
     <p>Philosophy is the study of underlying things. This means philosophy tries to understand the reasons or basis for things. It also tries to understand how things should be. "Philosophia" is the Ancient Greek word for the "love of wisdom". A person who does philosophy is called a philosopher. A philosopher is a kind of thinker or researcher. A "philosophy" can also mean a group of ideas by philosophers, or by a philosopher. Philosophy is a way of thinking about the world, the universe, and society. In the past, sciences were part of philosophy as well.</p>

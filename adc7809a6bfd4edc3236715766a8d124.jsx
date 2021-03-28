@@ -15,7 +15,7 @@ const serializer = markdown.markdownSerializer(specRegistry);
 export default function Editor(domNode) {
   const state = new BangleEditorState({
     specRegistry,
-    plugins: corePlugins(),
+    plugins: () => corePlugins(),
     initialValue: parser.parse(getMarkdown()),
   });
 
