@@ -186,7 +186,7 @@ A button for your menu.
   Whether the button is disabled.
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button.
+  A tooltip hint to show when hovering over this button.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
@@ -205,13 +205,13 @@ Marks text as `bold` mark.
 **Props:**
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### ItalicButton: {{global.link.ReactElement}}
 
@@ -220,13 +220,43 @@ Marks text as `italic` mark.
 **Props:**
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
+
+### UndoButton: {{global.link.ReactElement}}
+
+Undoes the last edit.
+
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
+
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, by default it will render an Icon for the button.
+
+### RedoButton: {{global.link.ReactElement}}
+
+Opposite of undo.
+
+**Props:**
+
+- **hint**: ?string\
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
+
+- **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
+  The position of the hint tooltip.
+
+- **children**: ?{{global.link.ReactElement}}\
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### CodeButton: {{global.link.ReactElement}}
 
@@ -235,13 +265,13 @@ Marks text as `code` mark.
 **Props:**
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### BlockquoteButton: {{global.link.ReactElement}}
 
@@ -250,13 +280,13 @@ Wrap's inside a Blockquote.
 **Props:**
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### BulletListButton: {{global.link.ReactElement}}
 
@@ -265,13 +295,13 @@ Convert text to a `bulletList` node.
 **Props:**
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### TodoListButton: {{global.link.ReactElement}}
 
@@ -280,13 +310,13 @@ Convert paragraph to a `todoList` node.
 **Props:**
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### HeadingButton: {{global.link.ReactElement}}
 
@@ -298,13 +328,13 @@ Convert text to a `heading` node.
   The heading level.
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.
 
 ### FloatingLinkButton {{global.link.ReactElement}}
 
@@ -316,10 +346,10 @@ Upon mouse down changes floating menu type to `'linkSubMenu'`. **Note:** this is
   The menu key associated with your menu plugin.
 
 - **hint**: ?string\
-  A tooltip hint to show when hover over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to now show any hint.
+  A tooltip hint to show when hovering over this button. Defaults to the name of the node and the keyboard shortcut. Set it to `null` to not show any hint.
 
 - **hintPos**: ?`'top'`|`'bottom'`|`'right'`|`'left'`\
   The position of the hint tooltip.
 
 - **children**: ?{{global.link.ReactElement}}\
-  The content to render inside the button, but default it will render an Icon for the button.
+  The content to render inside the button, by default it will render an Icon for the button.

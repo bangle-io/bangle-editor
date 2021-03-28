@@ -18,6 +18,8 @@ import {
   BoldButton,
   ItalicButton,
   MenuGroup,
+  UndoButton,
+  RedoButton,
 } from '@bangle.dev/react-menu';
 
 const menuKey = new PluginKey('menuKey');
@@ -54,6 +56,10 @@ export default function Example() {
                   : 'black',
             }}
           >
+            <MenuGroup>
+              <UndoButton />
+              <RedoButton />
+            </MenuGroup>
             <MenuGroup>
               <BoldButton />
               <ItalicButton />
