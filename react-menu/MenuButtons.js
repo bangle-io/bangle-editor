@@ -7,6 +7,12 @@ import {
   toggleItalic,
 } from '@bangle.dev/core/components/italic';
 import {
+  defaultKeys as historyKeys,
+  undo,
+  redo,
+} from '@bangle.dev/core/components/history';
+
+import {
   defaultKeys as boldKeys,
   queryIsBoldActive,
   toggleBold,
@@ -146,6 +152,68 @@ export function ItalicButton({
       hint={hint}
       isActive={queryIsItalicActive()(view.state)}
       isDisabled={!toggleItalic()(view.state)}
+    >
+      {children}
+    </MenuButton>
+  );
+}
+
+export function UndoButton({
+  hint = 'Undo\n' + historyKeys.undo,
+  hintPos = 'top',
+  children = <Icons.UndoIcon />,
+  ...props
+}) {
+  const view = useEditorViewContext();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (undo()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
+      }
+    },
+    [view],
+  );
+  return (
+    <MenuButton
+      {...props}
+      hintPos={hintPos}
+      onMouseDown={onSelect}
+      hint={hint}
+      isDisabled={!undo()(view.state)}
+    >
+      {children}
+    </MenuButton>
+  );
+}
+
+export function RedoButton({
+  hint = 'Redo\n' + historyKeys.undo,
+  hintPos = 'top',
+  children = <Icons.RedoIcon />,
+  ...props
+}) {
+  const view = useEditorViewContext();
+  const onSelect = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (redo()(view.state, view.dispatch, view)) {
+        if (view.dispatch) {
+          view.focus();
+        }
+      }
+    },
+    [view],
+  );
+  return (
+    <MenuButton
+      {...props}
+      hintPos={hintPos}
+      onMouseDown={onSelect}
+      hint={hint}
+      isDisabled={!redo()(view.state)}
     >
       {children}
     </MenuButton>
