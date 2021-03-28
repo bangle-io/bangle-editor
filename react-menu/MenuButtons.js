@@ -190,7 +190,7 @@ export function UndoButton({
 }
 
 export function RedoButton({
-  hint = 'Redo\n' + historyKeys.undo,
+  hint = 'Redo\n' + historyKeys.redo,
   hintPos = 'top',
   children = <Icons.RedoIcon />,
   ...props
