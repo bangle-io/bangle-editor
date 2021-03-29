@@ -94,7 +94,6 @@ function pluginsFactory({
               return false;
             }
           }
-
           return true;
         },
       }),

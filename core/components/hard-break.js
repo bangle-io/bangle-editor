@@ -31,7 +31,9 @@ function specFactory(opts = {}) {
           }
         }
       },
-      parseMarkdown: { hardbreak: { node: 'hardBreak' } },
+      parseMarkdown: {
+        hardbreak: { node: 'hardBreak' },
+      },
     },
   };
 }
