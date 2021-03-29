@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- bug: Fix css settings that were being applied globally instead of scoped to the editor.
+
 ## 0.5.0
 
 **@bangle.dev/react-menu**
