@@ -56,11 +56,30 @@
   text-decoration: underline;
 }
 
+.bangle-editor > p:first-child,
+.bangle-editor > h1:first-child,
+.bangle-editor > h2:first-child,
+.bangle-editor > h3:first-child,
+.bangle-editor > h4:first-child,
+.bangle-editor > h5:first-child,
+.bangle-editor > h6:first-child,
+.bangle-editor > blockquote:first-child,
+.bangle-editor > pre:first-child,
+.bangle-editor > hr:first-child,
+.bangle-editor > figure:first-child,
+.bangle-editor > dl:first-child,
+.bangle-editor > dd:first-child,
+.bangle-editor > ul:first-child,
+.bangle-editor > ol:first-child {
+  /** this prevents elements from bleeding out of the container */
+  margin-top: 0;
+}
+
 .bangle-editor blockquote {
   padding-left: 0.5rem;
   background-color: #f7fafc;
   color: #414e64;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
   margin-bottom: 1.25rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -73,42 +92,36 @@
 
 .bangle-editor h1 {
   font-size: 3rem;
-  margin-bottom: 0.5rem;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .bangle-editor h2 {
   font-size: 1.875rem;
-  margin-bottom: 0.25rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .bangle-editor h3 {
   font-size: 1.25rem;
   font-weight: 500;
-  margin-bottom: 0.25rem;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .bangle-editor h4 {
   font-size: 1.125rem;
   font-weight: 500;
-  margin-bottom: 0.25rem;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 }
 
 .bangle-editor h5 {
   font-weight: 500;
   font-size: 1rem;
-  margin-bottom: 0.1rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .bangle-editor h6 {
   font-weight: 500;
   font-size: 0.75rem;
-  margin-bottom: 0.1rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .bangle-editor img {
@@ -153,7 +166,6 @@
   outline: none;
 }
 
-/** Ordered list */
 .bangle-editor > ol {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -171,6 +183,9 @@
   font-size: 1.125rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+.bangle-editor > p {
+  margin-top: 0.75rem;
 }
 
 .bangle-editor p > code {

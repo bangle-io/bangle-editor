@@ -28,6 +28,12 @@ import {
 
 import { markdownParser } from '../markdown-parser';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import {
+  table,
+  tableCell,
+  tableHeader,
+  tableRow,
+} from '@bangle.dev/core/components/table/index';
 
 const specRegistry = new SpecRegistry([
   // nodes
@@ -44,6 +50,12 @@ const specRegistry = new SpecRegistry([
   orderedList.spec(),
   image.spec(),
   horizontalRule.spec(),
+
+  // table nodes
+  table,
+  tableCell,
+  tableHeader,
+  tableRow,
 
   // marks
   bold.spec(),
