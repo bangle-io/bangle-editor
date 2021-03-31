@@ -354,6 +354,21 @@ describe('parsing', () => {
 });
 
 describe('Markdown todo parsing', () => {
+  test('empty list', async () => {
+    const md = `
+- [ ] first
+-
+`;
+    const doc = await parse(md);
+    const md2 = await serialize(doc);
+    expect(md2.trim()).toMatchInlineSnapshot(`
+      "- [ ] first
+
+      -"
+    `);
+    expect(doc).toMatchSnapshot();
+  });
+
   test('todo1.md: an incorrectly indented doc results in empty list', async () => {
     const md = await fs.readFile(
       path.join(__dirname, './fixtures/todo1.md'),

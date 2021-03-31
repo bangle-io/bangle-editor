@@ -1,3 +1,5 @@
+import Token from 'markdown-it/lib/token';
+
 export function todoListMarkdownItPlugin(md, options = {}) {
   const {
     todoListOpenType = 'bullet_list_open',
@@ -57,6 +59,11 @@ export function todoListMarkdownItPlugin(md, options = {}) {
       .forEach(([todoItem, todoItemIndex]) => {
         // we add a +2 since the check works on the inline para node
         const inlineToken = tokens[todoItemIndex + 2];
+
+        if (inlineToken.children == null) {
+          inlineToken.children = [new Token('text', '', 0)];
+        }
+
         const inlineTokenChild = inlineToken.children[0];
 
         let isDone = null;
