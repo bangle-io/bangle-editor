@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/markdown**
+
+- bug: When opening a file with empty list item crashed the editor.
+
 ## 0.5.1
 
 **@bangle.dev/core**
