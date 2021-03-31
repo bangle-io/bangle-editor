@@ -1,3 +1,5 @@
+import Token from 'markdown-it/lib/token';
+
 export function todoListMarkdownItPlugin(md, options = {}) {
   const {
     todoListOpenType = 'bullet_list_open',
@@ -59,7 +61,7 @@ export function todoListMarkdownItPlugin(md, options = {}) {
         const inlineToken = tokens[todoItemIndex + 2];
 
         if (inlineToken.children == null) {
-          return;
+          inlineToken.children = [new Token('text', '', 0)];
         }
 
         const inlineTokenChild = inlineToken.children[0];
