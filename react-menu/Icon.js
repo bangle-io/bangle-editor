@@ -13,6 +13,7 @@ export const MenuButton = ({
 }) => {
   return (
     <button
+      type="button"
       data-bangle-balloon-break={hintBreakWhiteSpace}
       aria-label={hint}
       data-bangle-balloon-pos={hintPos}

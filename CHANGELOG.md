@@ -2,6 +2,10 @@
 
 ## HEAD
 
+**@bangle.dev/react-menu**
+
+- bug: Use button attribute for menu items
+
 **@bangle.dev/markdown**
 
 - bug: When opening a file with empty list item crashed the editor.
