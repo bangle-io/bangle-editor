@@ -152,7 +152,9 @@ function Speech({ node, children }) {
             </option>
           ))}
         </select>
-        <button onClick={onPlay}>Play</button>
+        <button type="button" onClick={onPlay}>
+          Play
+        </button>
       </div>
       {children}
     </div>
