@@ -1955,10 +1955,12 @@ __metadata:
   resolution: "@bangle.dev/markdown@workspace:markdown"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/table": "workspace:*"
     markdown-it: ^10.0.0
     prosemirror-markdown: ^1.5.0
   peerDependencies:
     "@bangle.dev/core": "*"
+    "@bangle.dev/table": "*"
   languageName: unknown
   linkType: soft
 
@@ -2061,6 +2063,18 @@ __metadata:
     "@bangle.dev/core": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@bangle.dev/table@workspace:*, @bangle.dev/table@workspace:table":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/table@workspace:table"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    prosemirror-keymap: ^1.1.4
+    prosemirror-tables: ^1.1.1
+  peerDependencies:
+    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
@@ -5249,6 +5263,7 @@ __metadata:
     "@bangle.dev/react-menu": "workspace:*"
     "@bangle.dev/react-sticker": "workspace:*"
     "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/table": "workspace:*"
     "@bangle.dev/text-formatting": "workspace:*"
     "@bangle.dev/timestamp": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"

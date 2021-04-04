@@ -36,7 +36,7 @@ describe('Markdown table parsing', () => {
     expect(resultDoc).toEqualDocument(doc);
     expect(md).toMatchSnapshot();
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -79,7 +79,7 @@ describe('Markdown table parsing', () => {
 
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -129,7 +129,7 @@ describe('Markdown table parsing', () => {
 
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -166,7 +166,7 @@ describe('Markdown table parsing', () => {
     const resultDoc = await parse(md);
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -206,7 +206,7 @@ describe('Markdown table parsing', () => {
     const resultDoc = await parse(md);
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -246,7 +246,7 @@ describe('Markdown table parsing', () => {
     const resultDoc = await parse(md);
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -268,7 +268,7 @@ describe('Markdown table parsing', () => {
     const resultDoc = await parse(md);
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });
@@ -297,7 +297,7 @@ describe('Markdown table parsing', () => {
     const resultDoc = await parse(md);
     expect(resultDoc).toEqualDocument(doc);
 
-    // check parsing
+    // check serializing
     const parsedDoc = await parse(await serialize(doc));
     expect(parsedDoc).toEqualDocument(doc);
   });

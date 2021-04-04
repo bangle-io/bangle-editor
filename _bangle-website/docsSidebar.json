@@ -55,6 +55,7 @@
         "api/emoji",
         "api/markdown",
         "api/markdown_front_matter",
+        "api/table",
         "api/tooltip"
       ]
     }

@@ -28,12 +28,7 @@ import {
 
 import { markdownParser } from '../markdown-parser';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import {
-  table,
-  tableCell,
-  tableHeader,
-  tableRow,
-} from '@bangle.dev/core/components/table/index';
+import { table, tableCell, tableHeader, tableRow } from '@bangle.dev/table';
 
 const specRegistry = new SpecRegistry([
   // nodes

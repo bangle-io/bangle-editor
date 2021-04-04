@@ -14,6 +14,12 @@
       "@bangle.dev/emoji/*": [
         "./emoji/*"
       ],
+      "@bangle.dev/table": [
+        "./table/index.js"
+      ],
+      "@bangle.dev/table/*": [
+        "./table/*"
+      ],
       "@bangle.dev/react-emoji-suggest": [
         "./contrib/react-emoji-suggest/index.js"
       ],
