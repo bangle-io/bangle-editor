@@ -27,12 +27,36 @@ const nodes = tableNodes({
   },
 });
 
+const tableHeaderName = 'table_header';
+
+const toMarkdownCell = (state, node) => {
+  node.forEach(function (child, _, i) {
+    const originalEsc = state.esc;
+
+    state.esc = (str, ...args) => {
+      str = originalEsc(str, ...args);
+      str = str.replace(/\|/gi, '\\$&');
+      return str;
+    };
+
+    state.renderInline(child);
+
+    state.esc = originalEsc;
+  });
+};
+
 export const table = {
   name: 'table',
   type: 'node',
   schema: nodes.table,
   markdown: {
-    toMarkdown: (state, node) => {},
+    toMarkdown: (state, node) => {
+      state.flushClose(1);
+      state.ensureNewLine();
+      state.write('\n');
+      state.renderContent(node);
+      return;
+    },
     parseMarkdown: {
       table: {
         block: 'table',
@@ -46,7 +70,7 @@ export const tableCell = {
   type: 'node',
   schema: nodes.table_cell,
   markdown: {
-    toMarkdown: (state, node) => {},
+    toMarkdown: toMarkdownCell,
     parseMarkdown: {
       td: {
         block: 'table_cell',
@@ -57,11 +81,12 @@ export const tableCell = {
 };
 
 export const tableHeader = {
-  name: 'table_header',
+  name: tableHeaderName,
   type: 'node',
   schema: nodes.table_header,
   markdown: {
-    toMarkdown: (state, node) => {},
+    // cell and header are same as far as serialization is concerned
+    toMarkdown: toMarkdownCell,
     parseMarkdown: {
       th: {
         block: 'table_header',
@@ -76,7 +101,45 @@ export const tableRow = {
   type: 'node',
   schema: nodes.table_row,
   markdown: {
-    toMarkdown: (state, node) => {},
+    toMarkdown: (state, node, parent) => {
+      state.ensureNewLine();
+      // child is either table_header or table_cell
+      node.forEach(function (child, _, i) {
+        i === 0 && state.write('| ');
+        state.render(child, node, i);
+        state.write(' |');
+        child !== node.lastChild && state.write(' ');
+      });
+
+      state.ensureNewLine();
+      // check if it is the header row
+      if (node.firstChild.type.name === tableHeaderName) {
+        node.forEach(function (child, _, i) {
+          i === 0 && state.write('|');
+          const { align } = child.attrs;
+          switch (align) {
+            case 'left': {
+              state.write(':---');
+              break;
+            }
+            case 'center': {
+              state.write(':---:');
+              break;
+            }
+            case 'right': {
+              state.write('---:');
+              break;
+            }
+            default: {
+              state.write('----');
+              break;
+            }
+          }
+          state.write('|');
+        });
+      }
+      state.closeBlock();
+    },
     parseMarkdown: {
       tr: {
         block: 'table_row',

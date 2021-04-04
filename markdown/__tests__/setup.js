@@ -77,4 +77,6 @@ export const serialize = async (doc) => {
   return serializer.serialize(content);
 };
 
-export const parse = async (md) => parser.parse(md);
+export const parse = async (md) => {
+  return parser.parse(md);
+};

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown table parsing table1.md: a simple table 1`] = `
+"
+# My Table
+
+| NOTE: |
+| :--- |
+| Work in progress |
+"
+`;
