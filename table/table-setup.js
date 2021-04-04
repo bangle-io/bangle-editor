@@ -1,5 +1,36 @@
 import { tableNodes, tableEditing, goToNextCell } from 'prosemirror-tables';
 import { keymap } from 'prosemirror-keymap';
+import { weakCache } from '@bangle.dev/core/utils/index';
+
+const calculateColumnWidth = weakCache(function calculateColumnWidth(
+  tableNode,
+) {
+  const sizeMap = new Map();
+  let maxColIndex = 0;
+  tableNode.forEach((row) => {
+    row.forEach((cell, _, colIndex) => {
+      if (colIndex > maxColIndex) {
+        maxColIndex = colIndex;
+      }
+
+      if (!cell) {
+        return;
+      }
+
+      const textLength = cell.textContent.length + 2;
+
+      if (!sizeMap.has(colIndex)) {
+        sizeMap.set(colIndex, textLength);
+      }
+
+      if (textLength > sizeMap.get(colIndex)) {
+        sizeMap.set(colIndex, textLength);
+      }
+    });
+  });
+
+  return Array.from({ length: maxColIndex + 1 }, (_, k) => sizeMap.get(k) || 1);
+});
 
 const nodes = tableNodes({
   tableGroup: 'block',
@@ -103,10 +134,17 @@ export const tableRow = {
   markdown: {
     toMarkdown: (state, node, parent) => {
       state.ensureNewLine();
+
+      const width = calculateColumnWidth(parent);
+
       // child is either table_header or table_cell
       node.forEach(function (child, _, i) {
         i === 0 && state.write('| ');
         state.render(child, node, i);
+
+        const extraSpace = width[i] - 2 - child.textContent.length;
+        state.write(' '.repeat(Math.max(0, extraSpace)));
+
         state.write(' |');
         child !== node.lastChild && state.write(' ');
       });
@@ -119,19 +157,31 @@ export const tableRow = {
           const { align } = child.attrs;
           switch (align) {
             case 'left': {
-              state.write(':---');
+              state.write(':');
+              const extraSpace = width[i] - 1;
+              state.write('-'.repeat(Math.max(0, extraSpace)));
+
               break;
             }
             case 'center': {
-              state.write(':---:');
+              state.write(':');
+              const extraSpace = width[i] - 2;
+              state.write('-'.repeat(Math.max(0, extraSpace)));
+              state.write(':');
+
               break;
             }
             case 'right': {
-              state.write('---:');
+              const extraSpace = width[i] - 1;
+              state.write('-'.repeat(Math.max(0, extraSpace)));
+
+              state.write(':');
               break;
             }
             default: {
-              state.write('----');
+              const extraSpace = width[i];
+              state.write('-'.repeat(Math.max(0, extraSpace)));
+
               break;
             }
           }
