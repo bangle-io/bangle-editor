@@ -5293,6 +5293,7 @@ __metadata:
     "@bangle.dev/react-menu": "workspace:*"
     "@bangle.dev/react-sticker": "workspace:*"
     "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/table": "workspace:*"
     "@bangle.dev/text-formatting": "workspace:*"
     "@bangle.dev/timestamp": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
