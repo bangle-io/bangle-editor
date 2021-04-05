@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.7.2
+
+**@bangle.dev/react-emoji-suggest**
+
+- bug: stray console statement
+
 ## 0.7.1
 
 **@bangle.dev/table**
