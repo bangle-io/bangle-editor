@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/react-menu**
+
+- bug: disable menu buttons when view is not editable
+
 ## 0.7.2
 
 **@bangle.dev/react-emoji-suggest**

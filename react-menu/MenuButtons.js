@@ -85,7 +85,7 @@ export function BoldButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsBoldActive()(view.state)}
-      isDisabled={!toggleBold()(view.state)}
+      isDisabled={!view.editable || !toggleBold()(view.state)}
     >
       {children}
     </MenuButton>
@@ -119,7 +119,9 @@ export function BlockquoteButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={blockquote.commands.queryIsBlockquoteActive()(view.state)}
-      isDisabled={!blockquote.commands.wrapInBlockquote()(view.state)}
+      isDisabled={
+        !view.editable || !blockquote.commands.wrapInBlockquote()(view.state)
+      }
     >
       {children}
     </MenuButton>
@@ -151,7 +153,7 @@ export function ItalicButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsItalicActive()(view.state)}
-      isDisabled={!toggleItalic()(view.state)}
+      isDisabled={!view.editable || !toggleItalic()(view.state)}
     >
       {children}
     </MenuButton>
@@ -182,7 +184,7 @@ export function UndoButton({
       hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
-      isDisabled={!undo()(view.state)}
+      isDisabled={!view.editable || !undo()(view.state)}
     >
       {children}
     </MenuButton>
@@ -213,7 +215,7 @@ export function RedoButton({
       hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
-      isDisabled={!redo()(view.state)}
+      isDisabled={!view.editable || !redo()(view.state)}
     >
       {children}
     </MenuButton>
@@ -245,7 +247,7 @@ export function CodeButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsCodeActive()(view.state)}
-      isDisabled={!toggleCode()(view.state)}
+      isDisabled={!view.editable || !toggleCode()(view.state)}
     >
       {children}
     </MenuButton>
@@ -276,6 +278,7 @@ export function BulletListButton({
       hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
+      isDisabled={!view.editable}
       isActive={
         queryIsBulletListActive()(view.state) &&
         !queryIsTodoListActive()(view.state)
@@ -310,6 +313,7 @@ export function OrderedListButton({
       hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
+      isDisabled={!view.editable}
       isActive={queryIsOrderedListActive()(view.state)}
     >
       {children}
@@ -342,6 +346,7 @@ export function TodoListButton({
       hintPos={hintPos}
       onMouseDown={onSelect}
       hint={hint}
+      isDisabled={!view.editable}
       isActive={queryIsTodoListActive()(view.state)}
     >
       {children}
@@ -376,7 +381,7 @@ export function HeadingButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsHeadingActive(level)(view.state)}
-      isDisabled={!toggleHeading(level)(view.state)}
+      isDisabled={!view.editable || !toggleHeading(level)(view.state)}
     >
       {children}
     </MenuButton>
@@ -413,7 +418,7 @@ export function ParagraphButton({
       onMouseDown={onSelect}
       hint={hint}
       isActive={queryIsTopLevelParagraph()(view.state)}
-      isDisabled={!convertToParagraph()(view.state)}
+      isDisabled={!view.editable || !convertToParagraph()(view.state)}
     >
       {children}
     </MenuButton>
@@ -456,7 +461,7 @@ export function FloatingLinkButton({
       hint={hint}
       hintPos={hintPos}
       isActive={queryIsLinkActive()(view.state)}
-      isDisabled={!createLink('')(view.state)}
+      isDisabled={!view.editable || !createLink('')(view.state)}
     >
       {children}
     </MenuButton>
