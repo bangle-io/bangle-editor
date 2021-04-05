@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.7.1
+
+**@bangle.dev/table**
+
+- bug: Renamed table.css to style.css
+
 ## 0.7.0
 
 **@bangle.dev/markdown**
