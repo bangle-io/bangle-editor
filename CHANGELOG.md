@@ -1,5 +1,15 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/markdown**
+
+- feat: Now parses and serializes markdown
+
+**@bangle.dev/table**
+
+- NEW package for dealing with tables!
+
 ## 0.6.0
 
 **@bangle.dev/react-menu**

@@ -29,6 +29,7 @@
     "react",
     "react-menu",
     "tooltip",
+    "table",
     "contrib/*"
   ],
   "scripts": {

@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown table parsing table1.md: a simple table 1`] = `
+"# My Table
+
+| NOTE:            |
+|:-----------------|
+| Work in progress |
+"
+`;
+
+exports[`Markdown table parsing table2.md: two simple table with two columns 1`] = `
+"# Table 2
+
+| Header 1 | Header 2 |
+|----------|----------|
+| hello    | world    |
+
+| Header 1 | Header 2 |
+|----------|----------|
+| hello    | world    |
+"
+`;
+
+exports[`Markdown table parsing table3.md: with alignment 1`] = `
+"# Table 3
+
+| Default | Left | Center | Right |
+|---------|:-----|:------:|------:|
+| x       | x    | x      | x     |
+"
+`;
+
+exports[`Markdown table parsing table4.md 1`] = `
+"# Table 4
+
+| foo | goo |
+|:---:|----:|
+| bar | baz |
+"
+`;
+
+exports[`Markdown table parsing table5.md 1`] = `
+"# Table 5
+
+| f\\\\|oo    |
+|---------|
+| b \`\\\\|\` az |
+| b **\\\\|** im  |
+"
+`;
+
+exports[`Markdown table parsing table6.md 1`] = `
+"# Table 6
+
+| abc | def |
+|-----|-----|
+| bar | baz |
+> bar"
+`;
+
+exports[`Markdown table parsing table7 missing column cell 1`] = `
+"# Table 7
+
+| abc | def |
+| --- |
+| bar |"
+`;
+
+exports[`Markdown table parsing table8 no row 1`] = `
+"# Table 8
+
+| abc | def |
+|-----|-----|"
+`;

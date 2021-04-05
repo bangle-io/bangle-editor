@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { psx } from '@bangle.dev/core/test-helpers/index';
-import { parse } from './setup';
+import { serialize, parse } from './setup';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -33,9 +33,12 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table2.md: two simple table with two columns', async () => {
@@ -73,9 +76,13 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
+
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table3.md: with alignment', async () => {
@@ -120,9 +127,13 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
+
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table4.md', async () => {
@@ -155,9 +166,12 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table5.md', async () => {
@@ -193,9 +207,12 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table6.md', async () => {
@@ -231,9 +248,12 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table7 missing column cell', async () => {
@@ -251,9 +271,12 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 
   test('table8 no row', async () => {
@@ -278,8 +301,11 @@ describe('Markdown table parsing', () => {
       'utf-8',
     );
     const resultDoc = await parse(md);
-    // const md2 = await serialize(doc);
-    // expect(md2.trim()).to('-');
     expect(resultDoc).toEqualDocument(doc);
+
+    // check serializing
+    expect(await serialize(doc)).toMatchSnapshot();
+    const parsedDoc = await parse(await serialize(doc));
+    expect(parsedDoc).toEqualDocument(doc);
   });
 });
