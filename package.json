@@ -1,6 +1,6 @@
 {
   "name": "banglejs",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -19,6 +19,18 @@
   },
   "private": true,
   "workspaces": [
+    "__integration-tests__",
+    "_bangle-website",
+    "_bangle-scripts",
+    "core",
+    "collab",
+    "emoji",
+    "markdown",
+    "react",
+    "react-menu",
+    "tooltip",
+    "table",
+    "contrib/*",
     "__integration-tests__",
     "_bangle-website",
     "_bangle-scripts",
