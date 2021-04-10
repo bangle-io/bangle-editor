@@ -18,6 +18,8 @@ export const commands = {
   jumpToEndOfParagraph,
   queryIsParagraph,
   queryIsTopLevelParagraph,
+  insertEmptyParagraphAbove,
+  insertEmptyParagraphBelow,
 };
 
 export const defaultKeys = {
@@ -143,5 +145,25 @@ export function queryIsParagraph() {
   return (state) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));
+  };
+}
+
+export function insertEmptyParagraphAbove() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return filter(
+      parentHasDirectParentOfType(type, state.schema.nodes.doc),
+      insertEmpty(type, 'above'),
+    )(state, dispatch, view);
+  };
+}
+
+export function insertEmptyParagraphBelow() {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return filter(
+      parentHasDirectParentOfType(type, state.schema.nodes.doc),
+      insertEmpty(type, 'below'),
+    )(state, dispatch, view);
   };
 }
