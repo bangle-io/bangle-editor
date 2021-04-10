@@ -29,6 +29,8 @@ export const plugins = pluginsFactory;
 export const commands = {
   indentListItem,
   outdentListItem,
+  moveListItemUp,
+  moveListItemDown,
 };
 export const defaultKeys = {
   toggleDone: browser.mac ? 'Ctrl-Enter' : 'Ctrl-I',
@@ -95,32 +97,6 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
       schema.nodes['orderedList'],
     ]);
 
-    const move = (dir) =>
-      chainCommands(moveNode(type, dir), (state, dispatch, view) => {
-        const node = state.selection.$from.node(-3);
-        const isParentTodo = isNodeTodo(node, state.schema);
-        const result = moveEdgeListItem(type, dir)(state, dispatch, view);
-
-        if (!result) {
-          return false;
-        }
-
-        // if parent was a todo convert the moved edge node
-        // to todo bullet item
-        if (isParentTodo && dispatch) {
-          const state = view.state;
-          let { tr, schema } = state;
-          tr = setTodoCheckedAttr(
-            tr,
-            schema,
-            state.selection.$from.node(-1),
-            state.selection.$from.before(-1),
-          );
-          dispatch(tr);
-        }
-        return true;
-      });
-
     return [
       keybindings &&
         keymap({
@@ -137,8 +113,8 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
           Enter: enterKeyCommand(type),
           [keybindings.indent]: indentListItem(),
           [keybindings.outdent]: outdentListItem(),
-          [keybindings.moveUp]: filter(isBulletList, move('UP')),
-          [keybindings.moveDown]: filter(isBulletList, move('DOWN')),
+          [keybindings.moveUp]: moveListItemUp(),
+          [keybindings.moveDown]: moveListItemDown(),
           [keybindings.emptyCut]: filter(isBulletList, cutEmptyCommand(type)),
           [keybindings.emptyCopy]: filter(isBulletList, copyEmptyCommand(type)),
           [keybindings.insertEmptyListAbove]: chainCommands(
@@ -180,3 +156,50 @@ export function outdentListItem() {
 const isSelectionInsideTodo = (state) => {
   return isNodeTodo(state.selection.$from.node(-1), state.schema);
 };
+
+function moveListItem(dir) {
+  return (state, dispatch, view) => {
+    const { schema } = state;
+    const type = getTypeFromSchema(schema);
+
+    const isBulletList = parentHasDirectParentOfType(type, [
+      schema.nodes['bulletList'],
+      schema.nodes['orderedList'],
+    ]);
+
+    const move = (dir) =>
+      chainCommands(moveNode(type, dir), (state, dispatch, view) => {
+        const node = state.selection.$from.node(-3);
+        const isParentTodo = isNodeTodo(node, state.schema);
+        const result = moveEdgeListItem(type, dir)(state, dispatch, view);
+
+        if (!result) {
+          return false;
+        }
+
+        // if parent was a todo convert the moved edge node
+        // to todo bullet item
+        if (isParentTodo && dispatch) {
+          const state = view.state;
+          let { tr, schema } = state;
+          tr = setTodoCheckedAttr(
+            tr,
+            schema,
+            state.selection.$from.node(-1),
+            state.selection.$from.before(-1),
+          );
+          dispatch(tr);
+        }
+        return true;
+      });
+
+    return filter(isBulletList, move(dir))(state, dispatch, view);
+  };
+}
+
+export function moveListItemUp() {
+  return moveListItem('UP');
+}
+export function moveListItemDown() {
+  return moveListItem('DOWN');
+}

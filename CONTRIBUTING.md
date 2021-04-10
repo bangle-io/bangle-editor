@@ -30,7 +30,11 @@ For templating we use [handlebars](https://handlebarsjs.com) and a configuration
 ### Steps to do a release
 
 - Bump up the version in the file `constraints.pro`.
+
 - Run `yarn update-versions`.
+
 - Due to a bug in yarn there might be redundant items added in the `package.json` `workspaces` field -- Remove them.
+
 - Update the changelog.
+
 - Run `yarn release-packages`.

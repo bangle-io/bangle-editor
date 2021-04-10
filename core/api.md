@@ -876,6 +876,12 @@ Named parameters:
 - **outdentListItem**(): {{typedQueryCommand "boolean"}}\
   Outdents list item one level. If level is root, outdents to a paragraph.
 
+- **moveListItemUp**(): {{typedQueryCommand "boolean"}}\
+  Swap the list item with the one above. If the item above is not a list item, converts the item to paragraph and then moves it.
+
+- **moveListItemDown**(): {{typedQueryCommand "boolean"}}\
+  The opposite of `moveListItemUp`.
+
 **Usage**
 
 ```js
@@ -993,6 +999,12 @@ Named parameters:
 
 - **queryIsTopLevelParagraph**(): {{typedQueryCommand "boolean"}}\
   Query if it is paragraph under the selection and it is a direct descendant of the top level node, which by default is [doc](#doc-component).
+
+- **insertEmptyParagraphAbove():** {{typedQueryCommand "boolean"}}\
+  Inserts an empty paragraph above the current node.
+
+- **insertEmptyParagraphBelow():** {{typedQueryCommand "boolean"}}\
+  Inserts an empty paragraph below the current node.
 
 **Usage**
 

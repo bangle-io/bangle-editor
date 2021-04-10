@@ -2,6 +2,11 @@
 
 ## HEAD
 
+**@bangle.dev/core**
+
+- feat: add `insertEmptyParagraphBelow`, `insertEmptyParagraphAbove` command to paragraph component.
+- feat: add `moveListItemUp`, `moveListItemDown` to listItem component.
+
 **@bangle.dev/react-menu**
 
 - bug: disable menu buttons when view is not editable
