@@ -81,8 +81,16 @@ function buildDeco(state) {
     state.doc,
     // Create a decoration for each heading that is collapsible
     headings.map((match) =>
-      Decoration.widget(match.pos + 1, (view) =>
-        createCollapseDOM(view, collapsedHeadingSet.has(match.node), match.pos),
+      Decoration.widget(
+        match.pos + 1,
+        (view) =>
+          createCollapseDOM(
+            view,
+            collapsedHeadingSet.has(match.node),
+            match.pos,
+          ),
+        // render deco before cursor
+        { side: -1 },
       ),
     ),
   );
