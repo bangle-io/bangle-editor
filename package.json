@@ -30,18 +30,6 @@
     "react-menu",
     "tooltip",
     "table",
-    "contrib/*",
-    "__integration-tests__",
-    "_bangle-website",
-    "_bangle-scripts",
-    "core",
-    "collab",
-    "emoji",
-    "markdown",
-    "react",
-    "react-menu",
-    "tooltip",
-    "table",
     "contrib/*"
   ],
   "scripts": {
