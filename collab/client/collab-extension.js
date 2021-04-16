@@ -221,7 +221,6 @@ function connectionManager({
   const onError = (error) => {
     const { errorCode, from } = error;
     if (!(error instanceof CollabError)) {
-      console.error(error);
       throw error;
     }
     log('received error', errorCode, error.message, error.from);
