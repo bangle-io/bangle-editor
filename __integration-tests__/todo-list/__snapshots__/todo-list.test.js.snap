@@ -5,6 +5,9 @@ Object {
   "doc": Object {
     "content": Array [
       Object {
+        "attrs": Object {
+          "tight": false,
+        },
         "content": Array [
           Object {
             "attrs": Object {

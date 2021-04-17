@@ -10,7 +10,7 @@ describe('ordered list', () => {
   test('renders ordered list', async () => {
     const doc = (
       <doc>
-        <ol>
+        <ol tight={true}>
           <li>
             <para>hello</para>
           </li>
@@ -92,13 +92,13 @@ describe('ordered list', () => {
   test('renders paragraph between 2 ordered list', async () => {
     const doc = (
       <doc>
-        <ol>
+        <ol tight={true}>
           <li>
             <para>hello</para>
           </li>
         </ol>
         <para>world</para>
-        <ol>
+        <ol tight={true}>
           <li>
             <para>hello</para>
           </li>
@@ -122,13 +122,13 @@ describe('ordered list', () => {
   test('renders hr between 2 ordered list', async () => {
     const doc = (
       <doc>
-        <ol>
+        <ol tight={true}>
           <li>
             <para>hello</para>
           </li>
         </ol>
         <hr />
-        <ol>
+        <ol tight={true}>
           <li>
             <para>hello</para>
           </li>
@@ -226,7 +226,7 @@ describe('unordered list', () => {
   test('renders unordered list', async () => {
     const doc = (
       <doc>
-        <ul>
+        <ul tight={true}>
           <li>
             <para>hello</para>
           </li>
@@ -288,6 +288,35 @@ describe('unordered list', () => {
 
          - hello
 
+         - hello"
+    `);
+    expect(await parse(md)).toEqualDocument(doc);
+  });
+
+  test('renders unordered list nested inside ordered list with tight to true', async () => {
+    const doc = (
+      <doc>
+        <ol>
+          <li>
+            <para>parent</para>
+            <ul tight={true}>
+              <li>
+                <para>hello</para>
+              </li>
+              <li>
+                <para>hello</para>
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </doc>
+    );
+    const md = await serialize(doc);
+
+    expect(md).toMatchInlineSnapshot(`
+      "1. parent
+
+         - hello
          - hello"
     `);
     expect(await parse(md)).toEqualDocument(doc);

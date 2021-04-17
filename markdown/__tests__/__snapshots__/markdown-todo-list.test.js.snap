@@ -4,6 +4,9 @@ exports[`Markdown todo parsing empty list 2`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -45,6 +48,9 @@ exports[`Markdown todo parsing todo1.md: an incorrectly indented doc results in 
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "tight": false,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -69,6 +75,9 @@ exports[`Markdown todo parsing todo2.md: correct indentation of todo1 1`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "tight": false,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -85,6 +94,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": false,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -101,6 +113,9 @@ Object {
                       "type": "paragraph",
                     },
                     Object {
+                      "attrs": Object {
+                        "tight": false,
+                      },
                       "content": Array [
                         Object {
                           "attrs": Object {
@@ -134,6 +149,9 @@ Object {
                               "type": "paragraph",
                             },
                             Object {
+                              "attrs": Object {
+                                "tight": false,
+                              },
                               "content": Array [
                                 Object {
                                   "attrs": Object {
@@ -214,17 +232,11 @@ Object {
 
 exports[`Markdown todo parsing todo3.md: malformed with multiple confused square braces 1`] = `
 "- [ ] unchecked todo item 1
-
 - \\\\[ \\\\]
-
 - \\\\[  \\\\] not a todo item 2
-
 - \\\\[ x\\\\] not a todo item 3
-
 - \\\\[x \\\\] not a todo item 4
-
 - \\\\[ x \\\\] not a todo item 5
-
 - [x] todo item 6"
 `;
 
@@ -232,6 +244,9 @@ exports[`Markdown todo parsing todo3.md: malformed with multiple confused square
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -362,21 +377,13 @@ Object {
 
 exports[`Markdown todo parsing todo4.md multiple nesting 1`] = `
 "- [ ] top
-
   - [ ] Zono
-
   - [ ] Banshe
-
   - [ ] parent
-
     - [ ] top
-
     - [ ] parent
-
       - first
-
       - second
-
   - [ ] bottom"
 `;
 
@@ -384,6 +391,9 @@ exports[`Markdown todo parsing todo4.md multiple nesting 2`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -400,6 +410,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -450,6 +463,9 @@ Object {
                       "type": "paragraph",
                     },
                     Object {
+                      "attrs": Object {
+                        "tight": true,
+                      },
                       "content": Array [
                         Object {
                           "attrs": Object {
@@ -483,6 +499,9 @@ Object {
                               "type": "paragraph",
                             },
                             Object {
+                              "attrs": Object {
+                                "tight": true,
+                              },
                               "content": Array [
                                 Object {
                                   "attrs": Object {
@@ -563,11 +582,8 @@ Object {
 
 exports[`Markdown todo parsing todo5.md no nesting 1`] = `
 "- [ ] unchecked item 1
-
 - [ ] unchecked item 2
-
 - [x] checked item 3
-
 - [ ] unchecked item 4"
 `;
 
@@ -575,6 +591,9 @@ exports[`Markdown todo parsing todo5.md no nesting 2`] = `
 Object {
   "content": Array [
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -656,29 +675,19 @@ exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 2`
 "# Test 1
 
 1. foo
-
    - [ ] nested unchecked item 1
-
    - not a todo item 2
-
    - not a todo item 3
-
    - [x] nested checked item 4
-
 2. bar
-
 3. spam
 
 # Test 2
 
 - foo
-
   - [ ] nested unchecked item 1
-
   - [ ] nested unchecked item 2
-
   - [x] nested checked item 3
-
   - [x] nested checked item 4"
 `;
 
@@ -701,6 +710,7 @@ Object {
     Object {
       "attrs": Object {
         "order": 1,
+        "tight": true,
       },
       "content": Array [
         Object {
@@ -718,6 +728,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -844,6 +857,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -860,6 +876,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -960,6 +979,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -976,6 +998,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1102,6 +1127,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -1118,6 +1146,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1210,6 +1241,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -1226,6 +1260,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1333,6 +1370,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1383,6 +1423,9 @@ Object {
                       "type": "paragraph",
                     },
                     Object {
+                      "attrs": Object {
+                        "tight": true,
+                      },
                       "content": Array [
                         Object {
                           "attrs": Object {
@@ -1425,53 +1468,33 @@ exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 2`
 "# Test 1
 
 - [ ] foo
-
   - [ ] nested unchecked item 1
-
   - not a todo item 2
-
   - not a todo item 3
-
   - [x] nested checked item 4
-
 - [ ] bar
-
 - [ ] spam
 
 # Test 2
 
 - [ ] foo
-
   - [ ] nested unchecked item 1
-
   - [ ] nested unchecked item 2
-
   - [x] nested checked item 3
-
   - [x] nested checked item 4
 
 # Test 3
 
 - [ ] foo
-
   - [ ] nested unchecked item 1
-
   - not a todo item 2
-
   - not a todo item 3
-
   - [x] nested checked item 4
-
 - [ ] bar
-
 - [ ] spam
-
   - regular list 1
-
   - regular list 2
-
   - regular list 3
-
     - a child of list 3"
 `;
 
@@ -1492,6 +1515,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -1508,6 +1534,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1634,6 +1663,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -1650,6 +1682,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1742,6 +1777,9 @@ Object {
       "type": "heading",
     },
     Object {
+      "attrs": Object {
+        "tight": true,
+      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -1758,6 +1796,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1865,6 +1906,9 @@ Object {
               "type": "paragraph",
             },
             Object {
+              "attrs": Object {
+                "tight": true,
+              },
               "content": Array [
                 Object {
                   "attrs": Object {
@@ -1915,6 +1959,9 @@ Object {
                       "type": "paragraph",
                     },
                     Object {
+                      "attrs": Object {
+                        "tight": true,
+                      },
                       "content": Array [
                         Object {
                           "attrs": Object {

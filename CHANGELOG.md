@@ -1,5 +1,15 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- feat: adding a new `tight` attribute to ordered and unorder list components.
+
+**@bangle.dev/markdown**
+
+- feat: Markdown parsing now remembers whether lists are tightly spaced or not.
+
 ## 0.8.0
 
 **@bangle.dev/core**

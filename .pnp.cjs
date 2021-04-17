@@ -4676,7 +4676,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__table", null],
             ["markdown-it", "npm:10.0.0"],
-            ["prosemirror-markdown", "npm:1.5.0"]
+            ["prosemirror-markdown", "npm:1.5.1"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -4694,7 +4694,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__table", null],
             ["markdown-it", "npm:10.0.0"],
-            ["prosemirror-markdown", "npm:1.5.0"]
+            ["prosemirror-markdown", "npm:1.5.1"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -4711,7 +4711,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/table", "virtual:066245a4a642af98c31b2abe1f87cd4bf49942905dd17abdea4e86a9b52353d20f8d7f8aff81c5556462c2b78bf83b46a78ab7cf9e10e37fca9b5e8805067e34#workspace:table"],
             ["markdown-it", "npm:10.0.0"],
-            ["prosemirror-markdown", "npm:1.5.0"]
+            ["prosemirror-markdown", "npm:1.5.1"]
           ],
           "linkType": "SOFT",
         }]
@@ -22022,10 +22022,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-markdown", [
-        ["npm:1.5.0", {
-          "packageLocation": "./.yarn/cache/prosemirror-markdown-npm-1.5.0-207853176b-c31fe0fd9e.zip/node_modules/prosemirror-markdown/",
+        ["npm:1.5.1", {
+          "packageLocation": "./.yarn/cache/prosemirror-markdown-npm-1.5.1-80b7a27638-0e99c19f82.zip/node_modules/prosemirror-markdown/",
           "packageDependencies": [
-            ["prosemirror-markdown", "npm:1.5.0"],
+            ["prosemirror-markdown", "npm:1.5.1"],
             ["markdown-it", "npm:10.0.0"],
             ["prosemirror-model", "npm:1.12.0"]
           ],
