@@ -9,6 +9,7 @@ import {
   setTodo,
   isNodeTodo,
 } from './list-item/todo';
+import { listIsTight } from './list-item/list-is-tight';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -34,6 +35,15 @@ function specFactory(opts = {}) {
       group: 'block',
       parseDOM: [{ tag: 'ul' }],
       toDOM: () => ['ul', 0],
+      attrs: {
+        // a style preference attribute which be used for
+        // rendering output.
+        // For example markdown serializer can render a new line in
+        // between or not.
+        tight: {
+          default: false,
+        },
+      },
     },
     markdown: {
       toMarkdown(state, node) {
@@ -42,6 +52,9 @@ function specFactory(opts = {}) {
       parseMarkdown: {
         bullet_list: {
           block: name,
+          getAttrs: (_, tokens, i) => {
+            return { tight: listIsTight(tokens, i) };
+          },
         },
       },
     },

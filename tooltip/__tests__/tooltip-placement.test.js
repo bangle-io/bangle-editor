@@ -83,7 +83,7 @@ const setupTooltipPlugin = ({ stateKey, renderOpts }) => {
 
 const setupEditorState = (plugin) => {
   const specRegistry = new SpecRegistry(coreSpec());
-  const plugins = [...defaultPlugins(), plugin];
+  const plugins = () => [...defaultPlugins(), plugin];
 
   return new BangleEditorState({
     specRegistry,

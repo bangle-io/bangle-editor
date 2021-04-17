@@ -1957,7 +1957,7 @@ __metadata:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     markdown-it: ^10.0.0
-    prosemirror-markdown: ^1.5.0
+    prosemirror-markdown: ^1.5.1
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/table": "*"
@@ -16404,13 +16404,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prosemirror-markdown@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "prosemirror-markdown@npm:1.5.0"
+"prosemirror-markdown@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "prosemirror-markdown@npm:1.5.1"
   dependencies:
     markdown-it: ^10.0.0
     prosemirror-model: ^1.0.0
-  checksum: c31fe0fd9e1b9967cbe956be6a488d336978c264e4dd11196b651ddb3aec115dfcc717c5a2080fb0d0ce23bd57f6d555a3c6de32548f892dc984dd8254b43ac9
+  checksum: 0e99c19f826d6773ed6bd2c65708f1759d909f93dafce1b49fac0b308790a41bb3b8269f792065c51c08d5380f5ed32e4abdea67c0200de77eae359d4f2fe33b
   languageName: node
   linkType: hard
 

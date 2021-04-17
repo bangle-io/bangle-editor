@@ -3,6 +3,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 
 import { keymap } from 'prosemirror-keymap';
 import { parentHasDirectParentOfType } from '../core-commands';
+import { listIsTight } from './list-item/list-is-tight';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -22,6 +23,13 @@ function specFactory(opts = {}) {
       attrs: {
         order: {
           default: 1,
+        },
+        // a style preference attribute which be used for
+        // rendering output.
+        // For example markdown serializer can render a new line in
+        // between or not.
+        tight: {
+          default: false,
         },
       },
       content: 'listItem+',
@@ -52,6 +60,12 @@ function specFactory(opts = {}) {
       parseMarkdown: {
         ordered_list: {
           block: name,
+          getAttrs: (tok, tokens, i) => {
+            return {
+              tight: listIsTight(tokens, i),
+              order: +tok.attrGet('start') || 1,
+            };
+          },
         },
       },
     },

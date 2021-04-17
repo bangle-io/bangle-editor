@@ -1,6 +1,6 @@
 import { objectFilter, objectMapValues } from '@bangle.dev/core/utils/js-utils';
 import { MarkdownSerializer } from 'prosemirror-markdown';
-import { markdownLoader } from './markdown-parser';
+import { markdownLoader } from './markdown-loader';
 // A markdown serializer which uses a node/mark schema's
 // toMarkdown property to generate a markdown string
 export const markdownSerializer = (
@@ -8,7 +8,6 @@ export const markdownSerializer = (
   { useDefaults = true } = {},
 ) => {
   const { serializer } = markdownLoader(specRegistry, { useDefaults });
-
   return new MarkdownSerializer(serializer.node, serializer.mark);
 };
 

@@ -186,7 +186,7 @@ describe('blockquote', () => {
   test('renders blockquote with list', async () => {
     const doc = (
       <doc>
-        <ul>
+        <ul tight={true}>
           <li>
             <para>top</para>
           </li>
@@ -206,7 +206,7 @@ describe('blockquote', () => {
     `);
     expect(await parse(md)).toEqualDocument(
       <doc>
-        <ul>
+        <ul tight={true}>
           <li>
             <para>top</para>
           </li>

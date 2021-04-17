@@ -90,7 +90,7 @@ describe('todo list', () => {
         <bulletList>
           <listItem todoChecked={false}>
             <para>first</para>
-            <ol>
+            <ol tight={true}>
               <li>
                 <para>[]second</para>
               </li>
@@ -113,10 +113,10 @@ describe('todo list', () => {
   test('renders with nested todo list', async () => {
     const doc = (
       <doc>
-        <bulletList>
+        <bulletList tight={true}>
           <listItem todoChecked={false}>
             <para>first</para>
-            <bulletList>
+            <bulletList tight={true}>
               <listItem todoChecked={false}>
                 <para>[]second</para>
               </listItem>
@@ -129,7 +129,6 @@ describe('todo list', () => {
 
     expect(md).toMatchInlineSnapshot(`
       "- [ ] first
-
         - [ ] second"
     `);
 
@@ -363,7 +362,6 @@ describe('Markdown todo parsing', () => {
     const md2 = await serialize(doc);
     expect(md2.trim()).toMatchInlineSnapshot(`
       "- [ ] first
-
       -"
     `);
     expect(doc).toMatchSnapshot();
