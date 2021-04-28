@@ -1,4 +1,5 @@
 import { InputRule } from '@bangle.dev/core/prosemirror/inputrules';
+import { TextSelection } from '@bangle.dev/core/prosemirror/state';
 
 // ProseMirror uses the Unicode Character 'OBJECT REPLACEMENT CHARACTER' (U+FFFC) as text representation for
 // leaf nodes, i.e. nodes that don't have any content or text property (e.g. hardBreak, emoji)
@@ -8,7 +9,7 @@ const leafNodeReplacementCharacter = '\ufffc';
 
 export function triggerInputRule(schema, markName, trigger) {
   const regexStart = new RegExp(
-    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${trigger})$`,
+    `(^|[.!?\\s${leafNodeReplacementCharacter}])(${escapeRegExp(trigger)})$`,
   );
 
   const startRule = new InputRule(regexStart, (editorState, match) => {
@@ -21,8 +22,20 @@ export function triggerInputRule(schema, markName, trigger) {
     if (!trigger) {
       return;
     }
+
     const mark = schema.mark(markName, { trigger });
     const { tr, selection } = editorState;
+    // set the selection to cover the trigger
+    // when the trigger is bigger than 1 char.
+    // for 1 char length you dont need a non empty selection.
+    if (trigger.length > 1) {
+      const textSelection = TextSelection.create(
+        tr.doc,
+        selection.from,
+        selection.from - trigger.length + 1,
+      );
+      tr.setSelection(textSelection);
+    }
     const marks = selection.$from.marks(); // selection would tell the cursor position, in this case from == to as no selection
     return tr.replaceSelectionWith(
       schema.text(trigger, [mark, ...marks]),
@@ -31,4 +44,31 @@ export function triggerInputRule(schema, markName, trigger) {
   });
 
   return startRule;
+}
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+const reHasRegExpChar = RegExp(reRegExpChar.source);
+
+/**
+ * Escapes the `RegExp` special characters "^", "$", "\", ".", "*", "+",
+ * "?", "(", ")", "[", "]", "{", "}", and "|" in `string`.
+ *
+ * @since 3.0.0
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @returns {string} Returns the escaped string.
+ * @see escape, escapeRegExp, unescape
+ * @example
+ *
+ * escapeRegExp('[lodash](https://lodash.com/)')
+ * // => '\[lodash\]\(https://lodash\.com/\)'
+ */
+function escapeRegExp(string) {
+  return string && reHasRegExpChar.test(string)
+    ? string.replace(reRegExpChar, '\\$&')
+    : string || '';
 }

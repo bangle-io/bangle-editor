@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.9.1
+
+**@bangle.dev/tooltip**
+
+- bug: suggest tooltip now resets counter on hide.
+- feat: triggers can now be more than one characters.
+
 ## 0.9.0
 
 **@bangle.dev/core**

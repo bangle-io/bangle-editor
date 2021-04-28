@@ -113,7 +113,12 @@ function pluginsFactory({
               if (pluginState.show === false) {
                 return pluginState;
               }
-              return { ...pluginState, triggerText: '', show: false };
+              return {
+                ...pluginState,
+                triggerText: '',
+                show: false,
+                counter: 0,
+              };
             }
             if (meta.type === 'INCREMENT_COUNTER') {
               return { ...pluginState, counter: pluginState.counter + 1 };
