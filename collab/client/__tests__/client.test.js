@@ -13,7 +13,9 @@ import { CollabError } from '../../collab-error';
 import { Selection } from '@bangle.dev/core/prosemirror/state';
 import * as collab from '../collab-extension';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { paragraph, doc, text } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
+
+const { paragraph, doc, text } = components;
 const DEFAULT_SLEEP = 50;
 
 function promiseNever() {

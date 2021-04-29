@@ -3,7 +3,7 @@ import '@bangle.dev/tooltip/style.css';
 import '@bangle.dev/react-menu/style.css';
 import React from 'react';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { PluginKey, heading } from '@bangle.dev/core';
+import { PluginKey, components } from '@bangle.dev/core';
 import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 import {
   floatingMenu,
@@ -29,7 +29,7 @@ export default function Example() {
         calculateType: (state, prevType) => {
           // Use the 'headingSubMenu' type whenever
           // the selection is inside a heading.
-          if (heading.commands.queryIsHeadingActive()(state)) {
+          if (components.heading.commands.queryIsHeadingActive()(state)) {
             return 'headingSubMenu';
           }
 

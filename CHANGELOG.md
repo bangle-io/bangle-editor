@@ -1,12 +1,28 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.10.1
+
+- chore: doc updates and cleanup
+
 ## 0.10.0
 
 **@bangle.dev/core**
 
 - breaking bug: Follow stricter ESM (ecma-script module) pattern by not having `index.js` within sub-directories of a module. Unlike node resolver, importing a folder in ESM does not return the index.js file in the folder.
 
-If you were doing something like `import {xyz} form '@bangle.dev/core/components/index'` please instead do `import {xyz} form '@bangle.dev/core'` or directly import the file `import {xyz} form '@bangle.dev/core/components/doc'`.
+If you were doing something like `import {xyz} from '@bangle.dev/core/components/index'` please instead do `import {xyz} from '@bangle.dev/core'` or directly import the file `import {xyz} from '@bangle.dev/core/components/doc'`.
+
+```js
+// make this
+import { doc, heading } from '@bangle.dev/core/components/index';
+
+// into this
+import { components } from '@bangle.dev/core';
+const { doc, heading } = components;
+
+// or
+import doc from '@bangle.dev/core/components/doc';
+```
 
 ## 0.9.1
 

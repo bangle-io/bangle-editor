@@ -5,7 +5,13 @@
 /** @jsx psx */
 import { markdownSerializer } from '../markdown-serializer';
 
-import {
+import { components } from '@bangle.dev/core';
+
+import { markdownParser } from '../markdown-parser';
+import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { table, tableCell, tableHeader, tableRow } from '@bangle.dev/table';
+
+const {
   bold,
   code,
   italic,
@@ -24,12 +30,7 @@ import {
   orderedList,
   image,
   horizontalRule,
-} from '@bangle.dev/core';
-
-import { markdownParser } from '../markdown-parser';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { table, tableCell, tableHeader, tableRow } from '@bangle.dev/table';
-
+} = components;
 const specRegistry = new SpecRegistry([
   // nodes
   doc.spec(),

@@ -4,7 +4,15 @@
 
 /** @jsx psx */
 import { SpecRegistry } from '@bangle.dev/core/index';
+import { components } from '@bangle.dev/core';
 import {
+  psx,
+  renderTestEditor,
+  createPSXFragment,
+} from '@bangle.dev/core/test-helpers/test-helpers';
+import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
+
+const {
   bulletList,
   listItem,
   orderedList,
@@ -16,13 +24,7 @@ import {
   text,
   paragraph,
   heading,
-} from '@bangle.dev/core';
-import {
-  psx,
-  renderTestEditor,
-  createPSXFragment,
-} from '@bangle.dev/core/test-helpers/test-helpers';
-import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
+} = components;
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

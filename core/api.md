@@ -344,8 +344,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { bold } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { bold } = components;
 const specFactory = [
   // other specs
   bold.spec(),
@@ -398,8 +399,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { bulletList, listItem } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { bulletList, listItem, orderedList } = components;
 const specFactory = [
   // other specs
   listItem.spec(),
@@ -448,8 +450,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { code } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { code } = components;
 const specFactory = [
   // other specs
   code.spec(),
@@ -496,8 +499,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { codeBlock } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { codeBlock } = components;
 const specFactory = [
   // other specs
   codeBlock.spec(),
@@ -612,8 +616,9 @@ On top of the collapse commands, the component also exports the following helper
 **Usage**
 
 ```js
-import { heading } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { heading } = components;
 const specFactory = [
   // other specs
   heading.spec({ levels: [1, 2] }),
@@ -671,8 +676,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { hardBreak } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { hardBreak } = components;
 const specFactory = [
   // other specs
   hardBreak.spec(),
@@ -702,8 +708,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { horizontalRule } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { horizontalRule } = components;
 const specFactory = [
   // other specs
   horizontalRule.spec(),
@@ -733,8 +740,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { image } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { image } = components;
 const specFactory = [
   // other specs
   image.spec(),
@@ -776,8 +784,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { italic } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { italic } = components;
 const specFactory = [
   // other specs
   italic.spec(),
@@ -825,8 +834,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { link } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { link } = components;
 const specFactory = [
   // other specs
   link.spec(),
@@ -885,7 +895,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { orderedList, bulletList, listItem } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
+
+const { orderedList, bulletList, listItem } = components;
 
 const specFactory = [
   // other specs
@@ -932,7 +944,9 @@ Named parameters:
 **Usage**
 
 ```js
-import { orderedList, bulletList, listItem } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
+
+const { orderedList, bulletList, listItem } = components;
 
 const specFactory = [
   // other specs
@@ -1009,16 +1023,16 @@ Named parameters:
 **Usage**
 
 ```js
-import { blockquote } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
-  blockquote.spec(),
+  component.blockquote.spec(),
 ];
 
 const plugins = [
   // other plugins
-  blockquote.plugins(),
+  component.blockquote.plugins(),
 ];
 ```
 
@@ -1049,16 +1063,16 @@ Named parameters:
 **Usage**
 
 ```js
-import { strike } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
-  strike.spec(),
+  component.strike.spec(),
 ];
 
 const plugins = [
   // other plugins
-  strike.plugins(),
+  component.strike.plugins(),
 ];
 ```
 
@@ -1093,15 +1107,15 @@ Named parameters:
 **Usage**
 
 ```js
-import { underline } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
 const specFactory = [
   // other specs
-  underline.spec(),
+  component.underline.spec(),
 ];
 
 const plugins = [
   // other plugins
-  underline.plugins(),
+  component.underline.plugins(),
 ];
 ```

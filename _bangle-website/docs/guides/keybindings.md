@@ -12,8 +12,9 @@ In the example below we look at how to customize a keybindings for the
 [bold](/docs/api/core#bold-component) component.
 
 ```js
-import { bold } from '@bangle.dev/core';
+import { components } from '@bangle.dev/core';
 
+const { bold } = components;
 // If you pass nothing the `bold.defaultKeys` keybindings will be used
 bold.plugins();
 

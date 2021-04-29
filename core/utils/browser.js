@@ -44,6 +44,3 @@ if (typeof navigator !== 'undefined') {
 }
 
 export default browser;
-
-export const isChromeWithSelectionBug =
-  browser.chrome && !browser.android && browser.chrome_version >= 58;
