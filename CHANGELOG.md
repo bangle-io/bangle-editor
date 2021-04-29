@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.10.3
+
+- bug: `editorStateCounter` was missing in bangle.dev/core.
+
 ## 0.10.2
 
 - chore: doc updates and cleanup
