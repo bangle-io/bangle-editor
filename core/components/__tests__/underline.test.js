@@ -3,10 +3,14 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from '../../test-helpers/index';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+} from '../../test-helpers/test-helpers';
 
 import { setSelectionNear } from '../../test-helpers/selection-helpers';
-import { underline } from '../index';
+import { underline } from '../components';
 
 const keybindings = underline.defaultKeys;
 

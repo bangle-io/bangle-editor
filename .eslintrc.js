@@ -26,7 +26,7 @@ module.exports = {
     'import/no-cycle': [
       2,
       // eslint-disable-next-line no-process-env
-      { maxDepth: process.env.EsLintCycle ? 5 : 1 },
+      { maxDepth: process.env.EsLintCycle ? 3 : 1 },
     ],
     // 'react/prop-types': ['error'],
     // 'import/no-unused-modules': [1, { unusedExports: true }],

@@ -4,7 +4,7 @@
 import { act, render } from '@testing-library/react';
 import React from 'react';
 import { TextSelection } from '@bangle.dev/core/prosemirror/state';
-import { getDocLabels } from '@bangle.dev/core/test-helpers/index';
+import { getDocLabels } from '@bangle.dev/core/test-helpers/test-helpers';
 import { BangleEditor, useEditorState } from '../../index';
 
 function ReactEditor({

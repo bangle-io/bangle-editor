@@ -3,14 +3,14 @@
  */
 
 /** @jsx psx */
-import { doc, heading, paragraph, text } from '../../components/index';
+import { doc, heading, paragraph, text } from '../components';
 import { SpecRegistry } from '../../spec-registry';
 import {
   renderTestEditor,
   psx,
   typeText,
   sendKeyToPm,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 import {
   convertToParagraph,
   jumpToEndOfParagraph,

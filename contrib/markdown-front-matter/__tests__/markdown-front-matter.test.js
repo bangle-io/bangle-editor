@@ -2,7 +2,10 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor } from '@bangle.dev/core/test-helpers/index';
+import {
+  psx,
+  renderTestEditor,
+} from '@bangle.dev/core/test-helpers/test-helpers';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import {
   defaultPlugins,

@@ -7,9 +7,9 @@ import {
   renderTestEditor,
   typeText,
   sendKeyToPm,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 import { siblingsAndNodesBetween } from '../list-item/todo';
-import { listItem } from '../index';
+import { listItem } from '../components';
 
 const testEditor = renderTestEditor();
 const keybindings = listItem.defaultKeys;

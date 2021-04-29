@@ -18,7 +18,7 @@ import {
   listItem,
   orderedList,
   image,
-} from '../components/index';
+} from '../components/components';
 
 export function coreSpec() {
   return [...coreMarkSpec(), ...coreNodeSpec()];

@@ -9,7 +9,7 @@ import {
   sendKeyToPm,
   typeText,
   selectNodeAt,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 import {
   bulletList,
   listItem,
@@ -22,7 +22,7 @@ import {
   strike,
   text,
   paragraph,
-} from '../index';
+} from '../components';
 import { SpecRegistry } from '../../spec-registry';
 import {
   enterKeyCommand,

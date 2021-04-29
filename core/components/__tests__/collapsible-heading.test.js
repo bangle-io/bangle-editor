@@ -16,12 +16,12 @@ import {
   text,
   paragraph,
   heading,
-} from '@bangle.dev/core/components';
+} from '@bangle.dev/core';
 import {
   psx,
   renderTestEditor,
   createPSXFragment,
-} from '@bangle.dev/core/test-helpers/index';
+} from '@bangle.dev/core/test-helpers/test-helpers';
 import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
 
 const specRegistry = new SpecRegistry([

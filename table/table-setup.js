@@ -1,6 +1,6 @@
 import { tableNodes, tableEditing, goToNextCell } from 'prosemirror-tables';
 import { keymap } from 'prosemirror-keymap';
-import { weakCache } from '@bangle.dev/core/utils/index';
+import { weakCache } from '@bangle.dev/core/utils/utils';
 
 const calculateColumnWidth = weakCache(function calculateColumnWidth(
   tableNode,

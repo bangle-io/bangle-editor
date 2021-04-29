@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { psx } from '@bangle.dev/core/test-helpers/index';
+import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';

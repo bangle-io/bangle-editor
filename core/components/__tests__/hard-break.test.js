@@ -3,9 +3,13 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from '../../test-helpers/index';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+} from '../../test-helpers/test-helpers';
 
-import { hardBreak } from '../index';
+import { hardBreak } from '../components';
 const keybindings = hardBreak.defaultKeys;
 
 describe('Basic', () => {

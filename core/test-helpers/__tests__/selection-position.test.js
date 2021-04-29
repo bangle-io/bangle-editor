@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor } from '../index';
+import { psx, renderTestEditor } from '../test-helpers';
 
 const testEditor = renderTestEditor();
 

@@ -8,7 +8,7 @@ import {
   psx,
   renderTestEditor,
   selectNodeAt,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 import { toggleMark } from 'prosemirror-commands';
 import { queryLinkAttrs, updateLink } from '../link';
 import {
@@ -20,7 +20,7 @@ import {
   doc,
   text,
   paragraph,
-} from '../index';
+} from '../components';
 import { SpecRegistry } from '../../spec-registry';
 
 const specRegistry = new SpecRegistry([
