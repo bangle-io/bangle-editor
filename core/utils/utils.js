@@ -1,4 +1,4 @@
-export * from './browser';
+export { default as browser } from './browser';
 export * from './core-components';
 export * from './dom-serialization-helpers';
 export * from './environment';
