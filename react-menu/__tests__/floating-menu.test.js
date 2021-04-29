@@ -3,7 +3,7 @@
  */
 
 /** @jsx pjsx */
-import { link } from '@bangle.dev/core/index';
+import { components } from '@bangle.dev/core/index';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import {
   reactTestEditor,
@@ -17,7 +17,7 @@ import { coreSpec } from '@bangle.dev/core/utils/core-components';
 const menuKey = new PluginKey('floatingMenuTestKey');
 const specRegistry = new SpecRegistry(coreSpec());
 const plugins = () => [
-  link.plugins(),
+  components.link.plugins(),
   floatingMenu.plugins({
     key: menuKey,
   }),

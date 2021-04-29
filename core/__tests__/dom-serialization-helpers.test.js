@@ -1,7 +1,8 @@
 import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
-import { paragraph, doc, text } from '../index';
+import { components } from '../index';
 import { SpecRegistry } from '../spec-registry';
 
+const { paragraph, doc, text } = components;
 describe('domSerializationHelpers parseDOM', () => {
   test('does not get affected by other attributes', () => {
     const spec = {
