@@ -3,8 +3,12 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from '../../test-helpers/index';
-import { codeBlock } from '../index';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+} from '../../test-helpers/test-helpers';
+import { codeBlock } from '../components';
 
 const testEditor = renderTestEditor();
 const keybindings = codeBlock.defaultKeys;

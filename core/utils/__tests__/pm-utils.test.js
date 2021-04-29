@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor } from '../../test-helpers/index';
+import { psx, renderTestEditor } from '../../test-helpers/test-helpers';
 
 import { isFirstChildOfParent, findCutBefore } from '../pm-utils';
 

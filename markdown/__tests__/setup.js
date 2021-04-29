@@ -24,7 +24,7 @@ import {
   orderedList,
   image,
   horizontalRule,
-} from '@bangle.dev/core/components';
+} from '@bangle.dev/core';
 
 import { markdownParser } from '../markdown-parser';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';

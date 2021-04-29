@@ -16,7 +16,7 @@ import * as codeBlock from './code-block';
 import * as hardBreak from './hard-break';
 import * as heading from './heading';
 import * as horizontalRule from './horizontal-rule';
-import * as listItem from './list-item/list-item';
+import * as listItem from './list-item/list-item-component';
 import * as orderedList from './ordered-list';
 import * as image from './image';
 

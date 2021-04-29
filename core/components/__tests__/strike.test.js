@@ -3,10 +3,14 @@
  */
 
 /** @jsx psx */
-import { psx, renderTestEditor, sendKeyToPm } from '../../test-helpers/index';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+} from '../../test-helpers/test-helpers';
 
 import { setSelectionNear } from '../../test-helpers/selection-helpers';
-import { strike } from '../index';
+import { strike } from '../components';
 
 const keybindings = strike.defaultKeys;
 

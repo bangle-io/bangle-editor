@@ -8,8 +8,8 @@ import {
   sendKeyToPm,
   typeChar,
   typeText,
-} from '../../test-helpers/index';
-import { heading } from '../index';
+} from '../../test-helpers/test-helpers';
+import { heading } from '../components';
 
 const testEditor = renderTestEditor();
 const keybindings = heading.defaultKeys;

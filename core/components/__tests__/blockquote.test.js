@@ -8,9 +8,9 @@ import {
   renderTestEditor,
   sendKeyToPm,
   typeText,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 
-import { blockquote } from '../index';
+import { blockquote } from '../components';
 
 const keybindings = blockquote.defaultKeys;
 

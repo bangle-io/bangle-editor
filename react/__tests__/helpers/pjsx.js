@@ -1,5 +1,5 @@
 import React from 'react';
-import { psx as banglePsx } from '@bangle.dev/core/test-helpers/index';
+import { psx as banglePsx } from '@bangle.dev/core/test-helpers/test-helpers';
 
 export function pjsx(name, ...args) {
   if (typeof name !== 'string') {

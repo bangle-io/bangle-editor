@@ -8,7 +8,7 @@ import {
   psx,
   typeText,
   renderTestEditor,
-} from '@bangle.dev/core/test-helpers/index';
+} from '@bangle.dev/core/test-helpers/test-helpers';
 
 import { selectionTooltip, createTooltipDOM } from '../index';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';

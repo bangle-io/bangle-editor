@@ -1,5 +1,11 @@
 import { MarkType, NodeType } from 'prosemirror-model';
-import { hardBreak, doc, paragraph, text, bold } from '../components/index';
+import {
+  hardBreak,
+  doc,
+  paragraph,
+  text,
+  bold,
+} from '../components/components';
 
 import { SpecRegistry } from '../spec-registry';
 

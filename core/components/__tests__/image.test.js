@@ -9,7 +9,7 @@ import {
   dispatchPasteEvent,
   typeText,
   createEvent,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 
 import { sleep } from '../../utils/js-utils';
 

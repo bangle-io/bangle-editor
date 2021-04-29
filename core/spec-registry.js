@@ -1,5 +1,5 @@
 import { Schema } from 'prosemirror-model';
-import { doc, paragraph, text } from './components/index';
+import { doc, paragraph, text } from './components/components';
 import { bangleWarn } from './utils/js-utils';
 
 const LOG = false;

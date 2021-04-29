@@ -3,7 +3,7 @@
  */
 /** @jsx psx */
 import { SpecRegistry } from '../spec-registry';
-import { psx, renderTestEditor } from '../test-helpers/index';
+import { psx, renderTestEditor } from '../test-helpers/test-helpers';
 import { BangleEditorState, BangleEditor, blockquote, heading } from '../index';
 import { coreSpec } from '../utils/core-components';
 

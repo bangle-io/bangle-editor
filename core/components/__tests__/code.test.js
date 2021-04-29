@@ -8,10 +8,10 @@ import {
   renderTestEditor,
   sendKeyToPm,
   typeChar,
-} from '../../test-helpers/index';
+} from '../../test-helpers/test-helpers';
 
 import { setSelectionNear } from '../../test-helpers/selection-helpers';
-import { code } from '../index';
+import { code } from '../components';
 
 const keybindings = code.defaultKeys;
 
