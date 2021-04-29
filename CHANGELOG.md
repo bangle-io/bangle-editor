@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.10.2
+
+- chore: doc updates and cleanup
+
 ## 0.10.1
 
 - chore: doc updates and cleanup
