@@ -55,7 +55,6 @@ function pluginsFactory({
 } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const isInBlockquote = queryIsBlockquoteActive();
     return [
       markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),
       keybindings &&
@@ -67,14 +66,8 @@ function pluginsFactory({
           [keybindings.emptyCopy]: copyEmptyCommand(type),
           [keybindings.emptyCut]: cutEmptyCommand(type),
 
-          [keybindings.insertEmptyParaAbove]: filter(
-            isInBlockquote,
-            insertEmpty(schema.nodes.paragraph, 'above', true),
-          ),
-          [keybindings.insertEmptyParaBelow]: filter(
-            isInBlockquote,
-            insertEmpty(schema.nodes.paragraph, 'below', true),
-          ),
+          [keybindings.insertEmptyParaAbove]: insertEmptyParaAbove(),
+          [keybindings.insertEmptyParaBelow]: insertEmptyParaBelow(),
         }),
     ];
   };
@@ -95,4 +88,24 @@ export function wrapInBlockquote() {
       return wrapIn(type)(state, dispatch, view);
     },
   );
+}
+
+export function insertEmptyParaAbove() {
+  const isInBlockquote = queryIsBlockquoteActive();
+  return (state, dispatch, view) => {
+    return filter(
+      isInBlockquote,
+      insertEmpty(state.schema.nodes.paragraph, 'above', true),
+    )(state, dispatch, view);
+  };
+}
+
+export function insertEmptyParaBelow() {
+  const isInBlockquote = queryIsBlockquoteActive();
+  return (state, dispatch, view) => {
+    return filter(
+      isInBlockquote,
+      insertEmpty(state.schema.nodes.paragraph, 'below', true),
+    )(state, dispatch, view);
+  };
 }

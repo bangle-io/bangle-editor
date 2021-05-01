@@ -33,6 +33,11 @@ export const defaultKeys = {
 const name = 'heading';
 const defaultLevels = [1, 2, 3, 4, 5, 6];
 const getTypeFromSchema = (schema) => schema.nodes[name];
+
+const checkIsInHeading = (state) => {
+  const type = getTypeFromSchema(state.schema);
+  return findParentNodeOfType(type)(state.selection);
+};
 const parseLevel = (level) => {
   level = parseInt(level, 10);
   return Number.isNaN(level) ? undefined : level;
@@ -116,7 +121,7 @@ function pluginsFactory({
   return ({ schema, specRegistry }) => {
     const { levels } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
-    const isInHeading = (state) => findParentNodeOfType(type)(state.selection);
+
     const levelBindings = Object.fromEntries(
       levels.map((level) => [
         keybindings[`toH${level}`],
@@ -133,14 +138,8 @@ function pluginsFactory({
           [keybindings.emptyCopy]: copyEmptyCommand(type),
           [keybindings.emptyCut]: cutEmptyCommand(type),
 
-          [keybindings.insertEmptyParaAbove]: filter(
-            isInHeading,
-            insertEmpty(schema.nodes.paragraph, 'above', false),
-          ),
-          [keybindings.insertEmptyParaBelow]: filter(
-            isInHeading,
-            insertEmpty(schema.nodes.paragraph, 'below', false),
-          ),
+          [keybindings.insertEmptyParaAbove]: insertEmptyParaAbove(),
+          [keybindings.insertEmptyParaBelow]: insertEmptyParaBelow(),
           [keybindings.toggleCollapse]: toggleHeadingCollapse(),
         }),
       ...(markdownShortcut ? levels : []).map((level) =>
@@ -292,6 +291,26 @@ export function uncollapseHeading() {
 
     return true;
   };
+}
+
+export function insertEmptyParaAbove() {
+  return filter(checkIsInHeading, (state, dispatch, view) => {
+    return insertEmpty(state.schema.nodes.paragraph, 'above', false)(
+      state,
+      dispatch,
+      view,
+    );
+  });
+}
+
+export function insertEmptyParaBelow() {
+  return filter(checkIsInHeading, (state, dispatch, view) => {
+    return insertEmpty(state.schema.nodes.paragraph, 'below', false)(
+      state,
+      dispatch,
+      view,
+    );
+  });
 }
 
 export function toggleHeadingCollapse() {
