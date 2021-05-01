@@ -592,6 +592,12 @@ Named parameters:
 - **uncollapseAllHeadings**(): {{core.link.Command}}\
   Uncollapses all headings in the `doc`. Will also deep uncollapse every heading that was inside of a collapsed heading.
 
+- **insertEmptyParaAbove**(): {{core.link.Command}}\
+  Insert an empty paragraph above
+
+- **insertEmptyParaBelow**(): {{core.link.Command}}\
+  Insert an empty paragraph below
+
 **On Heading collapse**
 
 The heading component also allows you to collapse and uncollapse any content, after the current heading, that is not of type heading or has a heading of level greater than the current heading.

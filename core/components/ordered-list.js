@@ -7,7 +7,10 @@ import { listIsTight } from './list-item/list-is-tight';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
-export const commands = {};
+export const commands = {
+  toggleOrderedList,
+  queryIsOrderedListActive,
+};
 export const defaultKeys = {
   toggle: 'Shift-Ctrl-9',
 };

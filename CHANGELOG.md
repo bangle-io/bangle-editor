@@ -1,5 +1,10 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+- chore: added insert para above/below commands to blockquote & heading.
+- chore: export `prosemirror-keymap` via `@bangle.dev/core/prosemirror/keymap`.
+
 ## 0.10.3
 
 - bug: `editorStateCounter` was missing in bangle.dev/core.
