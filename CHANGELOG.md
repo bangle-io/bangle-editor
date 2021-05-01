@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.10.4
 
 - chore: added insert para above/below commands to blockquote & heading.
 - chore: export `prosemirror-keymap` via `@bangle.dev/core/prosemirror/keymap`.
