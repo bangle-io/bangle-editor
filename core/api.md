@@ -477,7 +477,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -926,7 +926,7 @@ const plugins = [
 ];
 
 // run commands
-listItem.insertEmptySiblingListBelow()(state, dispatch)
+listItem.insertEmptySiblingListBelow()(state, dispatch);
 ```
 
 ### orderedList: {{core.link.Component}}
