@@ -46,6 +46,13 @@ export const defaultKeys = {
 
 const name = 'listItem';
 const getTypeFromSchema = (schema) => schema.nodes[name];
+const isValidList = (state) => {
+  const type = getTypeFromSchema(state.schema);
+  return parentHasDirectParentOfType(type, [
+    state.schema.nodes['bulletList'],
+    state.schema.nodes['orderedList'],
+  ]);
+};
 
 function specFactory(opts = {}) {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
@@ -92,16 +99,12 @@ function specFactory(opts = {}) {
 function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
-    const isBulletList = parentHasDirectParentOfType(type, [
-      schema.nodes['bulletList'],
-      schema.nodes['orderedList'],
-    ]);
 
     return [
       keybindings &&
         keymap({
           [keybindings.toggleDone]: filter(
-            isBulletList,
+            isValidList,
             updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
               ...attrs,
               todoChecked:
@@ -115,23 +118,10 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
           [keybindings.outdent]: outdentListItem(),
           [keybindings.moveUp]: moveListItemUp(),
           [keybindings.moveDown]: moveListItemDown(),
-          [keybindings.emptyCut]: filter(isBulletList, cutEmptyCommand(type)),
-          [keybindings.emptyCopy]: filter(isBulletList, copyEmptyCommand(type)),
-          [keybindings.insertEmptyListAbove]: chainCommands(
-            filter(
-              isSelectionInsideTodo,
-              insertEmpty(type, 'above', true, { todoChecked: false }),
-            ),
-            filter(isBulletList, insertEmpty(type, 'above', true)),
-          ),
-
-          [keybindings.insertEmptyListBelow]: chainCommands(
-            filter(
-              isSelectionInsideTodo,
-              insertEmpty(type, 'below', true, { todoChecked: false }),
-            ),
-            filter(isBulletList, insertEmpty(type, 'below', true)),
-          ),
+          [keybindings.emptyCut]: filter(isValidList, cutEmptyCommand(type)),
+          [keybindings.emptyCopy]: filter(isValidList, copyEmptyCommand(type)),
+          [keybindings.insertEmptyListAbove]: insertEmptySiblingListAbove(),
+          [keybindings.insertEmptyListBelow]: insertEmptySiblingListBelow(),
         }),
 
       nodeView && listItemNodeViewPlugin(name),
@@ -202,4 +192,27 @@ export function moveListItemUp() {
 }
 export function moveListItemDown() {
   return moveListItem('DOWN');
+}
+
+export function insertEmptySiblingList(isAbove = true) {
+  return (state, dispatch, view) => {
+    const type = getTypeFromSchema(state.schema);
+    return chainCommands(
+      filter(
+        isSelectionInsideTodo,
+        insertEmpty(type, isAbove ? 'above' : 'below', true, {
+          todoChecked: false,
+        }),
+      ),
+      filter(isValidList, insertEmpty(type, isAbove ? 'above' : 'below', true)),
+    )(state, dispatch, view);
+  };
+}
+
+export function insertEmptySiblingListAbove() {
+  return insertEmptySiblingList(true);
+}
+
+export function insertEmptySiblingListBelow() {
+  return insertEmptySiblingList(false);
 }

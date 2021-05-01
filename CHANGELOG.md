@@ -1,11 +1,21 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- chore: Export the list item commands `insertEmptySiblingListAbove` & `insertEmptySiblingListBelow`.
+
 ## 0.10.4
+
+**@bangle.dev/core**
 
 - chore: added insert para above/below commands to blockquote & heading.
 - chore: export `prosemirror-keymap` via `@bangle.dev/core/prosemirror/keymap`.
 
 ## 0.10.3
+
+**@bangle.dev/core**
 
 - bug: `editorStateCounter` was missing in bangle.dev/core.
 

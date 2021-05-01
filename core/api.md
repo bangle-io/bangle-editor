@@ -477,7 +477,7 @@ Named parameters:
 - {{core.text.pluginsParamKeybindings}}
 
 - **markdownShortcut**: ?Boolean=true\
-  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ` ``` ` to create one.
+  Toggle the markdown shortcut for creating a codeBlock. If enabled, type ```` ``` ```` to create one.
 
 #### defaultKeys: {{core.link.Keybindings}}
 
@@ -898,6 +898,12 @@ Named parameters:
 - **moveListItemDown**(): {{typedQueryCommand "boolean"}}\
   The opposite of `moveListItemUp`.
 
+- **insertEmptySiblingListAbove**(): {{core.link.Command}}\
+  Insert an empty list, at the same nesting level, above the current list
+
+- **insertEmptySiblingListBelow**(): {{core.link.Command}}\
+  Insert an empty list, at the same nesting level, below the current list.
+
 **Usage**
 
 ```js
@@ -918,6 +924,9 @@ const plugins = [
   orderedList.plugins(),
   bulletList.spec(),
 ];
+
+// run commands
+listItem.insertEmptySiblingListBelow()(state, dispatch)
 ```
 
 ### orderedList: {{core.link.Component}}
