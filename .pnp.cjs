@@ -67,6 +67,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:contrib/trailing-node"
       },
       {
+        "name": "@bangle.dev/wiki-link",
+        "reference": "workspace:contrib/wiki-link"
+      },
+      {
         "name": "@bangle.dev/core",
         "reference": "workspace:core"
       },
@@ -113,6 +117,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@bangle.dev/timestamp", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/timestamp", "workspace:contrib/timestamp"]],
       ["@bangle.dev/tooltip", ["virtual:1f4dd5ca22c30c6e803710da006673ff460993f26e512cbb56418593552d4d6cae875aa2b6ee2b36e1e411c6edc51d0a4510c7f7da85460de8d94eedd2d37e1e#workspace:tooltip", "workspace:tooltip"]],
       ["@bangle.dev/trailing-node", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/trailing-node", "workspace:contrib/trailing-node"]],
+      ["@bangle.dev/wiki-link", ["workspace:contrib/wiki-link"]],
       ["bangle-scripts", ["workspace:_bangle-scripts"]],
       ["bangle-website", ["workspace:_bangle-website"]],
       ["banglejs", ["workspace:."]],
@@ -4723,9 +4728,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/markdown-front-matter", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/markdown-front-matter"],
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/markdown", "virtual:3556a5e27f39bb2c2fe46a0741a4469c40907bd27e9a12a8478e6a1d279f9ac35eee5579041c93a3b330ad88256d397cdb0a74fb7ed151f0e59580cb04ea0e86#workspace:markdown"],
-            ["@types/bangle.dev__core", null],
-            ["markdown-it-container", "npm:3.0.0"],
-            ["markdown-it-front-matter", "npm:0.2.3"]
+            ["@types/bangle.dev__core", null]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -4738,9 +4741,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/markdown-front-matter", "workspace:contrib/markdown-front-matter"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@bangle.dev/markdown", "virtual:3556a5e27f39bb2c2fe46a0741a4469c40907bd27e9a12a8478e6a1d279f9ac35eee5579041c93a3b330ad88256d397cdb0a74fb7ed151f0e59580cb04ea0e86#workspace:markdown"],
-            ["markdown-it-container", "npm:3.0.0"],
-            ["markdown-it-front-matter", "npm:0.2.3"]
+            ["@bangle.dev/markdown", "virtual:3556a5e27f39bb2c2fe46a0741a4469c40907bd27e9a12a8478e6a1d279f9ac35eee5579041c93a3b330ad88256d397cdb0a74fb7ed151f0e59580cb04ea0e86#workspace:markdown"]
           ],
           "linkType": "SOFT",
         }]
@@ -5363,6 +5364,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "workspace:contrib/trailing-node"],
             ["@bangle.dev/core", "workspace:core"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@bangle.dev/wiki-link", [
+        ["workspace:contrib/wiki-link", {
+          "packageLocation": "./contrib/wiki-link/",
+          "packageDependencies": [
+            ["@bangle.dev/wiki-link", "workspace:contrib/wiki-link"],
+            ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/markdown", "virtual:3556a5e27f39bb2c2fe46a0741a4469c40907bd27e9a12a8478e6a1d279f9ac35eee5579041c93a3b330ad88256d397cdb0a74fb7ed151f0e59580cb04ea0e86#workspace:markdown"]
           ],
           "linkType": "SOFT",
         }]
@@ -18580,29 +18592,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["markdown-it-container", [
-        ["npm:3.0.0", {
-          "packageLocation": "./.yarn/cache/markdown-it-container-npm-3.0.0-e3348fcf77-8638a2f758.zip/node_modules/markdown-it-container/",
-          "packageDependencies": [
-            ["markdown-it-container", "npm:3.0.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["markdown-it-emoji", [
         ["npm:2.0.0", {
           "packageLocation": "./.yarn/cache/markdown-it-emoji-npm-2.0.0-f7e2c75804-7d25844134.zip/node_modules/markdown-it-emoji/",
           "packageDependencies": [
             ["markdown-it-emoji", "npm:2.0.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["markdown-it-front-matter", [
-        ["npm:0.2.3", {
-          "packageLocation": "./.yarn/cache/markdown-it-front-matter-npm-0.2.3-b5a0221d41-605ec5f368.zip/node_modules/markdown-it-front-matter/",
-          "packageDependencies": [
-            ["markdown-it-front-matter", "npm:0.2.3"]
           ],
           "linkType": "HARD",
         }]
