@@ -56,11 +56,11 @@
       "@bangle.dev/timestamp/*": [
         "./contrib/timestamp/*"
       ],
-      "@bangle.dev/markdown-it-container": [
-        "./contrib/markdown-it-container/index.js"
+      "@bangle.dev/wiki-link": [
+        "./contrib/wiki-link/index.js"
       ],
-      "@bangle.dev/markdown-it-container/*": [
-        "./contrib/markdown-it-container/*"
+      "@bangle.dev/wiki-link/*": [
+        "./contrib/wiki-link/*"
       ],
       "@bangle.dev/react": [
         "./react/index.js"

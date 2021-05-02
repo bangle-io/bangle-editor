@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/wiki-link**
+
+- 🎉 We have a new component which allows for wiki style links. It also supports parsing and serializing the format into markdown.
+
 ## 0.10.5
 
 **@bangle.dev/core**

@@ -1943,8 +1943,6 @@ __metadata:
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
-    markdown-it-container: ^3.0.0
-    markdown-it-front-matter: ^0.2.3
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -2114,6 +2112,17 @@ __metadata:
   resolution: "@bangle.dev/trailing-node@workspace:contrib/trailing-node"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+  peerDependencies:
+    "@bangle.dev/core": "*"
+  languageName: unknown
+  linkType: soft
+
+"@bangle.dev/wiki-link@workspace:contrib/wiki-link":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/wiki-link@workspace:contrib/wiki-link"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -13356,24 +13365,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"markdown-it-container@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "markdown-it-container@npm:3.0.0"
-  checksum: 8638a2f7587afe0c7c725558599d541fac46f8578b7ba2a7d305d87db8549d07edfb89c59147d0d17ffa189c8d39eff3f16a80613ec7aaf92af8ead713292693
-  languageName: node
-  linkType: hard
-
 "markdown-it-emoji@npm:^2.0.0":
   version: 2.0.0
   resolution: "markdown-it-emoji@npm:2.0.0"
   checksum: 7d25844134d98a4e2cf70d9a14ea4ec5afc3f64740d69c88012795c8a24ed2f286850b72fd4437d60d2fe34f73cc1889a7e8e3ab4663f4fc3a4899991601bbba
-  languageName: node
-  linkType: hard
-
-"markdown-it-front-matter@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "markdown-it-front-matter@npm:0.2.3"
-  checksum: 605ec5f3683e1d69d76b6e26c80328069669424b3d58ef0bb42953871f98ff8c831e74450c2bda81ec158fe0424f8937e94bfb7af6dd890cec41d28b667576f7
   languageName: node
   linkType: hard
 
