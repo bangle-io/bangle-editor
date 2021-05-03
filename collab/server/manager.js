@@ -49,14 +49,12 @@ export class Manager {
 
   _stopInstance(docName) {
     const instance = this.instances[docName];
-    log(
-      'stopping instances',
-      instance.docName,
-      instance.doc.firstChild && instance.doc.firstChild.textContent,
-    );
-    this.instances[docName].stop();
-    delete this.instances[docName];
-    --this.instanceCount;
+    if (instance) {
+      log('stopping instances', instance.docName);
+      this.instances[docName].stop();
+      delete this.instances[docName];
+      --this.instanceCount;
+    }
   }
 
   _cleanup() {

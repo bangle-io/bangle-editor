@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/collab**
+
+- bug: fixed a bug in which the module was accessing a field on an undefined.
+
 ## 0.11.0
 
 **@bangle.dev/wiki-link**
