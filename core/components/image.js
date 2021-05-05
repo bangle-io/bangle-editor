@@ -1,7 +1,6 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
-
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
@@ -64,7 +63,12 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ handleDragAndDrop = true, keybindings = {} } = {}) {
+function pluginsFactory({
+  handleDragAndDrop = true,
+  keybindings = {},
+  acceptFileType = 'image/*',
+  createImageNodes = defaultCreateImageNodes,
+} = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
@@ -101,7 +105,11 @@ function pluginsFactory({ handleDragAndDrop = true, keybindings = {} } = {}) {
                 if (event.dataTransfer == null) {
                   return false;
                 }
-                const files = getFileData(event.dataTransfer, 'image/*', true);
+                const files = getFileData(
+                  event.dataTransfer,
+                  acceptFileType,
+                  true,
+                );
                 // TODO should we handle all drops but just show error?
                 // returning false here would just default to native behaviour
                 // But then any drop handler would fail to work.
@@ -114,11 +122,17 @@ function pluginsFactory({ handleDragAndDrop = true, keybindings = {} } = {}) {
                   top: event.clientY,
                 });
 
-                addImagesToView(
+                createImageNodes(
+                  files,
+                  getTypeFromSchema(view.state.schema),
                   view,
-                  coordinates == null ? undefined : coordinates.pos,
-                  files.map((file) => readFile(file)),
-                );
+                ).then((imageNodes) => {
+                  addImagesToView(
+                    view,
+                    coordinates == null ? undefined : coordinates.pos,
+                    imageNodes,
+                  );
+                });
 
                 return true;
               },
@@ -129,15 +143,22 @@ function pluginsFactory({ handleDragAndDrop = true, keybindings = {} } = {}) {
               if (!event.clipboardData) {
                 return false;
               }
-              const files = getFileData(event.clipboardData, 'image/*', true);
+              const files = getFileData(
+                event.clipboardData,
+                acceptFileType,
+                true,
+              );
               if (!files || files.length === 0) {
                 return false;
               }
-              addImagesToView(
+              createImageNodes(
+                files,
+                getTypeFromSchema(view.state.schema),
                 view,
-                view.state.selection.from,
-                files.map((file) => readFile(file)),
-              ).catch((err) => console.error(err));
+              ).then((imageNodes) => {
+                addImagesToView(view, view.state.selection.from, imageNodes);
+              });
+
               return true;
             },
           },
@@ -146,14 +167,21 @@ function pluginsFactory({ handleDragAndDrop = true, keybindings = {} } = {}) {
   };
 }
 
-async function addImagesToView(view, pos, imagePromises) {
-  for (const imagePromise of imagePromises) {
-    const image = await imagePromise;
-    const node = getTypeFromSchema(view.state.schema).create({
-      src: image,
+async function defaultCreateImageNodes(files, imageType, view) {
+  let resolveBinaryStrings = await Promise.all(
+    files.map((file) => readFileAsBinaryString(file)),
+  );
+  return resolveBinaryStrings.map((binaryStr) => {
+    return imageType.create({
+      src: binaryStr,
     });
+  });
+}
+
+function addImagesToView(view, pos, imageNodes) {
+  for (const node of imageNodes) {
     const { tr } = view.state;
-    const newTr = safeInsert(node, pos)(tr);
+    let newTr = safeInsert(node, pos)(tr);
 
     if (newTr === tr) {
       continue;
@@ -163,7 +191,7 @@ async function addImagesToView(view, pos, imagePromises) {
   }
 }
 
-function readFile(file) {
+function readFileAsBinaryString(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     const onLoadBinaryString = (readerEvt) => {
