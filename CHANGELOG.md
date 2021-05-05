@@ -2,6 +2,10 @@
 
 ## HEAD
 
+**@bangle.dev/core**
+
+- feat: The image component's plugin now accepts two new params `acceptFileType` and `createImageNodes` which help saving an input image.
+
 **@bangle.dev/collab**
 
 - bug: fixed a bug in which the module was accessing a field on an undefined.
