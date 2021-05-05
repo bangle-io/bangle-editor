@@ -745,7 +745,7 @@ Named parameters:
 
 - **acceptFileType:** ?string=image/\*
 
-- **createImageNodes**: (files: Array<[File](https://developer.mozilla.org/en-US/docs/Web/API/File)>, imageType: [PMNodeType](https://prosemirror.net/docs/ref/#model.NodeType), view: [PMEditorView](https://prosemirror.net/docs/ref/#view.EditorView)) -> Promise<Array<ImageNode>>\
+- **createImageNodes**: ?(files: [File\[\]](https://developer.mozilla.org/en-US/docs/Web/API/File), imageType: [PMNodeType](https://prosemirror.net/docs/ref/#model.NodeType), view: [PMEditorView](https://prosemirror.net/docs/ref/#view.EditorView)) -> `Promise<ImageNode[]>`\
   A callback that is called whenever an image is pasted or drop. You are expected to return a promise of corresponding image nodes. If not provided it will run the default `defaultCreateImageNodes` (see [src](https://github.com/bangle-io/bangle.dev/blob/c7f59191c0f4ae57594c7c67fc5fef8913656dd3/core/components/image.js#L170) code) which inlines the image data. If you want to handle saving the image on a server you will want want to provide this param.
 
 **Usage**
