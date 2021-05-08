@@ -81,6 +81,7 @@ function specFactory({ openOnClick = false } = {}) {
 
 function pluginsFactory() {
   return ({ schema, specRegistry }) => {
+    // TODO why is this an option in schema
     const { openOnClick } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
     return [

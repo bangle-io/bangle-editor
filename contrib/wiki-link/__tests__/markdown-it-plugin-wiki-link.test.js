@@ -158,6 +158,30 @@ describe('parsing', () => {
       `"doc(paragraph(\\"This is [[not a valid wiki link]\\"))"`,
     );
   });
+  test('case 3 chinese char', async () => {
+    const md = `一段 [[链接]]。`;
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>
+          一段 <wikiLink path="链接" />。
+        </para>
+      </doc>,
+    );
+  });
+  test('case 4 no space', async () => {
+    const md = `Some[[wiki-link.md]]no-space.`;
+
+    expect(await parse(md)).toEqualDocument(
+      <doc>
+        <para>
+          Some
+          <wikiLink path="wiki-link.md" />
+          no-space.
+        </para>
+      </doc>,
+    );
+  });
 
   test('weird case 1', async () => {
     const md = `Nested [[weird [ wiki link]]`;
