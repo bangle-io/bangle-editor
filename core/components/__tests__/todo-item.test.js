@@ -67,6 +67,33 @@ test('Pressing Enter', async () => {
   );
 });
 
+test('Pressing Enter in the middle', async () => {
+  const { view } = await testEditor(
+    <doc>
+      <ul>
+        <li todoChecked={true}>
+          <para>foo[]bar</para>
+        </li>
+      </ul>
+    </doc>,
+  );
+
+  sendKeyToPm(view, 'Enter');
+
+  expect(view.state).toEqualDocAndSelection(
+    <doc>
+      <ul>
+        <li todoChecked={true}>
+          <para>foo</para>
+        </li>
+        <li todoChecked={false}>
+          <para>[]bar</para>
+        </li>
+      </ul>
+    </doc>,
+  );
+});
+
 test('Pressing Enter on nested', async () => {
   const { view } = await testEditor(
     <doc>
