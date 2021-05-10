@@ -721,11 +721,11 @@ function splitListItem(itemType, splitAttrs) {
         ? grandParent.contentMatchAt(0).defaultType
         : undefined;
     const tr = state.tr.delete($from.pos, $to.pos);
-    const types = nextType && [
+    const types = [
       splitAttrs
         ? { type: itemType, attrs: splitAttrs(grandParent) }
         : undefined,
-      { type: nextType },
+      nextType && { type: nextType },
     ];
     if (dispatch) {
       dispatch(tr.split($from.pos, 2, types).scrollIntoView());
