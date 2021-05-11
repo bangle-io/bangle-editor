@@ -7,11 +7,8 @@ I have poured my :heart: to this project and nothing gives me more joy to see so
 Bangle uses `yarn` v2 which provides the feature of zero-install which mean you would not have to run `yarn install` everytime you checkout the code, every thing should just run.
 
 ```sh
-# start the playground
-yarn start
-
 # start the docs website
-yarn website:start
+yarn start
 
 # to run tests
 yarn test

@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.12.1
+
+**@bangle.dev/core**
+
+- bug: Fixed a bug when splitting a checked todo item from the middle of the text results in a new checked item https://github.com/bangle-io/bangle.dev/issues/181
+
 ## 0.12.0
 
 **@bangle.dev/core**
