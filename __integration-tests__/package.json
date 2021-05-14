@@ -41,7 +41,7 @@
     "jest-circus": "^26.6.3",
     "jest-environment-puppeteer": "^4.4.0",
     "jest-puppeteer": "^4.4.0",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "punycode": "^2.1.1",
     "puppeteer": "^5.5.0",
     "react": ">=16.0.0",

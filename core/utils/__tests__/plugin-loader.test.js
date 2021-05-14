@@ -111,9 +111,9 @@ describe('Flattens plugins correctly', () => {
 
   test('Does not include history if pluginGroup with name history exists', () => {
     expect(
-      pluginLoader(new SpecRegistry(), [
-        new PluginGroup('history', []),
-      ]).some((r) => r.key.startsWith('history$')),
+      pluginLoader(new SpecRegistry(), [new PluginGroup('history', [])]).some(
+        (r) => r.key.startsWith('history$'),
+      ),
     ).toBe(false);
   });
 });

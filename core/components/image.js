@@ -279,26 +279,24 @@ function getMatchingItems(list, accept, multiple) {
   return results;
 }
 
-export const updateImageNodeAttribute = (attr = {}) => (
-  state,
-  dispatch,
-  view,
-) => {
-  if (!state.selection instanceof NodeSelection || !state.selection.node) {
-    return false;
-  }
-  const { node } = state.selection;
-  if (node.type !== getTypeFromSchema(state.schema)) {
-    return false;
-  }
+export const updateImageNodeAttribute =
+  (attr = {}) =>
+  (state, dispatch, view) => {
+    if (!state.selection instanceof NodeSelection || !state.selection.node) {
+      return false;
+    }
+    const { node } = state.selection;
+    if (node.type !== getTypeFromSchema(state.schema)) {
+      return false;
+    }
 
-  if (dispatch) {
-    dispatch(
-      state.tr.setNodeMarkup(state.selection.$from.pos, undefined, {
-        ...node.attrs,
-        ...attr,
-      }),
-    );
-  }
-  return true;
-};
+    if (dispatch) {
+      dispatch(
+        state.tr.setNodeMarkup(state.selection.$from.pos, undefined, {
+          ...node.attrs,
+          ...attr,
+        }),
+      );
+    }
+    return true;
+  };

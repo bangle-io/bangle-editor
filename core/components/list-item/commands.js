@@ -575,33 +575,35 @@ function mergeLists(listItem, range) {
 }
 
 // Chaining runs each command until one of them returns true
-export const backspaceKeyCommand = (type) => (...args) => {
-  return baseCommand.chainCommands(
-    // if we're at the start of a list item, we need to either backspace
-    // directly to an empty list item above, or outdent this node
-    filter(
-      [
-        isInsideListItem(type),
-        isEmptySelectionAtStart,
+export const backspaceKeyCommand =
+  (type) =>
+  (...args) => {
+    return baseCommand.chainCommands(
+      // if we're at the start of a list item, we need to either backspace
+      // directly to an empty list item above, or outdent this node
+      filter(
+        [
+          isInsideListItem(type),
+          isEmptySelectionAtStart,
 
-        // list items might have multiple paragraphs; only do this at the first one
-        isFirstChildOfParent,
-        canOutdent(type),
-      ],
-      baseCommand.chainCommands(
-        deletePreviousEmptyListItem(type),
-        outdentList(type),
+          // list items might have multiple paragraphs; only do this at the first one
+          isFirstChildOfParent,
+          canOutdent(type),
+        ],
+        baseCommand.chainCommands(
+          deletePreviousEmptyListItem(type),
+          outdentList(type),
+        ),
       ),
-    ),
 
-    // if we're just inside a paragraph node (or gapcursor is shown) and backspace, then try to join
-    // the text to the previous list item, if one exists
-    filter(
-      [isEmptySelectionAtStart, canToJoinToPreviousListItem],
-      joinToPreviousListItem(type),
-    ),
-  )(...args);
-};
+      // if we're just inside a paragraph node (or gapcursor is shown) and backspace, then try to join
+      // the text to the previous list item, if one exists
+      filter(
+        [isEmptySelectionAtStart, canToJoinToPreviousListItem],
+        joinToPreviousListItem(type),
+      ),
+    )(...args);
+  };
 
 export function enterKeyCommand(type) {
   return (state, dispatch, view) => {
@@ -742,12 +744,8 @@ function joinToPreviousListItem(type) {
     }
 
     const { $from } = state.selection;
-    const {
-      paragraph,
-      codeBlock,
-      bulletList,
-      orderedList,
-    } = state.schema.nodes;
+    const { paragraph, codeBlock, bulletList, orderedList } =
+      state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
     const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
     let $cut = findCutBefore($cutPos);

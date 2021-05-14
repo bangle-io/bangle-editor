@@ -10,9 +10,8 @@ import {
 
 export function EmojiSuggest({ emojiSuggestKey }) {
   const view = useEditorViewContext();
-  const { tooltipContentDOM, emojis, maxItems } = usePluginState(
-    emojiSuggestKey,
-  );
+  const { tooltipContentDOM, emojis, maxItems } =
+    usePluginState(emojiSuggestKey);
   const { counter, triggerText } = usePluginState(
     getSuggestTooltipKey(emojiSuggestKey),
   );

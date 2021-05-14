@@ -50,14 +50,16 @@ function Comp({
   );
 }
 
-const insertBananaAtSelection = (attrs = {}) => (dispatch, state) => {
-  const node = state.schema.nodes.banana.create(attrs);
-  const newTr = safeInsert(node, state.selection.from)(state.tr);
-  if (dispatch) {
-    dispatch(newTr);
-  }
-  return true;
-};
+const insertBananaAtSelection =
+  (attrs = {}) =>
+  (dispatch, state) => {
+    const node = state.schema.nodes.banana.create(attrs);
+    const newTr = safeInsert(node, state.selection.from)(state.tr);
+    if (dispatch) {
+      dispatch(newTr);
+    }
+    return true;
+  };
 
 describe('basic tests', () => {
   let specRegistry, plugins;

@@ -239,8 +239,7 @@ function getContent() {
                   },
                   {
                     type: 'text',
-                    text:
-                      '. You can move any node (yes headings too) with this shortcut.',
+                    text: '. You can move any node (yes headings too) with this shortcut.',
                   },
                 ],
               },
@@ -404,8 +403,7 @@ function getContent() {
                                 content: [
                                   {
                                     type: 'text',
-                                    text:
-                                      'Oh an you can mix and match ordered unordered.',
+                                    text: 'Oh an you can mix and match ordered unordered.',
                                   },
                                 ],
                               },
@@ -443,8 +441,7 @@ function getContent() {
           {
             type: 'image',
             attrs: {
-              src:
-                'https://user-images.githubusercontent.com/6966254/101979122-f4405e80-3c0e-11eb-9bf8-9af9b1ddc94f.png',
+              src: 'https://user-images.githubusercontent.com/6966254/101979122-f4405e80-3c0e-11eb-9bf8-9af9b1ddc94f.png',
               alt: null,
               title: null,
             },
@@ -497,8 +494,7 @@ function getContent() {
         content: [
           {
             type: 'text',
-            text:
-              "// This is a code block\nfunction foo() {\n  console.log('Hello world!')\n}",
+            text: "// This is a code block\nfunction foo() {\n  console.log('Hello world!')\n}",
           },
         ],
       },

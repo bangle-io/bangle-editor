@@ -102,8 +102,7 @@ module.exports = (Handlebars, resolvePath) => {
       Prosemirror: {
         NodeSpec:
           '[Prosemirror.NodeSpec](https://prosemirror.net/docs/ref/#model.NodeSpec)',
-        Node:
-          '[Prosemirror.Node](https://prosemirror.net/docs/ref/#model.Node)',
+        Node: '[Prosemirror.Node](https://prosemirror.net/docs/ref/#model.Node)',
         MarkSpec:
           '[Prosemirror.MarkSpec](https://prosemirror.net/docs/ref/#model.MarkSpec)',
         PluginSpec:
