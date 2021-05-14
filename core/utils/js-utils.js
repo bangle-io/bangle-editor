@@ -60,7 +60,7 @@ export function compose(func, ...funcs) {
  * @param {*} str
  */
 export function matchAllPlus(regexp, str) {
-  const matches = [...str.matchAll(regexp)];
+  const matches = Array.from(str.matchAll(regexp));
   if (matches.length === 0) {
     return [
       {
