@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/collab**
+
+- bug: Improve cross browser compatibility where Error.captureStackTrace is not available https://github.com/bangle-io/bangle.dev/pull/183
+
 ## 0.12.1
 
 **@bangle.dev/core**
