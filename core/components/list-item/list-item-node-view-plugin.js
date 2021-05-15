@@ -113,20 +113,9 @@ export function listItemNodeViewPlugin(name) {
         // will be called. The create handler was called in the past
         // but without the checkbox element, hence the checkbox wont be there
         setupCheckbox(attrs, updateAttrs, instance);
-
         const checkbox = instance.containerDOM.firstChild.firstChild;
-
-        const hasAttribute = checkbox.hasAttribute('checked');
-        if (todoChecked === hasAttribute) {
-          log('skipping update', todoChecked, hasAttribute);
-          return;
-        }
-        log('updating inputElement');
-        if (todoChecked) {
-          checkbox.setAttribute('checked', 'true');
-        } else {
-          checkbox.removeAttribute('checked');
-        }
+        log('updating inputElement, checked = ' + todoChecked);
+        checkbox.checked = todoChecked;
       },
 
       destroy: () => {},
