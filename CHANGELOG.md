@@ -1,6 +1,10 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.13.0
+
+**@bangle.dev/core**
+
+- bug: Fixed a bug that prevented todo check box from toggling by keyboard shortcut https://github.com/bangle-io/bangle.dev/pull/187
 
 **@bangle.dev/collab**
 
