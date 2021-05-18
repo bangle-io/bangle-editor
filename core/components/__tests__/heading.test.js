@@ -107,6 +107,32 @@ describe('Basic', () => {
   });
 });
 
+describe('Jump selection start and end', () => {
+  it('Moves selection to the start', async () => {
+    const { view } = testEditor(
+      <doc>
+        <heading level={1}>foo[]bar</heading>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keybindings.jumpToStartOfHeading);
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <heading level={1}>[]foobar</heading>
+      </doc>,
+    );
+
+    sendKeyToPm(view, keybindings.jumpToEndOfHeading);
+
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <heading level={1}>foobar[]</heading>
+      </doc>,
+    );
+  });
+});
+
 describe('Insert empty paragraph above and below', () => {
   test.each([
     [

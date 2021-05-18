@@ -4,6 +4,7 @@
 
 /** @jsx psx */
 import { doc, heading, paragraph, text } from '../components';
+import { jumpToStartOfNode, jumpToEndOfNode } from '../../core-commands';
 import { SpecRegistry } from '../../spec-registry';
 import {
   renderTestEditor,
@@ -11,11 +12,7 @@ import {
   typeText,
   sendKeyToPm,
 } from '../../test-helpers/test-helpers';
-import {
-  convertToParagraph,
-  jumpToEndOfParagraph,
-  jumpToStartOfParagraph,
-} from '../paragraph';
+import { convertToParagraph } from '../paragraph';
 
 const testEditor = renderTestEditor();
 const keybindings = paragraph.defaultKeys;
@@ -276,6 +273,12 @@ describe('Commands', () => {
       );
     });
 
+    const typeName = paragraph.spec().name;
+    const jumpToStartOfParagraph = (view) =>
+      jumpToStartOfNode(view.state.schema.nodes[typeName]);
+    const jumpToEndOfParagraph = (view) =>
+      jumpToEndOfNode(view.state.schema.nodes[typeName]);
+
     it('jumpToEndOfParagraph returns false if selection if not in paragraph', async () => {
       const testEditor = renderTestEditor();
 
@@ -285,7 +288,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      expect(jumpToEndOfParagraph()(view.state, view.dispatch, view)).toBe(
+      expect(jumpToEndOfParagraph(view)(view.state, view.dispatch, view)).toBe(
         false,
       );
 
@@ -305,7 +308,7 @@ describe('Commands', () => {
         </doc>,
       );
 
-      expect(jumpToEndOfParagraph()(view.state, view.dispatch, view)).toBe(
+      expect(jumpToEndOfParagraph(view)(view.state, view.dispatch, view)).toBe(
         true,
       );
 
@@ -325,9 +328,9 @@ describe('Commands', () => {
         </doc>,
       );
 
-      expect(jumpToStartOfParagraph()(view.state, view.dispatch, view)).toBe(
-        false,
-      );
+      expect(
+        jumpToStartOfParagraph(view)(view.state, view.dispatch, view),
+      ).toBe(false);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>
@@ -345,9 +348,9 @@ describe('Commands', () => {
         </doc>,
       );
 
-      expect(jumpToStartOfParagraph()(view.state, view.dispatch, view)).toBe(
-        true,
-      );
+      expect(
+        jumpToStartOfParagraph(view)(view.state, view.dispatch, view),
+      ).toBe(true);
 
       expect(view.state).toEqualDocAndSelection(
         <doc>

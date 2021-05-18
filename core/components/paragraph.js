@@ -7,6 +7,8 @@ import {
   copyEmptyCommand,
   cutEmptyCommand,
   moveNode,
+  jumpToStartOfNode,
+  jumpToEndOfNode,
 } from '../core-commands';
 import browser from '../utils/browser';
 
@@ -14,8 +16,6 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   convertToParagraph,
-  jumpToStartOfParagraph,
-  jumpToEndOfParagraph,
   queryIsParagraph,
   queryIsTopLevelParagraph,
   insertEmptyParagraphAbove,
@@ -79,8 +79,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
           [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
           [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 
-          [keybindings.jumpToStartOfParagraph]: jumpToStartOfParagraph(),
-          [keybindings.jumpToEndOfParagraph]: jumpToEndOfParagraph(),
+          [keybindings.jumpToStartOfParagraph]: jumpToStartOfNode(type),
+          [keybindings.jumpToEndOfParagraph]: jumpToEndOfNode(type),
 
           [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
           [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
@@ -113,23 +113,6 @@ export function jumpToStartOfParagraph() {
     }
     const { start } = current;
     dispatch(state.tr.setSelection(TextSelection.create(state.doc, start)));
-    return true;
-  };
-}
-
-export function jumpToEndOfParagraph() {
-  return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
-    const current = findParentNodeOfType(type)(state.selection);
-    if (!current) {
-      return false;
-    }
-    const { node, start } = current;
-    dispatch(
-      state.tr.setSelection(
-        TextSelection.create(state.doc, start + node.content.size),
-      ),
-    );
     return true;
   };
 }

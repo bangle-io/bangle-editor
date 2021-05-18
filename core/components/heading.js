@@ -5,8 +5,15 @@ import { Fragment } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 
 import { keymap } from '../utils/keymap';
-import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
+import {
+  copyEmptyCommand,
+  cutEmptyCommand,
+  moveNode,
+  jumpToStartOfNode,
+  jumpToEndOfNode,
+} from '../core-commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
+import browser from '../utils/browser';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -26,6 +33,8 @@ export const defaultKeys = {
   emptyCopy: 'Mod-c',
   emptyCut: 'Mod-x',
   insertEmptyParaAbove: 'Mod-Shift-Enter',
+  jumpToStartOfHeading: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
+  jumpToEndOfHeading: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
   insertEmptyParaBelow: 'Mod-Enter',
   toggleCollapse: null,
 };
@@ -134,6 +143,8 @@ function pluginsFactory({
           ...levelBindings,
           [keybindings.moveUp]: moveNode(type, 'UP'),
           [keybindings.moveDown]: moveNode(type, 'DOWN'),
+          [keybindings.jumpToStartOfHeading]: jumpToStartOfNode(type),
+          [keybindings.jumpToEndOfHeading]: jumpToEndOfNode(type),
 
           [keybindings.emptyCopy]: copyEmptyCommand(type),
           [keybindings.emptyCut]: cutEmptyCommand(type),
