@@ -104,19 +104,6 @@ export function convertToParagraph() {
     setBlockType(getTypeFromSchema(state.schema))(state, dispatch);
 }
 
-export function jumpToStartOfParagraph() {
-  return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
-    const current = findParentNodeOfType(type)(state.selection);
-    if (!current) {
-      return false;
-    }
-    const { start } = current;
-    dispatch(state.tr.setSelection(TextSelection.create(state.doc, start)));
-    return true;
-  };
-}
-
 export function queryIsTopLevelParagraph() {
   return (state) => {
     const type = getTypeFromSchema(state.schema);

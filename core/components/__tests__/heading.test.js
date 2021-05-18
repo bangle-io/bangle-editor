@@ -108,7 +108,7 @@ describe('Basic', () => {
 });
 
 describe('Jump selection start and end', () => {
-  it('Moves selection to the start', async () => {
+  it('Moves selection to the start / end', async () => {
     const { view } = testEditor(
       <doc>
         <heading level={1}>foo[]bar</heading>
