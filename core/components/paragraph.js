@@ -16,6 +16,8 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
   convertToParagraph,
+  jumpToStartOfParagraph,
+  jumpToEndOfParagraph,
   queryIsParagraph,
   queryIsTopLevelParagraph,
   insertEmptyParagraphAbove,
@@ -135,5 +137,19 @@ export function insertEmptyParagraphBelow() {
       parentHasDirectParentOfType(type, state.schema.nodes.doc),
       insertEmpty(type, 'below'),
     )(state, dispatch, view);
+  };
+}
+
+export function jumpToStartOfParagraph() {
+  return (state, dispatch) => {
+    const type = getTypeFromSchema(state.schema);
+    return jumpToStartOfNode(type)(state, dispatch);
+  };
+}
+
+export function jumpToEndOfParagraph() {
+  return (state, dispatch) => {
+    const type = getTypeFromSchema(state.schema);
+    return jumpToEndOfNode(type)(state, dispatch);
   };
 }
