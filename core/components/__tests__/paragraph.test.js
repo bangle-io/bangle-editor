@@ -13,8 +13,8 @@ import {
 } from '../../test-helpers/test-helpers';
 import {
   convertToParagraph,
-  jumpToEndOfParagraph,
   jumpToStartOfParagraph,
+  jumpToEndOfParagraph,
 } from '../paragraph';
 
 const testEditor = renderTestEditor();

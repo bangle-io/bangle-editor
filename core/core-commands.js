@@ -170,3 +170,35 @@ export const setSelectionAtEnd = (node) => {
     return true;
   };
 };
+
+export function jumpToStartOfNode(type) {
+  return (state, dispatch) => {
+    const current = findParentNodeOfType(type)(state.selection);
+    if (!current) {
+      return false;
+    }
+    if (dispatch) {
+      const { start } = current;
+      dispatch(state.tr.setSelection(TextSelection.create(state.doc, start)));
+    }
+    return true;
+  };
+}
+
+export function jumpToEndOfNode(type) {
+  return (state, dispatch) => {
+    const current = findParentNodeOfType(type)(state.selection);
+    if (!current) {
+      return false;
+    }
+    if (dispatch) {
+      const { node, start } = current;
+      dispatch(
+        state.tr.setSelection(
+          TextSelection.create(state.doc, start + node.content.size),
+        ),
+      );
+    }
+    return true;
+  };
+}

@@ -7,6 +7,8 @@ import {
   copyEmptyCommand,
   cutEmptyCommand,
   moveNode,
+  jumpToStartOfNode,
+  jumpToEndOfNode,
 } from '../core-commands';
 import browser from '../utils/browser';
 
@@ -79,8 +81,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
           [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
           [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
 
-          [keybindings.jumpToStartOfParagraph]: jumpToStartOfParagraph(),
-          [keybindings.jumpToEndOfParagraph]: jumpToEndOfParagraph(),
+          [keybindings.jumpToStartOfParagraph]: jumpToStartOfNode(type),
+          [keybindings.jumpToEndOfParagraph]: jumpToEndOfNode(type),
 
           [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
           [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
@@ -102,36 +104,6 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
 export function convertToParagraph() {
   return (state, dispatch) =>
     setBlockType(getTypeFromSchema(state.schema))(state, dispatch);
-}
-
-export function jumpToStartOfParagraph() {
-  return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
-    const current = findParentNodeOfType(type)(state.selection);
-    if (!current) {
-      return false;
-    }
-    const { start } = current;
-    dispatch(state.tr.setSelection(TextSelection.create(state.doc, start)));
-    return true;
-  };
-}
-
-export function jumpToEndOfParagraph() {
-  return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
-    const current = findParentNodeOfType(type)(state.selection);
-    if (!current) {
-      return false;
-    }
-    const { node, start } = current;
-    dispatch(
-      state.tr.setSelection(
-        TextSelection.create(state.doc, start + node.content.size),
-      ),
-    );
-    return true;
-  };
 }
 
 export function queryIsTopLevelParagraph() {
@@ -165,5 +137,19 @@ export function insertEmptyParagraphBelow() {
       parentHasDirectParentOfType(type, state.schema.nodes.doc),
       insertEmpty(type, 'below'),
     )(state, dispatch, view);
+  };
+}
+
+export function jumpToStartOfParagraph() {
+  return (state, dispatch) => {
+    const type = getTypeFromSchema(state.schema);
+    return jumpToStartOfNode(type)(state, dispatch);
+  };
+}
+
+export function jumpToEndOfParagraph() {
+  return (state, dispatch) => {
+    const type = getTypeFromSchema(state.schema);
+    return jumpToEndOfNode(type)(state, dispatch);
   };
 }
