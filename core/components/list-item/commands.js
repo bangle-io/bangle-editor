@@ -744,7 +744,7 @@ function joinToPreviousListItem(type) {
     }
 
     const { $from } = state.selection;
-    const { paragraph, codeBlock, bulletList, orderedList } =
+    const { paragraph, codeBlock, heading, bulletList, orderedList } =
       state.schema.nodes;
     const isGapCursorShown = state.selection instanceof GapCursorSelection;
     const $cutPos = isGapCursorShown ? state.doc.resolve($from.pos + 1) : $from;
@@ -758,10 +758,10 @@ function joinToPreviousListItem(type) {
       $cut.nodeBefore &&
       [bulletList, orderedList].indexOf($cut.nodeBefore.type) > -1
     ) {
-      // and the node after this is a paragraph or a codeBlock
+      // and the node after this is a paragraph / codeBlock / heading
       if (
         $cut.nodeAfter &&
-        ($cut.nodeAfter.type === paragraph || $cut.nodeAfter.type === codeBlock)
+        [paragraph, codeBlock, heading].indexOf($cut.nodeAfter.type) > -1
       ) {
         // find the nearest paragraph that precedes this node
         let $lastNode = $cut.doc.resolve($cut.pos - 1);
@@ -776,7 +776,7 @@ function joinToPreviousListItem(type) {
           if (typeof nodeBeforePos !== 'number') {
             return false;
           }
-          // append the codeblock to the list node
+          // append the paragraph / codeblock / heading to the list node
           const list = $cut.nodeBefore.copy(
             $cut.nodeBefore.content.append(
               Fragment.from(listItem.createChecked({}, $cut.nodeAfter)),
@@ -789,7 +789,7 @@ function joinToPreviousListItem(type) {
           );
         } else {
           // take the text content of the paragraph and insert after the paragraph up until before the the cut
-          tr = state.tr.step(
+          tr = tr.step(
             new ReplaceAroundStep(
               $lastNode.pos,
               $cut.pos + $cut.nodeAfter.nodeSize,
