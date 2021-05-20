@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- bug: Fixed a bug that backspacing at the start of heading doesn't work correctly https://github.com/bangle-io/bangle.dev/pull/193
+
 ## 0.13.0
 
 **@bangle.dev/core**
