@@ -1108,6 +1108,36 @@ describe('Pressing Backspace', () => {
     );
   });
 
+  it('should move heading content back to previous (nested) list item', async () => {
+    await check(
+      <doc>
+        <ol>
+          <li>
+            <para>text</para>
+            <ol>
+              <li>
+                <para>text</para>
+              </li>
+            </ol>
+          </li>
+        </ol>
+        <heading level={1}>[]after</heading>
+      </doc>,
+      <doc>
+        <ol>
+          <li>
+            <para>text</para>
+            <ol>
+              <li>
+                <para>text[]after</para>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </doc>,
+    );
+  });
+
   it('keeps nodes same level as backspaced list item together in same list', async () => {
     await check(
       <doc>
