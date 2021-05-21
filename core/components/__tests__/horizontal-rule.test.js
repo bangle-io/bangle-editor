@@ -80,4 +80,21 @@ describe('Markdown shorthand works', () => {
       </doc>,
     );
   });
+
+  it('type ___ above a paragraph', () => {
+    const { view } = testEditor(
+      <doc>
+        <para>[]</para>
+        <para>test</para>
+      </doc>,
+    );
+
+    typeText(view, '___ ');
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <hr />
+        <para>[]test</para>
+      </doc>,
+    );
+  });
 });

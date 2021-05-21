@@ -40,10 +40,12 @@ function pluginsFactory({ markdownShortcut = true } = {}) {
               return null;
             }
             let tr = state.tr.replaceWith(start - 1, end, type.createChecked());
-            return safeInsert(
-              state.schema.nodes.paragraph.createChecked(),
-              tr.selection.end,
-            )(tr);
+            // Insert a new parapgrah after the hr only if it is the last node.
+            const isLastNode =
+              tr.selection.$from.pos >= tr.doc.content.size - 1;
+            return !isLastNode
+              ? tr
+              : safeInsert(state.schema.nodes.paragraph.createChecked())(tr);
           },
         ),
     ];
