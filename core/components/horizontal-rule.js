@@ -27,6 +27,10 @@ function specFactory(opts = {}) {
   };
 }
 
+function atLastLeafNode($pos) {
+  return $pos.pos >= $pos.node(0).content.size - $pos.depth - 1;
+}
+
 function pluginsFactory({ markdownShortcut = true } = {}) {
   return ({ schema }) => {
     const type = getTypeFromSchema(schema);
@@ -41,8 +45,7 @@ function pluginsFactory({ markdownShortcut = true } = {}) {
             }
             let tr = state.tr.replaceWith(start - 1, end, type.createChecked());
             // Insert a new parapgrah after the hr only if it is the last node.
-            const isLastNode =
-              tr.selection.$from.pos >= tr.doc.content.size - 1;
+            const isLastNode = atLastLeafNode(tr.selection.$from);
             return !isLastNode
               ? tr
               : safeInsert(state.schema.nodes.paragraph.createChecked())(tr);
