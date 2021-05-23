@@ -61,7 +61,10 @@ test('Rendering works', async () => {
         Array [
           "horse",
           Object {
-            "emojiAlias": "horse",
+            "attrs": Object {
+              "emojiAlias": "horse",
+            },
+            "type": "emoji",
           },
         ],
       ],
@@ -117,7 +120,7 @@ describe('markdown', () => {
       </doc>
     );
     const md = await serialize(doc);
-    expect(md).toMatchInlineSnapshot(`"hello world:performing_arts:"`);
+    expect(md).toMatchInlineSnapshot(`"hello world:smiley:"`);
     expect(await parse(md)).toEqualDocument(
       <doc>
         <para>
