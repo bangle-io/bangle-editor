@@ -10,18 +10,27 @@ import { emoji } from '@bangle.dev/emoji';
 import { emojiSuggest, EmojiSuggest } from '@bangle.dev/react-emoji-suggest';
 
 const emojiSuggestKey = new PluginKey('emojiSuggestKey');
-const emojisArray = [
-  ['kiss', '💋'],
-  ['standing_woman', '🧍‍♀️'],
-  ['heartpulse', '💗'],
-  ['japanese_ogre', '👹'],
-  ['shallow_pan_of_food', '🥘'],
-];
+
+const myEmojiDefs = {
+  grinning: '😀',
+  smiley: '😃',
+  smile: '😄',
+  grin: '😁',
+  laughing: '😆',
+  satisfied: '😆',
+  sweat_smile: '😅',
+  rofl: '🤣',
+  joy: '😂',
+  slightly_smiling_face: '🙂',
+};
+
 export default function Example() {
   const editorState = useEditorState({
     specs: [
       ...coreSpec(),
-      emoji.spec(),
+      emoji.spec({
+        getEmoji: (emojiAlias) => myEmojiDefs[emojiAlias] || '❓',
+      }),
       emojiSuggest.spec({ markName: 'emojiSuggest', trigger: ':' }),
     ],
     plugins: () => [
@@ -29,7 +38,7 @@ export default function Example() {
       emoji.plugins(),
       emojiSuggest.plugins({
         key: emojiSuggestKey,
-        emojis: emojisArray,
+        emojis: Array.from(Object.entries(myEmojiDefs)),
         markName: 'emojiSuggest',
         tooltipRenderOpts: {
           placement: 'bottom',
@@ -48,6 +57,6 @@ export default function Example() {
 
 function getInitialValue() {
   return JSON.parse(
-    `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Everyone gets to pick an emoji "},{"type":"emoji","attrs":{"emojiKind":"heartpulse"}},{"type":"text","text":"!"}]},{"type":"paragraph","content":[{"type":"text","text":"Please type "},{"type":"text","marks":[{"type":"code"}],"text":":"},{"type":"text","text":" to trigger the suggest menu."}]},{"type":"paragraph","content":[{"type":"text","text":" "}]},{"type":"paragraph","content":[{"type":"text","text":"You can also click after this "},{"type":"text","marks":[{"type":"emojiSuggest","attrs":{"trigger":":"}}],"text":":"}]}]}`,
+    `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Please type "},{"type":"text","marks":[{"type":"code"}],"text":":"},{"type":"text","text":" to trigger the suggest menu."}]},{"type":"paragraph","content":[{"type":"text","text":"Or click after this colon -> "},{"type":"text","marks":[{"type":"emojiSuggest","attrs":{"trigger":":"}}],"text":":"}]}]}`,
   );
 }
