@@ -18,7 +18,7 @@ export const commands = {
 };
 
 const defaultTrigger = ':';
-const defaultMaxItems = 200;
+const defaultMaxItems = 2000;
 function specFactory({ markName, trigger = defaultTrigger } = {}) {
   const spec = suggestTooltip.spec({ markName, trigger });
 

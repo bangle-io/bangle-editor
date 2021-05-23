@@ -8,17 +8,72 @@ import {
   selectEmoji,
 } from './emoji-suggest';
 
-export function EmojiSuggest({ emojiSuggestKey }) {
+export function EmojiSuggest({
+  emojiSuggestKey,
+  squareSide = 32,
+  squareMargin = 2,
+  rowWidth = 406,
+  palettePadding = 4,
+}) {
+  const {
+    counter,
+    triggerText,
+    show: isVisible,
+  } = usePluginState(getSuggestTooltipKey(emojiSuggestKey));
   const view = useEditorViewContext();
+
   const { tooltipContentDOM, emojis, maxItems } =
     usePluginState(emojiSuggestKey);
-  const { counter, triggerText } = usePluginState(
-    getSuggestTooltipKey(emojiSuggestKey),
+
+  return reactDOM.createPortal(
+    <div className="bangle-emoji-suggest" style={{ padding: palettePadding }}>
+      <div
+        style={{
+          width: rowWidth,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        {isVisible && (
+          <EmojiSuggestContainer
+            view={view}
+            rowWidth={rowWidth}
+            squareMargin={squareMargin}
+            squareSide={squareSide}
+            emojiSuggestKey={emojiSuggestKey}
+            emojis={emojis}
+            maxItems={maxItems}
+            triggerText={triggerText}
+            counter={counter}
+          />
+        )}
+      </div>
+    </div>,
+    tooltipContentDOM,
   );
+}
+
+export function EmojiSuggestContainer({
+  view,
+  rowWidth,
+  squareMargin,
+  squareSide,
+  emojiSuggestKey,
+  emojis,
+  maxItems,
+  triggerText,
+  counter,
+}) {
+  const squareFullWidth = squareSide + 2 * squareMargin;
+  // -2 to account for borders and safety
+  const rowCount = Math.floor((rowWidth - 2) / squareFullWidth);
+  const containerWidth = rowCount * squareFullWidth;
+
   const filteredEmojis = useMemo(
     () => getEmojis(emojis, triggerText, maxItems),
     [emojis, triggerText, maxItems],
   );
+
   const activeIndex = getActiveIndex(counter, filteredEmojis.length);
   const onSelectEmoji = useCallback(
     (emojiAlias) => {
@@ -27,8 +82,13 @@ export function EmojiSuggest({ emojiSuggestKey }) {
     [view, emojiSuggestKey],
   );
 
-  return reactDOM.createPortal(
-    <div className="bangle-emoji-suggest">
+  return (
+    <div
+      className="bangle-emoji-suggest-container"
+      style={{
+        width: containerWidth,
+      }}
+    >
       {filteredEmojis.map(([emojiAlias, emoji], i) => {
         return (
           <Row
@@ -38,11 +98,17 @@ export function EmojiSuggest({ emojiSuggestKey }) {
             emoji={emoji}
             emojiAlias={emojiAlias}
             onSelectEmoji={onSelectEmoji}
+            style={{
+              margin: squareMargin,
+              width: squareSide,
+              height: squareSide,
+              lineHeight: squareSide + 'px',
+              fontSize: squareSide - 4,
+            }}
           />
         );
       })}
-    </div>,
-    tooltipContentDOM,
+    </div>
   );
 }
 
@@ -52,29 +118,33 @@ const Row = React.memo(function Row({
   emojiAlias,
   scrollIntoViewIfNeeded = true,
   onSelectEmoji,
+  style,
 }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (scrollIntoViewIfNeeded && isSelected) {
+    if (scrollIntoViewIfNeeded && isSelected && ref.current) {
       if ('scrollIntoViewIfNeeded' in document.body) {
         ref.current.scrollIntoViewIfNeeded(false);
-      } else {
+      } else if (ref.current.scrollIntoView) {
         ref.current.scrollIntoView(false);
       }
     }
   }, [scrollIntoViewIfNeeded, isSelected]);
 
   return (
-    <div
-      className={`bangle-row ${isSelected ? 'bangle-is-selected' : ''}`}
+    <button
+      className={`bangle-emoji-square ${
+        isSelected ? 'bangle-is-selected' : ''
+      }`}
       onClick={(e) => {
         e.preventDefault();
         onSelectEmoji(emojiAlias);
       }}
       ref={ref}
+      style={style}
     >
-      <span>{emoji + ' ' + emojiAlias}</span>
-    </div>
+      {emoji}
+    </button>
   );
 });
