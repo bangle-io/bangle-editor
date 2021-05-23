@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.14.0
 
 **@bangle.dev/emoji**
 
@@ -10,6 +10,7 @@
 **@bangle.dev/core**
 
 - bug: Fixed a bug that backspacing at the start of heading doesn't work correctly https://github.com/bangle-io/bangle.dev/pull/193
+- bug: Improve jumping to start and end of a heading
 
 ## 0.13.0
 
