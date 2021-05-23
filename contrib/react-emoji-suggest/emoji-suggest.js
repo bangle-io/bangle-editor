@@ -104,10 +104,10 @@ function pluginsFactory({
             return removeSuggestMark(key)(state, dispatch, view);
           }
           const { counter } = suggestTooltipKey.getState(state);
-          const emojiKind =
+          const emojiAlias =
             matchedEmojis[getActiveIndex(counter, matchedEmojis.length)][0];
           rafCommandExec(view, resetSuggestTooltipCounter(suggestTooltipKey));
-          return selectEmoji(key, emojiKind)(state, dispatch, view);
+          return selectEmoji(key, emojiAlias)(state, dispatch, view);
         },
         onArrowDown: updateCounter('DOWN'),
         onArrowUp: updateCounter('UP'),
@@ -141,10 +141,10 @@ export function queryTriggerText(key) {
   return suggestTooltip.queryTriggerText(getSuggestTooltipKey(key));
 }
 
-export function selectEmoji(key, emojiKind) {
+export function selectEmoji(key, emojiAlias) {
   return (state, dispatch, view) => {
     const emojiNode = state.schema.nodes.emoji.create({
-      emojiKind: emojiKind,
+      emojiAlias: emojiAlias,
     });
     return suggestTooltip.replaceSuggestMarkWith(key, emojiNode)(
       state,

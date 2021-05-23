@@ -47,12 +47,12 @@
       "label": "API",
       "items": [
         "api/core",
+        "api/emoji",
         "api/react",
         "api/react_emoji_suggest",
         "api/react_menu",
         "api/text_formatting",
         "api/collab",
-        "api/emoji",
         "api/markdown",
         "api/markdown_front_matter",
         "api/table",
