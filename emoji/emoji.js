@@ -1,24 +1,22 @@
 import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
-import { keymap } from '@bangle.dev/core/utils/keymap';
-import { EMOJI_NODE_NAME, validEmojis, emojiLookup } from './constants';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
-  insertRandomEmoji,
   insertEmoji,
 };
 
-const name = EMOJI_NODE_NAME;
+const name = 'emoji';
+
 const getTypeFromSchema = (schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory({ getEmoji, defaultEmojiAlias = 'smiley' }) {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'span',
     parsingPriority: 51,
     content: (node) => {
-      let result = emojiLookup[node.attrs.emojiKind];
-      return result || emojiLookup['question'];
+      let result = getEmoji(node.attrs.emojiAlias, node);
+      return result;
     },
   });
 
@@ -27,8 +25,8 @@ function specFactory() {
     name,
     schema: {
       attrs: {
-        emojiKind: {
-          default: 'performing_arts',
+        emojiAlias: {
+          default: defaultEmojiAlias,
         },
       },
       inline: true,
@@ -41,14 +39,14 @@ function specFactory() {
 
     markdown: {
       toMarkdown: (state, node) => {
-        state.write(`:${node.attrs['emojiKind']}:`);
+        state.write(`:${node.attrs.emojiAlias}:`);
       },
       parseMarkdown: {
         emoji: {
           node: 'emoji',
           getAttrs: (tok) => {
             return {
-              emojiKind: tok.markup,
+              emojiAlias: tok.markup,
             };
           },
         },
@@ -57,29 +55,13 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({
-  keybindings = { insertRandomEmoji: 'Shift-Ctrl-e' },
-} = {}) {
+function pluginsFactory({ keybindings = {} } = {}) {
   return () => {
-    return [
-      keymap({
-        [keybindings.insertRandomEmoji]: insertRandomEmoji(),
-      }),
-    ];
+    return [];
   };
 }
 
-export function insertRandomEmoji() {
-  return (state, dispatch) => {
-    return insertEmoji(
-      validEmojis[Math.floor(Math.random() * validEmojis.length)],
-    )(state, dispatch);
-  };
-}
-
-export function insertEmoji(
-  name = validEmojis[Math.floor(Math.random() * validEmojis.length)],
-) {
+export function insertEmoji(emojiAlias) {
   return function (state, dispatch) {
     let emojiType = getTypeFromSchema(state.schema);
 
@@ -90,7 +72,7 @@ export function insertEmoji(
     }
     if (dispatch) {
       const attr = {
-        emojiKind: name,
+        emojiAlias: emojiAlias,
       };
 
       dispatch(state.tr.replaceSelectionWith(emojiType.create(attr)));

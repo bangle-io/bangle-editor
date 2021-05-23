@@ -21,22 +21,22 @@ export function EmojiSuggest({ emojiSuggestKey }) {
   );
   const activeIndex = getActiveIndex(counter, filteredEmojis.length);
   const onSelectEmoji = useCallback(
-    (emojiKind) => {
-      selectEmoji(emojiSuggestKey, emojiKind)(view.state, view.dispatch, view);
+    (emojiAlias) => {
+      selectEmoji(emojiSuggestKey, emojiAlias)(view.state, view.dispatch, view);
     },
     [view, emojiSuggestKey],
   );
 
   return reactDOM.createPortal(
     <div className="bangle-emoji-suggest">
-      {filteredEmojis.map(([emojiKind, emoji], i) => {
+      {filteredEmojis.map(([emojiAlias, emoji], i) => {
         return (
           <Row
-            key={emojiKind}
+            key={emojiAlias}
             scrollIntoViewIfNeeded={true}
             isSelected={activeIndex === i}
             emoji={emoji}
-            emojiKind={emojiKind}
+            emojiAlias={emojiAlias}
             onSelectEmoji={onSelectEmoji}
           />
         );
@@ -49,7 +49,7 @@ export function EmojiSuggest({ emojiSuggestKey }) {
 const Row = React.memo(function Row({
   isSelected,
   emoji,
-  emojiKind,
+  emojiAlias,
   scrollIntoViewIfNeeded = true,
   onSelectEmoji,
 }) {
@@ -70,11 +70,11 @@ const Row = React.memo(function Row({
       className={`bangle-row ${isSelected ? 'bangle-is-selected' : ''}`}
       onClick={(e) => {
         e.preventDefault();
-        onSelectEmoji(emojiKind);
+        onSelectEmoji(emojiAlias);
       }}
       ref={ref}
     >
-      <span>{emoji + ' ' + emojiKind}</span>
+      <span>{emoji + ' ' + emojiAlias}</span>
     </div>
   );
 });

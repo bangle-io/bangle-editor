@@ -59,7 +59,7 @@ Named parameters:
 - **queryTriggerText**(key: {{Prosemirror.PluginKey}}): {{core.link.Command}}\
   Query the trigger text that is being used to filter the `emojis`. For example, with `:` as trigger, if the user typed `:man` , `man` will the trigger text.
 
-- **selectEmoji**(key: {{Prosemirror.PluginKey}}, emojiKind: string): {{core.link.Command}}\
+- **selectEmoji**(key: {{Prosemirror.PluginKey}}, emojiAlias: string): {{core.link.Command}}\
   Programmatically select an emoji. For example if `emojis=["office_worker", "🧑‍💼"], ["ninja", "🥷"]]`, executing command with `selectEmoji(key, 'ninja')(state, dispatch)` will create a `🥷` emoji.
 
 **Usage**

@@ -1,21 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rendering works 1`] = `
+exports[`Rendering works 2`] = `
 <span
-  data-bangle-attrs="{\\"emojiKind\\":\\"horse\\"}"
+  data-bangle-attrs="{\\"emojiAlias\\":\\"horse\\"}"
   data-bangle-name="emoji"
   draggable="true"
 >
-  🐴
-</span>
-`;
-
-exports[`Unknown emoji puts question mark 1`] = `
-<span
-  data-bangle-attrs="{\\"emojiKind\\":\\"unknown_emoji\\"}"
-  data-bangle-name="emoji"
-  draggable="true"
->
-  ❓
+  horse
 </span>
 `;

@@ -2,6 +2,11 @@
 
 ## HEAD
 
+**@bangle.dev/emoji**
+
+- breaking: The package no longer exports `data` and the user is expected to provide its own datasource, see [emoji docs](https://bangle.dev/docs/api/emoji) for more details.
+- feat: The `emoji.spec()` now accepts a new parameter `getEmoji`.
+
 **@bangle.dev/core**
 
 - bug: Fixed a bug that backspacing at the start of heading doesn't work correctly https://github.com/bangle-io/bangle.dev/pull/193

@@ -19,12 +19,21 @@ import {
 import { emoji } from '../index';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 
-const specRegistry = new SpecRegistry([...defaultSpecs(), emoji.spec()]);
-const plugins = [...defaultPlugins(), emoji.plugins()];
+let getEmoji, testEditor, specRegistry;
 
-const testEditor = renderTestEditor({
-  specRegistry,
-  plugins,
+beforeEach(() => {
+  getEmoji = jest.fn(() => 'horse');
+
+  specRegistry = new SpecRegistry([
+    ...defaultSpecs(),
+    emoji.spec({ getEmoji }),
+  ]);
+  const plugins = [...defaultPlugins(), emoji.plugins()];
+
+  testEditor = renderTestEditor({
+    specRegistry,
+    plugins,
+  });
 });
 
 test('Rendering works', async () => {
@@ -33,7 +42,7 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji emojiKind="horse" />
+        <emoji emojiAlias="horse" />
       </para>
     </doc>,
   );
@@ -42,34 +51,31 @@ test('Rendering works', async () => {
     <doc>
       <para>
         foo[]bar
-        <emoji emojiKind="horse" />
+        <emoji emojiAlias="horse" />
       </para>
     </doc>,
   );
-  expect(
-    container.querySelector(`[data-bangle-name="emoji"]`),
-  ).toMatchSnapshot();
-});
-
-test('Unknown emoji puts question mark', async () => {
-  Date.now = jest.fn(() => 0);
-  const { container, view } = testEditor(
-    <doc>
-      <para>
-        foo[]bar
-        <emoji emojiKind="unknown_emoji" />
-      </para>
-    </doc>,
-  );
-
-  expect(view.state).toEqualDocAndSelection(
-    <doc>
-      <para>
-        foo[]bar
-        <emoji emojiKind="unknown_emoji" />
-      </para>
-    </doc>,
-  );
+  expect(getEmoji).toMatchInlineSnapshot(`
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          "horse",
+          Object {
+            "attrs": Object {
+              "emojiAlias": "horse",
+            },
+            "type": "emoji",
+          },
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": "horse",
+        },
+      ],
+    }
+  `);
   expect(
     container.querySelector(`[data-bangle-name="emoji"]`),
   ).toMatchSnapshot();
@@ -94,7 +100,7 @@ describe('markdown', () => {
       <doc>
         <para>
           hello world
-          <emoji emojiKind="horse" />
+          <emoji emojiAlias="horse" />
         </para>
       </doc>
     );
@@ -114,7 +120,7 @@ describe('markdown', () => {
       </doc>
     );
     const md = await serialize(doc);
-    expect(md).toMatchInlineSnapshot(`"hello world:performing_arts:"`);
+    expect(md).toMatchInlineSnapshot(`"hello world:smiley:"`);
     expect(await parse(md)).toEqualDocument(
       <doc>
         <para>
@@ -125,5 +131,3 @@ describe('markdown', () => {
     );
   });
 });
-
-test.todo('Emoji inline suggestion');
