@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useEditorViewContext, usePluginState } from '@bangle.dev/react';
 import {
   getActiveIndex,
-  getEmojis,
   getSuggestTooltipKey,
   selectEmoji,
 } from './emoji-suggest';
@@ -22,7 +21,7 @@ export function EmojiSuggest({
   } = usePluginState(getSuggestTooltipKey(emojiSuggestKey));
   const view = useEditorViewContext();
 
-  const { tooltipContentDOM, emojis, maxItems } =
+  const { tooltipContentDOM, getEmojis, maxItems } =
     usePluginState(emojiSuggestKey);
 
   return reactDOM.createPortal(
@@ -41,7 +40,7 @@ export function EmojiSuggest({
             squareMargin={squareMargin}
             squareSide={squareSide}
             emojiSuggestKey={emojiSuggestKey}
-            emojis={emojis}
+            getEmojis={getEmojis}
             maxItems={maxItems}
             triggerText={triggerText}
             counter={counter}
@@ -59,8 +58,7 @@ export function EmojiSuggestContainer({
   squareMargin,
   squareSide,
   emojiSuggestKey,
-  emojis,
-  maxItems,
+  getEmojis,
   triggerText,
   counter,
 }) {
@@ -70,8 +68,8 @@ export function EmojiSuggestContainer({
   const containerWidth = rowCount * squareFullWidth;
 
   const filteredEmojis = useMemo(
-    () => getEmojis(emojis, triggerText, maxItems),
-    [emojis, triggerText, maxItems],
+    () => getEmojis(triggerText),
+    [getEmojis, triggerText],
   );
 
   const activeIndex = getActiveIndex(counter, filteredEmojis.length);

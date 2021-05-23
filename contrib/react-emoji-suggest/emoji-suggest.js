@@ -37,7 +37,7 @@ function pluginsFactory({
   key = new PluginKey('emojiSuggestMenu'),
   markName,
   tooltipRenderOpts = {},
-  emojis,
+  getEmojis,
   maxItems = defaultMaxItems,
 } = {}) {
   return ({ schema, specRegistry }) => {
@@ -81,7 +81,7 @@ function pluginsFactory({
     };
     return [
       valuePlugin(key, {
-        emojis,
+        getEmojis,
         maxItems,
         tooltipContentDOM: tooltipDOMSpec.contentDOM,
         markName,
@@ -95,11 +95,7 @@ function pluginsFactory({
           tooltipDOMSpec,
         },
         onEnter: (state, dispatch, view) => {
-          const matchedEmojis = getEmojis(
-            emojis,
-            queryTriggerText(key)(state),
-            maxItems,
-          );
+          const matchedEmojis = getEmojis(queryTriggerText(key)(state));
           if (matchedEmojis.length === 0) {
             return removeSuggestMark(key)(state, dispatch, view);
           }
@@ -116,15 +112,15 @@ function pluginsFactory({
   };
 }
 
-export function getEmojis(emojis, queryText, maxItems = defaultMaxItems) {
-  if (!queryText) {
-    return emojis.slice(0, maxItems);
-  } else {
-    return emojis
-      .filter(([item]) => item.includes(queryText))
-      .slice(0, maxItems);
-  }
-}
+// export function getEmojis(emojis, queryText, maxItems = defaultMaxItems) {
+//   if (!queryText) {
+//     return emojis.slice(0, maxItems);
+//   } else {
+//     return emojis
+//       .filter(([item]) => item.includes(queryText))
+//       .slice(0, maxItems);
+//   }
+// }
 
 export function getActiveIndex(counter, size) {
   const r = counter % size;

@@ -16,7 +16,7 @@ describe('EmojiSuggestContainer', () => {
     squareMargin,
     squareSide,
     emojiSuggestKey,
-    emojis,
+    getEmojis,
     maxItems,
     triggerText,
     counter;
@@ -27,11 +27,16 @@ describe('EmojiSuggestContainer', () => {
     squareMargin = 2;
     squareSide = 8;
     emojiSuggestKey = jest.fn();
-    emojis = [
-      ['grinning', '😀'],
-      ['smiley', '😃'],
-      ['smile', '😄'],
-    ];
+    getEmojis = (query) => {
+      const data = [
+        ['grinning', '😀'],
+        ['smiley', '😃'],
+        ['smile', '😄'],
+      ];
+      return query
+        ? data.filter((r) => r[0].includes(query) || query.includes(r[0]))
+        : [];
+    };
     maxItems = Infinity;
     triggerText = 'no match';
     counter = 2;
@@ -45,7 +50,7 @@ describe('EmojiSuggestContainer', () => {
         squareMargin={squareMargin}
         squareSide={squareSide}
         emojiSuggestKey={emojiSuggestKey}
-        emojis={emojis}
+        getEmojis={getEmojis}
         maxItems={maxItems}
         triggerText={triggerText}
         counter={counter}
