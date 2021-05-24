@@ -21,9 +21,10 @@ npm install @bangle.dev/react
 
 I have setup a repo to showcase how to use Bangle.dev with various contemporary bundlers. Lets be honest, frontend setup is a nightmare 🧟‍♀️ and the last thing I want is someone fiddling with Webpack or Babel config:
 
-- [create-react-app-v4](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/create-react-app-v4)
-- [create-react-app-v3](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/create-react-app-v3)
-- [webpack-v4](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/webpack-v4)
+- [create-react-app-v4](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/react__create-react-app-v4)
+- [create-react-app-v3](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/react__create-react-app-v3)
+- [react webpack 4](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/react__webpack-v4)
+- [vanilla-js vite](https://github.com/bangle-io/bangle.dev-boilerplates/tree/main/vanillajs__vite)
 
 Feel free to send a Pull Request for your favorite build tool. If setup looks good, head over to the [examples](https://bangle.dev/docs/examples/markdown-editor)!
 
