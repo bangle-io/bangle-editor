@@ -98,6 +98,24 @@ describe('Markdown shorthand works', () => {
     );
   });
 
+  it('type ___ above a hr', () => {
+    const { view } = testEditor(
+      <doc>
+        <para>[]</para>
+        <hr />
+      </doc>,
+    );
+
+    typeText(view, '___ ');
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <hr />
+        <para>[]</para>
+        <hr />
+      </doc>,
+    );
+  });
+
   it('type ___ inisde a nested blockquote', () => {
     const { view } = testEditor(
       <doc>
