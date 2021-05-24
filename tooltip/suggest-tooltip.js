@@ -77,6 +77,8 @@ function pluginsFactory({
   onEscape = (state, dispatch, view) => {
     return removeSuggestMark(key)(state, dispatch, view);
   },
+  onArrowLeft,
+  onArrowRight,
 } = {}) {
   return ({ schema }) => {
     const isActiveCheck = queryIsSuggestTooltipActive(key);
@@ -126,6 +128,9 @@ function pluginsFactory({
             if (meta.type === 'RESET_COUNTER') {
               return { ...pluginState, counter: 0 };
             }
+            if (meta.type === 'UPDATE_COUNTER') {
+              return { ...pluginState, counter: meta.value };
+            }
             if (meta.type === 'DECREMENT_COUNTER') {
               return { ...pluginState, counter: pluginState.counter - 1 };
             }
@@ -162,6 +167,8 @@ function pluginsFactory({
           },
           [keybindings.up]: filter(isActiveCheck, onArrowUp),
           [keybindings.down]: filter(isActiveCheck, onArrowDown),
+          [keybindings.left]: filter(isActiveCheck, onArrowLeft),
+          [keybindings.right]: filter(isActiveCheck, onArrowRight),
           [keybindings.hide]: filter(isActiveCheck, onEscape),
         }),
     ];
@@ -509,6 +516,19 @@ export function resetSuggestTooltipCounter(key) {
       dispatch(
         state.tr
           .setMeta(key, { type: 'RESET_COUNTER' })
+          .setMeta('addToHistory', false),
+      );
+    }
+    return true;
+  };
+}
+
+export function updateSuggestTooltipCounter(key, counter) {
+  return (state, dispatch, view) => {
+    if (dispatch) {
+      dispatch(
+        state.tr
+          .setMeta(key, { type: 'UPDATE_COUNTER', value: counter })
           .setMeta('addToHistory', false),
       );
     }
