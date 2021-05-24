@@ -139,4 +139,20 @@ describe('Markdown shorthand works', () => {
       </doc>,
     );
   });
+
+  it('type ___ inisde a paragraph with more text', () => {
+    const { view } = testEditor(
+      <doc>
+        <para>[]abc</para>
+      </doc>,
+    );
+
+    typeText(view, '___ ');
+    expect(view.state).toEqualDocAndSelection(
+      <doc>
+        <hr />
+        <para>[]abc</para>
+      </doc>,
+    );
+  });
 });
