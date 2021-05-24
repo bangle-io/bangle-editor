@@ -81,7 +81,7 @@ describe('Markdown shorthand works', () => {
     );
   });
 
-  it('type ___ above a paragraph', () => {
+  it('type --- above a paragraph', () => {
     const { view } = testEditor(
       <doc>
         <para>[]</para>
@@ -89,7 +89,7 @@ describe('Markdown shorthand works', () => {
       </doc>,
     );
 
-    typeText(view, '___ ');
+    typeText(view, '---');
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <hr />
@@ -98,7 +98,7 @@ describe('Markdown shorthand works', () => {
     );
   });
 
-  it('type ___ above a hr', () => {
+  it('type --- above a hr', () => {
     const { view } = testEditor(
       <doc>
         <para>[]</para>
@@ -106,7 +106,7 @@ describe('Markdown shorthand works', () => {
       </doc>,
     );
 
-    typeText(view, '___ ');
+    typeText(view, '---');
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <hr />
@@ -116,7 +116,7 @@ describe('Markdown shorthand works', () => {
     );
   });
 
-  it('type ___ inisde a nested blockquote', () => {
+  it('type --- inisde a nested blockquote', () => {
     const { view } = testEditor(
       <doc>
         <blockquote>
@@ -127,7 +127,7 @@ describe('Markdown shorthand works', () => {
       </doc>,
     );
 
-    typeText(view, '___ ');
+    typeText(view, '---');
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <blockquote>
@@ -140,14 +140,14 @@ describe('Markdown shorthand works', () => {
     );
   });
 
-  it('type ___ inisde a paragraph with more text', () => {
+  it('type --- inisde a paragraph with more text', () => {
     const { view } = testEditor(
       <doc>
         <para>[]abc</para>
       </doc>,
     );
 
-    typeText(view, '___ ');
+    typeText(view, '---');
     expect(view.state).toEqualDocAndSelection(
       <doc>
         <hr />
