@@ -14,28 +14,31 @@
   background-color: white;
 }
 
-.bangle-emoji-suggest-container > .bangle-emoji-square {
-  cursor: pointer;
-  display: inline-flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+.bangle-emoji-suggest-container .bangle-emoji-square {
+  padding: 0;
   content-visibility: auto;
+  background-color: transparent;
+  overflow: none;
+  border-width: 0;
+  cursor: pointer;
 }
 
-.bangle-emoji-suggest-container > .bangle-emoji-square.bangle-is-selected {
+.bangle-emoji-suggest-container .bangle-emoji-square.bangle-is-selected {
   background-color: teal;
   border-radius: 2px;
 }
 
-.bangle-emoji-suggest-container > .bangle-emoji-square:hover {
-  background-color: rgb(199, 199, 199);
-  border-radius: 2px;
+.bangle-emoji-suggest-container .bangle-emoji-suggest-group:not(:first-child) {
+  margin-top: 16px;
 }
 
-.bangle-emoji-suggest-container > .bangle-emoji-square > button {
-  /* text-align: center;
-  overflow: hidden;
-  user-select: none; */
+.bangle-emoji-suggest-container .bangle-emoji-suggest-group {
+  font-size: 0.75rem;
+  display: 'flex';
+  flex-direction: 'column';
+}
+
+.bangle-emoji-suggest-container .bangle-emoji-square:hover {
+  background-color: rgb(199, 199, 199);
+  border-radius: 2px;
 }

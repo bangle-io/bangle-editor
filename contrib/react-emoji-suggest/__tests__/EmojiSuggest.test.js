@@ -2,21 +2,17 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import {
-  pjsx,
-  reactTestEditor,
-} from '@bangle.dev/react/__tests__/helpers/index';
+import { pjsx } from '@bangle.dev/react/__tests__/helpers/index';
 import { EmojiSuggestContainer } from '../EmojiSuggest';
-import { render as _render, fireEvent, act } from '@testing-library/react';
+import { render as _render } from '@testing-library/react';
 
 describe('EmojiSuggestContainer', () => {
-  let renderResult,
-    view,
+  let view,
     rowWidth,
     squareMargin,
     squareSide,
     emojiSuggestKey,
-    getEmojis,
+    getEmojiGroups,
     maxItems,
     triggerText,
     counter;
@@ -27,15 +23,27 @@ describe('EmojiSuggestContainer', () => {
     squareMargin = 2;
     squareSide = 8;
     emojiSuggestKey = jest.fn();
-    getEmojis = (query) => {
+    getEmojiGroups = (query) => {
       const data = [
-        ['grinning', '😀'],
-        ['smiley', '😃'],
-        ['smile', '😄'],
+        { name: 'a-1', emojis: [['grinning', '😀']] },
+        { name: 'a-2', emojis: [['smiley', '😃']] },
+        { name: 'a-3', emojis: [['smile', '😄']] },
       ];
-      return query
-        ? data.filter((r) => r[0].includes(query) || query.includes(r[0]))
-        : [];
+
+      if (!query) {
+        return [];
+      }
+
+      return data
+        .map((group) => {
+          return {
+            ...group,
+            emojis: group.emojis.filter(
+              ([alias]) => alias.includes(query) || query.includes(alias),
+            ),
+          };
+        })
+        .filter((r) => r.emojis.length > 0);
     };
     maxItems = Infinity;
     triggerText = 'no match';
@@ -50,15 +58,16 @@ describe('EmojiSuggestContainer', () => {
         squareMargin={squareMargin}
         squareSide={squareSide}
         emojiSuggestKey={emojiSuggestKey}
-        getEmojis={getEmojis}
+        getEmojiGroups={getEmojiGroups}
         maxItems={maxItems}
         triggerText={triggerText}
         counter={counter}
+        selectedEmojiSquareId="abcd-123"
       />,
     );
   };
 
-  test('renders correctly when no maatch', async () => {
+  test('renders correctly when no match', async () => {
     expect(render().container).toMatchInlineSnapshot(`
       <div>
         <div
@@ -129,18 +138,37 @@ describe('EmojiSuggestContainer', () => {
           class="bangle-emoji-suggest-container"
           style="width: 396px;"
         >
-          <button
-            class="bangle-emoji-square bangle-is-selected"
-            style="margin: 2px; width: 8px; height: 8px; line-height: 8px; font-size: 4px;"
+          <div
+            class="bangle-emoji-suggest-group"
           >
-            😃
-          </button>
-          <button
-            class="bangle-emoji-square "
-            style="margin: 2px; width: 8px; height: 8px; line-height: 8px; font-size: 4px;"
+            <span>
+              a-2
+            </span>
+            <div>
+              <button
+                class="bangle-emoji-square bangle-is-selected"
+                id="abcd-123"
+                style="margin: 2px; width: 8px; height: 8px; line-height: 8px; font-size: 4px;"
+              >
+                😃
+              </button>
+            </div>
+          </div>
+          <div
+            class="bangle-emoji-suggest-group"
           >
-            😄
-          </button>
+            <span>
+              a-3
+            </span>
+            <div>
+              <button
+                class="bangle-emoji-square "
+                style="margin: 2px; width: 8px; height: 8px; line-height: 8px; font-size: 4px;"
+              >
+                😄
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     `);

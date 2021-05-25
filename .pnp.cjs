@@ -9448,6 +9448,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@docusaurus/preset-classic", "virtual:894572e2628843ec5c970052b44cccf9fb72b8e08ee70eebd42eb8db714036822bf5f3e74693f4678919528b6e488f14c81f198cad04fc4a093c61a15399454b#npm:2.0.0-alpha.69"],
             ["@mdx-js/react", "virtual:894572e2628843ec5c970052b44cccf9fb72b8e08ee70eebd42eb8db714036822bf5f3e74693f4678919528b6e488f14c81f198cad04fc4a093c61a15399454b#npm:1.6.21"],
             ["clsx", "npm:1.1.1"],
+            ["emoji-lookup-data", "npm:1.3.0"],
             ["prop-types", "npm:15.7.2"],
             ["react", "npm:16.14.0"],
             ["react-dom", "virtual:b98ba4fc0b3dfc33d80e8a4eb90ecaf6926937b97930169f10cb8a9ec876c480ef7ab125cc72516ef649265b0c9516b2968b6b3b169ec45fd7cc7813e5936203#npm:16.14.0"]
@@ -12734,6 +12735,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/emittery-npm-0.7.1-2e5216986e-ae934ba2bb.zip/node_modules/emittery/",
           "packageDependencies": [
             ["emittery", "npm:0.7.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["emoji-lookup-data", [
+        ["npm:1.3.0", {
+          "packageLocation": "./.yarn/cache/emoji-lookup-data-npm-1.3.0-62cc016d31-1f9af57cc6.zip/node_modules/emoji-lookup-data/",
+          "packageDependencies": [
+            ["emoji-lookup-data", "npm:1.3.0"]
           ],
           "linkType": "HARD",
         }]
