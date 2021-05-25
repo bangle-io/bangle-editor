@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- bug: Fixed inserting a horizontal break above a paragraph https://github.com/bangle-io/bangle.dev/pull/194
+
 ## 0.14.0
 
 **@bangle.dev/emoji**
