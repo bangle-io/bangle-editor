@@ -9,12 +9,6 @@ const c = (groups) => groups.map((g, i) => ({ name: 'group-' + i, emojis: g }));
 
 describe('resolveCounter', () => {
   test('1 works', () => {
-    console.log(
-      c([
-        ['a', 'b', 'c'],
-        ['d', 'e'],
-      ]),
-    );
     const result = resolveCounter(
       3,
       c([

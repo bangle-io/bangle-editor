@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/react-emoji-suggest**
+
+- feat: A new and improved emoji suggest tooltip.
+
 ## 0.14.0
 
 **@bangle.dev/emoji**
