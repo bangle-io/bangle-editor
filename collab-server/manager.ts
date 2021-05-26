@@ -1,58 +1,64 @@
-import { Step } from '@bangle.dev/core/prosemirror/transform';
-import {
-  objectMapValues,
-  serialExecuteQueue,
-  raceTimeout,
-} from '@bangle.dev/core/utils/js-utils';
-import { Instance } from './instance';
-import { CollabError } from '../collab-error';
+import { Step } from 'prosemirror-transform';
+import { objectMapValues, serialExecuteQueue, raceTimeout } from './utils';
+import { Instance, StepBigger } from './instance';
+import { CollabError } from './collab-error';
+import { Schema, Node } from 'prosemirror-model';
 
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+
 export class Manager {
-  constructor(schema, opts = {}) {
-    this._getInstanceQueued = this._getInstanceQueued.bind(this);
-    this.instanceCount = 0;
-    this.maxCount = 20;
-    this.instances = {};
-    this.getDocumentQueue = serialExecuteQueue();
-    this.defaultOpts = {
-      disk: {
-        load: async () => {},
-        update: async () => {},
-        flush: async () => {},
+  instanceCount = 0;
+  maxCount = 20;
+  instances: { [key: string]: Instance } = {};
+  getDocumentQueue = serialExecuteQueue<Instance>();
+
+  routes;
+  disk;
+  cleanUpInterval?: number = undefined;
+  collectUsersTimeout;
+  interceptRequests?: (path: string, payload: any) => void;
+
+  constructor(
+    private schema: Schema,
+    {
+      disk = {
+        load: async (_docName: string): Promise<any> => {},
+        update: async (_docName: string, _cb: () => Node) => {},
+        flush: async (_docName: string, _doc: Node) => {},
       },
-      // the time interval for which the get_events is kept to wait for any new changes, after this time it will abort the connect expecting the client to make another request
-      userWaitTimeout: 7 * 1000,
-      collectUsersTimeout: 5 * 1000,
-      instanceCleanupTimeout: 10 * 1000,
-      interceptRequests: undefined, // useful for testing or debugging
-    };
-    this.opts = { ...this.defaultOpts, ...opts };
-    this.schema = schema;
-    this.disk = this.opts.disk;
+      userWaitTimeout = 7 * 1000,
+      collectUsersTimeout = 5 * 1000,
+      instanceCleanupTimeout = 10 * 1000,
+      interceptRequests = undefined, // useful for testing or debugging
+    } = {},
+  ) {
+    this._getInstanceQueued = this._getInstanceQueued.bind(this);
+    this.disk = disk;
+    this.collectUsersTimeout = collectUsersTimeout;
+    this.interceptRequests = interceptRequests;
     // to prevent parallel requests from creating deadlock
     // for example two requests parallely comming and creating two new instances of the same doc
     this.routes = generateRoutes(
       schema,
       this._getInstanceQueued,
-      this.opts.userWaitTimeout,
+      userWaitTimeout,
     );
 
-    if (this.opts.instanceCleanupTimeout > 0) {
+    if (instanceCleanupTimeout > 0) {
       this.cleanUpInterval = setInterval(
         () => this._cleanup(),
-        this.opts.instanceCleanupTimeout,
+        instanceCleanupTimeout,
       );
     }
   }
 
-  _stopInstance(docName) {
+  _stopInstance(docName: string) {
     const instance = this.instances[docName];
     if (instance) {
       log('stopping instances', instance.docName);
-      this.instances[docName].stop();
+      instance.stop();
       delete this.instances[docName];
       --this.instanceCount;
     }
@@ -76,11 +82,11 @@ export class Manager {
     }
     if (this.cleanUpInterval) {
       clearInterval(this.cleanUpInterval);
-      this.cleanUpInterval = null;
+      this.cleanUpInterval = undefined;
     }
   }
 
-  async _newInstance(docName, doc) {
+  async _newInstance(docName: string, doc?: Node) {
     log('creating new instance', docName);
     const { instances } = this;
     let created;
@@ -93,30 +99,36 @@ export class Manager {
 
     if (++this.instanceCount > this.maxCount) {
       let oldest = null;
-      for (let id in instances) {
-        let inst = instances[id];
+      for (let inst of Object.values(instances)) {
         if (!oldest || inst.lastActive < oldest.lastActive) {
           oldest = inst;
         }
       }
-      this._stopInstance(oldest.docName);
+      if (oldest) {
+        this._stopInstance(oldest.docName);
+      }
     }
-    return (instances[docName] = new Instance({
+    const scheduleSave = (final?: boolean): void => {
+      const instance = instances[docName];
+      if (!instance) {
+        return;
+      }
+      final
+        ? this.disk.flush(docName, instance.doc)
+        : this.disk.update(docName, () => instance.doc);
+    };
+
+    return (instances[docName] = new Instance(
       docName,
+      this.schema,
       doc,
-      schema: this.schema,
-      scheduleSave: (final) => {
-        const instance = instances[docName];
-        final
-          ? this.disk.flush(docName, instance.doc)
-          : this.disk.update(docName, () => instance.doc);
-      },
+      scheduleSave,
       created,
-      collectUsersTimeout: this.opts.collectUsersTimeout,
-    }));
+      this.collectUsersTimeout,
+    ));
   }
 
-  async handleRequest(path, payload) {
+  async handleRequest(path: string, payload: any) {
     if (!this.routes[path]) {
       throw new Error('Path not found');
     }
@@ -125,15 +137,16 @@ export class Manager {
       throw new Error('Must have user id');
     }
 
-    if (this.opts.interceptRequests) {
-      await this.opts.interceptRequests(path, payload);
+    if (this.interceptRequests) {
+      await this.interceptRequests(path, payload);
     }
 
     log(`request to ${path} from `, payload.userId);
-    return this.routes[path](payload);
+    const route: any = this.routes[path];
+    return route(payload);
   }
 
-  async _getInstanceQueued(docName, userId) {
+  async _getInstanceQueued(docName: string, userId: string) {
     if (!userId) {
       throw new Error('userId is required');
     }
@@ -148,7 +161,7 @@ export class Manager {
   }
 }
 
-function nonNegInteger(str) {
+function nonNegInteger(str: any) {
   let num = Number(str);
   if (!isNaN(num) && Math.floor(num) === num && num >= 0) {
     return num;
@@ -159,21 +172,19 @@ function nonNegInteger(str) {
 
 // Object that represents an HTTP response.
 class Output {
-  constructor(body) {
-    this.body = body;
-    this.responded = false;
-  }
+  responded: boolean = false;
+  constructor(public body: OutputData) {}
 
-  static outputEvents(inst, data) {
+  static outputEvents(inst: Instance, data: any) {
     return Output.json({
       version: inst.version,
-      steps: data.steps.map((s) => s.toJSON()),
-      clientIDs: data.steps.map((step) => step.clientID),
+      steps: data.steps.map((step: StepBigger) => step.toJSON()),
+      clientIDs: data.steps.map((step: StepBigger) => step.clientID),
       users: data.users,
     });
   }
 
-  static json(data) {
+  static json(data: OutputData) {
     return new Output(data);
   }
 
@@ -186,12 +197,38 @@ class Output {
   }
 }
 
-function generateRoutes(schema, getInstance, userWaitTimeout) {
+interface OutputData {
+  doc?: { [key: string]: any };
+  // TODO users cannot be a number lol
+  users?: number;
+  version?: number;
+  steps?: Array<{ [key: string]: any }>;
+  clientIDs?: string[];
+}
+
+function generateRoutes(
+  schema: Schema,
+  getInstance: (
+    docName: string,
+    userId: string,
+  ) => Promise<Instance | undefined>,
+  userWaitTimeout: number,
+) {
   const routes = {
-    get_document: async ({ docName, userId }) => {
+    get_document: async ({
+      docName,
+      userId,
+    }: {
+      docName: string;
+      userId: string;
+    }) => {
       log('get_document', { docName, userId });
 
       let inst = await getInstance(docName, userId);
+      // TODO better propogating of these errors
+      if (!inst) {
+        throw new Error('Instance not found');
+      }
       return Output.json({
         doc: inst.doc.toJSON(),
         users: inst.userCount,
@@ -199,21 +236,34 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       });
     },
 
-    get_events: async ({ docName, version, userId }) => {
+    get_events: async ({
+      docName,
+      version,
+      userId,
+    }: {
+      docName: string;
+      version: number;
+      userId: string;
+    }) => {
       // An endpoint for a collaborative document instance which
       // returns all events between a given version and the server's
       // current version of the document.
       version = nonNegInteger(version);
 
-      let inst = await getInstance(docName, userId);
-      let data = inst.getEvents(version);
+      let instance = await getInstance(docName, userId);
+
+      if (instance == null) {
+        throw new Error('Instance not found');
+      }
+
+      let data = instance.getEvents(version);
       if (data === false) {
         throw new CollabError(410, 'History no longer available');
       }
       // If the server version is greater than the given version,
       // return the data immediately.
       if (data.steps.length) {
-        return Output.outputEvents(inst, data);
+        return Output.outputEvents(instance, data);
       }
       // If the server version matches the given version,
       // wait until a new version is published to return the event data.
@@ -222,7 +272,14 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       // decide to close the get_events request.
       let abort;
 
-      const waitForChanges = new Promise((res) => {
+      const waitForChanges = new Promise<void>((res) => {
+        const inst = instance;
+
+        if (inst == null) {
+          res();
+          return;
+        }
+
         // An object to assist in waiting for a collaborative editing
         // instance to publish a new version before sending the version
         // event data to the client.
@@ -249,12 +306,13 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       try {
         await raceTimeout(waitForChanges, userWaitTimeout);
         log('finished');
-        return Output.outputEvents(inst, inst.getEvents(version, null));
+        return Output.outputEvents(instance, instance.getEvents(version));
       } catch (err) {
         if (err.timeout === true) {
           log('timeout aborting');
           if (abort) {
-            abort();
+            // TODO fix this
+            (abort as any)();
           }
           return Output.json({});
         }
@@ -262,11 +320,26 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
       }
     },
 
-    push_events: async ({ clientID, version, steps, docName, userId }) => {
+    push_events: async ({
+      clientID,
+      version,
+      steps,
+      docName,
+      userId,
+    }: {
+      clientID: string;
+      steps: any[];
+      docName: string;
+      version: number;
+      userId: string;
+    }) => {
       version = nonNegInteger(version);
       steps = steps.map((s) => Step.fromJSON(schema, s));
       const instance = await getInstance(docName, userId);
-      log('recevied version =', version, 'server version', instance.version);
+      if (!instance) {
+        throw new Error('Instance not found');
+      }
+      log('received version =', version, 'server version', instance.version);
       let result = instance.addEvents(version, steps, clientID);
 
       if (!result) {
@@ -280,13 +353,16 @@ function generateRoutes(schema, getInstance, userWaitTimeout) {
     },
   };
 
-  return objectMapValues(routes, (route) => {
-    return async (...args) => {
-      let result = await route(...args);
-      if (!(result instanceof Output)) {
-        throw new Error('Only output allow');
-      }
-      return result.resp();
-    };
-  });
+  function mapRoutes<T>(routes: {
+    [key: string]: (...args: T[]) => Promise<Output>;
+  }) {
+    return objectMapValues(routes, (route) => {
+      return async (...args: T[]) => {
+        let result = await route(...args);
+        return result.resp();
+      };
+    });
+  }
+
+  return mapRoutes(routes);
 }

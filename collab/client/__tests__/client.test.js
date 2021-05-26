@@ -9,7 +9,7 @@ import {
   typeText,
   renderTestEditor,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import { CollabError } from '../../collab-error';
+import { CollabError } from '@bangle.dev/collab-server';
 import { Selection } from '@bangle.dev/core/prosemirror/state';
 import * as collab from '../collab-extension';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';

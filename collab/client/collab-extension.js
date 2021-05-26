@@ -19,7 +19,8 @@ import {
 } from '@bangle.dev/core/utils/js-utils';
 
 import { replaceDocument } from './helpers';
-import { CollabError } from '../collab-error';
+import { CollabError } from '@bangle.dev/collab-server';
+
 import { Emitter } from './emitter';
 
 const LOG = false;

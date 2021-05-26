@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab",
-  "version": "0.14.0",
+  "version": "0.14.0-alpha",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -27,7 +27,7 @@
     "@bangle.dev/core": "workspace:*"
   },
   "dependencies": {
-    "@bangle.dev/collaboration": "workspace:*",
+    "@bangle.dev/collab-server": "workspace:*",
     "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2"
   },

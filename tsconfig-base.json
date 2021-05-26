@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "esnext",
+        "module": "ES2020",
         "target": "es2019",
         "strict": true,
         "declaration": true,
@@ -9,5 +9,20 @@
         "removeComments": true,
         "allowSyntheticDefaultImports": true,
         "composite": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": false,
+        "jsx": "react",
+        "newLine": "lf",
+        "pretty": true,
+        "stripInternal": true,
+        "noEmitOnError": false,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "useDefineForClassFields": true,
+        "skipLibCheck": true
     },
 }

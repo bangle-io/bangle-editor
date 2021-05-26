@@ -2110,27 +2110,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:collab-server":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/collab-server@workspace:collab-server"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    "@types/jest": ^26.0.23
+    "@types/node": ^15.6.1
+    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-transform": ^1.1.3
+    localforage: ^1.9.0
+    prosemirror-collab: ^1.2.2
+    prosemirror-model: ^1.14.1
+    prosemirror-transform: ^1.2.8
+  peerDependencies:
+    "@bangle.dev/core": "*"
+    prosemirror-model: "*"
+    prosemirror-transform: "*"
+  languageName: unknown
+  linkType: soft
+
 "@bangle.dev/collab@workspace:*, @bangle.dev/collab@workspace:collab":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collab@workspace:collab"
   dependencies:
-    "@bangle.dev/collaboration": "workspace:*"
+    "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
   peerDependencies:
     "@bangle.dev/core": "*"
-  languageName: unknown
-  linkType: soft
-
-"@bangle.dev/collaboration@workspace:*, @bangle.dev/collaboration@workspace:collaboration":
-  version: 0.0.0-use.local
-  resolution: "@bangle.dev/collaboration@workspace:collaboration"
-  dependencies:
-    "@types/jest": ^26.0.23
-    "@types/node": ^15.6.1
-    localforage: ^1.9.0
-    prosemirror-collab: ^1.2.2
   languageName: unknown
   linkType: soft
 
@@ -3853,6 +3862,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/orderedmap@npm:*":
+  version: 1.0.0
+  resolution: "@types/orderedmap@npm:1.0.0"
+  checksum: 8629e0046e02ec09edf3787c4c592b8b026ff354be5f7a837e81367fb98c8606c0702a02bcf2a94d346b917ee3ae869311efbcec4e85941ae78cb7c18d9ee96b
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -3878,6 +3894,24 @@ __metadata:
   version: 15.7.3
   resolution: "@types/prop-types@npm:15.7.3"
   checksum: 41831d53c44c9eeafdaf9762bcb4553c13a3bbf990745ed9065a1cc3581b80633113b53fd49b202bf51731b258da5d0a9aa09c9035d5af7f78b0f6bc273f1325
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-model@npm:*, @types/prosemirror-model@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@types/prosemirror-model@npm:1.13.0"
+  dependencies:
+    "@types/orderedmap": "*"
+  checksum: a04e3b88faeb240f0df8eb6c6db28c44bc8b354badb27e3ba5e865ff3456d139f032aeec96de73b2f804401d8074d1f87b416901c2b4cc7a2a6a083a58873743
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-transform@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@types/prosemirror-transform@npm:1.1.3"
+  dependencies:
+    "@types/prosemirror-model": "*"
+  checksum: ff34c0602f33710ab64179042060b57dc925751914100e836934b1b2415ec3ec3c2e6d43b4d77ae5d7f2842ea1e37cec2ec4c5ff882393eac5129be91663d2ae
   languageName: node
   linkType: hard
 

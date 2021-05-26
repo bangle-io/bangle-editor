@@ -10,7 +10,8 @@ import {
   spinEditors,
   expectToHaveIdenticalElements,
 } from '../collab-test-helpers';
-import { CollabError } from '../collab-error';
+import { CollabError } from '@bangle.dev/collab-server';
+
 import { RECOVERY_BACK_OFF } from '../client/collab-extension';
 jest.mock('localforage', () => ({
   config: jest.fn(),

@@ -2,10 +2,10 @@
     "files": [],
     "references": [
         {
-            "path": "./collaboration/tsconfig.json"
+            "path": "./collab-server/tsconfig.json"
         },
         {
-            "path": "./collaboration/tsconfig.test.json"
+            "path": "./collab-server/tsconfig.test.json"
         }
     ]
 }

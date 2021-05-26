@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { Manager } from './server/manager';
+import { Manager } from '@bangle.dev/collab-server';
 import {
   renderTestEditor,
   sendKeyToPm,

@@ -1,22 +1,26 @@
-export class Emitter {
-  constructor() {
-    this._callbacks = {};
-  }
+export interface Listeners<T> {
+  [name: string]: Listener<T>[];
+}
+export type Listener<T = any> = (data: T) => void;
+
+export class Emitter<T> {
+  _callbacks: Listeners<T> = {};
+
   // Add an event listener for given event
-  on(event, fn) {
+  on(event: string, fn: Listener<T>) {
     // Create namespace for this event
     if (!this._callbacks[event]) {
       this._callbacks[event] = [];
     }
-    this._callbacks[event].push(fn);
+    this._callbacks[event]!.push(fn);
     return this;
   }
 
-  emit(event, ...args) {
+  emit(event: string, data: T) {
     const callbacks = this._callbacks[event];
 
     if (callbacks) {
-      callbacks.forEach((callback) => callback.apply(this, args));
+      callbacks.forEach((callback) => callback(data));
     }
 
     return this;
@@ -25,7 +29,7 @@ export class Emitter {
   // Remove event listener for given event.
   // If fn is not provided, all event listeners for that event will be removed.
   // If neither is provided, all event listeners will be removed.
-  off(event, fn) {
+  off(event: string, fn: Listener<T>) {
     if (!arguments.length) {
       this._callbacks = {};
     } else {

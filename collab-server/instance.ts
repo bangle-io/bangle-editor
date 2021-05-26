@@ -1,43 +1,45 @@
-import { CollabError } from '../collab-error';
+import { Step, StepMap } from 'prosemirror-transform';
+import { Schema, Node } from 'prosemirror-model';
+import { CollabError } from './collab-error';
 
 const MAX_STEP_HISTORY = 1000;
 
 const LOG = false;
 
-function log(...args) {
+function log(...args: any[]) {
   if (LOG) {
     console.log('collab/server/instance', ...args);
   }
 }
+interface Waiter {
+  userId: string;
+  onFinish: () => void;
+}
+
+export interface StepBigger extends Step {
+  clientID: string;
+}
 
 export class Instance {
-  constructor({
-    docName,
-    doc,
-    schema,
-    scheduleSave,
-    created,
-    collectUsersTimeout,
-  } = {}) {
-    this.scheduleSave = scheduleSave;
-    this.docName = docName;
-    this.doc =
-      doc ||
-      schema.node('doc', null, [
-        schema.node('paragraph', null, [schema.text('Namaste!')]),
-      ]);
-    // The version number of the document instance.
-    this.version = 0;
-    this.steps = [];
-    this.lastActive = Date.now();
-    this.users = Object.create(null);
-    this.userCount = 0;
-    this.waiting = [];
-    this.collecting = null;
-    this.lastModified = this.lastActive;
-    this.collectUsersTimeout = collectUsersTimeout;
-    this.created = created || Date.now();
-  }
+  version = 0;
+  steps: StepBigger[] = [];
+  lastActive = Date.now();
+  users = Object.create(null);
+  userCount = 0;
+  waiting: Array<Waiter> = [];
+  collecting: number | null = null;
+  lastModified = this.lastActive;
+
+  constructor(
+    public docName: string,
+    public schema: Schema,
+    public doc: Node = schema.node('doc', {}, [
+      schema.node('paragraph', {}, [schema.text('Namaste!')]),
+    ]),
+    public scheduleSave: (final?: boolean) => void,
+    public created: number = Date.now(),
+    public collectUsersTimeout: number,
+  ) {}
 
   stop() {
     if (this.collecting != null) {
@@ -47,19 +49,28 @@ export class Instance {
     }
   }
 
-  addEvents(version, steps, clientID) {
+  addEvents(version: number, steps: StepBigger[], clientID: string) {
+    // TODO this checkversion is not covered
     this.checkVersion(version);
+
     if (this.version !== version) {
-      log('this version', this.version, 'not same as ', version);
+      // TODO returning false gives 409 but if we donot give 409 error
+      // tests donot fail
       return false;
     }
     let doc = this.doc,
-      maps = [];
-    for (let i = 0; i < steps.length; i++) {
-      steps[i].clientID = clientID;
-      let result = steps[i].apply(doc);
+      maps: StepMap[] = [];
+
+    for (const step of steps) {
+      step.clientID = clientID;
+      let result = step.apply(doc);
+      if (result.doc == null) {
+        // TODO if the apply gives error what to do?
+        throw new Error('Applying failed');
+      }
+
       doc = result.doc;
-      maps.push(steps[i].getMap());
+      maps.push(step.getMap());
     }
     this.doc = doc;
     this.version += steps.length;
@@ -68,23 +79,22 @@ export class Instance {
       this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
     }
 
-    this.sendUpdates();
+    Instance.sendUpdates(this.waiting);
     this.scheduleSave();
     return { version: this.version };
   }
 
-  sendUpdates() {
-    while (this.waiting.length) {
-      const popped = this.waiting.pop();
-      log('sending up to user:', popped.userId);
-      popped.onFinish();
+  static sendUpdates(waiting: Waiter[]) {
+    while (waiting.length) {
+      const popped = waiting.pop();
+      popped && log('sending up to user:', popped?.userId);
+      popped?.onFinish();
     }
   }
-
   // : (Number)
   // Check if a document version number relates to an existing
   // document version.
-  checkVersion(version) {
+  checkVersion(version: any) {
     if (typeof version !== 'number') {
       throw new Error('version is not a number');
     }
@@ -96,7 +106,7 @@ export class Instance {
   // : (Number, Number)
   // Get events between a given document version and
   // the current document version.
-  getEvents(version) {
+  getEvents(version: number) {
     this.checkVersion(version);
     let startIndex = this.steps.length - (this.version - version);
     if (startIndex < 0) {
@@ -116,23 +126,24 @@ export class Instance {
     this.collecting = null;
     log('collectUsers', [...Object.entries(this.users || {})]);
     log('waiting', [...this.waiting.map((r) => r.userId)]);
-    for (let i = 0; i < this.waiting.length; i++) {
-      this._registerUser(this.waiting[i].userId);
+    for (const waiter of this.waiting) {
+      this._registerUser(waiter.userId);
     }
+
     if (this.userCount !== oldUserCount) {
-      this.sendUpdates();
+      Instance.sendUpdates(this.waiting);
     }
   }
 
-  registerUser(userId) {
+  registerUser(userId: string) {
     log('registerUser', [...Object.entries(this.users || {})]);
     if (!(userId in this.users)) {
       this._registerUser(userId);
-      this.sendUpdates();
+      Instance.sendUpdates(this.waiting);
     }
   }
   // TODO when switching docs its a good idea to kill users
-  _registerUser(userId) {
+  _registerUser(userId: string) {
     if (!(userId in this.users)) {
       this.users[userId] = true;
       this.userCount++;

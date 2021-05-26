@@ -1,6 +1,6 @@
 {
   "name": "banglejs",
-  "version": "0.14.0",
+  "version": "0.14.0-alpha",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -30,7 +30,7 @@
     "react-menu",
     "tooltip",
     "table",
-    "collaboration",
+    "collab-server",
     "contrib/*"
   ],
   "scripts": {
@@ -41,7 +41,8 @@
     "integration-tests": "yarn e2e:test",
     "lint": "yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
-    "release-packages": "yarn workspaces foreach -v --all --no-private npm publish"
+    "release-packages": "yarn workspaces foreach -v --all --no-private npm publish",
+    "g:tsc": "yarn tsc"
   },
   "prettier": {
     "singleQuote": true,
