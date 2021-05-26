@@ -27,6 +27,7 @@
     "@bangle.dev/core": "workspace:*"
   },
   "dependencies": {
+    "@bangle.dev/collaboration": "workspace:*",
     "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2"
   },

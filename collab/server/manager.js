@@ -6,6 +6,7 @@ import {
 } from '@bangle.dev/core/utils/js-utils';
 import { Instance } from './instance';
 import { CollabError } from '../collab-error';
+
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};

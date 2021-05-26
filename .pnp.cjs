@@ -4831,6 +4831,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-virtual-7fb92abaa4/1/collab/",
           "packageDependencies": [
             ["@bangle.dev/collab", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab"],
+            ["@bangle.dev/collaboration", "workspace:collaboration"],
             ["@bangle.dev/core", "workspace:core"],
             ["@types/bangle.dev__core", null],
             ["localforage", "npm:1.9.0"],
@@ -4846,6 +4847,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./collab/",
           "packageDependencies": [
             ["@bangle.dev/collab", "workspace:collab"],
+            ["@bangle.dev/collaboration", "workspace:collaboration"],
             ["@bangle.dev/core", "workspace:core"],
             ["localforage", "npm:1.9.0"],
             ["prosemirror-collab", "npm:1.2.2"]
@@ -4858,7 +4860,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./collaboration/",
           "packageDependencies": [
             ["@bangle.dev/collaboration", "workspace:collaboration"],
-            ["@bangle.dev/core", "workspace:core"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.6.1"],
             ["localforage", "npm:1.9.0"],

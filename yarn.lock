@@ -2114,6 +2114,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collab@workspace:collab"
   dependencies:
+    "@bangle.dev/collaboration": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
@@ -2122,17 +2123,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/collaboration@workspace:collaboration":
+"@bangle.dev/collaboration@workspace:*, @bangle.dev/collaboration@workspace:collaboration":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collaboration@workspace:collaboration"
   dependencies:
-    "@bangle.dev/core": "workspace:*"
     "@types/jest": ^26.0.23
     "@types/node": ^15.6.1
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
-  peerDependencies:
-    "@bangle.dev/core": "*"
   languageName: unknown
   linkType: soft
 
