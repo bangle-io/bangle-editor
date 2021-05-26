@@ -1903,6 +1903,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@bangle.dev/collaboration@workspace:collaboration":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/collaboration@workspace:collaboration"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    "@types/node": ^15.6.1
+    localforage: ^1.9.0
+    prosemirror-collab: ^1.2.2
+    typescript: ^4.2.4
+  peerDependencies:
+    "@bangle.dev/core": "*"
+  languageName: unknown
+  linkType: soft
+
 "@bangle.dev/core@workspace:*, @bangle.dev/core@workspace:core":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/core@workspace:core"
@@ -3595,6 +3609,13 @@ __metadata:
   version: 13.13.30
   resolution: "@types/node@npm:13.13.30"
   checksum: 804a180b49a8aa90c101e69761339c4c3e48f19849f4fbeefb2288a2f37e010c824e7900fe37a8e1b06600d9b31764e20fa0f82438c70f6cc153cc88b4133b1a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^15.6.1":
+  version: 15.6.1
+  resolution: "@types/node@npm:15.6.1"
+  checksum: 8ed16d4f7404203d3aade0b73e58c969fab4a721cfe637eff9b739f6b25a35e33dfe9e0961b9ac5994d629302faa977f8ee8931d09187a136875f966332cc552
   languageName: node
   linkType: hard
 
@@ -5328,6 +5349,7 @@ __metadata:
     "@babel/plugin-proposal-optional-chaining": ^7.12.7
     "@babel/preset-env": ^7.12.7
     "@babel/preset-react": ^7.12.7
+    "@types/node": ^15.6.1
     "@typescript-eslint/eslint-plugin": ^4.9.1
     "@typescript-eslint/parser": ^4.9.1
     "@yarnpkg/pnpify": ^2.4.0
@@ -5349,6 +5371,7 @@ __metadata:
     jest-circus: ^26.6.3
     lint-staged: ^10.5.3
     prettier: ^2.3.0
+    typescript: ^4.2.4
   languageName: unknown
   linkType: soft
 
@@ -19844,6 +19867,26 @@ fsevents@^1.2.7:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
+  languageName: node
+  linkType: hard
+
+typescript@^4.2.4:
+  version: 4.2.4
+  resolution: "typescript@npm:4.2.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 89c397df192f239359ad798b96d8e8d552e12c0c189ac5676cec4c20c410d6eec636b8e59a88f2aef0a56d961a9678d99c400099be9b7cae2f7b062eb4b7b171
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.2.4#~builtin<compat/typescript>":
+  version: 4.2.4
+  resolution: "typescript@patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 083de437033ea11e57b0c66305a2c1d6d05e9383e57de2af405b0833ab68bd96d82d1f4f317fac06f3420410a006244648cf70278f58b3b4d55632dc7aeb8d4a
   languageName: node
   linkType: hard
 
