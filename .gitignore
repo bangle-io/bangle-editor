@@ -29,3 +29,5 @@ _bangle-website/docs/api
 /dist
 
 dist
+
+*.tsbuildinfo

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es2017",
+        "strict": true,
+        "declaration": true,
+        "moduleResolution": "node",
+        "declarationMap": true,
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "composite": true,
+    },
+}
