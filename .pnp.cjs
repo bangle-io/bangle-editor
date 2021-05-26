@@ -141,7 +141,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-optional-chaining", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:7.12.7"],
             ["@babel/preset-env", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:7.12.7"],
             ["@babel/preset-react", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:7.12.7"],
-            ["@types/node", "npm:15.6.1"],
             ["@typescript-eslint/eslint-plugin", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:4.9.1"],
             ["@typescript-eslint/parser", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:4.9.1"],
             ["@yarnpkg/pnpify", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:2.4.0"],
@@ -4616,8 +4615,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core", "workspace:core"],
             ["@types/node", "npm:15.6.1"],
             ["localforage", "npm:1.9.0"],
-            ["prosemirror-collab", "npm:1.2.2"],
-            ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"]
+            ["prosemirror-collab", "npm:1.2.2"]
           ],
           "linkType": "SOFT",
         }]
@@ -9514,7 +9512,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-optional-chaining", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:7.12.7"],
             ["@babel/preset-env", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:7.12.7"],
             ["@babel/preset-react", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:7.12.7"],
-            ["@types/node", "npm:15.6.1"],
             ["@typescript-eslint/eslint-plugin", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:4.9.1"],
             ["@typescript-eslint/parser", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:4.9.1"],
             ["@yarnpkg/pnpify", "virtual:cfb2d9a98547a59c298869ba4171abe698f6be772bdd867fd3ad3c02ed8a3ea88b2ff5a9411febb82fb79608eda2b1edecfb6fd1b1e7ea6159d1124b27750b92#npm:2.4.0"],
