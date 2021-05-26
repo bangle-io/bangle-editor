@@ -11,3 +11,5 @@ _bangle-website/.docusaurus
 _bangle-website/.cache-loader
 
 build
+
+dist
