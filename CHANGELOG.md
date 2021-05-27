@@ -2,7 +2,7 @@
 
 ## HEAD
 
-**@bangle.dev/core**
+- feat: A new and improved emoji suggest tooltip.
 
 - bug: Fixed inserting a horizontal break above a paragraph https://github.com/bangle-io/bangle.dev/pull/194
 

@@ -1,14 +1,21 @@
-import { bangleWarn, rafCommandExec } from '@bangle.dev/core/utils/js-utils';
+import {
+  bangleWarn,
+  rafCommandExec,
+  uuid,
+} from '@bangle.dev/core/utils/js-utils';
 import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip/index';
 import { PluginKey } from '@bangle.dev/core';
 import {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,
+  updateSuggestTooltipCounter,
   removeSuggestMark,
   resetSuggestTooltipCounter,
+  defaultKeys,
 } from '@bangle.dev/tooltip/suggest-tooltip';
 import { valuePlugin } from '@bangle.dev/core/utils/pm-utils';
 import { pluginKeyStore } from '@bangle.dev/core/utils/plugin-key-store';
+import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -18,7 +25,7 @@ export const commands = {
 };
 
 const defaultTrigger = ':';
-const defaultMaxItems = 200;
+const defaultMaxItems = 2000;
 function specFactory({ markName, trigger = defaultTrigger } = {}) {
   const spec = suggestTooltip.spec({ markName, trigger });
 
@@ -37,8 +44,12 @@ function pluginsFactory({
   key = new PluginKey('emojiSuggestMenu'),
   markName,
   tooltipRenderOpts = {},
-  emojis,
+  getEmojiGroups,
   maxItems = defaultMaxItems,
+  squareSide = 32,
+  squareMargin = 2,
+  rowWidth = 400,
+  palettePadding = 16,
 } = {}) {
   return ({ schema, specRegistry }) => {
     const { trigger } = specRegistry.options[markName];
@@ -59,32 +70,75 @@ function pluginsFactory({
       throw new Error(`markName ${markName} not found`);
     }
 
-    const updateCounter = (key = 'UP') => {
+    const selectedEmojiSquareId = uuid(6);
+
+    const updateCounter = (keyType) => {
       return (state, dispatch, view) => {
         requestAnimationFrame(() => {
+          const selectedEmoji = document.getElementById(selectedEmojiSquareId);
+          if (selectedEmoji) {
+            if ('scrollIntoViewIfNeeded' in document.body) {
+              selectedEmoji.scrollIntoViewIfNeeded(false);
+            } else if (selectedEmoji.scrollIntoView) {
+              selectedEmoji.scrollIntoView(false);
+            }
+          }
           view.focus();
         });
-        if (key === 'UP' ? !getIsTop() : getIsTop()) {
+        if (keyType === 'LEFT') {
           return decrementSuggestTooltipCounter(suggestTooltipKey)(
             state,
             dispatch,
             view,
           );
-        } else {
+        }
+        if (keyType === 'RIGHT') {
           return incrementSuggestTooltipCounter(suggestTooltipKey)(
             state,
             dispatch,
             view,
           );
         }
+
+        const goUp = keyType === 'UP' ? !getIsTop() : getIsTop();
+        const namedEmojiGroups = getEmojiGroups(queryTriggerText(key)(state));
+
+        const { counter } = suggestTooltipKey.getState(state);
+        const { rowCount } = getSquareDimensions({
+          rowWidth,
+          squareMargin,
+          squareSide,
+        });
+
+        const newCounter = resolveRowJump(
+          counter,
+          goUp ? -1 : 1,
+          rowCount,
+          namedEmojiGroups,
+        );
+
+        if (newCounter == null) {
+          return false;
+        }
+
+        return updateSuggestTooltipCounter(suggestTooltipKey, newCounter)(
+          state,
+          dispatch,
+          view,
+        );
       };
     };
     return [
       valuePlugin(key, {
-        emojis,
+        getEmojiGroups,
         maxItems,
         tooltipContentDOM: tooltipDOMSpec.contentDOM,
         markName,
+        squareSide,
+        squareMargin,
+        palettePadding,
+        selectedEmojiSquareId,
+        rowWidth,
       }),
       suggestTooltip.plugins({
         key: suggestTooltipKey,
@@ -94,42 +148,40 @@ function pluginsFactory({
           ...tooltipRenderOpts,
           tooltipDOMSpec,
         },
+
+        keybindings: {
+          ...defaultKeys,
+          left: 'ArrowLeft',
+          right: 'ArrowRight',
+        },
+
         onEnter: (state, dispatch, view) => {
-          const matchedEmojis = getEmojis(
-            emojis,
-            queryTriggerText(key)(state),
-            maxItems,
-          );
+          const emojiGroups = getEmojiGroups(queryTriggerText(key)(state));
+          const matchedEmojis = emojiGroups.flatMap((r) => r[1]);
+
           if (matchedEmojis.length === 0) {
             return removeSuggestMark(key)(state, dispatch, view);
           }
+
           const { counter } = suggestTooltipKey.getState(state);
-          const emojiAlias =
-            matchedEmojis[getActiveIndex(counter, matchedEmojis.length)][0];
+          const { item: activeItem } = resolveCounter(counter, emojiGroups);
+
+          if (!activeItem) {
+            return removeSuggestMark(key)(state, dispatch, view);
+          }
+
+          const emojiAlias = activeItem[0];
           rafCommandExec(view, resetSuggestTooltipCounter(suggestTooltipKey));
           return selectEmoji(key, emojiAlias)(state, dispatch, view);
         },
+
         onArrowDown: updateCounter('DOWN'),
         onArrowUp: updateCounter('UP'),
+        onArrowLeft: updateCounter('LEFT'),
+        onArrowRight: updateCounter('RIGHT'),
       }),
     ];
   };
-}
-
-export function getEmojis(emojis, queryText, maxItems = defaultMaxItems) {
-  if (!queryText) {
-    return emojis.slice(0, maxItems);
-  } else {
-    return emojis
-      .filter(([item]) => item.includes(queryText))
-      .slice(0, maxItems);
-  }
-}
-
-export function getActiveIndex(counter, size) {
-  const r = counter % size;
-
-  return r < 0 ? r + size : r;
 }
 
 export function getSuggestTooltipKey(key) {

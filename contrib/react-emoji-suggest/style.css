@@ -5,12 +5,8 @@
  */
 
 .bangle-emoji-suggest {
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: scroll;
-  padding: 0.25rem;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid;
@@ -18,29 +14,31 @@
   background-color: white;
 }
 
-.bangle-tooltip[data-popper-placement='top-start'] .bangle-emoji-suggest {
-  flex-direction: column-reverse;
-}
-
-.bangle-emoji-suggest > .bangle-row {
-  padding-left: 3px;
-  padding-right: 16px;
-  height: 100%;
+.bangle-emoji-suggest-container .bangle-emoji-square {
+  padding: 0;
+  content-visibility: auto;
+  background-color: transparent;
+  overflow: none;
+  border-width: 0;
   cursor: pointer;
 }
 
-.bangle-emoji-suggest > .bangle-row.bangle-is-selected {
+.bangle-emoji-suggest-container .bangle-emoji-square.bangle-is-selected {
   background-color: teal;
+  border-radius: 2px;
 }
 
-.bangle-emoji-suggest > .bangle-row:hover {
-  background-color: teal;
+.bangle-emoji-suggest-container .bangle-emoji-suggest-group:not(:first-child) {
+  margin-top: 16px;
 }
 
-.bangle-emoji-suggest > .bangle-row > span {
-  font-size: 1.25rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  user-select: none;
+.bangle-emoji-suggest-container .bangle-emoji-suggest-group {
+  font-size: 0.75rem;
+  display: 'flex';
+  flex-direction: 'column';
+}
+
+.bangle-emoji-suggest-container .bangle-emoji-square:hover {
+  background-color: rgb(199, 199, 199);
+  border-radius: 2px;
 }
