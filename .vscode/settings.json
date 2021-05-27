@@ -16,12 +16,13 @@
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "files.exclude": {
-    // ".yarn/**": true
+    ".yarn/**": true
   },
   "search.exclude": {
     "**/.yarn": true,
-    "**/.pnp.*": true
-    // "**/build": true
+    "**/.pnp.*": true,
+    "**/build": true,
+    "**/dist": true
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
