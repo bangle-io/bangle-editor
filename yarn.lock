@@ -2136,10 +2136,28 @@ __metadata:
   dependencies:
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
+    "@types/jest": ^26.0.23
+    "@types/node": ^15.6.1
+    "@types/prosemirror-collab": ^1.1.1
+    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-state": ^1.2.6
+    "@types/prosemirror-transform": ^1.1.3
+    "@types/prosemirror-view": ^1.17.1
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
+    prosemirror-model: ^1.14.1
+    prosemirror-state: ^1.3.4
+    prosemirror-transform: ^1.2.8
+    prosemirror-view: ^1.18.7
+    strict-event-emitter-types: ^2.0.0
   peerDependencies:
+    "@bangle.dev/collab-server": "*"
     "@bangle.dev/core": "*"
+    prosemirror-collab: "*"
+    prosemirror-model: "*"
+    prosemirror-state: "*"
+    prosemirror-transform: "*"
+    prosemirror-view: "*"
   languageName: unknown
   linkType: soft
 
@@ -3897,6 +3915,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prosemirror-collab@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@types/prosemirror-collab@npm:1.1.1"
+  dependencies:
+    "@types/prosemirror-model": "*"
+    "@types/prosemirror-state": "*"
+    "@types/prosemirror-transform": "*"
+  checksum: 45e9d2791d3fa80b7435f01d5ab40bd7c9531184a40ad72e3af963b041e8cdefdb1faa69c65006d314523bae8d499ba9f7d26d98eb25cf268ffedc40f63c91a2
+  languageName: node
+  linkType: hard
+
 "@types/prosemirror-model@npm:*, @types/prosemirror-model@npm:^1.13.0":
   version: 1.13.0
   resolution: "@types/prosemirror-model@npm:1.13.0"
@@ -3906,12 +3935,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-transform@npm:^1.1.3":
+"@types/prosemirror-state@npm:*, @types/prosemirror-state@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@types/prosemirror-state@npm:1.2.6"
+  dependencies:
+    "@types/prosemirror-model": "*"
+    "@types/prosemirror-transform": "*"
+    "@types/prosemirror-view": "*"
+  checksum: b1491c523f4c55e4ecd25c8f63243d5b65bdc607c82c394e76821f32e85c98857cc98cc1e92c615a7762c990c3b3694842b500307ddd7e7d187cdd1beb7d703f
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-transform@npm:*, @types/prosemirror-transform@npm:^1.1.3":
   version: 1.1.3
   resolution: "@types/prosemirror-transform@npm:1.1.3"
   dependencies:
     "@types/prosemirror-model": "*"
   checksum: ff34c0602f33710ab64179042060b57dc925751914100e836934b1b2415ec3ec3c2e6d43b4d77ae5d7f2842ea1e37cec2ec4c5ff882393eac5129be91663d2ae
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-view@npm:*, @types/prosemirror-view@npm:^1.17.1":
+  version: 1.17.1
+  resolution: "@types/prosemirror-view@npm:1.17.1"
+  dependencies:
+    "@types/prosemirror-model": "*"
+    "@types/prosemirror-state": "*"
+    "@types/prosemirror-transform": "*"
+  checksum: 0367cd6547c12db492fbf2d2e18cddc8469b41398a12b136202f835363dc2c960c783fb5ca6d4f8f6c1d0ced9bd6d94e24237fd8add89b53fc0509563d688662
   languageName: node
   linkType: hard
 
@@ -19102,6 +19153,13 @@ fsevents@^1.2.7:
     end-of-stream: ~1.1.0
     stream-to-array: ~2.3.0
   checksum: 2c9ddb69c34d10ad27eb06197abc93fd1b1cd5f9597ead28ade4d6c57f4110d948a2ef14530f2f7b3b967f74f3554b57c38a4501b72a13b27fc8745bd7190d1d
+  languageName: node
+  linkType: hard
+
+"strict-event-emitter-types@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "strict-event-emitter-types@npm:2.0.0"
+  checksum: 91ef62364cad9ece9ab9984e806b1c6d947d0617437a25605fff0cbfae59ac6a8d641257a168c1d5f2909809a467c714f027fdccb70b6155d68eac0dc1535299
   languageName: node
   linkType: hard
 

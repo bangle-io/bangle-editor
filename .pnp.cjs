@@ -4833,12 +4833,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/collab", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab"],
             ["@bangle.dev/collab-server", "virtual:7fb92abaa433addd9ccf21270ebef5936aa2ef2860eb7bb8aeca255bb13cf24257a5f96695322d7190490606de86eb43e2a283b357b1c6d10ca04efc49e29782#workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@types/bangle.dev__collab-server", null],
             ["@types/bangle.dev__core", null],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/node", "npm:15.6.1"],
+            ["@types/prosemirror-collab", "npm:1.1.1"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["localforage", "npm:1.9.0"],
-            ["prosemirror-collab", "npm:1.2.2"]
+            ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-model", "npm:1.12.0"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-transform", "npm:1.2.7"],
+            ["prosemirror-view", "npm:1.16.3"],
+            ["strict-event-emitter-types", "npm:2.0.0"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
+            "@types/bangle.dev__collab-server",
             "@types/bangle.dev__core"
           ],
           "linkType": "SOFT",
@@ -4849,8 +4863,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/collab", "workspace:collab"],
             ["@bangle.dev/collab-server", "virtual:7fb92abaa433addd9ccf21270ebef5936aa2ef2860eb7bb8aeca255bb13cf24257a5f96695322d7190490606de86eb43e2a283b357b1c6d10ca04efc49e29782#workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/node", "npm:15.6.1"],
+            ["@types/prosemirror-collab", "npm:1.1.1"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["localforage", "npm:1.9.0"],
-            ["prosemirror-collab", "npm:1.2.2"]
+            ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-model", "npm:1.12.0"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-transform", "npm:1.2.7"],
+            ["prosemirror-view", "npm:1.16.3"],
+            ["strict-event-emitter-types", "npm:2.0.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -4873,7 +4899,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@bangle.dev/core",
-            "@types/bangle.dev__core"
+            "@types/bangle.dev__core",
+            "@types/prosemirror-model",
+            "@types/prosemirror-transform",
+            "prosemirror-model",
+            "prosemirror-transform"
           ],
           "linkType": "SOFT",
         }],
@@ -7613,6 +7643,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/prosemirror-collab", [
+        ["npm:1.1.1", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-collab-npm-1.1.1-887f99fab7-45e9d2791d.zip/node_modules/@types/prosemirror-collab/",
+          "packageDependencies": [
+            ["@types/prosemirror-collab", "npm:1.1.1"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-transform", "npm:1.1.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/prosemirror-model", [
         ["npm:1.13.0", {
           "packageLocation": "./.yarn/cache/@types-prosemirror-model-npm-1.13.0-4e27a0cb59-a04e3b88fa.zip/node_modules/@types/prosemirror-model/",
@@ -7623,12 +7665,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/prosemirror-state", [
+        ["npm:1.2.6", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-state-npm-1.2.6-bb81efd1a9-b1491c523f.zip/node_modules/@types/prosemirror-state/",
+          "packageDependencies": [
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["@types/prosemirror-view", "npm:1.17.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/prosemirror-transform", [
         ["npm:1.1.3", {
           "packageLocation": "./.yarn/cache/@types-prosemirror-transform-npm-1.1.3-a1ec033241-ff34c0602f.zip/node_modules/@types/prosemirror-transform/",
           "packageDependencies": [
             ["@types/prosemirror-transform", "npm:1.1.3"],
             ["@types/prosemirror-model", "npm:1.13.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-view", [
+        ["npm:1.17.1", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-view-npm-1.17.1-c12b145193-0367cd6547.zip/node_modules/@types/prosemirror-view/",
+          "packageDependencies": [
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-transform", "npm:1.1.3"]
           ],
           "linkType": "HARD",
         }]
@@ -25239,6 +25305,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["any-promise", "npm:1.3.0"],
             ["end-of-stream", "npm:1.1.0"],
             ["stream-to-array", "npm:2.3.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["strict-event-emitter-types", [
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/strict-event-emitter-types-npm-2.0.0-f24fda1f61-91ef62364c.zip/node_modules/strict-event-emitter-types/",
+          "packageDependencies": [
+            ["strict-event-emitter-types", "npm:2.0.0"]
           ],
           "linkType": "HARD",
         }]
