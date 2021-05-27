@@ -1,12 +1,15 @@
 export class CollabError extends Error {
-  constructor(errorCode, body) {
+  from?: string;
+  errorCode: number;
+  body: any;
+  constructor(errorCode: number, body: any) {
     super(body);
     this.errorCode = errorCode;
     this.body = body;
     // Error.captureStackTrace is a v8-specific method so not avilable on
     // Firefox or Safari
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, CollabError);
+    if ((Error as any).captureStackTrace) {
+      (Error as any).captureStackTrace(this, CollabError);
     } else {
       const stack = new Error().stack;
       if (stack) {

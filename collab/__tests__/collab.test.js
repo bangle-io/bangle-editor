@@ -9,7 +9,7 @@ import {
   setupDb,
   spinEditors,
   expectToHaveIdenticalElements,
-} from '../collab-test-helpers';
+} from './collab-test-helpers';
 import { CollabError } from '@bangle.dev/collab-server';
 
 import { RECOVERY_BACK_OFF } from '../client/collab-extension';

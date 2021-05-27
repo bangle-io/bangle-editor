@@ -6,6 +6,12 @@
         },
         {
             "path": "./collab-server/tsconfig.test.json"
+        },
+        {
+            "path": "./collab/tsconfig.json"
+        },
+        {
+            "path": "./collab/tsconfig.test.json"
         }
     ]
 }

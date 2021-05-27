@@ -1,13 +1,13 @@
-export interface Listeners<T> {
+interface Listeners<T> {
   [name: string]: Listener<T>[];
 }
-export type Listener<T = any> = (data: T) => void;
+type Listener<T = any> = (data: T) => void;
 
-export class Emitter<T> {
+export class Emitter<T = any> {
   _callbacks: Listeners<T> = {};
 
   // Add an event listener for given event
-  on(event: string, fn: Listener<T>) {
+  on(event: any, fn: any) {
     // Create namespace for this event
     if (!this._callbacks[event]) {
       this._callbacks[event] = [];
@@ -16,7 +16,7 @@ export class Emitter<T> {
     return this;
   }
 
-  emit(event: string, data: T) {
+  emit(event: any, data: any) {
     const callbacks = this._callbacks[event];
 
     if (callbacks) {
