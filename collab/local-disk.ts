@@ -1,4 +1,5 @@
 import { Disk } from './disk';
+import { Node } from 'prosemirror-model';
 
 const LOG = false;
 
@@ -9,7 +10,12 @@ let log = LOG ? console.log.bind(console, 'persistence/disk') : () => {};
  * into browsers storage.
  */
 export class LocalDisk extends Disk {
-  async _doSave(docName, doc) {
+  _saveTimeout: number | null = null;
+  _getItem;
+  _setItem;
+  _saveDebounce;
+  _pendingTimers: { [key: string]: () => void } = {};
+  async _doSave(docName: string, doc: Node) {
     log(docName, '_doSaveDoc  called');
 
     this._saveTimeout = null;
@@ -17,26 +23,29 @@ export class LocalDisk extends Disk {
     await this._setItem(docName, doc);
   }
 
-  /**
-   *
-   * @param {{getItem: (key) => Promise<Object>, setItem: (key, doc) => Promise<void>}} - Callback methods to make a call to save the data.
-   * @param {Object} options
-   */
-  constructor({ getItem, setItem }, { saveDebounce = 2000 } = {}) {
+  constructor(
+    {
+      getItem,
+      setItem,
+    }: {
+      getItem: (key: string) => Promise<any>;
+      setItem: (key: string, doc: Node) => Promise<void>;
+    },
+    { saveDebounce = 2000 } = {},
+  ) {
     super();
     this._getItem = getItem;
     this._setItem = setItem;
     this._saveTimeout = null;
     this._saveDebounce = saveDebounce;
-    this._pendingTimers = {};
   }
 
-  async load(docName) {
+  async load(docName: string) {
     let item = await this._getItem(docName);
     return item;
   }
 
-  async flush(docName, doc) {
+  async flush(docName: string, doc: Node) {
     log(docName, 'flush doc called');
     // clear the timeout so that we do not
     // overwrite the doc due to the timeout
@@ -48,7 +57,7 @@ export class LocalDisk extends Disk {
     this._doSave(docName, doc);
   }
 
-  async update(docName, getLatestDoc) {
+  async update(docName: string, getLatestDoc: () => Node) {
     const exists = this._pendingTimers[docName];
     if (exists) {
       log(docName, 'timeout already exists');

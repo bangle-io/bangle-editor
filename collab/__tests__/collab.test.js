@@ -12,7 +12,7 @@ import {
 } from './collab-test-helpers';
 import { CollabError } from '@bangle.dev/collab-server';
 
-import { RECOVERY_BACK_OFF } from '../client/collab-extension';
+import { RECOVERY_BACK_OFF } from '../collab-extension';
 jest.mock('localforage', () => ({
   config: jest.fn(),
   createInstance: jest.fn(),

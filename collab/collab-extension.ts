@@ -28,6 +28,7 @@ import {
   PullEvents,
   PushEvents,
 } from './types';
+import { Schema } from 'prosemirror-model';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
@@ -40,7 +41,7 @@ export const RECOVERY_BACK_OFF = 50;
 export const collabSettingsKey = new PluginKey('bangle/collabSettingsKey');
 export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
 
-export const getCollabSettings = (state: EditorState) => {
+export const getCollabSettings = (state: EditorState<Schema>) => {
   return collabSettingsKey.getState(state);
 };
 

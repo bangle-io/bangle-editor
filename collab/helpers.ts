@@ -1,13 +1,18 @@
-import { Selection } from '@bangle.dev/core/prosemirror/state';
-const LOG = false;
+import { Selection, EditorState } from 'prosemirror-state';
+import { Node, Schema } from 'prosemirror-model';
 
-let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
+// let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
 
-export function replaceDocument(state, doc, version) {
+export function replaceDocument(
+  state: EditorState<Schema>,
+  serializedDoc: any,
+  version: number,
+) {
   const { schema, tr } = state;
-  const content = (doc.content || []).map((child) =>
+  const content: Node[] = (serializedDoc.content || []).map((child: any) =>
     schema.nodeFromJSON(child),
   );
+
   const hasContent = Array.isArray(content)
     ? content.length > 0
     : Boolean(content);

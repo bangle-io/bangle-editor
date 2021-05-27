@@ -7,9 +7,9 @@ import {
   sleep,
   typeChar,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import * as collab from '../client/collab-extension';
-import { collabRequestHandlers } from '../client/collab-request-handlers';
-import { LocalDisk } from '@bangle.dev/collab/client/local-disk';
+import * as collab from '../collab-extension';
+import { collabRequestHandlers } from '../collab-request-handlers';
+import { LocalDisk } from '../local-disk';
 import {
   defaultPlugins,
   defaultSpecs,

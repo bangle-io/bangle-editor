@@ -1,3 +1,4 @@
-import * as collabClient from './client/collab-extension';
+import { LocalDisk } from './local-disk';
+import * as collabClient from './collab-extension';
 
-export { collabClient };
+export { LocalDisk, collabClient };
