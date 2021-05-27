@@ -4,24 +4,30 @@ import {
   getVersion,
   sendableSteps,
 } from 'prosemirror-collab';
-import { Step } from '@bangle.dev/core/prosemirror/transform';
+import { Step } from 'prosemirror-transform';
+import { EditorState, Plugin, PluginKey, Selection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { replaceDocument } from './helpers';
+import StrictEventEmitter from 'strict-event-emitter-types';
 import {
-  Plugin,
-  PluginKey,
-  Selection,
-} from '@bangle.dev/core/prosemirror/state';
-import {
+  CollabError,
   getIdleCallback,
   sleep,
   uuid,
   cancelablePromise,
   serialExecuteQueue,
-} from '@bangle.dev/core/utils/js-utils';
-
-import { replaceDocument } from './helpers';
-import { CollabError } from '@bangle.dev/collab-server';
+} from '@bangle.dev/collab-server';
 
 import { Emitter } from './emitter';
+import {
+  CollabConnectionObj,
+  GetDocument,
+  GetDocumentResponse,
+  PullEventParsedResponse,
+  PullEventResponse,
+  PullEvents,
+  PushEvents,
+} from './types';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
@@ -34,13 +40,13 @@ export const RECOVERY_BACK_OFF = 50;
 export const collabSettingsKey = new PluginKey('bangle/collabSettingsKey');
 export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
 
-export const getCollabSettings = (state) => {
+export const getCollabSettings = (state: EditorState) => {
   return collabSettingsKey.getState(state);
 };
 
 const name = 'collab_extension';
 
-function specFactory(opts = {}) {
+function specFactory(_opts = {}) {
   return {
     name,
     type: 'component',
@@ -53,7 +59,13 @@ function pluginsFactory({
   getDocument,
   pullEvents,
   pushEvents,
-} = {}) {
+}: {
+  clientID: string;
+  docName: string;
+  getDocument: GetDocument;
+  pullEvents: PullEvents;
+  pushEvents: PushEvents;
+}) {
   return () => {
     return [
       collab({
@@ -63,7 +75,7 @@ function pluginsFactory({
       new Plugin({
         key: collabSettingsKey,
         state: {
-          init: (_, state) => {
+          init: (_, _state) => {
             return {
               docName: docName,
               clientID: clientID,
@@ -108,9 +120,17 @@ function pluginsFactory({
   };
 }
 
-function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
-  let connection;
-  const restart = (view) => {
+function bangleCollabPlugin({
+  getDocument,
+  pullEvents,
+  pushEvents,
+}: {
+  getDocument: GetDocument;
+  pullEvents: PullEvents;
+  pushEvents: PushEvents;
+}) {
+  let connection: CollabConnectionObj | undefined;
+  const restart = (view: EditorView) => {
     log('restarting connection');
     const oldSelection = view.state.selection;
     if (connection) {
@@ -120,7 +140,7 @@ function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
     connection.init(oldSelection);
   };
 
-  const newConnection = (view) => {
+  const newConnection = (view: EditorView) => {
     return connectionManager({
       view,
       restart,
@@ -136,7 +156,7 @@ function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
       init() {
         return null;
       },
-      apply(tr, pluginState, prevState, newState) {
+      apply(tr, pluginState, _prevState, newState) {
         if (
           !tr.getMeta('bangle/isRemote') &&
           collabSettingsKey.getState(newState).ready
@@ -158,7 +178,7 @@ function bangleCollabPlugin({ getDocument, pullEvents, pushEvents }) {
         destroy() {
           if (connection) {
             connection.destroy();
-            connection = null;
+            connection = undefined;
           }
         },
       };
@@ -172,9 +192,15 @@ function connectionManager({
   getDocument,
   pullEvents,
   pushEvents,
-}) {
+}: {
+  view: EditorView;
+  restart: (view: EditorView) => void;
+  getDocument: GetDocument;
+  pullEvents: PullEvents;
+  pushEvents: PushEvents;
+}): CollabConnectionObj {
   let recoveryBackOff = 0;
-  const onReceiveSteps = (payload) => {
+  const onReceiveSteps = (payload: PullEventParsedResponse) => {
     const { clientIDs, steps } = payload;
     if (steps.length === 0) {
       log('no steps', payload);
@@ -219,7 +245,7 @@ function connectionManager({
       onError(error);
     });
 
-  const onError = (error) => {
+  const onError = (error: CollabError) => {
     const { errorCode, from } = error;
     if (!(error instanceof CollabError)) {
       throw error;
@@ -261,7 +287,7 @@ function connectionManager({
   };
 
   return {
-    init: (oldSelection) => {
+    init: (oldSelection?: Selection) => {
       initEmitter.emit('init', oldSelection);
     },
     pushNewEvents: () => {
@@ -281,10 +307,15 @@ function connectionManager({
  * A helper function to poll the Authority and emit newly received steps.
  * @returns {Emitter} An emitter emits steps or error and listens for pull events
  */
-function pullEventsEmitter(view, pullEvents) {
-  const emitter = new Emitter();
+function pullEventsEmitter(view: EditorView, pullEvents: PullEvents) {
+  interface Events {
+    error: (error: CollabError) => void;
+    steps: (obj: PullEventParsedResponse) => void;
+    pull: () => void;
+  }
+  const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
 
-  let cProm;
+  let cProm: { promise: Promise<PullEventResponse>; cancel: () => void };
 
   const pull = () => {
     // Only opt for the latest pull and cancel others.
@@ -326,11 +357,15 @@ function pullEventsEmitter(view, pullEvents) {
   return emitter;
 }
 
-function pushEventsEmitter(view, pushEvents) {
-  const emitter = new Emitter();
+function pushEventsEmitter(view: EditorView, pushEvents: PushEvents) {
+  interface Events {
+    error: (error: CollabError) => void;
+    push: () => void;
+  }
+  const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
   const queue = serialExecuteQueue();
 
-  const push = async () => {
+  emitter.on('push', async () => {
     // TODO add debounce
     await queue.add(async () => {
       const steps = sendableSteps(view.state);
@@ -339,13 +374,13 @@ function pushEventsEmitter(view, pushEvents) {
         return;
       }
       const collabSettings = getCollabSettings(view.state);
-
       // If successful When pushing our own changes expect server to send an update to
       // make our changes from unconfirmed to confirmed (i.e. a version change).
       return pushEvents({
         version: getVersion(view.state),
         steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
-        clientID: steps ? steps.clientID : 0,
+        // TODO  the default value numerical 0 before
+        clientID: (steps ? steps.clientID : 0) + '',
         docName: collabSettings.docName,
         userId: collabSettings.userId,
       }).catch((error) => {
@@ -353,14 +388,22 @@ function pushEventsEmitter(view, pushEvents) {
         emitter.emit('error', error);
       });
     });
-  };
-
-  emitter.on('push', push);
+  });
   return emitter;
 }
 
-function collabInitEmitter(view, getDocument) {
-  const emitter = new Emitter();
+function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
+  interface Events {
+    init: (oldSelection?: Selection) => void;
+    initCollabState: (obj: {
+      getDocumentResponse: GetDocumentResponse;
+      oldSelection?: Selection;
+    }) => void;
+    error: (error: CollabError) => void;
+    stateIsReady: () => void;
+  }
+  const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
+
   const collabSettings = getCollabSettings(view.state);
   emitter
     .on('init', async (oldSelection) => {
@@ -373,19 +416,21 @@ function collabInitEmitter(view, getDocument) {
         userId: collabSettings.userId,
       }).then(
         (payload) => {
-          const { doc, version } = payload;
           // We are breaking into two steps, so that in case the view was destroyed
           // or there was a networking error, 'initCollabState' will not be invoked.
-          emitter.emit('initCollabState', { doc, version }, oldSelection);
+          emitter.emit('initCollabState', {
+            getDocumentResponse: payload,
+            oldSelection,
+          });
         },
-        (error) => {
+        (error: CollabError) => {
           error.from = 'init';
           emitter.emit('error', error);
         },
       );
     })
-    .on('initCollabState', (payload, oldSelection) => {
-      const { doc, version } = payload;
+    .on('initCollabState', ({ getDocumentResponse, oldSelection }) => {
+      const { doc, version } = getDocumentResponse;
       let tr = replaceDocument(view.state, doc, version);
 
       if (oldSelection) {

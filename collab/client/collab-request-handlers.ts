@@ -1,9 +1,17 @@
+import { GetDocument, PullEvents, PushEvents } from './types';
+
 const LOG = false;
 let log = LOG
   ? console.log.bind(console, 'collab/collab-request-handlers')
   : () => {};
 
-export const collabRequestHandlers = (sendRequest) => ({
+export const collabRequestHandlers = (
+  sendRequest: any,
+): {
+  getDocument: GetDocument;
+  pullEvents: PullEvents;
+  pushEvents: PushEvents;
+} => ({
   async getDocument({ docName, userId }) {
     log({ docName, userId });
     return sendRequest('get_document', {
