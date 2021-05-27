@@ -27,3 +27,7 @@ _bangle-website/.cache-loader
 _bangle-website/docs/api
 
 /dist
+
+dist
+
+*.tsbuildinfo

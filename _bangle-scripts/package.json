@@ -24,7 +24,8 @@
     "scripts:build-docs": "yarn node docs/index.js"
   },
   "dependencies": {
-    "@bangle.dev/collab": "workspace:*",
+    "@bangle.dev/collab-client": "workspace:*",
+    "@bangle.dev/collab-server": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
