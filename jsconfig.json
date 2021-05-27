@@ -68,12 +68,6 @@
       "@bangle.dev/react/*": [
         "./react/*"
       ],
-      "@bangle.dev/collab": [
-        "./collab/index.js"
-      ],
-      "@bangle.dev/collab/*": [
-        "./collab/*"
-      ],
       "@bangle.dev/react-stopwatch": [
         "./contrib/react-stopwatch/index.js"
       ],

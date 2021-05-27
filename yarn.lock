@@ -2110,29 +2110,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:collab-server":
+"@bangle.dev/collab-client@workspace:*, @bangle.dev/collab-client@workspace:collab-client":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/collab-server@workspace:collab-server"
-  dependencies:
-    "@bangle.dev/core": "workspace:*"
-    "@types/jest": ^26.0.23
-    "@types/node": ^15.6.1
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-transform": ^1.1.3
-    localforage: ^1.9.0
-    prosemirror-collab: ^1.2.2
-    prosemirror-model: ^1.14.1
-    prosemirror-transform: ^1.2.8
-  peerDependencies:
-    "@bangle.dev/core": "*"
-    prosemirror-model: "*"
-    prosemirror-transform: "*"
-  languageName: unknown
-  linkType: soft
-
-"@bangle.dev/collab@workspace:*, @bangle.dev/collab@workspace:collab":
-  version: 0.0.0-use.local
-  resolution: "@bangle.dev/collab@workspace:collab"
+  resolution: "@bangle.dev/collab-client@workspace:collab-client"
   dependencies:
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
@@ -2158,6 +2138,26 @@ __metadata:
     prosemirror-state: "*"
     prosemirror-transform: "*"
     prosemirror-view: "*"
+  languageName: unknown
+  linkType: soft
+
+"@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:collab-server":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/collab-server@workspace:collab-server"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    "@types/jest": ^26.0.23
+    "@types/node": ^15.6.1
+    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-transform": ^1.1.3
+    localforage: ^1.9.0
+    prosemirror-collab: ^1.2.2
+    prosemirror-model: ^1.14.1
+    prosemirror-transform: ^1.2.8
+  peerDependencies:
+    "@bangle.dev/core": "*"
+    prosemirror-model: "*"
+    prosemirror-transform: "*"
   languageName: unknown
   linkType: soft
 
@@ -5595,7 +5595,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "bangle-scripts@workspace:_bangle-scripts"
   dependencies:
-    "@bangle.dev/collab": "workspace:*"
+    "@bangle.dev/collab-client": "workspace:*"
+    "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -5625,7 +5626,8 @@ __metadata:
   resolution: "bangle-website@workspace:_bangle-website"
   dependencies:
     "@babel/plugin-proposal-class-properties": ^7.12.1
-    "@bangle.dev/collab": "workspace:*"
+    "@bangle.dev/collab-client": "workspace:*"
+    "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -5651,9 +5653,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"banglejs@workspace:.":
+"bangle.dev@workspace:.":
   version: 0.0.0-use.local
-  resolution: "banglejs@workspace:."
+  resolution: "bangle.dev@workspace:."
   dependencies:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.9

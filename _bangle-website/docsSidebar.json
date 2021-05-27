@@ -3,7 +3,10 @@
     {
       "type": "category",
       "label": "Introduction",
-      "items": ["hello", "getting-started"]
+      "items": [
+        "hello",
+        "getting-started"
+      ]
     },
     {
       "type": "category",
@@ -52,7 +55,7 @@
         "api/react_emoji_suggest",
         "api/react_menu",
         "api/text_formatting",
-        "api/collab",
+        "api/collab_client",
         "api/markdown",
         "api/markdown_front_matter",
         "api/table",

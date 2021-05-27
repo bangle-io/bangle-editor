@@ -9,7 +9,7 @@
     },
     "include": [
         "./*.ts",
-        "./*.js",
+        "./*.js"
     ],
     "exclude": [
         "__tests__",

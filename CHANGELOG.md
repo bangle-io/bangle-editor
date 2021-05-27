@@ -2,7 +2,13 @@
 
 ## HEAD
 
+- breaking: `@bangle.dev/collab` is now broken into two packages: `@bangle.dev/collab-sever` & `@bangle.dev/collab-client`.
+
+**@bangle.dev/react-emoji-suggest**
+
 - feat: A new and improved emoji suggest tooltip.
+
+**@bangle.dev/core**
 
 - bug: Fixed inserting a horizontal break above a paragraph https://github.com/bangle-io/bangle.dev/pull/194
 
