@@ -76,7 +76,7 @@ export class Manager {
 
   destroy() {
     log('destroy called');
-    // todo need to abort `get_events` pending requests
+    // todo need to abort `pull_events` pending requests
     for (const i of Object.values(this.instances)) {
       this._stopInstance(i.docName);
     }
@@ -236,7 +236,7 @@ function generateRoutes(
       });
     },
 
-    get_events: async ({
+    pull_events: async ({
       docName,
       version,
       userId,
@@ -269,7 +269,7 @@ function generateRoutes(
       // wait until a new version is published to return the event data.
 
       // TODO we need to expose this abort in case the client themself
-      // decide to close the get_events request.
+      // decide to close the pull_events request.
       let abort;
 
       const waitForChanges = new Promise<void>((res) => {
