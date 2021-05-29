@@ -30,6 +30,16 @@ export type PushEventsRequestParam = {
   userId: string;
 };
 
+export type PullEvents = (
+  obj: PullEventRequestParam,
+) => Promise<PullEventResponse>;
+export type GetDocument = (
+  obj: GetDocumentRequestParam,
+) => Promise<GetDocumentResponse>;
+export type PushEvents = (
+  obj: PushEventsRequestParam,
+) => Promise<PushEventsResponse>;
+
 export type CollabRequestType =
   | GetDocumentType
   | PullEventsType

@@ -54,6 +54,38 @@ export class Manager {
     }
   }
 
+  public async handleRequest(path: CollabRequestType, payload: any) {
+    if (!payload.userId) {
+      throw new Error('Must have user id');
+    }
+
+    if (this.interceptRequests) {
+      await this.interceptRequests(path, payload);
+    }
+
+    log(`request to ${path} from `, payload.userId);
+    let data;
+    switch (path) {
+      case 'pull_events': {
+        data = await this.routes.pullEvents(payload);
+        break;
+      }
+      case 'push_events': {
+        data = await this.routes.pushEvents(payload);
+        break;
+      }
+      case 'get_document': {
+        data = await this.routes.getDocument(payload);
+        break;
+      }
+    }
+
+    log('data', path, { data });
+    return {
+      body: data,
+    };
+  }
+
   private _stopInstance(docName: string) {
     const instance = this.instances[docName];
     if (instance) {
@@ -126,38 +158,6 @@ export class Manager {
       created,
       this.collectUsersTimeout,
     ));
-  }
-
-  public async handleRequest(path: CollabRequestType, payload: any) {
-    if (!payload.userId) {
-      throw new Error('Must have user id');
-    }
-
-    if (this.interceptRequests) {
-      await this.interceptRequests(path, payload);
-    }
-
-    log(`request to ${path} from `, payload.userId);
-    let data;
-    switch (path) {
-      case 'pull_events': {
-        data = await this.routes.pullEvents(payload);
-        break;
-      }
-      case 'push_events': {
-        data = await this.routes.pushEvents(payload);
-        break;
-      }
-      case 'get_document': {
-        data = await this.routes.getDocument(payload);
-        break;
-      }
-    }
-
-    log('data', path, { data });
-    return {
-      body: data,
-    };
   }
 
   private async _getInstanceQueued(docName: string, userId: string) {

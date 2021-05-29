@@ -1,8 +1,8 @@
 import type {
-  CollabRequestType,
-  PullEventsType,
-  PushEventsType,
-  GetDocumentType,
+  PullEventResponse,
+  PullEvents,
+  GetDocument,
+  PushEvents,
 } from './types';
 
 export * from './instance';
@@ -10,9 +10,4 @@ export * from './manager';
 export * from './collab-error';
 export * from './utils';
 
-export type {
-  CollabRequestType,
-  PullEventsType,
-  PushEventsType,
-  GetDocumentType,
-};
+export type { PullEventResponse, PullEvents, GetDocument, PushEvents };

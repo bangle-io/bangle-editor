@@ -1,5 +1,4 @@
-import { GetDocument, PullEvents, PushEvents } from './types';
-
+import { PullEvents, PushEvents, GetDocument } from '@bangle.dev/collab-server';
 const LOG = false;
 let log = LOG
   ? console.log.bind(console, 'collab/collab-request-handlers')
@@ -12,31 +11,15 @@ export const collabRequestHandlers = (
   pullEvents: PullEvents;
   pushEvents: PushEvents;
 } => ({
-  async getDocument({ docName, userId }) {
-    log({ docName, userId });
-    return sendRequest('get_document', {
-      docName,
-      userId,
-    });
+  async getDocument(obj) {
+    return sendRequest('get_document', obj);
   },
 
-  async pullEvents({ version, docName, userId }) {
-    log({ version, docName, userId });
-    return sendRequest('pull_events', {
-      docName,
-      version,
-      userId,
-    });
+  async pullEvents(obj) {
+    return sendRequest('pull_events', obj);
   },
 
-  async pushEvents({ version, steps, clientID, docName, userId }) {
-    log({ version, steps, clientID, docName, userId });
-    return sendRequest('push_events', {
-      clientID,
-      version,
-      steps,
-      docName,
-      userId,
-    });
+  async pushEvents(obj) {
+    return sendRequest('push_events', obj);
   },
 });
