@@ -1,12 +1,25 @@
-import { Step } from 'prosemirror-transform';
-import { objectMapValues, serialExecuteQueue, raceTimeout } from './utils';
-import { Instance, StepBigger } from './instance';
-import { CollabError } from './collab-error';
+import { serialExecuteQueue } from './utils';
+import { Instance } from './instance';
 import { Schema, Node } from 'prosemirror-model';
+import { CollabRequestHandler } from './collab-request-handler';
+import { CollabResponse, CollabRequestType } from './types';
+import { CollabError } from './collab-error';
 
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+
+type HandleResponseOk = {
+  status: 'ok';
+  body: CollabResponse;
+};
+type HandleResponseError = {
+  status: 'error';
+  body: {
+    message: string;
+    errorCode: number;
+  };
+};
 
 export class Manager {
   instanceCount = 0;
@@ -40,10 +53,10 @@ export class Manager {
     this.interceptRequests = interceptRequests;
     // to prevent parallel requests from creating deadlock
     // for example two requests parallely comming and creating two new instances of the same doc
-    this.routes = generateRoutes(
-      schema,
+    this.routes = new CollabRequestHandler(
       this._getInstanceQueued,
       userWaitTimeout,
+      schema,
     );
 
     if (instanceCleanupTimeout > 0) {
@@ -54,7 +67,62 @@ export class Manager {
     }
   }
 
-  _stopInstance(docName: string) {
+  public async handleRequest(
+    path: CollabRequestType,
+    payload: any,
+  ): Promise<HandleResponseError | HandleResponseOk> {
+    if (!payload.userId) {
+      throw new Error('Must have user id');
+    }
+
+    log(`request to ${path} from `, payload.userId);
+    let data;
+
+    try {
+      if (this.interceptRequests) {
+        await this.interceptRequests(path, payload);
+      }
+      switch (path) {
+        case 'pull_events': {
+          data = await this.routes.pullEvents(payload);
+          break;
+        }
+        case 'push_events': {
+          data = await this.routes.pushEvents(payload);
+          break;
+        }
+        case 'get_document': {
+          data = await this.routes.getDocument(payload);
+          break;
+        }
+      }
+      return {
+        status: 'ok',
+        body: data,
+      };
+    } catch (err) {
+      if (err instanceof CollabError) {
+        return {
+          status: 'error',
+          body: {
+            errorCode: err.errorCode,
+            message: err.message,
+          },
+        };
+      }
+
+      console.error(err);
+      return {
+        status: 'error',
+        body: {
+          errorCode: 500,
+          message: err.message || 'Unknown error occurred',
+        },
+      };
+    }
+  }
+
+  private _stopInstance(docName: string) {
     const instance = this.instances[docName];
     if (instance) {
       log('stopping instances', instance.docName);
@@ -64,7 +132,7 @@ export class Manager {
     }
   }
 
-  _cleanup() {
+  private _cleanup() {
     log('Cleaning up');
     const instances = Object.values(this.instances);
     for (const i of instances) {
@@ -74,9 +142,9 @@ export class Manager {
     }
   }
 
-  destroy() {
+  public destroy() {
     log('destroy called');
-    // todo need to abort `get_events` pending requests
+    // todo need to abort `pull_events` pending requests
     for (const i of Object.values(this.instances)) {
       this._stopInstance(i.docName);
     }
@@ -86,7 +154,7 @@ export class Manager {
     }
   }
 
-  async _newInstance(docName: string, doc?: Node) {
+  private async _newInstance(docName: string, doc?: Node) {
     log('creating new instance', docName);
     const { instances } = this;
     let created;
@@ -128,25 +196,7 @@ export class Manager {
     ));
   }
 
-  async handleRequest(path: string, payload: any) {
-    if (!this.routes[path]) {
-      throw new Error('Path not found');
-    }
-
-    if (!payload.userId) {
-      throw new Error('Must have user id');
-    }
-
-    if (this.interceptRequests) {
-      await this.interceptRequests(path, payload);
-    }
-
-    log(`request to ${path} from `, payload.userId);
-    const route: any = this.routes[path];
-    return route(payload);
-  }
-
-  async _getInstanceQueued(docName: string, userId: string) {
+  private async _getInstanceQueued(docName: string, userId: string) {
     if (!userId) {
       throw new Error('userId is required');
     }
@@ -159,210 +209,4 @@ export class Manager {
       return inst;
     });
   }
-}
-
-function nonNegInteger(str: any) {
-  let num = Number(str);
-  if (!isNaN(num) && Math.floor(num) === num && num >= 0) {
-    return num;
-  }
-
-  throw new CollabError(400, 'Not a non-negative integer: ' + str);
-}
-
-// Object that represents an HTTP response.
-class Output {
-  responded: boolean = false;
-  constructor(public body: OutputData) {}
-
-  static outputEvents(inst: Instance, data: any) {
-    return Output.json({
-      version: inst.version,
-      steps: data.steps.map((step: StepBigger) => step.toJSON()),
-      clientIDs: data.steps.map((step: StepBigger) => step.clientID),
-      users: data.users,
-    });
-  }
-
-  static json(data: OutputData) {
-    return new Output(data);
-  }
-
-  resp() {
-    if (this.responded) {
-      throw new Error('already responded');
-    }
-    this.responded = true;
-    return { body: this.body };
-  }
-}
-
-interface OutputData {
-  doc?: { [key: string]: any };
-  // TODO users cannot be a number lol
-  users?: number;
-  version?: number;
-  steps?: Array<{ [key: string]: any }>;
-  clientIDs?: string[];
-}
-
-function generateRoutes(
-  schema: Schema,
-  getInstance: (
-    docName: string,
-    userId: string,
-  ) => Promise<Instance | undefined>,
-  userWaitTimeout: number,
-) {
-  const routes = {
-    get_document: async ({
-      docName,
-      userId,
-    }: {
-      docName: string;
-      userId: string;
-    }) => {
-      log('get_document', { docName, userId });
-
-      let inst = await getInstance(docName, userId);
-      // TODO better propogating of these errors
-      if (!inst) {
-        throw new Error('Instance not found');
-      }
-      return Output.json({
-        doc: inst.doc.toJSON(),
-        users: inst.userCount,
-        version: inst.version,
-      });
-    },
-
-    get_events: async ({
-      docName,
-      version,
-      userId,
-    }: {
-      docName: string;
-      version: number;
-      userId: string;
-    }) => {
-      // An endpoint for a collaborative document instance which
-      // returns all events between a given version and the server's
-      // current version of the document.
-      version = nonNegInteger(version);
-
-      let instance = await getInstance(docName, userId);
-
-      if (instance == null) {
-        throw new Error('Instance not found');
-      }
-
-      let data = instance.getEvents(version);
-      if (data === false) {
-        throw new CollabError(410, 'History no longer available');
-      }
-      // If the server version is greater than the given version,
-      // return the data immediately.
-      if (data.steps.length) {
-        return Output.outputEvents(instance, data);
-      }
-      // If the server version matches the given version,
-      // wait until a new version is published to return the event data.
-
-      // TODO we need to expose this abort in case the client themself
-      // decide to close the get_events request.
-      let abort;
-
-      const waitForChanges = new Promise<void>((res) => {
-        const inst = instance;
-
-        if (inst == null) {
-          res();
-          return;
-        }
-
-        // An object to assist in waiting for a collaborative editing
-        // instance to publish a new version before sending the version
-        // event data to the client.
-        let waiter = {
-          userId,
-          onFinish: () => {
-            res();
-          },
-        };
-        inst.waiting.push(waiter);
-        abort = () => {
-          // note instance.js removes item from the waiting array
-          // before calling onFinish
-          let found = inst.waiting.indexOf(waiter);
-          log('in abort waiting =', inst.waiting.length);
-
-          if (found > -1) {
-            inst.waiting.splice(found, 1);
-          }
-          abort = null;
-        };
-      });
-
-      try {
-        await raceTimeout(waitForChanges, userWaitTimeout);
-        log('finished');
-        return Output.outputEvents(instance, instance.getEvents(version));
-      } catch (err) {
-        if (err.timeout === true) {
-          log('timeout aborting');
-          if (abort) {
-            // TODO fix this
-            (abort as any)();
-          }
-          return Output.json({});
-        }
-        throw err;
-      }
-    },
-
-    push_events: async ({
-      clientID,
-      version,
-      steps,
-      docName,
-      userId,
-    }: {
-      clientID: string;
-      steps: any[];
-      docName: string;
-      version: number;
-      userId: string;
-    }) => {
-      version = nonNegInteger(version);
-      steps = steps.map((s) => Step.fromJSON(schema, s));
-      const instance = await getInstance(docName, userId);
-      if (!instance) {
-        throw new Error('Instance not found');
-      }
-      log('received version =', version, 'server version', instance.version);
-      let result = instance.addEvents(version, steps, clientID);
-
-      if (!result) {
-        throw new CollabError(
-          409,
-          `Version ${version} not current. Currently on ${instance.version}`,
-        );
-      } else {
-        return Output.json(result);
-      }
-    },
-  };
-
-  function mapRoutes<T>(routes: {
-    [key: string]: (...args: T[]) => Promise<Output>;
-  }) {
-    return objectMapValues(routes, (route) => {
-      return async (...args: T[]) => {
-        let result = await route(...args);
-        return result.resp();
-      };
-    });
-  }
-
-  return mapRoutes(routes);
 }

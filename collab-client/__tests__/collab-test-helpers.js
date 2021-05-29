@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { Manager } from '@bangle.dev/collab-server';
+import { Manager, parseCollabResponse } from '@bangle.dev/collab-server';
 import {
   renderTestEditor,
   sendKeyToPm,
@@ -8,7 +8,7 @@ import {
   typeChar,
 } from '@bangle.dev/core/test-helpers/test-helpers';
 import * as collab from '../collab-extension';
-import { collabRequestHandlers } from '../collab-request-handlers';
+
 import { LocalDisk } from '../local-disk';
 import {
   defaultPlugins,
@@ -86,9 +86,18 @@ export function setup(db = setupDb(), { managerOpts }) {
             collab.plugins({
               docName,
               clientID: id,
-              ...collabRequestHandlers((...args) =>
-                manager.handleRequest(...args).then((resp) => resp.body),
-              ),
+              getDocument: (payload) =>
+                manager
+                  .handleRequest('get_document', payload)
+                  .then((obj) => parseCollabResponse(obj)),
+              pullEvents: (payload) =>
+                manager
+                  .handleRequest('pull_events', payload)
+                  .then((obj) => parseCollabResponse(obj)),
+              pushEvents: (payload) =>
+                manager
+                  .handleRequest('push_events', payload)
+                  .then((obj) => parseCollabResponse(obj)),
             }),
           ],
         },

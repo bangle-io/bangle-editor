@@ -16,19 +16,19 @@ import {
   uuid,
   cancelablePromise,
   serialExecuteQueue,
+  PullEvents,
+  PushEvents,
+  GetDocument,
 } from '@bangle.dev/collab-server';
 
 import { Emitter } from './emitter';
-import {
-  CollabConnectionObj,
-  GetDocument,
-  GetDocumentResponse,
-  PullEventParsedResponse,
-  PullEventResponse,
-  PullEvents,
-  PushEvents,
-} from './types';
 import { Schema } from 'prosemirror-model';
+type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+type CollabConnectionObj = {
+  init: (oldSelection?: Selection) => void;
+  pushNewEvents: () => void;
+  destroy: () => void;
+};
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
@@ -201,8 +201,14 @@ function connectionManager({
   pushEvents: PushEvents;
 }): CollabConnectionObj {
   let recoveryBackOff = 0;
-  const onReceiveSteps = (payload: PullEventParsedResponse) => {
-    const { clientIDs, steps } = payload;
+  const onReceiveSteps = (payload: UnPromisify<ReturnType<PullEvents>>) => {
+    // TODO name these steps as rawSteps
+    // TODO make sure the data is always []
+    const steps = (payload.steps ? payload.steps : []).map((j) =>
+      Step.fromJSON(view.state.schema, j),
+    );
+    const clientIDs = payload.clientIDs ? payload.clientIDs : [];
+
     if (steps.length === 0) {
       log('no steps', payload);
       return false;
@@ -311,12 +317,12 @@ function connectionManager({
 function pullEventsEmitter(view: EditorView, pullEvents: PullEvents) {
   interface Events {
     error: (error: CollabError) => void;
-    steps: (obj: PullEventParsedResponse) => void;
+    steps: (obj: UnPromisify<ReturnType<PullEvents>>) => void;
     pull: () => void;
   }
   const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
 
-  let cProm: { promise: Promise<PullEventResponse>; cancel: () => void };
+  let cProm: { promise: ReturnType<PullEvents>; cancel: () => void };
 
   const pull = () => {
     // Only opt for the latest pull and cancel others.
@@ -337,14 +343,7 @@ function pullEventsEmitter(view: EditorView, pullEvents: PullEvents) {
     cProm.promise
       .then((data) => {
         log('pull received', data);
-        // TODO make sure the server responds with empty arrays
-        // instead of us hotfixing it here
-        const steps = data.steps ? data.steps : [];
-        const clientIDs = data.clientIDs ? data.clientIDs : [];
-        emitter.emit('steps', {
-          steps: steps.map((j) => Step.fromJSON(view.state.schema, j)),
-          clientIDs: clientIDs,
-        });
+        emitter.emit('steps', data);
       })
       .catch((error) => {
         if (error.isCanceled) {
@@ -397,7 +396,7 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
   interface Events {
     init: (oldSelection?: Selection) => void;
     initCollabState: (obj: {
-      getDocumentResponse: GetDocumentResponse;
+      getDocumentResponse: UnPromisify<ReturnType<GetDocument>>;
       oldSelection?: Selection;
     }) => void;
     error: (error: CollabError) => void;

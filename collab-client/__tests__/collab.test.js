@@ -135,7 +135,7 @@ it('hold incoming of a seq1 client', async () => {
     if (payload.userId !== 'user-seq1') {
       return;
     }
-    if (shouldStopSeq1 && path === 'get_events') {
+    if (shouldStopSeq1 && path === 'pull_events') {
       return new Promise((res) => {
         seq1Resume = res;
       });
@@ -204,7 +204,7 @@ it('hold incoming of a seq1 client but it still continues to type', async () => 
     if (payload.userId !== 'user-seq1') {
       return;
     }
-    if (shouldStopSeq1 && path === 'get_events') {
+    if (shouldStopSeq1 && path === 'pull_events') {
       return new Promise((res) => {
         seq1Resume = res;
       });
@@ -264,7 +264,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   let requestCounter = 0;
 
   let interceptRequests = (path, payload) => {
-    if (payload.userId === 'user-seq1' && path === 'get_events') {
+    if (payload.userId === 'user-seq1' && path === 'pull_events') {
       if (requestCounter++ === 1) {
         throw new CollabError('A weird error');
       }
@@ -404,7 +404,7 @@ it.each([
     if (payload.userId !== 'user-seq1') {
       return;
     }
-    if (shouldStopSeq1 && path === 'get_events') {
+    if (shouldStopSeq1 && path === 'pull_events') {
       return new Promise((res) => {
         seq1GetResume = res;
       });
@@ -719,7 +719,7 @@ test.each([
     </doc>,
   ],
 ])(
-  "Clients works after server times out the 'get_events' request",
+  "Clients works after server times out the 'pull_events' request",
   async (seq, secondBananaResult, thirdBananaResult) => {
     const userWaitTimeout = 150;
     const store = setupDb();

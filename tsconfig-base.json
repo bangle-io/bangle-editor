@@ -17,12 +17,12 @@
     "stripInternal": true,
     "noEmitOnError": false,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "useDefineForClassFields": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   }
 }
