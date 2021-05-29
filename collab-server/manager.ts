@@ -47,7 +47,6 @@ export class Manager {
       interceptRequests = undefined, // useful for testing or debugging
     } = {},
   ) {
-    console.log({ userWaitTimeout });
     this._getInstanceQueued = this._getInstanceQueued.bind(this);
     this.disk = disk;
     this.collectUsersTimeout = collectUsersTimeout;

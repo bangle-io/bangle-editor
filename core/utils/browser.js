@@ -10,7 +10,7 @@ const browser = {
   webkit: false,
 };
 
-if (typeof navigator !== 'undefined') {
+if (typeof navigator !== 'undefined' && typeof document !== 'undefined') {
   const ieEdge = /Edge\/(\d+)/.exec(navigator.userAgent);
   const ieUpTo10 = /MSIE \d/.test(navigator.userAgent);
   const ie11up = /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(
