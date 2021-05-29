@@ -47,6 +47,5 @@
     "globby": "^11.0.1",
     "handlebars": "^4.7.6",
     "surge": "^0.21.7"
-  },
-  "sideEffects": false
+  }
 }

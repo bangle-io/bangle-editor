@@ -20,7 +20,6 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "sideEffects": false,
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
