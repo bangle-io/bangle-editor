@@ -49,9 +49,13 @@ export class Instance {
     }
   }
 
-  addEvents(version: number, steps: StepBigger[], clientID: string) {
+  addEvents(version: number, steps: Step[], clientID: string) {
     // TODO this checkversion is not covered
     this.checkVersion(version);
+
+    const biggerSteps: StepBigger[] = steps.map((s) =>
+      Object.assign(s, { clientID }),
+    );
 
     if (this.version !== version) {
       // TODO returning false gives 409 but if we donot give 409 error
@@ -61,8 +65,7 @@ export class Instance {
     let doc = this.doc,
       maps: StepMap[] = [];
 
-    for (const step of steps) {
-      step.clientID = clientID;
+    for (const step of biggerSteps) {
       let result = step.apply(doc);
       if (result.doc == null) {
         // TODO if the apply gives error what to do?
@@ -73,8 +76,8 @@ export class Instance {
       maps.push(step.getMap());
     }
     this.doc = doc;
-    this.version += steps.length;
-    this.steps = this.steps.concat(steps);
+    this.version += biggerSteps.length;
+    this.steps = this.steps.concat(biggerSteps);
     if (this.steps.length > MAX_STEP_HISTORY) {
       this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
     }
