@@ -39,9 +39,11 @@
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
     "integration-tests": "yarn e2e:test",
-    "lint": "yarn prettier --check . && EsLintCycle=yes yarn eslint .",
+    "lint": "yarn tsc-check && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
     "release-packages": "yarn workspaces foreach -v --all --no-private npm publish",
+    "tsc-check": "yarn tsc -b",
+    "tsc-watch": "yarn tsc -b -w",
     "g:tsc": "yarn tsc"
   },
   "prettier": {
