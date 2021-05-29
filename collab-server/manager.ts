@@ -110,6 +110,8 @@ export class Manager {
           },
         };
       }
+
+      console.error(err);
       return {
         status: 'error',
         body: {
