@@ -3,6 +3,7 @@
 ## HEAD
 
 - breaking: `@bangle.dev/collab-sever` will no longer throw errors in `manager.handleRequest`. You should use `parseCollabResponse` that parses the response and throws `CollabError`.
+- breaking: `@bangle.dev/collab-sever` The request type `get_events` is now renamed to `pull_events`.
 
 ## 0.15.0
 

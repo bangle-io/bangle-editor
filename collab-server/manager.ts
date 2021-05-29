@@ -41,9 +41,9 @@ export class Manager {
         update: async (_docName: string, _cb: () => Node) => {},
         flush: async (_docName: string, _doc: Node) => {},
       },
-      userWaitTimeout = 7 * 10000,
-      collectUsersTimeout = 5 * 10000,
-      instanceCleanupTimeout = 10 * 10000,
+      userWaitTimeout = 7 * 1000,
+      collectUsersTimeout = 5 * 1000,
+      instanceCleanupTimeout = 10 * 1000,
       interceptRequests = undefined, // useful for testing or debugging
     } = {},
   ) {
