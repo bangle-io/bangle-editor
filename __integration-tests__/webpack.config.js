@@ -5,21 +5,31 @@ const { readdir, access, lstat } = require('fs/promises');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const base = __dirname;
-const getEntryPath = (f) => path.join(base, f, 'entry.js');
 const getEntries = async () => {
   const files = await readdir(base);
-  return Promise.all(
-    files.map(async (f) => {
-      const exists = await access(getEntryPath(f))
-        .then(() => true)
-        .catch(() => false);
+  const entryTypes = ['entry.js', 'entry.jsx'];
+  let result = [];
+  for (const entryType of entryTypes) {
+    result.push(
+      ...(await Promise.all(
+        files.map(async (f) => {
+          const entryPath = path.join(base, f, entryType);
+          const exists = await access(entryPath)
+            .then(() => true)
+            .catch(() => false);
 
-      return [
-        exists && (await lstat(path.join(base, f, 'entry.js'))).isFile(),
-        f,
-      ];
-    }),
-  ).then((files) => files.filter((f) => f[0]).map((r) => r[1]));
+          return {
+            isValid:
+              exists && (await lstat(path.join(base, f, entryType))).isFile(),
+            fileName: f,
+            path: entryPath,
+          };
+        }),
+      )),
+    );
+  }
+
+  return result.filter((r) => r.isValid);
 };
 
 module.exports = async (env, argv) => {
@@ -37,9 +47,10 @@ module.exports = async (env, argv) => {
     target: 'web',
     mode,
     entry: Object.fromEntries(
-      entries.map((entry) => [entry, getEntryPath(entry)]),
+      entries.map((entry) => [entry.fileName, entry.path]),
     ),
     resolve: {
+      extensions: ['.jsx', '.js', '...'],
       // TODO fix me punycode
       fallback: { punycode: require.resolve('punycode/') },
     },
@@ -60,9 +71,9 @@ module.exports = async (env, argv) => {
         (entry) =>
           new HtmlWebpackPlugin({
             inject: true,
-            chunks: [entry],
+            chunks: [entry.fileName],
             title: 'Bangle App',
-            filename: entry + '.html',
+            filename: entry.fileName + '.html',
           }),
       ),
     ],
@@ -73,7 +84,7 @@ module.exports = async (env, argv) => {
           use: ['file-loader'],
         },
         {
-          test: /\.js$/,
+          test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
             loader: require.resolve('babel-loader'),
