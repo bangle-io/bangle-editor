@@ -40,6 +40,7 @@ module.exports = async (env, argv) => {
       entries.map((entry) => [entry, getEntryPath(entry)]),
     ),
     resolve: {
+      extensions: ['.jsx', '.js', '...'],
       // TODO fix me punycode
       fallback: { punycode: require.resolve('punycode/') },
     },
@@ -73,7 +74,7 @@ module.exports = async (env, argv) => {
           use: ['file-loader'],
         },
         {
-          test: /\.js$/,
+          test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
             loader: require.resolve('babel-loader'),
