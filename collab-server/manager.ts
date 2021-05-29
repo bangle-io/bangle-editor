@@ -2,11 +2,24 @@ import { serialExecuteQueue } from './utils';
 import { Instance } from './instance';
 import { Schema, Node } from 'prosemirror-model';
 import { CollabRequestHandler } from './collab-request-handler';
-import { CollabRequestType } from './types';
+import { CollabResponse, CollabRequestType } from './types';
+import { CollabError } from './collab-error';
 
-const LOG = true;
+const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+
+type HandleResponseOk = {
+  status: 'ok';
+  body: CollabResponse;
+};
+type HandleResponseError = {
+  status: 'error';
+  body: {
+    message: string;
+    errorCode: number;
+  };
+};
 
 export class Manager {
   instanceCount = 0;
@@ -28,12 +41,13 @@ export class Manager {
         update: async (_docName: string, _cb: () => Node) => {},
         flush: async (_docName: string, _doc: Node) => {},
       },
-      userWaitTimeout = 7 * 1000,
-      collectUsersTimeout = 5 * 1000,
-      instanceCleanupTimeout = 10 * 1000,
+      userWaitTimeout = 7 * 10000,
+      collectUsersTimeout = 5 * 10000,
+      instanceCleanupTimeout = 10 * 10000,
       interceptRequests = undefined, // useful for testing or debugging
     } = {},
   ) {
+    console.log({ userWaitTimeout });
     this._getInstanceQueued = this._getInstanceQueued.bind(this);
     this.disk = disk;
     this.collectUsersTimeout = collectUsersTimeout;
@@ -54,36 +68,57 @@ export class Manager {
     }
   }
 
-  public async handleRequest(path: CollabRequestType, payload: any) {
+  public async handleRequest(
+    path: CollabRequestType,
+    payload: any,
+  ): Promise<HandleResponseError | HandleResponseOk> {
     if (!payload.userId) {
       throw new Error('Must have user id');
     }
 
-    if (this.interceptRequests) {
-      await this.interceptRequests(path, payload);
-    }
-
     log(`request to ${path} from `, payload.userId);
     let data;
-    switch (path) {
-      case 'pull_events': {
-        data = await this.routes.pullEvents(payload);
-        break;
-      }
-      case 'push_events': {
-        data = await this.routes.pushEvents(payload);
-        break;
-      }
-      case 'get_document': {
-        data = await this.routes.getDocument(payload);
-        break;
-      }
-    }
 
-    log('data', path, { data });
-    return {
-      body: data,
-    };
+    try {
+      if (this.interceptRequests) {
+        await this.interceptRequests(path, payload);
+      }
+      switch (path) {
+        case 'pull_events': {
+          data = await this.routes.pullEvents(payload);
+          break;
+        }
+        case 'push_events': {
+          data = await this.routes.pushEvents(payload);
+          break;
+        }
+        case 'get_document': {
+          data = await this.routes.getDocument(payload);
+          break;
+        }
+      }
+      return {
+        status: 'ok',
+        body: data,
+      };
+    } catch (err) {
+      if (err instanceof CollabError) {
+        return {
+          status: 'error',
+          body: {
+            errorCode: err.errorCode,
+            message: err.message,
+          },
+        };
+      }
+      return {
+        status: 'error',
+        body: {
+          errorCode: 500,
+          message: err.message || 'Unknown error occurred',
+        },
+      };
+    }
   }
 
   private _stopInstance(docName: string) {

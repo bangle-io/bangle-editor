@@ -44,3 +44,13 @@ export type CollabRequestType =
   | GetDocumentType
   | PullEventsType
   | PushEventsType;
+
+export type CollabRequestParam =
+  | PullEventRequestParam
+  | GetDocumentRequestParam
+  | PushEventsRequestParam;
+
+export type CollabResponse =
+  | PullEventResponse
+  | GetDocumentResponse
+  | PushEventsResponse;

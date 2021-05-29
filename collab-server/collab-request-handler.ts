@@ -1,4 +1,5 @@
 import {
+  GetDocumentRequestParam,
   GetDocumentResponse,
   PullEventRequestParam,
   PullEventResponse,
@@ -14,7 +15,7 @@ import { raceTimeout } from './utils';
 
 const LOG = false;
 
-let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+const log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 
 export class CollabRequestHandler {
   constructor(
@@ -29,10 +30,7 @@ export class CollabRequestHandler {
   async getDocument({
     docName,
     userId,
-  }: {
-    docName: string;
-    userId: string;
-  }): Promise<GetDocumentResponse> {
+  }: GetDocumentRequestParam): Promise<GetDocumentResponse> {
     log('get_document', { docName, userId });
 
     let inst = await this.getInstance(docName, userId);
