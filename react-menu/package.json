@@ -45,5 +45,6 @@
     "access": "public",
     "main": "./dist/index.js",
     "module": "./dist/index.js"
-  }
+  },
+  "sideEffects": false
 }
