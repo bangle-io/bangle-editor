@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+- breaking: `@bangle.dev/collab-sever` will no longer throw errors in `manager.handleRequest`. You should use `parseCollabResponse` that parses the response and throws `CollabError`.
+
 ## 0.15.0
 
 - breaking: `@bangle.dev/collab` is now broken into two packages: `@bangle.dev/collab-sever` & `@bangle.dev/collab-client`.
