@@ -25,11 +25,13 @@ export function pluginLoader(
   } = {},
 ) {
   const schema = specRegistry.schema;
-
-  let [flatPlugins, pluginGroupNames] = flatten(plugins, {
+  const pluginPayload = {
     schema,
     specRegistry,
-  });
+    metadata,
+  };
+
+  let [flatPlugins, pluginGroupNames] = flatten(plugins, pluginPayload);
 
   if (defaultPlugins) {
     let defaultPluginGroups = [];
@@ -43,7 +45,7 @@ export function pluginLoader(
     }
 
     flatPlugins = flatPlugins.concat(
-      flatten(defaultPluginGroups, { schema, specRegistry, metadata })[0],
+      flatten(defaultPluginGroups, pluginPayload)[0],
     );
 
     flatPlugins = processInputRules(flatPlugins);

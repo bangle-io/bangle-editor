@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.16.2
+
+**@bangle.dev/core**
+
+- bug: Fixes a problem with `0.16.1`'s `pluginMetadata`.
+
 ## 0.16.1
 
 **@bangle.dev/core**

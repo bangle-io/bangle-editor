@@ -83,6 +83,54 @@ describe('Flattens plugins correctly', () => {
     );
   });
 
+  test('passes params correctly to plugins which are functions', () => {
+    const pluginFn = jest.fn(
+      () => new Plugin({ key: new PluginKey('myPlug') }),
+    );
+    const groupChildPluginFn = jest.fn(
+      () => new Plugin({ key: new PluginKey('grp1.first') }),
+    );
+    const group1 = new PluginGroup('grp1', [[groupChildPluginFn]]);
+
+    expect(
+      pluginLoader(specRegistry, [group1, pluginFn])
+        .map((r) => r.key)
+        .includes('myPlug$'),
+    ).toBe(true);
+
+    expect(pluginFn).toBeCalledTimes(1);
+    expect(groupChildPluginFn).toBeCalledTimes(1);
+
+    expect(pluginFn).nthCalledWith(1, {
+      specRegistry,
+      schema: specRegistry.schema,
+      metadata: {},
+    });
+    expect(groupChildPluginFn).nthCalledWith(1, {
+      specRegistry,
+      schema: specRegistry.schema,
+      metadata: {},
+    });
+  });
+
+  test('passes params metadata correctly to plugins which are functions', () => {
+    const pluginFn = jest.fn(() => new Plugin({ key: new PluginKey('myPug') }));
+    const metadata = { hello: 'world' };
+
+    expect(
+      pluginLoader(specRegistry, [pluginFn], { metadata })
+        .map((r) => r.key)
+        .includes('myPug$'),
+    ).toBe(true);
+
+    expect(pluginFn).toBeCalledTimes(1);
+    expect(pluginFn).nthCalledWith(1, {
+      specRegistry,
+      schema: specRegistry.schema,
+      metadata,
+    });
+  });
+
   test('Throws error if duplicate groups', () => {
     const group1_child = new PluginGroup('grp1_child', [
       [new Plugin({ key: new PluginKey('group1_child.first') })],
