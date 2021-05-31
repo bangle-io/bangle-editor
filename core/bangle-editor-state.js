@@ -12,6 +12,7 @@ export class BangleEditorState {
     initialValue,
     editorProps,
     pmStateOpts,
+    pluginMetadata = {},
   } = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
@@ -32,7 +33,10 @@ export class BangleEditorState {
     this.pmState = EditorState.create({
       schema,
       doc: createDocument({ schema, content: initialValue }),
-      plugins: pluginLoader(specRegistry, plugins, { editorProps }),
+      plugins: pluginLoader(specRegistry, plugins, {
+        editorProps,
+        metadata: pluginMetadata,
+      }),
       ...pmStateOpts,
     });
   }

@@ -1,5 +1,15 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.16.1
+
+**@bangle.dev/core**
+
+- feat: `EditorState` now accepts an additional prop `pluginMetadata` which will be then passed to a plugin function as `metadata`.
+
+**@bangle.dev/react-emoji-suggest**
+
+- bug: Fixed the font size of the emojis so that in windows they don't get clipped.
+
 ## 0.16.0
 
 - breaking: `@bangle.dev/collab-sever` will no longer throw errors in `manager.handleRequest`. You should use `parseCollabResponse` that parses the response and throws `CollabError`.

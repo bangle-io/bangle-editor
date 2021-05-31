@@ -17,6 +17,7 @@ export function pluginLoader(
   specRegistry,
   plugins,
   {
+    metadata = {},
     editorProps,
     defaultPlugins = true,
     dropCursorOpts,
@@ -42,7 +43,7 @@ export function pluginLoader(
     }
 
     flatPlugins = flatPlugins.concat(
-      flatten(defaultPluginGroups, { schema, specRegistry })[0],
+      flatten(defaultPluginGroups, { schema, specRegistry, metadata })[0],
     );
 
     flatPlugins = processInputRules(flatPlugins);

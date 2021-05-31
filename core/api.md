@@ -51,7 +51,7 @@ An object with the following fields:
 
 :brain: _Please note this is a **recursive** type - it contains reference to itself!_
 
-> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | (fn({ schema, specRegistry }) -> [Plugins](#plugins)) | undefined
+> {{Prosemirror.PluginSpec}} | [Plugins](#plugins)\[\] | (fn({ schema, specRegistry, metadata }) -> [Plugins](#plugins)) | undefined
 
 This is designed in a way to provide flexibility and extensibility when grouping multiple plugins under a {{core.link.Component}}. Please checkout this [example](/docs/examples/exporting-data#persisting-to-local-storage) on how to create a small plugin or read the source code of some of the core components.
 
@@ -178,8 +178,11 @@ Create an editor state instance with following params:
   - **specs:** ?[Spec](#spec)\[\]\
     A shorthand which initializes SpecRegistry for you behind the scenes. Use this if you don't care about creating and managing a SpecRegistry instance. Note: you can either set `specRegistry` or `specs` but _not_ both.
 
-  - **plugins:** ?({ schema, specRegistry }) -> {{core.link.Plugins}}\[\]\
+  - **plugins:** ?({ schema, specRegistry, metadata }) -> {{core.link.Plugins}}\[\]\
     The list of plugins for your editor.
+
+  - **pluginMetadata**: ?Object\
+    An object that will be then passed to any plugin (see the `options.plugins` ) as a `metadata` named parameter. Use this to relay any information about the editor to a plugin.
 
   - **initialValue:** string | htmlString | undefined \
     The initial content of the editor.

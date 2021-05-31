@@ -105,7 +105,7 @@ export function EmojiSuggestContainer({
                     width: squareSide,
                     height: squareSide,
                     lineHeight: squareSide + 'px',
-                    fontSize: squareSide - 4,
+                    fontSize: Math.max(squareSide - 7, 4),
                   }}
                 />
               ))}
