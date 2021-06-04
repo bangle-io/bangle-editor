@@ -35,22 +35,21 @@ export const editorPlugins = defaultPlugins();
 export function setupDb(doc) {
   return {
     getItem: jest.fn(async () => {
-      return (
-        doc || {
-          type: 'doc',
-          content: [
-            {
-              type: 'paragraph',
-              content: [
-                {
-                  type: 'text',
-                  text: 'hello world!',
-                },
-              ],
-            },
-          ],
-        }
-      );
+      const rawDoc = doc || {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'hello world!',
+              },
+            ],
+          },
+        ],
+      };
+      return specRegistry.schema.nodeFromJSON(rawDoc);
     }),
 
     setItem: jest.fn(async () => {}),

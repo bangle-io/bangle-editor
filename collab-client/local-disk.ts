@@ -1,4 +1,4 @@
-import { Disk } from './disk';
+import { Disk } from '@bangle.dev/collab-server';
 import { Node } from 'prosemirror-model';
 
 const LOG = false;
@@ -28,7 +28,7 @@ export class LocalDisk extends Disk {
       getItem,
       setItem,
     }: {
-      getItem: (key: string) => Promise<any>;
+      getItem: (key: string) => Promise<Node>;
       setItem: (key: string, doc: Node) => Promise<void>;
     },
     { saveDebounce = 2000 } = {},
