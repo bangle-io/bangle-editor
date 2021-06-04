@@ -1,4 +1,4 @@
-import { CollabError } from './collab-error';
+import { CollabError, ValidErrorCodes } from './collab-error';
 import { Manager } from './manager';
 
 type UnPromisify<T> = T extends Promise<infer U> ? U : T;
@@ -10,7 +10,10 @@ export function parseCollabResponse(
     return payload.body;
   }
   if (payload.status === 'error') {
-    throw new CollabError(payload.body.errorCode, payload.body.message);
+    throw new CollabError(
+      payload.body.errorCode as ValidErrorCodes,
+      payload.body.message,
+    );
   }
   throw new Error('Unknown status');
 }

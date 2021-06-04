@@ -86,7 +86,7 @@ describe('one client - server', () => {
       </doc>,
     );
 
-    await sleep(50); // wait for disk
+    await sleep(250); // wait for disk
 
     expect(store.setItem).lastCalledWith('ole', view.state.doc);
   });
@@ -266,7 +266,7 @@ it('throw an error for seq1 client and expect it to recover', async () => {
   let interceptRequests = (path, payload) => {
     if (payload.userId === 'user-seq1' && path === 'pull_events') {
       if (requestCounter++ === 1) {
-        throw new CollabError('A weird error');
+        throw new CollabError(500, 'A weird error');
       }
     }
   };

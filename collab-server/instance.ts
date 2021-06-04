@@ -62,6 +62,7 @@ export class Instance {
       // tests donot fail
       return false;
     }
+    let previousDoc = this.doc;
     let doc = this.doc,
       maps: StepMap[] = [];
 
@@ -83,7 +84,9 @@ export class Instance {
     }
 
     Instance.sendUpdates(this.waiting);
-    this.scheduleSave();
+    if (!previousDoc.eq(this.doc)) {
+      this.scheduleSave();
+    }
     return { version: this.version };
   }
 

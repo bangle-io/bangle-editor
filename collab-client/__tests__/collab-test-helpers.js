@@ -8,8 +8,7 @@ import {
   typeChar,
 } from '@bangle.dev/core/test-helpers/test-helpers';
 import * as collab from '../collab-extension';
-
-import { LocalDisk } from '../local-disk';
+import { DebouncedDisk } from '@bangle.dev/disk';
 import {
   defaultPlugins,
   defaultSpecs,
@@ -35,22 +34,21 @@ export const editorPlugins = defaultPlugins();
 export function setupDb(doc) {
   return {
     getItem: jest.fn(async () => {
-      return (
-        doc || {
-          type: 'doc',
-          content: [
-            {
-              type: 'paragraph',
-              content: [
-                {
-                  type: 'text',
-                  text: 'hello world!',
-                },
-              ],
-            },
-          ],
-        }
-      );
+      const rawDoc = doc || {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'hello world!',
+              },
+            ],
+          },
+        ],
+      };
+      return specRegistry.schema.nodeFromJSON(rawDoc);
     }),
 
     setItem: jest.fn(async () => {}),
@@ -58,7 +56,10 @@ export function setupDb(doc) {
 }
 
 export function setup(db = setupDb(), { managerOpts }) {
-  let disk = new LocalDisk(db, { saveDebounce: 50 });
+  let disk = new DebouncedDisk(db.getItem, db.setItem, {
+    debounceMaxWait: 100,
+    debounceWait: 10,
+  });
   const manager = new Manager(specRegistry.schema, {
     disk,
     ...managerOpts,

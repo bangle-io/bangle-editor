@@ -3,7 +3,11 @@ import { Instance } from './instance';
 import { Schema, Node } from 'prosemirror-model';
 import { CollabRequestHandler } from './collab-request-handler';
 import { CollabResponse, CollabRequestType } from './types';
-import { CollabError } from './collab-error';
+import {
+  CollabError,
+  ValidErrorCodes as ValidCollabErrorCodes,
+} from './collab-error';
+import { Disk } from './disk';
 
 const LOG = false;
 
@@ -17,7 +21,7 @@ type HandleResponseError = {
   status: 'error';
   body: {
     message: string;
-    errorCode: number;
+    errorCode: ValidCollabErrorCodes;
   };
 };
 
@@ -36,16 +40,19 @@ export class Manager {
   constructor(
     private schema: Schema,
     {
-      disk = {
-        load: async (_docName: string): Promise<any> => {},
-        update: async (_docName: string, _cb: () => Node) => {},
-        flush: async (_docName: string, _doc: Node) => {},
-      },
+      disk,
+      // time to wait before aborting the users request
       userWaitTimeout = 7 * 1000,
       collectUsersTimeout = 5 * 1000,
       instanceCleanupTimeout = 10 * 1000,
       interceptRequests = undefined, // useful for testing or debugging
-    } = {},
+    }: {
+      disk: Disk;
+      userWaitTimeout: number;
+      collectUsersTimeout: number;
+      instanceCleanupTimeout: number;
+      interceptRequests?: (path: string, payload: any) => void;
+    },
   ) {
     this._getInstanceQueued = this._getInstanceQueued.bind(this);
     this.disk = disk;
@@ -159,10 +166,7 @@ export class Manager {
     const { instances } = this;
     let created;
     if (!doc) {
-      let rawDoc = await this.disk.load(docName);
-      doc = this.schema.nodeFromJSON(rawDoc);
-      // in case the doc was newly created save it
-      this.disk.flush(docName, doc);
+      doc = await this.disk.load(docName);
     }
 
     if (++this.instanceCount > this.maxCount) {

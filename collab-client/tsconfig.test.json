@@ -8,6 +8,9 @@
   "references": [
     {
       "path": "./tsconfig.json"
+    },
+    {
+      "path": "../contrib/disk/tsconfig.json"
     }
   ]
 }

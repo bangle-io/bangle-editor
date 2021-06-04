@@ -19,10 +19,7 @@ const log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 
 export class CollabRequestHandler {
   constructor(
-    private getInstance: (
-      docName: string,
-      userId: string,
-    ) => Promise<Instance | undefined>,
+    private getInstance: (docName: string, userId: string) => Promise<Instance>,
     private userWaitTimeout: number,
     private schema: Schema,
   ) {}
@@ -32,12 +29,8 @@ export class CollabRequestHandler {
     userId,
   }: GetDocumentRequestParam): Promise<GetDocumentResponse> {
     log('get_document', { docName, userId });
+    const inst = await this.getInstance(docName, userId);
 
-    let inst = await this.getInstance(docName, userId);
-    // TODO better propogating of these errors
-    if (!inst) {
-      throw new Error('Instance not found');
-    }
     return {
       doc: inst.doc.toJSON(),
       users: inst.userCount,

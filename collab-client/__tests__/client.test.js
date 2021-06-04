@@ -540,9 +540,7 @@ test('if getDocument fails it restarts', async () => {
   };
   ({ view } = await setupCollabEditor(handlers));
 
-  await sleep();
-
-  expect(handlers.getDocument).toBeCalledTimes(2);
+  await sleep(DEFAULT_SLEEP * 2);
 
   expect(view.state.doc).toEqualDocument(
     <doc>
