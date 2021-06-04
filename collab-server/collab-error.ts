@@ -1,8 +1,10 @@
+export type ValidErrorCodes = 400 | 410 | 409 | 500;
+
 export class CollabError extends Error {
   from?: string;
-  errorCode: number;
+  errorCode: ValidErrorCodes;
   body: any;
-  constructor(errorCode: number, message: any) {
+  constructor(errorCode: ValidErrorCodes, message: any) {
     super(message);
     this.errorCode = errorCode;
     this.body = message;

@@ -84,11 +84,10 @@ export function cancelablePromise<T>(promise: Promise<T>) {
   };
 }
 
-// TODO window is not defined in Webworker
 export function getIdleCallback(
   cb: (deadline: RequestIdleCallbackDeadline) => void,
 ) {
-  if (window.requestIdleCallback) {
+  if (typeof window !== 'undefined' && window.requestIdleCallback) {
     return window.requestIdleCallback(cb);
   }
   var t = Date.now();

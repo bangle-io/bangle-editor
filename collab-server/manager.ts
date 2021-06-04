@@ -3,7 +3,10 @@ import { Instance } from './instance';
 import { Schema, Node } from 'prosemirror-model';
 import { CollabRequestHandler } from './collab-request-handler';
 import { CollabResponse, CollabRequestType } from './types';
-import { CollabError } from './collab-error';
+import {
+  CollabError,
+  ValidErrorCodes as ValidCollabErrorCodes,
+} from './collab-error';
 
 const LOG = false;
 
@@ -17,7 +20,7 @@ type HandleResponseError = {
   status: 'error';
   body: {
     message: string;
-    errorCode: number;
+    errorCode: ValidCollabErrorCodes;
   };
 };
 

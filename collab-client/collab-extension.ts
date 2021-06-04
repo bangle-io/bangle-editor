@@ -54,18 +54,22 @@ function specFactory(_opts = {}) {
   };
 }
 
+type OnFatalError = (error: CollabError) => boolean;
+
 function pluginsFactory({
   clientID = 'client-' + uuid(),
   docName,
   getDocument,
   pullEvents,
   pushEvents,
+  onFatalError = () => true,
 }: {
   clientID: string;
   docName: string;
   getDocument: GetDocument;
   pullEvents: PullEvents;
   pushEvents: PushEvents;
+  onFatalError: OnFatalError;
 }) {
   return () => {
     return [
@@ -116,6 +120,7 @@ function pluginsFactory({
         getDocument: getDocument,
         pullEvents: pullEvents,
         pushEvents: pushEvents,
+        onFatalError,
       }),
     ];
   };
@@ -125,10 +130,12 @@ function bangleCollabPlugin({
   getDocument,
   pullEvents,
   pushEvents,
+  onFatalError,
 }: {
   getDocument: GetDocument;
   pullEvents: PullEvents;
   pushEvents: PushEvents;
+  onFatalError: OnFatalError;
 }) {
   let connection: CollabConnectionObj | undefined;
   const restart = (view: EditorView) => {
@@ -148,6 +155,7 @@ function bangleCollabPlugin({
       getDocument,
       pullEvents,
       pushEvents,
+      onFatalError,
     });
   };
 
@@ -193,12 +201,14 @@ function connectionManager({
   getDocument,
   pullEvents,
   pushEvents,
+  onFatalError,
 }: {
   view: EditorView;
   restart: (view: EditorView) => void;
   getDocument: GetDocument;
   pullEvents: PullEvents;
   pushEvents: PushEvents;
+  onFatalError: OnFatalError;
 }): CollabConnectionObj {
   let recoveryBackOff = 0;
   const onReceiveSteps = (payload: UnPromisify<ReturnType<PullEvents>>) => {
@@ -251,6 +261,13 @@ function connectionManager({
     .on('error', (error) => {
       onError(error);
     });
+  const backoffSleep = () => {
+    recoveryBackOff = recoveryBackOff
+      ? Math.min(recoveryBackOff * 2, 6e6)
+      : RECOVERY_BACK_OFF;
+    log('attempting recover', recoveryBackOff);
+    return sleep(recoveryBackOff);
+  };
 
   const onError = (error: CollabError) => {
     const { errorCode, from } = error;
@@ -262,7 +279,12 @@ function connectionManager({
     // If initialization failed, regardless of error code
     // we will need to restart setting up the initial state
     if (from === 'init') {
-      restart(view);
+      const result = onFatalError(error);
+      if (result) {
+        sleep(50).then(() => {
+          restart(view);
+        });
+      }
       return;
     }
     switch (errorCode) {
@@ -279,16 +301,19 @@ function connectionManager({
         pullEmitter.emit('pull');
         return;
       }
-      default: {
+      case 500: {
         // recover
-        recoveryBackOff = recoveryBackOff
-          ? Math.min(recoveryBackOff * 2, 6e4)
-          : RECOVERY_BACK_OFF;
-        log('attempting recover', recoveryBackOff);
-        // TODO add somee helpful api here for user to react to this
-        sleep(recoveryBackOff).then(() => {
-          pullEmitter.emit('pull');
-        });
+        const result = onFatalError(error);
+        if (result) {
+          backoffSleep().then(() => {
+            pullEmitter.emit('pull');
+          });
+        }
+        return;
+      }
+      default: {
+        console.error(error);
+        throw new Error('Unknown error code ' + errorCode);
       }
     }
   };
