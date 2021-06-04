@@ -56,7 +56,10 @@ export function setupDb(doc) {
 }
 
 export function setup(db = setupDb(), { managerOpts }) {
-  let disk = new DebouncedDisk(db.getItem, db.setItem, {});
+  let disk = new DebouncedDisk(db.getItem, db.setItem, {
+    debounceMaxWait: 100,
+    debounceWait: 10,
+  });
   const manager = new Manager(specRegistry.schema, {
     disk,
     ...managerOpts,
