@@ -4,7 +4,7 @@ module.exports = {
     `<rootDir>/__integration-tests__/`,
     `<rootDir>/.yarn`,
   ],
-  transformIgnorePatterns: ['node_modules/(?!(@popperjs)/)'],
+  transformIgnorePatterns: ['node_modules/(?!((@popperjs)|(debounce-fn))/)'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coveragePathIgnorePatterns: [
     `<rootDir>/.yarn`,

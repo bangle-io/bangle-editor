@@ -8,8 +8,7 @@ import {
   typeChar,
 } from '@bangle.dev/core/test-helpers/test-helpers';
 import * as collab from '../collab-extension';
-
-import { LocalDisk } from '../local-disk';
+import { DebouncedDisk } from '@bangle.dev/disk';
 import {
   defaultPlugins,
   defaultSpecs,
@@ -57,7 +56,7 @@ export function setupDb(doc) {
 }
 
 export function setup(db = setupDb(), { managerOpts }) {
-  let disk = new LocalDisk(db, { saveDebounce: 50 });
+  let disk = new DebouncedDisk(db.getItem, db.setItem, {});
   const manager = new Manager(specRegistry.schema, {
     disk,
     ...managerOpts,

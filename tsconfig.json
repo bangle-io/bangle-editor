@@ -12,6 +12,9 @@
     },
     {
       "path": "./collab-client/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/disk/tsconfig.json"
     }
   ]
 }

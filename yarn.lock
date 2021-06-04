@@ -2116,6 +2116,7 @@ __metadata:
   dependencies:
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/disk": "workspace:*"
     "@types/jest": ^26.0.23
     "@types/node": ^15.6.1
     "@types/prosemirror-collab": ^1.1.1
@@ -2179,6 +2180,16 @@ __metadata:
     prosemirror-transform: ^1.2.8
     prosemirror-utils: ^0.9.6
     prosemirror-view: ^1.16.3
+  languageName: unknown
+  linkType: soft
+
+"@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/disk@workspace:contrib/disk"
+  dependencies:
+    "@bangle.dev/collab-server": "workspace:*"
+    "@types/prosemirror-model": ^1.13.0
+    debounce-fn: ^5.0.0
   languageName: unknown
   linkType: soft
 
@@ -7890,6 +7901,15 @@ __metadata:
   version: 2.15.0
   resolution: "date-fns@npm:2.15.0"
   checksum: 32720142e9fb2a7d94ae296fde6fa7e5bc75944ea2ead73395e9c250c1ea465763e5d4d3c2dd78a089c7b47bfaf276cafa7865202470b3bc122ae6c5139c0f02
+  languageName: node
+  linkType: hard
+
+"debounce-fn@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "debounce-fn@npm:5.0.0"
+  dependencies:
+    mimic-fn: ^3.0.0
+  checksum: 2e6c7f7a5e9e7a1402c63d6c42752dad77dd7bc5327b766e078faf59f8305e024881a395750724dc5a50cd61ae86c39d53587d4f0190b93344e630538aca09a4
   languageName: node
   linkType: hard
 
@@ -13982,6 +14002,13 @@ fsevents@^1.2.7:
   version: 2.1.0
   resolution: "mimic-fn@npm:2.1.0"
   checksum: d2421a3444848ce7f84bd49115ddacff29c15745db73f54041edc906c14b131a38d05298dae3081667627a59b2eb1ca4b436ff2e1b80f69679522410418b478a
+  languageName: node
+  linkType: hard
+
+"mimic-fn@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "mimic-fn@npm:3.1.0"
+  checksum: f7b167f9115b8bbdf2c3ee55dce9149d14be9e54b237259c4bc1d8d0512ea60f25a1b323f814eb1fe8f5a541662804bcfcfff3202ca58df143edb986849d58db
   languageName: node
   linkType: hard
 
