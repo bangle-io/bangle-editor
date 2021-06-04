@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/collab-sever** & **@bangle.dev/collab-client**
+
+- disk.load is now expected to return a `Node`.
+- collab plugin now accepts `onFatalError`.
+
 ## 0.16.2
 
 **@bangle.dev/core**

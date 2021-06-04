@@ -41,6 +41,7 @@ export class Manager {
     private schema: Schema,
     {
       disk,
+      // time to wait before aborting the users request
       userWaitTimeout = 7 * 1000,
       collectUsersTimeout = 5 * 1000,
       instanceCleanupTimeout = 10 * 1000,
@@ -166,8 +167,6 @@ export class Manager {
     let created;
     if (!doc) {
       doc = await this.disk.load(docName);
-      // in case the doc was newly created save it
-      this.disk.flush(docName, doc);
     }
 
     if (++this.instanceCount > this.maxCount) {
