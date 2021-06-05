@@ -15,15 +15,15 @@ export class DebouncedDisk implements Disk {
   debounceMaxWait;
   debounceFuncs = new Map<string, DebouncedFunction<any, any>>();
   pendingWrites: WatchSet<string>;
-  async _doSave(docName: string, doc: Node) {
+  async _doSave(docName: string, doc: Node, version: number) {
     log(docName, '_doSaveDoc  called');
-    await this.setItem(docName, doc);
+    await this.setItem(docName, doc, version);
     this.pendingWrites.delete(docName);
   }
 
   constructor(
     private getItem: (key: string) => Promise<Node>,
-    private setItem: (key: string, doc: Node) => Promise<void>,
+    private setItem: (key: string, doc: Node, version: number) => Promise<void>,
     {
       debounceWait = 300,
       debounceMaxWait = 1000,
@@ -46,7 +46,7 @@ export class DebouncedDisk implements Disk {
     return item;
   }
 
-  async flush(docName: string, doc: Node) {
+  async flush(docName: string, doc: Node, version: number) {
     log(docName, 'flush doc called');
     this.pendingWrites.add(docName);
     // clear the timeout so that we do not
@@ -56,17 +56,21 @@ export class DebouncedDisk implements Disk {
       existingFn.cancel();
       this.debounceFuncs.delete(docName);
     }
-    this._doSave(docName, doc);
+    this._doSave(docName, doc, version);
   }
 
-  async update(docName: string, getLatestDoc: () => Node) {
+  async update(
+    docName: string,
+    getLatestDoc: () => { doc: Node; version: number },
+  ) {
     let existingFn = this.debounceFuncs.get(docName);
     this.pendingWrites.add(docName);
     if (!existingFn) {
       existingFn = debounceFn(
         () => {
           this.debounceFuncs.delete(docName);
-          this._doSave(docName, getLatestDoc());
+          const { doc, version } = getLatestDoc();
+          this._doSave(docName, doc, version);
         },
         { wait: this.debounceWait, maxWait: this.debounceMaxWait },
       );

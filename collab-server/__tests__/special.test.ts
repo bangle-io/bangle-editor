@@ -1,3 +1,0 @@
-describe('summation', () => {
-  test('works', () => {});
-});

@@ -211,6 +211,14 @@ function connectionManager({
   onFatalError: OnFatalError;
 }): CollabConnectionObj {
   let recoveryBackOff = 0;
+  let managerId: string | undefined = undefined;
+  const getManagerId = () => {
+    if (!managerId) {
+      throw new Error('ManagerId not defined');
+    }
+    return managerId;
+  };
+
   const onReceiveSteps = (payload: UnPromisify<ReturnType<PullEvents>>) => {
     // TODO name these steps as rawSteps
     // TODO make sure the data is always []
@@ -232,7 +240,7 @@ function connectionManager({
     return;
   };
 
-  const pullEmitter = pullEventsEmitter(view, pullEvents)
+  const pullEmitter = pullEventsEmitter(view, pullEvents, getManagerId)
     .on('steps', (payload) => {
       recoveryBackOff = 0;
       onReceiveSteps(payload);
@@ -247,7 +255,7 @@ function connectionManager({
       onError(error);
     });
 
-  const pushEmitter = pushEventsEmitter(view, pushEvents).on(
+  const pushEmitter = pushEventsEmitter(view, pushEvents, getManagerId).on(
     'error',
     (error) => {
       onError(error);
@@ -255,7 +263,8 @@ function connectionManager({
   );
 
   const initEmitter = collabInitEmitter(view, getDocument)
-    .on('stateIsReady', () => {
+    .on('stateIsReady', (_managerId) => {
+      managerId = _managerId;
       pullEmitter.emit('pull');
     })
     .on('error', (error) => {
@@ -291,8 +300,7 @@ function connectionManager({
       // invalid version
       case 400:
       case 410: {
-        // bad version
-        // TODO when restarting preserve the selection
+        // bad version or manager id
         restart(view);
         return;
       }
@@ -339,7 +347,11 @@ function connectionManager({
  * A helper function to poll the Authority and emit newly received steps.
  * @returns {Emitter} An emitter emits steps or error and listens for pull events
  */
-function pullEventsEmitter(view: EditorView, pullEvents: PullEvents) {
+function pullEventsEmitter(
+  view: EditorView,
+  pullEvents: PullEvents,
+  getManagerId: () => string,
+) {
   interface Events {
     error: (error: CollabError) => void;
     steps: (obj: UnPromisify<ReturnType<PullEvents>>) => void;
@@ -362,6 +374,7 @@ function pullEventsEmitter(view: EditorView, pullEvents: PullEvents) {
         version: getVersion(view.state),
         docName: collabSettings.docName,
         userId: collabSettings.userId,
+        managerId: getManagerId(),
       }),
     );
 
@@ -382,7 +395,11 @@ function pullEventsEmitter(view: EditorView, pullEvents: PullEvents) {
   return emitter;
 }
 
-function pushEventsEmitter(view: EditorView, pushEvents: PushEvents) {
+function pushEventsEmitter(
+  view: EditorView,
+  pushEvents: PushEvents,
+  getManagerId: () => string,
+) {
   interface Events {
     error: (error: CollabError) => void;
     push: () => void;
@@ -408,6 +425,7 @@ function pushEventsEmitter(view: EditorView, pushEvents: PushEvents) {
         clientID: (steps ? steps.clientID : 0) + '',
         docName: collabSettings.docName,
         userId: collabSettings.userId,
+        managerId: getManagerId(),
       }).catch((error) => {
         error.from = 'push';
         emitter.emit('error', error);
@@ -425,7 +443,7 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
       oldSelection?: Selection;
     }) => void;
     error: (error: CollabError) => void;
-    stateIsReady: () => void;
+    stateIsReady: (managerId: string) => void;
   }
   const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
 
@@ -455,7 +473,7 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
       );
     })
     .on('initCollabState', ({ getDocumentResponse, oldSelection }) => {
-      const { doc, version } = getDocumentResponse;
+      const { doc, version, managerId } = getDocumentResponse;
       let tr = replaceDocument(view.state, doc, version);
 
       if (oldSelection) {
@@ -475,7 +493,7 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
       view.updateState(newState);
 
       view.dispatch(view.state.tr.setMeta(collabSettingsKey, { ready: true }));
-      emitter.emit('stateIsReady');
+      emitter.emit('stateIsReady', managerId);
       return;
     });
 

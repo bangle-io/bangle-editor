@@ -43,6 +43,8 @@ function getInitialDoc(version, text = 'hello world') {
       ],
     },
     version: version,
+    users: 1,
+    managerId: 'test-manager-1',
   };
 }
 
@@ -425,6 +427,7 @@ test('pushes changes to server', async () => {
     ],
     userId: 'user-test',
     version: 6,
+    managerId: 'test-manager-1',
   });
 
   expect(view.state.doc).toEqualDocument(

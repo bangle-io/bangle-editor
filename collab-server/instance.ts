@@ -21,7 +21,6 @@ export interface StepBigger extends Step {
 }
 
 export class Instance {
-  version = 0;
   steps: StepBigger[] = [];
   lastActive = Date.now();
   users = Object.create(null);
@@ -29,6 +28,7 @@ export class Instance {
   waiting: Array<Waiter> = [];
   collecting: number | null = null;
   lastModified = this.lastActive;
+  lastSavedVersion: number;
 
   constructor(
     public docName: string,
@@ -39,13 +39,25 @@ export class Instance {
     public scheduleSave: (final?: boolean) => void,
     public created: number = Date.now(),
     public collectUsersTimeout: number,
-  ) {}
+    public version: number = 0,
+  ) {
+    this.lastSavedVersion = version;
+    log('new instance', docName, version);
+  }
+
+  private saveData(final?: boolean) {
+    if (this.lastSavedVersion !== this.version) {
+      this.lastSavedVersion = this.version;
+      this.scheduleSave(final);
+    }
+  }
 
   stop() {
     if (this.collecting != null) {
       clearInterval(this.collecting);
       this.collecting = null;
-      this.scheduleSave(true);
+      Instance.sendUpdates(this.waiting);
+      this.saveData(true);
     }
   }
 
@@ -82,10 +94,10 @@ export class Instance {
     if (this.steps.length > MAX_STEP_HISTORY) {
       this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
     }
-
+    log(this.version, version, clientID);
     Instance.sendUpdates(this.waiting);
     if (!previousDoc.eq(this.doc)) {
-      this.scheduleSave();
+      this.saveData();
     }
     return { version: this.version };
   }

@@ -4895,6 +4895,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/disk", "workspace:contrib/disk"],
             ["@types/bangle.dev__core", null],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.6.1"],
@@ -4916,6 +4917,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/collab-server", "workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/disk", "workspace:contrib/disk"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.6.1"],
             ["@types/prosemirror-model", "npm:1.13.0"],
@@ -4958,7 +4960,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/disk", "workspace:contrib/disk"],
             ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
             ["@types/prosemirror-model", "npm:1.13.0"],
-            ["debounce-fn", "npm:5.0.0"]
+            ["debounce-fn", "npm:5.0.0"],
+            ["prosemirror-model", "npm:1.12.0"]
           ],
           "linkType": "SOFT",
         }]
