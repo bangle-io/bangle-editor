@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.17.1
+
+**@bangle.dev/collab-sever** , **@bangle.dev/collab-client** **@bangle.dev/disk**
+
+- collab disk improvments https://github.com/bangle-io/bangle.dev/pull/203
+
 ## 0.17.0
 
 **@bangle.dev/collab-sever** , **@bangle.dev/collab-client** **@bangle.dev/disk**
