@@ -32,20 +32,15 @@ class SimpleDisk implements Disk {
   }
 
   async load(_key: string): Promise<Node> {
-    debugger;
     return specRegistry.schema.nodeFromJSON(rawDoc) as Node;
   }
 
   async update(
     _key: string,
     _getLatestDoc: () => { doc: Node; version: number },
-  ) {
-    debugger;
-  }
+  ) {}
 
-  async flush(_key: string, _doc: Node, version: number) {
-    debugger;
-  }
+  async flush(_key: string, _doc: Node, version: number) {}
 }
 
 const setup = (arg: any = {}) => {
