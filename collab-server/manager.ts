@@ -1,4 +1,4 @@
-import { serialExecuteQueue } from './utils';
+import { serialExecuteQueue, uuid } from './utils';
 import { Instance } from './instance';
 import { Schema, Node } from 'prosemirror-model';
 import { CollabRequestHandler } from './collab-request-handler';
@@ -11,7 +11,7 @@ import { Disk } from './disk';
 
 const LOG = false;
 
-let log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+let log = LOG ? console.log.bind(console, 'collab-server') : () => {};
 
 type HandleResponseOk = {
   status: 'ok';
@@ -28,6 +28,7 @@ type HandleResponseError = {
 export class Manager {
   instanceCount = 0;
   maxCount = 20;
+  destroyed = false;
   instances: { [key: string]: Instance } = {};
   getDocumentQueue = serialExecuteQueue<Instance>();
 
@@ -36,7 +37,7 @@ export class Manager {
   cleanUpInterval?: number = undefined;
   collectUsersTimeout;
   interceptRequests?: (path: string, payload: any) => void;
-
+  managerId = uuid();
   constructor(
     private schema: Schema,
     {
@@ -64,6 +65,7 @@ export class Manager {
       this._getInstanceQueued,
       userWaitTimeout,
       schema,
+      this.managerId,
     );
 
     if (instanceCleanupTimeout > 0) {
@@ -82,7 +84,7 @@ export class Manager {
       throw new Error('Must have user id');
     }
 
-    log(`request to ${path} from `, payload.userId);
+    log(`request to ${path} from `, payload.userId, payload);
     let data;
 
     try {
@@ -151,6 +153,7 @@ export class Manager {
 
   public destroy() {
     log('destroy called');
+    this.destroyed = true;
     // todo need to abort `pull_events` pending requests
     for (const i of Object.values(this.instances)) {
       this._stopInstance(i.docName);
@@ -161,8 +164,8 @@ export class Manager {
     }
   }
 
-  private async _newInstance(docName: string, doc?: Node) {
-    log('creating new instance', docName);
+  private async _newInstance(docName: string, doc?: Node, version?: number) {
+    log('creating new instance', docName, version);
     const { instances } = this;
     let created;
     if (!doc) {
@@ -186,8 +189,11 @@ export class Manager {
         return;
       }
       final
-        ? this.disk.flush(docName, instance.doc)
-        : this.disk.update(docName, () => instance.doc);
+        ? this.disk.flush(docName, instance.doc, instance.version)
+        : this.disk.update(docName, () => ({
+            doc: instance.doc,
+            version: instance.version,
+          }));
     };
 
     return (instances[docName] = new Instance(
@@ -197,14 +203,23 @@ export class Manager {
       scheduleSave,
       created,
       this.collectUsersTimeout,
+      version,
     ));
   }
 
   private async _getInstanceQueued(docName: string, userId: string) {
+    if (this.destroyed) {
+      throw new CollabError(410, 'Server is no longer available');
+    }
+
     if (!userId) {
       throw new Error('userId is required');
     }
     return this.getDocumentQueue.add(async () => {
+      if (this.destroyed) {
+        throw new CollabError(410, 'Server is no longer available');
+      }
+
       let inst = this.instances[docName] || (await this._newInstance(docName));
       if (userId) {
         inst.registerUser(userId);

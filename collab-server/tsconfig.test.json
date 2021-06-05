@@ -4,10 +4,13 @@
     "baseUrl": ".",
     "noEmit": true
   },
-  "include": ["./__tests__/"],
+  "include": ["*.ts", "./**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.json"
+    },
+    {
+      "path": "../contrib/disk/tsconfig.json"
     }
   ]
 }

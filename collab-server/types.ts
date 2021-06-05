@@ -7,6 +7,7 @@ export type PullEventRequestParam = {
   docName: string;
   version: number;
   userId: string;
+  managerId: string;
 };
 
 export type GetDocumentType = 'get_document';
@@ -18,6 +19,7 @@ export type GetDocumentResponse = {
   doc: { [key: string]: any };
   version: number;
   users: number;
+  managerId: string;
 };
 
 export type PushEventsType = 'push_events';
@@ -28,6 +30,7 @@ export type PushEventsRequestParam = {
   clientID: string;
   docName: string;
   userId: string;
+  managerId: string;
 };
 
 export type PullEvents = (

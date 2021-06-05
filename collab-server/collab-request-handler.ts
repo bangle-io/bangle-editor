@@ -16,13 +16,21 @@ import { raceTimeout } from './utils';
 const LOG = false;
 
 const log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
-
 export class CollabRequestHandler {
   constructor(
     private getInstance: (docName: string, userId: string) => Promise<Instance>,
     private userWaitTimeout: number,
     private schema: Schema,
+    private managerId: string,
   ) {}
+
+  private validateManagerId(managerId: string) {
+    // helpful when a new manager has spawned
+    // this is used to signal the client to reset its state
+    if (this.managerId !== managerId) {
+      throw new CollabError(410, `Incorrect manager id ` + managerId);
+    }
+  }
 
   async getDocument({
     docName,
@@ -30,11 +38,11 @@ export class CollabRequestHandler {
   }: GetDocumentRequestParam): Promise<GetDocumentResponse> {
     log('get_document', { docName, userId });
     const inst = await this.getInstance(docName, userId);
-
     return {
       doc: inst.doc.toJSON(),
       users: inst.userCount,
       version: inst.version,
+      managerId: this.managerId,
     };
   }
 
@@ -42,7 +50,10 @@ export class CollabRequestHandler {
     docName,
     version,
     userId,
+    managerId,
   }: PullEventRequestParam): Promise<PullEventResponse> {
+    log('userWaitTimeout', this.userWaitTimeout);
+    this.validateManagerId(managerId);
     // An endpoint for a collaborative document instance which
     // returns all events between a given version and the server's
     // current version of the document.
@@ -128,7 +139,10 @@ export class CollabRequestHandler {
     steps,
     docName,
     userId,
+    managerId,
   }: PushEventsRequestParam): Promise<PushEventsResponse> {
+    this.validateManagerId(managerId);
+
     version = nonNegInteger(version);
     const parsedSteps = steps.map((s) => Step.fromJSON(this.schema, s));
     const instance = await this.getInstance(docName, userId);

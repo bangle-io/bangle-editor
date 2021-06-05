@@ -88,7 +88,11 @@ describe('one client - server', () => {
 
     await sleep(250); // wait for disk
 
-    expect(store.setItem).lastCalledWith('ole', view.state.doc);
+    expect(store.setItem).lastCalledWith(
+      'ole',
+      view.state.doc,
+      expect.any(Number),
+    );
   });
 });
 
