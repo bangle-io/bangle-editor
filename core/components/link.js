@@ -1,3 +1,4 @@
+import { InputRule } from 'prosemirror-inputrules';
 import { Plugin } from 'prosemirror-state';
 import { matchAllPlus } from '../utils/js-utils';
 import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
@@ -85,6 +86,7 @@ function pluginsFactory() {
     const { openOnClick } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
     return [
+      autoLinkInputRule(type),
       pasteLink(
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
       ),
@@ -109,6 +111,23 @@ function pluginsFactory() {
         }),
     ];
   };
+}
+
+// TODO: Get a full tld list from IANA, or make it an option.
+// scheme :: name :: tld
+export const URL_REGEX =
+  /^(?:(http|https|ftp):\/\/)?(?:[^\s.:].)+(?:com|net|io)\s$/;
+
+function autoLinkInputRule(type) {
+  return new InputRule(URL_REGEX, (state, match, start, end) => {
+    if (!match[0]) {
+      return null;
+    }
+    debugger;
+    const text = match[0];
+    console.log(text);
+    // tr.addMark(markStart, markEnd, markType.create({href: 'http://icanhazip.com'}));
+  });
 }
 
 function pasteLink(regexp) {
