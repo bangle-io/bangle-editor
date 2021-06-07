@@ -684,6 +684,34 @@ describe('Input rule', () => {
         </para>
       </doc>,
     ],
+    [
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link> def.com[]
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link>{' '}
+          <link href="http://def.com">def.com</link> []
+        </para>
+      </doc>,
+    ],
+    // No auto link when there is no space after the prev link.
+    [
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link>
+          def.com[]
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link>
+          def.com []
+        </para>
+      </doc>,
+    ],
   ])('%# input rule', async (input, expected) => {
     const { editorView } = testEditor(input);
 

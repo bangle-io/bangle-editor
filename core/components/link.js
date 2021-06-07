@@ -124,7 +124,28 @@ function autoLinkInputRule(type) {
       return null;
     }
     const [_, leadingSpace, text, scheme] = match;
-    // If no scheme, use default scheme http://
+    if (!leadingSpace) {
+      // Do nothing there is already a link within [start, end] This is for
+      // cases like "<link>abc.com</link>def.com[]". In such case typing a space
+      // after def.com should not auto link.
+      let ignore = false;
+      state.doc.nodesBetween(start, end, (node) => {
+        if (ignore) {
+          return false;
+        }
+        if (type.isInSet(node.marks)) {
+          ignore = true;
+          return false;
+        }
+        return true;
+      });
+
+      if (ignore) {
+        return null;
+      }
+    }
+    // If no scheme, use default scheme "http://". Most https sites would do a
+    // redirect for http request anyway.
     const href = scheme ? text : `http://${text}`;
     const tr = state.tr;
     tr.addMark(
