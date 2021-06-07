@@ -116,17 +116,26 @@ function pluginsFactory() {
 // TODO: Get a full tld list from IANA, or make it an option.
 // scheme :: name :: tld
 export const URL_REGEX =
-  /^(?:(http|https|ftp):\/\/)?(?:[^\s.:].)+(?:com|net|io)\s$/;
+  /(^|\s)(((http|https|ftp):\/\/)?(?:[^\s.:\/]+\.)+(?:com|net|io))\s$/;
 
 function autoLinkInputRule(type) {
   return new InputRule(URL_REGEX, (state, match, start, end) => {
     if (!match[0]) {
       return null;
     }
-    debugger;
-    const text = match[0];
-    console.log(text);
-    // tr.addMark(markStart, markEnd, markType.create({href: 'http://icanhazip.com'}));
+    const [_, leadingSpace, text, scheme] = match;
+    // If no scheme, use default scheme http://
+    const href = scheme ? text : `http://${text}`;
+    const tr = state.tr;
+    tr.addMark(
+      // Ignore the leading space, if any
+      leadingSpace.length > 0 ? start + 1 : start,
+      end,
+      type.create({ href: href }),
+    );
+    // Append the space after the link
+    tr.insertText(' ', end);
+    return tr;
   });
 }
 

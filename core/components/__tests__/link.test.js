@@ -646,8 +646,10 @@ describe('queryLinkAttrs', () => {
 describe('auto link regexp', () => {
   test.each([
     ['http://foo.com', true],
+    ['http:///foo.com', false],
     ['foo.com', true],
     ['1http://foo.com', false],
+    ['abc def.com', true],
   ])('%# auto link regexp', async (input, expected) => {
     const match = URL_REGEX.exec(input + ' ');
     expect({
@@ -668,7 +670,17 @@ describe('Input rule', () => {
       </doc>,
       <doc>
         <para>
-          <link href="http://hello.com">hello</link> []
+          <link href="http://hello.com">hello.com</link> []
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>hello https://123.com[]</para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://123.com">https://123.com</link> []
         </para>
       </doc>,
     ],
