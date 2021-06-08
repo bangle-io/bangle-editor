@@ -8,9 +8,10 @@ import {
   psx,
   renderTestEditor,
   selectNodeAt,
+  typeText,
 } from '../../test-helpers/test-helpers';
 import { toggleMark } from 'prosemirror-commands';
-import { queryLinkAttrs, updateLink } from '../link';
+import { queryLinkAttrs, updateLink, URL_REGEX } from '../link';
 import {
   bulletList,
   listItem,
@@ -639,5 +640,83 @@ describe('queryLinkAttrs', () => {
     const { editorView } = testEditor(input);
 
     expect(queryLinkAttrs()(editorView.state)).toEqual(expected);
+  });
+});
+
+describe('auto link regexp', () => {
+  test.each([
+    ['http://foo.com', true],
+    ['http:///foo.com', false],
+    ['foo.com', true],
+    ['1http://foo.com', false],
+    ['abc def.com', true],
+  ])('%# auto link regexp', async (input, expected) => {
+    const match = URL_REGEX.exec(input + ' ');
+    expect({
+      text: input,
+      match: !!match,
+    }).toEqual({
+      text: input,
+      match: expected,
+    });
+  });
+});
+
+describe('Input rule', () => {
+  test.each([
+    [
+      <doc>
+        <para>hello.com[]</para>
+      </doc>,
+      <doc>
+        <para>
+          <link href="http://hello.com">hello.com</link> []
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>hello https://123.com[]</para>
+      </doc>,
+      <doc>
+        <para>
+          hello <link href="https://123.com">https://123.com</link> []
+        </para>
+      </doc>,
+    ],
+    [
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link> def.com[]
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link>{' '}
+          <link href="http://def.com">def.com</link> []
+        </para>
+      </doc>,
+    ],
+    // No auto link when there is no space after the prev link.
+    [
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link>
+          def.com[]
+        </para>
+      </doc>,
+      <doc>
+        <para>
+          <link href="http://123.com">123.com</link>
+          def.com []
+        </para>
+      </doc>,
+    ],
+  ])('%# input rule', async (input, expected) => {
+    const { editorView } = testEditor(input);
+
+    typeText(editorView, ' ');
+
+    expect(editorView.state).toEqualDocAndSelection(expected);
   });
 });
