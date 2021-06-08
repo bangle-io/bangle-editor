@@ -125,7 +125,7 @@ function autoLinkInputRule(type) {
     }
     const [_, leadingSpace, text, scheme] = match;
     if (!leadingSpace) {
-      // Do nothing there is already a link within [start, end] This is for
+      // Do nothing if there is already a link within [start, end]. This is for
       // cases like "<link>abc.com</link>def.com[]". In such case typing a space
       // after def.com should not auto link.
       let ignore = false;
