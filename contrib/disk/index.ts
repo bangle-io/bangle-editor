@@ -81,7 +81,6 @@ export class DebouncedDisk implements Disk {
   }
 
   async flushAll() {
-    console.log('Flushing data');
     Array.from(this.debounceFuncs.values()).map((r) => r());
   }
 }
