@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- feat: Automatically convert urls to links https://github.com/bangle-io/bangle.dev/pull/204
+
 ## 0.17.1
 
 **@bangle.dev/collab-sever** , **@bangle.dev/collab-client** **@bangle.dev/disk**
