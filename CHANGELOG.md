@@ -1,12 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.17.2
 
 **@bangle.dev/core**
 
 - feat: Automatically convert urls to links https://github.com/bangle-io/bangle.dev/pull/204
 
-  **@bangle.dev/collab-client**
+**@bangle.dev/collab-client**
 
 - bug: preserve selection if it was provided in a collab session.
 
