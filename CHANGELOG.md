@@ -6,6 +6,10 @@
 
 - feat: Automatically convert urls to links https://github.com/bangle-io/bangle.dev/pull/204
 
+  **@bangle.dev/collab-client**
+
+- bug: preserve selection if it was provided in a collab session.
+
 ## 0.17.1
 
 **@bangle.dev/collab-sever** , **@bangle.dev/collab-client** **@bangle.dev/disk**

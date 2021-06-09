@@ -5,7 +5,13 @@ import {
   sendableSteps,
 } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
-import { EditorState, Plugin, PluginKey, Selection } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  Selection,
+  TextSelection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { replaceDocument } from './helpers';
 import StrictEventEmitter from 'strict-event-emitter-types';
@@ -474,10 +480,16 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
     })
     .on('initCollabState', ({ getDocumentResponse, oldSelection }) => {
       const { doc, version, managerId } = getDocumentResponse;
-      let tr = replaceDocument(view.state, doc, version);
 
-      if (oldSelection) {
-        let { from } = oldSelection;
+      const prevSelection =
+        view.state.selection instanceof TextSelection
+          ? view.state.selection
+          : undefined;
+
+      let tr = replaceDocument(view.state, doc, version);
+      const selection = oldSelection || prevSelection;
+      if (selection) {
+        let { from } = selection;
         if (from >= tr.doc.content.size) {
           tr = tr.setSelection(Selection.atEnd(tr.doc));
         } else {
