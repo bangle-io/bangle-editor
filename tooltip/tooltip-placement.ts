@@ -1,6 +1,16 @@
+import { PluginKey, EditorState } from 'prosemirror-state';
+import { DOMOutputSpec } from 'prosemirror-model';
 import { Plugin } from '@bangle.dev/core/index';
 import { bangleWarn } from '@bangle.dev/core/utils/js-utils';
 import { createTooltipDOM } from './create-tooltip-dom';
+import {
+  Placement,
+  State as PopperState,
+  VirtualElement,
+  Modifier,
+  Instance as PopperInstance,
+} from '@popperjs/core';
+import { EditorView } from 'prosemirror-view';
 import {
   createPopper,
   offset,
@@ -22,6 +32,46 @@ const rem =
     ? 12
     : parseFloat(getComputedStyle(document.documentElement).fontSize);
 
+type TooltipPluginState = {
+  show: boolean;
+};
+
+type TooltipCallbackFunction = (
+  state: EditorState,
+  dispatch: any,
+  view: EditorView,
+) => any;
+
+type ModifierList = Modifier<any, any>[];
+
+export type GetRefereenceElementFunction = (
+  view: EditorView,
+  tooltipDOM: HTMLElement,
+  scrollContainerDOM: HTMLElement,
+) => VirtualElement;
+
+export type TooltipRenderOpts = {
+  tooltipDOMSpec: DOMOutputSpec;
+  placement?: Placement;
+  getReferenceElement: GetRefereenceElementFunction;
+  getScrollContainer?: (view: EditorView) => HTMLElement;
+  onUpdateTooltip?: TooltipCallbackFunction;
+  onHideTooltip?: TooltipCallbackFunction;
+  tooltipOffset?: (state: PopperState) => [number, number];
+  fallbackPlacements?: [Placement, Placement];
+  customPopperModifiers?: (
+    view: EditorView,
+    tooltipDOM: HTMLElement,
+    scrollContainerDOM: HTMLElement,
+    defaultModifiers: ModifierList,
+  ) => ModifierList;
+};
+
+type TooltipPlacementOptions = {
+  stateKey: PluginKey;
+  renderOpts: TooltipRenderOpts;
+};
+
 function tooltipPlacement({
   stateKey,
   renderOpts: {
@@ -29,27 +79,30 @@ function tooltipPlacement({
     placement = 'top',
     getReferenceElement,
     getScrollContainer = (view) => {
-      return view.dom.parentElement;
+      return view.dom.parentElement!;
     },
-    onUpdateTooltip = (state, dispatch, view) => {},
-    onHideTooltip = (state, dispatch, view) => {},
+    onUpdateTooltip = (_state, _dispatch, _view) => {},
+    onHideTooltip = (_state, _dispatch, _view) => {},
     tooltipOffset = () => {
       return [0, 0.5 * rem];
     },
     fallbackPlacements = ['bottom', 'top'],
     customPopperModifiers,
   },
-}) {
+}: TooltipPlacementOptions) {
   const plugin = new Plugin({
-    view: (view) => {
+    view: (view: EditorView) => {
       return new TooltipPlacementView(view);
     },
   });
 
   class TooltipPlacementView {
-    constructor(view) {
-      this.popperInstance = null;
+    popperInstance: PopperInstance | null = null;
+    _view: EditorView;
+    _tooltip: HTMLElement;
+    _scrollContainerDOM: HTMLElement;
 
+    constructor(view: EditorView) {
       this._view = view;
 
       const { dom: tooltipDOM } = createTooltipDOM(tooltipDOMSpec);
@@ -57,9 +110,9 @@ function tooltipPlacement({
       this._tooltip = tooltipDOM;
       this._scrollContainerDOM = getScrollContainer(view);
       // TODO should this be this plugins responsibility
-      this._view.dom.parentNode.appendChild(this._tooltip);
+      this._view.dom.parentNode!.appendChild(this._tooltip);
 
-      const pluginState = stateKey.getState(view.state);
+      const pluginState: TooltipPluginState = stateKey.getState(view.state);
       validateState(pluginState);
       // if the initial state is to show, setup the tooltip
       if (pluginState.show) {
@@ -68,7 +121,7 @@ function tooltipPlacement({
       }
     }
 
-    update(view, prevState) {
+    update(view: EditorView, prevState: EditorState) {
       const pluginState = stateKey.getState(view.state);
       if (pluginState === stateKey.getState(prevState)) {
         return;
@@ -90,7 +143,7 @@ function tooltipPlacement({
         this.popperInstance = null;
       }
 
-      this._view.dom.parentNode.removeChild(this._tooltip);
+      this._view.dom.parentNode!.removeChild(this._tooltip);
     }
 
     _hideTooltip() {
@@ -111,10 +164,10 @@ function tooltipPlacement({
     _showTooltip() {
       this._tooltip.setAttribute('data-show', '');
       this._createPopperInstance(this._view);
-      this.popperInstance.update();
+      this.popperInstance!.update();
     }
 
-    _createPopperInstance(view) {
+    _createPopperInstance(view: EditorView) {
       if (this.popperInstance) {
         return;
       }
@@ -129,7 +182,7 @@ function tooltipPlacement({
         {
           name: 'offset',
           options: {
-            offset: (popperState) => {
+            offset: (popperState: PopperState) => {
               return tooltipOffset(popperState);
             },
           },
@@ -157,7 +210,7 @@ function tooltipPlacement({
               },
             }
           : undefined,
-      ].filter(Boolean);
+      ].filter(Boolean) as ModifierList;
 
       this.popperInstance = createPopper(
         getReferenceElement(view, this._tooltip, this._scrollContainerDOM),
@@ -181,7 +234,7 @@ function tooltipPlacement({
   return plugin;
 }
 
-function validateState(state) {
+function validateState(state: TooltipPluginState) {
   if (typeof state.show !== 'boolean') {
     bangleWarn(
       `Tooltip must be controlled by a plugin having a boolean field "show" in its state, but received the state=`,

@@ -5669,7 +5669,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/tooltip", "virtual:1f4dd5ca22c30c6e803710da006673ff460993f26e512cbb56418593552d4d6cae875aa2b6ee2b36e1e411c6edc51d0a4510c7f7da85460de8d94eedd2d37e1e#workspace:tooltip"],
             ["@bangle.dev/core", "workspace:core"],
             ["@popperjs/core", "npm:2.5.4"],
-            ["@types/bangle.dev__core", null]
+            ["@types/bangle.dev__core", null],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/prosemirror-collab", "npm:1.1.1"],
+            ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
+            ["prosemirror-model", "npm:1.12.0"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-view", "npm:1.16.3"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -5682,7 +5693,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/tooltip", "workspace:tooltip"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@popperjs/core", "npm:2.5.4"]
+            ["@popperjs/core", "npm:2.5.4"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/prosemirror-collab", "npm:1.1.1"],
+            ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
+            ["prosemirror-model", "npm:1.12.0"],
+            ["prosemirror-state", "npm:1.3.3"],
+            ["prosemirror-view", "npm:1.16.3"]
           ],
           "linkType": "SOFT",
         }]
@@ -7670,6 +7692,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/prosemirror-transform", "npm:1.1.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-inputrules", [
+        ["npm:1.0.4", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-inputrules-npm-1.0.4-e3a98031c4-af89b9e449.zip/node_modules/@types/prosemirror-inputrules/",
+          "packageDependencies": [
+            ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"]
           ],
           "linkType": "HARD",
         }]

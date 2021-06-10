@@ -31,3 +31,4 @@ _bangle-website/docs/api
 dist
 
 *.tsbuildinfo
+.log/
