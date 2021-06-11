@@ -5,25 +5,38 @@ import {
   findSelectedNodeOfType,
   findParentNodeOfType as _findParentNodeOfType,
 } from 'prosemirror-utils';
-import { Fragment, Slice, DOMSerializer } from 'prosemirror-model';
+import {
+  Fragment,
+  Slice,
+  DOMSerializer,
+  MarkType,
+  Node,
+  NodeType,
+  Schema,
+  ResolvedPos,
+} from 'prosemirror-model';
+import { EditorState, Transaction, PluginKey, Plugin } from 'prosemirror-state';
+import { Command } from 'prosemirror-commands';
+import { EditorView } from 'prosemirror-view';
 import { GapCursorSelection } from '../gap-cursor';
-import { Plugin } from '../plugin';
 
-export function safeInsert(...args) {
-  return _safeInsert(...args);
+export function safeInsert(
+  content: Node | Fragment,
+  position?: number,
+  tryToReplace?: boolean,
+): (tr: Transaction) => Transaction {
+  return _safeInsert(content, position, tryToReplace);
 }
 
-export function removeSelectedNode(...args) {
-  return _removeSelectedNode(...args);
+export function removeSelectedNode(tr: Transaction): Transaction {
+  return _removeSelectedNode(tr);
 }
 
 export const findParentNodeOfType = _findParentNodeOfType;
 
-/**
- * whether the mark of type is active in selection
- * @returns {Boolean}
- */
-export function isMarkActiveInSelection(type) {
+export function isMarkActiveInSelection(
+  type: MarkType,
+): (state: EditorState) => boolean {
   return (state) => {
     const { from, $from, to, empty } = state.selection;
     if (empty) {
@@ -33,18 +46,21 @@ export function isMarkActiveInSelection(type) {
   };
 }
 
-export const validPos = (pos, doc) =>
+export const validPos = (pos: number, doc: Node) =>
   Number.isInteger(pos) && pos >= 0 && pos < doc.content.size;
 
-export const validListParent = (type, schemaNodes) => {
+export const validListParent = (
+  type: NodeType,
+  schemaNodes: Schema['nodes'],
+) => {
   const { bulletList, orderedList } = schemaNodes;
   return [bulletList, orderedList].includes(type);
 };
 
 // TODO document this, probably gets the attributes of the mark of the current selection
-export function getMarkAttrs(editorState, type) {
+export function getMarkAttrs(editorState: EditorState, type: MarkType) {
   const { from, to } = editorState.selection;
-  let marks = [];
+  let marks: Node['marks'] = [];
 
   editorState.doc.nodesBetween(from, to, (node) => {
     marks = [...marks, ...node.marks];
@@ -55,8 +71,12 @@ export function getMarkAttrs(editorState, type) {
   return mark ? mark.attrs : {};
 }
 
-export function nodeIsActive(state, type, attrs = {}) {
-  const predicate = (node) => node.type === type;
+export function nodeIsActive(
+  state: EditorState,
+  type: NodeType,
+  attrs: Node['attrs'] = {},
+) {
+  const predicate = (node: Node) => node.type === type;
   const node =
     findSelectedNodeOfType(type)(state.selection) ||
     findParentNode(predicate)(state.selection);
@@ -68,30 +88,30 @@ export function nodeIsActive(state, type, attrs = {}) {
   return node.node.hasMarkup(type, { ...node.node.attrs, ...attrs });
 }
 
-export function findChangedNodesFromTransaction(tr) {
-  const nodes = [];
-  const steps = tr.steps || [];
-  steps.forEach((step) => {
-    const { to, from, slice } = step;
-    const size = slice && slice.content ? slice.content.size : 0;
-    for (let i = from; i <= to + size; i++) {
-      if (i <= tr.doc.content.size) {
-        const topLevelNode = tr.doc.resolve(i).node(1);
-        if (topLevelNode && !nodes.find((n) => n === topLevelNode)) {
-          nodes.push(topLevelNode);
-        }
-      }
-    }
-  });
-  return nodes;
-}
+// export function findChangedNodesFromTransaction(tr: Transaction) {
+//   const nodes: Node[] = [];
+//   const steps = tr.steps || [];
+//   steps.forEach((step) => {
+//     const { to, from, slice } = step;
+//     const size = slice && slice.content ? slice.content.size : 0;
+//     for (let i = from; i <= to + size; i++) {
+//       if (i <= tr.doc.content.size) {
+//         const topLevelNode = tr.doc.resolve(i).node(1);
+//         if (topLevelNode && !nodes.find((n) => n === topLevelNode)) {
+//           nodes.push(topLevelNode);
+//         }
+//       }
+//     }
+//   });
+//   return nodes;
+// }
 
 /**
  * from atlaskit
  * Returns false if node contains only empty inline nodes and hardBreaks.
  */
-export function hasVisibleContent(node) {
-  const isInlineNodeHasVisibleContent = (inlineNode) => {
+export function hasVisibleContent(node: Node) {
+  const isInlineNodeHasVisibleContent = (inlineNode: Node) => {
     return inlineNode.isText
       ? !!inlineNode.textContent.trim()
       : inlineNode.type.name !== 'hardBreak';
@@ -116,19 +136,19 @@ export function hasVisibleContent(node) {
  *  * from atlaskit
  * Checks if a node has any content. Ignores node that only contain empty block nodes.
  */
-export function isNodeEmpty(node) {
+export function isNodeEmpty(node: Node) {
   if (node && node.textContent) {
     return false;
   }
   if (
     !node ||
     !node.childCount ||
-    (node.childCount === 1 && isEmptyParagraph(node.firstChild))
+    (node.childCount === 1 && isEmptyParagraph(node.firstChild!))
   ) {
     return true;
   }
-  const block = [];
-  const nonBlock = [];
+  const block: Node[] = [];
+  const nonBlock: Node[] = [];
   node.forEach((child) => {
     child.isInline ? nonBlock.push(child) : block.push(child);
   });
@@ -138,7 +158,8 @@ export function isNodeEmpty(node) {
       (childNode) =>
         (!!childNode.childCount &&
           !(
-            childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild)
+            childNode.childCount === 1 &&
+            isEmptyParagraph(childNode.firstChild!)
           )) ||
         childNode.isAtom,
     ).length
@@ -147,7 +168,7 @@ export function isNodeEmpty(node) {
 /**
  * Checks if a node looks like an empty document
  */
-export function isEmptyDocument(node) {
+export function isEmptyDocument(node: Node) {
   const nodeChild = node.content.firstChild;
   if (node.childCount !== 1 || !nodeChild) {
     return false;
@@ -163,17 +184,22 @@ export function isEmptyDocument(node) {
  * from atlaskit
  * Checks if node is an empty paragraph.
  */
-export function isEmptyParagraph(node) {
+export function isEmptyParagraph(node: Node) {
   return (
     !node ||
     (node.type.name === 'paragraph' && !node.textContent && !node.childCount)
   );
 }
 
+type PredicateFunction = (state: EditorState, view?: EditorView) => boolean;
+
 // Run predicates: Array<fn(state) -> boolean> and if all
 // true, run the command.
-export function filter(predicates, cmd) {
-  return function (state, dispatch, view) {
+export function filter(
+  predicates: PredicateFunction | PredicateFunction[],
+  cmd: Command,
+): Command {
+  return (state, dispatch, view) => {
     if (!Array.isArray(predicates)) {
       predicates = [predicates];
     }
@@ -191,7 +217,7 @@ export function filter(predicates, cmd) {
 //
 // You can think of this as, if you could construct each document like we do in the tests,
 // return the position of the first ) backwards from the current selection.
-export function findCutBefore($pos) {
+export function findCutBefore($pos: ResolvedPos) {
   // parent is non-isolating, so we can look across this boundary
   if (!$pos.parent.type.spec.isolating) {
     // search up the tree from the pos's *parent*
@@ -209,7 +235,12 @@ export function findCutBefore($pos) {
   return null;
 }
 
-export function isRangeOfType(doc, $from, $to, nodeType) {
+export function isRangeOfType(
+  doc: Node,
+  $from: ResolvedPos,
+  $to: ResolvedPos,
+  nodeType: NodeType,
+) {
   return (
     getAncestorNodesBetween(doc, $from, $to).filter(
       (node) => node.type !== nodeType,
@@ -220,7 +251,11 @@ export function isRangeOfType(doc, $from, $to, nodeType) {
 /**
  * Returns all top-level ancestor-nodes between $from and $to
  */
-export function getAncestorNodesBetween(doc, $from, $to) {
+export function getAncestorNodesBetween(
+  doc: Node,
+  $from: ResolvedPos,
+  $to: ResolvedPos,
+) {
   const nodes = [];
   const maxDepth = findAncestorPosition(doc, $from).depth;
   let current = doc.resolve($from.start(maxDepth));
@@ -259,7 +294,7 @@ export function getAncestorNodesBetween(doc, $from, $to) {
 /**
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
-export function findAncestorPosition(doc, pos) {
+export function findAncestorPosition(doc: Node, pos: ResolvedPos) {
   const nestableBlocks = ['blockquote', 'bulletList', 'orderedList'];
 
   if (pos.depth === 1) {
@@ -280,7 +315,7 @@ export function findAncestorPosition(doc, pos) {
   return newPos;
 }
 
-export const isEmptySelectionAtStart = (state) => {
+export const isEmptySelectionAtStart = (state: EditorState) => {
   const { empty, $from } = state.selection;
   return (
     empty &&
@@ -291,8 +326,11 @@ export const isEmptySelectionAtStart = (state) => {
 /**
  * Removes marks from nodes in the current selection that are not supported
  */
-export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
-  let tr;
+export const sanitiseSelectionMarksForWrapping = (
+  state: EditorState,
+  newParentType: NodeType,
+) => {
+  let tr: Transaction | null = null;
   let { from, to } = state.tr.selection;
 
   state.doc.nodesBetween(
@@ -333,7 +371,11 @@ export const sanitiseSelectionMarksForWrapping = (state, newParentType) => {
 };
 
 // This will return (depth - 1) for root list parent of a list.
-export const getListLiftTarget = (type, schema, resPos) => {
+export const getListLiftTarget = (
+  type: NodeType | null | undefined,
+  schema: Schema,
+  resPos: ResolvedPos,
+): number => {
   let target = resPos.depth;
   const { bulletList, orderedList } = schema.nodes;
   let listItem = type;
@@ -357,7 +399,10 @@ export const getListLiftTarget = (type, schema, resPos) => {
   return target - 1;
 };
 
-export function mapChildren(node, callback) {
+export function mapChildren<T>(
+  node: Node,
+  callback: (child: Node, index: number, frag: Fragment) => T,
+): T[] {
   const array = [];
   for (let i = 0; i < node.childCount; i++) {
     array.push(
@@ -372,7 +417,7 @@ export function mapChildren(node, callback) {
   return array;
 }
 
-export const isFirstChildOfParent = (state) => {
+export const isFirstChildOfParent = (state: EditorState): boolean => {
   const { $from } = state.selection;
   return $from.depth > 1
     ? (state.selection instanceof GapCursorSelection &&
@@ -381,25 +426,27 @@ export const isFirstChildOfParent = (state) => {
     : true;
 };
 
-export function mapSlice(
-  slice,
-  callback /*: (node, parent, index) => Node | Node[] | Fragment | null,*/,
-) {
+type MapFragmentCallback = (
+  node: Node,
+  parent: Node | undefined,
+  index: number,
+) => Node | Node[] | Fragment | null;
+
+export function mapSlice(slice: Slice, callback: MapFragmentCallback) {
   const fragment = mapFragment(slice.content, callback);
   return new Slice(fragment, slice.openStart, slice.openEnd);
 }
 
 export function mapFragment(
-  content,
-  callback,
-  parent,
-
+  content: Fragment,
+  callback: MapFragmentCallback,
+  parent?: Node,
   /*: (
     node: Node,
     parent: Node | null,
     index: number,
   ) => Node | Node[] | Fragment | null,*/
-) {
+): Fragment {
   const children = [];
   for (let i = 0, size = content.childCount; i < size; i++) {
     const node = content.child(i);
@@ -423,7 +470,9 @@ export function mapFragment(
   return Fragment.fromArray(children);
 }
 
-export function getFragmentBackingArray(fragment) {
+export function getFragmentBackingArray(fragment: Fragment) {
+  // @types/prosemirror-model doesn't have Fragment.content
+  // @ts-ignore
   return fragment.content;
 }
 
@@ -440,11 +489,11 @@ export function getFragmentBackingArray(fragment) {
  *            the function would hav inserted at p2.
  */
 export function insertEmpty(
-  type,
-  placement = 'above',
-  nestable = false,
-  attrs,
-) {
+  type: NodeType,
+  placement: 'above' | 'below' = 'above',
+  nestable: boolean = false,
+  attrs: Node['attrs'],
+): Command {
   const isAbove = placement === 'above';
   const depth = nestable ? -1 : undefined;
   return (state, dispatch) => {
@@ -455,7 +504,7 @@ export function insertEmpty(
     const nodeToInsert = type.createAndFill(attrs);
 
     const tr = state.tr;
-    let newTr = safeInsert(nodeToInsert, insertPos)(state.tr);
+    let newTr = safeInsert(nodeToInsert!, insertPos)(state.tr);
 
     if (tr === newTr) {
       return false;
@@ -469,7 +518,12 @@ export function insertEmpty(
   };
 }
 
-export function findFirstMarkPosition(mark, doc, from, to) {
+export function findFirstMarkPosition(
+  mark: MarkType,
+  doc: Node,
+  from: number,
+  to: number,
+) {
   let markPos = { start: -1, end: -1 };
   doc.nodesBetween(from, to, (node, pos) => {
     // stop recursing if result is found
@@ -495,7 +549,7 @@ export function findFirstMarkPosition(mark, doc, from, to) {
  *
  * Good to know: you get the value by doing `key.getState(state)`
  */
-export function valuePlugin(key, value) {
+export function valuePlugin<T>(key: PluginKey<T>, value: T): Plugin<T> {
   return new Plugin({
     key,
     state: {
@@ -509,7 +563,7 @@ export function valuePlugin(key, value) {
   });
 }
 
-export function toHTMLString(state) {
+export function toHTMLString(state: EditorState) {
   const div = document.createElement('div');
   const fragment = DOMSerializer.fromSchema(state.schema).serializeFragment(
     state.doc.content,
@@ -519,7 +573,10 @@ export function toHTMLString(state) {
   return div.innerHTML;
 }
 
-export function extendDispatch(dispatch, tapTr) {
+export function extendDispatch(
+  dispatch: ((tr: Transaction) => void) | null,
+  tapTr: (tr: Transaction) => any,
+): ((tr: Transaction) => void) | null {
   return (
     dispatch &&
     ((tr) => {

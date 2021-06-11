@@ -1,14 +1,16 @@
-import { DOMSerializer } from 'prosemirror-model';
+import { DOMOutputSpec, DOMSerializer } from 'prosemirror-model';
+import type { Command } from 'prosemirror-commands';
+import type { EditorView } from 'prosemirror-view';
 import { isProdEnv, isTestEnv } from './environment';
 const LOG = false;
 
-function log(...args) {
+function log(...args: any[]) {
   if (LOG) {
     console.log('js-utils.js', ...args);
   }
 }
 
-export function classNames(obj) {
+export function classNames(obj: any) {
   return Object.entries(obj)
     .filter((r) => Boolean(r[1]))
     .map((r) => r[0])
@@ -19,9 +21,9 @@ export function classNames(obj) {
  * @param {Function} fn - A unary function whose paramater is non-primitive,
  *                        so that it can be cached using WeakMap
  */
-export function weakCache(fn) {
+export function weakCache(fn: Function) {
   const cache = new WeakMap();
-  return (arg) => {
+  return (arg: any) => {
     let value = cache.get(arg);
     if (value) {
       return value;
@@ -32,23 +34,23 @@ export function weakCache(fn) {
   };
 }
 
-export function arrayify(x) {
+export function arrayify(x: any) {
   if (x == null) {
     throw new Error('undefined value passed');
   }
   return Array.isArray(x) ? x : [x];
 }
 
-export function rafWrap(cb) {
-  return (...args) => {
+export function rafWrap(cb: Function): Function {
+  return (...args: any[]) => {
     requestAnimationFrame(() => cb(...args));
   };
 }
 
 // simple higher order compose
-export function compose(func, ...funcs) {
+export function compose(func: Function, ...funcs: Function[]) {
   const allFuncs = [func, ...funcs];
-  return function composed(raw) {
+  return function composed(raw: any) {
     return allFuncs.reduceRight((prev, func) => func(prev), raw);
   };
 }
@@ -59,8 +61,9 @@ export function compose(func, ...funcs) {
  * @param {*} regexp
  * @param {*} str
  */
-export function matchAllPlus(regexp, str) {
-  const matches = Array.from(str.matchAll(regexp));
+export function matchAllPlus(regexp: RegExp, str: string) {
+  // @ts-ignore
+  const matches: RegExpMatchArray[] = Array.from(str.matchAll(regexp));
   if (matches.length === 0) {
     return [
       {
@@ -74,12 +77,11 @@ export function matchAllPlus(regexp, str) {
 
   let result = [];
   let prevElementEnd = 0;
-  for (let i = 0; i < matches.length; i++) {
-    let cur = matches[i];
-    let curStart = cur.index;
+  for (let cur of matches) {
+    let curStart = cur.index!;
     // TODO there was an error saying length of undefined in this function
     // I suspect it is coming from line below. But not sure how to reproduce it.
-    let curEnd = curStart + cur[0].length;
+    let curEnd = curStart + cur[0]!.length;
 
     if (prevElementEnd !== curStart) {
       result.push({
@@ -97,7 +99,7 @@ export function matchAllPlus(regexp, str) {
   }
 
   const lastItemEnd =
-    result[result.length - 1] && result[result.length - 1].end;
+    result[result.length - 1]! && result[result.length - 1]!.end;
 
   if (lastItemEnd && lastItemEnd !== str.length) {
     result.push({
@@ -115,8 +117,10 @@ export function uuid(len = 10) {
   return Math.random().toString(36).substring(2, 15).slice(0, len);
 }
 
-export function getIdleCallback(cb) {
+export function getIdleCallback(cb: Function): number {
+  // @ts-ignore
   if (window.requestIdleCallback) {
+    // @ts-ignore
     return window.requestIdleCallback(cb);
   }
   var t = Date.now();
@@ -130,10 +134,17 @@ export function getIdleCallback(cb) {
   }, 1);
 }
 
-export function cancelablePromise(promise) {
+type CancelablePromise<T = any> = {
+  promise: Promise<T>;
+  cancel: () => void;
+};
+
+export function cancelablePromise<T>(
+  promise: Promise<T>,
+): CancelablePromise<T> {
   let hasCanceled = false;
 
-  const wrappedPromise = new Promise((resolve, reject) =>
+  const wrappedPromise = new Promise<T>((resolve, reject) =>
     promise
       .then((val) =>
         hasCanceled ? reject({ isCanceled: true }) : resolve(val),
@@ -155,12 +166,12 @@ export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));
 }
 
-/**
- * @typedef {(value: any, key: string) => any} Mapper
- * @param {Object} obj
- * @param {Mapper} map
- */
-export function objectMapValues(obj, map) {
+type AnyObject = { [index: string]: any };
+
+export function objectMapValues(
+  obj: AnyObject,
+  map: (value: any, key: any) => any,
+): AnyObject {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
       return [key, map(value, key)];
@@ -168,12 +179,10 @@ export function objectMapValues(obj, map) {
   );
 }
 
-/**
- * @typedef {(value: any, key: string) => boolean} objectFilterCb
- * @param {Object} obj
- * @param {objectFilterCb} cb
- */
-export function objectFilter(obj, cb) {
+export function objectFilter(
+  obj: AnyObject,
+  cb: (value: any, key: any) => boolean,
+): AnyObject {
   return Object.fromEntries(
     Object.entries(obj).filter(([key, value]) => {
       return cb(value, key);
@@ -193,20 +202,20 @@ export function safeMergeObject(obj1 = {}, obj2 = {}) {
   };
 }
 
-export function hasOwnProperty(obj, property) {
+export function hasOwnProperty(obj: any, property: string) {
   return Object.prototype.hasOwnProperty.call(obj, property);
 }
 
-export function handleAsyncError(fn, onError) {
-  return async (...args) => {
-    return Promise.resolve(fn(...args)).catch(onError);
-  };
-}
+// export function handleAsyncError(fn, onError) {
+//   return async (...args) => {
+//     return Promise.resolve(fn(...args)).catch(onError);
+//   };
+// }
 
 export function serialExecuteQueue() {
   let prev = Promise.resolve();
   return {
-    add: (cb) => {
+    add: (cb: Function) => {
       return new Promise((resolve, reject) => {
         prev = prev.then(() => {
           return Promise.resolve(cb()).then(
@@ -223,8 +232,8 @@ export function serialExecuteQueue() {
   };
 }
 
-export function simpleLRU(size) {
-  let array = [];
+export function simpleLRU<K = any, V = any>(size: number) {
+  let array: Array<{ key: K; value: V }> = [];
   let removeItems = () => {
     while (array.length > size) {
       log('removing', array.shift());
@@ -235,22 +244,22 @@ export function simpleLRU(size) {
       return array.slice(0);
     },
 
-    remove(key) {
+    remove(key: K) {
       array = array.filter((item) => item.key !== key);
     },
 
     clear() {
-      array = undefined;
+      array = [];
     },
 
-    get(key) {
+    get(key: K) {
       let result = array.find((item) => item.key === key);
       if (result) {
         this.set(key, result.value); // put the item in the front
         return result.value;
       }
     },
-    set(key, value) {
+    set(key: K, value: V) {
       this.remove(key);
       array.push({ key, value });
       removeItems();
@@ -258,8 +267,8 @@ export function simpleLRU(size) {
   };
 }
 
-export async function raceTimeout(promise, ts) {
-  let timerId;
+export async function raceTimeout<T>(promise: Promise<T>, ts: number) {
+  let timerId: number | null;
   let timeout = false;
   return new Promise((resolve, reject) => {
     timerId = setTimeout(() => {
@@ -272,7 +281,7 @@ export async function raceTimeout(promise, ts) {
         if (timeout) {
           return;
         }
-        clearTimeout(timerId);
+        clearTimeout(timerId!);
         timerId = null;
         resolve(result);
       },
@@ -280,7 +289,7 @@ export async function raceTimeout(promise, ts) {
         if (timeout) {
           return;
         }
-        clearTimeout(timerId);
+        clearTimeout(timerId!);
         timerId = null;
         reject(error);
       },
@@ -288,7 +297,12 @@ export async function raceTimeout(promise, ts) {
   });
 }
 
-export function domEventListener(element, type, listener, options) {
+export function domEventListener(
+  element: EventTarget,
+  type: string,
+  listener: EventListenerOrEventListenerObject,
+  options?: boolean | AddEventListenerOptions,
+) {
   element.addEventListener(type, listener, options);
   return () => {
     element.removeEventListener(type, listener, options);
@@ -298,13 +312,12 @@ export function domEventListener(element, type, listener, options) {
 /**
  * Based on idea from https://github.com/alexreardon/raf-schd
  * Throttles the function and calls it with the latest argument
- * @param {Function} fn
  */
-export function rafSchedule(fn) {
-  let lastArgs = [];
-  let frameId = null;
+export function rafSchedule(fn: Function) {
+  let lastArgs: any[] = [];
+  let frameId: number | null = null;
 
-  const wrapperFn = (...args) => {
+  const wrapperFn = (...args: any[]) => {
     // Always capture the latest value
     lastArgs = args;
 
@@ -337,19 +350,19 @@ export const bangleWarn =
     ? () => {}
     : console.warn.bind(console, 'Warning in bangle.js:');
 
-export function createElement(spec) {
+export function createElement(spec: DOMOutputSpec): HTMLElement {
   const { dom, contentDOM } = DOMSerializer.renderSpec(window.document, spec);
   if (contentDOM) {
     throw new Error('createElement does not support creating contentDOM');
   }
-  return dom;
+  return dom as HTMLElement;
 }
 
-export function complement(func) {
-  return (...args) => !func(...args);
+export function complement(func: Function) {
+  return (...args: any[]) => !func(...args);
 }
 
-export function rafCommandExec(view, command) {
+export function rafCommandExec(view: EditorView, command: Command) {
   requestAnimationFrame(() => {
     command(view.state, view.dispatch, view);
   });

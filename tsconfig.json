@@ -2,6 +2,12 @@
   "files": [],
   "references": [
     {
+      "path": "./core/tsconfig.json"
+    },
+    {
+      "path": "./core/tsconfig.test.json"
+    },
+    {
       "path": "./collab-server/tsconfig.json"
     },
     {

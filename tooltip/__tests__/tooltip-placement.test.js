@@ -85,6 +85,8 @@ const setupEditorState = (plugin) => {
   const specRegistry = new SpecRegistry(coreSpec());
   const plugins = () => [...defaultPlugins(), plugin];
 
+  // console.log(plugins())
+
   return new BangleEditorState({
     specRegistry,
     plugins,

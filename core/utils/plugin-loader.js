@@ -69,6 +69,9 @@ export function pluginLoader(
   flatPlugins = transformPlugins(flatPlugins);
 
   if (flatPlugins.some((p) => !(p instanceof Plugin))) {
+    // console.log('flatPlugins=', flatPlugins)
+    // const x= flatPlugins.find((p) => !(p instanceof Plugin));
+    // console.log('p=', x)
     bangleWarn(
       'You are either using multiple versions of the library or not returning a Plugin class in your plugins. Investigate :',
       flatPlugins.find((p) => !(p instanceof Plugin)),
