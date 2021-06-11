@@ -1,16 +1,16 @@
 /**
  */
-const supportsEvent = ((event) => {
-  if (event) {
+const supportsEvent = (() => {
+  if (typeof Event !== 'undefined') {
     try {
       // eslint-disable-next-line no-unused-expressions
-      new event('emit-init');
+      new Event('emit-init');
     } catch (e) {
       return false;
     }
   }
   return true;
-})(Event);
+})();
 
 /**
  * Build an event object in a cross-browser manner
