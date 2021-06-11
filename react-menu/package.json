@@ -37,7 +37,7 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
-    "@testing-library/react": "^11.2.2",
+    "@testing-library/react": "^11.2.7",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   },

@@ -29,7 +29,7 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.6.1",
+    "@types/node": "^15.12.2",
     "@types/prosemirror-model": "^1.13.0",
     "@types/prosemirror-transform": "^1.1.3"
   },
