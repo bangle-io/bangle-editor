@@ -9,7 +9,8 @@ import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
 import { bangleWarn } from './js-utils';
-import { Plugin, PluginGroup } from '../plugin';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { PluginGroup } from '../plugin';
 import * as history from '../components/history';
 import * as editorStateCounter from '../components/editor-state-counter';
 
@@ -47,6 +48,8 @@ export function pluginLoader(
     flatPlugins = flatPlugins.concat(
       flatten(defaultPluginGroups, pluginPayload)[0],
     );
+    const x = Plugin;
+    debugger;
 
     flatPlugins = processInputRules(flatPlugins);
 
