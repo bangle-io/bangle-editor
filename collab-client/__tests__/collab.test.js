@@ -578,9 +578,13 @@ describe('🖤unmounting of editor🖤', () => {
       {
         seq1: '💚__hello____🖤_🍌',
         seq2: '💚______ttt__tt🍌',
+        seq3: '💚_____________🍌',
       },
       [
         undefined,
+        <doc>
+          <para>hellottttt[]</para>
+        </doc>,
         <doc>
           <para>hellottttt[]</para>
         </doc>,
@@ -629,7 +633,7 @@ describe('🖤unmounting of editor🖤', () => {
         const { seq1: view1, seq2: view2, seq3: view3 } = views;
         expect(view1).toBe(expected1);
         expect(view2.state).toEqualDocAndSelection(expected2);
-        expected3 && expect(view3.state).toEqualDocAndSelection(expected3);
+        expect(view3.state).toEqualDocAndSelection(expected3);
       }
       expect.hasAssertions();
     },
