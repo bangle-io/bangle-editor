@@ -1,7 +1,13 @@
-import { DOMSerializer } from '@bangle.dev/core/prosemirror/model';
+/// <reference path="./missing-types.d.ts" />
+import { DOMSerializer, DOMOutputSpec } from 'prosemirror-model';
+
+export type TooltipDOM = {
+  dom: HTMLElement;
+  contentDOM: HTMLElement;
+};
 
 export function createTooltipDOM(
-  tooltipDOMSpec = [
+  tooltipDOMSpec: DOMOutputSpec = [
     'div',
     {
       class: 'bangle-tooltip',
@@ -15,12 +21,12 @@ export function createTooltipDOM(
       0,
     ],
   ],
-  arrow,
-) {
+  arrow: boolean = false,
+): TooltipDOM {
   const { dom, contentDOM } = DOMSerializer.renderSpec(
     window.document,
     tooltipDOMSpec,
-  );
+  ) as TooltipDOM;
 
   if (arrow && !dom.querySelector('.bangle-tooltip-arrow')) {
     const arrowElement = DOMSerializer.renderSpec(window.document, [
@@ -30,7 +36,7 @@ export function createTooltipDOM(
         'data-popper-arrow': '',
       },
     ]);
-    dom.appendChild(arrowElement);
+    dom.appendChild(arrowElement.dom);
   }
   return { dom, contentDOM };
 }

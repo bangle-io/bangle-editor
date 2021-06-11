@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: 14.x
       - run: yarn install --immutable --immutable-cache
+      - run: yarn tsc-check
       - run: yarn ${{ matrix.test-kind }}
   check-cache:
     runs-on: ubuntu-latest

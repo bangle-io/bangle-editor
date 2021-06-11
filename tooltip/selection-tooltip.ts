@@ -1,6 +1,13 @@
-import { Plugin, PluginKey } from '@bangle.dev/core/index';
-import { NodeSelection } from '@bangle.dev/core/prosemirror/state';
-import { createTooltipDOM } from './create-tooltip-dom';
+import { Plugin } from '@bangle.dev/core/index';
+import {
+  EditorState,
+  NodeSelection,
+  PluginKey,
+  Transaction,
+} from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { TooltipDOM, createTooltipDOM } from './create-tooltip-dom';
+import type { TooltipRenderOpts } from './tooltip-placement';
 import * as tooltipPlacement from './tooltip-placement';
 
 export const plugins = selectionTooltip;
@@ -15,12 +22,23 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'selection-tooltip') : () => {};
 
+type SelectionType = string | null;
+
+type CalculateTypeFunction = (
+  state: EditorState,
+  prevType: SelectionType,
+) => SelectionType;
+
 function selectionTooltip({
   key = new PluginKey('selectionTooltipPlugin'),
-  calculateType = (state, prevType) => {
+  calculateType = (state, _prevType) => {
     return state.selection.empty ? null : 'default';
   },
-  tooltipRenderOpts = {},
+  tooltipRenderOpts,
+}: {
+  key?: PluginKey;
+  calculateType?: CalculateTypeFunction;
+  tooltipRenderOpts: TooltipRenderOpts;
 }) {
   return () => {
     // - We are creating tooltipDOMSpec inside the callback because if we create outside
@@ -41,8 +59,8 @@ function selectionTooltip({
       tooltipPlacement.plugins({
         stateKey: key,
         renderOpts: {
-          getReferenceElement: getSelectionReferenceElement,
           ...tooltipRenderOpts,
+          getReferenceElement: getSelectionReferenceElement,
           tooltipDOMSpec,
         },
       }),
@@ -50,11 +68,19 @@ function selectionTooltip({
   };
 }
 
-function selectionTooltipState({ key, calculateType, tooltipDOMSpec }) {
+function selectionTooltipState({
+  key,
+  calculateType,
+  tooltipDOMSpec,
+}: {
+  key: PluginKey;
+  calculateType: CalculateTypeFunction;
+  tooltipDOMSpec: TooltipDOM;
+}) {
   return new Plugin({
     key,
     state: {
-      init: (_, state) => {
+      init: (_: any, state: EditorState) => {
         const type = calculateType(state, null);
         return {
           type,
@@ -65,7 +91,7 @@ function selectionTooltipState({ key, calculateType, tooltipDOMSpec }) {
           calculateType,
         };
       },
-      apply: (tr, pluginState) => {
+      apply: (tr: Transaction, pluginState: any) => {
         const meta = tr.getMeta(key);
         if (meta === undefined) {
           return pluginState;
@@ -86,17 +112,16 @@ function selectionTooltipState({ key, calculateType, tooltipDOMSpec }) {
     },
   });
 }
-
-function selectionTooltipController({ stateKey }) {
+function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
   let mouseDown = false;
   return new Plugin({
     props: {
       handleDOMEvents: {
-        mousedown(view, event) {
+        mousedown(_view: EditorView, _event: MouseEvent) {
           mouseDown = true;
           return false;
         },
-        mouseup(view, event) {
+        mouseup(view: EditorView, _event: MouseEvent) {
           mouseDown = false;
           _syncTooltipOnUpdate(stateKey)(view.state, view.dispatch, view);
           return false;
@@ -105,7 +130,7 @@ function selectionTooltipController({ stateKey }) {
     },
     view() {
       return {
-        update(view, lastState) {
+        update(view: EditorView, lastState: EditorState) {
           const state = view.state;
           if (mouseDown || lastState === state) {
             return;
@@ -129,7 +154,7 @@ function selectionTooltipController({ stateKey }) {
   });
 }
 
-function getSelectionReferenceElement(view) {
+function getSelectionReferenceElement(view: EditorView) {
   return {
     getBoundingClientRect: () => {
       const { selection } = view.state;
@@ -150,7 +175,7 @@ function getSelectionReferenceElement(view) {
       // Not sure why, but coordsAtPos does not return the correct
       // width of the element, so doing this to override it.
       if (selection instanceof NodeSelection) {
-        const domNode = view.nodeDOM(pos);
+        const domNode = view.nodeDOM(pos) as HTMLElement;
         width = domNode ? domNode.clientWidth : width;
         // if (domNode) {
         //   return domNode.getBoundingClientRect();
@@ -169,8 +194,11 @@ function getSelectionReferenceElement(view) {
   };
 }
 
-export function _syncTooltipOnUpdate(key) {
-  return (state, dispatch, view) => {
+type _DispatchFunction = (tr: Transaction) => void;
+type DispatchFunction = _DispatchFunction | null;
+
+export function _syncTooltipOnUpdate(key: PluginKey) {
+  return (state: EditorState, dispatch: DispatchFunction, view: EditorView) => {
     const tooltipState = key.getState(state);
     const newType = tooltipState.calculateType(state, tooltipState.type);
     if (typeof newType === 'string') {
@@ -190,8 +218,11 @@ export function _syncTooltipOnUpdate(key) {
 
 // This command will rerender if you call it with the type
 // it already has. This is done in order to update the position of a tooltip.
-export function updateSelectionTooltipType(key, type) {
-  return (state, dispatch) => {
+export function updateSelectionTooltipType(
+  key: PluginKey,
+  type: SelectionType,
+) {
+  return (state: EditorState, dispatch: DispatchFunction, _: any) => {
     log('updateSelectionTooltipType', type);
 
     if (dispatch) {
@@ -201,8 +232,8 @@ export function updateSelectionTooltipType(key, type) {
   };
 }
 
-export function hideSelectionTooltip(key) {
-  return (state, dispatch) => {
+export function hideSelectionTooltip(key: PluginKey) {
+  return (state: EditorState, dispatch: DispatchFunction, _: any) => {
     log('hideSelectionTooltip');
 
     if (dispatch) {
@@ -214,15 +245,15 @@ export function hideSelectionTooltip(key) {
   };
 }
 
-export function queryIsSelectionTooltipActive(key) {
-  return (state) => {
+export function queryIsSelectionTooltipActive(key: PluginKey) {
+  return (state: EditorState) => {
     const pluginState = key.getState(state);
     return pluginState && typeof pluginState.type === 'string' ? true : false;
   };
 }
 
-export function querySelectionTooltipType(key) {
-  return (state) => {
+export function querySelectionTooltipType(key: PluginKey) {
+  return (state: EditorState) => {
     const pluginState = key.getState(state);
     return pluginState && pluginState.type;
   };
