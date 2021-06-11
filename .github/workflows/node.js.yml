@@ -10,21 +10,29 @@ on:
     branches: [master]
 
 jobs:
-  tests:
+  unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    strategy:
-      matrix:
-        test-kind: [unit-tests, integration-tests]
     steps:
       - uses: actions/checkout@v2
-      - name: Run test "${{ matrix.test-kind }}"
+      - name: Run unit-tests
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
       - run: yarn install --immutable --immutable-cache
-      - run: [[ "${{ matrix.test-kind }}" == "integration-tests" ]] && yarn tsc-check || true
-      - run: yarn ${{ matrix.test-kind }}
+      - run: yarn unit-tests
+  integration-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run integration-tests
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: yarn install --immutable --immutable-cache
+      - run: yarn tsc-check
+      - run: yarn integration-tests
   check-cache:
     runs-on: ubuntu-latest
     steps:
