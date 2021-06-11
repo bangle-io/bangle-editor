@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
 import { components } from '../index';
 import { SpecRegistry } from '../spec-registry';

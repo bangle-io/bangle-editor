@@ -60,8 +60,14 @@ const setup = (arg: any = {}) => {
     manager,
   };
 };
-test('gets document', async () => {
-  const { disk, manager } = setup();
+
+let manager: Manager;
+let disk;
+afterEach(() => {
+  manager.destroy();
+});
+test.only('gets document', async () => {
+  ({ disk, manager } = setup());
   const resp: any = await manager.handleRequest('get_document', {
     docName: 'test-doc-1',
     userId: 'test-user-1',
@@ -86,7 +92,7 @@ test('gets document', async () => {
 });
 
 test('destroy doesnt call flush on an untouched doc when destroying', async () => {
-  const { disk, manager } = setup();
+  ({ disk, manager } = setup());
   const resp: any = await manager.handleRequest('get_document', {
     docName: 'test-doc-1',
     userId: 'test-user-1',
@@ -117,7 +123,7 @@ test('instance is shut down after timer', async () => {
 
 test('handles push events', async () => {
   const docName = 'test-doc-1';
-  const { disk, manager } = setup();
+  ({ disk, manager } = setup());
   const { body } = (await manager.handleRequest('get_document', {
     docName,
     userId: 'test-user-1',
@@ -164,7 +170,7 @@ test('handles push events', async () => {
 
 test('correct error when push events have older version', async () => {
   const docName = 'test-doc-1';
-  const { disk, manager } = setup();
+  ({ disk, manager } = setup());
   await manager.handleRequest('get_document', {
     docName,
     userId: 'test-user-1',
@@ -240,7 +246,7 @@ test('correct error when push events have older version', async () => {
 
 test('correct error when push events are newer version', async () => {
   const docName = 'test-doc-1';
-  const { disk, manager } = setup();
+  ({ disk, manager } = setup());
   await manager.handleRequest('get_document', {
     docName,
     userId: 'test-user-1',
@@ -283,7 +289,8 @@ test('correct error when push events are newer version', async () => {
 
 test('push_events : correct error when managerId are different version', async () => {
   const docName = 'test-doc-1';
-  const { disk, manager } = setup();
+  ({ disk, manager } = setup());
+
   await manager.handleRequest('get_document', {
     docName,
     userId: 'test-user-1',
@@ -329,7 +336,7 @@ test('push_events : correct error when managerId are different version', async (
 
 test('pull_events: correct error when managerId are different version', async () => {
   const docName = 'test-doc-1';
-  const { disk, manager } = setup();
+  ({ disk, manager } = setup());
   await manager.handleRequest('get_document', {
     docName,
     userId: 'test-user-1',
@@ -358,13 +365,13 @@ test('pull_events: correct error when managerId are different version', async ()
 });
 
 test('pull_events: terminates connection immediately when called destroy', async () => {
-  const { disk, manager } = setup({
+  ({ disk, manager } = setup({
     managerOpts: {
       collectUsersTimeout: 200,
       userWaitTimeout: 200,
       instanceCleanupTimeout: 500,
     },
-  });
+  }));
   await manager.handleRequest('get_document', {
     docName: 'test-doc-1',
     userId: 'test-user-1',
@@ -391,13 +398,13 @@ test('pull_events: terminates connection immediately when called destroy', async
 });
 
 test('pull_events: waits userWaitTimeout', async () => {
-  const { disk, manager } = setup({
+  ({ disk, manager } = setup({
     managerOpts: {
       collectUsersTimeout: 500,
       userWaitTimeout: 150,
       instanceCleanupTimeout: 500,
     },
-  });
+  }));
   await manager.handleRequest('get_document', {
     docName: 'test-doc-1',
     userId: 'test-user-1',
@@ -422,11 +429,11 @@ test('pull_events: waits userWaitTimeout', async () => {
 });
 
 test('cleans up instance after timer expire', async () => {
-  const { disk, manager } = setup({
+  ({ disk, manager } = setup({
     managerOpts: {
       instanceCleanupTimeout: 150,
     },
-  });
+  }));
   await manager.handleRequest('get_document', {
     docName: 'test-doc-1',
     userId: 'test-user-1',

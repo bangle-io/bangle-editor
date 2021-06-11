@@ -158,10 +158,9 @@ export class Manager {
     for (const i of Object.values(this.instances)) {
       this._stopInstance(i.docName);
     }
-    if (this.cleanUpInterval) {
-      clearInterval(this.cleanUpInterval);
-      this.cleanUpInterval = undefined;
-    }
+
+    clearInterval(this.cleanUpInterval);
+    this.cleanUpInterval = undefined;
   }
 
   private async _newInstance(docName: string, doc?: Node, version?: number) {

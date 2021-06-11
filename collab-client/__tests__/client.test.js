@@ -1,9 +1,9 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 /**
  * @jest-environment jsdom
+ * @jsx psx
  */
+
 import { getVersion } from 'prosemirror-collab';
-/** @jsx psx */
 import {
   psx,
   typeText,

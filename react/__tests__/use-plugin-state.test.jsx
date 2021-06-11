@@ -1,8 +1,7 @@
-/** @jsx pjsx */
 /**
  * @jest-environment jsdom
+ * @jsx pjsx
  */
-
 import { render, act } from '@testing-library/react';
 import {
   defaultPlugins,

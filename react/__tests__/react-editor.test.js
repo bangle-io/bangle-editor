@@ -1,6 +1,6 @@
-/** @jsx pjsx */
 /**
  * @jest-environment jsdom
+ * @jsx pjsx
  */
 
 import { render, fireEvent } from '@testing-library/react';

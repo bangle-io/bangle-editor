@@ -10,7 +10,6 @@ import { defaultPlugins, defaultSpecs } from './default-components';
 import { BangleEditorState } from '../index';
 
 const mountedEditors = new Set();
-const rootElement = document.body;
 if (typeof afterEach === 'function') {
   afterEach(() => {
     [...mountedEditors].forEach((editor) => {
@@ -44,7 +43,7 @@ export function renderTestEditor(
   let newPlugins = plugins;
   // To bypass the deprecation of plugin being a function
   plugins = () => newPlugins;
-  const container = rootElement.appendChild(document.createElement('div'));
+  const container = document.body.appendChild(document.createElement('div'));
   container.setAttribute('data-testid', testId);
 
   return (testDoc) => {
