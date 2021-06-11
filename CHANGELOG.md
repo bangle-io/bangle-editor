@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.18.0
+
+**@bangle.dev/tooltip**
+
+- We have now added typescript types to the tooltip package.
+
 ## 0.17.2
 
 **@bangle.dev/core**
