@@ -3,19 +3,20 @@ import {
   rafCommandExec,
   uuid,
 } from '@bangle.dev/core/utils/js-utils';
-import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip/index';
+import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip';
 import { PluginKey } from '@bangle.dev/core';
-import {
+import { valuePlugin } from '@bangle.dev/core/utils/pm-utils';
+import { pluginKeyStore } from '@bangle.dev/core/utils/plugin-key-store';
+import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
+
+const {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,
   updateSuggestTooltipCounter,
   removeSuggestMark,
   resetSuggestTooltipCounter,
   defaultKeys,
-} from '@bangle.dev/tooltip/suggest-tooltip';
-import { valuePlugin } from '@bangle.dev/core/utils/pm-utils';
-import { pluginKeyStore } from '@bangle.dev/core/utils/plugin-key-store';
-import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
+} = suggestTooltip;
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

@@ -3,16 +3,17 @@ import {
   queryIsLinkActive,
 } from '@bangle.dev/core/components/link';
 import { filter } from '@bangle.dev/core/utils/pm-utils';
-import { selectionTooltip } from '@bangle.dev/tooltip/index';
-import {
+import { selectionTooltip } from '@bangle.dev/tooltip';
+import { keymap } from '@bangle.dev/core/utils/keymap';
+import { PluginKey } from '@bangle.dev/core';
+import { rafCommandExec } from '@bangle.dev/core/utils/js-utils';
+
+const {
   queryIsSelectionTooltipActive,
   querySelectionTooltipType,
   hideSelectionTooltip,
   updateSelectionTooltipType,
-} from '@bangle.dev/tooltip/selection-tooltip';
-import { keymap } from '@bangle.dev/core/utils/keymap';
-import { PluginKey } from '@bangle.dev/core';
-import { rafCommandExec } from '@bangle.dev/core/utils/js-utils';
+} = selectionTooltip;
 
 export const plugins = floatingMenu;
 export const commands = {
