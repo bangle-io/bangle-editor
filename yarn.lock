@@ -3188,6 +3188,7 @@ __metadata:
     prosemirror-transform: ^1.2.8
   peerDependencies:
     "@bangle.dev/core": "*"
+    prosemirror-collab: "*"
     prosemirror-model: "*"
     prosemirror-transform: "*"
   languageName: unknown
@@ -3416,6 +3417,10 @@ __metadata:
     prosemirror-view: ^1.16.3
   peerDependencies:
     "@bangle.dev/core": "*"
+    prosemirror-inputrules: "*"
+    prosemirror-model: "*"
+    prosemirror-state: "*"
+    prosemirror-view: "*"
   languageName: unknown
   linkType: soft
 

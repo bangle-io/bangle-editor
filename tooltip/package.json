@@ -26,7 +26,11 @@
     "prepack": "yarn compile-ts"
   },
   "peerDependencies": {
-    "@bangle.dev/core": "*"
+    "@bangle.dev/core": "*",
+    "prosemirror-inputrules": "*",
+    "prosemirror-model": "*",
+    "prosemirror-state": "*",
+    "prosemirror-view": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",

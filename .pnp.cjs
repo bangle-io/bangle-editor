@@ -111,7 +111,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?)|$))$)",
     "fallbackExclusionList": [
       ["@bangle.dev/collab-client", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-client", "workspace:collab-client"]],
-      ["@bangle.dev/collab-server", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server", "workspace:collab-server"]],
+      ["@bangle.dev/collab-server", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server", "virtual:b822dd19147205481ef96798ee414dc9fa503e0c2d74b548eac3b8ca7ac14e74371bfa43722d0a07f92b9479657e46d766a02e82bfab8a63db28111763c1286c#workspace:collab-server", "workspace:collab-server"]],
       ["@bangle.dev/core", ["workspace:core"]],
       ["@bangle.dev/disk", ["workspace:contrib/disk"]],
       ["@bangle.dev/emoji", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji", "virtual:e97aacf27c9a661057e23e6059b9d59a2985e44d34ed6ccf85723bee28cfe412d6e35fedcce5654f2f89c2468f10f9bdc92013d8ee3a7c7cc0e249e386f139fd#workspace:emoji", "workspace:emoji"]],
@@ -5606,7 +5606,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./collab-client/",
           "packageDependencies": [
             ["@bangle.dev/collab-client", "workspace:collab-client"],
-            ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
+            ["@bangle.dev/collab-server", "virtual:b822dd19147205481ef96798ee414dc9fa503e0c2d74b548eac3b8ca7ac14e74371bfa43722d0a07f92b9479657e46d766a02e82bfab8a63db28111763c1286c#workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/disk", "workspace:contrib/disk"],
             ["@types/jest", "npm:26.0.23"],
@@ -5637,6 +5637,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__core", null],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.12.2"],
+            ["@types/prosemirror-collab", null],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-transform", "npm:1.1.3"],
             ["localforage", "npm:1.9.0"],
@@ -5646,7 +5647,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@bangle.dev/core",
-            "@types/bangle.dev__core"
+            "@types/bangle.dev__core",
+            "@types/prosemirror-collab"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:b822dd19147205481ef96798ee414dc9fa503e0c2d74b548eac3b8ca7ac14e74371bfa43722d0a07f92b9479657e46d766a02e82bfab8a63db28111763c1286c#workspace:collab-server", {
+          "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-server-virtual-9fdb4112f4/1/collab-server/",
+          "packageDependencies": [
+            ["@bangle.dev/collab-server", "virtual:b822dd19147205481ef96798ee414dc9fa503e0c2d74b548eac3b8ca7ac14e74371bfa43722d0a07f92b9479657e46d766a02e82bfab8a63db28111763c1286c#workspace:collab-server"],
+            ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/disk", "workspace:contrib/disk"],
+            ["@types/bangle.dev__core", null],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/node", "npm:15.12.2"],
+            ["@types/prosemirror-collab", "npm:1.1.1"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["localforage", "npm:1.9.0"],
+            ["prosemirror-collab", "npm:1.2.2"],
+            ["prosemirror-model", "npm:1.12.0"],
+            ["prosemirror-transform", "npm:1.2.7"]
+          ],
+          "packagePeers": [
+            "@bangle.dev/core",
+            "@types/bangle.dev__core",
+            "@types/prosemirror-collab",
+            "@types/prosemirror-model",
+            "@types/prosemirror-transform",
+            "prosemirror-collab",
+            "prosemirror-model",
+            "prosemirror-transform"
           ],
           "linkType": "SOFT",
         }],

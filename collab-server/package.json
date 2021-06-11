@@ -41,6 +41,7 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
+    "prosemirror-collab": "*",
     "prosemirror-model": "*",
     "prosemirror-transform": "*"
   },
