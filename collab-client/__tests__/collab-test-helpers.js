@@ -186,6 +186,8 @@ export async function* spinEditors(
 
     throw new Error('unknown value type', type);
   }
+
+  base.manager.destroy();
 }
 
 async function* iterateCases(
