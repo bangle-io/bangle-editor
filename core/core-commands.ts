@@ -1,11 +1,18 @@
 import { findParentNodeOfType } from 'prosemirror-utils';
-import { NodeSelection, Selection, TextSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  NodeSelection,
+  Selection,
+  TextSelection,
+} from 'prosemirror-state';
 import { arrayify } from './utils/js-utils';
+import { Node, NodeType } from 'prosemirror-model';
 import { mapChildren } from './utils/pm-utils';
 import { Fragment, Slice } from 'prosemirror-model';
+import { Command } from 'prosemirror-commands';
 import { ReplaceStep } from 'prosemirror-transform';
 
-function getParentTextSelection(state, currentDepth) {
+function getParentTextSelection(state: EditorState, currentDepth: number) {
   const { $from } = state.selection;
   const parentPos = $from.start(currentDepth);
   let replaceStart = parentPos;
@@ -14,7 +21,7 @@ function getParentTextSelection(state, currentDepth) {
   return TextSelection.create(state.doc, replaceStart, replaceEnd);
 }
 
-export function copyEmptyCommand(type) {
+export function copyEmptyCommand(type: NodeType): Command {
   return (state, dispatch, view) => {
     if (!state.selection.empty) {
       return false;
@@ -36,7 +43,7 @@ export function copyEmptyCommand(type) {
     document.execCommand('copy');
 
     // restore the selection
-    const tr2 = view.state.tr;
+    const tr2 = view!.state.tr;
     if (dispatch) {
       dispatch(
         tr2.setSelection(Selection.near(tr2.doc.resolve(selection.$from.pos))),
@@ -46,7 +53,7 @@ export function copyEmptyCommand(type) {
   };
 }
 
-export function cutEmptyCommand(type) {
+export function cutEmptyCommand(type: NodeType): Command {
   return (state, dispatch) => {
     if (!state.selection.empty) {
       return false;
@@ -72,7 +79,10 @@ export function cutEmptyCommand(type) {
 }
 
 // Finds a parent node in the ancestors and check if that node has a direct parent of type `parentsParentType`
-export function parentHasDirectParentOfType(parentType, parentsParentType) {
+export function parentHasDirectParentOfType(
+  parentType: NodeType,
+  parentsParentType: NodeType | NodeType[],
+): (state: EditorState) => boolean {
   parentsParentType = arrayify(parentsParentType);
 
   return (state) => {
@@ -87,7 +97,7 @@ export function parentHasDirectParentOfType(parentType, parentsParentType) {
     }
     const parentsParent = state.selection.$from.node(depth);
 
-    return parentsParentType.includes(parentsParent.type);
+    return (parentsParentType as NodeType[]).includes(parentsParent.type);
   };
 }
 
@@ -98,7 +108,7 @@ export function parentHasDirectParentOfType(parentType, parentsParentType) {
  * @param {PMNodeType} type The items type
  * @param {['UP', 'DOWN']} dir
  */
-export function moveNode(type, dir = 'UP') {
+export function moveNode(type: NodeType, dir: 'UP' | 'DOWN' = 'UP'): Command {
   const isDown = dir === 'DOWN';
   return (state, dispatch) => {
     if (!state.selection.empty) {
@@ -132,8 +142,8 @@ export function moveNode(type, dir = 'UP') {
       return false;
     }
 
-    const swapWithNodeSize = arr[swapWith].nodeSize;
-    [arr[index], arr[swapWith]] = [arr[swapWith], arr[index]];
+    const swapWithNodeSize = arr[swapWith]!.nodeSize;
+    [arr[index]!, arr[swapWith]!] = [arr[swapWith]!, arr[index]!];
 
     let tr = state.tr;
     let replaceStart = parentPos;
@@ -157,8 +167,8 @@ export function moveNode(type, dir = 'UP') {
   };
 }
 
-export const setSelectionAtEnd = (node) => {
-  return (state, dispatch, view) => {
+export const setSelectionAtEnd = (node: Node): Command => {
+  return (state, dispatch, _view) => {
     let pos = node.nodeSize - 1;
     if (node.type.name === 'doc') {
       pos = node.content.size - 1;
@@ -171,7 +181,7 @@ export const setSelectionAtEnd = (node) => {
   };
 };
 
-export function jumpToStartOfNode(type) {
+export function jumpToStartOfNode(type: NodeType): Command {
   return (state, dispatch) => {
     const current = findParentNodeOfType(type)(state.selection);
     if (!current) {
@@ -185,7 +195,7 @@ export function jumpToStartOfNode(type) {
   };
 }
 
-export function jumpToEndOfNode(type) {
+export function jumpToEndOfNode(type: NodeType): Command {
   return (state, dispatch) => {
     const current = findParentNodeOfType(type)(state.selection);
     if (!current) {

@@ -20,7 +20,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "noPropertyAccessFromIndexSignature": false,
     "useDefineForClassFields": true,
     "skipLibCheck": true,

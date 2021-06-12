@@ -1,16 +1,52 @@
-import { Plugin, PluginKey } from './plugin';
+import { Node } from 'prosemirror-model';
+import { EditorView, Decoration } from 'prosemirror-view';
+import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { bangleWarn, createElement } from './utils/js-utils';
+import { DOMOutputSpec } from 'prosemirror-model';
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};
-const renderHandlersCache = new WeakMap();
+const renderHandlersCache: WeakMap<HTMLElement, RenderHandlers> = new WeakMap();
 
-class BaseNodeView {
+type GetPosFunction = () => number;
+
+type NodeViewProps = {
+  node: Node;
+  view: EditorView;
+  getPos: GetPosFunction;
+  decorations: Decoration[];
+  selected: boolean;
+  attrs: Node['attrs'];
+  updateAttrs: (attrs: Node['attrs']) => void;
+};
+
+type RenderHandlerFunction = (
+  nodeView: BaseNodeView,
+  props: NodeViewProps,
+) => void;
+
+type RenderHandlers = {
+  create: RenderHandlerFunction;
+  update: RenderHandlerFunction;
+  destroy: RenderHandlerFunction;
+};
+
+abstract class BaseNodeView {
+  _node: Node;
+  _view: EditorView;
+  _getPos: () => number;
+  _decorations: Decoration[];
+  _selected: boolean;
+  contentDOM?: HTMLElement;
+  containerDOM?: HTMLElement;
+  renderHandlers: RenderHandlers;
+  opts: { selectionSensitive: boolean };
+
   getAttrs() {
     return this._node.attrs;
   }
 
-  getNodeViewProps() {
+  getNodeViewProps(): NodeViewProps {
     return {
       node: this._node,
       view: this._view,
@@ -18,7 +54,7 @@ class BaseNodeView {
       decorations: this._decorations,
       selected: this._selected,
       attrs: this._node.attrs,
-      updateAttrs: (attrs) => {
+      updateAttrs: (attrs: Node['attrs']) => {
         this._view.dispatch(
           updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
         );
@@ -44,6 +80,14 @@ class BaseNodeView {
       // would have called the method `saveRenderHandlers` before this gets
       // executed.
       renderHandlers = getRenderHandlers(view),
+    }: {
+      node: Node;
+      view: EditorView;
+      getPos: () => number;
+      decorations: Decoration[];
+      contentDOM?: HTMLElement;
+      containerDOM?: HTMLElement;
+      renderHandlers?: RenderHandlers;
     },
     { selectionSensitive = true } = {},
   ) {
@@ -112,6 +156,11 @@ export class NodeView extends BaseNodeView {
     containerDOM: containerDOMSpec,
     contentDOM: contentDOMSpec, // only for components which need to have editable content
     renderHandlers,
+  }: {
+    name: string;
+    contentDOM?: DOMOutputSpec;
+    containerDOM: DOMOutputSpec;
+    renderHandlers?: RenderHandlers;
   }) {
     return new Plugin({
       key: new PluginKey(name + 'NodeView'),
@@ -125,6 +174,8 @@ export class NodeView extends BaseNodeView {
               contentDOM = createElement(contentDOMSpec);
             }
 
+            // getPos for custom marks is boolean
+            getPos = getPos as GetPosFunction;
             return new NodeView({
               node,
               view,
@@ -140,7 +191,7 @@ export class NodeView extends BaseNodeView {
     });
   }
 
-  update(node, decorations) {
+  update(node: Node, decorations: Decoration[]) {
     log('update node');
     // https://github.com/ProseMirror/prosemirror/issues/648
     if (this._node.type !== node.type) {
@@ -162,14 +213,14 @@ export class NodeView extends BaseNodeView {
   }
 
   selectNode() {
-    this.containerDOM.classList.add('ProseMirror-selectednode');
+    this.containerDOM!.classList.add('ProseMirror-selectednode');
     this._selected = true;
     log('select node');
     this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
   deselectNode() {
-    this.containerDOM.classList.remove('ProseMirror-selectednode');
+    this.containerDOM!.classList.remove('ProseMirror-selectednode');
     this._selected = false;
     log('deselectNode node');
     this.renderHandlers.update(this, this.getNodeViewProps());
@@ -182,7 +233,14 @@ export class NodeView extends BaseNodeView {
   // }
 
   // PM essentially works by watching mutation and then syncing the two states: its own and the DOM.
-  ignoreMutation(mutation) {
+  ignoreMutation(
+    mutation:
+      | MutationRecord
+      | {
+          type: 'selection';
+          target: Element;
+        },
+  ) {
     // For PM an atom node is a black box, what happens inside it are of no concern to PM
     // and should be ignored.
     if (this._node.type.isAtom) {
@@ -196,7 +254,7 @@ export class NodeView extends BaseNodeView {
 
     // if a child of containerDOM (the one handled by PM)
     // has any mutation, do not ignore it
-    if (this.containerDOM.contains(mutation.target)) {
+    if (this.containerDOM!.contains(mutation.target)) {
       return false;
     }
 
@@ -222,7 +280,10 @@ export class NodeView extends BaseNodeView {
   }
 }
 
-export function saveRenderHandlers(editorContainer, handlers) {
+export function saveRenderHandlers(
+  editorContainer: HTMLElement,
+  handlers: RenderHandlers,
+) {
   if (renderHandlersCache.has(editorContainer)) {
     throw new Error(
       'It looks like renderHandlers were already set by someone else.',
@@ -231,16 +292,21 @@ export function saveRenderHandlers(editorContainer, handlers) {
   renderHandlersCache.set(editorContainer, handlers);
 }
 
-export function getRenderHandlers(view) {
+export function getRenderHandlers(view: EditorView) {
   // TODO this assumes parentNode is one level above root
   //   lets make sure it always is or rewrite this to
   //    traverse the ancestry.
-  let editorContainer = view.dom.parentNode;
+  let editorContainer = view.dom.parentNode as HTMLElement;
   const handlers = renderHandlersCache.get(editorContainer);
   return handlers;
 }
 
-function updateAttrs(pos, node, newAttrs, tr) {
+function updateAttrs(
+  pos: number,
+  node: Node,
+  newAttrs: Node['attrs'],
+  tr: Transaction,
+) {
   return tr.setNodeMarkup(pos, undefined, {
     ...node.attrs,
     ...newAttrs,

@@ -1,7 +1,7 @@
 let counter = 0;
 
 export class ObjectUID extends WeakMap {
-  get(obj) {
+  get(obj: any) {
     let uid = super.get(obj);
     if (uid) {
       return uid;

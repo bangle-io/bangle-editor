@@ -34,7 +34,7 @@ export function weakCache(fn: Function) {
   };
 }
 
-export function arrayify(x: any) {
+export function arrayify<T>(x: T | T[]): T[] {
   if (x == null) {
     throw new Error('undefined value passed');
   }

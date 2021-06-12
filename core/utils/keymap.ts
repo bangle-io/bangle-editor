@@ -1,11 +1,14 @@
 import { keymap as pmKeymap } from 'prosemirror-keymap';
+import type { Keymap } from 'prosemirror-commands';
+import type { Plugin } from 'prosemirror-state';
 
 const MONITOR =
+  // @ts-ignore
   typeof window !== 'undefined' ? window.BANGLE_DEBUG_KEYBINDINGS : true;
 
 const cache = new WeakMap();
 
-export function keymap(bindings, { monitor = MONITOR } = {}) {
+export function keymap(bindings: Keymap, { monitor = MONITOR } = {}) {
   let flatBindings = Object.entries(bindings)
     .flatMap(([key, value]) => {
       // .entries() stringifies nully keys
@@ -16,7 +19,7 @@ export function keymap(bindings, { monitor = MONITOR } = {}) {
       // for example ['Z A', Command], will map Z and A to command
       return key.split(' ').map((k) => [k, value]);
     })
-    .filter(([key, value]) => value != null);
+    .filter(([_, value]) => value != null);
 
   const normalizedBindings = Object.fromEntries(flatBindings);
 
@@ -28,12 +31,10 @@ export function keymap(bindings, { monitor = MONITOR } = {}) {
   return plugin;
 }
 
-export function debugPrintDuplicateKeybindings(plugins) {
+export function debugPrintDuplicateKeybindings(plugins: Plugin[]) {
   const bindings = plugins.map((r) => [cache.get(r), r]).filter((r) => r[0]);
   console.log(bindings);
   return bindings;
 }
 
-export function bangleKeymap(...args) {
-  return keymap(...args);
-}
+export const bangleKeymap = keymap;
