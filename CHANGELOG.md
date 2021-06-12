@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.18.1
+
+- bug: Fixed package dependency issues.
+
 ## 0.18.0
 
 **@bangle.dev/tooltip**
