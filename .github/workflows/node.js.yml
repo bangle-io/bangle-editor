@@ -12,7 +12,7 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v2
       - name: Run unit-tests
@@ -32,6 +32,9 @@ jobs:
           node-version: 14.x
       - run: yarn install --immutable --immutable-cache
       - run: yarn tsc-check
+        # HACK: core/foo.js and core/dist/foo.js would both be included by
+        # webpack for some unclear reason and results in integration tests fail.
+      - run: rm -rf core/dist
       - run: yarn integration-tests
   check-cache:
     runs-on: ubuntu-latest
