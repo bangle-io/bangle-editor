@@ -38,7 +38,7 @@
     "update-versions": "yarn constraints --fix",
     "test": "yarn lint && yarn integration-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn tsc-check && yarn e2e:test",
+    "integration-tests": "yarn e2e:test",
     "lint": "yarn node _bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
     "release-packages": "yarn workspaces foreach -v --all --no-private npm publish",

@@ -10,32 +10,24 @@ on:
     branches: [master]
 
 jobs:
-  unit-tests:
+  tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        test-kind: [unit-tests, integration-tests]
     steps:
       - uses: actions/checkout@v2
-      - name: Run unit-tests
+      - name: Run test "${{ matrix.test-kind }}"
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
       - run: yarn install --immutable --immutable-cache
-      - run: yarn unit-tests
-  integration-tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 8
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run integration-tests
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - run: yarn install --immutable --immutable-cache
       - run: yarn tsc-check
         # HACK: core/foo.js and core/dist/foo.js would both be included by
-        # webpack for some unclear reason and results in integration tests fail.
+        # jest/webpack for some unclear reason and make tests fail.
       - run: rm -rf core/dist
-      - run: yarn integration-tests
+      - run: yarn ${{ matrix.test-kind }}
   check-cache:
     runs-on: ubuntu-latest
     steps:
