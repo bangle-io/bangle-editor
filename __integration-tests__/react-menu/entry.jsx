@@ -6,9 +6,9 @@ import {
 } from '@bangle.dev/core/test-helpers/default-components';
 import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import { sticker } from '@bangle.dev/react-sticker';
-import { setupReactEditor } from '../setup/entry-helpers';
 import { floatingMenu } from '@bangle.dev/react-menu';
 import { PluginKey } from '@bangle.dev/core/index';
+import { setupReactEditor } from '../setup/entry-helpers';
 
 setup();
 

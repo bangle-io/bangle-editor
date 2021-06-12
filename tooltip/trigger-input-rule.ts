@@ -1,6 +1,5 @@
 import { InputRule } from 'prosemirror-inputrules';
-import { TextSelection } from 'prosemirror-state';
-import { EditorState } from 'prosemirror-state';
+import { TextSelection, EditorState } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 
 // ProseMirror uses the Unicode Character 'OBJECT REPLACEMENT CHARACTER' (U+FFFC) as text representation for

@@ -1,8 +1,10 @@
-import type { Disk } from '@bangle.dev/collab-server';
+import { Disk } from './Disk';
 import type { Node } from 'prosemirror-model';
 import debounceFn, { DebouncedFunction } from 'debounce-fn';
 
 const LOG = false;
+
+export { Disk };
 
 let log = LOG ? console.log.bind(console, 'disk') : () => {};
 

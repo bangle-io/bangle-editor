@@ -35,11 +35,14 @@ export const commands = {
   decrementSuggestTooltipCounter,
   resetSuggestTooltipCounter,
 };
+
 export const defaultKeys = {
   select: 'Enter',
   up: 'ArrowUp',
   down: 'ArrowDown',
   hide: 'Escape',
+  right: undefined,
+  left: undefined,
 };
 
 function specFactory({
@@ -98,12 +101,19 @@ type PluginsOptions = {
   trigger: string;
   tooltipRenderOpts: TooltipRenderOpts;
   keybindings?: any;
-  onEnter: CallbackFunction;
-  onArrowDown: CallbackFunction;
-  onArrowUp: CallbackFunction;
-  onEscape: CallbackFunction;
-  onArrowLeft: CallbackFunction;
-  onArrowRight: CallbackFunction;
+  onEnter?: CallbackFunction;
+  onArrowDown?: CallbackFunction;
+  onArrowUp?: CallbackFunction;
+  onEscape?: CallbackFunction;
+  onArrowLeft?: CallbackFunction;
+  onArrowRight?: CallbackFunction;
+};
+type PluginState = {
+  triggerText: string;
+  show: boolean;
+  counter: number;
+  trigger: string;
+  markName: string;
 };
 
 function pluginsFactory({
@@ -125,9 +135,8 @@ function pluginsFactory({
 }: PluginsOptions) {
   return ({ schema }: { schema: Schema }) => {
     const isActiveCheck = queryIsSuggestTooltipActive(key);
-
     return [
-      new Plugin({
+      new Plugin<PluginState, Schema>({
         key,
         state: {
           init(_, _state) {
