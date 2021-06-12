@@ -12,7 +12,7 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 5
     strategy:
       matrix:
         test-kind: [unit-tests, integration-tests]
@@ -21,7 +21,7 @@ jobs:
       - name: Run test "${{ matrix.test-kind }}"
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.x
       - run: yarn install --immutable --immutable-cache
       - run: yarn tsc-check
       - run: yarn ${{ matrix.test-kind }}
@@ -32,7 +32,7 @@ jobs:
       - name: Build
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.x
       - run: yarn install --immutable --immutable-cache --check-cache
   linting:
     runs-on: ubuntu-latest
@@ -41,6 +41,6 @@ jobs:
       - name: Lint, Tsc and Formatting
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.x
       - run: yarn install --immutable --immutable-cache
       - run: yarn lint
