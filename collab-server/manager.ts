@@ -7,7 +7,7 @@ import {
   CollabError,
   ValidErrorCodes as ValidCollabErrorCodes,
 } from './collab-error';
-import { Disk } from './disk';
+import { Disk } from '@bangle.dev/disk';
 
 const LOG = false;
 

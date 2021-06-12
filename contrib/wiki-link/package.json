@@ -25,7 +25,8 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*",
+    "@bangle.dev/table": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

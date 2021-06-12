@@ -2,7 +2,7 @@
 
 import { SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
-import { Disk } from '../disk';
+import { Disk } from '@bangle.dev/disk';
 import { Manager } from '../manager';
 import { Node } from 'prosemirror-model';
 import { sleep } from '../utils';

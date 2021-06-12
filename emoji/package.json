@@ -24,12 +24,12 @@
     "markdown-it-emoji": "^2.0.0"
   },
   "peerDependencies": {
-    "@bangle.dev/core": "*",
-    "@bangle.dev/markdown": "*"
+    "@bangle.dev/core": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*",
+    "@bangle.dev/table": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

@@ -1,4 +1,4 @@
-import { Node } from 'prosemirror-model';
+import type { Node } from 'prosemirror-model';
 
 export abstract class Disk {
   abstract load(_key: string): Promise<Node>;

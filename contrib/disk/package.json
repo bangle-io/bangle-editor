@@ -26,9 +26,8 @@
     "prepack": "yarn compile-ts"
   },
   "devDependencies": {
-    "@bangle.dev/collab-server": "workspace:*",
     "@types/prosemirror-model": "^1.13.0",
-    "prosemirror-model": "^1.12.0"
+    "prosemirror-model": "^1.14.1"
   },
   "dependencies": {
     "debounce-fn": "^5.0.0"
