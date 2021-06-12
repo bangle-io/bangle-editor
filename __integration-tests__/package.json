@@ -39,7 +39,7 @@
     "css-loader": "^5.2.6",
     "expect-puppeteer": "^4.4.0",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^4.5.0",
+    "html-webpack-plugin": "^4.5.2",
     "jest": "^27.0.4",
     "jest-circus": "^27.0.4",
     "jest-environment-puppeteer": "^5.0.4",
