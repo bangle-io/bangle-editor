@@ -24,9 +24,6 @@ jobs:
           node-version: 16.x
       - run: yarn install --immutable --immutable-cache
       - run: yarn tsc-check
-        # HACK: core/foo.js and core/dist/foo.js would both be included by
-        # jest/webpack for some unclear reason and make tests fail.
-      - run: rm -rf core/dist
       - run: yarn ${{ matrix.test-kind }}
   check-cache:
     runs-on: ubuntu-latest

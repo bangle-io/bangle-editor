@@ -17,9 +17,9 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "index.js",
+  "style": "style.css",
   "scripts": {
     "unit-tests": "yarn jest",
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
@@ -59,6 +59,9 @@
     "prettier": "^2.3.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
   }
 }
