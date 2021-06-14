@@ -1,8 +1,10 @@
+import { Node } from 'prosemirror-model';
+
 export const spec = specFactory;
 
 const name = 'text';
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -10,7 +12,7 @@ function specFactory(opts = {}) {
       group: 'inline',
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: any, node: Node) {
         state.text(node.text);
       },
     },

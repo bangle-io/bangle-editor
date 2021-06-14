@@ -1,10 +1,10 @@
 import { bangleWarn } from './js-utils';
-import { PluginKey } from '../plugin';
+import { PluginKey } from 'prosemirror-state';
 
 export function pluginKeyStore() {
   const store = new WeakMap();
   return {
-    get(parentKey, childKeyId) {
+    get(parentKey: PluginKey, childKeyId: string) {
       validPluginKey(parentKey);
       const family = store.get(parentKey);
       if (!family || !family[childKeyId] || !childKeyId) {
@@ -20,7 +20,7 @@ export function pluginKeyStore() {
       return store.get(parentKey)[childKeyId];
     },
 
-    create(parentKey, childKeyId) {
+    create(parentKey: PluginKey, childKeyId: string) {
       validPluginKey(parentKey);
       const key = new PluginKey(childKeyId);
       if (store.has(parentKey)) {
@@ -42,7 +42,7 @@ export function pluginKeyStore() {
   };
 }
 
-function validPluginKey(key) {
+function validPluginKey(key: any) {
   if (!(key instanceof PluginKey)) {
     bangleWarn('The key is not a valid pluginKey', key);
     throw new Error(`Please pass a valid plugin key`);

@@ -11,10 +11,10 @@ function pluginsFactory() {
       new Plugin({
         key: docChangedKey,
         state: {
-          init(_, state) {
+          init(_, _state) {
             return 0;
           },
-          apply(tr, pluginState, oldState, newState) {
+          apply(tr, pluginState, _oldState, _newState) {
             return tr.docChanged ? pluginState + 1 : pluginState;
           },
         },
@@ -22,10 +22,10 @@ function pluginsFactory() {
       new Plugin({
         key: selectionChangedKey,
         state: {
-          init(_, state) {
+          init(_, _state) {
             return 0;
           },
-          apply(tr, pluginState, oldState, newState) {
+          apply(_tr, pluginState, oldState, newState) {
             return newState.selection.eq(oldState && oldState.selection)
               ? pluginState
               : pluginState + 1;

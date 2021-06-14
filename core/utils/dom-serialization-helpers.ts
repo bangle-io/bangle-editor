@@ -1,4 +1,5 @@
 import { objectFilter } from './js-utils';
+import { Node, DOMOutputSpec } from 'prosemirror-model';
 
 /**
  * Creates a bare bone `toDOM` and `parseDOM` handlers for the PM schema.
@@ -14,20 +15,30 @@ import { objectFilter } from './js-utils';
  * @param {Number} opts.parsingPriority https://prosemirror.net/docs/ref/#model.ParseRule.priority
  */
 export function domSerializationHelpers(
-  name,
-  { tag = 'div', content, ignoreAttrs = [], parsingPriority = 51 } = {},
+  name: string,
+  {
+    tag = 'div',
+    content,
+    ignoreAttrs = [],
+    parsingPriority = 51,
+  }: {
+    tag?: string;
+    content?: DOMOutputSpec | ((node: Node) => DOMOutputSpec);
+    ignoreAttrs?: string[];
+    parsingPriority?: number;
+  } = {},
 ) {
-  const serializer = (node) =>
+  const serializer = (node: Node) =>
     JSON.stringify(
       objectFilter(
         node.attrs || {},
-        (value, key) => !ignoreAttrs.includes(key),
+        (_value, key) => !ignoreAttrs.includes(key),
       ),
     );
 
   return {
-    toDOM: (node) => {
-      const domSpec = [
+    toDOM: (node: Node) => {
+      const domSpec: any[] = [
         tag,
         {
           'data-bangle-name': name,
@@ -49,7 +60,7 @@ export function domSerializationHelpers(
       {
         priority: parsingPriority,
         tag: `${tag}[data-bangle-name="${name}"]`,
-        getAttrs: (dom) => {
+        getAttrs: (dom: Element) => {
           const attrs = dom.getAttribute('data-bangle-attrs');
           if (!attrs) {
             return {};

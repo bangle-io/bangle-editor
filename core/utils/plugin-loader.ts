@@ -8,21 +8,42 @@ import { keymap } from 'prosemirror-keymap';
 import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
 import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
 import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
+import type { EditorProps } from 'prosemirror-view';
 import { bangleWarn } from './js-utils';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import { PluginGroup } from '../plugin';
 import * as history from '../components/history';
 import * as editorStateCounter from '../components/editor-state-counter';
 
+type PluginPayload = {
+  schema: Schema;
+  specRegistry: any;
+  metadata: any;
+};
+
+type RawPlugins =
+  | Plugin
+  | ((payLoad: PluginPayload) => Plugin)
+  | PluginGroup
+  | (() => PluginGroup)
+  | RawPlugins[];
+
 export function pluginLoader(
-  specRegistry,
-  plugins,
+  specRegistry: any,
+  plugins: RawPlugins,
   {
     metadata = {},
     editorProps,
     defaultPlugins = true,
     dropCursorOpts,
     transformPlugins = (p) => p,
+  }: {
+    metadata?: any;
+    editorProps?: EditorProps;
+    defaultPlugins?: boolean;
+    dropCursorOpts?: any;
+    transformPlugins?: (plugins: Plugin[]) => Plugin[];
   } = {},
 ) {
   const schema = specRegistry.schema;
@@ -48,8 +69,6 @@ export function pluginLoader(
     flatPlugins = flatPlugins.concat(
       flatten(defaultPluginGroups, pluginPayload)[0],
     );
-    const x = Plugin;
-    debugger;
 
     flatPlugins = processInputRules(flatPlugins);
 
@@ -71,13 +90,13 @@ export function pluginLoader(
   flatPlugins = flatPlugins.filter(Boolean);
   flatPlugins = transformPlugins(flatPlugins);
 
-  if (flatPlugins.some((p) => !(p instanceof Plugin))) {
+  if (flatPlugins.some((p: any) => !(p instanceof Plugin))) {
     // console.log('flatPlugins=', flatPlugins)
     // const x= flatPlugins.find((p) => !(p instanceof Plugin));
     // console.log('p=', x)
     bangleWarn(
       'You are either using multiple versions of the library or not returning a Plugin class in your plugins. Investigate :',
-      flatPlugins.find((p) => !(p instanceof Plugin)),
+      flatPlugins.find((p: any) => !(p instanceof Plugin)),
     );
     throw new Error('Invalid plugin');
   }
@@ -88,11 +107,11 @@ export function pluginLoader(
 }
 
 function processInputRules(
-  plugins,
+  plugins: any[],
   { inputRules = true, undoInputRule = true } = {},
 ) {
-  let newPlugins = [];
-  let match = [];
+  let newPlugins: any[] = [];
+  let match: InputRule[] = [];
   plugins.forEach((plugin) => {
     if (plugin instanceof InputRule) {
       match.push(plugin);
@@ -121,11 +140,13 @@ function processInputRules(
   return plugins;
 }
 
-function validateNodeViews(plugins, specRegistry) {
-  const nodeViewPlugins = plugins.filter((p) => p.props && p.props.nodeViews);
+function validateNodeViews(plugins: Plugin[], specRegistry: any) {
+  const nodeViewPlugins = plugins.filter(
+    (p: any) => p.props && p.props.nodeViews,
+  );
   const nodeViewNames = new Map();
   for (const plugin of nodeViewPlugins) {
-    for (const name of Object.keys(plugin.props.nodeViews)) {
+    for (const name of Object.keys(plugin.props.nodeViews as any)) {
       if (!specRegistry.schema.nodes[name]) {
         bangleWarn(
           `When loading your plugins, we found nodeView implementation for the node '${name}' did not have a corresponding spec. Check the plugin:`,
@@ -154,10 +175,10 @@ function validateNodeViews(plugins, specRegistry) {
   }
 }
 
-function flatten(rawPlugins, callbackPayload) {
+function flatten(rawPlugins: RawPlugins, callbackPayload: PluginPayload) {
   const pluginGroupNames = new Set();
 
-  const recurse = (plugins) => {
+  const recurse = (plugins: RawPlugins): any => {
     if (Array.isArray(plugins)) {
       return plugins.flatMap((p) => recurse(p)).filter(Boolean);
     }

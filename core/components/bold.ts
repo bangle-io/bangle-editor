@@ -1,5 +1,7 @@
-import { toggleMark } from 'prosemirror-commands';
+import { toggleMark, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 import { isMarkActiveInSelection } from '../utils/pm-utils';
@@ -16,9 +18,9 @@ export const defaultKeys = {
 
 const name = 'bold';
 
-const getTypeFromSchema = (schema) => schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'mark',
     name,
@@ -29,11 +31,13 @@ function specFactory(opts = {}) {
         },
         {
           tag: 'b',
-          getAttrs: (node) => node.style.fontWeight !== 'normal' && null,
+          getAttrs: (node: HTMLElement) =>
+            node.style.fontWeight !== 'normal' && null,
         },
         {
           style: 'font-weight',
-          getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
+          getAttrs: (value: string) =>
+            /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
         },
       ],
       toDOM: () => ['strong', 0],
@@ -56,7 +60,7 @@ function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -72,12 +76,13 @@ function pluginsFactory({
   };
 }
 
-export function toggleBold() {
-  return (state, dispatch, view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+export function toggleBold(): Command {
+  return (state, dispatch, _view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch);
   };
 }
 
 export function queryIsBoldActive() {
-  return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
+  return (state: EditorState) =>
+    isMarkActiveInSelection(state.schema.marks[name])(state);
 }
