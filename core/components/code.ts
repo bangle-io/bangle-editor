@@ -1,9 +1,10 @@
-import { toggleMark } from 'prosemirror-commands';
+import { Command, toggleMark } from 'prosemirror-commands';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 import { isMarkActiveInSelection, filter } from '../utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
-import { Selection } from 'prosemirror-state';
+import { EditorState, Selection, TextSelection } from 'prosemirror-state';
+import { Node, Schema, MarkType } from 'prosemirror-model';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -17,10 +18,10 @@ export const defaultKeys = {
 
 const name = 'code';
 
-const getTypeFromSchema = (schema) => schema.marks[name];
-const getTypeFromState = (state) => state.schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => schema.marks[name];
+const getTypeFromState = (state: EditorState) => state.schema.marks[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'mark',
     name,
@@ -31,10 +32,10 @@ function specFactory(opts = {}) {
     },
     markdown: {
       toMarkdown: {
-        open(_state, _mark, parent, index) {
+        open(_state: any, _mark: any, parent: Node, index: number) {
           return backticksFor(parent.child(index), -1);
         },
-        close(_state, _mark, parent, index) {
+        close(_state: any, _mark: any, parent: Node, index: number) {
           return backticksFor(parent.child(index - 1), 1);
         },
         escape: false,
@@ -51,14 +52,15 @@ function pluginsFactory({
   escapeAtEdge = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     const escapeFilters = [
       // The $cursor is a safe way to check if it is a textSelection,
       // It is also used in a bunch of placed in pm-commands when dealing with marks
       // Ref: https://discuss.prosemirror.net/t/what-is-an-example-of-an-empty-selection-that-has-a-cursor/3071
-      (state) => state.selection.empty && state.selection.$cursor,
+      (state: EditorState) =>
+        state.selection.empty && (state.selection as TextSelection).$cursor,
     ];
 
     return [
@@ -78,7 +80,7 @@ function pluginsFactory({
   };
 }
 
-const posHasCode = (state, pos) => {
+const posHasCode = (state: EditorState, pos: number) => {
   // This logic exists because
   // in  rtl (right to left) $<code>text#</code>  (where $ and # represent possible cursor positions)
   // at the edges of code only $ and # are valid positions by default.
@@ -102,9 +104,9 @@ const posHasCode = (state, pos) => {
   return node ? node.marks.some((mark) => mark.type === code) : false;
 };
 
-function moveRight(state, dispatch, view) {
+var moveRight: Command = (state, dispatch) => {
   const { code } = state.schema.marks;
-  const { $cursor } = state.selection;
+  const $cursor = (state.selection as TextSelection).$cursor!;
 
   let storedMarks = state.tr.storedMarks;
 
@@ -146,12 +148,12 @@ function moveRight(state, dispatch, view) {
   }
 
   return false;
-}
+};
 
-function moveLeft(state, dispatch, view) {
+var moveLeft: Command = (state, dispatch) => {
   const code = getTypeFromState(state);
   const insideCode = markActive(state, code);
-  const { $cursor } = state.selection;
+  const $cursor = (state.selection as TextSelection).$cursor!;
   const { storedMarks } = state.tr;
   const currentPosHasCode = posHasCode(state, $cursor.pos);
   const nextPosHasCode = posHasCode(state, $cursor.pos - 1);
@@ -215,14 +217,16 @@ function moveLeft(state, dispatch, view) {
     }
     return true;
   }
-}
 
-function backticksFor(node, side) {
+  return false;
+};
+
+function backticksFor(node: Node, side: number) {
   let ticks = /`+/g,
     m,
     len = 0;
   if (node.isText) {
-    while ((m = ticks.exec(node.text))) {
+    while ((m = ticks.exec(node.text!))) {
       len = Math.max(len, m[0].length);
     }
   }
@@ -236,7 +240,7 @@ function backticksFor(node, side) {
   return result;
 }
 
-function markActive(state, mark) {
+function markActive(state: EditorState, mark: MarkType) {
   const { from, to, empty } = state.selection;
   // When the selection is empty, only the active marks apply.
   if (empty) {
@@ -247,16 +251,17 @@ function markActive(state, mark) {
   // For a non-collapsed selection, the marks on the nodes matter.
   let found = false;
   state.doc.nodesBetween(from, to, (node) => {
-    found = found || mark.isInSet(node.marks);
+    found = found || !!mark.isInSet(node.marks);
   });
   return found;
 }
 
-export function toggleCode() {
-  return (state, dispatch, view) =>
-    toggleMark(state.schema.marks[name])(state, dispatch, view);
+export function toggleCode(): Command {
+  return (state, dispatch) =>
+    toggleMark(state.schema.marks[name])(state, dispatch);
 }
 
 export function queryIsCodeActive() {
-  return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
+  return (state: EditorState) =>
+    isMarkActiveInSelection(state.schema.marks[name])(state);
 }

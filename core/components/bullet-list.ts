@@ -2,7 +2,11 @@ import { keymap } from 'prosemirror-keymap';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 import { parentHasDirectParentOfType } from '../core-commands';
 import { toggleList } from './list-item/commands';
-import { chainCommands } from 'prosemirror-commands';
+import { chainCommands, Command } from 'prosemirror-commands';
+import { Schema, Node } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import Token from 'markdown-it/lib/token';
 import {
   wrappingInputRuleForTodo,
   removeTodo,
@@ -24,9 +28,9 @@ export const defaultKeys = {
 
 const name = 'bulletList';
 
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -46,13 +50,13 @@ function specFactory(opts = {}) {
       },
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         state.renderList(node, '  ', () => '- ');
       },
       parseMarkdown: {
         bullet_list: {
           block: name,
-          getAttrs: (_, tokens, i) => {
+          getAttrs: (_: any, tokens: Token[], i: number) => {
             return { tight: listIsTight(tokens, i) };
           },
         },
@@ -66,7 +70,7 @@ function pluginsFactory({
   todoMarkdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -76,7 +80,7 @@ function pluginsFactory({
           [keybindings.toggleTodo]: toggleTodoList(),
         }),
       markdownShortcut &&
-        wrappingInputRule(/^\s*([-+*])\s$/, type, undefined, (str, node) => {
+        wrappingInputRule(/^\s*([-+*])\s$/, type, undefined, (_str, node) => {
           if (node.lastChild && isNodeTodo(node.lastChild, schema)) {
             return false;
           }
@@ -90,8 +94,8 @@ function pluginsFactory({
   };
 }
 
-export function toggleBulletList() {
-  const handleBulletLists = (state, dispatch, view) =>
+export function toggleBulletList(): Command {
+  const handleBulletLists: Command = (state, dispatch, view) =>
     toggleList(state.schema.nodes.bulletList, state.schema.nodes.listItem)(
       state,
       dispatch,
@@ -101,8 +105,8 @@ export function toggleBulletList() {
   return chainCommands(removeTodo, handleBulletLists);
 }
 
-export function toggleTodoList() {
-  const fallback = (state, dispatch, view) =>
+export function toggleTodoList(): Command {
+  const fallback: Command = (state, dispatch, view) =>
     toggleList(
       state.schema.nodes.bulletList,
       state.schema.nodes.listItem,
@@ -113,7 +117,7 @@ export function toggleTodoList() {
 }
 
 export function queryIsBulletListActive() {
-  return (state) => {
+  return (state: EditorState) => {
     const { schema } = state;
     return parentHasDirectParentOfType(schema.nodes['listItem'], [
       schema.nodes['bulletList'],
@@ -122,7 +126,7 @@ export function queryIsBulletListActive() {
 }
 
 export function queryIsTodoListActive() {
-  return (state) => {
+  return (state: EditorState) => {
     const { schema } = state;
 
     return (

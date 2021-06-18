@@ -1,8 +1,10 @@
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
-import { toggleMark } from 'prosemirror-commands';
+import { toggleMark, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { isMarkActiveInSelection } from '../utils/pm-utils';
+import { EditorState } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -16,9 +18,9 @@ export const defaultKeys = {
 
 const name = 'strike';
 
-const getTypeFromSchema = (schema) => schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'mark',
     name,
@@ -35,7 +37,7 @@ function specFactory(opts = {}) {
         },
         {
           style: 'text-decoration',
-          getAttrs: (value) => value === 'line-through',
+          getAttrs: (value: string) => value === 'line-through',
         },
       ],
       toDOM: () => ['s', 0],
@@ -55,7 +57,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -69,14 +71,14 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   };
 }
 
-export function toggleStrike() {
-  return (state, dispatch, view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+export function toggleStrike(): Command {
+  return (state, dispatch, _view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch);
   };
 }
 
 export function queryIsStrikeActive() {
-  return (state) => {
+  return (state: EditorState) => {
     return isMarkActiveInSelection(state.schema.marks[name])(state);
   };
 }

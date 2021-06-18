@@ -1,8 +1,10 @@
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
-import { toggleMark } from 'prosemirror-commands';
+import { toggleMark, Command } from 'prosemirror-commands';
 import { isMarkActiveInSelection } from '../utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -16,9 +18,9 @@ export const defaultKeys = {
 
 const name = 'italic';
 
-const getTypeFromSchema = (schema) => schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'mark',
     name,
@@ -41,7 +43,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -57,14 +59,14 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   };
 }
 
-export function toggleItalic() {
-  return (state, dispatch, view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+export function toggleItalic(): Command {
+  return (state, dispatch, _view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch);
   };
 }
 
 export function queryIsItalicActive() {
-  return (state) => {
+  return (state: EditorState) => {
     return isMarkActiveInSelection(state.schema.marks[name])(state);
   };
 }

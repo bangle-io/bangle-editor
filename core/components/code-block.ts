@@ -1,8 +1,13 @@
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
+import { Node } from 'prosemirror-model';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import { moveNode } from '../core-commands';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import { Schema } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import Token from 'markdown-it/lib/token';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -18,9 +23,9 @@ export const defaultKeys = {
 };
 
 const name = 'codeBlock';
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -38,7 +43,7 @@ function specFactory(opts = {}) {
       toDOM: () => ['pre', ['code', 0]],
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         state.write('```' + (node.attrs.language || '') + '\n');
         state.text(node.textContent, false);
         state.ensureNewLine();
@@ -49,7 +54,7 @@ function specFactory(opts = {}) {
         code_block: { block: name, noCloseToken: true },
         fence: {
           block: name,
-          getAttrs: (tok) => ({ language: tok.info || '' }),
+          getAttrs: (tok: Token) => ({ language: tok.info || '' }),
           noCloseToken: true,
         },
       },
@@ -61,7 +66,7 @@ function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -87,7 +92,7 @@ function pluginsFactory({
 }
 
 export function queryIsCodeActiveBlock() {
-  return (state) => {
+  return (state: EditorState) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };

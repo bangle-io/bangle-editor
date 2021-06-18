@@ -1,4 +1,4 @@
-import { chainCommands } from 'prosemirror-commands';
+import { chainCommands, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import {
   indentList,
@@ -19,6 +19,10 @@ import { domSerializationHelpers } from '../../utils/dom-serialization-helpers';
 import browser from '../../utils/browser';
 import { isNodeTodo, setTodoCheckedAttr } from './todo';
 import { listItemNodeViewPlugin } from './list-item-node-view-plugin';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import Token from 'markdown-it/lib/token';
 
 const LOG = false;
 
@@ -45,8 +49,8 @@ export const defaultKeys = {
 };
 
 const name = 'listItem';
-const getTypeFromSchema = (schema) => schema.nodes[name];
-const isValidList = (state) => {
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
+const isValidList = (state: EditorState) => {
   const type = getTypeFromSchema(state.schema);
   return parentHasDirectParentOfType(type, [
     state.schema.nodes['bulletList'],
@@ -54,9 +58,10 @@ const isValidList = (state) => {
   ]);
 };
 
-function specFactory(opts = {}) {
+function specFactory() {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'li',
+    // @ts-ignore
     content: 0,
   });
 
@@ -76,7 +81,7 @@ function specFactory(opts = {}) {
       parseDOM,
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         if (node.attrs.todoChecked != null) {
           state.write(node.attrs.todoChecked ? '[x] ' : '[ ] ');
         }
@@ -85,7 +90,7 @@ function specFactory(opts = {}) {
       parseMarkdown: {
         list_item: {
           block: name,
-          getAttrs: (tok) => {
+          getAttrs: (tok: Token) => {
             return {
               todoChecked: tok.attrGet('isDone'),
             };
@@ -97,7 +102,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -129,25 +134,25 @@ function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
   };
 }
 
-export function indentListItem() {
-  return (state, dispatch, view) => {
+export function indentListItem(): Command {
+  return (state, dispatch) => {
     const type = getTypeFromSchema(state.schema);
-    return indentList(type)(state, dispatch, view);
+    return indentList(type)(state, dispatch);
   };
 }
 
-export function outdentListItem() {
+export function outdentListItem(): Command {
   return (state, dispatch, view) => {
     const type = getTypeFromSchema(state.schema);
     return outdentList(type)(state, dispatch, view);
   };
 }
 
-const isSelectionInsideTodo = (state) => {
+const isSelectionInsideTodo = (state: EditorState) => {
   return isNodeTodo(state.selection.$from.node(-1), state.schema);
 };
 
-function moveListItem(dir) {
+function moveListItem(dir: MoveDirection): Command {
   return (state, dispatch, view) => {
     const { schema } = state;
     const type = getTypeFromSchema(schema);
@@ -157,7 +162,7 @@ function moveListItem(dir) {
       schema.nodes['orderedList'],
     ]);
 
-    const move = (dir) =>
+    const move = (dir: MoveDirection) =>
       chainCommands(moveNode(type, dir), (state, dispatch, view) => {
         const node = state.selection.$from.node(-3);
         const isParentTodo = isNodeTodo(node, state.schema);
@@ -170,7 +175,6 @@ function moveListItem(dir) {
         // if parent was a todo convert the moved edge node
         // to todo bullet item
         if (isParentTodo && dispatch) {
-          const state = view.state;
           let { tr, schema } = state;
           tr = setTodoCheckedAttr(
             tr,
@@ -194,7 +198,7 @@ export function moveListItemDown() {
   return moveListItem('DOWN');
 }
 
-export function insertEmptySiblingList(isAbove = true) {
+export function insertEmptySiblingList(isAbove = true): Command {
   return (state, dispatch, view) => {
     const type = getTypeFromSchema(state.schema);
     return chainCommands(

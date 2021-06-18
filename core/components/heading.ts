@@ -1,8 +1,8 @@
-import { setBlockType } from 'prosemirror-commands';
+import { Command, setBlockType } from 'prosemirror-commands';
 import { textblockTypeInputRule } from 'prosemirror-inputrules';
-import { findChildren } from 'prosemirror-utils';
-import { Fragment } from 'prosemirror-model';
-import { TextSelection } from 'prosemirror-state';
+import { ContentNodeWithPos, findChildren } from 'prosemirror-utils';
+import { Fragment, Node, Schema } from 'prosemirror-model';
+import { EditorState, TextSelection } from 'prosemirror-state';
 
 import { keymap } from '../utils/keymap';
 import {
@@ -14,6 +14,8 @@ import {
 } from '../core-commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
 import browser from '../utils/browser';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import Token from 'markdown-it/lib/token';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -41,14 +43,14 @@ export const defaultKeys = {
 
 const name = 'heading';
 const defaultLevels = [1, 2, 3, 4, 5, 6];
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-const checkIsInHeading = (state) => {
+const checkIsInHeading = (state: EditorState) => {
   const type = getTypeFromSchema(state.schema);
   return findParentNodeOfType(type)(state.selection);
 };
-const parseLevel = (level) => {
-  level = parseInt(level, 10);
+const parseLevel = (levelStr: string | number) => {
+  const level = parseInt(levelStr as string, 10);
   return Number.isNaN(level) ? undefined : level;
 };
 function specFactory({ levels = defaultLevels } = {}) {
@@ -75,7 +77,7 @@ function specFactory({ levels = defaultLevels } = {}) {
       parseDOM: levels.map((level) => {
         return {
           tag: `h${level}`,
-          getAttrs: (dom) => {
+          getAttrs: (dom: HTMLElement) => {
             const result = { level: parseLevel(level) };
             const attrs = dom.getAttribute('data-bangle-attrs');
 
@@ -89,8 +91,8 @@ function specFactory({ levels = defaultLevels } = {}) {
           },
         };
       }),
-      toDOM: (node) => {
-        const result = [`h${node.attrs.level}`, {}, 0];
+      toDOM: (node: Node) => {
+        const result: any = [`h${node.attrs.level}`, {}, 0];
 
         if (node.attrs.collapseContent) {
           result[1]['data-bangle-attrs'] = JSON.stringify({
@@ -103,7 +105,7 @@ function specFactory({ levels = defaultLevels } = {}) {
       },
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         state.write(state.repeat('#', node.attrs.level) + ' ');
         state.renderInline(node);
         state.closeBlock(node);
@@ -111,7 +113,7 @@ function specFactory({ levels = defaultLevels } = {}) {
       parseMarkdown: {
         heading: {
           block: name,
-          getAttrs: (tok) => {
+          getAttrs: (tok: Token) => {
             return { level: parseLevel(tok.tag.slice(1)) };
           },
         },
@@ -127,13 +129,13 @@ function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema, specRegistry }) => {
+  return ({ schema, specRegistry }: { schema: Schema; specRegistry: any }) => {
     const { levels } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
 
     const levelBindings = Object.fromEntries(
-      levels.map((level) => [
-        keybindings[`toH${level}`],
+      levels.map((level: number) => [
+        keybindings[`toH${level}` as keyof typeof defaultKeys],
         setBlockType(type, { level }),
       ]),
     );
@@ -151,9 +153,9 @@ function pluginsFactory({
 
           [keybindings.insertEmptyParaAbove]: insertEmptyParaAbove(),
           [keybindings.insertEmptyParaBelow]: insertEmptyParaBelow(),
-          [keybindings.toggleCollapse]: toggleHeadingCollapse(),
+          [keybindings.toggleCollapse!]: toggleHeadingCollapse(),
         }),
-      ...(markdownShortcut ? levels : []).map((level) =>
+      ...(markdownShortcut ? levels : []).map((level: number) =>
         textblockTypeInputRule(
           new RegExp(`^(#{1,${level}})\\s$`),
           type,
@@ -166,21 +168,17 @@ function pluginsFactory({
   };
 }
 
-export function toggleHeading(level = 3) {
-  return (state, dispatch, view) => {
+export function toggleHeading(level = 3): Command {
+  return (state, dispatch) => {
     if (queryIsHeadingActive(level)(state)) {
-      return setBlockType(state.schema.nodes.paragraph)(state, dispatch, view);
+      return setBlockType(state.schema.nodes.paragraph)(state, dispatch);
     }
-    return setBlockType(state.schema.nodes[name], { level })(
-      state,
-      dispatch,
-      view,
-    );
+    return setBlockType(state.schema.nodes[name], { level })(state, dispatch);
   };
 }
 
-export function queryIsHeadingActive(level) {
-  return (state) => {
+export function queryIsHeadingActive(level: number) {
+  return (state: EditorState) => {
     const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
     );
@@ -196,7 +194,7 @@ export function queryIsHeadingActive(level) {
 }
 
 export function queryIsCollapseActive() {
-  return (state) => {
+  return (state: EditorState) => {
     const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
     );
@@ -209,7 +207,7 @@ export function queryIsCollapseActive() {
   };
 }
 
-export function collapseHeading() {
+export function collapseHeading(): Command {
   return (state, dispatch) => {
     const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
@@ -219,7 +217,7 @@ export function collapseHeading() {
       return false;
     }
 
-    const isCollapsed = queryIsCollapseActive()(state, dispatch);
+    const isCollapsed = queryIsCollapseActive()(state);
 
     if (isCollapsed) {
       return false;
@@ -257,7 +255,7 @@ export function collapseHeading() {
   };
 }
 
-export function uncollapseHeading() {
+export function uncollapseHeading(): Command {
   return (state, dispatch) => {
     const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
@@ -267,7 +265,7 @@ export function uncollapseHeading() {
       return false;
     }
 
-    const isCollapsed = queryIsCollapseActive()(state, dispatch);
+    const isCollapsed = queryIsCollapseActive()(state);
 
     if (!isCollapsed) {
       return false;
@@ -324,17 +322,17 @@ export function insertEmptyParaBelow() {
   });
 }
 
-export function toggleHeadingCollapse() {
+export function toggleHeadingCollapse(): Command {
   return (state, dispatch) => {
     const match = findParentNodeOfType(state.schema.nodes[name])(
       state.selection,
     );
 
     if (!match || match.depth !== 1) {
-      return null;
+      return false;
     }
 
-    const isCollapsed = queryIsCollapseActive()(state, dispatch);
+    const isCollapsed = queryIsCollapseActive()(state);
 
     return isCollapsed
       ? uncollapseHeading()(state, dispatch)
@@ -342,7 +340,7 @@ export function toggleHeadingCollapse() {
   };
 }
 
-export function uncollapseAllHeadings() {
+export function uncollapseAllHeadings(): Command {
   return (state, dispatch) => {
     const collapsibleNodes = listCollapsedHeading(state);
 
@@ -384,7 +382,7 @@ export function uncollapseAllHeadings() {
   };
 }
 
-export function listCollapsedHeading(state) {
+export function listCollapsedHeading(state: EditorState) {
   return findChildren(
     state.doc,
     (node) =>
@@ -394,7 +392,7 @@ export function listCollapsedHeading(state) {
   );
 }
 
-export function listCollapsibleHeading(state) {
+export function listCollapsibleHeading(state: EditorState) {
   return findChildren(
     state.doc,
     (node) => node.type === state.schema.nodes[name],
@@ -402,9 +400,13 @@ export function listCollapsibleHeading(state) {
   );
 }
 
-export const flattenFragmentJSON = (fragJSON) => {
-  let result = [];
-  fragJSON.forEach((nodeJSON) => {
+interface JSONObject {
+  [key: string]: any;
+}
+
+export const flattenFragmentJSON = (fragJSON: JSONObject[]) => {
+  let result: JSONObject[] = [];
+  fragJSON.forEach((nodeJSON: JSONObject) => {
     if (nodeJSON.type === 'heading' && nodeJSON.attrs.collapseContent) {
       const collapseContent = nodeJSON.attrs.collapseContent;
       result.push({
@@ -433,20 +435,22 @@ export const flattenFragmentJSON = (fragJSON) => {
 /**
  * Collapsible headings are only allowed at depth of 1
  */
-function isCollapsible(match) {
+function isCollapsible(match: ContentNodeWithPos) {
   if (match.depth !== 1) {
     return false;
   }
   return true;
 }
 
-function findCollapseFragment(matchNode, doc) {
+function findCollapseFragment(matchNode: Node, doc: Node) {
   // Find the last child that will be inside of the collapse
-  let start = undefined;
-  let end = undefined;
+  let start: { index: number; offset: number; node: Node } | undefined =
+    undefined;
+  let end: { index: number; offset: number; node: Node } | undefined =
+    undefined;
   let isDone = false;
 
-  const breakCriteria = (node) => {
+  const breakCriteria = (node: Node) => {
     if (node.type !== matchNode.type) {
       return false;
     }
@@ -491,13 +495,15 @@ function findCollapseFragment(matchNode, doc) {
   // We are not adding parents position (doc will be parent always) to
   // the offsets since it will be 0
   const slice = doc.slice(
-    start.offset + start.node.nodeSize,
+    start!.offset + start!.node.nodeSize,
+    // @ts-ignore
     end.offset + end.node.nodeSize,
   );
 
   return {
     fragment: slice.content,
-    start: start.offset,
+    start: start!.offset,
+    // @ts-ignore
     end: end.offset + end.node.nodeSize,
   };
 }

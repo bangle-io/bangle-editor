@@ -5652,12 +5652,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/core", "workspace:core"],
             ["@types/jest", "npm:26.0.23"],
+            ["@types/markdown-it", "npm:12.0.2"],
             ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-dropcursor", "npm:1.0.1"],
             ["@types/prosemirror-gapcursor", "npm:1.0.3"],
             ["@types/prosemirror-history", "npm:1.0.2"],
             ["@types/prosemirror-inputrules", "npm:1.0.4"],
             ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-markdown", "npm:1.5.1"],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-schema-list", "npm:1.0.3"],
             ["@types/prosemirror-state", "npm:1.2.6"],
@@ -7919,6 +7921,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/highlight.js", [
+        ["npm:9.12.4", {
+          "packageLocation": "./.yarn/cache/@types-highlight.js-npm-9.12.4-036875661e-1a491cc59b.zip/node_modules/@types/highlight.js/",
+          "packageDependencies": [
+            ["@types/highlight.js", "npm:9.12.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/html-minifier-terser", [
         ["npm:5.1.0", {
           "packageLocation": "./.yarn/cache/@types-html-minifier-terser-npm-5.1.0-0424fa430e-2a63ef7680.zip/node_modules/@types/html-minifier-terser/",
@@ -8037,12 +8048,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/linkify-it", [
+        ["npm:3.0.1", {
+          "packageLocation": "./.yarn/cache/@types-linkify-it-npm-3.0.1-c0051ea036-01c74a1391.zip/node_modules/@types/linkify-it/",
+          "packageDependencies": [
+            ["@types/linkify-it", "npm:3.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/markdown-it", [
+        ["npm:12.0.2", {
+          "packageLocation": "./.yarn/cache/@types-markdown-it-npm-12.0.2-619eb8b204-7859f84a27.zip/node_modules/@types/markdown-it/",
+          "packageDependencies": [
+            ["@types/markdown-it", "npm:12.0.2"],
+            ["@types/highlight.js", "npm:9.12.4"],
+            ["@types/linkify-it", "npm:3.0.1"],
+            ["@types/mdurl", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/mdast", [
         ["npm:3.0.3", {
           "packageLocation": "./.yarn/cache/@types-mdast-npm-3.0.3-3eaccff045-5318624af8.zip/node_modules/@types/mdast/",
           "packageDependencies": [
             ["@types/mdast", "npm:3.0.3"],
             ["@types/unist", "npm:2.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/mdurl", [
+        ["npm:1.0.2", {
+          "packageLocation": "./.yarn/cache/@types-mdurl-npm-1.0.2-5b57c94d95-79c7e523b3.zip/node_modules/@types/mdurl/",
+          "packageDependencies": [
+            ["@types/mdurl", "npm:1.0.2"]
           ],
           "linkType": "HARD",
         }]
@@ -8200,6 +8241,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/prosemirror-view", "npm:1.17.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-markdown", [
+        ["npm:1.5.1", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-markdown-npm-1.5.1-314588638f-11e9ff5ade.zip/node_modules/@types/prosemirror-markdown/",
+          "packageDependencies": [
+            ["@types/prosemirror-markdown", "npm:1.5.1"],
+            ["@types/markdown-it", "npm:12.0.2"],
+            ["@types/prosemirror-model", "npm:1.13.0"]
           ],
           "linkType": "HARD",
         }]

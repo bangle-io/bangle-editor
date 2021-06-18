@@ -1,5 +1,5 @@
-import { setBlockType } from 'prosemirror-commands';
-import { TextSelection } from 'prosemirror-state';
+import { Command, setBlockType } from 'prosemirror-commands';
+import { Node, Schema } from 'prosemirror-model';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import { keymap } from '../utils/keymap';
 import {
@@ -11,6 +11,8 @@ import {
   jumpToEndOfNode,
 } from '../core-commands';
 import browser from '../utils/browser';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import { EditorState } from 'prosemirror-state';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -37,9 +39,9 @@ export const defaultKeys = {
 };
 
 const name = 'paragraph';
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -55,7 +57,7 @@ function specFactory(opts = {}) {
       toDOM: () => ['p', 0],
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         state.renderInline(node);
         state.closeBlock(node);
       },
@@ -69,7 +71,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
     // Enables certain command to only work if paragraph is direct child of the `doc` node
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
@@ -101,26 +103,26 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
 }
 
 // Commands
-export function convertToParagraph() {
+export function convertToParagraph(): Command {
   return (state, dispatch) =>
     setBlockType(getTypeFromSchema(state.schema))(state, dispatch);
 }
 
 export function queryIsTopLevelParagraph() {
-  return (state) => {
+  return (state: EditorState) => {
     const type = getTypeFromSchema(state.schema);
     return parentHasDirectParentOfType(type, state.schema.nodes.doc)(state);
   };
 }
 
 export function queryIsParagraph() {
-  return (state) => {
+  return (state: EditorState) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }
 
-export function insertEmptyParagraphAbove() {
+export function insertEmptyParagraphAbove(): Command {
   return (state, dispatch, view) => {
     const type = getTypeFromSchema(state.schema);
     return filter(
@@ -130,7 +132,7 @@ export function insertEmptyParagraphAbove() {
   };
 }
 
-export function insertEmptyParagraphBelow() {
+export function insertEmptyParagraphBelow(): Command {
   return (state, dispatch, view) => {
     const type = getTypeFromSchema(state.schema);
     return filter(
@@ -140,14 +142,14 @@ export function insertEmptyParagraphBelow() {
   };
 }
 
-export function jumpToStartOfParagraph() {
+export function jumpToStartOfParagraph(): Command {
   return (state, dispatch) => {
     const type = getTypeFromSchema(state.schema);
     return jumpToStartOfNode(type)(state, dispatch);
   };
 }
 
-export function jumpToEndOfParagraph() {
+export function jumpToEndOfParagraph(): Command {
   return (state, dispatch) => {
     const type = getTypeFromSchema(state.schema);
     return jumpToEndOfNode(type)(state, dispatch);

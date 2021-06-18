@@ -1,6 +1,9 @@
 import { wrappingInputRule } from 'prosemirror-inputrules';
-import { wrapIn } from 'prosemirror-commands';
+import { wrapIn, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { Schema, Node } from 'prosemirror-model';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import { EditorState } from 'prosemirror-state';
 
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
 import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
@@ -22,9 +25,9 @@ export const defaultKeys = {
 };
 
 const name = 'blockquote';
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -37,8 +40,8 @@ function specFactory(opts = {}) {
       toDOM: () => ['blockquote', 0],
     },
     markdown: {
-      toMarkdown: (state, node) => {
-        state.wrapBlock('> ', null, node, () => state.renderContent(node));
+      toMarkdown: (state: MarkdownSerializerState, node: Node) => {
+        state.wrapBlock('> ', undefined, node, () => state.renderContent(node));
       },
       parseMarkdown: {
         blockquote: {
@@ -53,7 +56,7 @@ function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
     return [
       markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),
@@ -74,7 +77,7 @@ function pluginsFactory({
 }
 
 export function queryIsBlockquoteActive() {
-  return (state) => {
+  return (state: EditorState) => {
     const type = getTypeFromSchema(state.schema);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };
@@ -83,14 +86,14 @@ export function queryIsBlockquoteActive() {
 export function wrapInBlockquote() {
   return filter(
     (state) => !queryIsBlockquoteActive()(state),
-    (state, dispatch, view) => {
+    (state, dispatch, _view) => {
       const type = getTypeFromSchema(state.schema);
-      return wrapIn(type)(state, dispatch, view);
+      return wrapIn(type)(state, dispatch);
     },
   );
 }
 
-export function insertEmptyParaAbove() {
+export function insertEmptyParaAbove(): Command {
   const isInBlockquote = queryIsBlockquoteActive();
   return (state, dispatch, view) => {
     return filter(
@@ -100,7 +103,7 @@ export function insertEmptyParaAbove() {
   };
 }
 
-export function insertEmptyParaBelow() {
+export function insertEmptyParaBelow(): Command {
   const isInBlockquote = queryIsBlockquoteActive();
   return (state, dispatch, view) => {
     return filter(

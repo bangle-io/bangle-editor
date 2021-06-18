@@ -191,7 +191,7 @@ export function isEmptyParagraph(node: Node) {
   );
 }
 
-type PredicateFunction = (state: EditorState, view?: EditorView) => boolean;
+type PredicateFunction = (state: EditorState, view?: EditorView) => any;
 
 // Run predicates: Array<fn(state) -> boolean> and if all
 // true, run the command.
@@ -400,7 +400,7 @@ export const getListLiftTarget = (
 };
 
 export function mapChildren<T>(
-  node: Node,
+  node: Node | Fragment,
   callback: (child: Node, index: number, frag: Fragment) => T,
 ): T[] {
   const array = [];
@@ -492,7 +492,7 @@ export function insertEmpty(
   type: NodeType,
   placement: 'above' | 'below' = 'above',
   nestable: boolean = false,
-  attrs: Node['attrs'],
+  attrs?: Node['attrs'],
 ): Command {
   const isAbove = placement === 'above';
   const depth = nestable ? -1 : undefined;
@@ -574,9 +574,9 @@ export function toHTMLString(state: EditorState) {
 }
 
 export function extendDispatch(
-  dispatch: ((tr: Transaction) => void) | null,
+  dispatch: ((tr: Transaction) => void) | undefined,
   tapTr: (tr: Transaction) => any,
-): ((tr: Transaction) => void) | null {
+): ((tr: Transaction) => void) | undefined {
   return (
     dispatch &&
     ((tr) => {

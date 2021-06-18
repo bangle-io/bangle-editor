@@ -16,11 +16,11 @@ import { PluginGroup } from '../plugin';
 import * as history from '../components/history';
 import * as editorStateCounter from '../components/editor-state-counter';
 
-type PluginPayload = {
+interface PluginPayload {
   schema: Schema;
   specRegistry: any;
   metadata: any;
-};
+}
 
 type RawPlugins =
   | Plugin

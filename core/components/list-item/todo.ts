@@ -1,8 +1,10 @@
 import { canJoin, findWrapping } from 'prosemirror-transform';
 import { InputRule } from 'prosemirror-inputrules';
 import { filter } from '../../utils/pm-utils';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState, Transaction } from 'prosemirror/state';
 
-export const isNodeTodo = (node, schema) => {
+export const isNodeTodo = (node: Node, schema: Schema) => {
   return (
     node.type === schema.nodes.listItem &&
     typeof node.attrs.todoChecked === 'boolean'
@@ -17,7 +19,12 @@ export const isNodeTodo = (node, schema) => {
  * @param {*} node
  * @param {*} pos
  */
-export const removeTodoCheckedAttr = (tr, schema, node, pos) => {
+export const removeTodoCheckedAttr = (
+  tr: Transaction,
+  schema: Schema,
+  node: Node,
+  pos: number,
+) => {
   if (isNodeTodo(node, schema)) {
     tr = tr.setNodeMarkup(
       pos,
@@ -36,7 +43,12 @@ export const removeTodoCheckedAttr = (tr, schema, node, pos) => {
  * @param {*} node
  * @param {*} pos
  */
-export const setTodoCheckedAttr = (tr, schema, node, pos) => {
+export const setTodoCheckedAttr = (
+  tr: Transaction,
+  schema: Schema,
+  node: Node,
+  pos: number,
+) => {
   if (node.type === schema.nodes.listItem && !isNodeTodo(node, schema)) {
     tr = tr.setNodeMarkup(
       pos,
@@ -100,7 +112,10 @@ export const setTodo = filter(
 );
 
 // Alteration of PM's wrappingInputRule
-export function wrappingInputRuleForTodo(regexp, getAttrs) {
+export function wrappingInputRuleForTodo(
+  regexp: RegExp,
+  getAttrs: Node['attrs'] | ((match: RegExpMatchArray) => Node['attrs']),
+) {
   return new InputRule(regexp, function (state, match, start, end) {
     const nodeType = state.schema.nodes.listItem;
     var attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
@@ -111,7 +126,7 @@ export function wrappingInputRuleForTodo(regexp, getAttrs) {
     if (!wrapping) {
       return null;
     }
-    tr.wrap(range, wrapping);
+    tr.wrap(range!, wrapping);
     var before = tr.doc.resolve(start - 1).nodeBefore;
     if (
       before &&
@@ -147,14 +162,18 @@ export function wrappingInputRuleForTodo(regexp, getAttrs) {
  * In the above the callback will be called for everyone
  *  A, list-A's kids, B, C, D _but_ not list-D's kids.
  */
-export function siblingsAndNodesBetween(state, callback) {
+export function siblingsAndNodesBetween(
+  state: EditorState,
+  callback: (node: Node, pos: number) => void,
+) {
   const {
     schema,
     selection: { $from, $to },
   } = state;
   const range = $from.blockRange(
     $to,
-    (node) => node.childCount && node.firstChild.type === schema.nodes.listItem,
+    (node) =>
+      node.childCount > 0 && node.firstChild!.type === schema.nodes.listItem,
   );
 
   if (!range) {
@@ -184,7 +203,7 @@ export function siblingsAndNodesBetween(state, callback) {
   return;
 }
 
-function isSelectionParentBulletList(state) {
+function isSelectionParentBulletList(state: EditorState) {
   const { selection } = state;
   const fromNode = selection.$from.node(-2);
   const endNode = selection.$to.node(-2);
@@ -197,12 +216,12 @@ function isSelectionParentBulletList(state) {
   );
 }
 
-function todoCount(state) {
+function todoCount(state: EditorState) {
   let lists = 0;
   let todos = 0;
 
   const { schema } = state;
-  siblingsAndNodesBetween(state, (node, pos) => {
+  siblingsAndNodesBetween(state, (node, _pos) => {
     // TODO it might create problem by counting ol 's listItem?
     if (node.type === schema.nodes.listItem) {
       lists++;

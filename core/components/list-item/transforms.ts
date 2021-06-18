@@ -1,10 +1,27 @@
-import { Fragment, NodeRange, Slice } from 'prosemirror-model';
-import { EditorState, TextSelection } from 'prosemirror-state';
+import {
+  Fragment,
+  Node,
+  NodeRange,
+  NodeType,
+  Schema,
+  Slice,
+} from 'prosemirror-model';
+import {
+  EditorState,
+  Selection,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { autoJoin } from 'prosemirror-commands';
 import { getListLiftTarget, mapChildren, mapSlice } from '../../utils/pm-utils';
 
-function liftListItem(type, state, selection, tr) {
+function liftListItem(
+  type: NodeType,
+  state: EditorState,
+  selection: Selection,
+  tr: Transaction,
+) {
   let { $from, $to } = selection;
   let listItem = type;
   if (!listItem) {
@@ -49,10 +66,17 @@ function liftListItem(type, state, selection, tr) {
       range.depth,
     );
   }
-  return tr.lift(range, liftTarget(range)).scrollIntoView();
+  return tr.lift(range, liftTarget(range)!).scrollIntoView();
 }
 // Function will lift list item following selection to level-1.
-export function liftFollowingList(type, state, from, to, rootListDepth, tr) {
+export function liftFollowingList(
+  type: NodeType,
+  state: EditorState,
+  from: number,
+  to: number,
+  rootListDepth: number,
+  tr: Transaction,
+) {
   let listItem = type;
   if (!listItem) {
     ({ listItem } = state.schema.nodes);
@@ -75,10 +99,14 @@ export function liftFollowingList(type, state, from, to, rootListDepth, tr) {
   return tr;
 }
 // The function will list paragraphs in selection out to level 1 below root list.
-export function liftSelectionList(type, state, tr) {
+export function liftSelectionList(
+  type: NodeType | undefined,
+  state: EditorState,
+  tr: Transaction,
+) {
   const { from, to } = state.selection;
   const { paragraph } = state.schema.nodes;
-  const listCol = [];
+  const listCol: Array<{ node: Node; pos: number }> = [];
   tr.doc.nodesBetween(from, to, (node, pos) => {
     if (node.type === paragraph) {
       listCol.push({ node, pos });
@@ -108,7 +136,7 @@ export function liftSelectionList(type, state, tr) {
 // matchers for text lists
 const bullets = /^\s*[\*\-\u2022](\s*|$)/;
 const numbers = /^\s*\d[\.\)](\s*|$)/;
-const getListType = (node, schema) => {
+const getListType = (node: Node, schema: Schema): [NodeType, number] | null => {
   if (!node.text) {
     return null;
   }
@@ -122,15 +150,19 @@ const getListType = (node, schema) => {
       node: orderedList,
       matcher: numbers,
     },
-  ].reduce((lastMatch, listType) => {
+  ].reduce((lastMatch: [NodeType, number] | null, listType) => {
     if (lastMatch) {
       return lastMatch;
     }
-    const match = node.text.match(listType.matcher);
+    const match = node.text!.match(listType.matcher);
     return match ? [listType.node, match[0].length] : lastMatch;
   }, null);
 };
-const extractListFromParagaph = (type, node, schema) => {
+const extractListFromParagaph = (
+  type: NodeType,
+  node: Node,
+  schema: Schema,
+) => {
   const { hardBreak, bulletList, orderedList } = schema.nodes;
   const content = mapChildren(node.content, (node) => node);
   const listTypes = [bulletList, orderedList];
@@ -181,8 +213,8 @@ const extractListFromParagaph = (type, node, schema) => {
   const mockState = EditorState.create({
     schema,
   });
-  let lastTr;
-  const mockDispatch = (tr) => {
+  let lastTr: Transaction | undefined;
+  const mockDispatch = (tr: Transaction) => {
     lastTr = tr;
   };
   autoJoin(
@@ -210,10 +242,10 @@ const extractListFromParagaph = (type, node, schema) => {
  * @param schema
  * @returns the original paragraph node (as a fragment), or a fragment containing multiple nodes
  */
-const splitIntoParagraphs = (fragment, schema) => {
+const splitIntoParagraphs = (fragment: Fragment, schema: Schema) => {
   const paragraphs = [];
-  let curChildren = [];
-  let lastNode = null;
+  let curChildren: Node[] = [];
+  let lastNode: Node | null = null;
   const { hardBreak, paragraph } = schema.nodes;
   fragment.forEach((node) => {
     if (lastNode && lastNode.type === hardBreak && node.type === hardBreak) {
@@ -233,10 +265,10 @@ const splitIntoParagraphs = (fragment, schema) => {
     paragraphs.push(paragraph.createChecked(undefined, curChildren));
   }
   return Fragment.from(
-    paragraphs.length ? paragraphs : [paragraph.createAndFill()],
+    paragraphs.length ? paragraphs : [paragraph.createAndFill()!],
   );
 };
-export const splitParagraphs = (slice, schema) => {
+export const splitParagraphs = (slice: Slice, schema: Schema) => {
   // exclude Text nodes with a code mark, since we transform those later
   // into a codeblock
   let hasCodeMark = false;
@@ -250,7 +282,7 @@ export const splitParagraphs = (slice, schema) => {
     const replSlice = splitIntoParagraphs(slice.content, schema);
     return new Slice(replSlice, slice.openStart + 1, slice.openEnd + 1);
   }
-  return mapSlice(slice, (node, parent) => {
+  return mapSlice(slice, (node, _parent) => {
     if (node.type === schema.nodes.paragraph) {
       return splitIntoParagraphs(node.content, schema);
     }
@@ -258,8 +290,12 @@ export const splitParagraphs = (slice, schema) => {
   });
 };
 // above will wrap everything in paragraphs for us
-export const upgradeTextToLists = (type, slice, schema) => {
-  return mapSlice(slice, (node, parent) => {
+export const upgradeTextToLists = (
+  type: NodeType,
+  slice: Slice,
+  schema: Schema,
+) => {
+  return mapSlice(slice, (node, _parent) => {
     if (node.type === schema.nodes.paragraph) {
       return extractListFromParagaph(type, node, schema);
     }

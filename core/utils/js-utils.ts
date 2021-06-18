@@ -134,10 +134,10 @@ export function getIdleCallback(cb: Function): number {
   }, 1);
 }
 
-type CancelablePromise<T = any> = {
+interface CancelablePromise<T = any> {
   promise: Promise<T>;
   cancel: () => void;
-};
+}
 
 export function cancelablePromise<T>(
   promise: Promise<T>,
@@ -166,7 +166,9 @@ export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));
 }
 
-type AnyObject = { [index: string]: any };
+interface AnyObject {
+  [index: string]: any;
+}
 
 export function objectMapValues(
   obj: AnyObject,

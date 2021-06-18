@@ -108,7 +108,7 @@ export function parentHasDirectParentOfType(
  * @param {PMNodeType} type The items type
  * @param {['UP', 'DOWN']} dir
  */
-export function moveNode(type: NodeType, dir: 'UP' | 'DOWN' = 'UP'): Command {
+export function moveNode(type: NodeType, dir: MoveDirection = 'UP'): Command {
   const isDown = dir === 'DOWN';
   return (state, dispatch) => {
     if (!state.selection.empty) {

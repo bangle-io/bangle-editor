@@ -10,26 +10,28 @@ const renderHandlersCache: WeakMap<HTMLElement, RenderHandlers> = new WeakMap();
 
 type GetPosFunction = () => number;
 
-type NodeViewProps = {
+export type UpdateAttrsFunction = (attrs: Node['attrs']) => void;
+
+interface NodeViewProps {
   node: Node;
   view: EditorView;
   getPos: GetPosFunction;
   decorations: Decoration[];
   selected: boolean;
   attrs: Node['attrs'];
-  updateAttrs: (attrs: Node['attrs']) => void;
-};
+  updateAttrs: UpdateAttrsFunction;
+}
 
 type RenderHandlerFunction = (
   nodeView: BaseNodeView,
   props: NodeViewProps,
 ) => void;
 
-type RenderHandlers = {
+interface RenderHandlers {
   create: RenderHandlerFunction;
   update: RenderHandlerFunction;
   destroy: RenderHandlerFunction;
-};
+}
 
 abstract class BaseNodeView {
   _node: Node;

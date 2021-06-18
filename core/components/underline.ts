@@ -1,6 +1,8 @@
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
-import { toggleMark } from 'prosemirror-commands';
+import { toggleMark, Command } from 'prosemirror-commands';
+import { Schema } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 import { isMarkActiveInSelection } from '../utils/pm-utils';
 
@@ -16,9 +18,9 @@ export const defaultKeys = {
 
 const name = 'underline';
 
-const getTypeFromSchema = (schema) => schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'mark',
     name,
@@ -29,7 +31,7 @@ function specFactory(opts = {}) {
         },
         {
           style: 'text-decoration',
-          getAttrs: (value) => value === name,
+          getAttrs: (value: string) => value === name,
         },
       ],
       toDOM: () => ['u', 0],
@@ -49,7 +51,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -63,14 +65,14 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   };
 }
 
-export function toggleUnderline() {
-  return (state, dispatch, view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+export function toggleUnderline(): Command {
+  return (state, dispatch, _view) => {
+    return toggleMark(state.schema.marks[name])(state, dispatch);
   };
 }
 
 export function queryIsUnderlineActive() {
-  return (state) => {
+  return (state: EditorState) => {
     return isMarkActiveInSelection(state.schema.marks[name])(state);
   };
 }

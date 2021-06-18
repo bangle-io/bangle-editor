@@ -1,14 +1,16 @@
 import { safeInsert } from '../utils/pm-utils';
 import { InputRule } from 'prosemirror-inputrules';
+import { Schema, Node } from 'prosemirror-model';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 
 const name = 'horizontalRule';
 
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -18,7 +20,7 @@ function specFactory(opts = {}) {
       toDOM: () => ['hr'],
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         state.write(node.attrs.markup || '---');
         state.closeBlock(node);
       },
@@ -28,7 +30,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ markdownShortcut = true } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -55,7 +57,7 @@ function pluginsFactory({ markdownShortcut = true } = {}) {
               // new paragraph
               insertParaAfter = true;
             } else {
-              const nextNode = state.doc.resolve($para.after()).nodeAfter;
+              const nextNode = state.doc.resolve($para.after()).nodeAfter!;
               // if the next node is a hr, then insert a new paragraph
               insertParaAfter = nextNode.type === type;
             }

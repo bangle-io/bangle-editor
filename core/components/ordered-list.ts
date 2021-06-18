@@ -1,6 +1,11 @@
 import { toggleList } from './list-item/commands';
 import { wrappingInputRule } from 'prosemirror-inputrules';
+import { Schema, Node } from 'prosemirror-model';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import Token from 'markdown-it/lib/token';
 
+import { EditorState } from 'prosemirror-state';
+import { Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { parentHasDirectParentOfType } from '../core-commands';
 import { listIsTight } from './list-item/list-is-tight';
@@ -16,9 +21,9 @@ export const defaultKeys = {
 };
 
 const name = 'orderedList';
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -40,18 +45,18 @@ function specFactory(opts = {}) {
       parseDOM: [
         {
           tag: 'ol',
-          getAttrs: (dom) => ({
-            order: dom.hasAttribute('start') ? +dom.getAttribute('start') : 1,
+          getAttrs: (dom: HTMLElement) => ({
+            order: dom.hasAttribute('start') ? +dom.getAttribute('start')! : 1,
           }),
         },
       ],
-      toDOM: (node) =>
+      toDOM: (node: Node) =>
         node.attrs.order === 1
           ? ['ol', 0]
           : ['ol', { start: node.attrs.order }, 0],
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         let start = node.attrs.order || 1;
         let maxW = String(start + node.childCount - 1).length;
         let space = state.repeat(' ', maxW + 2);
@@ -63,10 +68,10 @@ function specFactory(opts = {}) {
       parseMarkdown: {
         ordered_list: {
           block: name,
-          getAttrs: (tok, tokens, i) => {
+          getAttrs: (tok: Token, tokens: Token[], i: number) => {
             return {
               tight: listIsTight(tokens, i),
-              order: +tok.attrGet('start') || 1,
+              order: +(tok.attrGet('start') ?? 1),
             };
           },
         },
@@ -76,7 +81,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -94,7 +99,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   };
 }
 
-export function toggleOrderedList() {
+export function toggleOrderedList(): Command {
   return (state, dispatch, view) => {
     return toggleList(
       state.schema.nodes.orderedList,
@@ -104,7 +109,7 @@ export function toggleOrderedList() {
 }
 
 export function queryIsOrderedListActive() {
-  return (state) => {
+  return (state: EditorState) => {
     const { schema } = state;
     return parentHasDirectParentOfType(schema.nodes['listItem'], [
       schema.nodes[name],

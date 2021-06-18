@@ -1,15 +1,21 @@
 import { InputRule } from 'prosemirror-inputrules';
+import { Command } from 'prosemirror-commands';
 import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
+import { Node, NodeType, Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import Token from 'markdown-it/lib/token';
+
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
 
 const name = 'image';
 
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(opts = {}) {
+function specFactory() {
   return {
     type: 'node',
     name,
@@ -29,19 +35,19 @@ function specFactory(opts = {}) {
       parseDOM: [
         {
           tag: 'img[src]',
-          getAttrs: (dom) => ({
+          getAttrs: (dom: HTMLElement) => ({
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
             alt: dom.getAttribute('alt'),
           }),
         },
       ],
-      toDOM: (node) => {
+      toDOM: (node: Node) => {
         return ['img', node.attrs];
       },
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: MarkdownSerializerState, node: Node) {
         const text = state.esc(node.attrs.alt || '');
         const url =
           state.esc(node.attrs.src) +
@@ -52,10 +58,10 @@ function specFactory(opts = {}) {
       parseMarkdown: {
         image: {
           node: name,
-          getAttrs: (tok) => ({
+          getAttrs: (tok: Token) => ({
             src: tok.attrGet('src'),
             title: tok.attrGet('title') || null,
-            alt: (tok.children[0] && tok.children[0].content) || null,
+            alt: (tok.children![0] && tok.children![0]!.content) || null,
           }),
         },
       },
@@ -65,11 +71,18 @@ function specFactory(opts = {}) {
 
 function pluginsFactory({
   handleDragAndDrop = true,
-  keybindings = {},
   acceptFileType = 'image/*',
   createImageNodes = defaultCreateImageNodes,
+}: {
+  handleDragAndDrop?: boolean;
+  acceptFileType?: string;
+  createImageNodes?: (
+    files: File[],
+    imageType: NodeType,
+    view: EditorView,
+  ) => Promise<Node[]>;
 } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
@@ -78,7 +91,7 @@ function pluginsFactory({
         (state, match, start, end) => {
           let [, alt, src, title] = match;
           if (!src) {
-            return;
+            return null;
           }
 
           if (!title) {
@@ -138,7 +151,7 @@ function pluginsFactory({
               },
             },
 
-            handlePaste: (view, rawEvent, slice) => {
+            handlePaste: (view, rawEvent) => {
               const event = rawEvent;
               if (!event.clipboardData) {
                 return false;
@@ -167,7 +180,11 @@ function pluginsFactory({
   };
 }
 
-async function defaultCreateImageNodes(files, imageType, view) {
+async function defaultCreateImageNodes(
+  files: File[],
+  imageType: NodeType,
+  _view: EditorView,
+) {
   let resolveBinaryStrings = await Promise.all(
     files.map((file) => readFileAsBinaryString(file)),
   );
@@ -178,7 +195,11 @@ async function defaultCreateImageNodes(files, imageType, view) {
   });
 }
 
-function addImagesToView(view, pos, imageNodes) {
+function addImagesToView(
+  view: EditorView,
+  pos: number | undefined,
+  imageNodes: Node[],
+) {
   for (const node of imageNodes) {
     const { tr } = view.state;
     let newTr = safeInsert(node, pos)(tr);
@@ -191,15 +212,15 @@ function addImagesToView(view, pos, imageNodes) {
   }
 }
 
-function readFileAsBinaryString(file) {
+function readFileAsBinaryString(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    const onLoadBinaryString = (readerEvt) => {
-      const binarySrc = btoa(readerEvt.target.result);
+    const onLoadBinaryString: FileReader['onload'] = (readerEvt) => {
+      const binarySrc = btoa(readerEvt.target!.result as string);
       resolve(`data:${file.type};base64,${binarySrc}`);
     };
-    const onLoadDataUrl = (readerEvt) => {
-      resolve(readerEvt.target.result);
+    const onLoadDataUrl: FileReader['onload'] = (readerEvt) => {
+      resolve(readerEvt.target!.result as string);
     };
     reader.onerror = () => {
       reject(new Error('Error reading file' + file.name));
@@ -210,15 +231,17 @@ function readFileAsBinaryString(file) {
       reader.onload = onLoadDataUrl;
       reader.readAsDataURL(file);
     } else {
+      // @ts-ignore
       reader.onload = onLoadBinaryString;
+      // @ts-ignore
       reader.readAsBinaryString(file);
     }
   });
 }
 
-function getFileData(data, accept, multiple) {
+function getFileData(data: DataTransfer, accept: string, multiple: boolean) {
   const dragDataItems = getMatchingItems(data.items, accept, multiple);
-  const files = [];
+  const files: File[] = [];
 
   dragDataItems.forEach((item) => {
     const file = item && item.getAsFile();
@@ -231,7 +254,11 @@ function getFileData(data, accept, multiple) {
   return files;
 }
 
-function getMatchingItems(list, accept, multiple) {
+function getMatchingItems(
+  list: DataTransferItemList,
+  accept: string,
+  multiple: boolean,
+) {
   const dataItems = Array.from(list);
   let results;
 
@@ -249,7 +276,7 @@ function getMatchingItems(list, accept, multiple) {
     })
     .filter((acceptParts) => acceptParts.length === 2); // Filter invalid values
 
-  const predicate = (item) => {
+  const predicate = (item: DataTransferItem) => {
     if (item.kind !== 'file') {
       return false;
     }
@@ -280,9 +307,9 @@ function getMatchingItems(list, accept, multiple) {
 }
 
 export const updateImageNodeAttribute =
-  (attr = {}) =>
-  (state, dispatch, view) => {
-    if (!state.selection instanceof NodeSelection || !state.selection.node) {
+  (attr: Node['attrs'] = {}): Command =>
+  (state, dispatch) => {
+    if (!(state.selection instanceof NodeSelection) || !state.selection.node) {
       return false;
     }
     const { node } = state.selection;
