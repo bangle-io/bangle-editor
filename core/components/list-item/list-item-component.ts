@@ -61,7 +61,7 @@ const isValidList = (state: EditorState) => {
 function specFactory() {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'li',
-    // @ts-ignore DOMOutputSpec from @types/prosemirror-model is buggy
+    // @ts-ignore DOMOutputSpec in @types is buggy
     content: 0,
   });
 
@@ -175,6 +175,7 @@ function moveListItem(dir: MoveDirection): Command {
         // if parent was a todo convert the moved edge node
         // to todo bullet item
         if (isParentTodo && dispatch) {
+          const state = view!.state;
           let { tr, schema } = state;
           tr = setTodoCheckedAttr(
             tr,
