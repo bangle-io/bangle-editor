@@ -11,6 +11,7 @@ import { mapChildren } from './utils/pm-utils';
 import { Fragment, Slice } from 'prosemirror-model';
 import { Command } from 'prosemirror-commands';
 import { ReplaceStep } from 'prosemirror-transform';
+import { MoveDirection } from './types';
 
 function getParentTextSelection(state: EditorState, currentDepth: number) {
   const { $from } = state.selection;

@@ -1,5 +1,6 @@
 import { chainCommands, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { MoveDirection } from '../../types';
 import {
   indentList,
   backspaceKeyCommand,

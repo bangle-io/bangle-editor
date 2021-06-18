@@ -27,6 +27,7 @@ import {
   Transaction,
 } from 'prosemirror-state';
 
+import { MoveDirection } from '../../types';
 import { compose } from '../../utils/js-utils';
 import {
   hasVisibleContent,

@@ -1,1 +1,1 @@
-type MoveDirection = 'UP' | 'DOWN';
+export type MoveDirection = 'UP' | 'DOWN';

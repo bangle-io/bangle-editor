@@ -118,7 +118,7 @@ export function uuid(len = 10) {
   return Math.random().toString(36).substring(2, 15).slice(0, len);
 }
 
-export function getIdleCallback(cb: Function): number {
+export function getIdleCallback(cb: Function) {
   // @ts-ignore browser quicks
   if (window.requestIdleCallback) {
     // @ts-ignore browser quicks
@@ -274,7 +274,7 @@ export async function raceTimeout<T>(promise: Promise<T>, ts: number) {
   let timerId: number | null;
   let timeout = false;
   return new Promise((resolve, reject) => {
-    timerId = setTimeout(() => {
+    timerId = window.setTimeout(() => {
       timeout = true;
       reject({ timeout: true });
     }, ts);
