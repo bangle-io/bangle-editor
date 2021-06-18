@@ -496,14 +496,14 @@ function findCollapseFragment(matchNode: Node, doc: Node) {
   // the offsets since it will be 0
   const slice = doc.slice(
     start!.offset + start!.node.nodeSize,
-    // @ts-ignore
+    // @ts-ignore end was incorrectly inferred as "never" here
     end.offset + end.node.nodeSize,
   );
 
   return {
     fragment: slice.content,
     start: start!.offset,
-    // @ts-ignore
+    // @ts-ignore end was incorrectly inferred as "never" here
     end: end.offset + end.node.nodeSize,
   };
 }

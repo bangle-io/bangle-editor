@@ -62,7 +62,8 @@ export function compose(func: Function, ...funcs: Function[]) {
  * @param {*} str
  */
 export function matchAllPlus(regexp: RegExp, str: string) {
-  // @ts-ignore
+  // @ts-ignore String.prototype.matchAll is pretty new. Even adding
+  // @types/string.prototype.matchall doesn't help.
   const matches: RegExpMatchArray[] = Array.from(str.matchAll(regexp));
   if (matches.length === 0) {
     return [
@@ -118,9 +119,9 @@ export function uuid(len = 10) {
 }
 
 export function getIdleCallback(cb: Function): number {
-  // @ts-ignore
+  // @ts-ignore browser quicks
   if (window.requestIdleCallback) {
-    // @ts-ignore
+    // @ts-ignore browser quicks
     return window.requestIdleCallback(cb);
   }
   var t = Date.now();

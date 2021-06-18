@@ -20,7 +20,7 @@ if (typeof navigator !== 'undefined' && typeof document !== 'undefined') {
   browser.mac = /Mac/.test(navigator.platform);
   let ie = (browser.ie = !!(ieUpTo10 || ie11up || ieEdge));
   browser.ie_version = ieUpTo10
-    ? // @ts-ignore
+    ? // @ts-ignore TS doesn't understand browser quirks
       document.documentMode || 6
     : ie11up
     ? +ie11up[1]

@@ -1,17 +1,25 @@
-import { Schema } from 'prosemirror-model';
+import { MarkSpec, NodeSpec, Schema } from 'prosemirror-model';
 import { doc, paragraph, text } from './components/components';
 import { bangleWarn } from './utils/js-utils';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};
 
+type PMSpec = NodeSpec | MarkSpec;
+
+export type RawSpecs = PMSpec | null | false | undefined | RawSpecs[];
+
 export class SpecRegistry {
-  constructor(rawSpecs = [], { defaultSpecs = true } = {}) {
+  _spec: PMSpec[];
+  _schema: Schema;
+  _options: Array<[string, any]>;
+
+  constructor(rawSpecs: RawSpecs = [], { defaultSpecs = true } = {}) {
     let flattenedSpecs = flatten(rawSpecs);
 
     flattenedSpecs.forEach(validateSpec);
 
-    const names = new Set(flattenedSpecs.map((r) => r.name));
+    const names = new Set(flattenedSpecs.map((r: PMSpec) => r.name));
 
     if (flattenedSpecs.length !== names.size) {
       bangleWarn(
@@ -57,7 +65,7 @@ export class SpecRegistry {
   }
 }
 
-function createSchema(specRegistry) {
+function createSchema(specRegistry: SpecRegistry['_spec']) {
   let nodes = [];
   let marks = [];
   let topNode;
@@ -82,7 +90,7 @@ function createSchema(specRegistry) {
   });
 }
 
-function validateSpec(spec) {
+function validateSpec(spec: any) {
   if (!spec.name) {
     bangleWarn("The spec didn't have a name field", spec);
     throw new Error('Invalid spec. Spec must have a name');
@@ -100,11 +108,12 @@ function validateSpec(spec) {
   }
 }
 
-function flatten(data) {
-  const recurse = (d) => {
+function flatten(data: RawSpecs): PMSpec[] {
+  const recurse = (d: RawSpecs): PMSpec[] => {
     if (Array.isArray(d)) {
       return d.flatMap((i) => recurse(i)).filter(Boolean);
     }
+    // @ts-ignore really hard to annotate recursive functions
     return d;
   };
 

@@ -2,7 +2,7 @@ import { canJoin, findWrapping } from 'prosemirror-transform';
 import { InputRule } from 'prosemirror-inputrules';
 import { filter } from '../../utils/pm-utils';
 import { Node, Schema } from 'prosemirror-model';
-import { EditorState, Transaction } from 'prosemirror/state';
+import { EditorState, Transaction } from 'prosemirror-state';
 
 export const isNodeTodo = (node: Node, schema: Schema) => {
   return (

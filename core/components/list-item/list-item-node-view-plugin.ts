@@ -1,6 +1,6 @@
 import { createElement } from '../../utils/js-utils';
 import { NodeView, UpdateAttrsFunction } from '../../node-view';
-import { EditorState } from 'prosemirror/state';
+import { EditorState } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
 
 const LOG = false;
@@ -52,7 +52,7 @@ export function listItemNodeViewPlugin(name: string) {
   ) => {
     const checkBox = createElement([
       'span',
-      // @ts-ignore
+      // @ts-ignore DOMOutputSpec from @types/prosemirror-model is buggy
       { contentEditable: false },
       [
         'input',

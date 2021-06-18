@@ -1,11 +1,30 @@
-import { EditorView } from 'prosemirror-view';
+import { DirectEditorProps, EditorView } from 'prosemirror-view';
 import { BangleEditorState } from './bangle-editor-state';
 
 import { isTestEnv } from './utils/environment';
 import { toHTMLString } from './utils/pm-utils';
 
+type PMViewOpts = Omit<
+  DirectEditorProps,
+  'state' | 'dispatchTransaction' | 'attributes'
+>;
+
 export class BangleEditor {
-  constructor(element, { focusOnInit = true, state, pmViewOpts = {} }) {
+  destroyed: boolean;
+  view: EditorView;
+
+  constructor(
+    element: HTMLElement,
+    {
+      focusOnInit = true,
+      state,
+      pmViewOpts = {},
+    }: {
+      focusOnInit?: boolean;
+      state: BangleEditorState;
+      pmViewOpts?: PMViewOpts;
+    },
+  ) {
     this.destroyed = false;
     if (!(state instanceof BangleEditorState)) {
       throw new Error(
@@ -29,7 +48,7 @@ export class BangleEditor {
   }
 
   focusView() {
-    if (isTestEnv || this.view.focused) {
+    if (isTestEnv || this.view.hasFocus()) {
       return;
     }
     this.view.focus();
@@ -41,6 +60,7 @@ export class BangleEditor {
     }
 
     // If view was destroyed directly
+    // @ts-ignore EditorView.docView is missing in @types/prosemirror-view
     if (this.view.docView === null) {
       this.destroyed = true;
       return;

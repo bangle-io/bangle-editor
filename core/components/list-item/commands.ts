@@ -712,7 +712,7 @@ function splitListItem(
     }
     /** --> The following line changed from the original PM implementation to allow list additions with multiple paragraphs */
     if (
-      // @ts-ignore
+      // @ts-ignore Fragment.content is missing in @types/prosemirror-model
       grandParent.content.content.length <= 1 &&
       $from.parent.content.size === 0 &&
       !(grandParent.content.size === 0)

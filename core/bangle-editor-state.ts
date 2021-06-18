@@ -1,10 +1,16 @@
 import { EditorState } from 'prosemirror-state';
-import { Node, DOMParser } from 'prosemirror-model';
+import { Node, DOMParser, Mark, Schema, ParseOptions } from 'prosemirror-model';
 
-import { SpecRegistry } from './spec-registry';
-import { pluginLoader } from './utils/plugin-loader';
+import { SpecRegistry, RawSpecs } from './spec-registry';
+import { RawPlugins, pluginLoader } from './utils/plugin-loader';
+import { EditorProps } from 'prosemirror-view';
+
+type InitialContent = string | Node | object;
 
 export class BangleEditorState {
+  specRegistry: SpecRegistry;
+  pmState: EditorState;
+
   constructor({
     specRegistry,
     specs,
@@ -13,6 +19,17 @@ export class BangleEditorState {
     editorProps,
     pmStateOpts,
     pluginMetadata = {},
+  }: {
+    specRegistry?: SpecRegistry;
+    specs?: RawSpecs;
+    plugins?: RawPlugins;
+    initialValue?: InitialContent;
+    editorProps?: EditorProps;
+    pmStateOpts?: {
+      storedMarks?: Mark[] | null;
+      plugins?: Plugin[] | null;
+    };
+    pluginMetadata?: any;
   } = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
@@ -42,7 +59,15 @@ export class BangleEditorState {
   }
 }
 
-const createDocument = ({ schema, content, parseOptions }) => {
+const createDocument = ({
+  schema,
+  content,
+  parseOptions,
+}: {
+  schema: Schema;
+  content?: InitialContent;
+  parseOptions?: ParseOptions;
+}): Node | null => {
   const emptyDocument = {
     type: 'doc',
     content: [
@@ -69,5 +94,5 @@ const createDocument = ({ schema, content, parseOptions }) => {
     return DOMParser.fromSchema(schema).parse(element, parseOptions);
   }
 
-  return false;
+  return null;
 };

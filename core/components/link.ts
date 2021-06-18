@@ -5,7 +5,7 @@ import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
 import { Mark, MarkType, Node, Schema } from 'prosemirror-model';
 import { MarkdownSerializerState } from 'prosemirror-markdown';
 import Token from 'markdown-it/lib/token';
-import { Command } from 'prosemirror/commands';
+import { Command } from 'prosemirror-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

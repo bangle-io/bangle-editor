@@ -471,8 +471,7 @@ export function mapFragment(
 }
 
 export function getFragmentBackingArray(fragment: Fragment) {
-  // @types/prosemirror-model doesn't have Fragment.content
-  // @ts-ignore
+  // @ts-ignore @types/prosemirror-model doesn't have Fragment.content
   return fragment.content;
 }
 

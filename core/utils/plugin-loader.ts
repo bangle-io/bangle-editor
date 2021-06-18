@@ -22,11 +22,12 @@ interface PluginPayload {
   metadata: any;
 }
 
-type RawPlugins =
+export type RawPlugins =
   | Plugin
   | ((payLoad: PluginPayload) => Plugin)
   | PluginGroup
   | (() => PluginGroup)
+  | (() => RawPlugins)
   | RawPlugins[];
 
 export function pluginLoader(

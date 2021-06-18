@@ -231,7 +231,7 @@ function readFileAsBinaryString(file: File): Promise<string> {
       reader.onload = onLoadDataUrl;
       reader.readAsDataURL(file);
     } else {
-      // @ts-ignore
+      // @ts-ignore reader was incorrectly inferred as 'never'
       reader.onload = onLoadBinaryString;
       // @ts-ignore
       reader.readAsBinaryString(file);

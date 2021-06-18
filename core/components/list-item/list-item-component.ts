@@ -61,7 +61,7 @@ const isValidList = (state: EditorState) => {
 function specFactory() {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'li',
-    // @ts-ignore
+    // @ts-ignore DOMOutputSpec from @types/prosemirror-model is buggy
     content: 0,
   });
 
