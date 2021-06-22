@@ -1,4 +1,4 @@
-import Token from 'markdown-it/lib/token';
+import type Token from 'markdown-it/lib/token';
 
 // markdown parsing helper
 export function listIsTight(tokens: Token[], i: number) {

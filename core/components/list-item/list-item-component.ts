@@ -22,8 +22,8 @@ import { isNodeTodo, setTodoCheckedAttr } from './todo';
 import { listItemNodeViewPlugin } from './list-item-node-view-plugin';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
-import Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type Token from 'markdown-it/lib/token';
 
 const LOG = false;
 

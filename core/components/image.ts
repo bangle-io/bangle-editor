@@ -4,8 +4,8 @@ import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { safeInsert } from 'prosemirror-utils';
 import { Node, NodeType, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
-import Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type Token from 'markdown-it/lib/token';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

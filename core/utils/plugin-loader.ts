@@ -26,7 +26,7 @@ export type RawPlugins =
   | Plugin
   | ((payLoad: PluginPayload) => Plugin)
   | PluginGroup
-  | (() => PluginGroup)
+  | ((payLoad: PluginPayload) => PluginGroup)
   | (() => RawPlugins)
   | RawPlugins[];
 

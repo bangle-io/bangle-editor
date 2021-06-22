@@ -11,7 +11,7 @@ import {
   jumpToEndOfNode,
 } from '../core-commands';
 import browser from '../utils/browser';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { EditorState } from 'prosemirror-state';
 
 export const spec = specFactory;

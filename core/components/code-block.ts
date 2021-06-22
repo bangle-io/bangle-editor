@@ -4,10 +4,10 @@ import { textblockTypeInputRule } from 'prosemirror-inputrules';
 import { Node } from 'prosemirror-model';
 import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
 import { moveNode } from '../core-commands';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { Schema } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-import Token from 'markdown-it/lib/token';
+import type Token from 'markdown-it/lib/token';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

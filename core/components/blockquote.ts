@@ -2,7 +2,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules';
 import { wrapIn, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { Schema, Node } from 'prosemirror-model';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { EditorState } from 'prosemirror-state';
 
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';

@@ -1,8 +1,8 @@
 import { toggleList } from './list-item/commands';
 import { wrappingInputRule } from 'prosemirror-inputrules';
 import { Schema, Node } from 'prosemirror-model';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
-import Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type Token from 'markdown-it/lib/token';
 
 import { EditorState } from 'prosemirror-state';
 import { Command } from 'prosemirror-commands';

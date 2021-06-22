@@ -5,8 +5,8 @@ import { toggleList } from './list-item/commands';
 import { chainCommands, Command } from 'prosemirror-commands';
 import { Schema, Node } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
-import Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type Token from 'markdown-it/lib/token';
 import {
   wrappingInputRuleForTodo,
   removeTodo,

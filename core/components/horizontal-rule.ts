@@ -1,7 +1,7 @@
 import { safeInsert } from '../utils/pm-utils';
 import { InputRule } from 'prosemirror-inputrules';
 import { Schema, Node } from 'prosemirror-model';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

@@ -14,8 +14,8 @@ import {
 } from '../core-commands';
 import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
 import browser from '../utils/browser';
-import { MarkdownSerializerState } from 'prosemirror-markdown';
-import Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type Token from 'markdown-it/lib/token';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
