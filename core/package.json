@@ -58,7 +58,9 @@
     "@types/prosemirror-transform": "^1.1.3",
     "@types/prosemirror-view": "^1.17.1",
     "@types/string.prototype.matchall": "^4.0.0",
-    "prettier": "^2.3.0"
+    "markdown-it": "^10.0.0",
+    "prettier": "^2.3.0",
+    "prosemirror-markdown": "^1.5.1"
   },
   "publishConfig": {
     "access": "public",
