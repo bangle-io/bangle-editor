@@ -5651,6 +5651,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./core/",
           "packageDependencies": [
             ["@bangle.dev/core", "workspace:core"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/markdown-it", "npm:12.0.2"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-dropcursor", "npm:1.0.1"],
+            ["@types/prosemirror-gapcursor", "npm:1.0.3"],
+            ["@types/prosemirror-history", "npm:1.0.2"],
+            ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-markdown", "npm:1.5.1"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-schema-list", "npm:1.0.3"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-tables", "npm:0.9.1"],
+            ["@types/prosemirror-transform", "npm:1.1.3"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["@types/string.prototype.matchall", "npm:4.0.0"],
+            ["markdown-it", "npm:10.0.0"],
             ["prettier", "npm:2.3.0"],
             ["prosemirror-commands", "npm:1.1.9"],
             ["prosemirror-dropcursor", "npm:1.3.5"],
@@ -5658,6 +5675,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-history", "npm:1.1.3"],
             ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-markdown", "npm:1.5.1"],
             ["prosemirror-model", "npm:1.14.1"],
             ["prosemirror-schema-list", "npm:1.1.4"],
             ["prosemirror-state", "npm:1.3.4"],
@@ -7905,6 +7923,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/highlight.js", [
+        ["npm:9.12.4", {
+          "packageLocation": "./.yarn/cache/@types-highlight.js-npm-9.12.4-036875661e-1a491cc59b.zip/node_modules/@types/highlight.js/",
+          "packageDependencies": [
+            ["@types/highlight.js", "npm:9.12.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/html-minifier-terser", [
         ["npm:5.1.0", {
           "packageLocation": "./.yarn/cache/@types-html-minifier-terser-npm-5.1.0-0424fa430e-2a63ef7680.zip/node_modules/@types/html-minifier-terser/",
@@ -8023,12 +8050,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/linkify-it", [
+        ["npm:3.0.1", {
+          "packageLocation": "./.yarn/cache/@types-linkify-it-npm-3.0.1-c0051ea036-01c74a1391.zip/node_modules/@types/linkify-it/",
+          "packageDependencies": [
+            ["@types/linkify-it", "npm:3.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/markdown-it", [
+        ["npm:12.0.2", {
+          "packageLocation": "./.yarn/cache/@types-markdown-it-npm-12.0.2-619eb8b204-7859f84a27.zip/node_modules/@types/markdown-it/",
+          "packageDependencies": [
+            ["@types/markdown-it", "npm:12.0.2"],
+            ["@types/highlight.js", "npm:9.12.4"],
+            ["@types/linkify-it", "npm:3.0.1"],
+            ["@types/mdurl", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/mdast", [
         ["npm:3.0.3", {
           "packageLocation": "./.yarn/cache/@types-mdast-npm-3.0.3-3eaccff045-5318624af8.zip/node_modules/@types/mdast/",
           "packageDependencies": [
             ["@types/mdast", "npm:3.0.3"],
             ["@types/unist", "npm:2.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/mdurl", [
+        ["npm:1.0.2", {
+          "packageLocation": "./.yarn/cache/@types-mdurl-npm-1.0.2-5b57c94d95-79c7e523b3.zip/node_modules/@types/mdurl/",
+          "packageDependencies": [
+            ["@types/mdurl", "npm:1.0.2"]
           ],
           "linkType": "HARD",
         }]
@@ -8122,6 +8179,50 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/prosemirror-commands", [
+        ["npm:1.0.4", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-commands-npm-1.0.4-ff43796dcc-9fd1d68d0e.zip/node_modules/@types/prosemirror-commands/",
+          "packageDependencies": [
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-dropcursor", [
+        ["npm:1.0.1", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-dropcursor-npm-1.0.1-8a566aaa7d-67ffdf4bce.zip/node_modules/@types/prosemirror-dropcursor/",
+          "packageDependencies": [
+            ["@types/prosemirror-dropcursor", "npm:1.0.1"],
+            ["@types/prosemirror-state", "npm:1.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-gapcursor", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-gapcursor-npm-1.0.3-785f8cfb94-8bade20d92.zip/node_modules/@types/prosemirror-gapcursor/",
+          "packageDependencies": [
+            ["@types/prosemirror-gapcursor", "npm:1.0.3"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-history", [
+        ["npm:1.0.2", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-history-npm-1.0.2-93f8658119-02e00e2890.zip/node_modules/@types/prosemirror-history/",
+          "packageDependencies": [
+            ["@types/prosemirror-history", "npm:1.0.2"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/prosemirror-inputrules", [
         ["npm:1.0.4", {
           "packageLocation": "./.yarn/cache/@types-prosemirror-inputrules-npm-1.0.4-e3a98031c4-af89b9e449.zip/node_modules/@types/prosemirror-inputrules/",
@@ -8129,6 +8230,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-inputrules", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-state", "npm:1.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-keymap", [
+        ["npm:1.0.4", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-keymap-npm-1.0.4-5d03b8eb53-d749d25f86.zip/node_modules/@types/prosemirror-keymap/",
+          "packageDependencies": [
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-markdown", [
+        ["npm:1.5.1", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-markdown-npm-1.5.1-314588638f-11e9ff5ade.zip/node_modules/@types/prosemirror-markdown/",
+          "packageDependencies": [
+            ["@types/prosemirror-markdown", "npm:1.5.1"],
+            ["@types/markdown-it", "npm:12.0.2"],
+            ["@types/prosemirror-model", "npm:1.13.0"]
           ],
           "linkType": "HARD",
         }]
@@ -8143,6 +8268,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/prosemirror-schema-list", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-schema-list-npm-1.0.3-e9dc44d117-5552080504.zip/node_modules/@types/prosemirror-schema-list/",
+          "packageDependencies": [
+            ["@types/prosemirror-schema-list", "npm:1.0.3"],
+            ["@types/orderedmap", "npm:1.0.0"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/prosemirror-state", [
         ["npm:1.2.6", {
           "packageLocation": "./.yarn/cache/@types-prosemirror-state-npm-1.2.6-bb81efd1a9-b1491c523f.zip/node_modules/@types/prosemirror-state/",
@@ -8151,6 +8288,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-transform", "npm:1.1.3"],
             ["@types/prosemirror-view", "npm:1.17.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/prosemirror-tables", [
+        ["npm:0.9.1", {
+          "packageLocation": "./.yarn/cache/@types-prosemirror-tables-npm-0.9.1-76f6451513-ef57c2f44f.zip/node_modules/@types/prosemirror-tables/",
+          "packageDependencies": [
+            ["@types/prosemirror-tables", "npm:0.9.1"],
+            ["prosemirror-tables", "npm:1.1.1"]
           ],
           "linkType": "HARD",
         }]
@@ -8279,6 +8426,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-stack-utils-npm-2.0.0-8ded8461bc-b3fbae25b0.zip/node_modules/@types/stack-utils/",
           "packageDependencies": [
             ["@types/stack-utils", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/string.prototype.matchall", [
+        ["npm:4.0.0", {
+          "packageLocation": "./.yarn/cache/@types-string.prototype.matchall-npm-4.0.0-3e55b25a7f-739464ccdc.zip/node_modules/@types/string.prototype.matchall/",
+          "packageDependencies": [
+            ["@types/string.prototype.matchall", "npm:4.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -17583,6 +17739,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"],
             ["serve", "npm:11.3.2"],
             ["style-loader", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:2.0.0"],
+            ["ts-loader", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:9.2.3"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"],
             ["webpack", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:5.38.1"],
             ["webpack-cli", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:4.7.2"]
           ],
@@ -23728,8 +23886,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/prosemirror-utils-virtual-892b831056/0/cache/prosemirror-utils-npm-1.0.0-0-d5824d5eb9-832227fe16.zip/node_modules/prosemirror-utils/",
           "packageDependencies": [
             ["prosemirror-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#npm:1.0.0-0"],
-            ["@types/prosemirror-model", null],
-            ["@types/prosemirror-state", null],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
             ["prosemirror-model", "npm:1.14.1"],
             ["prosemirror-state", "npm:1.3.4"]
           ],
@@ -27417,6 +27575,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ts-essentials-npm-2.0.12-2c553d7b88-e46916ef44.zip/node_modules/ts-essentials/",
           "packageDependencies": [
             ["ts-essentials", "npm:2.0.12"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["ts-loader", [
+        ["npm:9.2.3", {
+          "packageLocation": "./.yarn/cache/ts-loader-npm-9.2.3-77457cfe24-6f44795ae4.zip/node_modules/ts-loader/",
+          "packageDependencies": [
+            ["ts-loader", "npm:9.2.3"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:9.2.3", {
+          "packageLocation": "./.yarn/__virtual__/ts-loader-virtual-846f6fabf8/0/cache/ts-loader-npm-9.2.3-77457cfe24-6f44795ae4.zip/node_modules/ts-loader/",
+          "packageDependencies": [
+            ["ts-loader", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:9.2.3"],
+            ["@types/typescript", null],
+            ["@types/webpack", null],
+            ["chalk", "npm:4.1.0"],
+            ["enhanced-resolve", "npm:5.8.2"],
+            ["micromatch", "npm:4.0.4"],
+            ["semver", "npm:7.3.5"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"],
+            ["webpack", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:5.38.1"]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "@types/webpack",
+            "typescript",
+            "webpack"
           ],
           "linkType": "HARD",
         }]

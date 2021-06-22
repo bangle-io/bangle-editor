@@ -19,7 +19,7 @@ import { triggerInputRule } from './trigger-input-rule';
 import * as tooltipPlacement from './tooltip-placement';
 import type {
   TooltipRenderOpts,
-  GetRefereenceElementFunction,
+  GetReferenceElementFunction,
 } from './tooltip-placement';
 
 const LOG = false;
@@ -95,7 +95,7 @@ type CallbackFunction = (
   view: EditorView,
 ) => boolean;
 
-type PluginsOptions = {
+interface PluginsOptions {
   key?: PluginKey;
   markName: string;
   trigger: string;
@@ -107,14 +107,14 @@ type PluginsOptions = {
   onEscape?: CallbackFunction;
   onArrowLeft?: CallbackFunction;
   onArrowRight?: CallbackFunction;
-};
-type PluginState = {
+}
+interface PluginState {
   triggerText: string;
   show: boolean;
   counter: number;
   trigger: string;
   markName: string;
-};
+}
 
 function pluginsFactory({
   key = new PluginKey('suggest_tooltip'),
@@ -233,7 +233,7 @@ function pluginsFactory({
 
 function referenceElement(
   getActiveMarkPos: (state: EditorState) => { start: number; end: number },
-): GetRefereenceElementFunction {
+): GetReferenceElementFunction {
   return (view, _tooltipDOM, _scrollContainerDOM) => {
     return {
       getBoundingClientRect: () => {

@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- We have now added typescript types to the core package. https://github.com/bangle-io/bangle.dev/pull/208
+
 ## 0.18.1
 
 - bug: Fixed package dependency issues.

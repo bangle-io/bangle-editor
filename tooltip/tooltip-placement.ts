@@ -32,9 +32,9 @@ const rem =
     ? 12
     : parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-type TooltipPluginState = {
+interface TooltipPluginState {
   show: boolean;
-};
+}
 
 type TooltipCallbackFunction = (
   state: EditorState,
@@ -44,16 +44,16 @@ type TooltipCallbackFunction = (
 
 type ModifierList = Modifier<any, any>[];
 
-export type GetRefereenceElementFunction = (
+export type GetReferenceElementFunction = (
   view: EditorView,
   tooltipDOM: HTMLElement,
   scrollContainerDOM: HTMLElement,
 ) => VirtualElement;
 
-export type TooltipRenderOpts = {
+export interface TooltipRenderOpts {
   tooltipDOMSpec: DOMOutputSpec;
   placement?: Placement;
-  getReferenceElement: GetRefereenceElementFunction;
+  getReferenceElement: GetReferenceElementFunction;
   getScrollContainer?: (view: EditorView) => HTMLElement;
   onUpdateTooltip?: TooltipCallbackFunction;
   onHideTooltip?: TooltipCallbackFunction;
@@ -65,12 +65,12 @@ export type TooltipRenderOpts = {
     scrollContainerDOM: HTMLElement,
     defaultModifiers: ModifierList,
   ) => ModifierList;
-};
+}
 
-type TooltipPlacementOptions = {
+interface TooltipPlacementOptions {
   stateKey: PluginKey;
   renderOpts: TooltipRenderOpts;
-};
+}
 
 function tooltipPlacement({
   stateKey,
