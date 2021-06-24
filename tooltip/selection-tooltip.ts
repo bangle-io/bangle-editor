@@ -6,6 +6,7 @@ import {
   Transaction,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import type { Command } from 'prosemirror-commands';
 import { TooltipDOM, createTooltipDOM } from './create-tooltip-dom';
 import type { TooltipRenderOpts } from './tooltip-placement';
 import * as tooltipPlacement from './tooltip-placement';
@@ -24,22 +25,24 @@ let log = LOG ? console.log.bind(console, 'selection-tooltip') : () => {};
 
 type SelectionType = string | null;
 
-type CalculateTypeFunction = (
+export type CalculateTypeFunction = (
   state: EditorState,
   prevType: SelectionType,
 ) => SelectionType;
+
+export interface SelectionTooltipProps {
+  key?: PluginKey;
+  calculateType?: CalculateTypeFunction;
+  tooltipRenderOpts?: Omit<TooltipRenderOpts, 'getReferenceElement'>;
+}
 
 function selectionTooltip({
   key = new PluginKey('selectionTooltipPlugin'),
   calculateType = (state, _prevType) => {
     return state.selection.empty ? null : 'default';
   },
-  tooltipRenderOpts,
-}: {
-  key?: PluginKey;
-  calculateType?: CalculateTypeFunction;
-  tooltipRenderOpts: TooltipRenderOpts;
-}) {
+  tooltipRenderOpts = {},
+}: SelectionTooltipProps) {
   return () => {
     // - We are creating tooltipDOMSpec inside the callback because if we create outside
     //   it might get reused by multiple view instances if the caller of
@@ -194,11 +197,8 @@ function getSelectionReferenceElement(view: EditorView) {
   };
 }
 
-type _DispatchFunction = (tr: Transaction) => void;
-type DispatchFunction = _DispatchFunction | null;
-
-export function _syncTooltipOnUpdate(key: PluginKey) {
-  return (state: EditorState, dispatch: DispatchFunction, view: EditorView) => {
+export function _syncTooltipOnUpdate(key: PluginKey): Command {
+  return (state, dispatch, view) => {
     const tooltipState = key.getState(state);
     const newType = tooltipState.calculateType(state, tooltipState.type);
     if (typeof newType === 'string') {
@@ -221,8 +221,8 @@ export function _syncTooltipOnUpdate(key: PluginKey) {
 export function updateSelectionTooltipType(
   key: PluginKey,
   type: SelectionType,
-) {
-  return (state: EditorState, dispatch: DispatchFunction, _: any) => {
+): Command {
+  return (state, dispatch, _view) => {
     log('updateSelectionTooltipType', type);
 
     if (dispatch) {
@@ -232,8 +232,8 @@ export function updateSelectionTooltipType(
   };
 }
 
-export function hideSelectionTooltip(key: PluginKey) {
-  return (state: EditorState, dispatch: DispatchFunction, _: any) => {
+export function hideSelectionTooltip(key: PluginKey): Command {
+  return (state, dispatch, _view) => {
     log('hideSelectionTooltip');
 
     if (dispatch) {

@@ -58,6 +58,11 @@
       "yarn prettier --write"
     ],
     "*.ts": [
+      "yarn eslint",
+      "yarn prettier --write"
+    ],
+    "*.tsx": [
+      "yarn eslint",
       "yarn prettier --write"
     ]
   },

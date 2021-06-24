@@ -3,21 +3,36 @@ import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { objUid } from '@bangle.dev/core/utils/object-uid';
 import {
-  BangleEditorState as CoreBangleEditorState,
   BangleEditor as CoreBangleEditor,
-} from '@bangle.dev/core';
-import { saveRenderHandlers } from '@bangle.dev/core/node-view';
-import { NodeViewWrapper } from './NodeViewWrapper';
+  BangleEditorProps as CoreBangleEditorProps,
+} from '@bangle.dev/core/bangle-editor';
+import { BangleEditorState as CoreBangleEditorState } from '@bangle.dev/core/bangle-editor-state';
+import { NodeView, saveRenderHandlers } from '@bangle.dev/core/node-view';
+import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
 import {
   nodeViewRenderHandlers,
   nodeViewUpdateStore,
 } from './node-view-helpers';
+import { EditorView } from '@bangle.dev/core/prosemirror/view';
+import { Plugin } from '@bangle.dev/core/plugin';
 
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
-export const EditorViewContext = React.createContext();
+export const EditorViewContext = React.createContext<EditorView>(
+  /* we have to provide a default value to createContext */
+  null as unknown as EditorView,
+);
+
+interface BangleEditorProps extends CoreBangleEditorProps {
+  id: string;
+  children: React.ReactNode;
+  renderNodeViews: RenderNodeViewsFunction;
+  className: string;
+  style?: React.CSSProperties;
+  onReady?: (editor: CoreBangleEditor) => void;
+}
 
 export function BangleEditor({
   id,
@@ -29,16 +44,16 @@ export function BangleEditor({
   className,
   style,
   onReady = () => {},
-}) {
-  const renderRef = useRef();
+}: BangleEditorProps) {
+  const renderRef = useRef<HTMLDivElement>(null);
   const onReadyRef = useRef(onReady);
   const editorViewPayloadRef = useRef({
     state,
     focusOnInit,
     pmViewOpts,
   });
-  const [nodeViews, setNodeViews] = useState([]);
-  const [editor, setEditor] = useState();
+  const [nodeViews, setNodeViews] = useState<NodeView[]>([]);
+  const [editor, setEditor] = useState<CoreBangleEditor>();
 
   useEffect(() => {
     let destroyed = false;
@@ -47,20 +62,22 @@ export function BangleEditor({
     // of the component can get the handler reference from `getRenderHandlers(view)`.
     // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     saveRenderHandlers(
-      renderRef.current,
+      renderRef.current!,
       nodeViewRenderHandlers((cb) => {
         // use callback for of setState to avoid
         // get fresh nodeViews
         if (!destroyed) {
+          // @ts-ignore TS flow analysis would infer this branching is
+          // impossible and assign a <never> type
           setNodeViews((nodeViews) => cb(nodeViews));
         }
       }),
     );
     const editor = new CoreBangleEditor(
-      renderRef.current,
+      renderRef.current!,
       editorViewPayloadRef.current,
     );
-    editor.view._updatePluginWatcher = updatePluginWatcher(editor);
+    (editor.view as any)._updatePluginWatcher = updatePluginWatcher(editor);
     onReadyRef.current(editor);
     setEditor(editor);
     return () => {
@@ -80,7 +97,7 @@ export function BangleEditor({
             nodeView={nodeView}
             renderNodeViews={renderNodeViews}
           />,
-          nodeView.containerDOM,
+          nodeView.containerDOM!,
           objUid.get(nodeView),
         );
       })}
@@ -93,8 +110,8 @@ export function BangleEditor({
   );
 }
 
-const updatePluginWatcher = (editor) => {
-  return (watcher, remove = false) => {
+const updatePluginWatcher = (editor: CoreBangleEditor) => {
+  return (watcher: Plugin, remove = false) => {
     if (editor.destroyed) {
       return;
     }

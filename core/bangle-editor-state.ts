@@ -7,6 +7,19 @@ import { EditorProps } from 'prosemirror-view';
 
 type InitialContent = string | Node | object;
 
+export interface BangleEditorStateProps {
+  specRegistry?: SpecRegistry;
+  specs?: RawSpecs;
+  plugins?: RawPlugins;
+  initialValue?: InitialContent;
+  editorProps?: EditorProps;
+  pmStateOpts?: {
+    storedMarks?: Mark[] | null;
+    plugins?: Plugin[] | null;
+  };
+  pluginMetadata?: any;
+}
+
 export class BangleEditorState {
   specRegistry: SpecRegistry;
   pmState: EditorState;
@@ -19,18 +32,7 @@ export class BangleEditorState {
     editorProps,
     pmStateOpts,
     pluginMetadata = {},
-  }: {
-    specRegistry?: SpecRegistry;
-    specs?: RawSpecs;
-    plugins?: RawPlugins;
-    initialValue?: InitialContent;
-    editorProps?: EditorProps;
-    pmStateOpts?: {
-      storedMarks?: Mark[] | null;
-      plugins?: Plugin[] | null;
-    };
-    pluginMetadata?: any;
-  } = {}) {
+  }: BangleEditorStateProps = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
     }

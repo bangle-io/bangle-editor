@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { objUid } from '@bangle.dev/core/utils/object-uid';
-import { saveRenderHandlers } from '@bangle.dev/core/node-view';
+import {
+  NodeView,
+  RenderHandlers,
+  saveRenderHandlers,
+} from '@bangle.dev/core/node-view';
 
 const LOG = false;
 
@@ -8,12 +12,17 @@ let log = LOG ? console.log.bind(console, 'node-view-helpers') : () => {};
 
 export const nodeViewUpdateStore = new WeakMap();
 
-export const nodeViewRenderHandlers = (updateNodeViews) => ({
-  create: (nodeView, nodeViewProps) => {
+type NodeViewsUpdater = (nodeViewUpdateStore: NodeView[]) => NodeView[];
+type UpdateNodeViewsFunction = (updater: NodeViewsUpdater) => void;
+
+export const nodeViewRenderHandlers = (
+  updateNodeViews: UpdateNodeViewsFunction,
+): RenderHandlers => ({
+  create: (nodeView, _nodeViewProps) => {
     log('create', objUid.get(nodeView));
     updateNodeViews((nodeViews) => [...nodeViews, nodeView]);
   },
-  update: (nodeView, nodeViewProps) => {
+  update: (nodeView, _nodeViewProps) => {
     log('update', objUid.get(nodeView));
     const updateCallback = nodeViewUpdateStore.get(nodeView);
     // If updateCallback is undefined (which can happen if react took long to mount),
@@ -28,7 +37,7 @@ export const nodeViewRenderHandlers = (updateNodeViews) => ({
   },
 });
 
-export function useNodeViews(ref) {
+export function useNodeViews(ref: RefObject<HTMLElement>) {
   const [nodeViews, setNodeViews] = useState([]);
   useEffect(() => {
     // save the renderHandlers in the dom to decouple nodeView instantiating code
@@ -37,9 +46,10 @@ export function useNodeViews(ref) {
     // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     let destroyed = false;
     saveRenderHandlers(
-      ref.current,
+      ref.current!,
       nodeViewRenderHandlers((cb) => {
         if (!destroyed) {
+          // @ts-ignore
           // use callback variant of setState to
           // always get freshest nodeViews.
           setNodeViews((nodeViews) => cb(nodeViews));

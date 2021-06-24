@@ -260,7 +260,7 @@ function isTextAtPos(pos: number) {
   };
 }
 
-function setLink(from: number, to: number, href: string) {
+function setLink(from: number, to: number, href?: string) {
   href = href && href.trim();
   return filter(
     (state) => isTextAtPos(from)(state),
@@ -318,7 +318,7 @@ export function createLink(href: string) {
   );
 }
 
-export function updateLink(href: string): Command {
+export function updateLink(href?: string): Command {
   return (state, dispatch) => {
     if (!state.selection.empty) {
       return setLink(

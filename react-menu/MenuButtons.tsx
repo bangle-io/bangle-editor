@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { rafCommandExec } from '@bangle.dev/core/utils/js-utils';
+import { rafCommandExec } from '@bangle.dev/core/utils/utils';
 import {
   defaultKeys as italicKeys,
   queryIsItalicActive,
@@ -33,7 +33,7 @@ import {
   queryIsHeadingActive,
   toggleHeading,
 } from '@bangle.dev/core/components/heading';
-import { filter } from '@bangle.dev/core/utils/pm-utils';
+import { filter } from '@bangle.dev/core/utils/utils';
 import {
   createLink,
   queryIsLinkActive,
@@ -47,7 +47,7 @@ import {
 } from '@bangle.dev/core/components/bullet-list';
 import * as Icons from './Icons';
 import { useEditorViewContext } from '@bangle.dev/react';
-import { PluginKey } from '@bangle.dev/core';
+import { EditorState, PluginKey } from '@bangle.dev/core/prosemirror/state';
 import {
   defaultKeys as floatingMenuKeys,
   focusFloatingMenuInput,
@@ -59,19 +59,26 @@ import {
   queryIsOrderedListActive,
   toggleOrderedList,
 } from '@bangle.dev/core/components/ordered-list';
+import type { HintPos } from './types';
+
+interface ButtonProps {
+  hint?: string;
+  hintPos?: HintPos;
+  children?: React.ReactNode;
+}
 
 export function BoldButton({
   hint = 'Bold\n' + boldKeys.toggleBold,
   hintPos = 'top',
   children = <Icons.BoldIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (toggleBold()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -97,7 +104,7 @@ export function BlockquoteButton({
   hintPos = 'top',
   children = <Icons.BlockquoteIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
@@ -105,7 +112,7 @@ export function BlockquoteButton({
       if (
         blockquote.commands.wrapInBlockquote()(view.state, view.dispatch, view)
       ) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -133,13 +140,13 @@ export function ItalicButton({
   hintPos = 'top',
   children = <Icons.ItalicIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (toggleItalic()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -165,13 +172,13 @@ export function UndoButton({
   hintPos = 'top',
   children = <Icons.UndoIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
-      if (undo()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+      if (undo()(view.state, view.dispatch)) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -196,13 +203,13 @@ export function RedoButton({
   hintPos = 'top',
   children = <Icons.RedoIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
-      if (redo()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+      if (redo()(view.state, view.dispatch)) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -227,13 +234,13 @@ export function CodeButton({
   hintPos = 'top',
   children = <Icons.CodeIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (toggleCode()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -259,13 +266,13 @@ export function BulletListButton({
   hintPos = 'top',
   children = <Icons.BulletListIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (toggleBulletList()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -294,13 +301,13 @@ export function OrderedListButton({
   hintPos = 'top',
   children = <Icons.OrderedListIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (toggleOrderedList()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -326,14 +333,14 @@ export function TodoListButton({
   hintPos = 'top',
   children = <Icons.TodoListIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
 
       if (toggleTodoList()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -360,14 +367,14 @@ export function HeadingButton({
   hintPos = 'top',
   children = <Icons.HeadingIcon level={level} />,
   ...props
-}) {
+}: ButtonProps & { level: number }) {
   const view = useEditorViewContext();
 
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (toggleHeading(level)(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -397,13 +404,13 @@ export function ParagraphButton({
   hintPos = 'top',
   children = <Icons.ParagraphIcon />,
   ...props
-}) {
+}: ButtonProps) {
   const view = useEditorViewContext();
   const onSelect = useCallback(
     (e) => {
       e.preventDefault();
       if (convertToParagraph()(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }
@@ -430,24 +437,24 @@ export function FloatingLinkButton({
   hintPos = 'top',
   children = <Icons.LinkIcon />,
   menuKey,
-}) {
+}: ButtonProps & { menuKey: PluginKey }) {
   const view = useEditorViewContext();
 
   const onMouseDown = useCallback(
     (e) => {
       e.preventDefault();
       const command = filter(
-        (state) => createLink('')(state),
-        (state, dispatch, view) => {
+        (state: EditorState) => createLink('')(state),
+        (_state, dispatch, view) => {
           if (dispatch) {
-            toggleLinkSubMenu(menuKey)(view.state, view.dispatch, view);
-            rafCommandExec(view, focusFloatingMenuInput(menuKey));
+            toggleLinkSubMenu(menuKey)(view!.state, view!.dispatch, view);
+            rafCommandExec(view!, focusFloatingMenuInput(menuKey));
           }
           return true;
         },
       );
       if (command(view.state, view.dispatch, view)) {
-        if (view.dispatch) {
+        if (view.dispatch as any) {
           view.focus();
         }
       }

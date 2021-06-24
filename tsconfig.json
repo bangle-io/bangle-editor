@@ -27,6 +27,18 @@
     },
     {
       "path": "./tooltip/tsconfig.test.json"
+    },
+    {
+      "path": "./react/tsconfig.json"
+    },
+    {
+      "path": "./react/tsconfig.test.json"
+    },
+    {
+      "path": "./react-menu/tsconfig.json"
+    },
+    {
+      "path": "./react-menu/tsconfig.test.json"
     }
   ]
 }

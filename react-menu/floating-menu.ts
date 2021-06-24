@@ -4,9 +4,11 @@ import {
 } from '@bangle.dev/core/components/link';
 import { filter } from '@bangle.dev/core/utils/pm-utils';
 import { selectionTooltip } from '@bangle.dev/tooltip';
+import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
 import { keymap } from '@bangle.dev/core/utils/keymap';
-import { PluginKey } from '@bangle.dev/core';
-import { rafCommandExec } from '@bangle.dev/core/utils/js-utils';
+import { rafCommandExec } from '@bangle.dev/core/utils/utils';
+import { PluginKey, EditorState } from '@bangle.dev/core/prosemirror/state';
+import { Command } from '@bangle.dev/core/prosemirror/commands';
 
 const {
   queryIsSelectionTooltipActive,
@@ -28,7 +30,7 @@ export const defaultKeys = {
   toggleLink: 'Meta-k',
 };
 
-export const defaultCalculateType = (state, prevType) => {
+export const defaultCalculateType = (state: EditorState, _prevType: any) => {
   if (queryIsSelectionAroundLink()(state) || queryIsLinkActive()(state)) {
     return 'linkSubMenu';
   }
@@ -38,12 +40,16 @@ export const defaultCalculateType = (state, prevType) => {
   return 'defaultMenu';
 };
 
+interface FloatingMenuPluginArgs extends Partial<SelectionTooltipProps> {
+  keybindings?: { [index: string]: string };
+}
+
 function floatingMenu({
   key = new PluginKey('floatingMenuPlugin'),
   keybindings = defaultKeys,
   tooltipRenderOpts = {},
   calculateType = defaultCalculateType,
-} = {}) {
+}: FloatingMenuPluginArgs = {}) {
   return [
     selectionTooltip.plugins({
       key,
@@ -61,34 +67,34 @@ function floatingMenu({
   ];
 }
 
-export function toggleLinkSubMenu(key) {
-  return (state, dispatch, view) => {
+export function toggleLinkSubMenu(key: PluginKey): Command {
+  return (state, _dispatch, view) => {
     const type = querySelectionTooltipType(key)(state);
 
     if (state.selection.empty) {
       // Focus on link tooltip by keyboard shortcut
       if (type === 'linkSubMenu') {
-        rafCommandExec(view, focusFloatingMenuInput(key));
+        rafCommandExec(view!, focusFloatingMenuInput(key));
       }
       return false;
     }
 
     if (type === 'linkSubMenu') {
-      return hideSelectionTooltip(key)(view.state, view.dispatch, view);
+      return hideSelectionTooltip(key)(view!.state, view!.dispatch, view);
     }
 
-    rafCommandExec(view, focusFloatingMenuInput(key));
+    rafCommandExec(view!, focusFloatingMenuInput(key));
 
     return updateSelectionTooltipType(key, 'linkSubMenu')(
-      view.state,
-      view.dispatch,
+      view!.state,
+      view!.dispatch,
       view,
     );
   };
 }
 
-export function focusFloatingMenuInput(key) {
-  return (state) => {
+export function focusFloatingMenuInput(key: PluginKey) {
+  return (state: EditorState) => {
     const pluginState = key.getState(state);
 
     const input = pluginState.tooltipContentDOM.querySelector('input');

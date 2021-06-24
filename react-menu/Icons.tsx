@@ -1,7 +1,7 @@
 import React from 'react';
 // Source css.gg
 
-export function BoldIcon(props) {
+export function BoldIcon(props: any) {
   return (
     <svg viewBox={'-6 -5 24 24'} xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M5.997 14H1.72c-.618 0-1.058-.138-1.323-.415C.132 13.308 0 12.867 0 12.262V1.738C0 1.121.135.676.406.406.676.136 1.114 0 1.719 0h4.536c.669 0 1.248.041 1.738.124.49.083.93.242 1.318.478a3.458 3.458 0 0 1 1.461 1.752c.134.366.2.753.2 1.16 0 1.401-.7 2.426-2.1 3.075 1.84.586 2.76 1.726 2.76 3.42 0 .782-.2 1.487-.602 2.114a3.61 3.61 0 0 1-1.623 1.39 5.772 5.772 0 0 1-1.471.377c-.554.073-1.2.11-1.939.11zm-.21-6.217h-2.95v4.087h3.046c1.916 0 2.874-.69 2.874-2.072 0-.707-.248-1.22-.745-1.537-.496-.319-1.238-.478-2.225-.478zM2.837 2.13v3.619h2.597c.707 0 1.252-.067 1.638-.2.385-.134.68-.389.883-.765.16-.267.239-.566.239-.897 0-.707-.252-1.176-.755-1.409-.503-.232-1.27-.348-2.301-.348H2.836z"></path>
@@ -9,7 +9,7 @@ export function BoldIcon(props) {
   );
 }
 
-export function CodeIcon(props) {
+export function CodeIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M9.95263 16.9123L8.59323 18.3608L2.03082 12.2016L8.18994 5.63922L9.64826 7.00791L4.85783 12.112L9.95212 16.8932L9.95263 16.9123Z" />
@@ -17,7 +17,7 @@ export function CodeIcon(props) {
     </svg>
   );
 }
-export function BlockquoteIcon(props) {
+export function BlockquoteIcon(props: any) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -31,7 +31,7 @@ export function BlockquoteIcon(props) {
   );
 }
 
-export function BulletListIcon(props) {
+export function BulletListIcon() {
   return (
     <svg
       style={{ transform: 'scale(1.4, 1.4)' }}
@@ -48,7 +48,7 @@ export function BulletListIcon(props) {
   );
 }
 
-export function TodoListIcon(props) {
+export function TodoListIcon(props: any) {
   return (
     <svg
       style={{ transform: 'scale(0.8, 0.8)' }}
@@ -66,7 +66,7 @@ export function TodoListIcon(props) {
   );
 }
 
-export function ItalicIcon(props) {
+export function ItalicIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M11.4903 5.45801H17.4903L16.7788 7.32716H14.7788L11.2212 16.6729H13.2212L12.5097 18.5421H6.5097L7.22122 16.6729H9.22122L12.7788 7.32716H10.7788L11.4903 5.45801Z" />
@@ -74,7 +74,7 @@ export function ItalicIcon(props) {
   );
 }
 
-export function UndoIcon(props) {
+export function UndoIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
@@ -85,7 +85,7 @@ export function UndoIcon(props) {
   );
 }
 
-export function RedoIcon(props) {
+export function RedoIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
@@ -96,7 +96,7 @@ export function RedoIcon(props) {
   );
 }
 
-export function HeadingIcon({ level, ...props }) {
+export function HeadingIcon({ level, ...props }: { level: number }) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <text
@@ -113,7 +113,7 @@ export function HeadingIcon({ level, ...props }) {
   );
 }
 
-export function ParagraphIcon(props) {
+export function ParagraphIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <text
@@ -130,7 +130,7 @@ export function ParagraphIcon(props) {
   );
 }
 
-export function OrderedListIcon(props) {
+export function OrderedListIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <text
@@ -147,7 +147,7 @@ export function OrderedListIcon(props) {
   );
 }
 
-export function LinkIcon(props) {
+export function LinkIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M14.8284 12L16.2426 13.4142L19.071 10.5858C20.6331 9.02365 20.6331 6.49099 19.071 4.9289C17.509 3.3668 14.9763 3.3668 13.4142 4.9289L10.5858 7.75732L12 9.17154L14.8284 6.34311C15.6095 5.56206 16.8758 5.56206 17.6568 6.34311C18.4379 7.12416 18.4379 8.39049 17.6568 9.17154L14.8284 12Z" />
@@ -157,7 +157,7 @@ export function LinkIcon(props) {
   );
 }
 
-export function DoneIcon(props) {
+export function DoneIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M10.2426 16.3137L6 12.071L7.41421 10.6568L10.2426 13.4853L15.8995 7.8284L17.3137 9.24262L10.2426 16.3137Z" />
@@ -170,7 +170,7 @@ export function DoneIcon(props) {
   );
 }
 
-export function ExternalIcon(props) {
+export function ExternalIcon(props: any) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -184,7 +184,7 @@ export function ExternalIcon(props) {
   );
 }
 
-export function CloseIcon(props) {
+export function CloseIcon(props: any) {
   return (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M16.34 9.32a1 1 0 10-1.36-1.46l-2.93 2.73-2.73-2.93a1 1 0 00-1.46 1.36l2.73 2.93-2.93 2.73a1 1 0 101.36 1.46l2.93-2.73 2.73 2.93a1 1 0 101.46-1.36l-2.73-2.93 2.93-2.73z" />
@@ -197,7 +197,7 @@ export function CloseIcon(props) {
   );
 }
 
-export function ChevronDown(props) {
+export function ChevronDown(props: any) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -211,7 +211,7 @@ export function ChevronDown(props) {
   );
 }
 
-export function ChevronUp(props) {
+export function ChevronUp(props: any) {
   return (
     <svg
       viewBox="0 0 24 24"

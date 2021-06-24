@@ -17,11 +17,15 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "index.js",
-  "module": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "style": "style.css",
   "scripts": {
-    "prepack": "yarn g:babel",
-    "postpack": "rm -r $INIT_CWD/dist"
+    "prepack": "yarn compile-ts",
+    "postpack": "rm -r $INIT_CWD/dist",
+    "compile-ts": "yarn g:tsc --build $INIT_CWD",
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
     "prop-types": "^15.7.2"
@@ -38,12 +42,13 @@
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
     "@testing-library/react": "^11.2.7",
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "publishConfig": {
-    "access": "public",
-    "main": "./dist/index.js",
-    "module": "./dist/index.js"
+    "access": "public"
   }
 }

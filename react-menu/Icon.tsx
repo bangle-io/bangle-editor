@@ -1,5 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import type { HintPos } from './types';
+
+export interface MenuButtonProps {
+  className?: string;
+  children: React.ReactNode;
+  isActive?: boolean;
+  isDisabled?: boolean;
+  hint: string;
+  hintPos?: HintPos;
+  hintBreakWhiteSpace?: boolean;
+  onMouseDown?: React.MouseEventHandler;
+}
 
 export const MenuButton = ({
   className = '',
@@ -10,7 +22,7 @@ export const MenuButton = ({
   hintPos = 'top',
   hintBreakWhiteSpace = true,
   onMouseDown,
-}) => {
+}: MenuButtonProps) => {
   return (
     <button
       type="button"
