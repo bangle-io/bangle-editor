@@ -38,7 +38,7 @@ export const nodeViewRenderHandlers = (
 });
 
 export function useNodeViews(ref: RefObject<HTMLElement>) {
-  const [nodeViews, setNodeViews] = useState([]);
+  const [nodeViews, setNodeViews] = useState<NodeView[]>([]);
   useEffect(() => {
     // save the renderHandlers in the dom to decouple nodeView instantiating code
     // from the editor. Since PM passing view when nodeView is created, the author
@@ -49,7 +49,6 @@ export function useNodeViews(ref: RefObject<HTMLElement>) {
       ref.current!,
       nodeViewRenderHandlers((cb) => {
         if (!destroyed) {
-          // @ts-ignore
           // use callback variant of setState to
           // always get freshest nodeViews.
           setNodeViews((nodeViews) => cb(nodeViews));

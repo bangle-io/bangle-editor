@@ -19,6 +19,7 @@
   },
   "main": "index.ts",
   "module": "index.ts",
+  "types": "dist/index.d.ts",
   "style": "style.css",
   "scripts": {
     "unit-tests": "yarn jest",

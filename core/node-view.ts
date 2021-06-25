@@ -1,8 +1,8 @@
-import { Node } from 'prosemirror-model';
+import { Node, DOMOutputSpec } from 'prosemirror-model';
 import { EditorView, Decoration } from 'prosemirror-view';
 import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { bangleWarn, createElement } from './utils/js-utils';
-import { DOMOutputSpec } from 'prosemirror-model';
+
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};

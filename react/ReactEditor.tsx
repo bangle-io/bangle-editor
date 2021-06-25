@@ -7,12 +7,8 @@ import {
   BangleEditorProps as CoreBangleEditorProps,
 } from '@bangle.dev/core/bangle-editor';
 import { BangleEditorState as CoreBangleEditorState } from '@bangle.dev/core/bangle-editor-state';
-import { NodeView, saveRenderHandlers } from '@bangle.dev/core/node-view';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
-import {
-  nodeViewRenderHandlers,
-  nodeViewUpdateStore,
-} from './node-view-helpers';
+import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
 import { EditorView } from '@bangle.dev/core/prosemirror/view';
 import { Plugin } from '@bangle.dev/core/plugin';
 
@@ -52,27 +48,10 @@ export function BangleEditor({
     focusOnInit,
     pmViewOpts,
   });
-  const [nodeViews, setNodeViews] = useState<NodeView[]>([]);
   const [editor, setEditor] = useState<CoreBangleEditor>();
+  const nodeViews = useNodeViews(renderRef);
 
   useEffect(() => {
-    let destroyed = false;
-    // save the renderHandlers in the dom to decouple nodeView instantiating code
-    // from the editor. Since PM passing view when nodeView is created, the author
-    // of the component can get the handler reference from `getRenderHandlers(view)`.
-    // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
-    saveRenderHandlers(
-      renderRef.current!,
-      nodeViewRenderHandlers((cb) => {
-        // use callback for of setState to avoid
-        // get fresh nodeViews
-        if (!destroyed) {
-          // @ts-ignore TS flow analysis would infer this branching is
-          // impossible and assign a <never> type
-          setNodeViews((nodeViews) => cb(nodeViews));
-        }
-      }),
-    );
     const editor = new CoreBangleEditor(
       renderRef.current!,
       editorViewPayloadRef.current,
@@ -81,11 +60,9 @@ export function BangleEditor({
     onReadyRef.current(editor);
     setEditor(editor);
     return () => {
-      destroyed = true;
       editor.destroy();
     };
   }, []);
-
   return (
     <React.Fragment>
       <div ref={renderRef} id={id} className={className} style={style} />
