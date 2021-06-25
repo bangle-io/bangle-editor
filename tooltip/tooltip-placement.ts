@@ -51,7 +51,7 @@ export type GetReferenceElementFunction = (
 ) => VirtualElement;
 
 export interface TooltipRenderOpts {
-  tooltipDOMSpec: DOMOutputSpec;
+  tooltipDOMSpec?: DOMOutputSpec;
   placement?: Placement;
   getReferenceElement: GetReferenceElementFunction;
   getScrollContainer?: (view: EditorView) => HTMLElement;

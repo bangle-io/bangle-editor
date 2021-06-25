@@ -23,7 +23,7 @@ export const commands = {
   toggleHeading,
   queryIsHeadingActive,
 };
-export const defaultKeys = {
+export const defaultKeys: { [index: string]: string } = {
   toH1: 'Shift-Ctrl-1',
   toH2: 'Shift-Ctrl-2',
   toH3: 'Shift-Ctrl-3',
@@ -38,7 +38,7 @@ export const defaultKeys = {
   jumpToStartOfHeading: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
   jumpToEndOfHeading: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
   insertEmptyParaBelow: 'Mod-Enter',
-  toggleCollapse: null,
+  // toggleCollapse: null,
 };
 
 const name = 'heading';
@@ -153,7 +153,7 @@ function pluginsFactory({
 
           [keybindings.insertEmptyParaAbove]: insertEmptyParaAbove(),
           [keybindings.insertEmptyParaBelow]: insertEmptyParaBelow(),
-          [keybindings.toggleCollapse!]: toggleHeadingCollapse(),
+          // [keybindings.toggleCollapse]: toggleHeadingCollapse(),
         }),
       ...(markdownShortcut ? levels : []).map((level: number) =>
         textblockTypeInputRule(

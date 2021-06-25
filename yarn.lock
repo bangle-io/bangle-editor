@@ -3141,6 +3141,8 @@ __metadata:
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.7
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     react: ^17.0.2
     react-dom: ^17.0.2
   peerDependencies:
@@ -3161,6 +3163,9 @@ __metadata:
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.7
+    "@types/prop-types": ^15.7.3
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     prop-types: ^15.7.2
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -3182,6 +3187,8 @@ __metadata:
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     "@testing-library/react": ^11.2.7
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     prop-types: ^15.7.2
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -3203,6 +3210,8 @@ __metadata:
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     "@testing-library/react": ^11.2.7
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     react: ^17.0.2
     react-dom: ^17.0.2
   peerDependencies:
@@ -3223,6 +3232,9 @@ __metadata:
     "@testing-library/jest-dom": ^5.13.0
     "@testing-library/react": ^11.2.7
     "@testing-library/react-hooks": ^7.0.0
+    "@types/prop-types": ^15.7.3
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     prettier: ^2.3.0
     prop-types: ^15.7.2
     punycode: ^2.1.1
@@ -3276,11 +3288,13 @@ __metadata:
     "@popperjs/core": ^2.5.4
     "@types/jest": ^26.0.23
     "@types/prosemirror-collab": ^1.1.1
+    "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-inputrules": ^1.0.4
     "@types/prosemirror-model": ^1.13.0
     "@types/prosemirror-state": ^1.2.6
     "@types/prosemirror-transform": ^1.1.3
     "@types/prosemirror-view": ^1.17.1
+    prosemirror-commands: ^1.0.4
     prosemirror-inputrules: ^1.1.3
     prosemirror-model: ^1.14.1
     prosemirror-state: ^1.3.4
@@ -4864,7 +4878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
+"@types/prop-types@npm:*, @types/prop-types@npm:^15.7.3":
   version: 15.7.3
   resolution: "@types/prop-types@npm:15.7.3"
   checksum: 41831d53c44c9eeafdaf9762bcb4553c13a3bbf990745ed9065a1cc3581b80633113b53fd49b202bf51731b258da5d0a9aa09c9035d5af7f78b0f6bc273f1325
@@ -5030,6 +5044,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-dom@npm:^17.0.8":
+  version: 17.0.8
+  resolution: "@types/react-dom@npm:17.0.8"
+  dependencies:
+    "@types/react": "*"
+  checksum: 9ad1220297bede365e0d2aae4bc4a2deee3247da9da62d45bcd770812d246d46c219b3f58755b08423a4339c3c654fddd6c2b16b27151d09213b527a7cde8910
+  languageName: node
+  linkType: hard
+
 "@types/react-test-renderer@npm:>=16.9.0":
   version: 17.0.1
   resolution: "@types/react-test-renderer@npm:17.0.1"
@@ -5058,7 +5081,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:>=16.9.0":
+"@types/react@npm:>=16.9.0, @types/react@npm:^17.0.11":
   version: 17.0.11
   resolution: "@types/react@npm:17.0.11"
   dependencies:
@@ -6902,6 +6925,8 @@ __metadata:
     "@types/prosemirror-state": ^1.2.6
     "@types/prosemirror-transform": ^1.1.3
     "@types/prosemirror-view": ^1.17.1
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     change-case: ^4.1.2
     date-fns: ^2.10.0
     del: ^6.0.0
@@ -6946,6 +6971,8 @@ __metadata:
     "@types/prosemirror-state": ^1.2.6
     "@types/prosemirror-transform": ^1.1.3
     "@types/prosemirror-view": ^1.17.1
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     clsx: ^1.1.1
     emoji-lookup-data: 1.3.0
     file-loader: ^6.2.0
@@ -12981,6 +13008,8 @@ fsevents@~2.1.2:
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.7
+    "@types/react": ^17.0.11
+    "@types/react-dom": ^17.0.8
     babel-loader: ^8.2.2
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.2.6

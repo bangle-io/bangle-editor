@@ -12,7 +12,7 @@ type GetPosFunction = () => number;
 
 export type UpdateAttrsFunction = (attrs: Node['attrs']) => void;
 
-interface NodeViewProps {
+export interface NodeViewProps {
   node: Node;
   view: EditorView;
   getPos: GetPosFunction;
@@ -22,12 +22,12 @@ interface NodeViewProps {
   updateAttrs: UpdateAttrsFunction;
 }
 
-type RenderHandlerFunction = (
-  nodeView: BaseNodeView,
+export type RenderHandlerFunction = (
+  nodeView: NodeView,
   props: NodeViewProps,
 ) => void;
 
-interface RenderHandlers {
+export interface RenderHandlers {
   create: RenderHandlerFunction;
   update: RenderHandlerFunction;
   destroy: RenderHandlerFunction;
@@ -135,7 +135,10 @@ abstract class BaseNodeView {
       selectionSensitive,
     };
 
-    this.renderHandlers.create(this, this.getNodeViewProps());
+    this.renderHandlers.create(
+      this as unknown as NodeView,
+      this.getNodeViewProps(),
+    );
   }
 }
 // TODO this is adds unneeded abstraction

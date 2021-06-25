@@ -1,7 +1,7 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { PluginKey } from '@bangle.dev/core';
+import { PluginKey } from '@bangle.dev/core/prosemirror/state';
 import { LinkSubMenu } from './LinkSubMenu';
 import { usePluginState } from '@bangle.dev/react';
 import {
@@ -46,6 +46,12 @@ export function FloatingMenu({
     }
     return null;
   },
+}: {
+  menuKey: PluginKey;
+  renderMenuType: (opts: {
+    menuKey: PluginKey;
+    type: string;
+  }) => JSX.Element | null;
 }) {
   const menuState = usePluginState(menuKey);
   const renderElement = renderMenuType({ type: menuState.type, menuKey });

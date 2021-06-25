@@ -17,8 +17,8 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "index.js",
-  "module": "index.js",
+  "main": "index.ts",
+  "module": "index.ts",
   "style": "style.css",
   "scripts": {
     "unit-tests": "yarn jest",

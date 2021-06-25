@@ -4,23 +4,40 @@ import { objUid } from '@bangle.dev/core/utils/object-uid';
 import PropTypes from 'prop-types';
 import { Node } from '@bangle.dev/core/prosemirror/model';
 import { EditorView } from '@bangle.dev/core/prosemirror/view';
+import { NodeView, NodeViewProps } from '@bangle.dev/core/node-view';
 
 const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'NodeViewWrapper') : () => {};
 
-export class NodeViewWrapper extends React.PureComponent {
+export type RenderNodeViewsFunction = (props: any) => React.ReactNode;
+
+interface PropsType {
+  debugKey: string;
+  nodeView: NodeView;
+  renderNodeViews: RenderNodeViewsFunction;
+  nodeViewUpdateStore: WeakMap<NodeView, () => void>;
+}
+
+interface StateType {
+  nodeViewProps: NodeViewProps;
+}
+
+export class NodeViewWrapper extends React.PureComponent<PropsType, StateType> {
   static propTypes = {
     nodeView: PropTypes.object.isRequired,
     renderNodeViews: PropTypes.func.isRequired,
     nodeViewUpdateStore: PropTypes.instanceOf(WeakMap).isRequired,
   };
 
-  constructor(props) {
+  update: () => void;
+  attachToContentDOM: (reactElement: HTMLDivElement) => void;
+
+  constructor(props: PropsType) {
     super(props);
 
     this.update = () => {
-      this.setState((state, props) => ({
+      this.setState((_state, props) => ({
         nodeViewProps: props.nodeView.getNodeViewProps(),
       }));
     };
@@ -29,7 +46,7 @@ export class NodeViewWrapper extends React.PureComponent {
       if (!reactElement) {
         return;
       }
-      const { contentDOM } = this.props.nodeView;
+      const contentDOM = this.props.nodeView.contentDOM!;
       // Since we do not control how many times this callback is called
       // make sure it is not already mounted.
       if (!reactElement.contains(contentDOM)) {
@@ -97,6 +114,7 @@ export class NodeViewWrapper extends React.PureComponent {
 export const atomNodeViewPropTypes = {
   selected: PropTypes.bool.isRequired,
   node: PropTypes.instanceOf(Node).isRequired,
+  // ts-ignore
   view: PropTypes.instanceOf(EditorView).isRequired,
   getPos: PropTypes.func.isRequired,
   decorations: PropTypes.object.isRequired,

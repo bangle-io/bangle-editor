@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+// @ts-ignore idk why but TS reports this import doesn't exist
 import { BangleEditor } from '@bangle.dev/core';
 import { editorStateCounter } from '@bangle.dev/core/components/components';
 import { usePluginState, EditorViewContext } from '@bangle.dev/react';
 
-export function StaticMenu({ editor, renderMenu }) {
+interface StaticMenuProps {
+  renderMenu(): JSX.Element;
+  editor?: BangleEditor;
+}
+
+export function StaticMenu({ editor, renderMenu }: StaticMenuProps) {
   return editor ? (
     <EditorViewContext.Provider value={editor.view}>
       <StaticMenuContainer renderMenu={renderMenu}></StaticMenuContainer>
@@ -17,7 +23,9 @@ StaticMenu.propTypes = {
   editor: PropTypes.instanceOf(BangleEditor),
 };
 
-function StaticMenuContainer({ renderMenu }) {
+function StaticMenuContainer({
+  renderMenu,
+}: Pick<StaticMenuProps, 'renderMenu'>) {
   usePluginState(editorStateCounter.docChangedKey, true);
   usePluginState(editorStateCounter.selectionChangedKey, true);
   return renderMenu();

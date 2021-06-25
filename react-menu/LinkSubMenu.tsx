@@ -4,6 +4,7 @@ import * as Icons from './Icons';
 import { useEditorViewContext } from '@bangle.dev/react';
 import { MenuButton } from './Icon';
 import { MenuGroup } from './MenuGroup';
+import { EditorView } from '@bangle.dev/core/prosemirror/view';
 
 export function LinkSubMenu({ getIsTop = () => true }) {
   const view = useEditorViewContext();
@@ -23,9 +24,17 @@ export function LinkSubMenu({ getIsTop = () => true }) {
   );
 }
 
-function LinkMenu({ getIsTop, view, originalHref = '' }) {
+function LinkMenu({
+  getIsTop,
+  view,
+  originalHref = '',
+}: {
+  getIsTop: () => boolean;
+  view: EditorView;
+  originalHref?: string;
+}) {
   const [href, setHref] = useState(originalHref);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleSubmit = () => {
     updateLink(href)(view.state, view.dispatch);
     view.focus();

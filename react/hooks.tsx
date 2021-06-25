@@ -1,14 +1,19 @@
 import { useState, useContext, useEffect } from 'react';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { BangleEditorState, Plugin, PluginKey } from '@bangle.dev/core';
+import { RawSpecs, SpecRegistry } from '@bangle.dev/core/spec-registry';
+import {
+  BangleEditorState,
+  BangleEditorStateProps,
+} from '@bangle.dev/core/bangle-editor-state';
+import { Plugin, PluginKey } from '@bangle.dev/core/prosemirror/state';
 import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { EditorViewContext } from './ReactEditor';
-import { rafSchedule } from '@bangle.dev/core/utils/js-utils';
+import { rafSchedule } from '@bangle.dev/core/utils/utils';
+import { EditorView } from '@bangle.dev/core/prosemirror/view';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};
 
-export function useEditorState(props) {
+export function useEditorState(props: BangleEditorStateProps) {
   if (props.plugins && typeof props.plugins !== 'function') {
     throw new Error('plugins error: plugins must be a function');
   }
@@ -26,8 +31,8 @@ export function useEditorState(props) {
 }
 
 export function useSpecRegistry(
-  initialSpecs,
-  initialSpecRegistry,
+  initialSpecs: RawSpecs | null,
+  initialSpecRegistry: SpecRegistry | null,
   options = {},
 ) {
   const [specRegistry] = useState(() => {
@@ -44,7 +49,7 @@ export function usePlugins(getPlugins = corePlugins) {
   return result;
 }
 
-export function usePluginState(pluginKey, throttle = false) {
+export function usePluginState(pluginKey: PluginKey, throttle = false) {
   const view = useEditorViewContext();
   const [state, setState] = useState(pluginKey.getState(view.state));
 
@@ -55,25 +60,25 @@ export function usePluginState(pluginKey, throttle = false) {
       _setState = rafSchedule(setState);
     }
     const plugin = watcherPlugin(pluginKey, _setState);
-    view._updatePluginWatcher(plugin);
+    (view as any)._updatePluginWatcher(plugin);
     return () => {
       if (throttle) {
-        _setState.cancel();
+        (_setState as ReturnType<typeof rafSchedule>).cancel();
       }
-      view._updatePluginWatcher(plugin, true);
+      (view as any)._updatePluginWatcher(plugin, true);
     };
   }, [view, pluginKey, throttle]);
 
   return state;
 }
 
-export function useEditorViewContext() {
+export function useEditorViewContext(): EditorView {
   return useContext(EditorViewContext);
 }
 
-function watcherPlugin(pluginKey, setState) {
+function watcherPlugin(pluginKey: PluginKey, setState: Function) {
   return new Plugin({
-    key: new PluginKey(`withPluginState_${pluginKey.key}`),
+    key: new PluginKey(`withPluginState_${(pluginKey as any).key}`),
     view() {
       return {
         update(view, prevState) {

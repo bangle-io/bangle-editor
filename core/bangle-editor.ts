@@ -9,21 +9,19 @@ type PMViewOpts = Omit<
   'state' | 'dispatchTransaction' | 'attributes'
 >;
 
+export interface BangleEditorProps {
+  focusOnInit?: boolean;
+  state: BangleEditorState;
+  pmViewOpts?: PMViewOpts;
+}
+
 export class BangleEditor {
   destroyed: boolean;
   view: EditorView;
 
   constructor(
     element: HTMLElement,
-    {
-      focusOnInit = true,
-      state,
-      pmViewOpts = {},
-    }: {
-      focusOnInit?: boolean;
-      state: BangleEditorState;
-      pmViewOpts?: PMViewOpts;
-    },
+    { focusOnInit = true, state, pmViewOpts = {} }: BangleEditorProps,
   ) {
     this.destroyed = false;
     if (!(state instanceof BangleEditorState)) {

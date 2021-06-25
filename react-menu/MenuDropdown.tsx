@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 
-export function MenuDropdown({ className = '', parent, children }) {
+export function MenuDropdown({
+  className = '',
+  parent,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+  parent: (arg: {
+    isDropdownVisible: boolean;
+    updateDropdown: (isDropdownVisible: boolean) => void;
+  }) => React.ReactNode;
+}) {
   const [isDropdownVisible, updateDropdown] = useState(false);
 
   return (
