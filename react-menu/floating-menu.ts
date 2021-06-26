@@ -122,7 +122,7 @@ function hasTextBetween(doc: Node, from: number, to: number) {
     }
     if (node.isText) {
       const textStart = pos;
-      const textEnd = pos + node.text.length;
+      const textEnd = pos + node.text!.length;
       const noOverlap = from >= textEnd || to <= textStart;
       if (!noOverlap) {
         found = true;
