@@ -9,6 +9,7 @@ import { keymap } from '@bangle.dev/core/utils/keymap';
 import { rafCommandExec } from '@bangle.dev/core/utils/utils';
 import { PluginKey, EditorState } from '@bangle.dev/core/prosemirror/state';
 import { Command } from '@bangle.dev/core/prosemirror/commands';
+import { Node } from '@bangle.dev/core/prosemirror/model';
 
 const {
   queryIsSelectionTooltipActive,
@@ -40,14 +41,9 @@ export const defaultCalculateType = (
   if (state.selection.empty) {
     return null;
   }
-  const { $from, $to } = state.selection;
-  if ($from.pos == $from.end() && $to.pos == $to.start()) {
-    const depth = Math.min($from.depth, $to.depth);
-    if ($from.after(depth) == $to.before(depth)) {
-      // A selection between two nodes, e.g. double clicking on the end of a
-      // paragrah
-      return null;
-    }
+  const { from, to } = state.selection;
+  if (!hasTextBetween(state.doc, from, to)) {
+    return null;
   }
   return 'defaultMenu';
 };
@@ -116,4 +112,23 @@ export function focusFloatingMenuInput(key: PluginKey) {
     input.focus();
     return true;
   };
+}
+
+function hasTextBetween(doc: Node, from: number, to: number) {
+  let found = false;
+  doc.nodesBetween(from, to, (node, pos) => {
+    if (found) {
+      return false;
+    }
+    if (node.isText) {
+      const textStart = pos;
+      const textEnd = pos + node.text.length;
+      const noOverlap = from >= textEnd || to <= textStart;
+      if (!noOverlap) {
+        found = true;
+        return false;
+      }
+    }
+  });
+  return found;
 }
