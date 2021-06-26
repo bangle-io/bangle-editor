@@ -1,3 +1,7 @@
+import { Schema } from 'prosemirror-model';
+import { Step } from 'prosemirror-transform';
+import { CollabError } from './collab-error';
+import { Instance, StepBigger } from './instance';
 import {
   GetDocumentRequestParam,
   GetDocumentResponse,
@@ -6,11 +10,6 @@ import {
   PushEventsRequestParam,
   PushEventsResponse,
 } from './types';
-import { Step } from 'prosemirror-transform';
-import { Schema } from 'prosemirror-model';
-
-import { Instance, StepBigger } from './instance';
-import { CollabError } from './collab-error';
 import { raceTimeout } from './utils';
 
 const LOG = false;

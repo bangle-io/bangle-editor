@@ -1,20 +1,14 @@
 /// <reference path="./missing-types.d.ts" />
 import { Fragment, Node, Schema, MarkType } from 'prosemirror-model';
 import { keymap } from '@bangle.dev/core/utils/keymap';
-import {
-  EditorState,
-  Selection,
-  Transaction,
-  Plugin,
-  PluginKey,
-} from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { EditorState, Selection, Plugin, PluginKey } from 'prosemirror-state';
 import {
   findFirstMarkPosition,
   filter,
   safeInsert,
 } from '@bangle.dev/core/utils/pm-utils';
 import { isChromeWithSelectionBug } from '@bangle.dev/core';
+import { Command } from 'prosemirror-commands';
 import { triggerInputRule } from './trigger-input-rule';
 import * as tooltipPlacement from './tooltip-placement';
 import type {
@@ -86,27 +80,18 @@ function specFactory({
   };
 }
 
-type _DispatchFunction = (tr: Transaction) => void;
-type DispatchFunction = _DispatchFunction | null;
-
-type CallbackFunction = (
-  state: EditorState,
-  dispatch: DispatchFunction,
-  view: EditorView,
-) => boolean;
-
 interface PluginsOptions {
   key?: PluginKey;
   markName: string;
   trigger: string;
   tooltipRenderOpts: TooltipRenderOpts;
   keybindings?: any;
-  onEnter?: CallbackFunction;
-  onArrowDown?: CallbackFunction;
-  onArrowUp?: CallbackFunction;
-  onEscape?: CallbackFunction;
-  onArrowLeft?: CallbackFunction;
-  onArrowRight?: CallbackFunction;
+  onEnter?: Command;
+  onArrowDown?: Command;
+  onArrowUp?: Command;
+  onEscape?: Command;
+  onArrowLeft?: Command;
+  onArrowRight?: Command;
 }
 interface PluginState {
   triggerText: string;
@@ -214,13 +199,7 @@ function pluginsFactory({
       }),
       keybindings &&
         keymap({
-          [keybindings.select]: (
-            state: EditorState,
-            dispatch: DispatchFunction,
-            view: EditorView,
-          ) => {
-            return filter(isActiveCheck, onEnter)(state, dispatch, view);
-          },
+          [keybindings.select]: filter(isActiveCheck, onEnter),
           [keybindings.up]: filter(isActiveCheck, onArrowUp),
           [keybindings.down]: filter(isActiveCheck, onArrowDown),
           [keybindings.left]: filter(isActiveCheck, onArrowLeft),
@@ -353,7 +332,7 @@ function doesQueryHaveTrigger(
   return textContent.includes(trigger);
 }
 
-function showSuggestionsTooltip(key: PluginKey): CallbackFunction {
+function showSuggestionsTooltip(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(
@@ -366,7 +345,7 @@ function showSuggestionsTooltip(key: PluginKey): CallbackFunction {
   };
 }
 
-function hideSuggestionsTooltip(key: PluginKey): CallbackFunction {
+function hideSuggestionsTooltip(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(
@@ -423,7 +402,7 @@ export function queryIsSuggestTooltipActive(key: PluginKey) {
 export function replaceSuggestMarkWith(
   key: PluginKey,
   maybeNode?: string | Node | Fragment,
-): CallbackFunction {
+): Command {
   return (state, dispatch, view) => {
     const { markName } = key.getState(state);
     const { schema } = state;
@@ -497,7 +476,7 @@ export function replaceSuggestMarkWith(
     const tr = getTr();
 
     if (dispatch) {
-      view.focus();
+      view?.focus();
       dispatch(tr);
     }
 
@@ -505,7 +484,7 @@ export function replaceSuggestMarkWith(
   };
 }
 
-export function removeSuggestMark(key: PluginKey): CallbackFunction {
+export function removeSuggestMark(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     const { markName } = key.getState(state);
     const { schema, selection } = state;
@@ -557,9 +536,7 @@ export function removeSuggestMark(key: PluginKey): CallbackFunction {
   };
 }
 
-export function incrementSuggestTooltipCounter(
-  key: PluginKey,
-): CallbackFunction {
+export function incrementSuggestTooltipCounter(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(
@@ -572,9 +549,7 @@ export function incrementSuggestTooltipCounter(
   };
 }
 
-export function decrementSuggestTooltipCounter(
-  key: PluginKey,
-): CallbackFunction {
+export function decrementSuggestTooltipCounter(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(
@@ -587,7 +562,7 @@ export function decrementSuggestTooltipCounter(
   };
 }
 
-export function resetSuggestTooltipCounter(key: PluginKey): CallbackFunction {
+export function resetSuggestTooltipCounter(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(
@@ -603,7 +578,7 @@ export function resetSuggestTooltipCounter(key: PluginKey): CallbackFunction {
 export function updateSuggestTooltipCounter(
   key: PluginKey,
   counter: number,
-): CallbackFunction {
+): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(

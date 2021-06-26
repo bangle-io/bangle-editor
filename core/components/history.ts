@@ -1,5 +1,5 @@
 import * as pmHistory from 'prosemirror-history';
-import { bangleKeymap } from '../utils/keymap';
+import { keymap } from '../utils/keymap';
 import { PluginGroup } from '../plugin';
 
 export const plugins = pluginsFactory;
@@ -19,7 +19,7 @@ function pluginsFactory({ historyOpts = {}, keybindings = defaultKeys } = {}) {
     return new PluginGroup(name, [
       pmHistory.history(historyOpts),
       keybindings &&
-        bangleKeymap({
+        keymap({
           [keybindings.undo]: undo(),
           [keybindings.redo]: redo(),
         }),
