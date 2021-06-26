@@ -27,7 +27,7 @@ type SelectionType = string | null;
 
 type CalculateTypeFunction = (
   state: EditorState,
-  prevType?: SelectionType,
+  prevType: SelectionType,
 ) => SelectionType;
 
 export interface SelectionTooltipProps {
