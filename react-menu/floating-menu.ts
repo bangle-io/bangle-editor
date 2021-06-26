@@ -30,11 +30,20 @@ export const defaultKeys = {
   toggleLink: 'Meta-k',
 };
 
-export const defaultCalculateType = (state: EditorState, _prevType: any) => {
+export const defaultCalculateType = (
+  state: EditorState,
+  _prevType: string | null,
+) => {
   if (queryIsSelectionAroundLink()(state) || queryIsLinkActive()(state)) {
     return 'linkSubMenu';
   }
   if (state.selection.empty) {
+    return null;
+  }
+  const { $from, $to } = state.selection;
+  if ($from.pos == $from.end() && $to.pos == $to.start()) {
+    // A selection between two nodes, e.g. double clicking on the end of a
+    // paragrah
     return null;
   }
   return 'defaultMenu';

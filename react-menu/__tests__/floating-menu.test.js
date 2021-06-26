@@ -93,4 +93,21 @@ describe('Link menu', () => {
       type: 'linkSubMenu',
     });
   });
+
+  test('when selection falling between two nodes', async () => {
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+    const { view } = await testEditor(
+      <doc>
+        <para>foo[</para>
+        <para>]bar</para>
+      </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: false,
+      tooltipContentDOM: expect.any(window.Node),
+      type: null,
+    });
+  });
 });
