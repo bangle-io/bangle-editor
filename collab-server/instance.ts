@@ -1,5 +1,5 @@
+import { Node, Schema } from 'prosemirror-model';
 import { Step, StepMap } from 'prosemirror-transform';
-import { Schema, Node } from 'prosemirror-model';
 import { CollabError } from './collab-error';
 
 const MAX_STEP_HISTORY = 1000;

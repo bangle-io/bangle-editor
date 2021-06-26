@@ -114,7 +114,6 @@ export class NodeViewWrapper extends React.PureComponent<PropsType, StateType> {
 export const atomNodeViewPropTypes = {
   selected: PropTypes.bool.isRequired,
   node: PropTypes.instanceOf(Node).isRequired,
-  // ts-ignore
   view: PropTypes.instanceOf(EditorView).isRequired,
   getPos: PropTypes.func.isRequired,
   decorations: PropTypes.object.isRequired,

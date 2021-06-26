@@ -1,23 +1,23 @@
+import type { Command } from 'prosemirror-commands';
 import {
-  findParentNode,
-  safeInsert as _safeInsert,
-  removeSelectedNode as _removeSelectedNode,
-  findSelectedNodeOfType,
-  findParentNodeOfType as _findParentNodeOfType,
-} from 'prosemirror-utils';
-import {
-  Fragment,
-  Slice,
   DOMSerializer,
+  Fragment,
   MarkType,
   Node,
   NodeType,
-  Schema,
   ResolvedPos,
+  Schema,
+  Slice,
 } from 'prosemirror-model';
-import { EditorState, Transaction, PluginKey, Plugin } from 'prosemirror-state';
-import { Command } from 'prosemirror-commands';
-import { EditorView } from 'prosemirror-view';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import {
+  findParentNode,
+  findParentNodeOfType as _findParentNodeOfType,
+  findSelectedNodeOfType,
+  removeSelectedNode as _removeSelectedNode,
+  safeInsert as _safeInsert,
+} from 'prosemirror-utils';
+import type { EditorView } from 'prosemirror-view';
 import { GapCursorSelection } from '../gap-cursor';
 
 export function safeInsert(
@@ -197,9 +197,12 @@ type PredicateFunction = (state: EditorState, view?: EditorView) => any;
 // true, run the command.
 export function filter(
   predicates: PredicateFunction | PredicateFunction[],
-  cmd: Command,
+  cmd?: Command,
 ): Command {
   return (state, dispatch, view) => {
+    if (cmd == null) {
+      return false;
+    }
     if (!Array.isArray(predicates)) {
       predicates = [predicates];
     }
