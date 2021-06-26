@@ -42,9 +42,12 @@ export const defaultCalculateType = (
   }
   const { $from, $to } = state.selection;
   if ($from.pos == $from.end() && $to.pos == $to.start()) {
-    // A selection between two nodes, e.g. double clicking on the end of a
-    // paragrah
-    return null;
+    const depth = Math.min($from.depth, $to.depth);
+    if ($from.after(depth) == $to.before(depth)) {
+      // A selection between two nodes, e.g. double clicking on the end of a
+      // paragrah
+      return null;
+    }
   }
   return 'defaultMenu';
 };

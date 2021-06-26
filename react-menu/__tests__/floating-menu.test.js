@@ -110,4 +110,41 @@ describe('Link menu', () => {
       type: null,
     });
   });
+
+  test('when selection falling between two nodes - different depth', async () => {
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+    const { view } = await testEditor(
+      <doc>
+        <blockquote>
+          <para>foo[</para>
+        </blockquote>
+        <para>]bar</para>
+      </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: false,
+      tooltipContentDOM: expect.any(window.Node),
+      type: null,
+    });
+  });
+
+  test('when selection falling between two nodes - corner case', async () => {
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+    const { view } = await testEditor(
+      <doc>
+        <para>foo[</para>
+        <para>bar</para>
+        <para>]baz</para>
+      </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: true,
+      tooltipContentDOM: expect.any(window.Node),
+      type: 'defaultMenu',
+    });
+  });
 });
