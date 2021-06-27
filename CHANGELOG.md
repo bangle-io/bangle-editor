@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/react-menu**
+
+- bug: Fix incorrecting showing the floating menu when double-clicking in the end of a paragraph https://github.com/bangle-io/bangle.dev/pull/212
+
 ## 0.19.0
 
 **@bangle.dev/core**
