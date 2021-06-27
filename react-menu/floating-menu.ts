@@ -7,7 +7,11 @@ import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
 import { keymap } from '@bangle.dev/core/utils/keymap';
 import { rafCommandExec } from '@bangle.dev/core/utils/utils';
-import { PluginKey, EditorState } from '@bangle.dev/core/prosemirror/state';
+import {
+  PluginKey,
+  EditorState,
+  NodeSelection,
+} from '@bangle.dev/core/prosemirror/state';
 import { Command } from '@bangle.dev/core/prosemirror/commands';
 import { Node } from '@bangle.dev/core/prosemirror/model';
 
@@ -41,10 +45,16 @@ export const defaultCalculateType = (
   if (state.selection.empty) {
     return null;
   }
+
+  if (state.selection instanceof NodeSelection) {
+    return 'defaultMenu';
+  }
+
   const { from, to } = state.selection;
   if (!hasTextBetween(state.doc, from, to)) {
     return null;
   }
+
   return 'defaultMenu';
 };
 

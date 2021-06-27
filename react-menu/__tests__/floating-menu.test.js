@@ -9,7 +9,10 @@ import {
   reactTestEditor,
   pjsx,
 } from '@bangle.dev/react/__tests__/helpers/index';
-import { TextSelection } from '@bangle.dev/core/prosemirror/state';
+import {
+  NodeSelection,
+  TextSelection,
+} from '@bangle.dev/core/prosemirror/state';
 import { PluginKey } from '@bangle.dev/core/plugin';
 import { floatingMenu } from '../index';
 import { coreSpec } from '@bangle.dev/core/utils/core-components';
@@ -138,6 +141,28 @@ describe('Link menu', () => {
         <para>bar</para>
         <para>]baz</para>
       </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: true,
+      tooltipContentDOM: expect.any(window.Node),
+      type: 'defaultMenu',
+    });
+  });
+
+  test('when selection contains an atomic node', async () => {
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+    const { view } = await testEditor(
+      <doc>
+        <para>
+          <image src="http://example.com/foo.png" />
+        </para>
+      </doc>,
+    );
+
+    view.dispatch(
+      view.state.tr.setSelection(NodeSelection.create(view.state.doc, 1)),
     );
 
     expect(menuKey.getState(view.state)).toMatchObject({
