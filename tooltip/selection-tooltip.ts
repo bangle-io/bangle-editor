@@ -25,7 +25,7 @@ let log = LOG ? console.log.bind(console, 'selection-tooltip') : () => {};
 
 type SelectionType = string | null;
 
-export type CalculateTypeFunction = (
+type CalculateTypeFunction = (
   state: EditorState,
   prevType: SelectionType,
 ) => SelectionType;
@@ -69,6 +69,13 @@ function selectionTooltip({
       }),
     ];
   };
+}
+
+interface SelectionTooltipStateType {
+  type: string | null;
+  tooltipContentDOM: HTMLElement;
+  show: boolean;
+  calculateType: CalculateTypeFunction;
 }
 
 function selectionTooltipState({
@@ -115,6 +122,7 @@ function selectionTooltipState({
     },
   });
 }
+
 function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
   let mouseDown = false;
   return new Plugin({
@@ -197,9 +205,11 @@ function getSelectionReferenceElement(view: EditorView) {
   };
 }
 
-export function _syncTooltipOnUpdate(key: PluginKey): Command {
+export function _syncTooltipOnUpdate(
+  key: PluginKey<SelectionTooltipStateType>,
+): Command {
   return (state, dispatch, view) => {
-    const tooltipState = key.getState(state);
+    const tooltipState = key.getState(state)!;
     const newType = tooltipState.calculateType(state, tooltipState.type);
     if (typeof newType === 'string') {
       return updateSelectionTooltipType(key, newType)(state, dispatch, view);
