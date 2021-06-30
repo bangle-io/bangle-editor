@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig-base.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "noEmit": true
+    },
+    "include": [
+        "./__tests__/",
+        "./**/__tests__/"
+    ],
+    "references": []
+}
