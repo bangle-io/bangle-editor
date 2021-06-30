@@ -14,6 +14,12 @@ const setTimeoutBackup = window.setTimeout;
 const clearTimeoutBackup = window.clearTimeout;
 
 describe('matchAllPlus', () => {
+  const mergeStartEnd = (str, result) =>
+    result.reduce((prev, cur) => prev + str.slice(cur.start, cur.end), '');
+
+  const mergeSubstrings = (str, result) =>
+    result.reduce((prev, cur) => prev + cur.subString, '');
+
   test('works when match', () => {
     const result = matchAllPlus(/foo[a-z]*/g, 'baseball  foozball');
     expect(result.map((r) => r.subString)).toMatchInlineSnapshot(`
@@ -22,7 +28,7 @@ describe('matchAllPlus', () => {
         "foozball",
       ]
     `);
-    expect(result).toMatchSnapshot();
+    expect(result.map((r) => ({ ...r }))).toMatchSnapshot();
   });
 
   test('works when direct match', () => {
@@ -32,7 +38,7 @@ describe('matchAllPlus', () => {
         "foozball",
       ]
     `);
-    expect(result).toMatchSnapshot();
+    expect(result.map((r) => ({ ...r }))).toMatchSnapshot();
   });
 
   test('works when no match', () => {
@@ -43,7 +49,7 @@ describe('matchAllPlus', () => {
       ]
     `);
     expect(result.every((r) => r.match === false)).toBe(true);
-    expect(result).toMatchSnapshot();
+    expect(result.map((r) => ({ ...r }))).toMatchSnapshot();
   });
 
   test('works with multiple matches 1', () => {
@@ -96,19 +102,85 @@ describe('matchAllPlus', () => {
     ["hello https://google.com' two", 1],
   ])(
     '%# string start and end positions should be correct',
-    (str, matchCount) => {
+    (string, matchCount) => {
       const result = matchAllPlus(
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
-        str,
+        string,
       );
 
       expect(result.filter((r) => r.match)).toHaveLength(matchCount);
 
-      expect(
-        result.reduce((prev, cur) => prev + str.slice(cur.start, cur.end), ''),
-      ).toBe(str);
+      expect(mergeStartEnd(string, result)).toBe(string);
     },
   );
+
+  test('1 misc cases', () => {
+    const regex = /t(e)(st(\d?))/g;
+    const string = 'test1test2';
+    const result = matchAllPlus(regex, string);
+
+    expect(mergeStartEnd(string, result)).toBe(string);
+    expect(mergeSubstrings(string, result)).toBe(string);
+
+    expect(result).toMatchInlineSnapshot(`
+Array [
+  MatchType {
+    "end": 5,
+    "match": true,
+    "sourceString": "test1test2",
+    "start": 0,
+  },
+  MatchType {
+    "end": 10,
+    "match": true,
+    "sourceString": "test1test2",
+    "start": 5,
+  },
+]
+`);
+  });
+
+  test('2 misc cases', () => {
+    const regex = /(#\w+)/g;
+    const string = 'Hello #world #planet!';
+    const result = matchAllPlus(regex, string);
+    expect(mergeStartEnd(string, result)).toBe(string);
+
+    expect(result).toMatchInlineSnapshot(`
+Array [
+  MatchType {
+    "end": 6,
+    "match": false,
+    "sourceString": "Hello #world #planet!",
+    "start": 0,
+  },
+  MatchType {
+    "end": 12,
+    "match": true,
+    "sourceString": "Hello #world #planet!",
+    "start": 6,
+  },
+  MatchType {
+    "end": 13,
+    "match": false,
+    "sourceString": "Hello #world #planet!",
+    "start": 12,
+  },
+  MatchType {
+    "end": 20,
+    "match": true,
+    "sourceString": "Hello #world #planet!",
+    "start": 13,
+  },
+  MatchType {
+    "end": 21,
+    "match": false,
+    "sourceString": "Hello #world #planet!",
+    "start": 20,
+  },
+]
+`);
+  });
 });
 
 describe('serialExecuteQueue', () => {

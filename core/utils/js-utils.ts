@@ -55,62 +55,52 @@ export function compose(func: Function, ...funcs: Function[]) {
   };
 }
 
-/**
- * Runs matchAll and gives range of strings that matched and didnt match
- *
- * @param {*} regexp
- * @param {*} str
- */
-export function matchAllPlus(regexp: RegExp, str: string) {
-  // @ts-ignore String.prototype.matchAll is pretty new. Even adding
-  // @types/string.prototype.matchall doesn't help.
-  const matches: RegExpMatchArray[] = Array.from(str.matchAll(regexp));
-  if (matches.length === 0) {
-    return [
-      {
-        start: 0,
-        end: str.length,
-        match: false,
-        subString: str,
-      },
-    ];
+class MatchType {
+  constructor(
+    public start: number,
+    public end: number,
+    public match: boolean,
+    private sourceString: string,
+  ) {}
+
+  get subString() {
+    return this.sourceString.slice(this.start, this.end);
   }
-
-  let result = [];
+}
+/**
+ *
+ * Returns an array of objects which contains a range of substring and whether it matched or didn't match.
+ * Note: each item in this array will map 1:1 in order with the original string in a way
+ *  such that following will always hold true:
+ * ```
+ * const result = matchAllPlus(regex, myStr);
+ * result.reduce((a, b) => a + b.subString) === myStr
+ * result.reduce((a, b) => a + b.slice(b.start, b.end)) === myStr
+ * ```
+ */
+export function matchAllPlus(regexp: RegExp, str: string): MatchType[] {
+  const result: MatchType[] = [];
   let prevElementEnd = 0;
-  for (let cur of matches) {
-    let curStart = cur.index!;
-    // TODO there was an error saying length of undefined in this function
-    // I suspect it is coming from line below. But not sure how to reproduce it.
-    let curEnd = curStart + cur[0]!.length;
-
+  let match: RegExpExecArray | null;
+  while ((match = regexp.exec(str))) {
+    const curStart = match.index;
+    const curEnd = curStart + match[0].length;
     if (prevElementEnd !== curStart) {
-      result.push({
-        start: prevElementEnd,
-        end: curStart,
-        match: false,
-      });
+      result.push(new MatchType(prevElementEnd, curStart, false, str));
     }
-    result.push({
-      start: curStart,
-      end: curEnd,
-      match: true,
-    });
+    result.push(new MatchType(curStart, curEnd, true, str));
     prevElementEnd = curEnd;
+  }
+  if (result.length === 0) {
+    return [new MatchType(0, str.length, false, str)];
   }
 
   const lastItemEnd =
-    result[result.length - 1]! && result[result.length - 1]!.end;
+    result[result.length - 1] && result[result.length - 1].end;
 
   if (lastItemEnd && lastItemEnd !== str.length) {
-    result.push({
-      start: lastItemEnd,
-      end: str.length,
-      match: false,
-    });
+    result.push(new MatchType(lastItemEnd, str.length, false, str));
   }
-
-  result = result.map((r) => ({ ...r, subString: str.slice(r.start, r.end) }));
   return result;
 }
 
