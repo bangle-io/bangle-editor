@@ -66,7 +66,7 @@ let disk;
 afterEach(() => {
   manager.destroy();
 });
-test.only('gets document', async () => {
+test('gets document', async () => {
   ({ disk, manager } = setup());
   const resp: any = await manager.handleRequest('get_document', {
     docName: 'test-doc-1',
