@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`1 shows multiple decorations 1`] = `
+<div
+  data-testid="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+  >
+    <p>
+      <span
+        class="bangle-search-match"
+      >
+        hello
+      </span>
+       world 
+      <span
+        class="bangle-search-match"
+      >
+        hello
+      </span>
+       world
+    </p>
+  </div>
+</div>
+`;
+
+exports[`2 shows multiple decorations 1`] = `
+<div
+  data-testid="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+  >
+    <p>
+      hell
+      <span
+        class="bangle-search-match"
+      >
+        o
+      </span>
+       w
+      <span
+        class="bangle-search-match"
+      >
+        o
+      </span>
+      rld hell
+      <span
+        class="bangle-search-match"
+      >
+        o
+      </span>
+       w
+      <span
+        class="bangle-search-match"
+      >
+        o
+      </span>
+      rld
+    </p>
+  </div>
+</div>
+`;
+
+exports[`respects maxHighlights limit 1`] = `
+<div
+  data-testid="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+  >
+    <p>
+      hell
+      <span
+        class="bangle-search-match"
+      >
+        o
+      </span>
+       w
+      <span
+        class="bangle-search-match"
+      >
+        o
+      </span>
+      rld hello world
+    </p>
+  </div>
+</div>
+`;
+
+exports[`shows decoration 1`] = `
+<div
+  data-testid="test-editor"
+>
+  <div
+    class="ProseMirror bangle-editor content"
+    contenteditable="true"
+  >
+    <p>
+      <span
+        class="bangle-search-match"
+      >
+        hello
+      </span>
+       world
+    </p>
+  </div>
+</div>
+`;

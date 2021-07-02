@@ -54,6 +54,7 @@
         "api/react",
         "api/react_emoji_suggest",
         "api/react_menu",
+        "api/search",
         "api/text_formatting",
         "api/collab_client",
         "api/markdown",
