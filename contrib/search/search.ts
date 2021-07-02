@@ -6,7 +6,6 @@ import { matchAllPlus } from '@bangle.dev/core/utils/js-utils';
 import type { Command } from '@bangle.dev/core/prosemirror/commands';
 
 const name = 'search';
-
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 
@@ -19,28 +18,61 @@ function specFactory() {
 
 function pluginsFactory({
   key = new PluginKey(name),
-  query,
+  query: initialQuery,
+  className = 'bangle-search-match',
+  maxHighlights = 1500,
 }: {
   key: PluginKey;
-  query?: string;
+  query?: RegExp | string;
+  className?: string;
+  maxHighlights?: number;
 }) {
+  function buildDeco(state: EditorState, query?: RegExp | string) {
+    if (!query) {
+      return DecorationSet.empty;
+    }
+    const regex1 = query;
+    const matches = findMatches(state.doc, regex1);
+    const decorations = matches
+      .flatMap((match, index) => {
+        return match.result.map((result) => {
+          return Decoration.inline(
+            match.baseOffset + result.start,
+            match.baseOffset + result.end,
+            {
+              class: className,
+            },
+          );
+        });
+      })
+      .slice(0, maxHighlights);
+
+    return DecorationSet.create(state.doc, decorations);
+  }
   return () =>
     new Plugin({
       key: key,
       state: {
         init(_, state) {
-          return { query, decos: buildDeco(state, query) };
+          return {
+            query: initialQuery,
+            decos: buildDeco(state, initialQuery),
+          };
         },
         apply(tr, old, oldState, newState) {
           const meta = tr.getMeta(key);
           if (meta) {
             const newQuery = meta.query;
-            return { query: newQuery, decos: buildDeco(newState, newQuery) };
+            return {
+              query: newQuery,
+              decos: buildDeco(newState, newQuery),
+            };
           }
-          // For performance only build the
-          // decorations if the doc has actually changed
           return tr.docChanged
-            ? { query, decos: buildDeco(newState, query) }
+            ? {
+                query: old.query,
+                decos: buildDeco(newState, old.query),
+              }
             : old;
         },
       },
@@ -52,38 +84,25 @@ function pluginsFactory({
     });
 }
 
-function buildDeco(state: EditorState, query?: string) {
-  if (!query) {
-    return DecorationSet.empty;
-  }
-  const regex1 = RegExp(query, 'g');
-  const matches = findMatches(state.doc, regex1);
-  const decorations = matches.map((match, index) => {
-    return Decoration.inline(
-      match.baseOffset + match.result[0].start,
-      match.baseOffset + match.result[0].end,
-      {
-        class: `search-match`,
-        style: `background-color: yellow;`,
-      },
-    );
-  });
-
-  return DecorationSet.create(state.doc, decorations);
-}
-
-function findMatches(doc: Node, regex: RegExp, { caseSensitive = false } = {}) {
+function findMatches(
+  doc: Node,
+  regex: RegExp | string,
+  { caseSensitive = false } = {},
+) {
   let results: {
     baseOffset: number;
     result: ReturnType<typeof matchAllPlus>;
   }[] = [];
-  doc.descendants((node, pos, parent) => {
+
+  const gRegex = RegExp(regex, 'g');
+  doc.descendants((node, pos) => {
     if (node.isText) {
       const source = caseSensitive
         ? node.textContent
         : node.textContent.toLocaleLowerCase();
 
-      const matchedResult = matchAllPlus(regex, source); // matchText(query, source, offset, perFileMatchMax);
+      const matchedResult = matchAllPlus(gRegex, source);
+
       if (matchedResult.some((r) => r.match)) {
         results.push({
           baseOffset: pos,
@@ -96,7 +115,10 @@ function findMatches(doc: Node, regex: RegExp, { caseSensitive = false } = {}) {
   return results;
 }
 
-export function updateSearchQuery(key: PluginKey, query?: string): Command {
+export function updateSearchQuery(
+  key: PluginKey,
+  query?: RegExp | string,
+): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(state.tr.setMeta(key, { query }).setMeta('addToHistory', false));

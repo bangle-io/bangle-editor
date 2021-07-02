@@ -3248,11 +3248,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/search@workspace:contrib/search":
+"@bangle.dev/search@workspace:*, @bangle.dev/search@workspace:contrib/search":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/search@workspace:contrib/search"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@types/jest": ^26.0.23
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -6924,6 +6925,7 @@ __metadata:
     "@bangle.dev/react-menu": "workspace:*"
     "@bangle.dev/react-sticker": "workspace:*"
     "@bangle.dev/react-stopwatch": "workspace:*"
+    "@bangle.dev/search": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/text-formatting": "workspace:*"
     "@bangle.dev/timestamp": "workspace:*"

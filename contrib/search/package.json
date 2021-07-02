@@ -29,7 +29,8 @@
     "@bangle.dev/core": "*"
   },
   "devDependencies": {
-    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*",
+    "@types/jest": "^26.0.23"
   },
   "publishConfig": {
     "access": "public"

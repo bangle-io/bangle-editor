@@ -66,6 +66,7 @@ let disk;
 afterEach(() => {
   manager.destroy();
 });
+
 test('gets document', async () => {
   ({ disk, manager } = setup());
   const resp: any = await manager.handleRequest('get_document', {
@@ -119,6 +120,8 @@ test('instance is shut down after timer', async () => {
   expect(manager.instanceCount).toBe(1);
   await sleep(150);
   expect(manager.instanceCount).toBe(0);
+
+  manager.destroy();
 });
 
 test('handles push events', async () => {
