@@ -35,6 +35,9 @@ function pluginsFactory({
     const matches = findMatches(state.doc, regex1);
     const decorations = matches
       .flatMap((match, index) => {
+        // TODO we should improve the performance
+        // by online creating decos which need an update
+        // see https://discuss.prosemirror.net/t/how-to-update-multiple-inline-decorations-on-node-change/1493
         return match.result.map((result) => {
           return Decoration.inline(
             match.baseOffset + result.start,
