@@ -42,6 +42,9 @@ Named parameters:
 - **maxHighlights:** ?number=1500\
   The maximum number of search highlights.
 
+- **caseSensitive:** ?boolean=false\
+  Whether the search is case sensitive or not.
+
 ### commands: {{core.link.CommandObject}}
 
 - **updateSearchQuery**(key: {{Prosemirror.PluginKey}}, query: Regex | string | undefined): {{core.link.Command}}\

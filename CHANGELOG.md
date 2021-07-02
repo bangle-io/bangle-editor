@@ -2,6 +2,10 @@
 
 ## HEAD
 
+**@bangle.dev/search**
+
+- A new component for highlight text in response to a search query.
+
 **@bangle.dev/react-menu**
 
 - bug: Fix incorrecting showing the floating menu when double-clicking in the end of a paragraph https://github.com/bangle-io/bangle.dev/pull/212

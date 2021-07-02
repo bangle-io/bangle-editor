@@ -89,6 +89,27 @@ test('respects maxHighlights limit', async () => {
   expect(container).toMatchSnapshot();
 });
 
+test('when caseSensitive is true', async () => {
+  const testEditor = renderTestEditor({
+    specRegistry,
+    plugins: [
+      search.plugins({
+        key: searchPluginKey,
+        query: /hello/,
+        caseSensitive: true,
+      }),
+    ],
+  });
+
+  const { container, view } = testEditor(
+    <doc>
+      <para>Jello [world]</para>
+    </doc>,
+  );
+
+  expect(countOcurrences(container.innerHTML, '"bangle-search-match"')).toBe(0);
+});
+
 test('1 works when no match', async () => {
   const testEditor = renderTestEditor({
     specRegistry,

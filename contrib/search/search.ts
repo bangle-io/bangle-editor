@@ -21,34 +21,31 @@ function pluginsFactory({
   query: initialQuery,
   className = 'bangle-search-match',
   maxHighlights = 1500,
+  caseSensitive = false,
 }: {
   key: PluginKey;
   query?: RegExp | string;
   className?: string;
   maxHighlights?: number;
+  caseSensitive?: boolean;
 }) {
   function buildDeco(state: EditorState, query?: RegExp | string) {
     if (!query) {
       return DecorationSet.empty;
     }
-    const regex1 = query;
-    const matches = findMatches(state.doc, regex1);
-    const decorations = matches
-      .flatMap((match, index) => {
-        // TODO we should improve the performance
-        // by online creating decos which need an update
-        // see https://discuss.prosemirror.net/t/how-to-update-multiple-inline-decorations-on-node-change/1493
-        return match.result.map((result) => {
-          return Decoration.inline(
-            match.baseOffset + result.start,
-            match.baseOffset + result.end,
-            {
-              class: className,
-            },
-          );
-        });
-      })
-      .slice(0, maxHighlights);
+    const matches = findMatches(state.doc, query, maxHighlights, caseSensitive);
+    const decorations = matches.map((match) => {
+      // TODO we should improve the performance
+      // by only creating decos which need an update
+      // see https://discuss.prosemirror.net/t/how-to-update-multiple-inline-decorations-on-node-change/1493
+      return Decoration.inline(
+        match.pos + match.match.start,
+        match.pos + match.match.end,
+        {
+          class: className,
+        },
+      );
+    });
 
     return DecorationSet.create(state.doc, decorations);
   }
@@ -90,26 +87,35 @@ function pluginsFactory({
 function findMatches(
   doc: Node,
   regex: RegExp | string,
-  { caseSensitive = false } = {},
+  maxHighlights: number,
+  caseSensitive: boolean,
 ) {
   let results: {
-    baseOffset: number;
-    result: ReturnType<typeof matchAllPlus>;
+    pos: number;
+    match: ReturnType<typeof matchAllPlus>[0];
   }[] = [];
-
+  let count = 0;
   const gRegex = RegExp(regex, 'g');
   doc.descendants((node, pos) => {
+    if (maxHighlights <= count) {
+      return false;
+    }
     if (node.isText) {
       const source = caseSensitive
         ? node.textContent
         : node.textContent.toLocaleLowerCase();
 
       const matchedResult = matchAllPlus(gRegex, source);
-
-      if (matchedResult.some((r) => r.match)) {
+      for (const match of matchedResult) {
+        if (!match.match) {
+          continue;
+        }
+        if (maxHighlights <= count++) {
+          break;
+        }
         results.push({
-          baseOffset: pos,
-          result: matchedResult.filter((r) => r.match),
+          pos,
+          match,
         });
       }
     }
