@@ -2,9 +2,13 @@
 
 ## HEAD
 
+**@bangle.dev/tooltip**
+
+- breaking: Command `showSuggestionsTooltip` is now renamed to `renderSuggestionsTooltip` to more accurately reflect what the command does.
+
 **@bangle.dev/search**
 
-- A new component for highlight text in response to a search query.
+- new: A new component for highlight text in response to a search query.
 
 **@bangle.dev/react-menu**
 

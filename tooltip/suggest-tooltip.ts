@@ -138,7 +138,7 @@ function pluginsFactory({
             if (meta === undefined) {
               return pluginState;
             }
-            if (meta.type === 'SHOW_TOOLTIP') {
+            if (meta.type === 'RENDER_TOOLTIP') {
               return {
                 ...pluginState,
                 // Cannot use queryTriggerText because it relies on
@@ -283,11 +283,14 @@ function tooltipController({
           }
 
           if (!isMarkActive) {
-            hideSuggestionsTooltip(key)(view.state, view.dispatch, view);
+            // performance optimization to prevent unnecessary dispatches
+            if (key.getState(state).show === true) {
+              hideSuggestionsTooltip(key)(view.state, view.dispatch, view);
+            }
             return;
           }
 
-          showSuggestionsTooltip(key)(view.state, view.dispatch, view);
+          renderSuggestionsTooltip(key)(view.state, view.dispatch, view);
           return;
         },
       };
@@ -332,12 +335,12 @@ function doesQueryHaveTrigger(
   return textContent.includes(trigger);
 }
 
-function showSuggestionsTooltip(key: PluginKey): Command {
+function renderSuggestionsTooltip(key: PluginKey): Command {
   return (state, dispatch, _view) => {
     if (dispatch) {
       dispatch(
         state.tr
-          .setMeta(key, { type: 'SHOW_TOOLTIP' })
+          .setMeta(key, { type: 'RENDER_TOOLTIP' })
           .setMeta('addToHistory', false),
       );
     }
