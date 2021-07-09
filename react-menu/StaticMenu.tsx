@@ -1,9 +1,8 @@
+// @ts-ignore idk why but TS reports this import doesn't exist
+import { BangleEditor, editorStateCounter } from '@bangle.dev/core';
+import { EditorViewContext, usePluginState } from '@bangle.dev/react';
 import PropTypes from 'prop-types';
 import React from 'react';
-// @ts-ignore idk why but TS reports this import doesn't exist
-import { BangleEditor } from '@bangle.dev/core';
-import { editorStateCounter } from '@bangle.dev/core/components/components';
-import { usePluginState, EditorViewContext } from '@bangle.dev/react';
 
 interface StaticMenuProps {
   renderMenu(): JSX.Element;

@@ -1,15 +1,14 @@
-import React from 'react';
+import { NodeView } from '@bangle.dev/core';
+import { Node } from '@bangle.dev/core/prosemirror/model';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
+import { keymap } from '@bangle.dev/core/utils/keymap';
 import PropTypes from 'prop-types';
-
+import React from 'react';
 import brontosaurusImg from './img/brontosaurus.png';
+import pterodactylImg from './img/pterodactyl.png';
 import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
-import pterodactylImg from './img/pterodactyl.png';
-import { keymap } from '@bangle.dev/core/utils/keymap';
-import { NodeView } from '@bangle.dev/core/node-view';
-import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
-import { Node } from '@bangle.dev/core/prosemirror/model';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

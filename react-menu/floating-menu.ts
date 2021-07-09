@@ -1,16 +1,12 @@
 import { link } from '@bangle.dev/core';
+import { keymap } from '@bangle.dev/core/utils/keymap';
 import { filter } from '@bangle.dev/core/utils/pm-utils';
+import { rafCommandExec } from '@bangle.dev/core/utils/utils';
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
-import { keymap } from '@bangle.dev/core/utils/keymap';
-import { rafCommandExec } from '@bangle.dev/core/utils/utils';
-import {
-  PluginKey,
-  EditorState,
-  NodeSelection,
-} from '@bangle.dev/core/prosemirror/state';
-import { Command } from '@bangle.dev/core/prosemirror/commands';
-import { Node } from '@bangle.dev/core/prosemirror/model';
+import { Command } from 'prosemirror-commands';
+import { Node } from 'prosemirror-model';
+import { EditorState, NodeSelection, PluginKey } from 'prosemirror-state';
 
 const {
   queryIsSelectionTooltipActive,

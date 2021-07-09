@@ -1,19 +1,19 @@
+import { usePluginState } from '@bangle.dev/react';
+import PropTypes from 'prop-types';
+import { PluginKey } from 'prosemirror-state';
 import React from 'react';
 import reactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { PluginKey } from '@bangle.dev/core/prosemirror/state';
 import { LinkSubMenu } from './LinkSubMenu';
-import { usePluginState } from '@bangle.dev/react';
-import {
-  CodeButton,
-  TodoListButton,
-  BoldButton,
-  ItalicButton,
-  BulletListButton,
-  HeadingButton,
-  FloatingLinkButton,
-} from './MenuButtons';
 import { Menu } from './Menu';
+import {
+  BoldButton,
+  BulletListButton,
+  CodeButton,
+  FloatingLinkButton,
+  HeadingButton,
+  ItalicButton,
+  TodoListButton,
+} from './MenuButtons';
 import { MenuGroup } from './MenuGroup';
 
 export function FloatingMenu({
