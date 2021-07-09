@@ -9,7 +9,7 @@ import {
 import { BangleEditorState as CoreBangleEditorState } from '@bangle.dev/core/bangle-editor-state';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
-import { EditorView } from '@bangle.dev/core/prosemirror/view';
+import { EditorView } from 'prosemirror-view';
 import { Plugin } from '@bangle.dev/core/plugin';
 
 const LOG = false;

@@ -28,6 +28,9 @@
   },
   "dependencies": {
     "prop-types": "^15.7.2",
+    "prosemirror-model": "^1.14.1",
+    "prosemirror-state": "^1.3.4",
+    "prosemirror-view": "^1.18.7",
     "punycode": "^2.1.1"
   },
   "peerDependencies": {
@@ -42,6 +45,9 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/react-hooks": "^7.0.0",
     "@types/prop-types": "^15.7.3",
+    "@types/prosemirror-model": "^1.13.0",
+    "@types/prosemirror-state": "^1.2.6",
+    "@types/prosemirror-view": "^1.17.1",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
     "prettier": "^2.3.0",

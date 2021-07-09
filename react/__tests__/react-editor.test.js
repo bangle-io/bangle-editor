@@ -20,8 +20,8 @@ import { bananaComponent, Banana } from './setup/banana';
 import { pjsx } from './helpers/index';
 import { sleep } from '@bangle.dev/core/utils/js-utils';
 import { selectNodeAt } from '@bangle.dev/core/test-helpers/test-helpers';
-import { Node } from '@bangle.dev/core/prosemirror/model';
-import { EditorView as PMEditorView } from '@bangle.dev/core/prosemirror/view';
+import { Node } from 'prosemirror-model';
+import { EditorView as PMEditorView } from 'prosemirror-view';
 import { useEditorState } from '../hooks';
 const consoleError = console.error;
 
