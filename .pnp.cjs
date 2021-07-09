@@ -47,6 +47,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:contrib/disk"
       },
       {
+        "name": "@bangle.dev/js-utils",
+        "reference": "workspace:contrib/js-utils"
+      },
+      {
         "name": "@bangle.dev/markdown-front-matter",
         "reference": "workspace:contrib/markdown-front-matter"
       },
@@ -107,6 +111,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:table"
       },
       {
+        "name": "@bangle.dev/test-helpers",
+        "reference": "workspace:test-helpers"
+      },
+      {
         "name": "@bangle.dev/tooltip",
         "reference": "workspace:tooltip"
       }
@@ -119,6 +127,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@bangle.dev/core", ["workspace:core"]],
       ["@bangle.dev/disk", ["workspace:contrib/disk"]],
       ["@bangle.dev/emoji", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji", "workspace:emoji"]],
+      ["@bangle.dev/js-utils", ["workspace:contrib/js-utils"]],
       ["@bangle.dev/markdown", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown", "workspace:markdown"]],
       ["@bangle.dev/markdown-front-matter", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/markdown-front-matter", "workspace:contrib/markdown-front-matter"]],
       ["@bangle.dev/react", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", "workspace:react"]],
@@ -128,6 +137,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@bangle.dev/react-stopwatch", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-stopwatch", "workspace:contrib/react-stopwatch"]],
       ["@bangle.dev/search", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/search", "workspace:contrib/search"]],
       ["@bangle.dev/table", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table", "workspace:table"]],
+      ["@bangle.dev/test-helpers", ["workspace:test-helpers"]],
       ["@bangle.dev/text-formatting", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/text-formatting", "workspace:contrib/text-formatting"]],
       ["@bangle.dev/timestamp", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/timestamp", "workspace:contrib/timestamp"]],
       ["@bangle.dev/tooltip", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip", "workspace:tooltip"]],
@@ -5733,6 +5743,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@bangle.dev/js-utils", [
+        ["workspace:contrib/js-utils", {
+          "packageLocation": "./contrib/js-utils/",
+          "packageDependencies": [
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@bangle.dev/markdown", [
         ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown", {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-markdown-virtual-c7733cc8ec/1/markdown/",
@@ -5804,10 +5823,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/react-hooks", "virtual:d9f20580d21207b45787b1560be43166614960f0d7bca3c11fde95ef0d797600831b613b1104225f70f4985cc349a688c02676823428c526d5dd1982a2fb3f54#npm:7.0.0"],
             ["@types/bangle.dev__core", null],
             ["@types/prop-types", "npm:15.7.3"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
             ["prettier", "npm:2.3.0"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["punycode", "npm:2.1.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"],
@@ -5833,10 +5858,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
             ["@testing-library/react-hooks", "virtual:d9f20580d21207b45787b1560be43166614960f0d7bca3c11fde95ef0d797600831b613b1104225f70f4985cc349a688c02676823428c526d5dd1982a2fb3f54#npm:7.0.0"],
             ["@types/prop-types", "npm:15.7.3"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
             ["prettier", "npm:2.3.0"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["punycode", "npm:2.1.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"],
@@ -5859,8 +5890,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__emoji", null],
             ["@types/bangle.dev__react", null],
             ["@types/bangle.dev__tooltip", null],
+            ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
+            ["prosemirror-state", "npm:1.3.4"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -5889,8 +5922,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
+            ["prosemirror-state", "npm:1.3.4"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -6096,6 +6131,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core", "workspace:core"],
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-tables", "npm:1.1.1"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@bangle.dev/test-helpers", [
+        ["workspace:test-helpers", {
+          "packageLocation": "./test-helpers/",
+          "packageDependencies": [
+            ["@bangle.dev/test-helpers", "workspace:test-helpers"],
+            ["@types/jest", "npm:26.0.23"]
           ],
           "linkType": "SOFT",
         }]
