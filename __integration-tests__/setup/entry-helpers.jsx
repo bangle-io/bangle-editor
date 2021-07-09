@@ -1,7 +1,7 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,

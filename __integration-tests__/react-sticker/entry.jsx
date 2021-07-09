@@ -4,7 +4,7 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import { DOMSerializer, Slice } from '@bangle.dev/core/prosemirror/model';
 import { sticker } from '@bangle.dev/react-sticker';
 import { stopwatch } from '@bangle.dev/react-stopwatch';
