@@ -7,7 +7,7 @@ import {
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
 import { markdownSerializer } from '@bangle.dev/markdown/index';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import { sticker } from '../index';
 import {
   defaultPlugins,

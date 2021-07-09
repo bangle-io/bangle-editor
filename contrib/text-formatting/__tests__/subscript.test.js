@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { SpecRegistry } from '@bangle.dev/core/index';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   psx,
   renderTestEditor,

@@ -3,7 +3,7 @@
  * @jsx pjsx
  */
 import { screen } from '@testing-library/react';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,

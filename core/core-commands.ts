@@ -1,17 +1,16 @@
-import { findParentNodeOfType } from 'prosemirror-utils';
+import { Command } from 'prosemirror-commands';
+import { Fragment, Node, NodeType, Slice } from 'prosemirror-model';
 import {
   EditorState,
   NodeSelection,
   Selection,
   TextSelection,
 } from 'prosemirror-state';
-import { arrayify } from './utils/js-utils';
-import { Node, NodeType } from 'prosemirror-model';
-import { mapChildren } from './utils/pm-utils';
-import { Fragment, Slice } from 'prosemirror-model';
-import { Command } from 'prosemirror-commands';
 import { ReplaceStep } from 'prosemirror-transform';
+import { findParentNodeOfType } from 'prosemirror-utils';
 import { MoveDirection } from './types';
+import { arrayify } from './utils/js-utils';
+import { mapChildren } from './utils/pm-utils';
 
 function getParentTextSelection(state: EditorState, currentDepth: number) {
   const { $from } = state.selection;

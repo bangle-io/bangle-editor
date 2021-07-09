@@ -1,7 +1,4 @@
-import {
-  queryIsSelectionAroundLink,
-  queryIsLinkActive,
-} from '@bangle.dev/core/components/link';
+import { link } from '@bangle.dev/core';
 import { filter } from '@bangle.dev/core/utils/pm-utils';
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
@@ -39,7 +36,10 @@ export const defaultCalculateType = (
   state: EditorState,
   _prevType: string | null,
 ) => {
-  if (queryIsSelectionAroundLink()(state) || queryIsLinkActive()(state)) {
+  if (
+    link.queryIsSelectionAroundLink()(state) ||
+    link.queryIsLinkActive()(state)
+  ) {
     return 'linkSubMenu';
   }
   if (state.selection.empty) {

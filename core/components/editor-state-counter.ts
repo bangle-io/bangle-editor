@@ -1,4 +1,5 @@
-import { Plugin, PluginKey, PluginGroup } from '../plugin';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { PluginGroup } from '../plugin';
 
 const name = 'editorStateCounter';
 export const plugins = pluginsFactory;

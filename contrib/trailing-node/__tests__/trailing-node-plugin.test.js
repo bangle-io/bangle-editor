@@ -12,7 +12,7 @@ import {
 
 import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { trailingNode } from '../index';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
 import { toggleHeadingCollapse } from '@bangle.dev/core/components/heading';
 

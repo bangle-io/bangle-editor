@@ -3,26 +3,29 @@
  * @jsx pjsx
  */
 
-import { render, fireEvent } from '@testing-library/react';
-import { BangleEditor as CoreBangleEditorView } from '@bangle.dev/core/index';
+import {
+  BangleEditor as CoreBangleEditorView,
+  SpecRegistry,
+} from '@bangle.dev/core';
+import { getRenderHandlers } from '@bangle.dev/core/node-view';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { BangleEditor } from '@bangle.dev/react';
-import { getRenderHandlers } from '@bangle.dev/core/node-view';
-import {
-  safeInsert,
-  removeSelectedNode,
-} from '@bangle.dev/core/utils/pm-utils';
-import { bananaComponent, Banana } from './setup/banana';
-import { pjsx } from './helpers/index';
-import { sleep } from '@bangle.dev/core/utils/js-utils';
 import { selectNodeAt } from '@bangle.dev/core/test-helpers/test-helpers';
+import { sleep } from '@bangle.dev/core/utils/js-utils';
+import {
+  removeSelectedNode,
+  safeInsert,
+} from '@bangle.dev/core/utils/pm-utils';
+import { BangleEditor } from '@bangle.dev/react';
+import { fireEvent, render } from '@testing-library/react';
 import { Node } from 'prosemirror-model';
 import { EditorView as PMEditorView } from 'prosemirror-view';
 import { useEditorState } from '../hooks';
+import { pjsx } from './helpers/index';
+import { Banana, bananaComponent } from './setup/banana';
+
 const consoleError = console.error;
 
 beforeEach(() => {

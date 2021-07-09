@@ -2,21 +2,19 @@
  * @jest-environment jsdom
  * @jsx pjsx
  */
-import { render, act } from '@testing-library/react';
+import { Plugin, PluginKey, SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 import {
   BangleEditor,
   useEditorState,
   usePluginState,
 } from '@bangle.dev/react';
-import { pjsx, Span } from './helpers/index';
-import { Plugin, PluginKey } from '@bangle.dev/core/index';
-
+import { act, render } from '@testing-library/react';
 import { useEffect, useState } from 'react';
+import { pjsx, Span } from './helpers/index';
 
 const key = new PluginKey('testPlugins');
 let specRegistry, plugins, view, counterPlugin;

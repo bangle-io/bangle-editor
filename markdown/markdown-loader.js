@@ -1,4 +1,4 @@
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 
 export function markdownLoader(
   specRegistry = new SpecRegistry(),

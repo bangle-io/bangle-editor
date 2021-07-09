@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { updateLink, queryLinkAttrs } from '@bangle.dev/core/components/link';
-import * as Icons from './Icons';
-import { useEditorViewContext } from '@bangle.dev/react';
-import { MenuButton } from './Icon';
-import { MenuGroup } from './MenuGroup';
+import { link } from '@bangle.dev/core';
 import { EditorView } from '@bangle.dev/core/prosemirror/view';
+import { useEditorViewContext } from '@bangle.dev/react';
+import React, { useRef, useState } from 'react';
+import { MenuButton } from './Icon';
+import * as Icons from './Icons';
+import { MenuGroup } from './MenuGroup';
 
 export function LinkSubMenu({ getIsTop = () => true }) {
   const view = useEditorViewContext();
-  const result = queryLinkAttrs()(view.state);
+  const result = link.queryLinkAttrs()(view.state);
   const originalHref = (result && result.href) || '';
 
   return (
@@ -36,7 +36,7 @@ function LinkMenu({
   const [href, setHref] = useState(originalHref);
   const inputRef = useRef<HTMLInputElement>(null);
   const handleSubmit = () => {
-    updateLink(href)(view.state, view.dispatch);
+    link.updateLink(href)(view.state, view.dispatch);
     view.focus();
   };
 
@@ -90,7 +90,7 @@ function LinkMenu({
           hint="Clear"
           onMouseDown={(e) => {
             e.preventDefault();
-            updateLink()(view.state, view.dispatch);
+            link.updateLink()(view.state, view.dispatch);
             view.focus();
           }}
         >

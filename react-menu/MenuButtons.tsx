@@ -1,65 +1,58 @@
+import {
+  blockquote,
+  bold,
+  bulletList,
+  code,
+  heading,
+  history,
+  italic,
+  link,
+  orderedList,
+  paragraph,
+} from '@bangle.dev/core';
+import { EditorState, PluginKey } from '@bangle.dev/core/prosemirror/state';
+import { filter, rafCommandExec } from '@bangle.dev/core/utils/utils';
+import { useEditorViewContext } from '@bangle.dev/react';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import { rafCommandExec } from '@bangle.dev/core/utils/utils';
-import {
-  defaultKeys as italicKeys,
-  queryIsItalicActive,
-  toggleItalic,
-} from '@bangle.dev/core/components/italic';
-import {
-  defaultKeys as historyKeys,
-  undo,
-  redo,
-} from '@bangle.dev/core/components/history';
-
-import {
-  defaultKeys as boldKeys,
-  queryIsBoldActive,
-  toggleBold,
-} from '@bangle.dev/core/components/bold';
-import {
-  defaultKeys as codeKeys,
-  queryIsCodeActive,
-  toggleCode,
-} from '@bangle.dev/core/components/code';
-import * as blockquote from '@bangle.dev/core/components/blockquote';
-import {
-  defaultKeys as paragraphKeys,
-  queryIsTopLevelParagraph,
-  convertToParagraph,
-} from '@bangle.dev/core/components/paragraph';
-import {
-  defaultKeys as headingKeys,
-  queryIsHeadingActive,
-  toggleHeading,
-} from '@bangle.dev/core/components/heading';
-import { filter } from '@bangle.dev/core/utils/utils';
-import {
-  createLink,
-  queryIsLinkActive,
-} from '@bangle.dev/core/components/link';
-import {
-  defaultKeys as bulletListKeys,
-  queryIsBulletListActive,
-  queryIsTodoListActive,
-  toggleBulletList,
-  toggleTodoList,
-} from '@bangle.dev/core/components/bullet-list';
-import * as Icons from './Icons';
-import { useEditorViewContext } from '@bangle.dev/react';
-import { EditorState, PluginKey } from '@bangle.dev/core/prosemirror/state';
 import {
   defaultKeys as floatingMenuKeys,
   focusFloatingMenuInput,
   toggleLinkSubMenu,
 } from './floating-menu';
 import { MenuButton } from './Icon';
-import {
-  defaultKeys as orderedListKeys,
+import * as Icons from './Icons';
+import type { HintPos } from './types';
+
+const {
+  defaultKeys: orderedListKeys,
   queryIsOrderedListActive,
   toggleOrderedList,
-} from '@bangle.dev/core/components/ordered-list';
-import type { HintPos } from './types';
+} = orderedList;
+const { defaultKeys: italicKeys, queryIsItalicActive, toggleItalic } = italic;
+const { defaultKeys: historyKeys, undo, redo } = history;
+
+const { defaultKeys: boldKeys, queryIsBoldActive, toggleBold } = bold;
+const { defaultKeys: codeKeys, queryIsCodeActive, toggleCode } = code;
+const {
+  defaultKeys: paragraphKeys,
+  queryIsTopLevelParagraph,
+  convertToParagraph,
+} = paragraph;
+const {
+  defaultKeys: headingKeys,
+  queryIsHeadingActive,
+  toggleHeading,
+} = heading;
+
+const { createLink, queryIsLinkActive } = link;
+const {
+  defaultKeys: bulletListKeys,
+  queryIsBulletListActive,
+  queryIsTodoListActive,
+  toggleBulletList,
+  toggleTodoList,
+} = bulletList;
 
 interface ButtonProps {
   hint?: string;

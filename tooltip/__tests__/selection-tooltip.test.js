@@ -4,23 +4,21 @@
 
 /** @jsx psx */
 
-import {
-  psx,
-  typeText,
-  renderTestEditor,
-} from '@bangle.dev/core/test-helpers/test-helpers';
-
-import { selectionTooltip, createTooltipDOM } from '../index';
-import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   EditorState,
   PluginKey,
   TextSelection,
 } from '@bangle.dev/core/prosemirror/state';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-
-import { _syncTooltipOnUpdate } from '../selection-tooltip';
+import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
+import {
+  psx,
+  renderTestEditor,
+  typeText,
+} from '@bangle.dev/core/test-helpers/test-helpers';
 import { coreSpec } from '@bangle.dev/core/utils/core-components';
+import { createTooltipDOM, selectionTooltip } from '../index';
+import { _syncTooltipOnUpdate } from '../selection-tooltip';
 
 const specRegistry = new SpecRegistry(coreSpec());
 

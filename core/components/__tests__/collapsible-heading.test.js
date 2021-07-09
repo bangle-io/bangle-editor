@@ -3,12 +3,11 @@
  */
 
 /** @jsx psx */
-import { SpecRegistry } from '@bangle.dev/core/index';
-import { components } from '@bangle.dev/core';
+import { components, SpecRegistry } from '@bangle.dev/core';
 import {
+  createPSXFragment,
   psx,
   renderTestEditor,
-  createPSXFragment,
 } from '@bangle.dev/core/test-helpers/test-helpers';
 import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
 
