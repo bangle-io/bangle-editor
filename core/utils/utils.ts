@@ -3,7 +3,6 @@ export * from './core-components';
 export * from './dom-serialization-helpers';
 export * from './environment';
 export * from './js-utils';
-export * from './keymap';
 export * from './logging';
 export * from './mark-input-rule';
 export * from './mark-paste-rule';

@@ -20,11 +20,15 @@
   "main": "index.js",
   "module": "index.js",
   "scripts": {},
+  "dependencies": {
+    "prosemirror-keymap": "^1.1.4"
+  },
   "peerDependencies": {
     "@bangle.dev/core": "*"
   },
   "devDependencies": {
-    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/core": "workspace:*",
+    "@types/prosemirror-keymap": "^1.0.4"
   },
   "publishConfig": {
     "access": "public"

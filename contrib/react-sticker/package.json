@@ -24,7 +24,8 @@
     "postpack": "rm -r $INIT_CWD/dist"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "prosemirror-keymap": "^1.1.4"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
@@ -39,6 +40,7 @@
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
     "@testing-library/react": "^11.2.7",
+    "@types/prosemirror-keymap": "^1.0.4",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
     "react": "^17.0.2",

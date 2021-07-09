@@ -1,5 +1,5 @@
 import * as pmHistory from 'prosemirror-history';
-import { keymap } from '../utils/keymap';
+import { keymap } from 'prosemirror-keymap';
 import { PluginGroup } from '../plugin';
 
 export const plugins = pluginsFactory;
@@ -9,7 +9,8 @@ export const commands = {
 };
 export const defaultKeys = {
   undo: 'Mod-z',
-  redo: 'Mod-y Shift-Mod-z',
+  redo: 'Mod-y',
+  redoAlt: 'Shift-Mod-z',
 };
 
 const name = 'history';
@@ -22,6 +23,7 @@ function pluginsFactory({ historyOpts = {}, keybindings = defaultKeys } = {}) {
         keymap({
           [keybindings.undo]: undo(),
           [keybindings.redo]: redo(),
+          [keybindings.redoAlt]: redo(),
         }),
     ]);
   };

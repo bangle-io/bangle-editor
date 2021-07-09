@@ -1,5 +1,5 @@
 import { link } from '@bangle.dev/core';
-import { keymap } from '@bangle.dev/core/utils/keymap';
+import { keymap } from 'prosemirror-keymap';
 import { filter } from '@bangle.dev/core/utils/pm-utils';
 import { rafCommandExec } from '@bangle.dev/core/utils/utils';
 import { selectionTooltip } from '@bangle.dev/tooltip';

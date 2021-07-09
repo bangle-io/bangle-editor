@@ -1,5 +1,6 @@
 import { NodeView } from '@bangle.dev/core';
-import { domSerializationHelpers, keymap } from '@bangle.dev/core/utils/utils';
+import { domSerializationHelpers } from '@bangle.dev/core/utils/utils';
+import { keymap } from 'prosemirror-keymap';
 import { serializeAtomNodeToMdLink2 } from '@bangle.dev/markdown/markdown-serializer';
 import React from 'react';
 

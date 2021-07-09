@@ -4,7 +4,7 @@ import { BangleEditor, useEditorState } from '@bangle.dev/react';
 import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
 import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 import { safeInsert } from '@bangle.dev/core/utils/pm-utils';
-import { keymap } from '@bangle.dev/core/utils/keymap';
+import { keymap } from 'prosemirror-keymap';
 import { NodeView } from '@bangle.dev/core';
 
 const speech = {

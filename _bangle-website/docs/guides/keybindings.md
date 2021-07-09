@@ -47,8 +47,8 @@ If you want to create your own keyboard sorcery you will need to use [Prosemirro
 a `Ctrl-s` shortcut which shouts the text content whenever pressed.
 
 ```js
-import { keymap } from '@bangle.dev/core/utils/keymap';
 import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { keymap } from 'prosemirror-keymap';
 
 const state = new BangleEditorState({
   plugins: () => [

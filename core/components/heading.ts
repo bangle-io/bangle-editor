@@ -4,7 +4,7 @@ import { ContentNodeWithPos, findChildren } from 'prosemirror-utils';
 import { Fragment, Node, Schema } from 'prosemirror-model';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
-import { keymap } from '../utils/keymap';
+import { keymap } from 'prosemirror-keymap';
 import {
   copyEmptyCommand,
   cutEmptyCommand,
