@@ -6,8 +6,9 @@
 import {
   BangleEditor as CoreBangleEditorView,
   SpecRegistry,
+  getRenderHandlers,
 } from '@bangle.dev/core';
-import { getRenderHandlers } from '@bangle.dev/core/node-view';
+
 import {
   defaultPlugins,
   defaultSpecs,

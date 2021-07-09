@@ -4,11 +4,7 @@
 
 /** @jsx pjsx */
 import { components, SpecRegistry } from '@bangle.dev/core';
-import { PluginKey } from '@bangle.dev/core/plugin';
-import {
-  NodeSelection,
-  TextSelection,
-} from '@bangle.dev/core/prosemirror/state';
+import { PluginKey, NodeSelection, TextSelection } from 'prosemirror-state';
 import { coreSpec } from '@bangle.dev/core/utils/core-components';
 import {
   pjsx,

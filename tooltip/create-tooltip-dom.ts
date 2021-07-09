@@ -1,4 +1,3 @@
-/// <reference path="./missing-types.d.ts" />
 import { DOMSerializer, DOMOutputSpec } from 'prosemirror-model';
 
 export interface TooltipDOM {

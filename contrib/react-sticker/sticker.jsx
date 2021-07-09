@@ -1,5 +1,5 @@
 import { NodeView } from '@bangle.dev/core';
-import { Node } from '@bangle.dev/core/prosemirror/model';
+import { Node } from 'prosemirror-model';
 import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
 import { keymap } from 'prosemirror-keymap';
 import PropTypes from 'prop-types';

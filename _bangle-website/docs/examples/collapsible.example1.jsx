@@ -5,9 +5,8 @@ import {
   SpecRegistry,
 } from '@bangle.dev/core';
 import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
-import { Plugin } from '@bangle.dev/core/plugin';
-import { Decoration, DecorationSet } from '@bangle.dev/core/prosemirror/view';
-import { Selection } from '@bangle.dev/core/prosemirror/state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
+import { Plugin, Selection } from 'prosemirror-state';
 import {
   listCollapsedHeading,
   listCollapsibleHeading,

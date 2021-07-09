@@ -3206,10 +3206,12 @@ __metadata:
     "@bangle.dev/table": "workspace:*"
     "@testing-library/react": ^11.2.7
     "@types/prosemirror-keymap": ^1.0.4
+    "@types/prosemirror-model": ^1.13.0
     "@types/react": ^17.0.11
     "@types/react-dom": ^17.0.8
     prop-types: ^15.7.2
     prosemirror-keymap: ^1.1.4
+    prosemirror-model: ^1.14.1
     react: ^17.0.2
     react-dom: ^17.0.2
   peerDependencies:
@@ -3282,6 +3284,14 @@ __metadata:
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@types/jest": ^26.0.23
+    "@types/prosemirror-commands": ^1.0.4
+    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-state": ^1.2.6
+    "@types/prosemirror-view": ^1.17.1
+    prosemirror-commands: ^1.1.9
+    prosemirror-model: ^1.14.1
+    prosemirror-state: ^1.3.4
+    prosemirror-view: ^1.18.7
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -3312,7 +3322,9 @@ __metadata:
   resolution: "@bangle.dev/text-formatting@workspace:contrib/text-formatting"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-keymap": ^1.0.4
+    prosemirror-commands: ^1.1.9
     prosemirror-keymap: ^1.1.4
   peerDependencies:
     "@bangle.dev/core": "*"
@@ -3367,6 +3379,8 @@ __metadata:
   resolution: "@bangle.dev/trailing-node@workspace:contrib/trailing-node"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@types/prosemirror-state": ^1.2.6
+    prosemirror-state: ^1.3.4
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -7033,9 +7047,19 @@ __metadata:
     file-loader: ^6.2.0
     prop-types: ^15.7.2
     prosemirror-collab: "*"
-    prosemirror-keymap: "*"
-    prosemirror-model: "*"
-    prosemirror-transform: "*"
+    prosemirror-commands: ^1.1.9
+    prosemirror-dropcursor: ^1.3.5
+    prosemirror-gapcursor: ^1.1.5
+    prosemirror-history: ^1.1.3
+    prosemirror-inputrules: ^1.1.3
+    prosemirror-keymap: ^1.1.4
+    prosemirror-model: ^1.14.1
+    prosemirror-schema-list: ^1.1.4
+    prosemirror-state: ^1.3.4
+    prosemirror-tables: ^1.1.1
+    prosemirror-transform: ^1.3.2
+    prosemirror-utils: 1.0.0-0
+    prosemirror-view: ^1.18.7
     react: ^17.0.2
     react-dom: ^17.0.2
   languageName: unknown

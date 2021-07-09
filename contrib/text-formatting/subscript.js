@@ -1,4 +1,4 @@
-import { toggleMark } from '@bangle.dev/core/prosemirror/commands';
+import { toggleMark } from 'prosemirror-commands';
 import { isMarkActiveInSelection } from '@bangle.dev/core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
 

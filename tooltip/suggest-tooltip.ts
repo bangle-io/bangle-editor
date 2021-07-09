@@ -1,4 +1,3 @@
-/// <reference path="./missing-types.d.ts" />
 import { isChromeWithSelectionBug } from '@bangle.dev/core';
 import {
   filter,

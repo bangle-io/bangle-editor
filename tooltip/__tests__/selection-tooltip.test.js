@@ -5,11 +5,7 @@
 /** @jsx psx */
 
 import { SpecRegistry } from '@bangle.dev/core';
-import {
-  EditorState,
-  PluginKey,
-  TextSelection,
-} from '@bangle.dev/core/prosemirror/state';
+import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import {
   psx,
