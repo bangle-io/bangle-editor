@@ -28,8 +28,6 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
-    "@bangle.dev/js-utils": "*",
-    "@bangle.dev/pm-utils": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-keymap": "*",
     "prosemirror-model": "*",

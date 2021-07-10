@@ -31,8 +31,6 @@
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "@bangle.dev/emoji": "*",
-    "@bangle.dev/js-utils": "*",
-    "@bangle.dev/pm-utils": "*",
     "@bangle.dev/react": "*",
     "@bangle.dev/tooltip": "*",
     "react": ">=16.0.0",
