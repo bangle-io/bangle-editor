@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/text-formatting",
-  "version": "0.21.0-alpha.1",
+  "version": "0.21.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -21,13 +21,10 @@
   "module": "index.js",
   "scripts": {},
   "dependencies": {
+    "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm-utils": "workspace:*",
     "prosemirror-commands": "^1.1.9",
     "prosemirror-keymap": "^1.1.4"
-  },
-  "peerDependencies": {
-    "@bangle.dev/core": "*",
-    "@bangle.dev/pm-utils": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",

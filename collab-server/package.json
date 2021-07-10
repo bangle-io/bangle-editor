@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-server",
-  "version": "0.21.0-alpha.1",
+  "version": "0.21.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -26,25 +26,18 @@
     "prepack": "yarn compile-ts"
   },
   "devDependencies": {
-    "@bangle.dev/core": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
     "@types/prosemirror-model": "^1.13.0",
     "@types/prosemirror-transform": "^1.1.3"
   },
   "dependencies": {
+    "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2",
     "prosemirror-model": "^1.14.1",
     "prosemirror-transform": "^1.3.2"
-  },
-  "peerDependencies": {
-    "@bangle.dev/core": "*",
-    "@bangle.dev/disk": "*",
-    "prosemirror-collab": "*",
-    "prosemirror-model": "*",
-    "prosemirror-transform": "*"
   },
   "publishConfig": {
     "access": "public"

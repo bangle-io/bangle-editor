@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-emoji-suggest",
-  "version": "0.21.0-alpha.1",
+  "version": "0.21.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -24,23 +24,19 @@
     "postpack": "rm -r $INIT_CWD/dist"
   },
   "dependencies": {
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/js-utils": "workspace:*",
     "@bangle.dev/pm-utils": "workspace:*",
+    "@bangle.dev/react": "workspace:*",
+    "@bangle.dev/tooltip": "workspace:*",
     "prosemirror-state": "^1.3.4"
   },
   "peerDependencies": {
-    "@bangle.dev/core": "*",
-    "@bangle.dev/emoji": "*",
-    "@bangle.dev/react": "*",
-    "@bangle.dev/tooltip": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
-    "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/emoji": "workspace:*",
-    "@bangle.dev/react": "workspace:*",
-    "@bangle.dev/tooltip": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/prosemirror-state": "^1.2.6",
     "@types/react": "^17.0.11",
