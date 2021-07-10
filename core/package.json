@@ -28,6 +28,8 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
+    "@bangle.dev/pm-utils": "workspace:*",
     "prosemirror-commands": "^1.1.9",
     "prosemirror-dropcursor": "^1.3.5",
     "prosemirror-gapcursor": "^1.1.5",

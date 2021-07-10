@@ -1,5 +1,5 @@
 import { toggleMark } from 'prosemirror-commands';
-import { isMarkActiveInSelection } from '@bangle.dev/core/utils/pm-utils';
+import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
 import { keymap } from 'prosemirror-keymap';
 
 export const spec = specFactory;

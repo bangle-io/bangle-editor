@@ -14,11 +14,8 @@ import {
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
 import { selectNodeAt } from '@bangle.dev/core/test-helpers/test-helpers';
-import { sleep } from '@bangle.dev/core/utils/js-utils';
-import {
-  removeSelectedNode,
-  safeInsert,
-} from '@bangle.dev/core/utils/pm-utils';
+import { sleep } from '@bangle.dev/js-utils';
+import { removeSelectedNode, safeInsert } from '@bangle.dev/pm-utils';
 import { BangleEditor } from '@bangle.dev/react';
 import { fireEvent, render } from '@testing-library/react';
 import { Node } from 'prosemirror-model';

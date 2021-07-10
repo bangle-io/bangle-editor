@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { heading, SpecRegistry } from '@bangle.dev/core';
+import { corePlugins, heading, SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
 import {
   psx,
@@ -11,7 +11,6 @@ import {
   sendKeyToPm,
   typeText,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { trailingNode } from '../index';
 
 const specRegistry = new SpecRegistry([

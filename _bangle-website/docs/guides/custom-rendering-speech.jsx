@@ -1,11 +1,11 @@
 import '@bangle.dev/core/style.css';
-import React, { useEffect, useState } from 'react';
+import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core';
+
+import { safeInsert } from '@bangle.dev/pm-utils';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
-import { safeInsert } from '@bangle.dev/core/utils/pm-utils';
 import { keymap } from 'prosemirror-keymap';
-import { NodeView } from '@bangle.dev/core';
+import React, { useEffect, useState } from 'react';
 
 const speech = {
   spec() {

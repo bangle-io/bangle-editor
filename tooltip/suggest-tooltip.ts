@@ -3,7 +3,7 @@ import {
   filter,
   findFirstMarkPosition,
   safeInsert,
-} from '@bangle.dev/core/utils/pm-utils';
+} from '@bangle.dev/pm-utils';
 import { Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { Fragment, MarkType, Node, Schema } from 'prosemirror-model';

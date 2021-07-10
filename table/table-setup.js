@@ -1,10 +1,7 @@
 import { tableNodes, tableEditing, goToNextCell } from 'prosemirror-tables';
 import { keymap } from 'prosemirror-keymap';
-import { weakCache } from '@bangle.dev/core/utils/utils';
 
-const calculateColumnWidth = weakCache(function calculateColumnWidth(
-  tableNode,
-) {
+function calculateColumnWidth(tableNode) {
   const sizeMap = new Map();
   let maxColIndex = 0;
   tableNode.forEach((row) => {
@@ -30,7 +27,7 @@ const calculateColumnWidth = weakCache(function calculateColumnWidth(
   });
 
   return Array.from({ length: maxColIndex + 1 }, (_, k) => sizeMap.get(k) || 1);
-});
+}
 
 const nodes = tableNodes({
   tableGroup: 'block',

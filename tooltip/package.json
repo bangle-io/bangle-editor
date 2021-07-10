@@ -28,6 +28,8 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
+    "@bangle.dev/js-utils": "*",
+    "@bangle.dev/pm-utils": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-keymap": "*",
     "prosemirror-model": "*",
@@ -48,6 +50,8 @@
     "prosemirror-commands": "^1.0.4"
   },
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
+    "@bangle.dev/pm-utils": "workspace:*",
     "@popperjs/core": "^2.5.4",
     "prosemirror-inputrules": "^1.1.3",
     "prosemirror-keymap": "^1.1.4",

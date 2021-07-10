@@ -10,7 +10,7 @@ import {
   orderedList,
   paragraph,
 } from '@bangle.dev/core';
-import { filter, rafCommandExec } from '@bangle.dev/core/utils/utils';
+import { filter, rafCommandExec } from '@bangle.dev/pm-utils';
 import { useEditorViewContext } from '@bangle.dev/react';
 import PropTypes from 'prop-types';
 import { EditorState, PluginKey } from 'prosemirror-state';

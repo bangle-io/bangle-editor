@@ -1,5 +1,5 @@
 import { Plugin } from '@bangle.dev/core';
-import { bangleWarn } from '@bangle.dev/core/utils/js-utils';
+import { bangleWarn } from '@bangle.dev/js-utils';
 import {
   Instance as PopperInstance,
   Modifier,

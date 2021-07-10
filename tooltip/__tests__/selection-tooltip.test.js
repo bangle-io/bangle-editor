@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 
-import { SpecRegistry } from '@bangle.dev/core';
+import { SpecRegistry, coreSpec } from '@bangle.dev/core';
 import { EditorState, PluginKey, TextSelection } from 'prosemirror-state';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import {
@@ -12,7 +12,7 @@ import {
   renderTestEditor,
   typeText,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import { coreSpec } from '@bangle.dev/core/utils/core-components';
+
 import { createTooltipDOM, selectionTooltip } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 

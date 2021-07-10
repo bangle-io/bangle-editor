@@ -17,10 +17,17 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "index.js",
-  "module": "index.js",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "dist/index.d.ts",
   "scripts": {},
+  "devDependencies": {
+    "@types/jest": "^26.0.23"
+  },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
   }
 }

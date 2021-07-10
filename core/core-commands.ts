@@ -9,8 +9,7 @@ import {
 import { ReplaceStep } from 'prosemirror-transform';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { MoveDirection } from './types';
-import { arrayify } from './utils/js-utils';
-import { mapChildren } from './utils/pm-utils';
+import { mapChildren } from '@bangle.dev/pm-utils';
 
 function getParentTextSelection(state: EditorState, currentDepth: number) {
   const { $from } = state.selection;
@@ -83,7 +82,9 @@ export function parentHasDirectParentOfType(
   parentType: NodeType,
   parentsParentType: NodeType | NodeType[],
 ): (state: EditorState) => boolean {
-  parentsParentType = arrayify(parentsParentType);
+  parentsParentType = Array.isArray(parentsParentType)
+    ? parentsParentType
+    : [parentsParentType];
 
   return (state) => {
     const currentResolved = findParentNodeOfType(parentType)(state.selection);

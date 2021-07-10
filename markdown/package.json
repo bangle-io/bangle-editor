@@ -21,6 +21,7 @@
   "module": "index.js",
   "scripts": {},
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
     "markdown-it": "^10.0.0",
     "prosemirror-markdown": "^1.5.1"
   },

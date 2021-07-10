@@ -2,7 +2,6 @@ import {
   BangleEditor as CoreBangleEditor,
   BangleEditorProps as CoreBangleEditorProps,
   BangleEditorState as CoreBangleEditorState,
-  utils,
 } from '@bangle.dev/core';
 import { Plugin } from 'prosemirror-state';
 import PropTypes from 'prop-types';
@@ -11,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
+import { objectUid } from '@bangle.dev/js-utils';
 
 const LOG = false;
 
@@ -69,13 +69,13 @@ export function BangleEditor({
       {nodeViews.map((nodeView) => {
         return reactDOM.createPortal(
           <NodeViewWrapper
-            debugKey={utils.objUid.get(nodeView)}
+            debugKey={objectUid.get(nodeView)}
             nodeViewUpdateStore={nodeViewUpdateStore}
             nodeView={nodeView}
             renderNodeViews={renderNodeViews}
           />,
           nodeView.containerDOM!,
-          utils.objUid.get(nodeView),
+          objectUid.get(nodeView),
         );
       })}
       {editor ? (

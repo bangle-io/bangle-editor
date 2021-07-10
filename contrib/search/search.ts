@@ -1,4 +1,4 @@
-import { matchAllPlus } from '@bangle.dev/core/utils/js-utils';
+import { matchAllPlus } from '@bangle.dev/js-utils';
 import type { Command } from 'prosemirror-commands';
 import type { Node } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';

@@ -12,6 +12,6 @@ export class ObjectUID extends WeakMap {
   }
 }
 
-const objUid = new ObjectUID();
+const objectUid = new ObjectUID();
 
-export { objUid };
+export { objectUid };

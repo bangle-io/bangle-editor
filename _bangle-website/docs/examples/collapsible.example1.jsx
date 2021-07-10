@@ -1,17 +1,18 @@
-import '@bangle.dev/core/style.css';
 import {
   BangleEditor,
   BangleEditorState,
+  corePlugins,
+  coreSpec,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
-import { Decoration, DecorationSet } from 'prosemirror-view';
-import { Plugin, Selection } from 'prosemirror-state';
 import {
   listCollapsedHeading,
   listCollapsibleHeading,
   toggleHeadingCollapse,
 } from '@bangle.dev/core/components/heading';
+import '@bangle.dev/core/style.css';
+import { Plugin, Selection } from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({

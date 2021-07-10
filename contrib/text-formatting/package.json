@@ -21,11 +21,13 @@
   "module": "index.js",
   "scripts": {},
   "dependencies": {
+    "@bangle.dev/pm-utils": "workspace:*",
     "prosemirror-commands": "^1.1.9",
     "prosemirror-keymap": "^1.1.4"
   },
   "peerDependencies": {
-    "@bangle.dev/core": "*"
+    "@bangle.dev/core": "*",
+    "@bangle.dev/pm-utils": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",

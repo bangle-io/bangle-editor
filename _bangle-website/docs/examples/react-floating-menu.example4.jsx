@@ -5,7 +5,7 @@ import React from 'react';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
 import { PluginKey } from '@bangle.dev/core';
 import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { corePlugins, coreSpec } from '@bangle.dev/core';
 import {
   floatingMenu,
   FloatingMenu,

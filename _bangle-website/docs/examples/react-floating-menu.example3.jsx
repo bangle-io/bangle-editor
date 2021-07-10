@@ -8,7 +8,7 @@ import {
   useEditorViewContext,
 } from '@bangle.dev/react';
 import { PluginKey, components } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { corePlugins, coreSpec } from '@bangle.dev/core';
 import {
   floatingMenu,
   FloatingMenu,

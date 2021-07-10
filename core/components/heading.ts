@@ -12,7 +12,11 @@ import {
   jumpToStartOfNode,
   jumpToEndOfNode,
 } from '../core-commands';
-import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
+import {
+  filter,
+  findParentNodeOfType,
+  insertEmpty,
+} from '@bangle.dev/pm-utils';
 import browser from '../utils/browser';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import type Token from 'markdown-it/lib/token';

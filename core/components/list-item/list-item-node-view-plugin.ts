@@ -1,4 +1,4 @@
-import { createElement } from '../../utils/js-utils';
+import { createElement } from '../../create-element';
 import { NodeView, UpdateAttrsFunction } from '../../node-view';
 import { EditorState } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';

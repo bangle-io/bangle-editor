@@ -3,13 +3,12 @@
  */
 
 /** @jsx pjsx */
-import { components, SpecRegistry } from '@bangle.dev/core';
-import { PluginKey, NodeSelection, TextSelection } from 'prosemirror-state';
-import { coreSpec } from '@bangle.dev/core/utils/core-components';
+import { components, coreSpec, SpecRegistry } from '@bangle.dev/core';
 import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
+import { NodeSelection, PluginKey, TextSelection } from 'prosemirror-state';
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');

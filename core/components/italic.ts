@@ -1,7 +1,7 @@
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 import { toggleMark, Command } from 'prosemirror-commands';
-import { isMarkActiveInSelection } from '../utils/pm-utils';
+import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
 import { keymap } from 'prosemirror-keymap';
 import { Schema } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';

@@ -1,4 +1,4 @@
-import { utils } from '@bangle.dev/core';
+import { domSerializationHelpers } from '@bangle.dev/core';
 
 export const spec = specFactory;
 
@@ -41,7 +41,7 @@ function specFactory({} = {}) {
 
   spec.schema = {
     ...spec.schema,
-    ...utils.domSerializationHelpers(name, {
+    ...domSerializationHelpers(name, {
       tag: 'div',
       content: (node) => node.attrs.data,
       parsingPriority: 52,

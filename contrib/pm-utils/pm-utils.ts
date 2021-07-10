@@ -9,7 +9,13 @@ import {
   Schema,
   Slice,
 } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  Transaction,
+  Selection,
+} from 'prosemirror-state';
 import {
   findParentNode,
   findParentNodeOfType as _findParentNodeOfType,
@@ -18,7 +24,34 @@ import {
   safeInsert as _safeInsert,
 } from 'prosemirror-utils';
 import type { EditorView } from 'prosemirror-view';
-import { GapCursorSelection } from '../gap-cursor';
+
+export class GapCursorSelection extends Selection {}
+
+type PredicateFunction = (state: EditorState, view?: EditorView) => any;
+
+export function rafCommandExec(view: EditorView, command: Command) {
+  requestAnimationFrame(() => {
+    command(view.state, view.dispatch, view);
+  });
+}
+
+export function filter(
+  predicates: PredicateFunction | PredicateFunction[],
+  cmd?: Command,
+): Command {
+  return (state, dispatch, view) => {
+    if (cmd == null) {
+      return false;
+    }
+    if (!Array.isArray(predicates)) {
+      predicates = [predicates];
+    }
+    if (predicates.some((pred) => !pred(state, view))) {
+      return false;
+    }
+    return cmd(state, dispatch, view) || false;
+  };
+}
 
 export function safeInsert(
   content: Node | Fragment,
@@ -189,28 +222,6 @@ export function isEmptyParagraph(node: Node) {
     !node ||
     (node.type.name === 'paragraph' && !node.textContent && !node.childCount)
   );
-}
-
-type PredicateFunction = (state: EditorState, view?: EditorView) => any;
-
-// Run predicates: Array<fn(state) -> boolean> and if all
-// true, run the command.
-export function filter(
-  predicates: PredicateFunction | PredicateFunction[],
-  cmd?: Command,
-): Command {
-  return (state, dispatch, view) => {
-    if (cmd == null) {
-      return false;
-    }
-    if (!Array.isArray(predicates)) {
-      predicates = [predicates];
-    }
-    if (predicates.some((pred) => !pred(state, view))) {
-      return false;
-    }
-    return cmd(state, dispatch, view) || false;
-  };
 }
 
 // from atlaskit

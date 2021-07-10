@@ -51,6 +51,7 @@
     "strict-event-emitter-types": "^2.0.0"
   },
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
     "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2",
     "prosemirror-model": "^1.14.1",

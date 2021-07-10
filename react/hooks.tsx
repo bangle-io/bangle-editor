@@ -3,12 +3,13 @@ import {
   BangleEditorStateProps,
   RawSpecs,
   SpecRegistry,
-  utils,
+  corePlugins,
 } from '@bangle.dev/core';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { useContext, useEffect, useState } from 'react';
 import { EditorViewContext } from './ReactEditor';
+import { rafSchedule } from '@bangle.dev/js-utils';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};
@@ -41,7 +42,7 @@ export function useSpecRegistry(
   return specRegistry;
 }
 
-export function usePlugins(getPlugins = utils.corePlugins) {
+export function usePlugins(getPlugins = corePlugins) {
   if (typeof getPlugins !== 'function') {
     throw new Error('usePlugins error: getPlugins must be a function');
   }
@@ -57,13 +58,13 @@ export function usePluginState(pluginKey: PluginKey, throttle = false) {
     log('Setup plugin', pluginKey);
     let _setState = setState;
     if (throttle) {
-      _setState = utils.rafSchedule(setState);
+      _setState = rafSchedule(setState);
     }
     const plugin = watcherPlugin(pluginKey, _setState);
     (view as any)._updatePluginWatcher(plugin);
     return () => {
       if (throttle) {
-        (_setState as ReturnType<typeof utils.rafSchedule>).cancel();
+        (_setState as ReturnType<typeof rafSchedule>).cancel();
       }
       (view as any)._updatePluginWatcher(plugin, true);
     };

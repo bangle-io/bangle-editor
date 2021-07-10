@@ -1,7 +1,9 @@
-import { utils } from '@bangle.dev/core';
+import { pluginKeyStore } from '@bangle.dev/core';
 import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip';
 import { PluginKey } from 'prosemirror-state';
 import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
+import { valuePlugin, rafCommandExec } from '@bangle.dev/pm-utils';
+import { bangleWarn, uuid } from '@bangle.dev/js-utils';
 
 const {
   decrementSuggestTooltipCounter,
@@ -33,7 +35,7 @@ function specFactory({ markName, trigger = defaultTrigger } = {}) {
   };
 }
 
-const keyStore = utils.pluginKeyStore();
+const keyStore = pluginKeyStore();
 
 function pluginsFactory({
   key = new PluginKey('emojiSuggestMenu'),
@@ -59,13 +61,13 @@ function pluginsFactory({
       tooltipDOMSpec.dom.getAttribute('data-popper-placement') === 'top-start';
 
     if (!schema.marks[markName]) {
-      utils.bangleWarn(
+      bangleWarn(
         `Couldn't find the markName:${markName}, please make sure you have initialized to use the same markName you initialized the spec with`,
       );
       throw new Error(`markName ${markName} not found`);
     }
 
-    const selectedEmojiSquareId = utils.uuid(6);
+    const selectedEmojiSquareId = uuid(6);
 
     const updateCounter = (keyType) => {
       return (state, dispatch, view) => {
@@ -124,7 +126,7 @@ function pluginsFactory({
       };
     };
     return [
-      utils.valuePlugin(key, {
+      valuePlugin(key, {
         getEmojiGroups,
         maxItems,
         tooltipContentDOM: tooltipDOMSpec.contentDOM,
@@ -166,10 +168,7 @@ function pluginsFactory({
           }
 
           const emojiAlias = activeItem[0];
-          utils.rafCommandExec(
-            view,
-            resetSuggestTooltipCounter(suggestTooltipKey),
-          );
+          rafCommandExec(view, resetSuggestTooltipCounter(suggestTooltipKey));
           return selectEmoji(key, emojiAlias)(state, dispatch, view);
         },
 

@@ -24,11 +24,15 @@
     "postpack": "rm -r $INIT_CWD/dist"
   },
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
+    "@bangle.dev/pm-utils": "workspace:*",
     "prosemirror-state": "^1.3.4"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "@bangle.dev/emoji": "*",
+    "@bangle.dev/js-utils": "*",
+    "@bangle.dev/pm-utils": "*",
     "@bangle.dev/react": "*",
     "@bangle.dev/tooltip": "*",
     "react": ">=16.0.0",

@@ -1,10 +1,21 @@
 import {
+  cancelablePromise,
+  CollabError,
+  GetDocument,
+  getIdleCallback,
+  PullEvents,
+  PushEvents,
+  serialExecuteQueue,
+  sleep,
+  uuid,
+} from '@bangle.dev/collab-server';
+import {
   collab,
-  receiveTransaction,
   getVersion,
+  receiveTransaction,
   sendableSteps,
 } from 'prosemirror-collab';
-import { Step } from 'prosemirror-transform';
+import { Schema } from 'prosemirror-model';
 import {
   EditorState,
   Plugin,
@@ -12,23 +23,12 @@ import {
   Selection,
   TextSelection,
 } from 'prosemirror-state';
+import { Step } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
-import { replaceDocument } from './helpers';
 import StrictEventEmitter from 'strict-event-emitter-types';
-import {
-  CollabError,
-  getIdleCallback,
-  sleep,
-  uuid,
-  cancelablePromise,
-  serialExecuteQueue,
-  PullEvents,
-  PushEvents,
-  GetDocument,
-} from '@bangle.dev/collab-server';
+import { Emitter } from '@bangle.dev/js-utils';
+import { replaceDocument } from './helpers';
 
-import { Emitter } from './emitter';
-import { Schema } from 'prosemirror-model';
 type UnPromisify<T> = T extends Promise<infer U> ? U : T;
 type CollabConnectionObj = {
   init: (oldSelection?: Selection) => void;

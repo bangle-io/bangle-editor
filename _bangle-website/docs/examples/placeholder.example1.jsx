@@ -1,14 +1,15 @@
-import '@bangle.dev/core/style.css';
-import '@bangle.dev/tooltip/style.css';
 import {
   BangleEditor,
   BangleEditorState,
-  PluginKey,
+  corePlugins,
+  coreSpec,
   Plugin,
+  PluginKey,
 } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
 import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
+import '@bangle.dev/core/style.css';
 import { selectionTooltip } from '@bangle.dev/tooltip';
+import '@bangle.dev/tooltip/style.css';
 
 const placeholderKey = new PluginKey('placeholder');
 

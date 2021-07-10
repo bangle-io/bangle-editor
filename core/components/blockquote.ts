@@ -1,12 +1,15 @@
+import {
+  filter,
+  findParentNodeOfType,
+  insertEmpty,
+} from '@bangle.dev/pm-utils';
+import { Command, wrapIn } from 'prosemirror-commands';
 import { wrappingInputRule } from 'prosemirror-inputrules';
-import { wrapIn, Command } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
-import { Schema, Node } from 'prosemirror-model';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import { Node, Schema } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
-import { insertEmpty, filter, findParentNodeOfType } from '../utils/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

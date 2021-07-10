@@ -1,21 +1,4 @@
-import { DOMOutputSpec, DOMSerializer } from 'prosemirror-model';
-import type { Command } from 'prosemirror-commands';
-import type { EditorView } from 'prosemirror-view';
 import { isProdEnv, isTestEnv } from './environment';
-const LOG = false;
-
-function log(...args: any[]) {
-  if (LOG) {
-    console.log('js-utils.js', ...args);
-  }
-}
-
-export function classNames(obj: any) {
-  return Object.entries(obj)
-    .filter((r) => Boolean(r[1]))
-    .map((r) => r[0])
-    .join(' ');
-}
 
 /**
  * @param {Function} fn - A unary function whose paramater is non-primitive,
@@ -31,19 +14,6 @@ export function weakCache(fn: Function) {
     value = fn(arg);
     cache.set(arg, value);
     return value;
-  };
-}
-
-export function arrayify<T>(x: T | T[]): T[] {
-  if (x == null) {
-    throw new Error('undefined value passed');
-  }
-  return Array.isArray(x) ? x : [x];
-}
-
-export function rafWrap(cb: Function): Function {
-  return (...args: any[]) => {
-    requestAnimationFrame(() => cb(...args));
   };
 }
 
@@ -109,10 +79,8 @@ export function uuid(len = 10) {
 }
 
 export function getIdleCallback(cb: Function) {
-  // @ts-ignore browser quicks
-  if (window.requestIdleCallback) {
-    // @ts-ignore browser quicks
-    return window.requestIdleCallback(cb);
+  if (typeof window !== 'undefined' && (window as any).requestIdleCallback) {
+    return (window as any).requestIdleCallback(cb);
   }
   var t = Date.now();
   return setTimeout(function () {
@@ -157,14 +125,10 @@ export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));
 }
 
-interface AnyObject {
-  [index: string]: any;
-}
-
-export function objectMapValues(
-  obj: AnyObject,
-  map: (value: any, key: any) => any,
-): AnyObject {
+export function objectMapValues<T, K>(
+  obj: { [s: string]: T },
+  map: (value: T, key: string) => K,
+): { [s: string]: K } {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => {
       return [key, map(value, key)];
@@ -172,10 +136,10 @@ export function objectMapValues(
   );
 }
 
-export function objectFilter(
-  obj: AnyObject,
-  cb: (value: any, key: any) => boolean,
-): AnyObject {
+export function objectFilter<T>(
+  obj: { [s: string]: T },
+  cb: (value: T, key: string) => boolean,
+): { [s: string]: T } {
   return Object.fromEntries(
     Object.entries(obj).filter(([key, value]) => {
       return cb(value, key);
@@ -183,32 +147,10 @@ export function objectFilter(
   );
 }
 
-export function safeMergeObject(obj1 = {}, obj2 = {}) {
-  const culpritKey = Object.keys(obj1).find((key) => hasOwnProperty(obj2, key));
-  if (culpritKey) {
-    throw new Error(`Key ${culpritKey} already exists `);
-  }
-
-  return {
-    ...obj1,
-    ...obj2,
-  };
-}
-
-export function hasOwnProperty(obj: any, property: string) {
-  return Object.prototype.hasOwnProperty.call(obj, property);
-}
-
-// export function handleAsyncError(fn, onError) {
-//   return async (...args) => {
-//     return Promise.resolve(fn(...args)).catch(onError);
-//   };
-// }
-
 export function serialExecuteQueue() {
   let prev = Promise.resolve();
   return {
-    add: (cb: Function) => {
+    add<T>(cb: () => Promise<T>): Promise<T> {
       return new Promise((resolve, reject) => {
         prev = prev.then(() => {
           return Promise.resolve(cb()).then(
@@ -229,7 +171,7 @@ export function simpleLRU<K = any, V = any>(size: number) {
   let array: Array<{ key: K; value: V }> = [];
   let removeItems = () => {
     while (array.length > size) {
-      log('removing', array.shift());
+      array.shift();
     }
   };
   return {
@@ -260,36 +202,6 @@ export function simpleLRU<K = any, V = any>(size: number) {
   };
 }
 
-export async function raceTimeout<T>(promise: Promise<T>, ts: number) {
-  let timerId: number | null;
-  let timeout = false;
-  return new Promise((resolve, reject) => {
-    timerId = window.setTimeout(() => {
-      timeout = true;
-      reject({ timeout: true });
-    }, ts);
-
-    promise.then(
-      (result) => {
-        if (timeout) {
-          return;
-        }
-        clearTimeout(timerId!);
-        timerId = null;
-        resolve(result);
-      },
-      (error) => {
-        if (timeout) {
-          return;
-        }
-        clearTimeout(timerId!);
-        timerId = null;
-        reject(error);
-      },
-    );
-  });
-}
-
 export function domEventListener(
   element: EventTarget,
   type: string,
@@ -306,11 +218,11 @@ export function domEventListener(
  * Based on idea from https://github.com/alexreardon/raf-schd
  * Throttles the function and calls it with the latest argument
  */
-export function rafSchedule(fn: Function) {
+export function rafSchedule<T>(fn: (...args: T[]) => void) {
   let lastArgs: any[] = [];
   let frameId: number | null = null;
 
-  const wrapperFn = (...args: any[]) => {
+  const wrapperFn = (...args: T[]) => {
     // Always capture the latest value
     lastArgs = args;
 
@@ -343,20 +255,32 @@ export const bangleWarn =
     ? () => {}
     : console.warn.bind(console, 'Warning in bangle.js:');
 
-export function createElement(spec: DOMOutputSpec): HTMLElement {
-  const { dom, contentDOM } = DOMSerializer.renderSpec(window.document, spec);
-  if (contentDOM) {
-    throw new Error('createElement does not support creating contentDOM');
-  }
-  return dom as HTMLElement;
-}
+export async function raceTimeout<T>(promise: Promise<T>, ts: number) {
+  let timerId: number | null;
+  let timeout = false;
+  return new Promise((resolve, reject) => {
+    timerId = window.setTimeout(() => {
+      timeout = true;
+      reject({ timeout: true });
+    }, ts);
 
-export function complement(func: Function) {
-  return (...args: any[]) => !func(...args);
-}
-
-export function rafCommandExec(view: EditorView, command: Command) {
-  requestAnimationFrame(() => {
-    command(view.state, view.dispatch, view);
+    promise.then(
+      (result) => {
+        if (timeout) {
+          return;
+        }
+        clearTimeout(timerId!);
+        timerId = null;
+        resolve(result);
+      },
+      (error) => {
+        if (timeout) {
+          return;
+        }
+        clearTimeout(timerId!);
+        timerId = null;
+        reject(error);
+      },
+    );
   });
 }

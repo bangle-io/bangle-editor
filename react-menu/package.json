@@ -28,6 +28,7 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
+    "@bangle.dev/pm-utils": "workspace:*",
     "prop-types": "^15.7.2",
     "prosemirror-commands": "^1.1.9",
     "prosemirror-keymap": "^1.1.4",
@@ -37,6 +38,7 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
+    "@bangle.dev/pm-utils": "*",
     "@bangle.dev/react": "*",
     "@bangle.dev/tooltip": "*",
     "react": ">=16.0.0",

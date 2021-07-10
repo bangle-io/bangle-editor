@@ -45,6 +45,18 @@
     },
     {
       "path": "./contrib/search/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/js-utils/tsconfig.json"
+    },
+    {
+      "path": "./contrib/js-utils/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/pm-utils/tsconfig.json"
+    },
+    {
+      "path": "./contrib/pm-utils/tsconfig.test.json"
     }
   ]
 }
