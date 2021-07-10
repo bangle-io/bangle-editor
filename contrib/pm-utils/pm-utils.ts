@@ -16,7 +16,11 @@ import {
   Transaction,
   Selection,
 } from 'prosemirror-state';
-import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
+import {
+  findParentNode,
+  findSelectedNodeOfType,
+  safeInsert,
+} from 'prosemirror-utils';
 import type { EditorView } from 'prosemirror-view';
 
 export class GapCursorSelection extends Selection {}
