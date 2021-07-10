@@ -27,7 +27,39 @@ export class GapCursorSelection extends Selection {}
 
 type PredicateFunction = (state: EditorState, view?: EditorView) => any;
 
-export * from 'prosemirror-utils';
+export {
+  findParentNode,
+  findParentNodeClosestToPos,
+  findParentDomRef,
+  hasParentNode,
+  findParentNodeOfType,
+  findParentNodeOfTypeClosestToPos,
+  hasParentNodeOfType,
+  findParentDomRefOfType,
+  findSelectedNodeOfType,
+  isNodeSelection,
+  findPositionOfNodeBefore,
+  findDomRefAtPos,
+  flatten,
+  findChildren,
+  findTextNodes,
+  findInlineNodes,
+  findBlockNodes,
+  findChildrenByAttr,
+  findChildrenByType,
+  findChildrenByMark,
+  contains,
+  removeParentNodeOfType,
+  replaceParentNodeOfType,
+  removeSelectedNode,
+  replaceSelectedNode,
+  canInsert,
+  safeInsert,
+  setParentNodeMarkup,
+  selectParentNodeOfType,
+  removeNodeBefore,
+  setTextSelection,
+} from 'prosemirror-utils';
 
 export function rafCommandExec(view: EditorView, command: Command) {
   requestAnimationFrame(() => {
