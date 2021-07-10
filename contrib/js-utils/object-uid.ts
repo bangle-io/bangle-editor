@@ -1,4 +1,5 @@
 let counter = 0;
+let unique = Math.random();
 
 export class ObjectUID extends WeakMap {
   get(obj: any) {
@@ -6,7 +7,7 @@ export class ObjectUID extends WeakMap {
     if (uid) {
       return uid;
     }
-    uid = (counter++).toString();
+    uid = (counter++).toString() + '-' + unique;
     this.set(obj, uid);
     return uid;
   }

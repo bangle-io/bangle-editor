@@ -16,18 +16,14 @@ import {
   Transaction,
   Selection,
 } from 'prosemirror-state';
-import {
-  findParentNode,
-  findParentNodeOfType as _findParentNodeOfType,
-  findSelectedNodeOfType,
-  removeSelectedNode as _removeSelectedNode,
-  safeInsert as _safeInsert,
-} from 'prosemirror-utils';
+import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
 import type { EditorView } from 'prosemirror-view';
 
 export class GapCursorSelection extends Selection {}
 
 type PredicateFunction = (state: EditorState, view?: EditorView) => any;
+
+export * from 'prosemirror-utils';
 
 export function rafCommandExec(view: EditorView, command: Command) {
   requestAnimationFrame(() => {
@@ -52,20 +48,6 @@ export function filter(
     return cmd(state, dispatch, view) || false;
   };
 }
-
-export function safeInsert(
-  content: Node | Fragment,
-  position?: number,
-  tryToReplace?: boolean,
-): (tr: Transaction) => Transaction {
-  return _safeInsert(content, position, tryToReplace);
-}
-
-export function removeSelectedNode(tr: Transaction): Transaction {
-  return _removeSelectedNode(tr);
-}
-
-export const findParentNodeOfType = _findParentNodeOfType;
 
 export function isMarkActiveInSelection(
   type: MarkType,
