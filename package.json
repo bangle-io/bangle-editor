@@ -1,6 +1,6 @@
 {
   "name": "bangle.dev",
-  "version": "0.21.0-alpha.3",
+  "version": "0.21.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -31,7 +31,6 @@
     "table",
     "collab-server",
     "collab-client",
-    "test-helpers",
     "contrib/*"
   ],
   "scripts": {
