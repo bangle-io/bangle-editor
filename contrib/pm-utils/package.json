@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/pm-utils",
-  "version": "0.20.0",
+  "version": "0.21.0-alpha.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -20,7 +20,11 @@
   "main": "index.ts",
   "module": "index.ts",
   "types": "dist/index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "compile-ts": "yarn g:tsc --build $INIT_CWD",
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
+    "prepack": "yarn compile-ts"
+  },
   "peerDependencies": {
     "prosemirror-commands": "*",
     "prosemirror-model": "*",
