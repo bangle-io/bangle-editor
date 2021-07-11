@@ -1,4 +1,8 @@
-import { BangleEditor, BangleEditorState, setSelectionAtEnd } from '@bangle.dev/core';
+import {
+  BangleEditor,
+  BangleEditorState,
+  setSelectionAtEnd,
+} from '@bangle.dev/core';
 import '@bangle.dev/core/style.css';
 import { subscript, superscript } from '@bangle.dev/text-formatting';
 

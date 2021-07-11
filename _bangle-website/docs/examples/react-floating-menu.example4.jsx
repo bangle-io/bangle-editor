@@ -1,23 +1,23 @@
 import '@bangle.dev/react-menu/style.css';
 import '@bangle.dev/tooltip/style.css';
-import { corePlugins, coreSpec, PluginKey, setSelectionAtEnd } from '@bangle.dev/core';
+import {
+  corePlugins,
+  coreSpec,
+  PluginKey,
+  setSelectionAtEnd,
+} from '@bangle.dev/core';
 import '@bangle.dev/core/style.css';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
 import {
   BlockquoteButton,
-  BulletListButton, floatingMenu,
+  BulletListButton,
+  floatingMenu,
   FloatingMenu,
-
-  HeadingButton, Menu,
-
-
-
-
-  OrderedListButton, ParagraphButton,
-
-
-
-  TodoListButton
+  HeadingButton,
+  Menu,
+  OrderedListButton,
+  ParagraphButton,
+  TodoListButton,
 } from '@bangle.dev/react-menu';
 
 import React from 'react';
