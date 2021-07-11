@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/prosemirror-model": "^1.13.0",
-    "prosemirror-model": "^1.14.1"
+    "prosemirror-model": "^1.14.2"
   },
   "dependencies": {
     "debounce-fn": "^5.0.0"

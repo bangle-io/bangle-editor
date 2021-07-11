@@ -40,8 +40,8 @@
     "@types/prosemirror-model": "^1.13.0",
     "@types/prosemirror-state": "^1.2.6",
     "@types/prosemirror-view": "^1.17.1",
-    "prosemirror-commands": "^1.1.9",
-    "prosemirror-model": "^1.14.1"
+    "prosemirror-commands": "^1.1.10",
+    "prosemirror-model": "^1.14.2"
   },
   "publishConfig": {
     "access": "public"

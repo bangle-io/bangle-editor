@@ -23,7 +23,7 @@
   "dependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm-utils": "workspace:*",
-    "prosemirror-commands": "^1.1.9",
+    "prosemirror-commands": "^1.1.10",
     "prosemirror-keymap": "^1.1.4"
   },
   "devDependencies": {
