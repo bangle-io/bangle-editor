@@ -4,23 +4,23 @@
 
 /** @jsx psx */
 
-import {
-  psx,
-  typeText,
-  sendKeyToPm,
-  renderTestEditor,
-  typeChar,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+import { SpecRegistry } from '@bangle.dev/core';
+import { PluginKey, Selection } from 'prosemirror-state';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-
-import { PluginKey, Selection } from '@bangle.dev/core/prosemirror/state';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { sleep } from '@bangle.dev/core/utils/js-utils';
+import {
+  psx,
+  renderTestEditor,
+  sendKeyToPm,
+  typeChar,
+  typeText,
+} from '@bangle.dev/core/test-helpers/test-helpers';
+import { sleep } from '@bangle.dev/js-utils';
 import { suggestTooltip } from '../index';
 import { replaceSuggestMarkWith } from '../suggest-tooltip';
+
 // We are using char code to differentiate between different schema
 // 47 is char code for '/'
 const suggestTriggerMarkSlash = (content) => (

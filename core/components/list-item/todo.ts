@@ -1,6 +1,6 @@
 import { canJoin, findWrapping } from 'prosemirror-transform';
 import { InputRule } from 'prosemirror-inputrules';
-import { filter } from '../../utils/pm-utils';
+import { filter } from '@bangle.dev/pm-utils';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
 

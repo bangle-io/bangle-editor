@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/tooltip",
-  "version": "0.20.0",
+  "version": "0.21.0-alpha.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -29,6 +29,7 @@
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "prosemirror-inputrules": "*",
+    "prosemirror-keymap": "*",
     "prosemirror-model": "*",
     "prosemirror-state": "*",
     "prosemirror-view": "*"
@@ -39,16 +40,20 @@
     "@types/prosemirror-collab": "^1.1.1",
     "@types/prosemirror-commands": "^1.0.4",
     "@types/prosemirror-inputrules": "^1.0.4",
+    "@types/prosemirror-keymap": "^1.0.4",
     "@types/prosemirror-model": "^1.13.0",
     "@types/prosemirror-state": "^1.2.6",
     "@types/prosemirror-transform": "^1.1.3",
     "@types/prosemirror-view": "^1.17.1",
-    "prosemirror-commands": "^1.0.4"
+    "prosemirror-commands": "^1.1.10"
   },
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
+    "@bangle.dev/pm-utils": "workspace:*",
     "@popperjs/core": "^2.5.4",
     "prosemirror-inputrules": "^1.1.3",
-    "prosemirror-model": "^1.14.1",
+    "prosemirror-keymap": "^1.1.4",
+    "prosemirror-model": "^1.14.2",
     "prosemirror-state": "^1.3.4",
     "prosemirror-view": "^1.18.7"
   },

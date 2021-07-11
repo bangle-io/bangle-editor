@@ -47,8 +47,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:contrib/disk"
       },
       {
+        "name": "@bangle.dev/js-utils",
+        "reference": "workspace:contrib/js-utils"
+      },
+      {
         "name": "@bangle.dev/markdown-front-matter",
         "reference": "workspace:contrib/markdown-front-matter"
+      },
+      {
+        "name": "@bangle.dev/pm-utils",
+        "reference": "workspace:contrib/pm-utils"
       },
       {
         "name": "@bangle.dev/react-emoji-suggest",
@@ -115,12 +123,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?)|$))$)",
     "fallbackExclusionList": [
       ["@bangle.dev/collab-client", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-client", "workspace:collab-client"]],
-      ["@bangle.dev/collab-server", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server", "workspace:collab-server"]],
+      ["@bangle.dev/collab-server", ["workspace:collab-server"]],
       ["@bangle.dev/core", ["workspace:core"]],
       ["@bangle.dev/disk", ["workspace:contrib/disk"]],
       ["@bangle.dev/emoji", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji", "workspace:emoji"]],
+      ["@bangle.dev/js-utils", ["workspace:contrib/js-utils"]],
       ["@bangle.dev/markdown", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown", "workspace:markdown"]],
       ["@bangle.dev/markdown-front-matter", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/markdown-front-matter", "workspace:contrib/markdown-front-matter"]],
+      ["@bangle.dev/pm-utils", ["virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils", "workspace:contrib/pm-utils"]],
       ["@bangle.dev/react", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", "workspace:react"]],
       ["@bangle.dev/react-emoji-suggest", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/react-emoji-suggest", "workspace:contrib/react-emoji-suggest"]],
       ["@bangle.dev/react-menu", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react-menu", "workspace:react-menu"]],
@@ -128,7 +138,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@bangle.dev/react-stopwatch", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-stopwatch", "workspace:contrib/react-stopwatch"]],
       ["@bangle.dev/search", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/search", "workspace:contrib/search"]],
       ["@bangle.dev/table", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table", "workspace:table"]],
-      ["@bangle.dev/text-formatting", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/text-formatting", "workspace:contrib/text-formatting"]],
+      ["@bangle.dev/text-formatting", ["workspace:contrib/text-formatting"]],
       ["@bangle.dev/timestamp", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/timestamp", "workspace:contrib/timestamp"]],
       ["@bangle.dev/tooltip", ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip", "workspace:tooltip"]],
       ["@bangle.dev/trailing-node", ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/trailing-node", "workspace:contrib/trailing-node"]],
@@ -172,7 +182,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-circus", "npm:27.0.4"],
             ["jest-puppeteer", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:5.0.4"],
             ["lint-staged", "npm:10.5.3"],
-            ["prettier", "npm:2.3.0"],
+            ["prettier", "npm:2.3.2"],
             ["puppeteer", "npm:10.0.0"],
             ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"]
           ],
@@ -5539,9 +5549,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-client-virtual-2374bdfc26/1/collab-client/",
           "packageDependencies": [
             ["@bangle.dev/collab-client", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-client"],
-            ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
+            ["@bangle.dev/collab-server", "workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/disk", "workspace:contrib/disk"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
             ["@types/bangle.dev__collab-server", null],
             ["@types/bangle.dev__core", null],
             ["@types/jest", "npm:26.0.23"],
@@ -5553,7 +5564,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-view", "npm:1.17.1"],
             ["localforage", "npm:1.9.0"],
             ["prosemirror-collab", "npm:1.2.2"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"],
             ["prosemirror-view", "npm:1.18.7"],
@@ -5579,9 +5590,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./collab-client/",
           "packageDependencies": [
             ["@bangle.dev/collab-client", "workspace:collab-client"],
-            ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
+            ["@bangle.dev/collab-server", "workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/disk", "workspace:contrib/disk"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.12.2"],
             ["@types/prosemirror-collab", "npm:1.1.1"],
@@ -5591,7 +5603,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-view", "npm:1.17.1"],
             ["localforage", "npm:1.9.0"],
             ["prosemirror-collab", "npm:1.2.2"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"],
             ["prosemirror-view", "npm:1.18.7"],
@@ -5601,38 +5613,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@bangle.dev/collab-server", [
-        ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server", {
-          "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-server-virtual-b314106b91/1/collab-server/",
-          "packageDependencies": [
-            ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
-            ["@bangle.dev/core", "workspace:core"],
-            ["@bangle.dev/disk", "workspace:contrib/disk"],
-            ["@types/bangle.dev__core", null],
-            ["@types/bangle.dev__disk", null],
-            ["@types/jest", "npm:26.0.23"],
-            ["@types/node", "npm:15.12.2"],
-            ["@types/prosemirror-collab", "npm:1.1.1"],
-            ["@types/prosemirror-model", "npm:1.13.0"],
-            ["@types/prosemirror-transform", "npm:1.1.3"],
-            ["localforage", "npm:1.9.0"],
-            ["prosemirror-collab", "npm:1.2.2"],
-            ["prosemirror-model", "npm:1.14.1"],
-            ["prosemirror-transform", "npm:1.3.2"]
-          ],
-          "packagePeers": [
-            "@bangle.dev/core",
-            "@bangle.dev/disk",
-            "@types/bangle.dev__core",
-            "@types/bangle.dev__disk",
-            "@types/prosemirror-collab",
-            "@types/prosemirror-model",
-            "@types/prosemirror-transform",
-            "prosemirror-collab",
-            "prosemirror-model",
-            "prosemirror-transform"
-          ],
-          "linkType": "SOFT",
-        }],
         ["workspace:collab-server", {
           "packageLocation": "./collab-server/",
           "packageDependencies": [
@@ -5645,7 +5625,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-transform", "npm:1.1.3"],
             ["localforage", "npm:1.9.0"],
             ["prosemirror-collab", "npm:1.2.2"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-transform", "npm:1.3.2"]
           ],
           "linkType": "SOFT",
@@ -5656,6 +5636,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./core/",
           "packageDependencies": [
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/markdown-it", "npm:12.0.2"],
             ["@types/prosemirror-commands", "npm:1.0.4"],
@@ -5673,16 +5655,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/string.prototype.matchall", "npm:4.0.0"],
             ["markdown-it", "npm:10.0.0"],
-            ["prettier", "npm:2.3.0"],
-            ["prosemirror-commands", "npm:1.1.9"],
+            ["prettier", "npm:2.3.2"],
+            ["prosemirror-commands", "npm:1.1.10"],
             ["prosemirror-dropcursor", "npm:1.3.5"],
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-history", "npm:1.1.3"],
             ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-markdown", "npm:1.5.1"],
-            ["prosemirror-model", "npm:1.14.1"],
-            ["prosemirror-schema-list", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-schema-list", "npm:1.1.5"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.3.2"],
@@ -5693,13 +5675,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@bangle.dev/disk", [
+        ["npm:0.21.0", {
+          "packageLocation": "./.yarn/cache/@bangle.dev-disk-npm-0.21.0-fd5d5fb397-9843a2b38f.zip/node_modules/@bangle.dev/disk/",
+          "packageDependencies": [
+            ["@bangle.dev/disk", "npm:0.21.0"],
+            ["debounce-fn", "npm:5.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["workspace:contrib/disk", {
           "packageLocation": "./contrib/disk/",
           "packageDependencies": [
             ["@bangle.dev/disk", "workspace:contrib/disk"],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["debounce-fn", "npm:5.0.0"],
-            ["prosemirror-model", "npm:1.14.1"]
+            ["prosemirror-model", "npm:1.14.2"]
           ],
           "linkType": "SOFT",
         }]
@@ -5733,12 +5723,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@bangle.dev/js-utils", [
+        ["workspace:contrib/js-utils", {
+          "packageLocation": "./contrib/js-utils/",
+          "packageDependencies": [
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@types/jest", "npm:26.0.23"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@bangle.dev/markdown", [
         ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown", {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-markdown-virtual-c7733cc8ec/1/markdown/",
           "packageDependencies": [
             ["@bangle.dev/markdown", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__table", null],
@@ -5758,6 +5759,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/markdown", "workspace:markdown"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["markdown-it", "npm:10.0.0"],
             ["prosemirror-markdown", "npm:1.5.1"]
@@ -5792,22 +5794,76 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@bangle.dev/pm-utils", [
+        ["virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils", {
+          "packageLocation": "./.yarn/__virtual__/@bangle.dev-pm-utils-virtual-d9def01c68/1/contrib/pm-utils/",
+          "packageDependencies": [
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#npm:1.0.0-0"],
+            ["prosemirror-view", "npm:1.18.7"]
+          ],
+          "packagePeers": [
+            "@types/prosemirror-commands",
+            "@types/prosemirror-model",
+            "@types/prosemirror-state",
+            "@types/prosemirror-view",
+            "prosemirror-commands",
+            "prosemirror-model",
+            "prosemirror-state",
+            "prosemirror-view"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:contrib/pm-utils", {
+          "packageLocation": "./contrib/pm-utils/",
+          "packageDependencies": [
+            ["@bangle.dev/pm-utils", "workspace:contrib/pm-utils"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#npm:1.0.0-0"],
+            ["prosemirror-view", "npm:1.18.7"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@bangle.dev/react", [
         ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react", {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-react-virtual-d9f20580d2/1/react/",
           "packageDependencies": [
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@testing-library/dom", "npm:7.31.2"],
             ["@testing-library/jest-dom", "npm:5.13.0"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
             ["@testing-library/react-hooks", "virtual:d9f20580d21207b45787b1560be43166614960f0d7bca3c11fde95ef0d797600831b613b1104225f70f4985cc349a688c02676823428c526d5dd1982a2fb3f54#npm:7.0.0"],
             ["@types/bangle.dev__core", null],
             ["@types/prop-types", "npm:15.7.3"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
-            ["prettier", "npm:2.3.0"],
+            ["prettier", "npm:2.3.2"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["punycode", "npm:2.1.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"],
@@ -5828,15 +5884,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/react", "workspace:react"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@testing-library/dom", "npm:7.31.2"],
             ["@testing-library/jest-dom", "npm:5.13.0"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
             ["@testing-library/react-hooks", "virtual:d9f20580d21207b45787b1560be43166614960f0d7bca3c11fde95ef0d797600831b613b1104225f70f4985cc349a688c02676823428c526d5dd1982a2fb3f54#npm:7.0.0"],
             ["@types/prop-types", "npm:15.7.3"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
-            ["prettier", "npm:2.3.0"],
+            ["prettier", "npm:2.3.2"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["punycode", "npm:2.1.1"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"],
@@ -5852,27 +5916,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react-emoji-suggest", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/react-emoji-suggest"],
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/emoji", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
-            ["@types/bangle.dev__core", null],
-            ["@types/bangle.dev__emoji", null],
-            ["@types/bangle.dev__react", null],
-            ["@types/bangle.dev__tooltip", null],
+            ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
+            ["prosemirror-state", "npm:1.3.4"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
           "packagePeers": [
-            "@bangle.dev/core",
-            "@bangle.dev/emoji",
-            "@bangle.dev/react",
-            "@bangle.dev/tooltip",
-            "@types/bangle.dev__core",
-            "@types/bangle.dev__emoji",
-            "@types/bangle.dev__react",
-            "@types/bangle.dev__tooltip",
             "@types/react-dom",
             "@types/react",
             "react-dom",
@@ -5886,11 +5942,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react-emoji-suggest", "workspace:contrib/react-emoji-suggest"],
             ["@bangle.dev/core", "workspace:core"],
             ["@bangle.dev/emoji", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
+            ["prosemirror-state", "npm:1.3.4"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -5903,6 +5963,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/react-menu", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react-menu"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
@@ -5910,9 +5971,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__react", null],
             ["@types/bangle.dev__tooltip", null],
             ["@types/prop-types", "npm:15.7.3"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -5935,13 +6006,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/react-menu", "workspace:react-menu"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
             ["@types/prop-types", "npm:15.7.3"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -5961,9 +6043,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__markdown", null],
             ["@types/bangle.dev__react", null],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -5990,9 +6076,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -6012,8 +6102,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__markdown", null],
             ["@types/bangle.dev__react", null],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
+            ["prosemirror-keymap", "npm:1.1.4"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -6040,8 +6132,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
             ["@types/react", "npm:17.0.11"],
             ["@types/react-dom", "npm:17.0.8"],
+            ["prosemirror-keymap", "npm:1.1.4"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -6054,8 +6148,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/search", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/search"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
             ["@types/bangle.dev__core", null],
-            ["@types/jest", "npm:26.0.23"]
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -6068,7 +6171,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/search", "workspace:contrib/search"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@types/jest", "npm:26.0.23"]
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.0"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["@types/prosemirror-view", "npm:1.17.1"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-view", "npm:1.18.7"]
           ],
           "linkType": "SOFT",
         }]
@@ -6101,24 +6213,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@bangle.dev/text-formatting", [
-        ["virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/text-formatting", {
-          "packageLocation": "./.yarn/__virtual__/@bangle.dev-text-formatting-virtual-678f636bc2/1/contrib/text-formatting/",
-          "packageDependencies": [
-            ["@bangle.dev/text-formatting", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/text-formatting"],
-            ["@bangle.dev/core", "workspace:core"],
-            ["@types/bangle.dev__core", null]
-          ],
-          "packagePeers": [
-            "@bangle.dev/core",
-            "@types/bangle.dev__core"
-          ],
-          "linkType": "SOFT",
-        }],
         ["workspace:contrib/text-formatting", {
           "packageLocation": "./contrib/text-formatting/",
           "packageDependencies": [
             ["@bangle.dev/text-formatting", "workspace:contrib/text-formatting"],
-            ["@bangle.dev/core", "workspace:core"]
+            ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-keymap", "npm:1.1.4"]
           ],
           "linkType": "SOFT",
         }]
@@ -6129,7 +6233,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/timestamp", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/timestamp"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@types/bangle.dev__core", null]
+            ["@types/bangle.dev__core", null],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["prosemirror-keymap", "npm:1.1.4"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -6141,7 +6247,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./contrib/timestamp/",
           "packageDependencies": [
             ["@bangle.dev/timestamp", "workspace:contrib/timestamp"],
-            ["@bangle.dev/core", "workspace:core"]
+            ["@bangle.dev/core", "workspace:core"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["prosemirror-keymap", "npm:1.1.4"]
           ],
           "linkType": "SOFT",
         }]
@@ -6152,19 +6260,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@popperjs/core", "npm:2.5.4"],
             ["@types/bangle.dev__core", null],
             ["@types/jest", "npm:26.0.23"],
             ["@types/prosemirror-collab", "npm:1.1.1"],
             ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/prosemirror-transform", "npm:1.1.3"],
             ["@types/prosemirror-view", "npm:1.17.1"],
-            ["prosemirror-commands", "npm:1.1.9"],
+            ["prosemirror-commands", "npm:1.1.10"],
             ["prosemirror-inputrules", "npm:1.1.3"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-view", "npm:1.18.7"]
           ],
@@ -6183,18 +6295,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/tooltip", "workspace:tooltip"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@popperjs/core", "npm:2.5.4"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/prosemirror-collab", "npm:1.1.1"],
             ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-state", "npm:1.2.6"],
             ["@types/prosemirror-transform", "npm:1.1.3"],
             ["@types/prosemirror-view", "npm:1.17.1"],
-            ["prosemirror-commands", "npm:1.1.9"],
+            ["prosemirror-commands", "npm:1.1.10"],
             ["prosemirror-inputrules", "npm:1.1.3"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-view", "npm:1.18.7"]
           ],
@@ -6207,7 +6323,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/trailing-node"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@types/bangle.dev__core", null]
+            ["@types/bangle.dev__core", null],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["prosemirror-state", "npm:1.3.4"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
@@ -6219,7 +6337,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./contrib/trailing-node/",
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "workspace:contrib/trailing-node"],
-            ["@bangle.dev/core", "workspace:core"]
+            ["@bangle.dev/core", "workspace:core"],
+            ["@types/prosemirror-state", "npm:1.2.6"],
+            ["prosemirror-state", "npm:1.3.4"]
           ],
           "linkType": "SOFT",
         }]
@@ -10813,9 +10933,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["bangle-scripts", "workspace:_bangle-scripts"],
             ["@bangle.dev/collab-client", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-client"],
-            ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
+            ["@bangle.dev/collab-server", "workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@bangle.dev/disk", "workspace:contrib/disk"],
+            ["@bangle.dev/disk", "npm:0.21.0"],
             ["@bangle.dev/emoji", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji"],
             ["@bangle.dev/markdown", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown"],
             ["@bangle.dev/markdown-front-matter", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/markdown-front-matter"],
@@ -10826,7 +10946,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react-stopwatch", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-stopwatch"],
             ["@bangle.dev/search", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/search"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
-            ["@bangle.dev/text-formatting", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/text-formatting"],
+            ["@bangle.dev/text-formatting", "workspace:contrib/text-formatting"],
             ["@bangle.dev/timestamp", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/timestamp"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@bangle.dev/trailing-node", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/trailing-node"],
@@ -10844,7 +10964,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["globby", "npm:11.0.1"],
             ["handlebars", "npm:4.7.6"],
             ["prosemirror-collab", "npm:1.2.2"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-transform", "npm:1.3.2"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"],
@@ -10860,19 +10980,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bangle-website", "workspace:_bangle-website"],
             ["@babel/plugin-proposal-class-properties", "virtual:894572e2628843ec5c970052b44cccf9fb72b8e08ee70eebd42eb8db714036822bf5f3e74693f4678919528b6e488f14c81f198cad04fc4a093c61a15399454b#npm:7.14.5"],
             ["@bangle.dev/collab-client", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-client"],
-            ["@bangle.dev/collab-server", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:collab-server"],
+            ["@bangle.dev/collab-server", "workspace:collab-server"],
             ["@bangle.dev/core", "workspace:core"],
-            ["@bangle.dev/disk", "workspace:contrib/disk"],
+            ["@bangle.dev/disk", "npm:0.21.0"],
             ["@bangle.dev/emoji", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:emoji"],
             ["@bangle.dev/markdown", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:markdown"],
             ["@bangle.dev/markdown-front-matter", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/markdown-front-matter"],
+            ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/react-emoji-suggest", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/react-emoji-suggest"],
             ["@bangle.dev/react-menu", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react-menu"],
             ["@bangle.dev/react-sticker", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-sticker"],
             ["@bangle.dev/react-stopwatch", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/react-stopwatch"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
-            ["@bangle.dev/text-formatting", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/text-formatting"],
+            ["@bangle.dev/text-formatting", "workspace:contrib/text-formatting"],
             ["@bangle.dev/timestamp", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/timestamp"],
             ["@bangle.dev/tooltip", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:tooltip"],
             ["@bangle.dev/trailing-node", "virtual:8e5bb8363c57b398f14df670ff0e2b519dcb9d2df23b75b20d290f7a66b64be798bb26d90053f36164b6749ea1f545e64f4f7bb4d77281944a707aaafab10570#workspace:contrib/trailing-node"],
@@ -10891,8 +11012,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["file-loader", "virtual:894572e2628843ec5c970052b44cccf9fb72b8e08ee70eebd42eb8db714036822bf5f3e74693f4678919528b6e488f14c81f198cad04fc4a093c61a15399454b#npm:6.2.0"],
             ["prop-types", "npm:15.7.2"],
             ["prosemirror-collab", "npm:1.2.2"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-dropcursor", "npm:1.3.5"],
+            ["prosemirror-gapcursor", "npm:1.1.5"],
+            ["prosemirror-history", "npm:1.1.3"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-schema-list", "npm:1.1.5"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.3.2"],
+            ["prosemirror-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#npm:1.0.0-0"],
+            ["prosemirror-view", "npm:1.18.7"],
             ["react", "npm:17.0.2"],
             ["react-dom", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:17.0.2"]
           ],
@@ -10931,7 +11063,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-circus", "npm:27.0.4"],
             ["jest-puppeteer", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:5.0.4"],
             ["lint-staged", "npm:10.5.3"],
-            ["prettier", "npm:2.3.0"],
+            ["prettier", "npm:2.3.2"],
             ["puppeteer", "npm:10.0.0"],
             ["typescript", "patch:typescript@npm%3A4.2.4#~builtin<compat/typescript>::version=4.2.4&hash=34ad7d"]
           ],
@@ -17762,9 +17894,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-circus", "npm:27.0.4"],
             ["jest-environment-puppeteer", "npm:5.0.4"],
             ["jest-puppeteer", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:5.0.4"],
-            ["prettier", "npm:2.3.0"],
+            ["prettier", "npm:2.3.2"],
             ["prosemirror-inputrules", "npm:1.1.3"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-view", "npm:1.18.7"],
             ["punycode", "npm:2.1.1"],
@@ -23512,10 +23644,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prettier", [
-        ["npm:2.3.0", {
-          "packageLocation": "./.yarn/cache/prettier-npm-2.3.0-29ef37e8b6-e8851a45f6.zip/node_modules/prettier/",
+        ["npm:2.3.2", {
+          "packageLocation": "./.yarn/cache/prettier-npm-2.3.2-4467ec48dc-17ce5784ac.zip/node_modules/prettier/",
           "packageDependencies": [
-            ["prettier", "npm:2.3.0"]
+            ["prettier", "npm:2.3.2"]
           ],
           "linkType": "HARD",
         }]
@@ -23772,11 +23904,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-commands", [
-        ["npm:1.1.9", {
-          "packageLocation": "./.yarn/cache/prosemirror-commands-npm-1.1.9-880ad2cfab-9c75891dcd.zip/node_modules/prosemirror-commands/",
+        ["npm:1.1.10", {
+          "packageLocation": "./.yarn/cache/prosemirror-commands-npm-1.1.10-4a92af0831-16489153c5.zip/node_modules/prosemirror-commands/",
           "packageDependencies": [
-            ["prosemirror-commands", "npm:1.1.9"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"]
           ],
@@ -23801,7 +23933,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["prosemirror-gapcursor", "npm:1.1.5"],
             ["prosemirror-keymap", "npm:1.1.4"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-view", "npm:1.18.7"]
           ],
@@ -23848,27 +23980,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["prosemirror-markdown", "npm:1.5.1"],
             ["markdown-it", "npm:10.0.0"],
-            ["prosemirror-model", "npm:1.14.1"]
+            ["prosemirror-model", "npm:1.14.2"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["prosemirror-model", [
-        ["npm:1.14.1", {
-          "packageLocation": "./.yarn/cache/prosemirror-model-npm-1.14.1-167e0a33ae-85394aaff0.zip/node_modules/prosemirror-model/",
+        ["npm:1.14.2", {
+          "packageLocation": "./.yarn/cache/prosemirror-model-npm-1.14.2-b57218fe5f-1e2c662360.zip/node_modules/prosemirror-model/",
           "packageDependencies": [
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["orderedmap", "npm:1.1.1"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["prosemirror-schema-list", [
-        ["npm:1.1.4", {
-          "packageLocation": "./.yarn/cache/prosemirror-schema-list-npm-1.1.4-314796cf2a-b6b3a830c0.zip/node_modules/prosemirror-schema-list/",
+        ["npm:1.1.5", {
+          "packageLocation": "./.yarn/cache/prosemirror-schema-list-npm-1.1.5-98758e81c8-c4e5d657f0.zip/node_modules/prosemirror-schema-list/",
           "packageDependencies": [
-            ["prosemirror-schema-list", "npm:1.1.4"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-schema-list", "npm:1.1.5"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-transform", "npm:1.3.2"]
           ],
           "linkType": "HARD",
@@ -23879,7 +24011,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-state-npm-1.3.4-c4b4427e53-088748bca0.zip/node_modules/prosemirror-state/",
           "packageDependencies": [
             ["prosemirror-state", "npm:1.3.4"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-transform", "npm:1.3.2"]
           ],
           "linkType": "HARD",
@@ -23891,7 +24023,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-keymap", "npm:1.1.4"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"],
             ["prosemirror-view", "npm:1.18.7"]
@@ -23904,7 +24036,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-transform-npm-1.3.2-1e54a567f3-060804f64e.zip/node_modules/prosemirror-transform/",
           "packageDependencies": [
             ["prosemirror-transform", "npm:1.3.2"],
-            ["prosemirror-model", "npm:1.14.1"]
+            ["prosemirror-model", "npm:1.14.2"]
           ],
           "linkType": "HARD",
         }]
@@ -23923,7 +24055,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#npm:1.0.0-0"],
             ["@types/prosemirror-model", "npm:1.13.0"],
             ["@types/prosemirror-state", "npm:1.2.6"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"]
           ],
           "packagePeers": [
@@ -23940,7 +24072,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-view-npm-1.18.7-2a4cd9960c-a0343ff29d.zip/node_modules/prosemirror-view/",
           "packageDependencies": [
             ["prosemirror-view", "npm:1.18.7"],
-            ["prosemirror-model", "npm:1.14.1"],
+            ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"]
           ],

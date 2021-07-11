@@ -3,18 +3,15 @@
  */
 
 /** @jsx psx */
+import { corePlugins, heading, SpecRegistry } from '@bangle.dev/core';
+import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
 import {
   psx,
-  typeText,
-  sendKeyToPm,
   renderTestEditor,
+  sendKeyToPm,
+  typeText,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-
-import { corePlugins } from '@bangle.dev/core/utils/core-components';
 import { trailingNode } from '../index';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
-import { toggleHeadingCollapse } from '@bangle.dev/core/components/heading';
 
 const specRegistry = new SpecRegistry([
   ...defaultSpecs(),
@@ -77,15 +74,15 @@ test('Trailing node and collapsible heading', async () => {
     </doc>
   );
   const { view } = testEditor(original);
-  toggleHeadingCollapse()(view.state, view.dispatch);
-  toggleHeadingCollapse()(view.state, view.dispatch);
+  heading.toggleHeadingCollapse()(view.state, view.dispatch);
+  heading.toggleHeadingCollapse()(view.state, view.dispatch);
   expect(view.state).toEqualDocAndSelection(original);
 
-  toggleHeadingCollapse()(view.state, view.dispatch);
-  toggleHeadingCollapse()(view.state, view.dispatch);
+  heading.toggleHeadingCollapse()(view.state, view.dispatch);
+  heading.toggleHeadingCollapse()(view.state, view.dispatch);
   expect(view.state).toEqualDocAndSelection(original);
 
-  toggleHeadingCollapse()(view.state, view.dispatch);
-  toggleHeadingCollapse()(view.state, view.dispatch);
+  heading.toggleHeadingCollapse()(view.state, view.dispatch);
+  heading.toggleHeadingCollapse()(view.state, view.dispatch);
   expect(view.state).toEqualDocAndSelection(original);
 });

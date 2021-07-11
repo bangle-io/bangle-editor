@@ -1,8 +1,7 @@
-import React from 'react';
-
-import { NodeView } from '@bangle.dev/core/node-view';
-import { keymap, domSerializationHelpers } from '@bangle.dev/core/utils/utils';
+import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
+import { keymap } from 'prosemirror-keymap';
 import { serializeAtomNodeToMdLink2 } from '@bangle.dev/markdown/markdown-serializer';
+import React from 'react';
 
 const LOG = false;
 

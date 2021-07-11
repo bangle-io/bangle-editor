@@ -1,4 +1,4 @@
-import { bangleWarn } from './js-utils';
+import { bangleWarn } from '@bangle.dev/js-utils';
 import { PluginKey } from 'prosemirror-state';
 
 export function pluginKeyStore() {

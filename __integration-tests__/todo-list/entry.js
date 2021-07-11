@@ -3,7 +3,7 @@ import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components
 import {
   __serializeForClipboard,
   __parseFromClipboard,
-} from '@bangle.dev/core/prosemirror/view';
+} from 'prosemirror-view';
 import { setupReactEditor } from '../setup/entry-helpers';
 
 window.__serializeForClipboard = __serializeForClipboard;

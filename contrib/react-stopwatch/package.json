@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-stopwatch",
-  "version": "0.20.0",
+  "version": "0.21.0-alpha.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -23,6 +23,9 @@
     "prepack": "yarn g:babel",
     "postpack": "rm -r $INIT_CWD/dist"
   },
+  "dependencies": {
+    "prosemirror-keymap": "^1.1.4"
+  },
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "@bangle.dev/markdown": "*",
@@ -36,6 +39,7 @@
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
     "@testing-library/react": "^11.2.7",
+    "@types/prosemirror-keymap": "^1.0.4",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.8",
     "react": "^17.0.2",

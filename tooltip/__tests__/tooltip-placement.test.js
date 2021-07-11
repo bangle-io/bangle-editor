@@ -6,13 +6,17 @@
 import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
+import {
+  SpecRegistry,
+  BangleEditor,
+  BangleEditorState,
+  coreSpec,
+} from '@bangle.dev/core';
+
 import { Plugin, PluginKey } from 'prosemirror-state';
 
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
-import { coreSpec } from '@bangle.dev/core/utils/core-components';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {

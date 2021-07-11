@@ -1,13 +1,13 @@
-import '@bangle.dev/core/style.css';
-
 import {
-  Plugin,
   BangleEditor,
   BangleEditorState,
+  corePlugins,
+  coreSpec,
+  Plugin,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { toHTMLString } from '@bangle.dev/core/utils/pm-utils';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import '@bangle.dev/core/style.css';
+import { toHTMLString } from '@bangle.dev/pm-utils';
 
 export default function Editor(domNode) {
   function onEditorDocChange(state) {

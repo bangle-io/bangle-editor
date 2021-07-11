@@ -2,22 +2,22 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import {
-  psx,
-  renderTestEditor,
-} from '@bangle.dev/core/test-helpers/test-helpers';
-import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
-import {
-  defaultMarkdownItTokenizer,
-  markdownParser,
-} from '@bangle.dev/markdown/markdown-parser';
-import emojiParser from 'markdown-it-emoji';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
+import {
+  psx,
+  renderTestEditor,
+} from '@bangle.dev/core/test-helpers/test-helpers';
+import {
+  defaultMarkdownItTokenizer,
+  markdownParser,
+} from '@bangle.dev/markdown/markdown-parser';
+import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
+import emojiParser from 'markdown-it-emoji';
 import { emoji } from '../index';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
 
 let getEmoji, testEditor, specRegistry;
 

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/disk",
-  "version": "0.20.0",
+  "version": "0.21.0-alpha.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/prosemirror-model": "^1.13.0",
-    "prosemirror-model": "^1.14.1"
+    "prosemirror-model": "^1.14.2"
   },
   "dependencies": {
     "debounce-fn": "^5.0.0"

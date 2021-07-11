@@ -4,7 +4,7 @@ import { Schema } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
-import { isMarkActiveInSelection } from '../utils/pm-utils';
+import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

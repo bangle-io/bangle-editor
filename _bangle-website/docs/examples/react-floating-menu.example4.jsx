@@ -1,22 +1,26 @@
-import '@bangle.dev/core/style.css';
-import '@bangle.dev/tooltip/style.css';
 import '@bangle.dev/react-menu/style.css';
-import React from 'react';
-import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { PluginKey } from '@bangle.dev/core';
-import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import '@bangle.dev/tooltip/style.css';
 import {
-  floatingMenu,
-  FloatingMenu,
-  Menu,
-  HeadingButton,
-  ParagraphButton,
+  corePlugins,
+  coreSpec,
+  PluginKey,
+  setSelectionAtEnd,
+} from '@bangle.dev/core';
+import '@bangle.dev/core/style.css';
+import { BangleEditor, useEditorState } from '@bangle.dev/react';
+import {
   BlockquoteButton,
   BulletListButton,
+  floatingMenu,
+  FloatingMenu,
+  HeadingButton,
+  Menu,
   OrderedListButton,
+  ParagraphButton,
   TodoListButton,
 } from '@bangle.dev/react-menu';
+
+import React from 'react';
 
 const menuKey = new PluginKey('menuKey');
 

@@ -3,13 +3,10 @@
  */
 
 /** @jsx psx */
-import { markdownSerializer } from '../markdown-serializer';
-
-import { components } from '@bangle.dev/core';
-
-import { markdownParser } from '../markdown-parser';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { components, SpecRegistry } from '@bangle.dev/core';
 import { table, tableCell, tableHeader, tableRow } from '@bangle.dev/table';
+import { markdownParser } from '../markdown-parser';
+import { markdownSerializer } from '../markdown-serializer';
 
 const {
   bold,

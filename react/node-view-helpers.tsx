@@ -1,10 +1,6 @@
 import { RefObject, useEffect, useState } from 'react';
-import { objUid } from '@bangle.dev/core/utils/object-uid';
-import {
-  NodeView,
-  RenderHandlers,
-  saveRenderHandlers,
-} from '@bangle.dev/core/node-view';
+import { NodeView, RenderHandlers, saveRenderHandlers } from '@bangle.dev/core';
+import { objectUid } from '@bangle.dev/js-utils';
 
 const LOG = false;
 
@@ -19,11 +15,11 @@ export const nodeViewRenderHandlers = (
   updateNodeViews: UpdateNodeViewsFunction,
 ): RenderHandlers => ({
   create: (nodeView, _nodeViewProps) => {
-    log('create', objUid.get(nodeView));
+    log('create', objectUid.get(nodeView));
     updateNodeViews((nodeViews) => [...nodeViews, nodeView]);
   },
   update: (nodeView, _nodeViewProps) => {
-    log('update', objUid.get(nodeView));
+    log('update', objectUid.get(nodeView));
     const updateCallback = nodeViewUpdateStore.get(nodeView);
     // If updateCallback is undefined (which can happen if react took long to mount),
     // we are still okay, as the latest nodeViewProps will be accessed whenever it mounts.
@@ -32,7 +28,7 @@ export const nodeViewRenderHandlers = (
     }
   },
   destroy: (nodeView) => {
-    log('destroy', objUid.get(nodeView));
+    log('destroy', objectUid.get(nodeView));
     updateNodeViews((nodeViews) => nodeViews.filter((n) => n !== nodeView));
   },
 });

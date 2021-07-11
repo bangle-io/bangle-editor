@@ -28,7 +28,8 @@ import {
 } from 'prosemirror-state';
 
 import { MoveDirection } from '../../types';
-import { compose } from '../../utils/js-utils';
+import { compose } from '@bangle.dev/js-utils';
+
 import {
   hasVisibleContent,
   isNodeEmpty,
@@ -41,8 +42,9 @@ import {
   validPos,
   validListParent,
   extendDispatch,
-} from '../../utils/pm-utils';
-import { GapCursorSelection } from '../../gap-cursor';
+  GapCursorSelection,
+} from '@bangle.dev/pm-utils';
+
 import { liftSelectionList, liftFollowingList } from './transforms';
 import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
 

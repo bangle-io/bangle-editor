@@ -4,7 +4,7 @@ import { ContentNodeWithPos, findChildren } from 'prosemirror-utils';
 import { Fragment, Node, Schema } from 'prosemirror-model';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
-import { keymap } from '../utils/keymap';
+import { keymap } from 'prosemirror-keymap';
 import {
   copyEmptyCommand,
   cutEmptyCommand,
@@ -12,7 +12,11 @@ import {
   jumpToStartOfNode,
   jumpToEndOfNode,
 } from '../core-commands';
-import { filter, findParentNodeOfType, insertEmpty } from '../utils/pm-utils';
+import {
+  filter,
+  findParentNodeOfType,
+  insertEmpty,
+} from '@bangle.dev/pm-utils';
 import browser from '../utils/browser';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import type Token from 'markdown-it/lib/token';

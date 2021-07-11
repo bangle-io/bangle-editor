@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/markdown",
-  "version": "0.20.0",
+  "version": "0.21.0-alpha.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -21,6 +21,7 @@
   "module": "index.js",
   "scripts": {},
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
     "markdown-it": "^10.0.0",
     "prosemirror-markdown": "^1.5.1"
   },

@@ -1,11 +1,11 @@
-import { InputRule } from 'prosemirror-inputrules';
-import { EditorState, Plugin } from 'prosemirror-state';
-import { matchAllPlus } from '../utils/js-utils';
-import { filter, getMarkAttrs, mapSlice } from '../utils/pm-utils';
-import { Mark, MarkType, Node, Schema } from 'prosemirror-model';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import { matchAllPlus } from '@bangle.dev/js-utils';
 import type Token from 'markdown-it/lib/token';
 import { Command } from 'prosemirror-commands';
+import { InputRule } from 'prosemirror-inputrules';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import { Mark, MarkType, Node, Schema } from 'prosemirror-model';
+import { EditorState, Plugin } from 'prosemirror-state';
+import { filter, getMarkAttrs, mapSlice } from '@bangle.dev/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

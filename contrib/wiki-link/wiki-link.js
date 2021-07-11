@@ -1,4 +1,4 @@
-import { domSerializationHelpers } from '@bangle.dev/core/utils/dom-serialization-helpers';
+import { domSerializationHelpers } from '@bangle.dev/core';
 
 const name = 'wikiLink';
 export const spec = specFactory;

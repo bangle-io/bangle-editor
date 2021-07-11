@@ -1,7 +1,11 @@
 import { Command, setBlockType } from 'prosemirror-commands';
 import { Node, Schema } from 'prosemirror-model';
-import { filter, insertEmpty, findParentNodeOfType } from '../utils/pm-utils';
-import { keymap } from '../utils/keymap';
+import {
+  filter,
+  insertEmpty,
+  findParentNodeOfType,
+} from '@bangle.dev/pm-utils';
+import { keymap } from 'prosemirror-keymap';
 import {
   parentHasDirectParentOfType,
   copyEmptyCommand,

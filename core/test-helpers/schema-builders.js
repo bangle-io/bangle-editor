@@ -1,9 +1,4 @@
-import {
-  matchAllPlus,
-  objectMapValues,
-  safeMergeObject,
-  weakCache,
-} from '../utils/js-utils';
+import { matchAllPlus, objectMapValues, weakCache } from '@bangle.dev/js-utils';
 
 // Short hand to allow for smaller jsx syntax
 // For example instead of `<paragraph>hello world</paragraph>`
@@ -206,4 +201,20 @@ function matchLabel(text) {
       'g',
     ),
   );
+}
+
+function safeMergeObject(obj1 = {}, obj2 = {}) {
+  const culpritKey = Object.keys(obj1).find((key) => hasOwnProperty(obj2, key));
+  if (culpritKey) {
+    throw new Error(`Key ${culpritKey} already exists `);
+  }
+
+  return {
+    ...obj1,
+    ...obj2,
+  };
+}
+
+function hasOwnProperty(obj, property) {
+  return Object.prototype.hasOwnProperty.call(obj, property);
 }

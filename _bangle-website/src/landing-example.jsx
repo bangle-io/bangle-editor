@@ -4,7 +4,7 @@ import '@bangle.dev/react-menu/style.css';
 import React from 'react';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
 import { PluginKey } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { corePlugins, coreSpec } from '@bangle.dev/core';
 import { floatingMenu, FloatingMenu } from '@bangle.dev/react-menu';
 
 const menuKey = new PluginKey('menuKey');

@@ -1,4 +1,4 @@
-import { objectFilter, objectMapValues } from '@bangle.dev/core/utils/js-utils';
+import { objectFilter, objectMapValues } from '@bangle.dev/js-utils';
 import { MarkdownSerializer } from 'prosemirror-markdown';
 import { markdownLoader } from './markdown-loader';
 // A markdown serializer which uses a node/mark schema's

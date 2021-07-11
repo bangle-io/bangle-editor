@@ -1,18 +1,14 @@
-import '@bangle.dev/core/style.css';
 import {
   BangleEditor,
   BangleEditorState,
+  corePlugins,
+  coreSpec,
   SpecRegistry,
+  heading,
 } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
-import { Plugin } from '@bangle.dev/core/plugin';
-import { Decoration, DecorationSet } from '@bangle.dev/core/prosemirror/view';
-import { Selection } from '@bangle.dev/core/prosemirror/state';
-import {
-  listCollapsedHeading,
-  listCollapsibleHeading,
-  toggleHeadingCollapse,
-} from '@bangle.dev/core/components/heading';
+import '@bangle.dev/core/style.css';
+import { Plugin, Selection } from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({
@@ -69,12 +65,12 @@ const collapsePlugin = new Plugin({
 
 function buildDeco(state) {
   const collapsedHeadingSet = new Set(
-    listCollapsedHeading(state).map((r) => r.node),
+    heading.listCollapsedHeading(state).map((r) => r.node),
   );
 
-  const headings = listCollapsibleHeading(state).filter(
-    (r) => r.node.content.size > 0,
-  );
+  const headings = heading
+    .listCollapsibleHeading(state)
+    .filter((r) => r.node.content.size > 0);
 
   // See https://prosemirror.net/docs/ref/#view.Decoration^widget
   return DecorationSet.create(
@@ -104,7 +100,7 @@ function createCollapseDOM(view, isCollapsed, pos) {
   child.addEventListener('click', function (e) {
     const tr = view.state.tr;
     view.dispatch(tr.setSelection(Selection.near(tr.doc.resolve(pos))));
-    toggleHeadingCollapse()(view.state, view.dispatch, view);
+    heading.toggleHeadingCollapse()(view.state, view.dispatch, view);
   });
 
   child.style.userSelect = 'none';

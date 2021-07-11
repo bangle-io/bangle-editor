@@ -14,7 +14,7 @@ import {
 } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { autoJoin } from 'prosemirror-commands';
-import { getListLiftTarget, mapChildren, mapSlice } from '../../utils/pm-utils';
+import { getListLiftTarget, mapChildren, mapSlice } from '@bangle.dev/pm-utils';
 
 function liftListItem(
   type: NodeType,

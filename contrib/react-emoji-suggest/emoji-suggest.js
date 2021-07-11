@@ -1,13 +1,9 @@
-import {
-  bangleWarn,
-  rafCommandExec,
-  uuid,
-} from '@bangle.dev/core/utils/js-utils';
+import { pluginKeyStore } from '@bangle.dev/core';
 import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip';
-import { PluginKey } from '@bangle.dev/core';
-import { valuePlugin } from '@bangle.dev/core/utils/pm-utils';
-import { pluginKeyStore } from '@bangle.dev/core/utils/plugin-key-store';
+import { PluginKey } from 'prosemirror-state';
 import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
+import { valuePlugin, rafCommandExec } from '@bangle.dev/pm-utils';
+import { bangleWarn, uuid } from '@bangle.dev/js-utils';
 
 const {
   decrementSuggestTooltipCounter,

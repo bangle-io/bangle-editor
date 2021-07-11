@@ -1,10 +1,9 @@
-import React from 'react';
-import { bangleWarn } from '@bangle.dev/core/utils/js-utils';
-import { objUid } from '@bangle.dev/core/utils/object-uid';
+import { NodeView, NodeViewProps } from '@bangle.dev/core';
+import { objectUid, bangleWarn } from '@bangle.dev/js-utils';
 import PropTypes from 'prop-types';
-import { Node } from '@bangle.dev/core/prosemirror/model';
-import { EditorView } from '@bangle.dev/core/prosemirror/view';
-import { NodeView, NodeViewProps } from '@bangle.dev/core/node-view';
+import { Node } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import React from 'react';
 
 const LOG = false;
 
@@ -93,7 +92,7 @@ export class NodeViewWrapper extends React.PureComponent<PropsType, StateType> {
   }
 
   render() {
-    log('react rendering', objUid.get(this.props.nodeView));
+    log('react rendering', objectUid.get(this.props.nodeView));
     const element = this.props.renderNodeViews({
       ...this.state.nodeViewProps,
       children: this.getChildren(),

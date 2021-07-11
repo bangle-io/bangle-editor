@@ -6,7 +6,7 @@ import {
   psx,
   renderTestEditor,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,

@@ -1,6 +1,6 @@
-import { toggleMark } from '@bangle.dev/core/prosemirror/commands';
-import { isMarkActiveInSelection } from '@bangle.dev/core/utils/pm-utils';
-import { keymap } from '@bangle.dev/core/utils/keymap';
+import { toggleMark } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
+import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

@@ -72,12 +72,10 @@ You can either npm install them:
 npm i -S prosemirror-view prosemirror-state
 ```
 
-or use the ones provided in bangle core which follow the path of `@bangle.dev/core/prosemirror/<name_of_module>`:
-
 ```js
-import { EditorView } from '@bangle.dev/core/prosemirror/view';
-import { TextSelection } from '@bangle.dev/core/prosemirror/state';
-import { Slice } from '@bangle.dev/core/prosemirror/model';
+import { EditorView } from 'prosemirror-view';
+import { TextSelection } from 'prosemirror-state';
+import { Slice } from 'prosemirror-model';
 ```
 
 I recommend the later approach to avoid problems with different versions of Prosemirror existing in your application.

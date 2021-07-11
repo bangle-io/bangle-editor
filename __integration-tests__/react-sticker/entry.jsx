@@ -4,15 +4,15 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
-import { DOMSerializer, Slice } from '@bangle.dev/core/prosemirror/model';
+import { SpecRegistry } from '@bangle.dev/core';
+import { DOMSerializer, Slice } from 'prosemirror-model';
 import { sticker } from '@bangle.dev/react-sticker';
 import { stopwatch } from '@bangle.dev/react-stopwatch';
 import { setupReactEditor } from '../setup/entry-helpers';
 import {
   __serializeForClipboard,
   __parseFromClipboard,
-} from '@bangle.dev/core/prosemirror/view';
+} from 'prosemirror-view';
 
 window.__serializeForClipboard = __serializeForClipboard;
 window.__parseFromClipboard = __parseFromClipboard;

@@ -1,11 +1,12 @@
-import '@bangle.dev/core/style.css';
 import {
-  Plugin,
   BangleEditor,
   BangleEditorState,
+  corePlugins,
+  coreSpec,
+  Plugin,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import '@bangle.dev/core/style.css';
 
 function getItemFromStorage() {
   try {

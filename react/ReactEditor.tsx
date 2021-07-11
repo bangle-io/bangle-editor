@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import reactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { objUid } from '@bangle.dev/core/utils/object-uid';
 import {
   BangleEditor as CoreBangleEditor,
   BangleEditorProps as CoreBangleEditorProps,
-} from '@bangle.dev/core/bangle-editor';
-import { BangleEditorState as CoreBangleEditorState } from '@bangle.dev/core/bangle-editor-state';
-import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
+  BangleEditorState as CoreBangleEditorState,
+} from '@bangle.dev/core';
+import { Plugin } from 'prosemirror-state';
+import PropTypes from 'prop-types';
+import { EditorView } from 'prosemirror-view';
+import React, { useEffect, useRef, useState } from 'react';
+import reactDOM from 'react-dom';
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
-import { EditorView } from '@bangle.dev/core/prosemirror/view';
-import { Plugin } from '@bangle.dev/core/plugin';
+import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
+import { objectUid } from '@bangle.dev/js-utils';
 
 const LOG = false;
 
@@ -69,13 +69,13 @@ export function BangleEditor({
       {nodeViews.map((nodeView) => {
         return reactDOM.createPortal(
           <NodeViewWrapper
-            debugKey={objUid.get(nodeView)}
+            debugKey={objectUid.get(nodeView)}
             nodeViewUpdateStore={nodeViewUpdateStore}
             nodeView={nodeView}
             renderNodeViews={renderNodeViews}
           />,
           nodeView.containerDOM!,
-          objUid.get(nodeView),
+          objectUid.get(nodeView),
         );
       })}
       {editor ? (

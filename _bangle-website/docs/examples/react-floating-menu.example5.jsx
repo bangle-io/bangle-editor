@@ -3,8 +3,8 @@ import '@bangle.dev/tooltip/style.css';
 import '@bangle.dev/react-menu/style.css';
 import React from 'react';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { PluginKey } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core/utils/core-components';
+import { PluginKey, link } from '@bangle.dev/core';
+import { corePlugins, coreSpec } from '@bangle.dev/core';
 import {
   floatingMenu,
   FloatingMenu,
@@ -15,7 +15,6 @@ import {
   ItalicButton,
   MenuButton,
 } from '@bangle.dev/react-menu';
-import { queryIsLinkActive } from '@bangle.dev/core/components/link';
 
 const menuKey = new PluginKey('menuKey');
 
@@ -53,7 +52,7 @@ export default function Example() {
       floatingMenu.plugins({
         key: menuKey,
         calculateType: (state, prevType) => {
-          if (queryIsLinkActive()(state)) {
+          if (link.queryIsLinkActive()(state)) {
             return 'linkSubMenu';
           }
           if (state.selection.empty) {

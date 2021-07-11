@@ -4,10 +4,10 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry, PluginKey } from '@bangle.dev/core';
 import { sticker } from '@bangle.dev/react-sticker';
 import { floatingMenu } from '@bangle.dev/react-menu';
-import { PluginKey } from '@bangle.dev/core/index';
+
 import { setupReactEditor } from '../setup/entry-helpers';
 
 setup();

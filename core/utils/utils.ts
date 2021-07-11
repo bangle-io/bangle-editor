@@ -1,13 +1,7 @@
 export { default as browser } from './browser';
 export * from './core-components';
-export * from './dom-serialization-helpers';
-export * from './environment';
-export * from './js-utils';
-export * from './keymap';
 export * from './logging';
 export * from './mark-input-rule';
 export * from './mark-paste-rule';
-export * from './object-uid';
 export * from './plugin-key-store';
 export * from './plugin-loader';
-export * from './pm-utils';

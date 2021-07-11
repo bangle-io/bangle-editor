@@ -1,7 +1,10 @@
-import { superscript, subscript } from '@bangle.dev/text-formatting';
+import {
+  BangleEditor,
+  BangleEditorState,
+  setSelectionAtEnd,
+} from '@bangle.dev/core';
 import '@bangle.dev/core/style.css';
-import { BangleEditor, BangleEditorState } from '@bangle.dev/core';
-import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
+import { subscript, superscript } from '@bangle.dev/text-formatting';
 
 export default function Editor(domNode) {
   const state = new BangleEditorState({

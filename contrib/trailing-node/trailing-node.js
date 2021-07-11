@@ -1,4 +1,4 @@
-import { PluginKey, Plugin } from '@bangle.dev/core/plugin';
+import { PluginKey, Plugin } from 'prosemirror-state';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

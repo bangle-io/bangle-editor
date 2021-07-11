@@ -1,4 +1,5 @@
-import { Plugin } from '@bangle.dev/core/index';
+import { Plugin } from '@bangle.dev/core';
+import type { Command } from 'prosemirror-commands';
 import {
   EditorState,
   NodeSelection,
@@ -6,8 +7,7 @@ import {
   Transaction,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import type { Command } from 'prosemirror-commands';
-import { TooltipDOM, createTooltipDOM } from './create-tooltip-dom';
+import { createTooltipDOM, TooltipDOM } from './create-tooltip-dom';
 import type { TooltipRenderOpts } from './tooltip-placement';
 import * as tooltipPlacement from './tooltip-placement';
 

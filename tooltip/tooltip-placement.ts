@@ -1,23 +1,23 @@
-import { PluginKey, EditorState } from 'prosemirror-state';
-import { DOMOutputSpec } from 'prosemirror-model';
-import { Plugin } from '@bangle.dev/core/index';
-import { bangleWarn } from '@bangle.dev/core/utils/js-utils';
-import { createTooltipDOM } from './create-tooltip-dom';
+import { Plugin } from '@bangle.dev/core';
+import { bangleWarn } from '@bangle.dev/js-utils';
 import {
+  Instance as PopperInstance,
+  Modifier,
   Placement,
   State as PopperState,
   VirtualElement,
-  Modifier,
-  Instance as PopperInstance,
 } from '@popperjs/core';
+import { DOMOutputSpec } from 'prosemirror-model';
+import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { createTooltipDOM } from './create-tooltip-dom';
 import {
-  createPopper,
-  offset,
-  preventOverflow,
-  flip,
   arrow,
+  createPopper,
+  flip,
+  offset,
   popperOffsets,
+  preventOverflow,
 } from './popper';
 
 export const plugins = tooltipPlacement;

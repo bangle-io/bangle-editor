@@ -1,20 +1,19 @@
-/// <reference path="./missing-types.d.ts" />
-import { Fragment, Node, Schema, MarkType } from 'prosemirror-model';
-import { keymap } from '@bangle.dev/core/utils/keymap';
-import { EditorState, Selection, Plugin, PluginKey } from 'prosemirror-state';
-import {
-  findFirstMarkPosition,
-  filter,
-  safeInsert,
-} from '@bangle.dev/core/utils/pm-utils';
 import { isChromeWithSelectionBug } from '@bangle.dev/core';
+import {
+  filter,
+  findFirstMarkPosition,
+  safeInsert,
+} from '@bangle.dev/pm-utils';
 import { Command } from 'prosemirror-commands';
-import { triggerInputRule } from './trigger-input-rule';
-import * as tooltipPlacement from './tooltip-placement';
+import { keymap } from 'prosemirror-keymap';
+import { Fragment, MarkType, Node, Schema } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, Selection } from 'prosemirror-state';
 import type {
-  TooltipRenderOpts,
   GetReferenceElementFunction,
+  TooltipRenderOpts,
 } from './tooltip-placement';
+import * as tooltipPlacement from './tooltip-placement';
+import { triggerInputRule } from './trigger-input-rule';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};

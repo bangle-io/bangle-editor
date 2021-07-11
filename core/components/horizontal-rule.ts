@@ -1,4 +1,4 @@
-import { safeInsert } from '../utils/pm-utils';
+import { safeInsert } from '@bangle.dev/pm-utils';
 import { InputRule } from 'prosemirror-inputrules';
 import { Schema, Node } from 'prosemirror-model';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';

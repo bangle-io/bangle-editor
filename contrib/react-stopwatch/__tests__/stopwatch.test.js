@@ -9,7 +9,7 @@ import {
 } from '@bangle.dev/react/__tests__/helpers/index';
 import { sendKeyToPm } from '@bangle.dev/core/test-helpers/test-helpers';
 import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
-import { SpecRegistry } from '@bangle.dev/core/spec-registry';
+import { SpecRegistry } from '@bangle.dev/core';
 import { stopwatch } from '../index';
 import { Stopwatch } from '../stopwatch';
 import {

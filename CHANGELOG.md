@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- breaking: All imports are now expected to be done by doing `import { ... } from '@bangle.dev/core'`. Direct file imports like `import { ... } from '@bangle.dev/core/xyz'` are no longer supported.
+- breaking: `keymap` is no longer exported, please use `prosemirror-keymap` directly.
+
 ## 0.20.0
 
 **@bangle.dev/tooltip**
