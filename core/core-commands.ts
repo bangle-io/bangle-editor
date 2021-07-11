@@ -8,8 +8,8 @@ import {
 } from 'prosemirror-state';
 import { ReplaceStep } from 'prosemirror-transform';
 import { findParentNodeOfType } from 'prosemirror-utils';
-import { MoveDirection } from './types';
 import { mapChildren } from '@bangle.dev/pm-utils';
+import { MoveDirection } from './types';
 
 function getParentTextSelection(state: EditorState, currentDepth: number) {
   const { $from } = state.selection;

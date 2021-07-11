@@ -13,6 +13,7 @@ export * from './create-element';
 export * from './utils/dom-serialization-helpers';
 export * from './utils/plugin-key-store';
 export * from './utils/core-components';
+export * from './core-commands';
 
 const isChromeWithSelectionBug =
   browser.chrome && !browser.android && browser.chrome_version >= 58;

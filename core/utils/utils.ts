@@ -1,6 +1,5 @@
 export { default as browser } from './browser';
 export * from './core-components';
-export * from './environment';
 export * from './logging';
 export * from './mark-input-rule';
 export * from './mark-paste-rule';

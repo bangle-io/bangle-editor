@@ -5,8 +5,8 @@ import {
   coreSpec,
   Plugin,
   PluginKey,
+  setSelectionAtEnd
 } from '@bangle.dev/core';
-import { setSelectionAtEnd } from '@bangle.dev/core/core-commands';
 import '@bangle.dev/core/style.css';
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import '@bangle.dev/tooltip/style.css';
