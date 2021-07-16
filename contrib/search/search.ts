@@ -20,19 +20,17 @@ function pluginsFactory({
   query: initialQuery,
   className = 'bangle-search-match',
   maxHighlights = 1500,
-  caseSensitive = false,
 }: {
   key: PluginKey;
   query?: RegExp | string;
   className?: string;
   maxHighlights?: number;
-  caseSensitive?: boolean;
 }) {
   function buildDeco(state: EditorState, query?: RegExp | string) {
     if (!query) {
       return DecorationSet.empty;
     }
-    const matches = findMatches(state.doc, query, maxHighlights, caseSensitive);
+    const matches = findMatches(state.doc, query, maxHighlights);
     const decorations = matches.map((match) => {
       // TODO we should improve the performance
       // by only creating decos which need an update
@@ -83,26 +81,32 @@ function pluginsFactory({
     });
 }
 
-function findMatches(
-  doc: Node,
-  regex: RegExp | string,
-  maxHighlights: number,
-  caseSensitive: boolean,
-) {
+function findMatches(doc: Node, regex: RegExp | string, maxHighlights: number) {
   let results: {
     pos: number;
     match: ReturnType<typeof matchAllPlus>[0];
   }[] = [];
   let count = 0;
-  const gRegex = RegExp(regex, 'g');
+  let gRegex: RegExp;
+  if (regex instanceof RegExp) {
+    let flags = 'g';
+    if (regex.ignoreCase) {
+      flags += 'i';
+    }
+    if (regex.multiline) {
+      flags += 'm';
+    }
+    gRegex = RegExp(regex.source, flags);
+  } else {
+    gRegex = RegExp(regex, 'g');
+  }
+
   doc.descendants((node, pos) => {
     if (maxHighlights <= count) {
       return false;
     }
     if (node.isText) {
-      const source = caseSensitive
-        ? node.textContent
-        : node.textContent.toLocaleLowerCase();
+      const source = node.textContent;
 
       const matchedResult = matchAllPlus(gRegex, source);
       for (const match of matchedResult) {

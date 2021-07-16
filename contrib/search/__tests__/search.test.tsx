@@ -89,25 +89,44 @@ test('respects maxHighlights limit', async () => {
   expect(container).toMatchSnapshot();
 });
 
-test('when caseSensitive is true', async () => {
+test('respect case senstivity provided by regex', async () => {
   const testEditor = renderTestEditor({
     specRegistry,
     plugins: [
       search.plugins({
         key: searchPluginKey,
         query: /hello/,
-        caseSensitive: true,
       }),
     ],
   });
 
   const { container, view } = testEditor(
     <doc>
-      <para>Jello [world]</para>
+      <para>Hello [world]</para>
     </doc>,
   );
 
   expect(countOcurrences(container.innerHTML, '"bangle-search-match"')).toBe(0);
+});
+
+test('ignores case when i flag is provided', async () => {
+  const testEditor = renderTestEditor({
+    specRegistry,
+    plugins: [
+      search.plugins({
+        key: searchPluginKey,
+        query: /hello/i,
+      }),
+    ],
+  });
+
+  const { container, view } = testEditor(
+    <doc>
+      <para>Hello [world]</para>
+    </doc>,
+  );
+
+  expect(countOcurrences(container.innerHTML, '"bangle-search-match"')).toBe(1);
 });
 
 test('1 works when no match', async () => {
