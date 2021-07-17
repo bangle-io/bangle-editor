@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/trailing-node",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@types/prosemirror-state": "^1.2.6"
+    "@types/prosemirror-state": "^1.2.7"
   },
   "publishConfig": {
     "access": "public"

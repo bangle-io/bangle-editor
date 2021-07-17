@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -32,7 +32,7 @@
     "prop-types": "^15.7.2",
     "prosemirror-model": "^1.14.2",
     "prosemirror-state": "^1.3.4",
-    "prosemirror-view": "^1.18.7",
+    "prosemirror-view": "^1.18.10",
     "punycode": "^2.1.1"
   },
   "peerDependencies": {
@@ -47,11 +47,11 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/react-hooks": "^7.0.0",
     "@types/prop-types": "^15.7.3",
-    "@types/prosemirror-model": "^1.13.0",
-    "@types/prosemirror-state": "^1.2.6",
-    "@types/prosemirror-view": "^1.17.1",
-    "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.8",
+    "@types/prosemirror-model": "^1.13.1",
+    "@types/prosemirror-state": "^1.2.7",
+    "@types/prosemirror-view": "^1.17.2",
+    "@types/react": "^17.0.14",
+    "@types/react-dom": "^17.0.9",
     "prettier": "^2.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

@@ -1,6 +1,6 @@
 {
   "name": "integration-tests",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -34,8 +34,8 @@
     "@bangle.dev/table": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
     "@testing-library/react": "^11.2.7",
-    "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.8",
+    "@types/react": "^17.0.14",
+    "@types/react-dom": "^17.0.9",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.2.6",

@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.22.1
+
+- Updates prosemirror package versions.
+
 ## 0.22.0
 
 **@bangle.dev/markdown**

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-emoji-suggest",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.7",
-    "@types/prosemirror-state": "^1.2.6",
-    "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.8",
+    "@types/prosemirror-state": "^1.2.7",
+    "@types/react": "^17.0.14",
+    "@types/react-dom": "^17.0.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

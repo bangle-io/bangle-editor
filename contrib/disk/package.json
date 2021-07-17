@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/disk",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -26,7 +26,7 @@
     "prepack": "yarn compile-ts"
   },
   "devDependencies": {
-    "@types/prosemirror-model": "^1.13.0",
+    "@types/prosemirror-model": "^1.13.1",
     "prosemirror-model": "^1.14.2"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/markdown",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -38,7 +38,7 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/table": "workspace:*",
     "@types/markdown-it": "^12.0.3",
-    "@types/prosemirror-markdown": "^1.5.1"
+    "@types/prosemirror-markdown": "^1.5.2"
   },
   "publishConfig": {
     "access": "public",

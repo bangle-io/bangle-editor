@@ -2999,17 +2999,17 @@ __metadata:
     "@bangle.dev/js-utils": "workspace:*"
     "@types/jest": ^26.0.23
     "@types/node": ^15.12.2
-    "@types/prosemirror-collab": ^1.1.1
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-transform": ^1.1.3
-    "@types/prosemirror-view": ^1.17.1
+    "@types/prosemirror-collab": ^1.1.2
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-transform": ^1.1.4
+    "@types/prosemirror-view": ^1.17.2
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
     prosemirror-model: ^1.14.2
     prosemirror-state: ^1.3.4
-    prosemirror-transform: "*"
-    prosemirror-view: ^1.18.7
+    prosemirror-transform: ^1.3.2
+    prosemirror-view: ^1.18.10
     strict-event-emitter-types: ^2.0.0
   peerDependencies:
     "@bangle.dev/collab-server": "*"
@@ -3030,8 +3030,8 @@ __metadata:
     "@bangle.dev/disk": "workspace:*"
     "@types/jest": ^26.0.23
     "@types/node": ^15.12.2
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-transform": ^1.1.3
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-transform": ^1.1.4
     localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
     prosemirror-model: ^1.14.2
@@ -3048,18 +3048,18 @@ __metadata:
     "@types/jest": ^26.0.23
     "@types/markdown-it": ^12.0.2
     "@types/prosemirror-commands": ^1.0.4
-    "@types/prosemirror-dropcursor": ^1.0.1
-    "@types/prosemirror-gapcursor": ^1.0.3
-    "@types/prosemirror-history": ^1.0.2
+    "@types/prosemirror-dropcursor": ^1.0.2
+    "@types/prosemirror-gapcursor": ^1.0.4
+    "@types/prosemirror-history": ^1.0.3
     "@types/prosemirror-inputrules": ^1.0.4
     "@types/prosemirror-keymap": ^1.0.4
-    "@types/prosemirror-markdown": ^1.5.1
-    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-markdown": ^1.5.2
+    "@types/prosemirror-model": ^1.13.1
     "@types/prosemirror-schema-list": ^1.0.3
-    "@types/prosemirror-state": ^1.2.6
+    "@types/prosemirror-state": ^1.2.7
     "@types/prosemirror-tables": ^0.9.1
-    "@types/prosemirror-transform": ^1.1.3
-    "@types/prosemirror-view": ^1.17.1
+    "@types/prosemirror-transform": ^1.1.4
+    "@types/prosemirror-view": ^1.17.2
     "@types/string.prototype.matchall": ^4.0.0
     markdown-it: ^10.0.0
     prettier: ^2.3.2
@@ -3076,7 +3076,7 @@ __metadata:
     prosemirror-tables: ^1.1.1
     prosemirror-transform: ^1.3.2
     prosemirror-utils: 1.0.0-0
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
   languageName: unknown
   linkType: soft
 
@@ -3084,7 +3084,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/disk@workspace:contrib/disk"
   dependencies:
-    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-model": ^1.13.1
     debounce-fn: ^5.0.0
     prosemirror-model: ^1.14.2
   languageName: unknown
@@ -3131,7 +3131,7 @@ __metadata:
     "@bangle.dev/js-utils": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     "@types/markdown-it": ^12.0.3
-    "@types/prosemirror-markdown": ^1.5.1
+    "@types/prosemirror-markdown": ^1.5.2
     markdown-it: ^10.0.0
     prosemirror-markdown: ^1.5.1
   peerDependencies:
@@ -3146,14 +3146,14 @@ __metadata:
   dependencies:
     "@types/jest": ^26.0.23
     "@types/prosemirror-commands": ^1.0.4
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-view": ^1.17.1
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-view": ^1.17.2
     prosemirror-commands: ^1.1.10
     prosemirror-model: ^1.14.2
     prosemirror-state: ^1.3.4
     prosemirror-utils: 1.0.0-0
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
   peerDependencies:
     prosemirror-commands: "*"
     prosemirror-model: "*"
@@ -3173,9 +3173,9 @@ __metadata:
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.7
-    "@types/prosemirror-state": ^1.2.6
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/prosemirror-state": ^1.2.7
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     prosemirror-state: ^1.3.4
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -3197,17 +3197,17 @@ __metadata:
     "@types/prop-types": ^15.7.3
     "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-keymap": ^1.0.4
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-view": ^1.17.1
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-view": ^1.17.2
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     prop-types: ^15.7.2
     prosemirror-commands: ^1.1.10
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.14.2
     prosemirror-state: ^1.3.4
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
     react: ^17.0.2
     react-dom: ^17.0.2
   peerDependencies:
@@ -3229,9 +3229,9 @@ __metadata:
     "@bangle.dev/table": "workspace:*"
     "@testing-library/react": ^11.2.7
     "@types/prosemirror-keymap": ^1.0.4
-    "@types/prosemirror-model": ^1.13.0
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/prosemirror-model": ^1.13.1
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     prop-types: ^15.7.2
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.14.2
@@ -3257,8 +3257,8 @@ __metadata:
     "@bangle.dev/table": "workspace:*"
     "@testing-library/react": ^11.2.7
     "@types/prosemirror-keymap": ^1.0.4
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     prosemirror-keymap: ^1.1.4
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -3283,16 +3283,16 @@ __metadata:
     "@testing-library/react": ^11.2.7
     "@testing-library/react-hooks": ^7.0.0
     "@types/prop-types": ^15.7.3
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-view": ^1.17.1
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-view": ^1.17.2
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     prettier: ^2.3.2
     prop-types: ^15.7.2
     prosemirror-model: ^1.14.2
     prosemirror-state: ^1.3.4
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
     punycode: ^2.1.1
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -3312,13 +3312,13 @@ __metadata:
     "@bangle.dev/js-utils": "workspace:*"
     "@types/jest": ^26.0.23
     "@types/prosemirror-commands": ^1.0.4
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-view": ^1.17.1
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-view": ^1.17.2
     prosemirror-commands: ^1.1.10
     prosemirror-model: ^1.14.2
     prosemirror-state: ^1.3.4
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -3370,20 +3370,20 @@ __metadata:
     "@bangle.dev/pm-utils": "workspace:*"
     "@popperjs/core": ^2.5.4
     "@types/jest": ^26.0.23
-    "@types/prosemirror-collab": ^1.1.1
+    "@types/prosemirror-collab": ^1.1.2
     "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-inputrules": ^1.0.4
     "@types/prosemirror-keymap": ^1.0.4
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-transform": ^1.1.3
-    "@types/prosemirror-view": ^1.17.1
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-transform": ^1.1.4
+    "@types/prosemirror-view": ^1.17.2
     prosemirror-commands: ^1.1.10
     prosemirror-inputrules: ^1.1.3
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.14.2
     prosemirror-state: ^1.3.4
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
   peerDependencies:
     "@bangle.dev/core": "*"
     prosemirror-inputrules: "*"
@@ -3399,7 +3399,7 @@ __metadata:
   resolution: "@bangle.dev/trailing-node@workspace:contrib/trailing-node"
   dependencies:
     "@bangle.dev/core": "workspace:*"
-    "@types/prosemirror-state": ^1.2.6
+    "@types/prosemirror-state": ^1.2.7
     prosemirror-state: ^1.3.4
   peerDependencies:
     "@bangle.dev/core": "*"
@@ -4984,14 +4984,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-collab@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@types/prosemirror-collab@npm:1.1.1"
+"@types/prosemirror-collab@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@types/prosemirror-collab@npm:1.1.2"
   dependencies:
     "@types/prosemirror-model": "*"
     "@types/prosemirror-state": "*"
     "@types/prosemirror-transform": "*"
-  checksum: 45e9d2791d3fa80b7435f01d5ab40bd7c9531184a40ad72e3af963b041e8cdefdb1faa69c65006d314523bae8d499ba9f7d26d98eb25cf268ffedc40f63c91a2
+  checksum: bda3d8c23d3d1a316f7b9a593899c9c49f4ee065706348e0b2da287e38b6431296630c5e1ec0c8e9082dfa0aff3c2e6032088dd839d7e358d9afe2f1681770b0
   languageName: node
   linkType: hard
 
@@ -5006,32 +5006,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-dropcursor@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@types/prosemirror-dropcursor@npm:1.0.1"
-  dependencies:
-    "@types/prosemirror-state": "*"
-  checksum: 67ffdf4bce36b96a90b7a0a8c82c49748d46a6e878c9474a5ce194d6dcbba976810d0c32f83d6c8966e5eac28888d06150d12e4d30d224bcc6cc93ac4ccc1b39
-  languageName: node
-  linkType: hard
-
-"@types/prosemirror-gapcursor@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@types/prosemirror-gapcursor@npm:1.0.3"
-  dependencies:
-    "@types/prosemirror-model": "*"
-    "@types/prosemirror-state": "*"
-  checksum: 8bade20d923ee31f4ff36c2eff2a2af2604fef4cefd0202a441f0effd4ed5c67de25d234ca07c80fed019ff4dabdd1a23759df02a9768f25d70d541d4671b0d9
-  languageName: node
-  linkType: hard
-
-"@types/prosemirror-history@npm:^1.0.2":
+"@types/prosemirror-dropcursor@npm:^1.0.2":
   version: 1.0.2
-  resolution: "@types/prosemirror-history@npm:1.0.2"
+  resolution: "@types/prosemirror-dropcursor@npm:1.0.2"
+  dependencies:
+    "@types/prosemirror-state": "*"
+  checksum: cfd39acf1aacde5137dbe8ab8983e35cea2ad2104ba10276b909da5825da706807cce5cbdb67b9c196c3c49bb7a4f6bf8590e01d13cb59dbdacd52a7e46540d7
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-gapcursor@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@types/prosemirror-gapcursor@npm:1.0.4"
   dependencies:
     "@types/prosemirror-model": "*"
     "@types/prosemirror-state": "*"
-  checksum: 02e00e289053d828254c7503120dbb8e0ed997436762d4e37a3aba3e32a4d14c1eae460b09eb3a01c4ee346a1170a10cb956dd6276b972ba759146f7f32dea05
+  checksum: 927d3eec859337b180c67b341cf95954ab517d5894e8e7b43c23a5f0f524cb2a32f7dab054f884b1c910b8a53984103ae87516940ec47ee9311493fd5638eaad
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-history@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@types/prosemirror-history@npm:1.0.3"
+  dependencies:
+    "@types/prosemirror-model": "*"
+    "@types/prosemirror-state": "*"
+  checksum: d1c9b4d2f603ac60895db711ff6eeda6ea7d81eb65754a878a2d9f8f64e66e0737e8ac33a3a1ab22a6597fd84e954a593bf2f39c47cbdbc4bb524bdad422b432
   languageName: node
   linkType: hard
 
@@ -5057,22 +5057,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-markdown@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "@types/prosemirror-markdown@npm:1.5.1"
+"@types/prosemirror-markdown@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "@types/prosemirror-markdown@npm:1.5.2"
   dependencies:
     "@types/markdown-it": "*"
     "@types/prosemirror-model": "*"
-  checksum: 11e9ff5adebc3d36286b5758112b066e4fb8790da9ec8036074bd7c36e146d05bceb7869855183f40ae9794303e4212540b7422c4e38b7a29006d7e019712185
+  checksum: 73bdb648413d5c053fc1cb0e871d4663e1fac3580934a4d4eb3387c8f583a98be27b80ce28cc5766d966905df1c3cceb060d43dbc11ef26dbf789c80d59a0432
   languageName: node
   linkType: hard
 
-"@types/prosemirror-model@npm:*, @types/prosemirror-model@npm:^1.13.0":
+"@types/prosemirror-model@npm:*":
   version: 1.13.0
   resolution: "@types/prosemirror-model@npm:1.13.0"
   dependencies:
     "@types/orderedmap": "*"
   checksum: a04e3b88faeb240f0df8eb6c6db28c44bc8b354badb27e3ba5e865ff3456d139f032aeec96de73b2f804401d8074d1f87b416901c2b4cc7a2a6a083a58873743
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-model@npm:^1.13.1":
+  version: 1.13.1
+  resolution: "@types/prosemirror-model@npm:1.13.1"
+  dependencies:
+    "@types/orderedmap": "*"
+  checksum: d529d6cb87a0231f62c2be25d3e95e538d27c451c45e324373042676dd4d257753c3db32549e7efe5ed3d837877b5450dc1063ebe592076fc0b04aec0f984ad9
   languageName: node
   linkType: hard
 
@@ -5087,7 +5096,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-state@npm:*, @types/prosemirror-state@npm:^1.2.6":
+"@types/prosemirror-state@npm:*":
   version: 1.2.6
   resolution: "@types/prosemirror-state@npm:1.2.6"
   dependencies:
@@ -5095,6 +5104,17 @@ __metadata:
     "@types/prosemirror-transform": "*"
     "@types/prosemirror-view": "*"
   checksum: b1491c523f4c55e4ecd25c8f63243d5b65bdc607c82c394e76821f32e85c98857cc98cc1e92c615a7762c990c3b3694842b500307ddd7e7d187cdd1beb7d703f
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-state@npm:^1.2.7":
+  version: 1.2.7
+  resolution: "@types/prosemirror-state@npm:1.2.7"
+  dependencies:
+    "@types/prosemirror-model": "*"
+    "@types/prosemirror-transform": "*"
+    "@types/prosemirror-view": "*"
+  checksum: 711295b617e8fc836a536386ef096f23c4c6b4cb650b4229d76257c6bd97e645273cf4aec4bd6e123e4f1aed4d8041fb66efc7630ae466cc440a6b40ffef9f44
   languageName: node
   linkType: hard
 
@@ -5107,7 +5127,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-transform@npm:*, @types/prosemirror-transform@npm:^1.1.3":
+"@types/prosemirror-transform@npm:*":
   version: 1.1.3
   resolution: "@types/prosemirror-transform@npm:1.1.3"
   dependencies:
@@ -5116,7 +5136,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-view@npm:*, @types/prosemirror-view@npm:^1.17.1":
+"@types/prosemirror-transform@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@types/prosemirror-transform@npm:1.1.4"
+  dependencies:
+    "@types/prosemirror-model": "*"
+  checksum: f267a63ac35b82b342f16563a02cdbe68dc28275684eecbb972d6342c428aa289173a9fa4f12b0ee0471e42c4d9a1a4d10f4bc97a14eb2f8da830df55fbdf640
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-view@npm:*":
   version: 1.17.1
   resolution: "@types/prosemirror-view@npm:1.17.1"
   dependencies:
@@ -5124,6 +5153,17 @@ __metadata:
     "@types/prosemirror-state": "*"
     "@types/prosemirror-transform": "*"
   checksum: 0367cd6547c12db492fbf2d2e18cddc8469b41398a12b136202f835363dc2c960c783fb5ca6d4f8f6c1d0ced9bd6d94e24237fd8add89b53fc0509563d688662
+  languageName: node
+  linkType: hard
+
+"@types/prosemirror-view@npm:^1.17.2":
+  version: 1.17.2
+  resolution: "@types/prosemirror-view@npm:1.17.2"
+  dependencies:
+    "@types/prosemirror-model": "*"
+    "@types/prosemirror-state": "*"
+    "@types/prosemirror-transform": "*"
+  checksum: 5b35f59fd5a9fc1f1682b123a5e7e46a6d9d6f1d3934832d7b9ca7f345b1f8a855d9fd8a6322195f5dda9be0870f2214706918fe068565354f8269d033d7c13e
   languageName: node
   linkType: hard
 
@@ -5143,12 +5183,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^17.0.8":
-  version: 17.0.8
-  resolution: "@types/react-dom@npm:17.0.8"
+"@types/react-dom@npm:^17.0.9":
+  version: 17.0.9
+  resolution: "@types/react-dom@npm:17.0.9"
   dependencies:
     "@types/react": "*"
-  checksum: 9ad1220297bede365e0d2aae4bc4a2deee3247da9da62d45bcd770812d246d46c219b3f58755b08423a4339c3c654fddd6c2b16b27151d09213b527a7cde8910
+  checksum: b7e898e1a22643a371f58e801a3d1d8cf13a82d77063c24be73e840ef8d877ca1d04adc5db168d0dac3167dc050a26b1d70efc5fe8566a7f46a3c488a8322989
   languageName: node
   linkType: hard
 
@@ -5180,7 +5220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:>=16.9.0, @types/react@npm:^17.0.11":
+"@types/react@npm:>=16.9.0":
   version: 17.0.11
   resolution: "@types/react@npm:17.0.11"
   dependencies:
@@ -5188,6 +5228,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 89e80ee8e08988abca0266e5e131f57b2e18f326bebfa0ed0a06b0bca29621a5a8202d617254a053f659b9c18090c52cae0aa475a6c6036b8858030f1d448e47
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^17.0.14":
+  version: 17.0.14
+  resolution: "@types/react@npm:17.0.14"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: ca2eca8f33ddbcba46932efeb8affdd274ea5800ea38bf8bc8de205808d09de21ea1f3d6ab156573aca393b912f0d908826cc6ad92470a3f2b6c34e70d5f75db
   languageName: node
   linkType: hard
 
@@ -7020,13 +7071,13 @@ __metadata:
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/trailing-node": "workspace:*"
     "@github-docs/frontmatter": ^1.3.1
-    "@types/prosemirror-collab": ^1.1.1
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-transform": ^1.1.3
-    "@types/prosemirror-view": ^1.17.1
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/prosemirror-collab": ^1.1.2
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-transform": ^1.1.4
+    "@types/prosemirror-view": ^1.17.2
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     change-case: ^4.1.2
     date-fns: ^2.10.0
     del: ^6.0.0
@@ -7034,7 +7085,7 @@ __metadata:
     handlebars: ^4.7.6
     prosemirror-collab: ^1.2.2
     prosemirror-model: ^1.14.2
-    prosemirror-transform: "*"
+    prosemirror-transform: ^1.3.2
     react: ^17.0.2
     react-dom: ^17.0.2
     surge: ^0.21.7
@@ -7067,13 +7118,13 @@ __metadata:
     "@docusaurus/core": 2.0.0-alpha.69
     "@docusaurus/preset-classic": 2.0.0-alpha.69
     "@mdx-js/react": ^1.6.22
-    "@types/prosemirror-collab": ^1.1.1
-    "@types/prosemirror-model": ^1.13.0
-    "@types/prosemirror-state": ^1.2.6
-    "@types/prosemirror-transform": ^1.1.3
-    "@types/prosemirror-view": ^1.17.1
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/prosemirror-collab": ^1.1.2
+    "@types/prosemirror-model": ^1.13.1
+    "@types/prosemirror-state": ^1.2.7
+    "@types/prosemirror-transform": ^1.1.4
+    "@types/prosemirror-view": ^1.17.2
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     clsx: ^1.1.1
     emoji-lookup-data: 1.3.0
     file-loader: ^6.2.0
@@ -7091,7 +7142,7 @@ __metadata:
     prosemirror-tables: ^1.1.1
     prosemirror-transform: ^1.3.2
     prosemirror-utils: 1.0.0-0
-    prosemirror-view: ^1.18.7
+    prosemirror-view: ^1.18.10
     react: ^17.0.2
     react-dom: ^17.0.2
   languageName: unknown
@@ -13120,8 +13171,8 @@ fsevents@~2.1.2:
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@testing-library/react": ^11.2.7
-    "@types/react": ^17.0.11
-    "@types/react-dom": ^17.0.8
+    "@types/react": ^17.0.14
+    "@types/react-dom": ^17.0.9
     babel-loader: ^8.2.2
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.2.6
