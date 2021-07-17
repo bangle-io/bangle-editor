@@ -74,6 +74,12 @@ function specFactory() {
       defining: true,
       draggable: true,
       attrs: {
+        // We overload the todoChecked value to
+        // decide if its a regular bullet list or a list with todo
+        // todoChecked can take following values:
+        //   null => regular bullet list
+        //   true => todo list with checked
+        //   false => todo list with no check
         todoChecked: {
           default: null,
         },
@@ -92,8 +98,16 @@ function specFactory() {
         list_item: {
           block: name,
           getAttrs: (tok: Token) => {
+            let todoChecked = null;
+
+            const todoIsDone = tok.attrGet('isDone');
+            if (todoIsDone === 'yes') {
+              todoChecked = true;
+            } else if (todoIsDone === 'no') {
+              todoChecked = false;
+            }
             return {
-              todoChecked: tok.attrGet('isDone'),
+              todoChecked,
             };
           },
         },

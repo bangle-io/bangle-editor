@@ -24,6 +24,7 @@
     "postpack": "rm -r $INIT_CWD/dist"
   },
   "dependencies": {
+    "@bangle.dev/js-utils": "workspace:*",
     "prosemirror-keymap": "^1.1.4"
   },
   "peerDependencies": {

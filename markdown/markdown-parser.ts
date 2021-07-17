@@ -5,15 +5,13 @@ import { markdownLoader } from './markdown-loader';
 import { tableMarkdownItPlugin } from './table-markdown-it-plugin';
 import { todoListMarkdownItPlugin } from './todo-list-markdown-it-plugin';
 
-export const defaultMarkdownItTokenizer = markdownIt()
-  .use(todoListMarkdownItPlugin)
-  .use(tableMarkdownItPlugin);
+export const getDefaultMarkdownItTokenizer = () =>
+  markdownIt().use(todoListMarkdownItPlugin).use(tableMarkdownItPlugin);
 
 export function markdownParser(
   specRegistry = new SpecRegistry(),
-  markdownItTokenizer = defaultMarkdownItTokenizer,
-  { useDefaults = true } = {},
+  markdownItTokenizer = getDefaultMarkdownItTokenizer(),
 ) {
-  const { tokens } = markdownLoader(specRegistry, { useDefaults });
+  const { tokens } = markdownLoader(specRegistry);
   return new MarkdownParser(specRegistry.schema, markdownItTokenizer, tokens);
 }

@@ -1,10 +1,8 @@
 import { SpecRegistry } from '@bangle.dev/core';
+import { TokenConfig } from 'prosemirror-markdown';
 
-export function markdownLoader(
-  specRegistry = new SpecRegistry(),
-  { useDefaults },
-) {
-  const tokens = Object.fromEntries(
+export function markdownLoader(specRegistry = new SpecRegistry()) {
+  const tokens: { [key: string]: TokenConfig } = Object.fromEntries(
     specRegistry.spec
       .filter((e) => e.markdown && e.markdown.parseMarkdown)
       .flatMap((e) => {

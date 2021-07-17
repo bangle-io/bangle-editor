@@ -1,7 +1,7 @@
 import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
 import { keymap } from 'prosemirror-keymap';
-import { serializeAtomNodeToMdLink2 } from '@bangle.dev/markdown/markdown-serializer';
 import React from 'react';
+import { objectFilter, objectMapValues } from '@bangle.dev/js-utils';
 
 const LOG = false;
 
@@ -180,4 +180,25 @@ export function insertStopwatch() {
     }
     return true;
   };
+}
+
+function serializeAtomNodeToMdLink2(name, attrs) {
+  return `[$${name}](bangle://v1?data=${encodeURIComponent(
+    JSON.stringify(attrs),
+  )}`;
+}
+
+function serializeAtomNodeToMdLink(name, attrs) {
+  const data = objectFilter(attrs, (val, key) => {
+    return key.startsWith('data-');
+  });
+
+  const string = new URLSearchParams(
+    objectMapValues(data, (val) => {
+      // convert it to string for predictability when parsing different types
+      return JSON.stringify(val);
+    }),
+  );
+
+  return `[$${name}](bangle://${string})`;
 }

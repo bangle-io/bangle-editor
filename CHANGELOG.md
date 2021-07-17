@@ -1,5 +1,15 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/markdown**
+
+- breaking: `defaultMarkdownItTokenizer` is now a function `getDefaultMarkdownItTokenizer` which returns the default tokenizer.
+
+**@bangle.dev/search**
+
+- breaking: Search no longer uses a `caseSensitive` param, users should instead send a query regex `i` flag for case insensitivity.
+
 ## 0.21.1
 
 **@bangle.dev/core**

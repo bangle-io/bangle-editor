@@ -1,10 +1,10 @@
-export function frontMatterPlugin(md, cb = () => {}) {
+export function frontMatterPlugin(md: any, cb = (arg: any) => {}) {
   var min_markers = 3,
     marker_str = '-',
     marker_char = marker_str.charCodeAt(0),
     marker_len = marker_str.length;
 
-  function frontMatter(state, startLine, endLine, silent) {
+  function frontMatter(state: any, startLine: any, endLine: any, silent: any) {
     var pos,
       nextLine,
       marker_count,

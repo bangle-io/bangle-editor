@@ -15,10 +15,11 @@ import { Plugin } from 'prosemirror-state';
 import { PluginGroup } from '../plugin';
 import * as history from '../components/history';
 import * as editorStateCounter from '../components/editor-state-counter';
+import type { SpecRegistry } from '../spec-registry';
 
 interface PluginPayload {
   schema: Schema;
-  specRegistry: any;
+  specRegistry: SpecRegistry;
   metadata: any;
 }
 
@@ -31,7 +32,7 @@ export type RawPlugins =
   | RawPlugins[];
 
 export function pluginLoader(
-  specRegistry: any,
+  specRegistry: SpecRegistry,
   plugins: RawPlugins,
   {
     metadata = {},

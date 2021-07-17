@@ -13,7 +13,7 @@ import {
 } from '@bangle.dev/core/test-helpers/default-components';
 import { markdownSerializer } from '@bangle.dev/markdown';
 import {
-  defaultMarkdownItTokenizer,
+  getDefaultMarkdownItTokenizer,
   markdownParser,
 } from '@bangle.dev/markdown/markdown-parser';
 import { frontMatterPlugin } from '../markdown-it-plugin';
@@ -36,7 +36,7 @@ const serialize = async (doc) => {
 const parse = async (md) =>
   markdownParser(
     specRegistry,
-    defaultMarkdownItTokenizer.use(frontMatterPlugin),
+    getDefaultMarkdownItTokenizer().use(frontMatterPlugin),
   ).parse(md);
 
 describe('markdown', () => {
