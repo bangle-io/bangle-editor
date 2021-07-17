@@ -19,7 +19,7 @@ function specFactory({} = {}) {
       },
     },
     markdown: {
-      toMarkdown(state, node) {
+      toMarkdown(state: any, node: any) {
         state.write('---\n');
         state.text(node.attrs.data, false);
         state.write('\n---');
@@ -28,7 +28,7 @@ function specFactory({} = {}) {
       parseMarkdown: {
         front_matter: {
           block: name,
-          getAttrs: (tok) => {
+          getAttrs: (tok: any) => {
             if (typeof tok.meta === 'string') {
               return { data: tok.meta };
             }

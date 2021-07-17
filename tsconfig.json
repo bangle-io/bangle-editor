@@ -57,6 +57,9 @@
     },
     {
       "path": "./contrib/pm-utils/tsconfig.test.json"
-    }
+    },
+    {
+      "path": "./contrib/markdown-front-matter/tsconfig.json"
+    },
   ]
 }
