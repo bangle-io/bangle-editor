@@ -8,6 +8,9 @@
       "path": "./core/tsconfig.test.json"
     },
     {
+      "path": "./emoji/tsconfig.json"
+    },
+    {
       "path": "./collab-server/tsconfig.json"
     },
     {

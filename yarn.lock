@@ -3097,7 +3097,14 @@ __metadata:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/table": "workspace:*"
+    "@types/markdown-it": ^10.0.0
+    "@types/prosemirror-commands": ^1.0.4
+    "@types/prosemirror-markdown": ^1.5.2
+    "@types/prosemirror-model": ^1.13.0
     markdown-it-emoji: ^2.0.0
+    prosemirror-commands: ^1.1.10
+    prosemirror-markdown: ^1.5.1
+    prosemirror-model: ^1.14.2
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
