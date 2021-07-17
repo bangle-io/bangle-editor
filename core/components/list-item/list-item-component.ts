@@ -99,7 +99,6 @@ function specFactory() {
           block: name,
           getAttrs: (tok: Token) => {
             let todoChecked = null;
-
             const todoIsDone = tok.attrGet('isDone');
             if (todoIsDone === 'yes') {
               todoChecked = true;
