@@ -35,6 +35,9 @@
       "path": "./react/tsconfig.test.json"
     },
     {
+      "path": "./table/tsconfig.json"
+    },
+    {
       "path": "./react-menu/tsconfig.json"
     },
     {

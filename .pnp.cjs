@@ -5639,7 +5639,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/js-utils", "workspace:contrib/js-utils"],
             ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@types/jest", "npm:26.0.23"],
-            ["@types/markdown-it", "npm:12.0.2"],
+            ["@types/markdown-it", "npm:12.0.3"],
             ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-dropcursor", "npm:1.0.2"],
             ["@types/prosemirror-gapcursor", "npm:1.0.4"],
@@ -6190,7 +6190,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@bangle.dev/core", "workspace:core"],
             ["@types/bangle.dev__core", null],
+            ["@types/markdown-it", "npm:10.0.3"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-markdown", "npm:1.5.2"],
+            ["@types/prosemirror-model", "npm:1.13.1"],
+            ["@types/prosemirror-state", "npm:1.2.7"],
+            ["@types/prosemirror-tables", "npm:0.9.1"],
+            ["markdown-it", "npm:10.0.0"],
             ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-markdown", "npm:1.5.1"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-tables", "npm:1.1.1"]
           ],
           "packagePeers": [
@@ -6204,7 +6214,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/table", "workspace:table"],
             ["@bangle.dev/core", "workspace:core"],
+            ["@types/markdown-it", "npm:10.0.3"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-markdown", "npm:1.5.2"],
+            ["@types/prosemirror-model", "npm:1.13.1"],
+            ["@types/prosemirror-state", "npm:1.2.7"],
+            ["@types/prosemirror-tables", "npm:0.9.1"],
+            ["markdown-it", "npm:10.0.0"],
             ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-markdown", "npm:1.5.1"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-tables", "npm:1.1.1"]
           ],
           "linkType": "SOFT",
@@ -8206,6 +8226,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/markdown-it", [
+        ["npm:10.0.3", {
+          "packageLocation": "./.yarn/cache/@types-markdown-it-npm-10.0.3-8a10be0cc7-e369a7a40f.zip/node_modules/@types/markdown-it/",
+          "packageDependencies": [
+            ["@types/markdown-it", "npm:10.0.3"],
+            ["@types/highlight.js", "npm:9.12.4"],
+            ["@types/linkify-it", "npm:3.0.1"],
+            ["@types/mdurl", "npm:1.0.2"],
+            ["highlight.js", "npm:9.18.5"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:12.0.2", {
           "packageLocation": "./.yarn/cache/@types-markdown-it-npm-12.0.2-619eb8b204-7859f84a27.zip/node_modules/@types/markdown-it/",
           "packageDependencies": [
@@ -17137,6 +17168,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/hex-color-regex-npm-1.1.0-35ec780c11-44fa1b7a26.zip/node_modules/hex-color-regex/",
           "packageDependencies": [
             ["hex-color-regex", "npm:1.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["highlight.js", [
+        ["npm:9.18.5", {
+          "packageLocation": "./.yarn/unplugged/highlight.js-npm-9.18.5-571500f48d/node_modules/highlight.js/",
+          "packageDependencies": [
+            ["highlight.js", "npm:9.18.5"]
           ],
           "linkType": "HARD",
         }]

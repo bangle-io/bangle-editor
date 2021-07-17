@@ -3046,7 +3046,7 @@ __metadata:
     "@bangle.dev/js-utils": "workspace:*"
     "@bangle.dev/pm-utils": "workspace:*"
     "@types/jest": ^26.0.23
-    "@types/markdown-it": ^12.0.2
+    "@types/markdown-it": ^12.0.3
     "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-dropcursor": ^1.0.2
     "@types/prosemirror-gapcursor": ^1.0.4
@@ -3329,7 +3329,17 @@ __metadata:
   resolution: "@bangle.dev/table@workspace:table"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@types/markdown-it": ^10.0.0
+    "@types/prosemirror-keymap": ^1.0.4
+    "@types/prosemirror-markdown": ^1.5.2
+    "@types/prosemirror-model": ^1.13.0
+    "@types/prosemirror-state": ^1.2.6
+    "@types/prosemirror-tables": ^0.9.1
+    markdown-it: ^10.0.0
     prosemirror-keymap: ^1.1.4
+    prosemirror-markdown: ^1.5.1
+    prosemirror-model: ^1.14.2
+    prosemirror-state: ^1.3.4
     prosemirror-tables: ^1.1.1
   peerDependencies:
     "@bangle.dev/core": "*"
@@ -4883,7 +4893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/markdown-it@npm:*, @types/markdown-it@npm:^12.0.2":
+"@types/markdown-it@npm:*":
   version: 12.0.2
   resolution: "@types/markdown-it@npm:12.0.2"
   dependencies:
@@ -4891,6 +4901,18 @@ __metadata:
     "@types/linkify-it": "*"
     "@types/mdurl": "*"
   checksum: 7859f84a273f33bae9e78aa603338b64aa9b06566739a324ff7aca388f08c7ab13256286493ad5f8894558184fb8b0dfd674a05900995d5f3e7a6e47373fc348
+  languageName: node
+  linkType: hard
+
+"@types/markdown-it@npm:^10.0.0":
+  version: 10.0.3
+  resolution: "@types/markdown-it@npm:10.0.3"
+  dependencies:
+    "@types/highlight.js": ^9.7.0
+    "@types/linkify-it": "*"
+    "@types/mdurl": "*"
+    highlight.js: ^9.7.0
+  checksum: e369a7a40f5b2ea5a72d865172a03fb6b0533401a550336fbeb4457b4353c6e47326562fbe868bba4920b09a25deb9c69f7e6e6e5a329739ce69bf78204876a0
   languageName: node
   linkType: hard
 
@@ -5076,7 +5098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-model@npm:^1.13.1":
+"@types/prosemirror-model@npm:^1.13.0, @types/prosemirror-model@npm:^1.13.1":
   version: 1.13.1
   resolution: "@types/prosemirror-model@npm:1.13.1"
   dependencies:
@@ -5107,7 +5129,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prosemirror-state@npm:^1.2.7":
+"@types/prosemirror-state@npm:^1.2.6, @types/prosemirror-state@npm:^1.2.7":
   version: 1.2.7
   resolution: "@types/prosemirror-state@npm:1.2.7"
   dependencies:
@@ -12486,6 +12508,13 @@ fsevents@~2.1.2:
   version: 1.1.0
   resolution: "hex-color-regex@npm:1.1.0"
   checksum: 44fa1b7a26d745012f3bfeeab8015f60514f72d2fcf10dce33068352456b8d71a2e6bc5a17f933ab470da2c5ab1e3e04b05caf3fefe3c1cabd7e02e516fc8784
+  languageName: node
+  linkType: hard
+
+"highlight.js@npm:^9.7.0":
+  version: 9.18.5
+  resolution: "highlight.js@npm:9.18.5"
+  checksum: a8afdb395869bba8a892dd8891b738d3bd48fe2e5b6843ec3181c93d73f52abf2cab863424caa631442a7bbafac222bafdab3f5a536a69aab9c60d4c1b7f8b77
   languageName: node
   linkType: hard
 
