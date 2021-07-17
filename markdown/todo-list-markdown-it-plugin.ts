@@ -1,6 +1,15 @@
 import Token from 'markdown-it/lib/token';
 
-export function todoListMarkdownItPlugin(md, options = {}) {
+export function todoListMarkdownItPlugin(
+  md: any,
+  options: {
+    todoListOpenType?: string;
+    todoListCloseType?: string;
+    todoItemCloseType?: string;
+    todoItemOpenName?: string;
+    isDoneAttrName?: string;
+  } = {},
+) {
   const {
     todoListOpenType = 'bullet_list_open',
     todoListCloseType = 'bullet_list_close',
@@ -9,14 +18,14 @@ export function todoListMarkdownItPlugin(md, options = {}) {
     isDoneAttrName = 'isDone',
   } = options;
 
-  md.core.ruler.after('inline', 'gfm-todo-list', function (state) {
+  md.core.ruler.after('inline', 'gfm-todo-list', function (state: any) {
     var tokens = state.tokens;
     for (var i = 0; i < tokens.length; i++) {
       processToken(tokens, i);
     }
   });
 
-  function processToken(tokens, index) {
+  function processToken(tokens: Token[], index: number) {
     if (tokens[index].type !== 'bullet_list_open') {
       return;
     }
@@ -32,7 +41,6 @@ export function todoListMarkdownItPlugin(md, options = {}) {
 
     // this means some or all children are todoItems
     if (children.some(([child]) => !child.type.startsWith('list_item_'))) {
-      console.log(children, tokens, index);
       throw new Error('Expected all children to be of type list_item_*');
     }
 
@@ -56,7 +64,7 @@ export function todoListMarkdownItPlugin(md, options = {}) {
 
     children
       .filter(([todoItem]) => todoItem.type === todoItemOpenName)
-      .forEach(([todoItem, todoItemIndex]) => {
+      .forEach(([todoItem, todoItemIndex]: [Token, number]) => {
         // we add a +2 since the check works on the inline para node
         const inlineToken = tokens[todoItemIndex + 2];
 
@@ -74,23 +82,29 @@ export function todoListMarkdownItPlugin(md, options = {}) {
               ? inlineTokenChild.content.charAt(1)
               : null;
 
-          if (['x', 'X'].includes(charAt1)) {
-            isDone = true;
+          if (charAt1 && ['x', 'X'].includes(charAt1)) {
+            isDone = 'yes';
           } else {
-            isDone = false;
+            isDone = 'no';
           }
         }
 
-        todoItem.attrs = todoItem.attrs
-          ? [[isDoneAttrName, isDone], ...todoItem.attrs]
-          : [[isDoneAttrName, isDone]];
+        const existingAttrs = todoItem.attrs;
+
+        if (isDone) {
+          if (existingAttrs) {
+            todoItem.attrs = [[isDoneAttrName, isDone], ...existingAttrs];
+          } else {
+            todoItem.attrs = [[isDoneAttrName, isDone]];
+          }
+        }
 
         inlineTokenChild.content = trimTodoSquare(inlineTokenChild.content);
         inlineToken.content = trimTodoSquare(inlineToken.content);
       });
   }
 
-  function findMatchingCloseToken(tokens, position) {
+  function findMatchingCloseToken(tokens: Token[], position: number) {
     const type = tokens[position].type;
     if (!type.endsWith('_open')) {
       throw new Error('expect type to be _open');
@@ -108,15 +122,14 @@ export function todoListMarkdownItPlugin(md, options = {}) {
   }
 
   // returns children of same level
-  function getChildren(tokens, position) {
+  function getChildren(tokens: Token[], position: number) {
     const parentOpen = tokens[position];
     if (!parentOpen.type.endsWith('_open')) {
       throw new Error('Can only work with _open types');
     }
-
     const endType = parentOpen.type.split('_open').join('') + '_close';
+    const result: Array<[Token, number]> = [];
 
-    const result = [];
     for (let i = position + 1; i < tokens.length; i++) {
       const current = tokens[i];
       if (current.level < parentOpen.level) {
@@ -125,7 +138,6 @@ export function todoListMarkdownItPlugin(md, options = {}) {
       if (current.level === parentOpen.level && current.type === endType) {
         break;
       }
-
       if (current.level === parentOpen.level + 1) {
         result.push([current, i]);
       }
@@ -134,11 +146,11 @@ export function todoListMarkdownItPlugin(md, options = {}) {
     return result;
   }
 
-  function trimTodoSquare(str) {
+  function trimTodoSquare(str: string) {
     return strStartsWithTodoMarkdown(str) ? str.slice(4) : str;
   }
 
-  function strStartsWithTodoMarkdown(str) {
+  function strStartsWithTodoMarkdown(str: string) {
     return str
       ? str.startsWith('[ ] ') ||
           str.startsWith('[x] ') ||
@@ -146,19 +158,19 @@ export function todoListMarkdownItPlugin(md, options = {}) {
       : false;
   }
 
-  function startsWithTodoMarkdown(token) {
+  function startsWithTodoMarkdown(token: Token) {
     // leading whitespace in a list item is already trimmed off by markdown-it
     return strStartsWithTodoMarkdown(token.content);
   }
 
-  function isListItemTodoItem(tokens, index) {
-    function isInline(token) {
+  function isListItemTodoItem(tokens: Token[], index: number) {
+    function isInline(token: Token) {
       return token.type === 'inline';
     }
-    function isParagraph(token) {
+    function isParagraph(token: Token) {
       return token.type === 'paragraph_open';
     }
-    function isListItem(token) {
+    function isListItem(token: Token) {
       return token.type === 'list_item_open';
     }
 

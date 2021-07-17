@@ -1,7 +1,7 @@
 import Token from 'markdown-it/lib/token';
 
-export function tableMarkdownItPlugin(md, options = {}) {
-  md.core.ruler.after('inline', 'tables', function (state) {
+export function tableMarkdownItPlugin(md: any, options = {}): void {
+  md.core.ruler.after('inline', 'tables', function (state: any) {
     state.tokens = removeWrapping(state.tokens, 'tbody');
     state.tokens = removeWrapping(state.tokens, 'thead');
     state.tokens = insertParagraph(state.tokens);
@@ -9,11 +9,11 @@ export function tableMarkdownItPlugin(md, options = {}) {
   });
 }
 
-function removeWrapping(tokens, type) {
+function removeWrapping(tokens: Token[], type: string) {
   const openType = type + '_open';
   const closeType = type + '_close';
-
   let subtractBy = 0;
+
   return tokens.filter((token) => {
     token.level = token.level - subtractBy;
 
@@ -29,12 +29,12 @@ function removeWrapping(tokens, type) {
   });
 }
 
-function insertParagraph(tokens) {
+function insertParagraph(tokens: Token[]) {
   return tokens.flatMap((token) => {
     if (['th_open', 'td_open'].includes(token.type)) {
       if (token.attrs) {
         const [, style] = token.attrs[0];
-        token.align = style.split(':')[1];
+        (token as any).align = style.split(':')[1];
       }
       return [token, new Token('paragraph_open', 'p', 1)];
     }

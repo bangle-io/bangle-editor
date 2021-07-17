@@ -61,5 +61,11 @@
     {
       "path": "./contrib/markdown-front-matter/tsconfig.json"
     },
+    {
+      "path": "./markdown/tsconfig.json"
+    },
+    {
+      "path": "./markdown/tsconfig.test.json"
+    },
   ]
 }

@@ -12,8 +12,7 @@ export const defaultMarkdownItTokenizer = markdownIt()
 export function markdownParser(
   specRegistry = new SpecRegistry(),
   markdownItTokenizer = defaultMarkdownItTokenizer,
-  { useDefaults = true } = {},
 ) {
-  const { tokens } = markdownLoader(specRegistry, { useDefaults });
+  const { tokens } = markdownLoader(specRegistry);
   return new MarkdownParser(specRegistry.schema, markdownItTokenizer, tokens);
 }

@@ -3080,16 +3080,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/disk@npm:*":
-  version: 0.21.0
-  resolution: "@bangle.dev/disk@npm:0.21.0"
-  dependencies:
-    debounce-fn: ^5.0.0
-  checksum: 9843a2b38fdc29a7073f323fe1418aaa611f398c330bc9e0fe5dd094d135b5c3c6d261a3a49f9089b8376e1035c736a820ac4ff46f3ab1438f380ce144f943a3
-  languageName: node
-  linkType: hard
-
-"@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
+"@bangle.dev/disk@*, @bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/disk@workspace:contrib/disk"
   dependencies:
@@ -3139,6 +3130,8 @@ __metadata:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/js-utils": "workspace:*"
     "@bangle.dev/table": "workspace:*"
+    "@types/markdown-it": ^12.0.3
+    "@types/prosemirror-markdown": ^1.5.1
     markdown-it: ^10.0.0
     prosemirror-markdown: ^1.5.1
   peerDependencies:
@@ -3258,6 +3251,7 @@ __metadata:
   resolution: "@bangle.dev/react-stopwatch@workspace:contrib/react-stopwatch"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/js-utils": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/table": "workspace:*"
@@ -4897,6 +4891,17 @@ __metadata:
     "@types/linkify-it": "*"
     "@types/mdurl": "*"
   checksum: 7859f84a273f33bae9e78aa603338b64aa9b06566739a324ff7aca388f08c7ab13256286493ad5f8894558184fb8b0dfd674a05900995d5f3e7a6e47373fc348
+  languageName: node
+  linkType: hard
+
+"@types/markdown-it@npm:^12.0.3":
+  version: 12.0.3
+  resolution: "@types/markdown-it@npm:12.0.3"
+  dependencies:
+    "@types/highlight.js": ^9.7.0
+    "@types/linkify-it": "*"
+    "@types/mdurl": "*"
+  checksum: aa0a0162fd9d1f4799706ed3950f4fef8afe8bad3b2e6335186060799255b24fcc05ccf44c305df6bc6e7181543a57ed7e1d6b7c3c705f823314dc7bc8e1b425
   languageName: node
   linkType: hard
 
