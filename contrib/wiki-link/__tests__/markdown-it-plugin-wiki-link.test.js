@@ -2,10 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import {
-  psx,
-  renderTestEditor,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
 import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
@@ -13,7 +10,7 @@ import {
 } from '@bangle.dev/core/test-helpers/default-components';
 import { markdownSerializer } from '@bangle.dev/markdown';
 import {
-  defaultMarkdownItTokenizer,
+  getDefaultMarkdownItTokenizer,
   markdownParser,
 } from '@bangle.dev/markdown/markdown-parser';
 import { wikiLinkMarkdownItPlugin, wikiLink } from '../index';
@@ -31,7 +28,7 @@ const serialize = async (doc) => {
 const parse = async (md) =>
   markdownParser(
     specRegistry,
-    defaultMarkdownItTokenizer.use(wikiLinkMarkdownItPlugin),
+    getDefaultMarkdownItTokenizer().use(wikiLinkMarkdownItPlugin),
   ).parse(md);
 
 describe('markdown', () => {

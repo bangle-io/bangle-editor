@@ -12,7 +12,7 @@ import {
   renderTestEditor,
 } from '@bangle.dev/core/test-helpers/test-helpers';
 import {
-  defaultMarkdownItTokenizer,
+  getDefaultMarkdownItTokenizer,
   markdownParser,
 } from '@bangle.dev/markdown/markdown-parser';
 import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
@@ -92,7 +92,7 @@ describe('markdown', () => {
   const parse = async (md) =>
     markdownParser(
       specRegistry,
-      defaultMarkdownItTokenizer.use(emojiParser),
+      getDefaultMarkdownItTokenizer().use(emojiParser),
     ).parse(md);
 
   test('markdown 1', async () => {

@@ -42,7 +42,7 @@ Sample code for setting up markdown.
 import {
   markdownParser,
   markdownSerializer,
-  defaultMarkdownItTokenizer,
+  getDefaultMarkdownItTokenizer,
 } from '@bangle.dev/markdown';
 import { emoji, emojiMarkdownItPlugin } from '@bangle.dev/emoji';
 
@@ -68,7 +68,7 @@ const specRegistry = [
 
 const parser = markdownParser(
   specRegistry,
-  defaultMarkdownItTokenizer.use(emojiMarkdownItPlugin, {
+  getDefaultMarkdownItTokenizer().use(emojiMarkdownItPlugin, {
     // https://github.com/markdown-it/markdown-it-emoji options go here
     defs: myEmojiDefs,
   }),
