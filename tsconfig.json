@@ -73,5 +73,11 @@
     {
       "path": "./markdown/tsconfig.test.json"
     },
+    {
+      "path": "./contrib/wiki-link/tsconfig.json"
+    },
+    {
+      "path": "./contrib/wiki-link/tsconfig.test.json"
+    },
   ]
 }
