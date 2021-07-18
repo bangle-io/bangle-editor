@@ -28,10 +28,14 @@
     "prepack": "yarn compile-ts"
   },
   "peerDependencies": {
-    "@bangle.dev/pm": "0.5.0"
+    "@bangle.dev/pm": "*",
+    "@bangle.dev/utils": "*"
   },
   "peerDependenciesMeta": {
     "@bangle.dev/pm": {
+      "optional": true
+    },
+    "@bangle.dev/utils": {
       "optional": true
     }
   },

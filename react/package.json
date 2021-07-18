@@ -40,8 +40,18 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
+    "@bangle.dev/pm": "*",
+    "@bangle.dev/utils": "*",
     "react": "*",
     "react-dom": "*"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    },
+    "@bangle.dev/utils": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",

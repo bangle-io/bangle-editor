@@ -3008,7 +3008,12 @@ __metadata:
     "@bangle.dev/collab-server": "*"
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
-    prosemirror-collab: "*"
+    "@bangle.dev/utils": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3022,8 +3027,16 @@ __metadata:
     "@types/jest": ^26.0.23
     "@types/node": ^15.12.2
     "@types/prosemirror-collab": ^1.1.2
-    localforage: ^1.9.0
     prosemirror-collab: ^1.2.2
+  peerDependencies:
+    "@bangle.dev/core": "*"
+    "@bangle.dev/disk": "*"
+    "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/disk":
+      optional: true
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3040,9 +3053,12 @@ __metadata:
     prettier: ^2.3.2
     prosemirror-markdown: ^1.5.1
   peerDependencies:
-    "@bangle.dev/pm": 0.5.0
+    "@bangle.dev/pm": "*"
+    "@bangle.dev/utils": "*"
   peerDependenciesMeta:
     "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
       optional: true
   languageName: unknown
   linkType: soft
@@ -3080,6 +3096,9 @@ __metadata:
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3108,7 +3127,10 @@ __metadata:
     prosemirror-markdown: ^1.5.1
   peerDependencies:
     "@bangle.dev/core": "*"
-    "@bangle.dev/table": "*"
+    "@bangle.dev/utils": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3218,6 +3240,11 @@ __metadata:
     "@bangle.dev/utils": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3294,8 +3321,15 @@ __metadata:
     react-test-renderer: ^17.0.2
   peerDependencies:
     "@bangle.dev/core": "*"
+    "@bangle.dev/pm": "*"
+    "@bangle.dev/utils": "*"
     react: "*"
     react-dom: "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3323,6 +3357,9 @@ __metadata:
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3364,6 +3401,9 @@ __metadata:
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 

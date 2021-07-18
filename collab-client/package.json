@@ -35,21 +35,29 @@
     "@bangle.dev/collab-server": "*",
     "@bangle.dev/core": "*",
     "@bangle.dev/pm": "*",
-    "prosemirror-collab": "*"
+    "@bangle.dev/utils": "*"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    },
+    "@bangle.dev/utils": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@bangle.dev/collab-server": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
-    "@bangle.dev/pm": "0.5.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
     "@types/prosemirror-collab": "^1.1.2",
+    "localforage": "^1.9.0",
     "strict-event-emitter-types": "^2.0.0"
   },
   "dependencies": {
+    "@bangle.dev/pm": "0.5.0",
     "@bangle.dev/utils": "workspace:*",
-    "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2"
   }
 }

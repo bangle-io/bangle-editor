@@ -32,7 +32,12 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
-    "@bangle.dev/table": "*"
+    "@bangle.dev/utils": "*"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/utils": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",

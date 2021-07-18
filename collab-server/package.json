@@ -32,15 +32,27 @@
     "prepack": "yarn compile-ts"
   },
   "devDependencies": {
+    "@bangle.dev/core": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
     "@types/prosemirror-collab": "^1.1.2"
   },
+  "peerDependencies": {
+    "@bangle.dev/core": "*",
+    "@bangle.dev/disk": "*",
+    "@bangle.dev/pm": "*"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/disk": {
+      "optional": true
+    },
+    "@bangle.dev/pm": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/pm": "0.5.0",
-    "localforage": "^1.9.0",
     "prosemirror-collab": "^1.2.2"
   }
 }
