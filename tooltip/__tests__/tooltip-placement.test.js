@@ -3,18 +3,16 @@
  */
 
 /** @jsx psx */
-import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
-import { createPopper } from '@popperjs/core/lib/popper-lite';
-import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
 import {
-  SpecRegistry,
   BangleEditor,
   BangleEditorState,
   coreSpec,
+  SpecRegistry,
 } from '@bangle.dev/core';
-
+import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
+import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
-
+import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';
 

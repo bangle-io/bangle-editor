@@ -1,11 +1,11 @@
 import { Plugin } from '@bangle.dev/core';
-import { bangleWarn } from '@bangle.dev/utils';
 import {
   DOMOutputSpec,
   EditorState,
   EditorView,
   PluginKey,
 } from '@bangle.dev/pm';
+import { bangleWarn } from '@bangle.dev/utils';
 import {
   Instance as PopperInstance,
   Modifier,

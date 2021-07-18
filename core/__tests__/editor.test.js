@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
+import { BangleEditor, BangleEditorState, components } from '../index';
 import { SpecRegistry } from '../spec-registry';
 import { psx, renderTestEditor } from '../test-helpers/test-helpers';
-import { BangleEditorState, BangleEditor, components } from '../index';
 import { coreSpec } from '../utils/core-components';
 
 const { blockquote, heading } = components;

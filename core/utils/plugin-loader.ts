@@ -1,4 +1,3 @@
-import { bangleWarn } from '@bangle.dev/utils';
 import type { EditorProps } from '@bangle.dev/pm';
 import {
   baseKeymap as pmBaseKeymap,
@@ -11,6 +10,7 @@ import {
   Schema,
   undoInputRule as pmUndoInputRule,
 } from '@bangle.dev/pm';
+import { bangleWarn } from '@bangle.dev/utils';
 import * as editorStateCounter from '../components/editor-state-counter';
 import * as history from '../components/history';
 import { PluginGroup } from '../plugin';

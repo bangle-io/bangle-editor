@@ -1,14 +1,14 @@
-import reactDOM from 'react-dom';
-import React, { useCallback, useMemo } from 'react';
+import type { EditorView } from '@bangle.dev/pm';
+import { PluginKey } from '@bangle.dev/pm';
 import { useEditorViewContext, usePluginState } from '@bangle.dev/react';
+import React, { useCallback, useMemo } from 'react';
+import reactDOM from 'react-dom';
 import {
   GetEmojiGroupsType,
   getSuggestTooltipKey,
   selectEmoji,
 } from './emoji-suggest';
-import { resolveCounter, getSquareDimensions } from './utils';
-import { PluginKey } from '@bangle.dev/pm';
-import type { EditorView } from '@bangle.dev/pm';
+import { getSquareDimensions, resolveCounter } from './utils';
 
 export function EmojiSuggest({
   emojiSuggestKey,

@@ -3,14 +3,13 @@
  */
 
 /** @jsx psx */
+import { setSelectionNear } from '../../test-helpers/selection-helpers';
 import {
   psx,
   renderTestEditor,
   sendKeyToPm,
   typeChar,
 } from '../../test-helpers/test-helpers';
-
-import { setSelectionNear } from '../../test-helpers/selection-helpers';
 import { code } from '../components';
 
 const keybindings = code.defaultKeys;

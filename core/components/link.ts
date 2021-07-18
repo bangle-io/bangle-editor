@@ -1,10 +1,4 @@
 import {
-  matchAllPlus,
-  filter,
-  getMarkAttrs,
-  mapSlice,
-} from '@bangle.dev/utils';
-import {
   Command,
   EditorState,
   InputRule,
@@ -14,7 +8,12 @@ import {
   Plugin,
   Schema,
 } from '@bangle.dev/pm';
-
+import {
+  filter,
+  getMarkAttrs,
+  mapSlice,
+  matchAllPlus,
+} from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 

@@ -1,5 +1,5 @@
-import { bangleWarn } from '@bangle.dev/utils';
 import { MarkSpec, NodeSpec, Schema } from '@bangle.dev/pm';
+import { bangleWarn } from '@bangle.dev/utils';
 import { doc, paragraph, text } from './components/components';
 
 const LOG = false;

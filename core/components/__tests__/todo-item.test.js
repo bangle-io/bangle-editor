@@ -5,11 +5,11 @@
 import {
   psx,
   renderTestEditor,
-  typeText,
   sendKeyToPm,
+  typeText,
 } from '../../test-helpers/test-helpers';
-import { siblingsAndNodesBetween } from '../list-item/todo';
 import { listItem } from '../components';
+import { siblingsAndNodesBetween } from '../list-item/todo';
 
 const testEditor = renderTestEditor();
 const keybindings = listItem.defaultKeys;

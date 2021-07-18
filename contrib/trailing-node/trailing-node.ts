@@ -1,5 +1,5 @@
-import { PluginKey, Plugin } from '@bangle.dev/pm';
 import type { Schema } from '@bangle.dev/pm';
+import { Plugin, PluginKey } from '@bangle.dev/pm';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 

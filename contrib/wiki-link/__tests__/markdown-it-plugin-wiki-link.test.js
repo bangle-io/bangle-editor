@@ -2,18 +2,18 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
 import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
+import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
 import { markdownSerializer } from '@bangle.dev/markdown';
 import {
   getDefaultMarkdownItTokenizer,
   markdownParser,
 } from '@bangle.dev/markdown/markdown-parser';
-import { wikiLinkMarkdownItPlugin, wikiLink } from '../index';
+import { wikiLink, wikiLinkMarkdownItPlugin } from '../index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), wikiLink.spec()]);
 const plugins = [...defaultPlugins()];

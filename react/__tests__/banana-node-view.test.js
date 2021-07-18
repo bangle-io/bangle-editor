@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  * @jsx pjsx
  */
-import { screen } from '@testing-library/react';
 import { SpecRegistry } from '@bangle.dev/core';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
+import { screen } from '@testing-library/react';
 import { pjsx, reactTestEditor } from './helpers/index';
-import { bananaComponent, Banana } from './setup/banana';
+import { Banana, bananaComponent } from './setup/banana';
 
 const renderNodeViews = jest.fn(({ node, ...args }) => {
   if (node.type.name === 'banana') {

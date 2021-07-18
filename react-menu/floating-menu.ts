@@ -1,15 +1,14 @@
 import { link } from '@bangle.dev/core';
 import {
-  keymap,
   Command,
-  Node,
   EditorState,
+  keymap,
+  Node,
   NodeSelection,
   PluginKey,
 } from '@bangle.dev/pm';
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
-
 import { filter, rafCommandExec } from '@bangle.dev/utils';
 
 const {

@@ -1,18 +1,17 @@
 import { pluginKeyStore, SpecRegistry } from '@bangle.dev/core';
-import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip';
+import type { Command, Schema } from '@bangle.dev/pm';
 import { PluginKey } from '@bangle.dev/pm';
-import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
-import {
-  valuePlugin,
-  rafCommandExec,
-  bangleWarn,
-  uuid,
-} from '@bangle.dev/utils';
-
 import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
-import type { Schema, Command } from '@bangle.dev/pm';
-
+import { createTooltipDOM, suggestTooltip } from '@bangle.dev/tooltip';
+import {
+  bangleWarn,
+  rafCommandExec,
+  uuid,
+  valuePlugin,
+} from '@bangle.dev/utils';
 import { EmojiGroupType } from './types';
+import { getSquareDimensions, resolveCounter, resolveRowJump } from './utils';
+
 const {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,

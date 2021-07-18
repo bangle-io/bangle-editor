@@ -1,12 +1,12 @@
 /// <reference path="./missing-types.d.ts" />
 
 import {
+  domSerializationHelpers,
   NodeView,
   NodeViewProps,
-  domSerializationHelpers,
 } from '@bangle.dev/core';
-import { Node } from '@bangle.dev/pm';
-import { keymap } from '@bangle.dev/pm';
+import type { Command, Schema } from '@bangle.dev/pm';
+import { keymap, Node } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
 import React from 'react';
 import brontosaurusImg from './img/brontosaurus.png';
@@ -14,8 +14,6 @@ import pterodactylImg from './img/pterodactyl.png';
 import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
-import type { Schema } from '@bangle.dev/pm';
-import type { Command } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

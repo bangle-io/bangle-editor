@@ -3,18 +3,18 @@
  */
 
 /** @jsx psx */
-import { doc, heading, paragraph, text } from '../components';
 import { SpecRegistry } from '../../spec-registry';
 import {
-  renderTestEditor,
   psx,
-  typeText,
+  renderTestEditor,
   sendKeyToPm,
+  typeText,
 } from '../../test-helpers/test-helpers';
+import { doc, heading, paragraph, text } from '../components';
 import {
   convertToParagraph,
-  jumpToStartOfParagraph,
   jumpToEndOfParagraph,
+  jumpToStartOfParagraph,
 } from '../paragraph';
 
 const testEditor = renderTestEditor();

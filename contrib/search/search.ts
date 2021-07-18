@@ -1,4 +1,3 @@
-import { matchAllPlus } from '@bangle.dev/utils';
 import type { Command, Node } from '@bangle.dev/pm';
 import {
   Decoration,
@@ -7,6 +6,7 @@ import {
   Plugin,
   PluginKey,
 } from '@bangle.dev/pm';
+import { matchAllPlus } from '@bangle.dev/utils';
 
 const name = 'search';
 export const spec = specFactory;

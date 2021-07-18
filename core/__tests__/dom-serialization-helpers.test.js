@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
 import { components } from '../index';
 import { SpecRegistry } from '../spec-registry';
+import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
 
 const { paragraph, doc, text } = components;
 describe('domSerializationHelpers parseDOM', () => {

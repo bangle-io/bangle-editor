@@ -9,7 +9,6 @@ import {
   sendKeyToPm,
   typeText,
 } from '../../test-helpers/test-helpers';
-
 import { blockquote } from '../components';
 
 const keybindings = blockquote.defaultKeys;

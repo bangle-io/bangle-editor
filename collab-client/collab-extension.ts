@@ -10,24 +10,23 @@ import {
   uuid,
 } from '@bangle.dev/collab-server';
 import {
+  EditorState,
+  EditorView,
+  Plugin,
+  PluginKey,
+  Schema,
+  Selection,
+  Step,
+  TextSelection,
+} from '@bangle.dev/pm';
+import { Emitter } from '@bangle.dev/utils';
+import {
   collab,
   getVersion,
   receiveTransaction,
   sendableSteps,
 } from 'prosemirror-collab';
-import {
-  Schema,
-  EditorState,
-  Plugin,
-  PluginKey,
-  Selection,
-  TextSelection,
-  Step,
-  EditorView,
-} from '@bangle.dev/pm';
-
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { Emitter } from '@bangle.dev/utils';
 import { replaceDocument } from './helpers';
 
 type UnPromisify<T> = T extends Promise<infer U> ? U : T;

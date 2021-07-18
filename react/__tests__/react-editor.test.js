@@ -13,12 +13,11 @@ import {
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
 import { selectNodeAt } from '@bangle.dev/core/test-helpers/test-helpers';
-import { sleep, removeSelectedNode, safeInsert } from '@bangle.dev/utils';
 import { EditorView as PMEditorView, Node } from '@bangle.dev/pm';
-
-import { BangleEditor } from '../index';
+import { removeSelectedNode, safeInsert, sleep } from '@bangle.dev/utils';
 import { fireEvent, render } from '@testing-library/react';
 import { useEditorState } from '../hooks';
+import { BangleEditor } from '../index';
 import { pjsx } from './helpers/index';
 import { Banana, bananaComponent } from './setup/banana';
 

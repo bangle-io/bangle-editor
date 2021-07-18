@@ -1,7 +1,6 @@
-import { toggleMark, keymap } from '@bangle.dev/pm';
+import type { Command, Schema } from '@bangle.dev/pm';
+import { keymap, toggleMark } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
-
-import type { Schema, Command } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

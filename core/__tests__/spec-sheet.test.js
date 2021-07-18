@@ -1,12 +1,11 @@
 import { MarkType, NodeType } from '@bangle.dev/pm';
 import {
-  hardBreak,
+  bold,
   doc,
+  hardBreak,
   paragraph,
   text,
-  bold,
 } from '../components/components';
-
 import { SpecRegistry } from '../spec-registry';
 
 test('Loads node and marks schema correctly', () => {

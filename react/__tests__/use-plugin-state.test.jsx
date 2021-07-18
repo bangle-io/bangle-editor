@@ -7,9 +7,9 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import { BangleEditor, useEditorState, usePluginState } from '../index';
 import { act, render } from '@testing-library/react';
 import { useEffect, useState } from 'react';
+import { BangleEditor, useEditorState, usePluginState } from '../index';
 import { pjsx, Span } from './helpers/index';
 
 const key = new PluginKey('testPlugins');

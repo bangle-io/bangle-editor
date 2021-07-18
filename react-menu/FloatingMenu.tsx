@@ -1,6 +1,6 @@
+import { PluginKey } from '@bangle.dev/pm';
 import { usePluginState } from '@bangle.dev/react';
 import PropTypes from 'prop-types';
-import { PluginKey } from '@bangle.dev/pm';
 import React from 'react';
 import reactDOM from 'react-dom';
 import { LinkSubMenu } from './LinkSubMenu';

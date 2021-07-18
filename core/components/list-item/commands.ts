@@ -1,4 +1,3 @@
-import { compose } from '@bangle.dev/utils';
 import {
   autoJoin,
   chainCommands,
@@ -22,6 +21,7 @@ import {
   wrapInList as pmWrapInList,
 } from '@bangle.dev/pm';
 import {
+  compose,
   extendDispatch,
   filter,
   findCutBefore,

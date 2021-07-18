@@ -2,9 +2,8 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
+import { findCutBefore, isFirstChildOfParent } from '@bangle.dev/utils';
 import { psx, renderTestEditor } from '../../test-helpers/test-helpers';
-
-import { isFirstChildOfParent, findCutBefore } from '@bangle.dev/utils';
 
 const testEditor = renderTestEditor();
 

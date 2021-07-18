@@ -4,9 +4,9 @@
 
 /** @jsx psx */
 import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
-import { serialize, parse } from './setup';
 import fs from 'fs/promises';
 import path from 'path';
+import { parse, serialize } from './setup';
 
 describe('todo list', () => {
   test('renders 1', async () => {

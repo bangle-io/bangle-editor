@@ -1,5 +1,5 @@
-import { bangleWarn } from '@bangle.dev/utils';
 import { PluginKey } from '@bangle.dev/pm';
+import { bangleWarn } from '@bangle.dev/utils';
 
 export function pluginKeyStore() {
   const store = new WeakMap();

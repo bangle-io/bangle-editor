@@ -5,7 +5,6 @@
 /** @jsx psx */
 
 import { SpecRegistry } from '@bangle.dev/core';
-import { PluginKey, Selection } from '@bangle.dev/pm';
 import {
   defaultPlugins,
   defaultSpecs,
@@ -17,6 +16,7 @@ import {
   typeChar,
   typeText,
 } from '@bangle.dev/core/test-helpers/test-helpers';
+import { PluginKey, Selection } from '@bangle.dev/pm';
 import { sleep } from '@bangle.dev/utils';
 import { suggestTooltip } from '../index';
 import { replaceSuggestMarkWith } from '../suggest-tooltip';

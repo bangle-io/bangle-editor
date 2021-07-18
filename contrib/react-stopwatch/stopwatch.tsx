@@ -1,12 +1,11 @@
 import {
-  NodeView,
   domSerializationHelpers,
+  NodeView,
   NodeViewProps,
 } from '@bangle.dev/core';
+import type { Command } from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
 import React from 'react';
-import { objectFilter, objectMapValues } from '@bangle.dev/utils';
-import type { Command } from '@bangle.dev/pm';
 
 const LOG = false;
 
