@@ -31,10 +31,16 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
     "prepack": "yarn compile-ts"
   },
-  "devDependencies": {
-    "@bangle.dev/pm": "0.5.0"
+  "peerDependencies": {
+    "@bangle.dev/pm": "*"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    }
   },
   "dependencies": {
+    "@bangle.dev/pm": "0.5.0",
     "debounce-fn": "^5.0.0"
   }
 }

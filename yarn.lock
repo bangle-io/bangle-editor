@@ -3024,6 +3024,7 @@ __metadata:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": 0.5.0
+    "@bangle.dev/utils": "workspace:*"
     "@types/jest": ^26.0.23
     "@types/node": ^15.12.2
     "@types/prosemirror-collab": ^1.1.2
@@ -3063,21 +3064,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/disk@npm:*":
-  version: 0.23.1
-  resolution: "@bangle.dev/disk@npm:0.23.1"
-  dependencies:
-    debounce-fn: ^5.0.0
-  checksum: 483192cbf2ffb71bbaa6d1b55e6ac8203829d320f88584bf7dbaf2e85a6e5898e8202e91bf0155192246ca69eab52f87c4bd9d314f9c96982739bb7572b968ac
-  languageName: node
-  linkType: hard
-
 "@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/disk@workspace:contrib/disk"
   dependencies:
     "@bangle.dev/pm": 0.5.0
     debounce-fn: ^5.0.0
+  peerDependencies:
+    "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3089,6 +3086,7 @@ __metadata:
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": 0.5.0
     "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
     "@types/markdown-it": ^10.0.0
     "@types/prosemirror-markdown": ^1.5.2
     markdown-it-emoji: ^2.0.0
@@ -3108,7 +3106,9 @@ __metadata:
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/pm": 0.5.0
     "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
   peerDependencies:
     "@bangle.dev/core": "*"
   languageName: unknown
@@ -3119,6 +3119,7 @@ __metadata:
   resolution: "@bangle.dev/markdown@workspace:markdown"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/pm": 0.5.0
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
     "@types/markdown-it": ^12.0.3
@@ -3213,6 +3214,11 @@ __metadata:
     "@bangle.dev/utils": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3257,6 +3263,7 @@ __metadata:
     "@bangle.dev/pm": 0.5.0
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
     "@testing-library/react": ^11.2.7
     "@types/prop-types": ^15.7.4
     "@types/react": ^17.0.14
@@ -3271,6 +3278,9 @@ __metadata:
     "@bangle.dev/react": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3294,8 +3304,14 @@ __metadata:
     "@bangle.dev/markdown": "*"
     "@bangle.dev/pm": "*"
     "@bangle.dev/react": "*"
+    "@bangle.dev/utils": "*"
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3344,6 +3360,12 @@ __metadata:
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+    "@bangle.dev/utils": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3352,8 +3374,11 @@ __metadata:
   resolution: "@bangle.dev/table@workspace:table"
   dependencies:
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": 0.5.0
+    "@bangle.dev/utils": "workspace:*"
+    "@types/prosemirror-markdown": ^1.5.2
+    markdown-it: ^10.0.0
+    prosemirror-markdown: ^1.5.1
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
@@ -3374,6 +3399,11 @@ __metadata:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
     "@bangle.dev/utils": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
+    "@bangle.dev/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3383,9 +3413,13 @@ __metadata:
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": 0.5.0
+    "@bangle.dev/utils": "workspace:*"
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3413,9 +3447,13 @@ __metadata:
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": 0.5.0
+    "@bangle.dev/utils": "workspace:*"
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3446,9 +3484,13 @@ __metadata:
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": 0.5.0
     "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  peerDependenciesMeta:
+    "@bangle.dev/pm":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -7092,7 +7134,7 @@ __metadata:
     "@bangle.dev/collab-client": "workspace:*"
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/disk": "*"
+    "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/markdown-front-matter": "workspace:*"
@@ -7139,7 +7181,7 @@ __metadata:
     "@bangle.dev/collab-client": "workspace:*"
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/disk": "*"
+    "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/markdown-front-matter": "workspace:*"

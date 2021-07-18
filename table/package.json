@@ -35,7 +35,11 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/markdown": "workspace:*"
+    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/utils": "workspace:*",
+    "@types/prosemirror-markdown": "^1.5.2",
+    "markdown-it": "^10.0.0",
+    "prosemirror-markdown": "^1.5.1"
   },
   "dependencies": {
     "@bangle.dev/pm": "0.5.0"

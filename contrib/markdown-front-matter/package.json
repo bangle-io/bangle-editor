@@ -31,7 +31,9 @@
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
-    "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

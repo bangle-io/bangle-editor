@@ -43,6 +43,8 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^26.0.23"
   },
   "dependencies": {

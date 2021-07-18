@@ -29,6 +29,18 @@
     "@bangle.dev/pm": "*",
     "@bangle.dev/utils": "*"
   },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    },
+    "@bangle.dev/utils": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/utils": "workspace:*"
+  },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "0.5.0",

@@ -25,6 +25,7 @@
     "prepack": "yarn compile-ts && cp -r $INIT_CWD/img $INIT_CWD/dist/"
   },
   "dependencies": {
+    "@bangle.dev/pm": "0.5.0",
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
@@ -35,12 +36,18 @@
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "0.5.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/utils": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.14",

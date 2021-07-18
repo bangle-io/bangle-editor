@@ -25,6 +25,7 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
+    "@bangle.dev/pm": "0.5.0",
     "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
@@ -32,8 +33,17 @@
     "@bangle.dev/markdown": "*",
     "@bangle.dev/pm": "*",
     "@bangle.dev/react": "*",
+    "@bangle.dev/utils": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    },
+    "@bangle.dev/utils": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
@@ -41,6 +51,7 @@
     "@bangle.dev/pm": "0.5.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/utils": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",

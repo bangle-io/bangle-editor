@@ -1,6 +1,8 @@
-import type { MarkdownSerializerState, Token } from '@bangle.dev/markdown';
 import type { Node } from '@bangle.dev/pm';
 import { goToNextCell, keymap, tableEditing, tableNodes } from '@bangle.dev/pm';
+// Not importing @bangle.dev/markdown to avoid cyclic dependency
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 function calculateColumnWidth(tableNode: Node) {
   const sizeMap = new Map();
