@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.23.1
+
+**@bangle.dev/react-sticker**
+
+- Fixed a problem in prepack script which prevented it from being built.
+
 ## 0.23.0
 
 - All the packages are now written in Typescript.

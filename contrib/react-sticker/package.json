@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-sticker",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -22,7 +22,7 @@
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
-    "prepack": "yarn compile-ts && && cp -r $INIT_CWD/img $INIT_CWD/dist/"
+    "prepack": "yarn compile-ts && cp -r $INIT_CWD/img $INIT_CWD/dist/"
   },
   "dependencies": {
     "prop-types": "^15.7.2",
