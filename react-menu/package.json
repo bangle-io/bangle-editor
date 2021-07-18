@@ -17,8 +17,8 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "index.ts",
+  "module": "index.ts",
   "types": "dist/index.d.ts",
   "style": "style.css",
   "scripts": {
@@ -60,6 +60,9 @@
     "react-dom": "^17.0.2"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
   }
 }

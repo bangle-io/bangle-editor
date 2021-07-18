@@ -17,9 +17,15 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "index.ts",
+  "module": "index.ts",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  },
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
@@ -42,8 +48,5 @@
     "@types/prosemirror-view": "^1.17.2",
     "prosemirror-commands": "^1.1.10",
     "prosemirror-model": "^1.14.2"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

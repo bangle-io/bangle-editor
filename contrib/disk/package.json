@@ -17,9 +17,15 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "index.ts",
+  "module": "index.ts",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  },
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
@@ -31,8 +37,5 @@
   },
   "dependencies": {
     "debounce-fn": "^5.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
