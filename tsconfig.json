@@ -79,5 +79,11 @@
     {
       "path": "./contrib/wiki-link/tsconfig.test.json"
     },
+    {
+      "path": "./contrib/trailing-node/tsconfig.json"
+    },
+    {
+      "path": "./contrib/trailing-node/tsconfig.test.json"
+    },
   ]
 }
