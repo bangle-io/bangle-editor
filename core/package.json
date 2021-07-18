@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/core",
-  "version": "0.24.0-alpha.2",
+  "version": "0.24.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -26,6 +26,14 @@
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
     "prepack": "yarn compile-ts"
+  },
+  "peerDependencies": {
+    "@bangle.dev/pm": "0.5.0"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@bangle.dev/js-utils": "workspace:*",
