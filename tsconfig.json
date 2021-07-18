@@ -88,5 +88,11 @@
     {
       "path": "./contrib/timestamp/tsconfig.json"
     },
+    {
+      "path": "./contrib/text-formatting/tsconfig.json"
+    },
+    {
+      "path": "./contrib/text-formatting/tsconfig.test.json"
+    },
   ]
 }

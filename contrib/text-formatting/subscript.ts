@@ -1,6 +1,8 @@
 import { toggleMark } from 'prosemirror-commands';
 import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
 import { keymap } from 'prosemirror-keymap';
+import type { Schema } from 'prosemirror-model';
+import type { Command } from 'prosemirror-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -9,7 +11,7 @@ export const commands = {
   queryIsSubscriptActive,
 };
 export const defaultKeys = {
-  toggleSubscript: null,
+  toggleSubscript: '',
 };
 
 const name = 'subscript';
@@ -27,7 +29,7 @@ function specFactory(opts = {}) {
 }
 
 function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     return [
       keybindings &&
         keymap({
@@ -37,12 +39,12 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   };
 }
 
-export function toggleSubscript() {
+export function toggleSubscript(): Command {
   return (state, dispatch, view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch, view);
+    return toggleMark(state.schema.marks[name])(state, dispatch);
   };
 }
 
-export function queryIsSubscriptActive() {
+export function queryIsSubscriptActive(): Command {
   return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
 }

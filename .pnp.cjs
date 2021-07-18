@@ -6253,8 +6253,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm-utils", "virtual:59ac9ea4d189dcdc3689b9153f5ed3f4fa80ea0e9dc407a0e10dab808b4e41fee1640d98dfc92485713c7f4c411b5fd0437b3bca35f79d471e8ac888205a393f#workspace:contrib/pm-utils"],
             ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.1"],
             ["prosemirror-commands", "npm:1.1.10"],
-            ["prosemirror-keymap", "npm:1.1.4"]
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"]
           ],
           "linkType": "SOFT",
         }]

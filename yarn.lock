@@ -3361,8 +3361,10 @@ __metadata:
     "@bangle.dev/pm-utils": "workspace:*"
     "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-keymap": ^1.0.4
+    "@types/prosemirror-model": ^1.13.0
     prosemirror-commands: ^1.1.10
     prosemirror-keymap: ^1.1.4
+    prosemirror-model: ^1.14.2
   languageName: unknown
   linkType: soft
 
