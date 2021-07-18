@@ -1,7 +1,6 @@
 import type { Node } from '@bangle.dev/pm';
 import { goToNextCell, keymap, tableEditing, tableNodes } from '@bangle.dev/pm';
-import type Token from 'markdown-it/lib/token';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { Token, MarkdownSerializerState } from '@bangle.dev/markdown';
 
 function calculateColumnWidth(tableNode: Node) {
   const sizeMap = new Map();

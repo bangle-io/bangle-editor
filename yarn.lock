@@ -3043,7 +3043,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/disk@*, @bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
+"@bangle.dev/disk@npm:*":
+  version: 0.23.1
+  resolution: "@bangle.dev/disk@npm:0.23.1"
+  dependencies:
+    debounce-fn: ^5.0.0
+  checksum: 483192cbf2ffb71bbaa6d1b55e6ac8203829d320f88584bf7dbaf2e85a6e5898e8202e91bf0155192246ca69eab52f87c4bd9d314f9c96982739bb7572b968ac
+  languageName: node
+  linkType: hard
+
+"@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/disk@workspace:contrib/disk"
   dependencies:
@@ -3331,10 +3340,8 @@ __metadata:
   resolution: "@bangle.dev/table@workspace:table"
   dependencies:
     "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": 0.5.0
-    "@types/markdown-it": ^10.0.0
-    "@types/prosemirror-markdown": ^1.5.2
-    markdown-it: ^10.0.0
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
@@ -3403,9 +3410,6 @@ __metadata:
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": 0.5.0
     "@bangle.dev/table": "workspace:*"
-    "@types/markdown-it": ^10.0.0
-    markdown-it: ^10.0.0
-    prosemirror-markdown: ^1.5.1
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
