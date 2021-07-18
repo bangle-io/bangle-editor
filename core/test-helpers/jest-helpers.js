@@ -1,6 +1,5 @@
-import { Node } from 'prosemirror-model';
+import { Node, NodeSelection } from '@bangle.dev/pm';
 import prettier from 'prettier';
-import { NodeSelection } from 'prosemirror-state';
 import { getDocLabels } from './schema-builders';
 
 global.db = function db(fn) {

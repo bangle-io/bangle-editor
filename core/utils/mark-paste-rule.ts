@@ -1,5 +1,4 @@
-import { Plugin } from 'prosemirror-state';
-import { Node, Mark, Slice, Fragment, MarkType } from 'prosemirror-model';
+import { Fragment, Mark, MarkType, Node, Plugin, Slice } from '@bangle.dev/pm';
 
 export function markPasteRule(
   regexp: RegExp,

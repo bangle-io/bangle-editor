@@ -1,20 +1,19 @@
+import { bangleWarn } from '@bangle.dev/js-utils';
+import type { EditorProps } from '@bangle.dev/pm';
 import {
+  baseKeymap as pmBaseKeymap,
+  dropCursor as pmDropCursor,
+  gapCursor as pmGapCursor,
   InputRule,
   inputRules as pmInputRules,
+  keymap,
+  Plugin,
+  Schema,
   undoInputRule as pmUndoInputRule,
-} from 'prosemirror-inputrules';
-
-import { keymap } from 'prosemirror-keymap';
-import { gapCursor as pmGapCursor } from 'prosemirror-gapcursor';
-import { baseKeymap as pmBaseKeymap } from 'prosemirror-commands';
-import { dropCursor as pmDropCursor } from 'prosemirror-dropcursor';
-import type { EditorProps } from 'prosemirror-view';
-import { bangleWarn } from '@bangle.dev/js-utils';
-import { Schema } from 'prosemirror-model';
-import { Plugin } from 'prosemirror-state';
-import { PluginGroup } from '../plugin';
-import * as history from '../components/history';
+} from '@bangle.dev/pm';
 import * as editorStateCounter from '../components/editor-state-counter';
+import * as history from '../components/history';
+import { PluginGroup } from '../plugin';
 import type { SpecRegistry } from '../spec-registry';
 
 interface PluginPayload {

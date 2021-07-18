@@ -1,6 +1,4 @@
-import { chainCommands, exitCode } from 'prosemirror-commands';
-import { keymap } from 'prosemirror-keymap';
-import { Schema, Node } from 'prosemirror-model';
+import { chainCommands, exitCode, keymap, Node, Schema } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

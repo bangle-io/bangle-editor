@@ -1,16 +1,19 @@
-import type Token from 'markdown-it/lib/token';
-import { setBlockType } from 'prosemirror-commands';
-import { textblockTypeInputRule } from 'prosemirror-inputrules';
-import { keymap } from 'prosemirror-keymap';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import { Node, Schema } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
-import { moveNode } from '../core-commands';
+import {
+  EditorState,
+  keymap,
+  Node,
+  Schema,
+  setBlockType,
+  textblockTypeInputRule,
+} from '@bangle.dev/pm';
 import {
   filter,
   findParentNodeOfType,
   insertEmpty,
 } from '@bangle.dev/pm-utils';
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import { moveNode } from '../core-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

@@ -1,4 +1,4 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { PluginGroup } from '../plugin';
 
 const name = 'editorStateCounter';

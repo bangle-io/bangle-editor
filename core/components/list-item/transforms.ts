@@ -1,19 +1,18 @@
 import {
+  autoJoin,
+  EditorState,
   Fragment,
+  liftTarget,
   Node,
   NodeRange,
   NodeType,
+  ReplaceAroundStep,
   Schema,
-  Slice,
-} from 'prosemirror-model';
-import {
-  EditorState,
   Selection,
+  Slice,
   TextSelection,
   Transaction,
-} from 'prosemirror-state';
-import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
-import { autoJoin } from 'prosemirror-commands';
+} from '@bangle.dev/pm';
 import { getListLiftTarget, mapChildren, mapSlice } from '@bangle.dev/pm-utils';
 
 function liftListItem(

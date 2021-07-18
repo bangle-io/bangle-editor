@@ -1,4 +1,4 @@
-import { MarkType, NodeType } from 'prosemirror-model';
+import { MarkType, NodeType } from '@bangle.dev/pm';
 import {
   hardBreak,
   doc,

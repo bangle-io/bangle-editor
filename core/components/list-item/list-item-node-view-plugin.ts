@@ -1,7 +1,6 @@
+import { EditorState, Node } from '@bangle.dev/pm';
 import { createElement } from '../../create-element';
 import { NodeView, UpdateAttrsFunction } from '../../node-view';
-import { EditorState } from 'prosemirror-state';
-import { Node } from 'prosemirror-model';
 
 const LOG = false;
 

@@ -3,6 +3,8 @@
  */
 
 /** @jsx psx */
+import { toggleMark } from '@bangle.dev/pm';
+import { SpecRegistry } from '../../spec-registry';
 import {
   dispatchPasteEvent,
   psx,
@@ -10,19 +12,17 @@ import {
   selectNodeAt,
   typeText,
 } from '../../test-helpers/test-helpers';
-import { toggleMark } from 'prosemirror-commands';
-import { queryLinkAttrs, updateLink, URL_REGEX } from '../link';
 import {
+  bold,
   bulletList,
+  doc,
+  link,
   listItem,
   orderedList,
-  bold,
-  link,
-  doc,
-  text,
   paragraph,
+  text,
 } from '../components';
-import { SpecRegistry } from '../../spec-registry';
+import { queryLinkAttrs, updateLink, URL_REGEX } from '../link';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

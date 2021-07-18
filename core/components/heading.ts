@@ -1,25 +1,31 @@
-import { Command, setBlockType } from 'prosemirror-commands';
-import { textblockTypeInputRule } from 'prosemirror-inputrules';
-import { ContentNodeWithPos, findChildren } from 'prosemirror-utils';
-import { Fragment, Node, Schema } from 'prosemirror-model';
-import { EditorState, TextSelection } from 'prosemirror-state';
-
-import { keymap } from 'prosemirror-keymap';
 import {
-  copyEmptyCommand,
-  cutEmptyCommand,
-  moveNode,
-  jumpToStartOfNode,
-  jumpToEndOfNode,
-} from '../core-commands';
+  Command,
+  EditorState,
+  Fragment,
+  keymap,
+  Node,
+  Schema,
+  setBlockType,
+  textblockTypeInputRule,
+  TextSelection,
+} from '@bangle.dev/pm';
 import {
+  ContentNodeWithPos,
   filter,
+  findChildren,
   findParentNodeOfType,
   insertEmpty,
 } from '@bangle.dev/pm-utils';
-import browser from '../utils/browser';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import {
+  copyEmptyCommand,
+  cutEmptyCommand,
+  jumpToEndOfNode,
+  jumpToStartOfNode,
+  moveNode,
+} from '../core-commands';
+import browser from '../utils/browser';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

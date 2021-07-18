@@ -1,52 +1,49 @@
-import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
-import * as pmListCommands from 'prosemirror-schema-list';
-import { Command } from 'prosemirror-commands';
-import * as baseCommand from 'prosemirror-commands';
+import { compose } from '@bangle.dev/js-utils';
 import {
+  autoJoin,
+  chainCommands,
+  Command,
+  EditorState,
+  Fragment,
+  liftListItem,
+  liftTarget,
   Node,
   NodeRange,
-  Fragment,
-  Slice,
-  Schema,
-  ResolvedPos,
-  NodeType,
-} from 'prosemirror-model';
-import {
-  findParentNodeOfType,
-  safeInsert,
-  hasParentNodeOfType,
-  findPositionOfNodeBefore,
-  findParentNode,
-  flatten,
-} from 'prosemirror-utils';
-import {
-  EditorState,
-  Selection,
   NodeSelection,
+  NodeType,
+  ReplaceAroundStep,
+  ResolvedPos,
+  Schema,
+  Selection,
+  sinkListItem,
+  Slice,
   TextSelection,
   Transaction,
-} from 'prosemirror-state';
-
-import { MoveDirection } from '../../types';
-import { compose } from '@bangle.dev/js-utils';
-
+  wrapInList as pmWrapInList,
+} from '@bangle.dev/pm';
 import {
-  hasVisibleContent,
-  isNodeEmpty,
+  extendDispatch,
   filter,
   findCutBefore,
-  isFirstChildOfParent,
-  isRangeOfType,
-  isEmptySelectionAtStart,
-  sanitiseSelectionMarksForWrapping,
-  validPos,
-  validListParent,
-  extendDispatch,
+  findParentNode,
+  findParentNodeOfType,
+  findPositionOfNodeBefore,
+  flatten,
   GapCursorSelection,
+  hasParentNodeOfType,
+  hasVisibleContent,
+  isEmptySelectionAtStart,
+  isFirstChildOfParent,
+  isNodeEmpty,
+  isRangeOfType,
+  safeInsert,
+  sanitiseSelectionMarksForWrapping,
+  validListParent,
+  validPos,
 } from '@bangle.dev/pm-utils';
-
-import { liftSelectionList, liftFollowingList } from './transforms';
+import { MoveDirection } from '../../types';
 import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
+import { liftFollowingList, liftSelectionList } from './transforms';
 
 const maxIndentation = 4;
 
@@ -332,8 +329,8 @@ function toggleListCommand(listType: NodeType, todo: boolean = false): Command {
 }
 
 function wrapInList(nodeType: NodeType, attrs?: Node['attrs']): Command {
-  return baseCommand.autoJoin(
-    pmListCommands.wrapInList(nodeType, attrs),
+  return autoJoin(
+    pmWrapInList(nodeType, attrs),
     (before, after) => before.type === after.type && before.type === nodeType,
   );
 }
@@ -470,7 +467,7 @@ export function indentList(type: NodeType) {
         state.schema.nodes,
       );
       if (canSink(initialIndentationLevel, state)) {
-        pmListCommands.sinkListItem(listItem)(
+        sinkListItem(listItem)(
           state,
           extendDispatch(dispatch, handleTodo(state.schema)),
         );
@@ -538,7 +535,7 @@ export function outdentList(type: NodeType): Command {
 
     const composedCommand = compose(
       mergeLists(listItem, range), // 2. Check if I need to merge nearest list
-      pmListCommands.liftListItem, // 1. First lift list item
+      liftListItem, // 1. First lift list item
     )(listItem);
 
     return composedCommand(state, dispatch, view);
@@ -614,7 +611,7 @@ function mergeLists(
 export const backspaceKeyCommand =
   (type: NodeType): Command =>
   (state, dispatch, view) => {
-    return baseCommand.chainCommands(
+    return chainCommands(
       // if we're at the start of a list item, we need to either backspace
       // directly to an empty list item above, or outdent this node
       filter(
@@ -626,10 +623,7 @@ export const backspaceKeyCommand =
           isFirstChildOfParent,
           canOutdent(type),
         ],
-        baseCommand.chainCommands(
-          deletePreviousEmptyListItem(type),
-          outdentList(type),
-        ),
+        chainCommands(deletePreviousEmptyListItem(type), outdentList(type)),
       ),
 
       // if we're just inside a paragraph node (or gapcursor is shown) and backspace, then try to join

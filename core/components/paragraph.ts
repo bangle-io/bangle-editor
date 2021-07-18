@@ -1,22 +1,26 @@
-import { Command, setBlockType } from 'prosemirror-commands';
-import { Node, Schema } from 'prosemirror-model';
+import {
+  Command,
+  EditorState,
+  keymap,
+  Node,
+  Schema,
+  setBlockType,
+} from '@bangle.dev/pm';
 import {
   filter,
-  insertEmpty,
   findParentNodeOfType,
+  insertEmpty,
 } from '@bangle.dev/pm-utils';
-import { keymap } from 'prosemirror-keymap';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import {
-  parentHasDirectParentOfType,
   copyEmptyCommand,
   cutEmptyCommand,
-  moveNode,
-  jumpToStartOfNode,
   jumpToEndOfNode,
+  jumpToStartOfNode,
+  moveNode,
+  parentHasDirectParentOfType,
 } from '../core-commands';
 import browser from '../utils/browser';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import { EditorState } from 'prosemirror-state';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

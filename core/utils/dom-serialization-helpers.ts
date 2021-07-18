@@ -1,5 +1,5 @@
 import { objectFilter } from '@bangle.dev/js-utils';
-import { DOMOutputSpec, Node } from 'prosemirror-model';
+import { DOMOutputSpec, Node } from '@bangle.dev/pm';
 
 /**
  * Creates a bare bone `toDOM` and `parseDOM` handlers for the PM schema.

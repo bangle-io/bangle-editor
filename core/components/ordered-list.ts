@@ -1,13 +1,15 @@
-import { toggleList } from './list-item/commands';
-import { wrappingInputRule } from 'prosemirror-inputrules';
-import { Schema, Node } from 'prosemirror-model';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import {
+  Command,
+  EditorState,
+  keymap,
+  Node,
+  Schema,
+  wrappingInputRule,
+} from '@bangle.dev/pm';
 import type Token from 'markdown-it/lib/token';
-
-import { EditorState } from 'prosemirror-state';
-import { Command } from 'prosemirror-commands';
-import { keymap } from 'prosemirror-keymap';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from '../core-commands';
+import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 
 export const spec = specFactory;

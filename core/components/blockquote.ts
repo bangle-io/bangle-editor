@@ -1,14 +1,18 @@
 import {
+  Command,
+  EditorState,
+  keymap,
+  Node,
+  Schema,
+  wrapIn,
+  wrappingInputRule,
+} from '@bangle.dev/pm';
+import {
   filter,
   findParentNodeOfType,
   insertEmpty,
 } from '@bangle.dev/pm-utils';
-import { Command, wrapIn } from 'prosemirror-commands';
-import { wrappingInputRule } from 'prosemirror-inputrules';
-import { keymap } from 'prosemirror-keymap';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import { Node, Schema } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
 
 export const spec = specFactory;
