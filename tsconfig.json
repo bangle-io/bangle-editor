@@ -85,5 +85,8 @@
     {
       "path": "./contrib/trailing-node/tsconfig.test.json"
     },
+    {
+      "path": "./contrib/timestamp/tsconfig.json"
+    },
   ]
 }
