@@ -94,5 +94,11 @@
     {
       "path": "./contrib/text-formatting/tsconfig.test.json"
     },
+    {
+      "path": "./contrib/react-stopwatch/tsconfig.json"
+    },
+    {
+      "path": "./contrib/react-stopwatch/tsconfig.test.json"
+    },
   ]
 }
