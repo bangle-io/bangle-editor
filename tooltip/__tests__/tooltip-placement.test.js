@@ -13,7 +13,7 @@ import {
   coreSpec,
 } from '@bangle.dev/core';
 
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin, PluginKey } from '@bangle.dev/pm';
 
 import { createTooltipDOM } from '../create-tooltip-dom';
 import { tooltipPlacement } from '../index';

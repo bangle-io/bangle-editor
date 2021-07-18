@@ -1,13 +1,21 @@
 import { isChromeWithSelectionBug } from '@bangle.dev/core';
 import {
+  Command,
+  EditorState,
+  Fragment,
+  keymap,
+  MarkType,
+  Node,
+  Plugin,
+  PluginKey,
+  Schema,
+  Selection,
+} from '@bangle.dev/pm';
+import {
   filter,
   findFirstMarkPosition,
   safeInsert,
 } from '@bangle.dev/pm-utils';
-import { Command } from 'prosemirror-commands';
-import { keymap } from 'prosemirror-keymap';
-import { Fragment, MarkType, Node, Schema } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, Selection } from 'prosemirror-state';
 import type {
   GetReferenceElementFunction,
   TooltipRenderOpts,

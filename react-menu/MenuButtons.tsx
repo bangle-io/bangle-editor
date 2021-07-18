@@ -13,7 +13,7 @@ import {
 import { filter, rafCommandExec } from '@bangle.dev/pm-utils';
 import { useEditorViewContext } from '@bangle.dev/react';
 import PropTypes from 'prop-types';
-import { EditorState, PluginKey } from 'prosemirror-state';
+import { EditorState, PluginKey } from '@bangle.dev/pm';
 import React, { useCallback } from 'react';
 import {
   defaultKeys as floatingMenuKeys,

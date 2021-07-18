@@ -1,8 +1,7 @@
-import { tableNodes, tableEditing, goToNextCell } from 'prosemirror-tables';
-import { keymap } from 'prosemirror-keymap';
-import type { Node } from 'prosemirror-model';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { Node } from '@bangle.dev/pm';
+import { goToNextCell, keymap, tableEditing, tableNodes } from '@bangle.dev/pm';
 import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 function calculateColumnWidth(tableNode: Node) {
   const sizeMap = new Map();

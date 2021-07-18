@@ -39,6 +39,7 @@
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/markdown-front-matter": "workspace:*",
+    "@bangle.dev/pm": "0.5.0",
     "@bangle.dev/pm-utils": "workspace:*",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/react-emoji-suggest": "workspace:*",

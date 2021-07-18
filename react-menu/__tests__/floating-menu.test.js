@@ -8,7 +8,7 @@ import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
-import { NodeSelection, PluginKey, TextSelection } from 'prosemirror-state';
+import { NodeSelection, PluginKey, TextSelection } from '@bangle.dev/pm';
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');

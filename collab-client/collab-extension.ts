@@ -15,16 +15,16 @@ import {
   receiveTransaction,
   sendableSteps,
 } from 'prosemirror-collab';
-import { Schema } from 'prosemirror-model';
+import { Schema } from '@bangle.dev/pm';
 import {
   EditorState,
   Plugin,
   PluginKey,
   Selection,
   TextSelection,
-} from 'prosemirror-state';
-import { Step } from 'prosemirror-transform';
-import { EditorView } from 'prosemirror-view';
+} from '@bangle.dev/pm';
+import { Step } from '@bangle.dev/pm';
+import { EditorView } from '@bangle.dev/pm';
 import StrictEventEmitter from 'strict-event-emitter-types';
 import { Emitter } from '@bangle.dev/js-utils';
 import { replaceDocument } from './helpers';

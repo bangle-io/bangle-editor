@@ -5,7 +5,7 @@
 /** @jsx psx */
 
 import { SpecRegistry } from '@bangle.dev/core';
-import { PluginKey, Selection } from 'prosemirror-state';
+import { PluginKey, Selection } from '@bangle.dev/pm';
 import {
   defaultPlugins,
   defaultSpecs,

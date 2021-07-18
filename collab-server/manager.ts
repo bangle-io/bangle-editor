@@ -1,6 +1,6 @@
 import { serialExecuteQueue, uuid } from './utils';
 import { Instance } from './instance';
-import { Schema, Node } from 'prosemirror-model';
+import { Schema, Node } from '@bangle.dev/pm';
 import { CollabRequestHandler } from './collab-request-handler';
 import { CollabResponse, CollabRequestType } from './types';
 import {

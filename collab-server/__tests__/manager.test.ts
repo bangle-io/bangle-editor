@@ -4,7 +4,7 @@ import { SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
 import { Disk } from '@bangle.dev/disk';
 import { Manager } from '../manager';
-import { Node } from 'prosemirror-model';
+import { Node } from '@bangle.dev/pm';
 import { sleep } from '../utils';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);

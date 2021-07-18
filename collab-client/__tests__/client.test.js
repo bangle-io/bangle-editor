@@ -10,7 +10,7 @@ import {
   renderTestEditor,
 } from '@bangle.dev/core/test-helpers/test-helpers';
 import { CollabError } from '@bangle.dev/collab-server';
-import { Selection } from 'prosemirror-state';
+import { Selection } from '@bangle.dev/pm';
 import * as collab from '../collab-extension';
 import { SpecRegistry, components } from '@bangle.dev/core';
 

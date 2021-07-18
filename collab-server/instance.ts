@@ -1,5 +1,5 @@
-import { Node, Schema } from 'prosemirror-model';
-import { Step, StepMap } from 'prosemirror-transform';
+import { Node, Schema, Step, StepMap } from '@bangle.dev/pm';
+
 import { CollabError } from './collab-error';
 
 const MAX_STEP_HISTORY = 1000;
