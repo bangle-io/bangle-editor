@@ -25,13 +25,12 @@
     "prepack": "yarn compile-ts && cp -r $INIT_CWD/img $INIT_CWD/dist/"
   },
   "dependencies": {
-    "prop-types": "^15.7.2",
-    "prosemirror-keymap": "^1.1.4",
-    "prosemirror-model": "^1.14.2"
+    "prop-types": "^15.7.2"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "@bangle.dev/markdown": "*",
+    "@bangle.dev/pm": "*",
     "@bangle.dev/react": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
@@ -39,16 +38,13 @@
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
+    "@bangle.dev/pm": "0.5.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/prop-types": "^15.7.4",
-    "@types/prosemirror-commands": "^1.0.4",
-    "@types/prosemirror-keymap": "^1.0.4",
-    "@types/prosemirror-model": "^1.13.1",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
-    "prosemirror-commands": "^1.1.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

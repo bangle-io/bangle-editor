@@ -1,12 +1,12 @@
 import { pluginKeyStore, SpecRegistry } from '@bangle.dev/core';
 import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip';
-import { PluginKey } from 'prosemirror-state';
+import { PluginKey } from '@bangle.dev/pm';
 import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
 import { valuePlugin, rafCommandExec } from '@bangle.dev/pm-utils';
 import { bangleWarn, uuid } from '@bangle.dev/js-utils';
 import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
-import type { Schema } from 'prosemirror-model';
-import type { Command } from 'prosemirror-commands';
+import type { Schema } from '@bangle.dev/pm';
+import type { Command } from '@bangle.dev/pm';
 import { EmojiGroupType } from './types';
 const {
   decrementSuggestTooltipCounter,

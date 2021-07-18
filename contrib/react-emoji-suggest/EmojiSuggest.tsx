@@ -7,8 +7,8 @@ import {
   selectEmoji,
 } from './emoji-suggest';
 import { resolveCounter, getSquareDimensions } from './utils';
-import { PluginKey } from 'prosemirror-state';
-import type { EditorView } from 'prosemirror-view';
+import { PluginKey } from '@bangle.dev/pm';
+import type { EditorView } from '@bangle.dev/pm';
 
 export function EmojiSuggest({
   emojiSuggestKey,

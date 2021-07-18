@@ -3,10 +3,10 @@ import {
   domSerializationHelpers,
   NodeViewProps,
 } from '@bangle.dev/core';
-import { keymap } from 'prosemirror-keymap';
+import { keymap } from '@bangle.dev/pm';
 import React from 'react';
 import { objectFilter, objectMapValues } from '@bangle.dev/js-utils';
-import type { Command } from 'prosemirror-commands';
+import type { Command } from '@bangle.dev/pm';
 
 const LOG = false;
 

@@ -32,8 +32,7 @@
     "prepack": "yarn compile-ts"
   },
   "devDependencies": {
-    "@types/prosemirror-model": "^1.13.1",
-    "prosemirror-model": "^1.14.2"
+    "@bangle.dev/pm": "0.5.0"
   },
   "dependencies": {
     "debounce-fn": "^5.0.0"

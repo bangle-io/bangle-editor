@@ -24,18 +24,15 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
     "prepack": "yarn compile-ts"
   },
-  "dependencies": {
-    "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm-utils": "workspace:*",
-    "prosemirror-commands": "^1.1.10",
-    "prosemirror-keymap": "^1.1.4"
+  "peerDependencies": {
+    "@bangle.dev/core": "*",
+    "@bangle.dev/pm": "*",
+    "@bangle.dev/pm-utils": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@types/prosemirror-commands": "^1.0.4",
-    "@types/prosemirror-keymap": "^1.0.4",
-    "@types/prosemirror-model": "^1.13.0",
-    "prosemirror-model": "^1.14.2"
+    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/pm-utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

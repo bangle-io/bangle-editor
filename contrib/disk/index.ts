@@ -1,5 +1,5 @@
 import { Disk } from './Disk';
-import type { Node } from 'prosemirror-model';
+import type { Node } from '@bangle.dev/pm';
 import debounceFn, { DebouncedFunction } from 'debounce-fn';
 
 const LOG = false;

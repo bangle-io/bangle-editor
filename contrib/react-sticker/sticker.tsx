@@ -5,8 +5,8 @@ import {
   NodeViewProps,
   domSerializationHelpers,
 } from '@bangle.dev/core';
-import { Node } from 'prosemirror-model';
-import { keymap } from 'prosemirror-keymap';
+import { Node } from '@bangle.dev/pm';
+import { keymap } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
 import React from 'react';
 import brontosaurusImg from './img/brontosaurus.png';
@@ -14,8 +14,8 @@ import pterodactylImg from './img/pterodactyl.png';
 import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
-import type { Schema } from 'prosemirror-model';
-import type { Command } from 'prosemirror-commands';
+import type { Schema } from '@bangle.dev/pm';
+import type { Command } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

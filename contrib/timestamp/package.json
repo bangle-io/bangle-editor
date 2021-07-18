@@ -24,15 +24,13 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
     "prepack": "yarn compile-ts"
   },
-  "dependencies": {
-    "prosemirror-keymap": "^1.1.4"
-  },
   "peerDependencies": {
-    "@bangle.dev/core": "*"
+    "@bangle.dev/core": "*",
+    "@bangle.dev/pm": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@types/prosemirror-keymap": "^1.0.4"
+    "@bangle.dev/pm": "0.5.0"
   },
   "publishConfig": {
     "access": "public",
