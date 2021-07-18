@@ -79,11 +79,16 @@ function specFactory({
   };
 }
 
+export type SuggestTooltipRenderOpts = Omit<
+  TooltipRenderOpts,
+  'getReferenceElement'
+>;
+
 interface PluginsOptions {
   key?: PluginKey;
   markName: string;
   trigger: string;
-  tooltipRenderOpts: TooltipRenderOpts;
+  tooltipRenderOpts: SuggestTooltipRenderOpts;
   keybindings?: any;
   onEnter?: Command;
   onArrowDown?: Command;

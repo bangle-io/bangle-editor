@@ -106,5 +106,11 @@
     {
       "path": "./contrib/react-sticker/tsconfig.test.json"
     },
+    {
+      "path": "./contrib/react-emoji-suggest/tsconfig.json"
+    },
+    {
+      "path": "./contrib/react-emoji-suggest/tsconfig.test.json"
+    },
   ]
 }
