@@ -7,11 +7,7 @@ import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
-import {
-  BangleEditor,
-  useEditorState,
-  usePluginState,
-} from '@bangle.dev/react';
+import { BangleEditor, useEditorState, usePluginState } from '../index';
 import { act, render } from '@testing-library/react';
 import { useEffect, useState } from 'react';
 import { pjsx, Span } from './helpers/index';

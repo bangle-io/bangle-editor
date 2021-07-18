@@ -3,14 +3,13 @@ import {
   BangleEditorProps as CoreBangleEditorProps,
   BangleEditorState as CoreBangleEditorState,
 } from '@bangle.dev/core';
-import { Plugin } from 'prosemirror-state';
+import { objectUid } from '@bangle.dev/js-utils';
+import { EditorView, Plugin } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
-import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
-import { objectUid } from '@bangle.dev/js-utils';
 
 const LOG = false;
 

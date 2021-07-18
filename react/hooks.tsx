@@ -1,15 +1,14 @@
 import {
   BangleEditorState,
   BangleEditorStateProps,
+  corePlugins,
   RawSpecs,
   SpecRegistry,
-  corePlugins,
 } from '@bangle.dev/core';
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { rafSchedule } from '@bangle.dev/js-utils';
+import { EditorView, Plugin, PluginKey } from '@bangle.dev/pm';
 import { useContext, useEffect, useState } from 'react';
 import { EditorViewContext } from './ReactEditor';
-import { rafSchedule } from '@bangle.dev/js-utils';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'react/usePluginState') : () => {};

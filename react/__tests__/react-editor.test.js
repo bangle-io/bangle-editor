@@ -5,21 +5,19 @@
 
 import {
   BangleEditor as CoreBangleEditorView,
-  SpecRegistry,
   getRenderHandlers,
+  SpecRegistry,
 } from '@bangle.dev/core';
-
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
 import { selectNodeAt } from '@bangle.dev/core/test-helpers/test-helpers';
 import { sleep } from '@bangle.dev/js-utils';
+import { EditorView as PMEditorView, Node } from '@bangle.dev/pm';
 import { removeSelectedNode, safeInsert } from '@bangle.dev/pm-utils';
-import { BangleEditor } from '@bangle.dev/react';
+import { BangleEditor } from '../index';
 import { fireEvent, render } from '@testing-library/react';
-import { Node } from 'prosemirror-model';
-import { EditorView as PMEditorView } from 'prosemirror-view';
 import { useEditorState } from '../hooks';
 import { pjsx } from './helpers/index';
 import { Banana, bananaComponent } from './setup/banana';
