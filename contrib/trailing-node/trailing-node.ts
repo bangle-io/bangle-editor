@@ -1,5 +1,5 @@
 import { PluginKey, Plugin } from 'prosemirror-state';
-
+import type { Schema } from 'prosemirror-model';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 
@@ -15,7 +15,7 @@ function specFactory() {
 // TODO can we move this to appendTransaction ?
 function pluginsFactory({ node = 'paragraph', notAfter = ['paragraph'] } = {}) {
   const plugin = new PluginKey(name);
-  return ({ schema }) => {
+  return ({ schema }: { schema: Schema }) => {
     const disabledNodes = Object.entries(schema.nodes)
       .map(([, value]) => value)
       .filter((node) => notAfter.includes(node.name));
@@ -49,20 +49,22 @@ function pluginsFactory({ node = 'paragraph', notAfter = ['paragraph'] } = {}) {
         }),
         state: {
           init: (_, state) => {
+            const lastChild = state.tr.doc.lastChild;
             return {
-              incorrectNodeAtEnd: !disabledNodes.includes(
-                state.tr.doc.lastChild.type,
-              ),
+              incorrectNodeAtEnd: lastChild
+                ? !disabledNodes.includes(lastChild.type)
+                : false,
             };
           },
           apply: (tr, value) => {
             if (!tr.docChanged) {
               return value;
             }
+            const lastChild = tr.doc.lastChild;
             return {
-              incorrectNodeAtEnd: !disabledNodes.includes(
-                tr.doc.lastChild.type,
-              ),
+              incorrectNodeAtEnd: lastChild
+                ? !disabledNodes.includes(lastChild.type)
+                : false,
             };
           },
         },

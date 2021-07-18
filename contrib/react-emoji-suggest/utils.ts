@@ -1,29 +1,15 @@
+import { EmojiGroupType, EmojiType } from './types';
+
 const emptyValue = { item: undefined, coords: undefined };
-
-function counterToCoords(counter, namedGroups) {
-  const groups = toGroups(namedGroups);
-  counter = normalizeCounter(counter, groups);
-  if (counter == null) {
-    return;
-  }
-
-  for (let i = 0; i < groups.length; i++) {
-    const size = groups[i].length;
-    if (counter < size) {
-      return [i, counter];
-    }
-    counter = counter - size;
-  }
-}
 
 /**
  * Converted 2d coordinates in a flat 1d integer referred everywhere as counter.
- * @param {Array[number, number]} coords The 2d coordinates to find an emoji
- * @param {Array<{name: string, emojis: string[]}>} namedGroups
- * @returns
  */
-export function coordsToCounter(coords, namedGroups) {
-  const groups = toGroups(namedGroups);
+export function coordsToCounter(
+  coords: [number, number],
+  namedGroups: EmojiGroupType,
+) {
+  const groups = flattenEmojiGroups(namedGroups);
   let counter = 0;
   for (let i = 0; i < coords[0]; i++) {
     counter += groups[i].length;
@@ -33,25 +19,41 @@ export function coordsToCounter(coords, namedGroups) {
   return counter;
 }
 
-export function resolveCounter(counter, namedGroups) {
+function counterToCoords(counter: number, namedGroups: EmojiGroupType) {
+  const groups = flattenEmojiGroups(namedGroups);
+  let normalizedCounter = normalizeCounter(counter, groups);
+  if (normalizedCounter == null) {
+    return;
+  }
+
+  for (let i = 0; i < groups.length; i++) {
+    const size = groups[i].length;
+    if (normalizedCounter < size) {
+      return [i, normalizedCounter];
+    }
+    normalizedCounter = normalizedCounter - size;
+  }
+}
+
+export function resolveCounter(counter: number, namedGroups: EmojiGroupType) {
   const coords = counterToCoords(counter, namedGroups);
   if (!coords) {
     return emptyValue;
   }
-  const groups = toGroups(namedGroups);
+  const groups = flattenEmojiGroups(namedGroups);
   return { item: groups[coords[0]][coords[1]], coords: coords };
 }
 
 /**
  * Helps calculate the position resulting from a jump between rows
- *
- * @param {*} counter
- * @param {1, -1} direction up or down
- * @param {*} jump the positive integer value to offset the counter by
- * @param {*} namedGroups
  * @returns a new counter
  */
-export function resolveRowJump(counter, direction = 1, jump, namedGroups) {
+export function resolveRowJump(
+  counter: number,
+  direction = 1,
+  jump: number,
+  namedGroups: EmojiGroupType,
+): number | null {
   const { coords } = jumpRow(counter, direction, jump, namedGroups);
   if (coords == null) {
     return null;
@@ -60,7 +62,7 @@ export function resolveRowJump(counter, direction = 1, jump, namedGroups) {
   return coordsToCounter(coords, namedGroups);
 }
 
-function getNextGroup(groupIndex, groups, direction = 1) {
+function getNextGroup(groupIndex: number, groups: any[], direction = 1) {
   let newIndex = groupIndex + direction;
   if (groups.length === 0) {
     return;
@@ -74,7 +76,15 @@ function getNextGroup(groupIndex, groups, direction = 1) {
   return newIndex;
 }
 
-export function getSquareDimensions({ rowWidth, squareMargin, squareSide }) {
+export function getSquareDimensions({
+  rowWidth,
+  squareMargin,
+  squareSide,
+}: {
+  rowWidth: number;
+  squareMargin: number;
+  squareSide: number;
+}) {
   const squareFullWidth = squareSide + 2 * squareMargin;
   // -2 to account for borders and safety
   const rowCount = Math.floor((rowWidth - 2) / squareFullWidth);
@@ -86,14 +96,22 @@ export function getSquareDimensions({ rowWidth, squareMargin, squareSide }) {
   };
 }
 
-export function jumpRow(counter, direction = 1, jump, namedGroups) {
+export function jumpRow(
+  counter: number,
+  direction = 1,
+  jump: number,
+  namedGroups: EmojiGroupType,
+): {
+  item: undefined | EmojiType;
+  coords: undefined | [number, number];
+} {
   const coords = counterToCoords(counter, namedGroups);
 
   if (!coords) {
     return emptyValue;
   }
 
-  const groups = toGroups(namedGroups);
+  const groups = flattenEmojiGroups(namedGroups);
   const groupIndex = coords[0];
   const itemIndex = coords[1];
   const groupSize = groups[groupIndex].length;
@@ -131,11 +149,14 @@ export function jumpRow(counter, direction = 1, jump, namedGroups) {
   };
 }
 
-function toGroups(namedGroups) {
+function flattenEmojiGroups(namedGroups: EmojiGroupType) {
   return namedGroups.map((r) => r.emojis);
 }
 
-function normalizeCounter(counter, groups) {
+function normalizeCounter(
+  counter: number,
+  groups: ReturnType<typeof flattenEmojiGroups>,
+) {
   const totalSize = groups.reduce((prev, cur) => prev + cur.length, 0);
   if (totalSize === 0) {
     return;

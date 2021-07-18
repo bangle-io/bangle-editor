@@ -20,8 +20,8 @@ function pluginsFactory() {
   });
 }
 
-function printDate(type) {
-  return function (state, dispatch) {
+function printDate(type: string) {
+  return function (state: any, dispatch: any) {
     let { $from } = state.selection,
       index = $from.index();
 
@@ -37,7 +37,7 @@ function printDate(type) {
           dateStyle: 'medium',
           timeStyle: 'medium',
           hour12: false,
-        });
+        } as any);
         text = '' + formatter.format(new Date().getTime());
       }
 
@@ -49,7 +49,7 @@ function printDate(type) {
         const formatter = new Intl.DateTimeFormat('default', {
           dateStyle: 'medium',
           hour12: false,
-        });
+        } as any);
         text = '' + formatter.format(new Date().getTime());
       }
       dispatch(state.tr.replaceSelectionWith(state.schema.text(text)));

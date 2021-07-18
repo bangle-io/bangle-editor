@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+- All the packages are now written in Typescript.
+
 ## 0.22.2
 
 **@bangle.dev/core**

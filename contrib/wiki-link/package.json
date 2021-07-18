@@ -17,18 +17,31 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "index.js",
-  "module": "index.js",
-  "scripts": {},
+  "main": "index.ts",
+  "module": "index.ts",
+  "scripts": {
+    "compile-ts": "yarn g:tsc --build $INIT_CWD",
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
+    "prepack": "yarn compile-ts"
+  },
   "peerDependencies": {
     "@bangle.dev/core": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
-    "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/table": "workspace:*",
+    "@types/markdown-it": "^10.0.0",
+    "@types/prosemirror-markdown": "^1.5.2",
+    "@types/prosemirror-model": "^1.13.0",
+    "markdown-it": "^10.0.0",
+    "prosemirror-markdown": "^1.5.1",
+    "prosemirror-model": "^1.14.2"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
   }
 }

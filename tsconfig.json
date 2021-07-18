@@ -8,6 +8,9 @@
       "path": "./core/tsconfig.test.json"
     },
     {
+      "path": "./emoji/tsconfig.json"
+    },
+    {
       "path": "./collab-server/tsconfig.json"
     },
     {
@@ -33,6 +36,9 @@
     },
     {
       "path": "./react/tsconfig.test.json"
+    },
+    {
+      "path": "./table/tsconfig.json"
     },
     {
       "path": "./react-menu/tsconfig.json"
@@ -66,6 +72,45 @@
     },
     {
       "path": "./markdown/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/wiki-link/tsconfig.json"
+    },
+    {
+      "path": "./contrib/wiki-link/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/trailing-node/tsconfig.json"
+    },
+    {
+      "path": "./contrib/trailing-node/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/timestamp/tsconfig.json"
+    },
+    {
+      "path": "./contrib/text-formatting/tsconfig.json"
+    },
+    {
+      "path": "./contrib/text-formatting/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/react-stopwatch/tsconfig.json"
+    },
+    {
+      "path": "./contrib/react-stopwatch/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/react-sticker/tsconfig.json"
+    },
+    {
+      "path": "./contrib/react-sticker/tsconfig.test.json"
+    },
+    {
+      "path": "./contrib/react-emoji-suggest/tsconfig.json"
+    },
+    {
+      "path": "./contrib/react-emoji-suggest/tsconfig.test.json"
     },
   ]
 }

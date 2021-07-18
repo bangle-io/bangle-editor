@@ -1,10 +1,20 @@
 import reactDOM from 'react-dom';
 import React, { useCallback, useMemo } from 'react';
 import { useEditorViewContext, usePluginState } from '@bangle.dev/react';
-import { getSuggestTooltipKey, selectEmoji } from './emoji-suggest';
+import {
+  GetEmojiGroupsType,
+  getSuggestTooltipKey,
+  selectEmoji,
+} from './emoji-suggest';
 import { resolveCounter, getSquareDimensions } from './utils';
+import { PluginKey } from 'prosemirror-state';
+import type { EditorView } from 'prosemirror-view';
 
-export function EmojiSuggest({ emojiSuggestKey }) {
+export function EmojiSuggest({
+  emojiSuggestKey,
+}: {
+  emojiSuggestKey: PluginKey;
+}) {
   const {
     counter,
     triggerText,
@@ -37,9 +47,9 @@ export function EmojiSuggest({ emojiSuggestKey }) {
             rowWidth={rowWidth}
             squareMargin={squareMargin}
             squareSide={squareSide}
+            maxItems={maxItems}
             emojiSuggestKey={emojiSuggestKey}
             getEmojiGroups={getEmojiGroups}
-            maxItems={maxItems}
             triggerText={triggerText}
             counter={counter}
             selectedEmojiSquareId={selectedEmojiSquareId}
@@ -61,6 +71,18 @@ export function EmojiSuggestContainer({
   triggerText,
   counter,
   selectedEmojiSquareId,
+  maxItems,
+}: {
+  view: EditorView;
+  rowWidth: number;
+  squareMargin: number;
+  squareSide: number;
+  emojiSuggestKey: PluginKey;
+  getEmojiGroups: GetEmojiGroupsType;
+  triggerText: string;
+  counter: number;
+  selectedEmojiSquareId: string;
+  maxItems: number;
 }) {
   const emojiGroups = useMemo(
     () => getEmojiGroups(triggerText),
@@ -74,12 +96,11 @@ export function EmojiSuggestContainer({
 
   const { item: activeItem } = resolveCounter(counter, emojiGroups);
   const onSelectEmoji = useCallback(
-    (emojiAlias) => {
+    (emojiAlias: string) => {
       selectEmoji(emojiSuggestKey, emojiAlias)(view.state, view.dispatch, view);
     },
     [view, emojiSuggestKey],
   );
-
   return (
     <div
       className="bangle-emoji-suggest-container"
@@ -92,10 +113,10 @@ export function EmojiSuggestContainer({
           <div className="bangle-emoji-suggest-group" key={groupName || i}>
             {groupName && <span>{groupName}</span>}
             <div>
-              {emojis.map(([emojiAlias, emoji], j) => (
+              {emojis.slice(0, maxItems).map(([emojiAlias, emoji], j) => (
                 <EmojiSquare
                   key={emojiAlias}
-                  isSelected={activeItem[0] === emojiAlias}
+                  isSelected={activeItem?.[0] === emojiAlias}
                   emoji={emoji}
                   emojiAlias={emojiAlias}
                   onSelectEmoji={onSelectEmoji}
@@ -124,6 +145,13 @@ function EmojiSquare({
   onSelectEmoji,
   style,
   selectedEmojiSquareId,
+}: {
+  isSelected: boolean;
+  emoji: string;
+  emojiAlias: string;
+  onSelectEmoji: (alias: string) => void;
+  style: any;
+  selectedEmojiSquareId: string;
 }) {
   return (
     <button

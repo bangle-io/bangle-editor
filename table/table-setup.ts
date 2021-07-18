@@ -1,7 +1,10 @@
 import { tableNodes, tableEditing, goToNextCell } from 'prosemirror-tables';
 import { keymap } from 'prosemirror-keymap';
+import type { Node } from 'prosemirror-model';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type Token from 'markdown-it/lib/token';
 
-function calculateColumnWidth(tableNode) {
+function calculateColumnWidth(tableNode: Node) {
   const sizeMap = new Map();
   let maxColIndex = 0;
   tableNode.forEach((row) => {
@@ -44,7 +47,7 @@ const nodes = tableNodes({
     background: {
       default: null,
       getFromDOM(dom) {
-        return dom.style.backgroundColor || null;
+        return (dom as HTMLElement).style.backgroundColor || null;
       },
       setDOMAttr(value, attrs) {
         if (value) {
@@ -57,11 +60,11 @@ const nodes = tableNodes({
 
 const tableHeaderName = 'table_header';
 
-const toMarkdownCell = (state, node) => {
+const toMarkdownCell = (state: MarkdownSerializerState, node: Node) => {
   node.forEach(function (child, _, i) {
     const originalEsc = state.esc;
 
-    state.esc = (str, ...args) => {
+    (state as any).esc = (str: string, ...args: any[]) => {
       str = originalEsc(str, ...args);
       str = str.replace(/\|/gi, '\\$&');
       return str;
@@ -78,8 +81,9 @@ export const table = {
   type: 'node',
   schema: nodes.table,
   markdown: {
-    toMarkdown: (state, node) => {
-      state.flushClose(1);
+    toMarkdown: (state: MarkdownSerializerState, node: Node) => {
+      // flushClose is not added to the typings
+      (state as any).flushClose(1);
       state.ensureNewLine();
       state.write('\n');
       state.renderContent(node);
@@ -102,7 +106,7 @@ export const tableCell = {
     parseMarkdown: {
       td: {
         block: 'table_cell',
-        getAttrs: (tok) => ({ align: tok.align }),
+        getAttrs: (tok: Token) => ({ align: (tok as any).align }),
       },
     },
   },
@@ -118,7 +122,7 @@ export const tableHeader = {
     parseMarkdown: {
       th: {
         block: 'table_header',
-        getAttrs: (tok) => ({ align: tok.align }),
+        getAttrs: (tok: Token) => ({ align: (tok as any).align }),
       },
     },
   },
@@ -129,7 +133,7 @@ export const tableRow = {
   type: 'node',
   schema: nodes.table_row,
   markdown: {
-    toMarkdown: (state, node, parent) => {
+    toMarkdown: (state: MarkdownSerializerState, node: Node, parent: Node) => {
       state.ensureNewLine();
 
       const width = calculateColumnWidth(parent);
@@ -137,7 +141,8 @@ export const tableRow = {
       // child is either table_header or table_cell
       node.forEach(function (child, _, i) {
         i === 0 && state.write('| ');
-        state.render(child, node, i);
+        // render has missing types for the 2nd and 3rd param (parent and index)
+        (state.render as any)(child, node, i);
 
         const extraSpace = width[i] - 2 - child.textContent.length;
         state.write(' '.repeat(Math.max(0, extraSpace)));
@@ -148,7 +153,7 @@ export const tableRow = {
 
       state.ensureNewLine();
       // check if it is the header row
-      if (node.firstChild.type.name === tableHeaderName) {
+      if (node.firstChild?.type.name === tableHeaderName) {
         node.forEach(function (child, _, i) {
           i === 0 && state.write('|');
           const { align } = child.attrs;
@@ -185,7 +190,6 @@ export const tableRow = {
           state.write('|');
         });
       }
-      state.closeBlock();
     },
     parseMarkdown: {
       tr: {

@@ -1,9 +1,16 @@
 import { domSerializationHelpers } from '@bangle.dev/core';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { Node } from 'prosemirror-model';
 
 const name = 'wikiLink';
 export const spec = specFactory;
 
 function specFactory() {
+  const { toDOM, parseDOM } = domSerializationHelpers(name, {
+    tag: 'span',
+    parsingPriority: 52,
+  });
+
   let spec = {
     type: 'node',
     name: name,
@@ -20,9 +27,11 @@ function specFactory() {
       group: 'inline',
       selectable: false,
       draggable: true,
+      toDOM,
+      parseDOM,
     },
     markdown: {
-      toMarkdown: (state, node) => {
+      toMarkdown: (state: MarkdownSerializerState, node: Node) => {
         state.text('[[', false);
         const { path, title } = node.attrs;
         let content = path;
@@ -36,7 +45,7 @@ function specFactory() {
       parseMarkdown: {
         wiki_link: {
           block: name,
-          getAttrs: (tok) => {
+          getAttrs: (tok: any) => {
             if (typeof tok.payload === 'string') {
               let [path, title] = tok.payload.split('|');
               return { path, title };
@@ -46,16 +55,6 @@ function specFactory() {
         },
       },
     },
-  };
-  const { toDOM, parseDOM } = domSerializationHelpers(name, {
-    tag: 'span',
-    parsingPriority: 52,
-  });
-
-  spec.schema = {
-    ...spec.schema,
-    toDOM,
-    parseDOM,
   };
 
   return spec;

@@ -1,10 +1,13 @@
-import { pluginKeyStore } from '@bangle.dev/core';
+import { pluginKeyStore, SpecRegistry } from '@bangle.dev/core';
 import { suggestTooltip, createTooltipDOM } from '@bangle.dev/tooltip';
 import { PluginKey } from 'prosemirror-state';
 import { resolveCounter, getSquareDimensions, resolveRowJump } from './utils';
 import { valuePlugin, rafCommandExec } from '@bangle.dev/pm-utils';
 import { bangleWarn, uuid } from '@bangle.dev/js-utils';
-
+import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
+import type { Schema } from 'prosemirror-model';
+import type { Command } from 'prosemirror-commands';
+import { EmojiGroupType } from './types';
 const {
   decrementSuggestTooltipCounter,
   incrementSuggestTooltipCounter,
@@ -23,19 +26,25 @@ export const commands = {
 
 const defaultTrigger = ':';
 const defaultMaxItems = 2000;
-function specFactory({ markName, trigger = defaultTrigger } = {}) {
+function specFactory({
+  markName,
+  trigger = defaultTrigger,
+}: {
+  markName: string;
+  trigger?: string;
+}) {
   const spec = suggestTooltip.spec({ markName, trigger });
 
   return {
     ...spec,
     options: {
-      ...spec.options,
       trigger,
     },
   };
 }
 
 const keyStore = pluginKeyStore();
+export type GetEmojiGroupsType = (queryText: string) => EmojiGroupType;
 
 function pluginsFactory({
   key = new PluginKey('emojiSuggestMenu'),
@@ -47,9 +56,25 @@ function pluginsFactory({
   squareMargin = 2,
   rowWidth = 400,
   palettePadding = 16,
-} = {}) {
-  return ({ schema, specRegistry }) => {
-    const { trigger } = specRegistry.options[markName];
+}: {
+  markName: string;
+  key?: PluginKey;
+  tooltipRenderOpts?: SuggestTooltipRenderOpts;
+  getEmojiGroups: GetEmojiGroupsType;
+  maxItems?: number;
+  squareSide?: number;
+  squareMargin?: number;
+  rowWidth?: number;
+  palettePadding?: number;
+}) {
+  return ({
+    schema,
+    specRegistry,
+  }: {
+    schema: Schema;
+    specRegistry: SpecRegistry;
+  }) => {
+    const { trigger } = specRegistry.options[markName as any] as any;
 
     const suggestTooltipKey = keyStore.create(key, 'suggestTooltipKey');
 
@@ -69,18 +94,20 @@ function pluginsFactory({
 
     const selectedEmojiSquareId = uuid(6);
 
-    const updateCounter = (keyType) => {
+    const updateCounter = (
+      keyType: 'LEFT' | 'RIGHT' | 'UP' | 'DOWN',
+    ): Command => {
       return (state, dispatch, view) => {
         requestAnimationFrame(() => {
           const selectedEmoji = document.getElementById(selectedEmojiSquareId);
           if (selectedEmoji) {
             if ('scrollIntoViewIfNeeded' in document.body) {
-              selectedEmoji.scrollIntoViewIfNeeded(false);
+              (selectedEmoji as any).scrollIntoViewIfNeeded(false);
             } else if (selectedEmoji.scrollIntoView) {
               selectedEmoji.scrollIntoView(false);
             }
           }
-          view.focus();
+          view?.focus();
         });
         if (keyType === 'LEFT') {
           return decrementSuggestTooltipCounter(suggestTooltipKey)(
@@ -154,7 +181,7 @@ function pluginsFactory({
 
         onEnter: (state, dispatch, view) => {
           const emojiGroups = getEmojiGroups(queryTriggerText(key)(state));
-          const matchedEmojis = emojiGroups.flatMap((r) => r[1]);
+          const matchedEmojis = emojiGroups.flatMap((r) => r.emojis);
 
           if (matchedEmojis.length === 0) {
             return removeSuggestMark(key)(state, dispatch, view);
@@ -168,7 +195,8 @@ function pluginsFactory({
           }
 
           const emojiAlias = activeItem[0];
-          rafCommandExec(view, resetSuggestTooltipCounter(suggestTooltipKey));
+          view &&
+            rafCommandExec(view, resetSuggestTooltipCounter(suggestTooltipKey));
           return selectEmoji(key, emojiAlias)(state, dispatch, view);
         },
 
@@ -181,16 +209,16 @@ function pluginsFactory({
   };
 }
 
-export function getSuggestTooltipKey(key) {
+export function getSuggestTooltipKey(key: PluginKey) {
   return keyStore.get(key, 'suggestTooltipKey');
 }
 
 /** Commands */
-export function queryTriggerText(key) {
+export function queryTriggerText(key: PluginKey) {
   return suggestTooltip.queryTriggerText(getSuggestTooltipKey(key));
 }
 
-export function selectEmoji(key, emojiAlias) {
+export function selectEmoji(key: PluginKey, emojiAlias: string): Command {
   return (state, dispatch, view) => {
     const emojiNode = state.schema.nodes.emoji.create({
       emojiAlias: emojiAlias,

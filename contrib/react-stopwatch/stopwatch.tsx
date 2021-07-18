@@ -1,11 +1,16 @@
-import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
+import {
+  NodeView,
+  domSerializationHelpers,
+  NodeViewProps,
+} from '@bangle.dev/core';
 import { keymap } from 'prosemirror-keymap';
 import React from 'react';
 import { objectFilter, objectMapValues } from '@bangle.dev/js-utils';
+import type { Command } from 'prosemirror-commands';
 
 const LOG = false;
 
-function log(...args) {
+function log(...args: any[]) {
   if (LOG) {
     console.log('contrib/react-stopwatch/index.js:', ...args);
   }
@@ -36,7 +41,7 @@ function specFactory() {
       atom: true,
     },
     markdown: {
-      toMarkdown: (state, node) => {
+      toMarkdown: (state: any, node: any) => {
         const string = serializeAtomNodeToMdLink2(name, node.attrs);
         state.write(string);
       },
@@ -60,7 +65,8 @@ function pluginsFactory(opts = {}) {
   ];
 }
 
-export class Stopwatch extends React.Component {
+export class Stopwatch extends React.Component<NodeViewProps> {
+  interval: number | null = null;
   state = {
     counter: 0,
   };
@@ -86,7 +92,13 @@ export class Stopwatch extends React.Component {
     }
   }
 
-  updateAttrs({ stopTime, startTime }) {
+  updateAttrs({
+    stopTime,
+    startTime,
+  }: {
+    stopTime: number | null;
+    startTime: number | null;
+  }) {
     this.props.updateAttrs({
       stopTime,
       startTime,
@@ -128,7 +140,7 @@ export class Stopwatch extends React.Component {
         contentEditable={false}
         style={{
           backgroundColor: isPaused ? 'pink' : '#00CED1',
-          outline: selected ? '2px solid blue' : null,
+          outline: selected ? '2px solid blue' : undefined,
           borderRadius: 10,
           padding: '1px 2px 1px 2px',
           margin: '1px 2px',
@@ -154,7 +166,7 @@ export class Stopwatch extends React.Component {
   }
 }
 
-function formatTime(secs) {
+function formatTime(secs: string) {
   var sec_num = parseInt(secs, 10);
   var hours = Math.floor(sec_num / 3600) % 24;
   var minutes = Math.floor(sec_num / 60) % 60;
@@ -167,7 +179,7 @@ function formatTime(secs) {
   return days > 0 ? days + 'd ' + result : result;
 }
 
-export function insertStopwatch() {
+export function insertStopwatch(): Command {
   return function (state, dispatch) {
     let stopwatchType = state.schema.nodes[name];
     let { $from } = state.selection,
@@ -182,23 +194,8 @@ export function insertStopwatch() {
   };
 }
 
-function serializeAtomNodeToMdLink2(name, attrs) {
+function serializeAtomNodeToMdLink2(name: string, attrs: any) {
   return `[$${name}](bangle://v1?data=${encodeURIComponent(
     JSON.stringify(attrs),
   )}`;
-}
-
-function serializeAtomNodeToMdLink(name, attrs) {
-  const data = objectFilter(attrs, (val, key) => {
-    return key.startsWith('data-');
-  });
-
-  const string = new URLSearchParams(
-    objectMapValues(data, (val) => {
-      // convert it to string for predictability when parsing different types
-      return JSON.stringify(val);
-    }),
-  );
-
-  return `[$${name}](bangle://${string})`;
 }

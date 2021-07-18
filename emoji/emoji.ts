@@ -1,4 +1,7 @@
 import { domSerializationHelpers } from '@bangle.dev/core';
+import type { Node } from 'prosemirror-model';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { Command } from 'prosemirror-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -8,9 +11,15 @@ export const commands = {
 
 const name = 'emoji';
 
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: any) => schema.nodes[name];
 
-function specFactory({ getEmoji, defaultEmojiAlias = 'smiley' }) {
+function specFactory({
+  getEmoji,
+  defaultEmojiAlias = 'smiley',
+}: {
+  getEmoji: (alias: string, node: Node) => string;
+  defaultEmojiAlias?: string;
+}) {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'span',
     parsingPriority: 51,
@@ -38,13 +47,13 @@ function specFactory({ getEmoji, defaultEmojiAlias = 'smiley' }) {
     },
 
     markdown: {
-      toMarkdown: (state, node) => {
+      toMarkdown: (state: MarkdownSerializerState, node: Node) => {
         state.write(`:${node.attrs.emojiAlias}:`);
       },
       parseMarkdown: {
         emoji: {
           node: 'emoji',
-          getAttrs: (tok) => {
+          getAttrs: (tok: any) => {
             return {
               emojiAlias: tok.markup,
             };
@@ -61,7 +70,7 @@ function pluginsFactory({ keybindings = {} } = {}) {
   };
 }
 
-export function insertEmoji(emojiAlias) {
+export function insertEmoji(emojiAlias: string): Command {
   return function (state, dispatch) {
     let emojiType = getTypeFromSchema(state.schema);
 

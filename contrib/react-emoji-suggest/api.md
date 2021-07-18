@@ -48,8 +48,8 @@ Named parameters:
 
 - **tooltipRenderOpts**: ?{{tooltip.link.tooltipRenderOpts}}
 
-- **getEmojiGroups:** fn(queryText: string) -> Array<{groupName: string, emojis: EmojisArray}>\
-  A callback which should return the filtered emojis corresponding to the query text. The `groupName` will be used in the UI to name the category of the emojis.
+- **getEmojiGroups:** fn(queryText: string) -> Array<{name: string, emojis: EmojisArray}>\
+  A callback which should return the filtered emojis corresponding to the query text. The `name` will be used in the UI to name the category of the emojis.
 
   - `EmojisArray`: Array<\[string, string\]>\
     An array where each item is a pair of `emojiAlias` and an emoji character, for example `[["office_worker", "🧑‍💼"], ["ninja", "🥷"]]`. The `emojiAlias` must be unique.

@@ -1,4 +1,7 @@
-export function wikiLinkMarkdownItPlugin(md) {
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import StateCore from 'markdown-it/lib/rules_core/state_core';
+
+export function wikiLinkMarkdownItPlugin(md: any) {
   genericNodeParser(md, {
     tokenName: 'wiki_link',
     regex: /\[\[([^\]\[]+)\]\]/g,
@@ -9,19 +12,25 @@ export function wikiLinkMarkdownItPlugin(md) {
   });
 }
 
+type GetTokenDetails = (match: string) => { payload: string; markup: string };
+
 function genericNodeParser(
-  md,
+  md: any,
   {
     tokenName,
     regex,
-    getTokenDetails = (match) => {
-      return { content: match.slice(1, -1), markup: '' };
+    getTokenDetails = (match: string) => {
+      return { payload: match.slice(1, -1), markup: '' };
     },
+  }: {
+    tokenName: string;
+    regex: RegExp;
+    getTokenDetails: GetTokenDetails;
   },
 ) {
   const arrayReplaceAt = md.utils.arrayReplaceAt;
 
-  md.core.ruler.push(tokenName, (state) => {
+  md.core.ruler.push(tokenName, (state: StateCore) => {
     var i,
       j,
       l,
@@ -36,8 +45,8 @@ function genericNodeParser(
       }
       tokens = blockTokens[j].children;
 
-      for (i = tokens.length - 1; i >= 0; i--) {
-        token = tokens[i];
+      for (i = tokens!.length - 1; i >= 0; i--) {
+        token = tokens![i];
 
         // if (token.type === 'link_open' || token.type === 'link_close') {
         //   if (token.info === 'auto') {
@@ -54,7 +63,7 @@ function genericNodeParser(
           blockTokens[j].children = tokens = arrayReplaceAt(
             tokens,
             i,
-            splitTextToken({ regex, getTokenDetails, tokenName })(
+            splitTextToken(regex, getTokenDetails, tokenName)(
               token.content,
               token.level,
               state.Token,
@@ -66,12 +75,17 @@ function genericNodeParser(
   });
 }
 // inspired from markdown-it-emoji
-function splitTextToken({ regex, getTokenDetails, tokenName }) {
-  return (text, level, Token) => {
+function splitTextToken(
+  regex: RegExp,
+  getTokenDetails: GetTokenDetails,
+  tokenName: string,
+) {
+  return (text: string, level: number, Token: any) => {
     var token,
       last_pos = 0,
       nodes = [];
-    text.replace(regex, function (match, ...args) {
+
+    text.replace(regex, (match: string, ...args: any[]) => {
       // so the callback is called with variable arguments
       // : (match, p1, p2, ...,pN, offset, string);
       // where p1 p2 .. pN, represent the matches due to capturing groups
@@ -92,6 +106,9 @@ function splitTextToken({ regex, getTokenDetails, tokenName }) {
       nodes.push(token);
 
       last_pos = offset + match.length;
+
+      // return empty string to keep type happy
+      return '';
     });
 
     if (last_pos < text.length) {
