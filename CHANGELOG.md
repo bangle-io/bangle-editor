@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+- Breaking: package `@bangle.dev/pm-utils` and `@bangle.dev/js-utils` have been merged into a single package `@bangle.dev/utils`.
+
 ## 0.23.1
 
 **@bangle.dev/react-sticker**

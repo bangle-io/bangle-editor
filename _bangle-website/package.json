@@ -1,6 +1,6 @@
 {
   "name": "bangle-website",
-  "version": "0.24.0-alpha.3",
+  "version": "0.24.0-alpha.9",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -39,7 +39,7 @@
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/markdown-front-matter": "workspace:*",
-    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/pm": "0.6.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/react-emoji-suggest": "workspace:*",
     "@bangle.dev/react-menu": "workspace:*",

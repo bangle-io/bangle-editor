@@ -1,6 +1,6 @@
 {
   "name": "bangle.dev",
-  "version": "0.24.0-alpha.3",
+  "version": "0.24.0-alpha.9",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -41,7 +41,7 @@
     "integration-tests": "yarn e2e:test",
     "lint": "yarn node _bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
-    "release-packages": "yarn workspaces foreach -pt --all --no-private npm publish",
+    "release-packages": "yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish",
     "tsc-check": "yarn tsc -b",
     "tsc-watch": "yarn tsc -b -w",
     "g:tsc": "yarn tsc"

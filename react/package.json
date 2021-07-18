@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react",
-  "version": "0.24.0-alpha.3",
+  "version": "0.24.0-alpha.9",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -33,7 +33,7 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
-    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/pm": "0.6.0",
     "@bangle.dev/utils": "workspace:*",
     "prop-types": "^15.7.2",
     "punycode": "^2.1.1"
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/pm": "0.6.0",
     "@bangle.dev/utils": "workspace:*",
     "@testing-library/dom": "^7.31.2",
     "@testing-library/jest-dom": "^5.13.0",

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/utils",
-  "version": "0.24.0-alpha.3",
+  "version": "0.24.0-alpha.9",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -26,24 +26,32 @@
     "prepack": "yarn compile-ts"
   },
   "peerDependencies": {
-    "@bangle.dev/pm": "*"
+    "@bangle.dev/pm": "*",
+    "prosemirror-model": "*",
+    "prosemirror-state": "*"
   },
   "peerDependenciesMeta": {
     "@bangle.dev/pm": {
       "optional": true
+    },
+    "prosemirror-model": {
+      "optional": true
+    },
+    "prosemirror-state": {
+      "optional": true
     }
   },
   "dependencies": {
-    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/pm": "0.6.0",
+    "prosemirror-model": "^1.14.2",
+    "prosemirror-state": "^1.3.4",
     "prosemirror-utils": "1.0.0-0"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "0.5.0",
+    "@bangle.dev/pm": "0.6.0",
     "@types/jest": "^26.0.23",
     "@types/prosemirror-model": "^1.13.1",
-    "@types/prosemirror-state": "^1.2.7",
-    "prosemirror-model": "^1.14.2",
-    "prosemirror-state": "^1.3.4"
+    "@types/prosemirror-state": "^1.2.7"
   },
   "publishConfig": {
     "access": "public",
