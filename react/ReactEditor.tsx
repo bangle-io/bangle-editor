@@ -21,10 +21,10 @@ export const EditorViewContext = React.createContext<EditorView>(
 );
 
 interface BangleEditorProps extends CoreBangleEditorProps {
-  id: string;
-  children: React.ReactNode;
-  renderNodeViews: RenderNodeViewsFunction;
-  className: string;
+  id?: string;
+  children?: React.ReactNode;
+  renderNodeViews?: RenderNodeViewsFunction;
+  className?: string;
   style?: React.CSSProperties;
   onReady?: (editor: CoreBangleEditor) => void;
 }
@@ -62,6 +62,13 @@ export function BangleEditor({
       editor.destroy();
     };
   }, []);
+
+  if (nodeViews.length > 0 && renderNodeViews == null) {
+    throw new Error(
+      'When using nodeViews, you must provide renderNodeViews callback',
+    );
+  }
+
   return (
     <React.Fragment>
       <div ref={renderRef} id={id} className={className} style={style} />
@@ -71,7 +78,7 @@ export function BangleEditor({
             debugKey={objectUid.get(nodeView)}
             nodeViewUpdateStore={nodeViewUpdateStore}
             nodeView={nodeView}
-            renderNodeViews={renderNodeViews}
+            renderNodeViews={renderNodeViews!}
           />,
           nodeView.containerDOM!,
           objectUid.get(nodeView),
