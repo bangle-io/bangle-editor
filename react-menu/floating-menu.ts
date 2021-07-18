@@ -1,11 +1,16 @@
 import { link } from '@bangle.dev/core';
-import { keymap } from '@bangle.dev/pm';
+import {
+  keymap,
+  Command,
+  Node,
+  EditorState,
+  NodeSelection,
+  PluginKey,
+} from '@bangle.dev/pm';
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
-import { Command } from '@bangle.dev/pm';
-import { Node } from '@bangle.dev/pm';
-import { EditorState, NodeSelection, PluginKey } from '@bangle.dev/pm';
-import { filter, rafCommandExec } from '@bangle.dev/pm-utils';
+
+import { filter, rafCommandExec } from '@bangle.dev/utils';
 
 const {
   queryIsSelectionTooltipActive,

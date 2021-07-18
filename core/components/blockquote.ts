@@ -7,11 +7,7 @@ import {
   wrapIn,
   wrappingInputRule,
 } from '@bangle.dev/pm';
-import {
-  filter,
-  findParentNodeOfType,
-  insertEmpty,
-} from '@bangle.dev/pm-utils';
+import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
 

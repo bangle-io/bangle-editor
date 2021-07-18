@@ -27,12 +27,12 @@
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "@bangle.dev/pm": "*",
-    "@bangle.dev/pm-utils": "*"
+    "@bangle.dev/utils": "*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "0.5.0",
-    "@bangle.dev/pm-utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

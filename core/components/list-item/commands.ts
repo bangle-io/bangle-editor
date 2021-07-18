@@ -1,4 +1,4 @@
-import { compose } from '@bangle.dev/js-utils';
+import { compose } from '@bangle.dev/utils';
 import {
   autoJoin,
   chainCommands,
@@ -40,7 +40,7 @@ import {
   sanitiseSelectionMarksForWrapping,
   validListParent,
   validPos,
-} from '@bangle.dev/pm-utils';
+} from '@bangle.dev/utils';
 import { MoveDirection } from '../../types';
 import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
 import { liftFollowingList, liftSelectionList } from './transforms';

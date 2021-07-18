@@ -33,9 +33,8 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
-    "@bangle.dev/js-utils": "workspace:*",
     "@bangle.dev/pm": "0.5.0",
-    "@bangle.dev/pm-utils": "workspace:*",
+    "@bangle.dev/utils": "workspace:*",
     "prop-types": "^15.7.2",
     "punycode": "^2.1.1"
   },

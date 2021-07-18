@@ -1,4 +1,4 @@
-import { bangleWarn } from '@bangle.dev/js-utils';
+import { bangleWarn } from '@bangle.dev/utils';
 import { MarkSpec, NodeSpec, Schema } from '@bangle.dev/pm';
 import { doc, paragraph, text } from './components/components';
 

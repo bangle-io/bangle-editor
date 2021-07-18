@@ -11,7 +11,7 @@ import {
   createEvent,
 } from '../../test-helpers/test-helpers';
 
-import { sleep } from '@bangle.dev/js-utils';
+import { sleep } from '@bangle.dev/utils';
 
 const testEditor = renderTestEditor({});
 const image =

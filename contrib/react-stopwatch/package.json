@@ -25,7 +25,7 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
-    "@bangle.dev/js-utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",

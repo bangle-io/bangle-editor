@@ -4,7 +4,9 @@
     "baseUrl": ".",
     "noEmit": true
   },
-  "include": ["./**/__tests__/*"],
+  "include": [
+    "./**/__tests__/*"
+  ],
   "references": [
     {
       "path": "./tsconfig.json"

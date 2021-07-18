@@ -13,9 +13,9 @@ import {
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
 import { selectNodeAt } from '@bangle.dev/core/test-helpers/test-helpers';
-import { sleep } from '@bangle.dev/js-utils';
+import { sleep, removeSelectedNode, safeInsert } from '@bangle.dev/utils';
 import { EditorView as PMEditorView, Node } from '@bangle.dev/pm';
-import { removeSelectedNode, safeInsert } from '@bangle.dev/pm-utils';
+
 import { BangleEditor } from '../index';
 import { fireEvent, render } from '@testing-library/react';
 import { useEditorState } from '../hooks';

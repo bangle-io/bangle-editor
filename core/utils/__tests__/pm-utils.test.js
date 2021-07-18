@@ -4,7 +4,7 @@
 /** @jsx psx */
 import { psx, renderTestEditor } from '../../test-helpers/test-helpers';
 
-import { isFirstChildOfParent, findCutBefore } from '@bangle.dev/pm-utils';
+import { isFirstChildOfParent, findCutBefore } from '@bangle.dev/utils';
 
 const testEditor = renderTestEditor();
 

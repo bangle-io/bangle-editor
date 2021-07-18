@@ -11,11 +11,7 @@ import {
   Schema,
   Selection,
 } from '@bangle.dev/pm';
-import {
-  filter,
-  findFirstMarkPosition,
-  safeInsert,
-} from '@bangle.dev/pm-utils';
+import { filter, findFirstMarkPosition, safeInsert } from '@bangle.dev/utils';
 import type {
   GetReferenceElementFunction,
   TooltipRenderOpts,

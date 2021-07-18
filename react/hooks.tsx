@@ -5,7 +5,7 @@ import {
   RawSpecs,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { rafSchedule } from '@bangle.dev/js-utils';
+import { rafSchedule } from '@bangle.dev/utils';
 import { EditorView, Plugin, PluginKey } from '@bangle.dev/pm';
 import { useContext, useEffect, useState } from 'react';
 import { EditorViewContext } from './ReactEditor';

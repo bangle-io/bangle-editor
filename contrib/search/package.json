@@ -36,7 +36,7 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "@bangle.dev/js-utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",

@@ -4,7 +4,7 @@
 /** @jsx psx */
 import { TextSelection } from '@bangle.dev/pm';
 import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
-import { sleep } from '@bangle.dev/js-utils';
+import { sleep } from '@bangle.dev/utils';
 import {
   setupDb,
   spinEditors,

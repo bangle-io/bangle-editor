@@ -1,4 +1,4 @@
-import { bangleWarn } from '@bangle.dev/js-utils';
+import { bangleWarn } from '@bangle.dev/utils';
 import type { EditorProps } from '@bangle.dev/pm';
 import {
   baseKeymap as pmBaseKeymap,

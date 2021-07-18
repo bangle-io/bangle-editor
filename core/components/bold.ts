@@ -5,7 +5,7 @@ import {
   Schema,
   toggleMark,
 } from '@bangle.dev/pm';
-import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
+import { isMarkActiveInSelection } from '@bangle.dev/utils';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 

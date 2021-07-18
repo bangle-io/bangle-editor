@@ -5,7 +5,7 @@ import {
 } from '@bangle.dev/core';
 import { keymap } from '@bangle.dev/pm';
 import React from 'react';
-import { objectFilter, objectMapValues } from '@bangle.dev/js-utils';
+import { objectFilter, objectMapValues } from '@bangle.dev/utils';
 import type { Command } from '@bangle.dev/pm';
 
 const LOG = false;

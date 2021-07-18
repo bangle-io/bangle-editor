@@ -13,7 +13,7 @@ import {
   TextSelection,
   Transaction,
 } from '@bangle.dev/pm';
-import { getListLiftTarget, mapChildren, mapSlice } from '@bangle.dev/pm-utils';
+import { getListLiftTarget, mapChildren, mapSlice } from '@bangle.dev/utils';
 
 function liftListItem(
   type: NodeType,

@@ -8,7 +8,7 @@ import {
   sleep,
   simpleLRU,
   raceTimeout,
-} from '@bangle.dev/js-utils';
+} from '@bangle.dev/utils';
 
 const setTimeoutBackup = window.setTimeout;
 const clearTimeoutBackup = window.clearTimeout;

@@ -1,5 +1,5 @@
 import { NodeView, NodeViewProps } from '@bangle.dev/core';
-import { bangleWarn, objectUid } from '@bangle.dev/js-utils';
+import { bangleWarn, objectUid } from '@bangle.dev/utils';
 import { EditorView, Node } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
 

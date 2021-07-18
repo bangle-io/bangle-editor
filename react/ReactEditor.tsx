@@ -3,7 +3,7 @@ import {
   BangleEditorProps as CoreBangleEditorProps,
   BangleEditorState as CoreBangleEditorState,
 } from '@bangle.dev/core';
-import { objectUid } from '@bangle.dev/js-utils';
+import { objectUid } from '@bangle.dev/utils';
 import { EditorView, Plugin } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';

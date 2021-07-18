@@ -6,7 +6,7 @@ import {
   Node,
   Schema,
 } from '@bangle.dev/pm';
-import { filter, insertEmpty } from '@bangle.dev/pm-utils';
+import { filter, insertEmpty } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import {

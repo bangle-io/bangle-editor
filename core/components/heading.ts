@@ -15,7 +15,7 @@ import {
   findChildren,
   findParentNodeOfType,
   insertEmpty,
-} from '@bangle.dev/pm-utils';
+} from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import {

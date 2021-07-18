@@ -15,7 +15,11 @@ import {
   Slice,
   Transaction,
 } from '@bangle.dev/pm';
-import { findParentNode, findSelectedNodeOfType, safeInsert } from './pm-utils';
+import {
+  findParentNode,
+  findSelectedNodeOfType,
+  safeInsert,
+} from './pm-utils-reexport';
 
 export class GapCursorSelection extends Selection {}
 

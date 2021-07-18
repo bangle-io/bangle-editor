@@ -10,7 +10,7 @@ import {
   Slice,
   TextSelection,
 } from '@bangle.dev/pm';
-import { findParentNodeOfType, mapChildren } from '@bangle.dev/pm-utils';
+import { findParentNodeOfType, mapChildren } from '@bangle.dev/utils';
 import { MoveDirection } from './types';
 
 function getParentTextSelection(state: EditorState, currentDepth: number) {

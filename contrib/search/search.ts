@@ -1,4 +1,4 @@
-import { matchAllPlus } from '@bangle.dev/js-utils';
+import { matchAllPlus } from '@bangle.dev/utils';
 import type { Command, Node } from '@bangle.dev/pm';
 import {
   Decoration,

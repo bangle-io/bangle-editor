@@ -15,18 +15,19 @@ import {
   receiveTransaction,
   sendableSteps,
 } from 'prosemirror-collab';
-import { Schema } from '@bangle.dev/pm';
 import {
+  Schema,
   EditorState,
   Plugin,
   PluginKey,
   Selection,
   TextSelection,
+  Step,
+  EditorView,
 } from '@bangle.dev/pm';
-import { Step } from '@bangle.dev/pm';
-import { EditorView } from '@bangle.dev/pm';
+
 import StrictEventEmitter from 'strict-event-emitter-types';
-import { Emitter } from '@bangle.dev/js-utils';
+import { Emitter } from '@bangle.dev/utils';
 import { replaceDocument } from './helpers';
 
 type UnPromisify<T> = T extends Promise<infer U> ? U : T;

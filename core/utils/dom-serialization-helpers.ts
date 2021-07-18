@@ -1,4 +1,4 @@
-import { objectFilter } from '@bangle.dev/js-utils';
+import { objectFilter } from '@bangle.dev/utils';
 import { DOMOutputSpec, Node } from '@bangle.dev/pm';
 
 /**

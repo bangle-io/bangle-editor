@@ -25,15 +25,15 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
-    "@bangle.dev/js-utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
     "@bangle.dev/emoji": "*",
     "@bangle.dev/pm": "*",
-    "@bangle.dev/pm-utils": "*",
     "@bangle.dev/react": "*",
     "@bangle.dev/tooltip": "*",
+    "@bangle.dev/utils": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
@@ -41,9 +41,9 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/pm": "0.5.0",
-    "@bangle.dev/pm-utils": "workspace:*",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
+    "@bangle.dev/utils": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
