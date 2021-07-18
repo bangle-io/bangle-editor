@@ -1,4 +1,10 @@
-import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
+/// <reference path="./missing-types.d.ts" />
+
+import {
+  NodeView,
+  NodeViewProps,
+  domSerializationHelpers,
+} from '@bangle.dev/core';
 import { Node } from 'prosemirror-model';
 import { keymap } from 'prosemirror-keymap';
 import PropTypes from 'prop-types';
@@ -8,6 +14,8 @@ import pterodactylImg from './img/pterodactyl.png';
 import stegosaurusImg from './img/stegosaurus.png';
 import triceratopsImg from './img/triceratops.png';
 import tyrannosaurusImg from './img/tyrannosaurus.png';
+import type { Schema } from 'prosemirror-model';
+import type { Command } from 'prosemirror-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -17,7 +25,7 @@ export const commands = {
 };
 
 const name = 'sticker';
-const getTypeFromSchema = (schema) => schema.nodes[name];
+const getTypeFromSchema = (schema: any) => schema.nodes[name];
 
 function specFactory() {
   let spec = {
@@ -37,7 +45,7 @@ function specFactory() {
       draggable: true,
     },
     markdown: {
-      toMarkdown: (state, node) => {
+      toMarkdown: (state: any, node: any) => {
         state.write('sticker');
       },
     },
@@ -52,7 +60,7 @@ function specFactory() {
 }
 
 function pluginsFactory() {
-  return ({ schema }) => [
+  return ({ schema }: { schema: Schema }) => [
     keymap({
       'Ctrl-B': randomSticker(),
     }),
@@ -77,14 +85,14 @@ export const stickerNames = [
   'pterodactyl',
 ];
 
-export function randomSticker() {
+export function randomSticker(): Command {
   return (state, dispatch) =>
     insertSticker(
       stickerNames[Math.floor(Math.random() * stickerNames.length)],
     )(state, dispatch);
 }
 
-export function insertSticker(stickerName) {
+export function insertSticker(stickerName: string): Command {
   return (state, dispatch) => {
     const stickerType = getTypeFromSchema(state.schema);
     let { $from } = state.selection;
@@ -114,9 +122,11 @@ const DINO_IMAGES = {
 };
 
 // no children for this type
-export function Sticker({ selected, node }) {
+export function Sticker({ selected, node }: NodeViewProps) {
   const nodeAttrs = node.attrs;
   const selectedStyle = selected ? { border: '4px solid pink' } : {};
+  const val: keyof typeof DINO_IMAGES = nodeAttrs['data-stickerkind'];
+
   return (
     <img
       className={`${selected ? 'bangle-selected' : ''}`}
@@ -129,8 +139,8 @@ export function Sticker({ selected, node }) {
         background: '#ddf6ff',
         ...selectedStyle,
       }}
-      src={DINO_IMAGES[nodeAttrs['data-stickerkind']]}
-      alt={nodeAttrs['data-stickerkind']}
+      src={DINO_IMAGES[val]}
+      alt={val}
     />
   );
 }

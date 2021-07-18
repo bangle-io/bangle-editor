@@ -3235,11 +3235,14 @@ __metadata:
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     "@testing-library/react": ^11.2.7
+    "@types/prop-types": ^15.7.4
+    "@types/prosemirror-commands": ^1.0.4
     "@types/prosemirror-keymap": ^1.0.4
     "@types/prosemirror-model": ^1.13.1
     "@types/react": ^17.0.14
     "@types/react-dom": ^17.0.9
     prop-types: ^15.7.2
+    prosemirror-commands: ^1.1.10
     prosemirror-keymap: ^1.1.4
     prosemirror-model: ^1.14.2
     react: ^17.0.2
@@ -5022,6 +5025,13 @@ __metadata:
   version: 15.7.3
   resolution: "@types/prop-types@npm:15.7.3"
   checksum: 41831d53c44c9eeafdaf9762bcb4553c13a3bbf990745ed9065a1cc3581b80633113b53fd49b202bf51731b258da5d0a9aa09c9035d5af7f78b0f6bc273f1325
+  languageName: node
+  linkType: hard
+
+"@types/prop-types@npm:^15.7.4":
+  version: 15.7.4
+  resolution: "@types/prop-types@npm:15.7.4"
+  checksum: ef6e1899e59b876c273811b1bd845022fc66d5a3d11cb38a25b6c566b30514ae38fe20a40f67622f362a4f4f7f9224e22d8da101cff3d6e97e11d7b4c307cfc1
   languageName: node
   linkType: hard
 

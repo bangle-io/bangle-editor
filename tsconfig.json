@@ -100,5 +100,11 @@
     {
       "path": "./contrib/react-stopwatch/tsconfig.test.json"
     },
+    {
+      "path": "./contrib/react-sticker/tsconfig.json"
+    },
+    {
+      "path": "./contrib/react-sticker/tsconfig.test.json"
+    },
   ]
 }

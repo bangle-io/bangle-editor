@@ -6053,11 +6053,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__markdown", null],
             ["@types/bangle.dev__react", null],
+            ["@types/prop-types", "npm:15.7.4"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-keymap", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.1"],
             ["@types/react", "npm:17.0.14"],
             ["@types/react-dom", "npm:17.0.9"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-commands", "npm:1.1.10"],
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.14.2"],
             ["react", "npm:17.0.2"],
@@ -6086,11 +6089,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:react"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
+            ["@types/prop-types", "npm:15.7.4"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
             ["@types/prosemirror-keymap", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.1"],
             ["@types/react", "npm:17.0.14"],
             ["@types/react-dom", "npm:17.0.9"],
             ["prop-types", "npm:15.7.2"],
+            ["prosemirror-commands", "npm:1.1.10"],
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.14.2"],
             ["react", "npm:17.0.2"],
@@ -8380,6 +8386,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-prop-types-npm-15.7.3-084e0015c6-41831d53c4.zip/node_modules/@types/prop-types/",
           "packageDependencies": [
             ["@types/prop-types", "npm:15.7.3"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:15.7.4", {
+          "packageLocation": "./.yarn/cache/@types-prop-types-npm-15.7.4-592896a9fe-ef6e1899e5.zip/node_modules/@types/prop-types/",
+          "packageDependencies": [
+            ["@types/prop-types", "npm:15.7.4"]
           ],
           "linkType": "HARD",
         }]
