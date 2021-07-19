@@ -84,12 +84,7 @@ module.exports = async (env, argv) => {
           use: ['file-loader'],
         },
         {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-        {
-          test: /\.(js|jsx)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           exclude: /node_modules/,
           use: {
             loader: require.resolve('babel-loader'),

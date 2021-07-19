@@ -1,9 +1,6 @@
 export {
   canInsert,
-  CellTransform,
   contains,
-  ContentNodeWithPos,
-  DomAtPos,
   findBlockNodes,
   findChildren,
   findChildrenByAttr,
@@ -24,9 +21,6 @@ export {
   hasParentNode,
   hasParentNodeOfType,
   isNodeSelection,
-  MovementOptions,
-  NodeWithPos,
-  Predicate,
   removeNodeBefore,
   removeParentNodeOfType,
   removeSelectedNode,
@@ -36,4 +30,13 @@ export {
   selectParentNodeOfType,
   setParentNodeMarkup,
   setTextSelection,
+} from 'prosemirror-utils';
+
+export type {
+  CellTransform,
+  ContentNodeWithPos,
+  DomAtPos,
+  MovementOptions,
+  NodeWithPos,
+  Predicate,
 } from 'prosemirror-utils';

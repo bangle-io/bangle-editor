@@ -7,6 +7,7 @@ const {
   sleep,
 } = require('../setup/helpers');
 const url = `http://localhost:1234/${path.basename(__dirname)}`;
+jest.setTimeout(105 * 1000);
 
 const isMenuActive = () =>
   page.evaluate(() => {
@@ -29,9 +30,7 @@ describe('react-menu test', () => {
   beforeEach(async () => {
     await jestPuppeteer.resetPage();
     await page.setViewport({ width: 600, height: 400 });
-    page.on('console', (warn) => {
-      console.log('warn happen at the page: ', warn);
-    });
+
     page.on('error', (err) => {
       console.log('error happen at the page: ', err);
     });
