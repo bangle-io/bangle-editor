@@ -9,6 +9,7 @@ coverage
 .yarnrc.yml
 jsconfig.json
 tsconfig.json
+tsconfig.test.json
 tsconfig-base.json
 __integration-tests__/build
 markdown/__tests__/fixtures
