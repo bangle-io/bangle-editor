@@ -20,7 +20,6 @@
   "private": true,
   "workspaces": [
     "__integration-tests__",
-    "_bangle-website",
     "_bangle-scripts",
     "core",
     "emoji",
@@ -40,7 +39,6 @@
     "unit-tests": "yarn jest",
     "integration-tests": "yarn e2e:test",
     "lint": "yarn node _bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
-    "scripts:build-api-docs": "yarn node _bangle-scripts/docs/index.js",
     "release-packages": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish",
     "tsc-check": "yarn tsc -b",
     "tsc-clean": "yarn tsc -b --clean",

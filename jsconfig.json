@@ -77,9 +77,6 @@
       "@bangle.dev/react-menu": [
         "./react-menu/index.js"
       ],
-      "bangle-website/*": [
-        "./_bangle-website/*"
-      ],
     },
     "module": "es2020",
     "target": "esnext"
@@ -90,9 +87,6 @@
     "dist",
     "archive",
     "__integration-tests__/build",
-    "_bangle-website/build",
-    "_bangle-website/.docusaurus",
-    "_bangle-website/.cache-loader",
     "public",
     ".cache",
     ".yarn",
