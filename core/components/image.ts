@@ -1,11 +1,17 @@
-import { InputRule } from 'prosemirror-inputrules';
-import { Command } from 'prosemirror-commands';
-import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
-import { safeInsert } from 'prosemirror-utils';
-import { Node, NodeType, Schema } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import {
+  Command,
+  EditorView,
+  InputRule,
+  Node,
+  NodeSelection,
+  NodeType,
+  Plugin,
+  PluginKey,
+  Schema,
+} from '@bangle.dev/pm';
+import { safeInsert } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

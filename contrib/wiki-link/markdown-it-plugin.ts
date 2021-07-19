@@ -1,5 +1,4 @@
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import StateCore from 'markdown-it/lib/rules_core/state_core';
+import type { StateCore } from '@bangle.dev/markdown';
 
 export function wikiLinkMarkdownItPlugin(md: any) {
   genericNodeParser(md, {

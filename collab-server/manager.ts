@@ -1,13 +1,13 @@
-import { serialExecuteQueue, uuid } from './utils';
-import { Instance } from './instance';
-import { Schema, Node } from 'prosemirror-model';
-import { CollabRequestHandler } from './collab-request-handler';
-import { CollabResponse, CollabRequestType } from './types';
+import { Disk } from '@bangle.dev/disk';
+import { Node, Schema } from '@bangle.dev/pm';
 import {
   CollabError,
   ValidErrorCodes as ValidCollabErrorCodes,
 } from './collab-error';
-import { Disk } from '@bangle.dev/disk';
+import { CollabRequestHandler } from './collab-request-handler';
+import { Instance } from './instance';
+import { CollabRequestType, CollabResponse } from './types';
+import { serialExecuteQueue, uuid } from './utils';
 
 const LOG = false;
 

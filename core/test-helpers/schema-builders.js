@@ -1,4 +1,4 @@
-import { matchAllPlus, objectMapValues, weakCache } from '@bangle.dev/js-utils';
+import { matchAllPlus, objectMapValues, weakCache } from '@bangle.dev/utils';
 
 // Short hand to allow for smaller jsx syntax
 // For example instead of `<paragraph>hello world</paragraph>`

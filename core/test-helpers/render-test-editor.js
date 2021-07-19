@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  */
 
-import { TextSelection } from 'prosemirror-state';
-import { getDocLabels } from './schema-builders';
-import { SpecRegistry } from '../spec-registry';
+import { TextSelection } from '@bangle.dev/pm';
 import { BangleEditor } from '../bangle-editor';
-import { defaultPlugins, defaultSpecs } from './default-components';
 import { BangleEditorState } from '../index';
+import { SpecRegistry } from '../spec-registry';
+import { defaultPlugins, defaultSpecs } from './default-components';
+import { getDocLabels } from './schema-builders';
 
 const mountedEditors = new Set();
 if (typeof afterEach === 'function') {

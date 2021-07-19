@@ -1,8 +1,12 @@
-import { matchAllPlus } from '@bangle.dev/js-utils';
-import type { Command } from 'prosemirror-commands';
-import type { Node } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
-import { Decoration, DecorationSet } from 'prosemirror-view';
+import type { Command, Node } from '@bangle.dev/pm';
+import {
+  Decoration,
+  DecorationSet,
+  EditorState,
+  Plugin,
+  PluginKey,
+} from '@bangle.dev/pm';
+import { matchAllPlus } from '@bangle.dev/utils';
 
 const name = 'search';
 export const spec = specFactory;

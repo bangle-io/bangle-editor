@@ -1,13 +1,12 @@
-import { NodeSelection } from 'prosemirror-state';
-import { Fragment, Slice } from 'prosemirror-model';
+import { Fragment, NodeSelection } from '@bangle.dev/pm';
 
 export * from './commands-helpers';
+export * from './create-event';
+export * from './dispatch-paste-event';
 export * from './jest-helpers';
 export * from './keyboard';
 export * from './render-test-editor';
 export * from './schema-builders';
-export * from './dispatch-paste-event';
-export * from './create-event';
 export * from './selection-helpers';
 
 export const selectNodeAt = (view, pos) => {

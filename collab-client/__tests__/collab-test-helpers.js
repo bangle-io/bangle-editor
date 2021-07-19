@@ -1,19 +1,19 @@
 /* istanbul ignore file */
 
 import { Manager, parseCollabResponse } from '@bangle.dev/collab-server';
+import { SpecRegistry } from '@bangle.dev/core';
+import {
+  defaultPlugins,
+  defaultSpecs,
+} from '@bangle.dev/core/test-helpers/default-components';
 import {
   renderTestEditor,
   sendKeyToPm,
   sleep,
   typeChar,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import * as collab from '../collab-extension';
 import { DebouncedDisk } from '@bangle.dev/disk';
-import {
-  defaultPlugins,
-  defaultSpecs,
-} from '@bangle.dev/core/test-helpers/default-components';
-import { SpecRegistry } from '@bangle.dev/core';
+import * as collab from '../collab-extension';
 
 const START = '💚';
 const END = '🖤';

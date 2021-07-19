@@ -1,4 +1,4 @@
-import { Node } from 'prosemirror-model';
+import { Node } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 

@@ -1,14 +1,16 @@
-import { Command } from 'prosemirror-commands';
-import { Fragment, Node, NodeType, Slice } from 'prosemirror-model';
 import {
+  Command,
   EditorState,
+  Fragment,
+  Node,
   NodeSelection,
+  NodeType,
+  ReplaceStep,
   Selection,
+  Slice,
   TextSelection,
-} from 'prosemirror-state';
-import { ReplaceStep } from 'prosemirror-transform';
-import { findParentNodeOfType } from 'prosemirror-utils';
-import { mapChildren } from '@bangle.dev/pm-utils';
+} from '@bangle.dev/pm';
+import { findParentNodeOfType, mapChildren } from '@bangle.dev/utils';
 import { MoveDirection } from './types';
 
 function getParentTextSelection(state: EditorState, currentDepth: number) {

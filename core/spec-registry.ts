@@ -1,6 +1,6 @@
-import { MarkSpec, NodeSpec, Schema } from 'prosemirror-model';
+import { MarkSpec, NodeSpec, Schema } from '@bangle.dev/pm';
+import { bangleWarn } from '@bangle.dev/utils';
 import { doc, paragraph, text } from './components/components';
-import { bangleWarn } from '@bangle.dev/js-utils';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};

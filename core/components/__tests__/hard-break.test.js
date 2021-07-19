@@ -8,8 +8,8 @@ import {
   renderTestEditor,
   sendKeyToPm,
 } from '../../test-helpers/test-helpers';
-
 import { hardBreak } from '../components';
+
 const keybindings = hardBreak.defaultKeys;
 
 describe('Basic', () => {

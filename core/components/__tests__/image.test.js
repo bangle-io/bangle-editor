@@ -3,15 +3,14 @@
  */
 
 /** @jsx psx */
+import { sleep } from '@bangle.dev/utils';
 import {
+  createEvent,
+  dispatchPasteEvent,
   psx,
   renderTestEditor,
-  dispatchPasteEvent,
   typeText,
-  createEvent,
 } from '../../test-helpers/test-helpers';
-
-import { sleep } from '@bangle.dev/js-utils';
 
 const testEditor = renderTestEditor({});
 const image =

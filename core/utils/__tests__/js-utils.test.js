@@ -4,11 +4,11 @@
 
 import {
   matchAllPlus,
-  serialExecuteQueue,
-  sleep,
-  simpleLRU,
   raceTimeout,
-} from '@bangle.dev/js-utils';
+  serialExecuteQueue,
+  simpleLRU,
+  sleep,
+} from '@bangle.dev/utils';
 
 const setTimeoutBackup = window.setTimeout;
 const clearTimeoutBackup = window.clearTimeout;

@@ -2,8 +2,8 @@ import {
   table,
   tableCell,
   tableHeader,
-  tableRow,
   tablePlugins,
+  tableRow,
 } from './table-setup';
 
 export { table, tableCell, tableHeader, tableRow, tablePlugins };

@@ -2,35 +2,34 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
+import { SpecRegistry } from '../../spec-registry';
 import {
   applyCommand,
   psx,
   renderTestEditor,
+  selectNodeAt,
   sendKeyToPm,
   typeText,
-  selectNodeAt,
 } from '../../test-helpers/test-helpers';
+import { defaultKeys as bulletListDefaultKeys } from '../bullet-list';
 import {
   bulletList,
-  listItem,
-  orderedList,
+  doc,
   hardBreak,
   heading,
-  underline,
-  codeBlock,
-  doc,
+  listItem,
+  orderedList,
+  paragraph,
   strike,
   text,
-  paragraph,
+  underline,
 } from '../components';
-import { SpecRegistry } from '../../spec-registry';
 import {
+  backspaceKeyCommand,
   enterKeyCommand,
   toggleList,
-  backspaceKeyCommand,
 } from '../list-item/commands';
 import { defaultKeys as orderedListDefaultKeys } from '../ordered-list';
-import { defaultKeys as bulletListDefaultKeys } from '../bullet-list';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

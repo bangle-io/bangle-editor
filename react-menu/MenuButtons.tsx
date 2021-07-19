@@ -10,10 +10,10 @@ import {
   orderedList,
   paragraph,
 } from '@bangle.dev/core';
-import { filter, rafCommandExec } from '@bangle.dev/pm-utils';
+import { EditorState, PluginKey } from '@bangle.dev/pm';
 import { useEditorViewContext } from '@bangle.dev/react';
+import { filter, rafCommandExec } from '@bangle.dev/utils';
 import PropTypes from 'prop-types';
-import { EditorState, PluginKey } from 'prosemirror-state';
 import React, { useCallback } from 'react';
 import {
   defaultKeys as floatingMenuKeys,

@@ -3,14 +3,13 @@ import {
   BangleEditorProps as CoreBangleEditorProps,
   BangleEditorState as CoreBangleEditorState,
 } from '@bangle.dev/core';
-import { Plugin } from 'prosemirror-state';
+import { EditorView, Plugin } from '@bangle.dev/pm';
+import { objectUid } from '@bangle.dev/utils';
 import PropTypes from 'prop-types';
-import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
-import { objectUid } from '@bangle.dev/js-utils';
 
 const LOG = false;
 
@@ -22,10 +21,10 @@ export const EditorViewContext = React.createContext<EditorView>(
 );
 
 interface BangleEditorProps extends CoreBangleEditorProps {
-  id: string;
-  children: React.ReactNode;
-  renderNodeViews: RenderNodeViewsFunction;
-  className: string;
+  id?: string;
+  children?: React.ReactNode;
+  renderNodeViews?: RenderNodeViewsFunction;
+  className?: string;
   style?: React.CSSProperties;
   onReady?: (editor: CoreBangleEditor) => void;
 }
@@ -63,6 +62,13 @@ export function BangleEditor({
       editor.destroy();
     };
   }, []);
+
+  if (nodeViews.length > 0 && renderNodeViews == null) {
+    throw new Error(
+      'When using nodeViews, you must provide renderNodeViews callback',
+    );
+  }
+
   return (
     <React.Fragment>
       <div ref={renderRef} id={id} className={className} style={style} />
@@ -72,7 +78,7 @@ export function BangleEditor({
             debugKey={objectUid.get(nodeView)}
             nodeViewUpdateStore={nodeViewUpdateStore}
             nodeView={nodeView}
-            renderNodeViews={renderNodeViews}
+            renderNodeViews={renderNodeViews!}
           />,
           nodeView.containerDOM!,
           objectUid.get(nodeView),

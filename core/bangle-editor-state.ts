@@ -1,9 +1,14 @@
-import { EditorState } from 'prosemirror-state';
-import { Node, DOMParser, Mark, Schema, ParseOptions } from 'prosemirror-model';
-
-import { SpecRegistry, RawSpecs } from './spec-registry';
-import { RawPlugins, pluginLoader } from './utils/plugin-loader';
-import { EditorProps } from 'prosemirror-view';
+import {
+  DOMParser,
+  EditorProps,
+  EditorState,
+  Mark,
+  Node,
+  ParseOptions,
+  Schema,
+} from '@bangle.dev/pm';
+import { RawSpecs, SpecRegistry } from './spec-registry';
+import { pluginLoader, RawPlugins } from './utils/plugin-loader';
 
 type InitialContent = string | Node | object;
 

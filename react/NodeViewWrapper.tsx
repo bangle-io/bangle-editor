@@ -1,8 +1,7 @@
 import { NodeView, NodeViewProps } from '@bangle.dev/core';
-import { objectUid, bangleWarn } from '@bangle.dev/js-utils';
+import { EditorView, Node } from '@bangle.dev/pm';
+import { bangleWarn, objectUid } from '@bangle.dev/utils';
 import PropTypes from 'prop-types';
-import { Node } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
 import React from 'react';
 
 const LOG = false;

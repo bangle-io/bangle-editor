@@ -3,13 +3,12 @@
  */
 
 /** @jsx psx */
+import { setSelectionNear } from '../../test-helpers/selection-helpers';
 import {
   psx,
   renderTestEditor,
   sendKeyToPm,
 } from '../../test-helpers/test-helpers';
-
-import { setSelectionNear } from '../../test-helpers/selection-helpers';
 import { italic } from '../components';
 
 const keybindings = italic.defaultKeys;

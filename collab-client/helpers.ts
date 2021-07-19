@@ -1,5 +1,4 @@
-import { Selection, EditorState } from 'prosemirror-state';
-import { Node, Schema } from 'prosemirror-model';
+import { EditorState, Node, Schema, Selection } from '@bangle.dev/pm';
 
 // let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
 

@@ -1,8 +1,13 @@
-import { canJoin, findWrapping } from 'prosemirror-transform';
-import { InputRule } from 'prosemirror-inputrules';
-import { filter } from '@bangle.dev/pm-utils';
-import { Node, Schema } from 'prosemirror-model';
-import { EditorState, Transaction } from 'prosemirror-state';
+import {
+  canJoin,
+  EditorState,
+  findWrapping,
+  InputRule,
+  Node,
+  Schema,
+  Transaction,
+} from '@bangle.dev/pm';
+import { filter } from '@bangle.dev/utils';
 
 export const isNodeTodo = (node: Node, schema: Schema) => {
   return (

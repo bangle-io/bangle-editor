@@ -1,10 +1,13 @@
+import {
+  Command,
+  EditorState,
+  keymap,
+  Schema,
+  toggleMark,
+} from '@bangle.dev/pm';
+import { isMarkActiveInSelection } from '@bangle.dev/utils';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
-import { toggleMark, Command } from 'prosemirror-commands';
-import { Schema } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
-import { keymap } from 'prosemirror-keymap';
-import { isMarkActiveInSelection } from '@bangle.dev/pm-utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

@@ -7,7 +7,7 @@ import {
   SpecRegistry,
 } from '@bangle.dev/core';
 import '@bangle.dev/core/style.css';
-import { toHTMLString } from '@bangle.dev/pm-utils';
+import { toHTMLString } from '@bangle.dev/utils';
 
 export default function Editor(domNode) {
   function onEditorDocChange(state) {

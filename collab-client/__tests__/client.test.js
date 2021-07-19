@@ -3,16 +3,16 @@
  * @jsx psx
  */
 
-import { getVersion } from 'prosemirror-collab';
+import { CollabError } from '@bangle.dev/collab-server';
+import { components, SpecRegistry } from '@bangle.dev/core';
 import {
   psx,
-  typeText,
   renderTestEditor,
+  typeText,
 } from '@bangle.dev/core/test-helpers/test-helpers';
-import { CollabError } from '@bangle.dev/collab-server';
-import { Selection } from 'prosemirror-state';
+import { Selection } from '@bangle.dev/pm';
+import { getVersion } from 'prosemirror-collab';
 import * as collab from '../collab-extension';
-import { SpecRegistry, components } from '@bangle.dev/core';
 
 const { paragraph, doc, text } = components;
 const DEFAULT_SLEEP = 50;

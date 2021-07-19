@@ -1,19 +1,23 @@
-import { keymap } from 'prosemirror-keymap';
-import { wrappingInputRule } from 'prosemirror-inputrules';
+import {
+  chainCommands,
+  Command,
+  EditorState,
+  keymap,
+  Node,
+  Schema,
+  wrappingInputRule,
+} from '@bangle.dev/pm';
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from '../core-commands';
 import { toggleList } from './list-item/commands';
-import { chainCommands, Command } from 'prosemirror-commands';
-import { Schema, Node } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import type Token from 'markdown-it/lib/token';
+import { listIsTight } from './list-item/list-is-tight';
 import {
-  wrappingInputRuleForTodo,
+  isNodeTodo,
   removeTodo,
   setTodo,
-  isNodeTodo,
+  wrappingInputRuleForTodo,
 } from './list-item/todo';
-import { listIsTight } from './list-item/list-is-tight';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

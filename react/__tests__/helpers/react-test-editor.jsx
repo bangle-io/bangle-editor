@@ -1,10 +1,10 @@
 /**
  * @jest-environment jsdom
  */
+import { getDocLabels } from '@bangle.dev/core/test-helpers/test-helpers';
+import { TextSelection } from '@bangle.dev/pm';
 import { act, render } from '@testing-library/react';
 import React from 'react';
-import { TextSelection } from 'prosemirror-state';
-import { getDocLabels } from '@bangle.dev/core/test-helpers/test-helpers';
 import { BangleEditor, useEditorState } from '../../index';
 
 function ReactEditor({

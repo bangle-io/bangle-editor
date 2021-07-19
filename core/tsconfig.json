@@ -19,10 +19,7 @@
   ],
   "references": [
     {
-      "path": "../contrib/js-utils/tsconfig.json"
-    },
-    {
-      "path": "../contrib/pm-utils/tsconfig.json"
+      "path": "../contrib/utils/tsconfig.json"
     },
   ]
 }

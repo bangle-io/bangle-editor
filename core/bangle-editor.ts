@@ -1,6 +1,5 @@
-import { isTestEnv } from '@bangle.dev/js-utils';
-import { toHTMLString } from '@bangle.dev/pm-utils';
-import { DirectEditorProps, EditorView } from 'prosemirror-view';
+import { DirectEditorProps, EditorView } from '@bangle.dev/pm';
+import { isTestEnv, toHTMLString } from '@bangle.dev/utils';
 import { BangleEditorState } from './bangle-editor-state';
 
 type PMViewOpts = Omit<

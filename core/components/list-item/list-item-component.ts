@@ -1,29 +1,33 @@
-import { chainCommands, Command } from 'prosemirror-commands';
-import { keymap } from 'prosemirror-keymap';
-import { MoveDirection } from '../../types';
 import {
-  indentList,
+  chainCommands,
+  Command,
+  EditorState,
+  keymap,
+  Node,
+  Schema,
+} from '@bangle.dev/pm';
+import { filter, insertEmpty } from '@bangle.dev/utils';
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import {
+  copyEmptyCommand,
+  cutEmptyCommand,
+  moveNode,
+  parentHasDirectParentOfType,
+} from '../../core-commands';
+import { MoveDirection } from '../../types';
+import browser from '../../utils/browser';
+import { domSerializationHelpers } from '../../utils/dom-serialization-helpers';
+import {
   backspaceKeyCommand,
   enterKeyCommand,
-  outdentList,
+  indentList,
   moveEdgeListItem,
+  outdentList,
   updateNodeAttrs,
 } from './commands';
-import {
-  cutEmptyCommand,
-  copyEmptyCommand,
-  parentHasDirectParentOfType,
-  moveNode,
-} from '../../core-commands';
-import { filter, insertEmpty } from '@bangle.dev/pm-utils';
-import { domSerializationHelpers } from '../../utils/dom-serialization-helpers';
-import browser from '../../utils/browser';
-import { isNodeTodo, setTodoCheckedAttr } from './todo';
 import { listItemNodeViewPlugin } from './list-item-node-view-plugin';
-import { Node, Schema } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import type Token from 'markdown-it/lib/token';
+import { isNodeTodo, setTodoCheckedAttr } from './todo';
 
 const LOG = false;
 

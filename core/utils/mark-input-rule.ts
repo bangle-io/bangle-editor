@@ -1,6 +1,4 @@
-import { InputRule } from 'prosemirror-inputrules';
-import { Mark, MarkType } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, InputRule, Mark, MarkType } from '@bangle.dev/pm';
 
 function getMarksBetween(start: number, end: number, state: EditorState) {
   let marks: Array<{ start: number; end: number; mark: Mark }> = [];

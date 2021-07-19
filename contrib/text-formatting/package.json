@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/text-formatting",
-  "version": "0.23.1",
+  "version": "0.24.0-alpha.10",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -24,18 +24,27 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
     "prepack": "yarn compile-ts"
   },
+  "peerDependencies": {
+    "@bangle.dev/core": "*",
+    "@bangle.dev/pm": "*",
+    "@bangle.dev/utils": "*"
+  },
+  "peerDependenciesMeta": {
+    "@bangle.dev/pm": {
+      "optional": true
+    },
+    "@bangle.dev/utils": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm-utils": "workspace:*",
-    "prosemirror-commands": "^1.1.10",
-    "prosemirror-keymap": "^1.1.4"
+    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/utils": "workspace:*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@types/prosemirror-commands": "^1.0.4",
-    "@types/prosemirror-keymap": "^1.0.4",
-    "@types/prosemirror-model": "^1.13.0",
-    "prosemirror-model": "^1.14.2"
+    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/utils": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

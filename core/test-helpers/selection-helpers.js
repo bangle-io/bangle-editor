@@ -1,4 +1,4 @@
-import { Selection } from 'prosemirror-state';
+import { Selection } from '@bangle.dev/pm';
 
 export function setSelectionNear(view, pos) {
   let tr = view.state.tr;

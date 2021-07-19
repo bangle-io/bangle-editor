@@ -1,5 +1,11 @@
 import { Plugin } from '@bangle.dev/core';
-import { bangleWarn } from '@bangle.dev/js-utils';
+import {
+  DOMOutputSpec,
+  EditorState,
+  EditorView,
+  PluginKey,
+} from '@bangle.dev/pm';
+import { bangleWarn } from '@bangle.dev/utils';
 import {
   Instance as PopperInstance,
   Modifier,
@@ -7,9 +13,6 @@ import {
   State as PopperState,
   VirtualElement,
 } from '@popperjs/core';
-import { DOMOutputSpec } from 'prosemirror-model';
-import { EditorState, PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import { createTooltipDOM } from './create-tooltip-dom';
 import {
   arrow,

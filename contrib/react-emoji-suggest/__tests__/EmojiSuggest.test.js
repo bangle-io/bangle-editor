@@ -3,8 +3,8 @@
  */
 /** @jsx pjsx */
 import { pjsx } from '@bangle.dev/react/__tests__/helpers/index';
-import { EmojiSuggestContainer } from '../EmojiSuggest';
 import { render as _render } from '@testing-library/react';
+import { EmojiSuggestContainer } from '../EmojiSuggest';
 
 describe('EmojiSuggestContainer', () => {
   let view,

@@ -1,4 +1,4 @@
-import type { Node } from 'prosemirror-model';
+import type { Node } from '@bangle.dev/pm';
 
 export abstract class Disk {
   abstract load(_key: string): Promise<Node>;

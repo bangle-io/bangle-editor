@@ -1,5 +1,5 @@
+import { domSerializationHelpers, NodeView } from '@bangle.dev/core';
 import React from 'react';
-import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
 
 export class Banana extends React.Component {
   render() {

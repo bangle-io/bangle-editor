@@ -1,2 +1,2 @@
-export * from './ReactEditor';
 export * from './hooks';
+export * from './ReactEditor';

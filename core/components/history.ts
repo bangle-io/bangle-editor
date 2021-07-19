@@ -1,5 +1,5 @@
-import * as pmHistory from 'prosemirror-history';
-import { keymap } from 'prosemirror-keymap';
+import * as pmHistory from '@bangle.dev/pm';
+import { keymap } from '@bangle.dev/pm';
 import { PluginGroup } from '../plugin';
 
 export const plugins = pluginsFactory;

@@ -1,6 +1,6 @@
 import { link } from '@bangle.dev/core';
+import { EditorView } from '@bangle.dev/pm';
 import { useEditorViewContext } from '@bangle.dev/react';
-import { EditorView } from 'prosemirror-view';
 import React, { useRef, useState } from 'react';
 import { MenuButton } from './Icon';
 import * as Icons from './Icons';

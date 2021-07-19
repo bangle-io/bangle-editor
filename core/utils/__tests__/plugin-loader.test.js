@@ -1,8 +1,8 @@
-import { SpecRegistry } from '../../spec-registry';
 import { NodeView } from '../../node-view';
-import { pluginLoader } from '../plugin-loader';
 import { Plugin, PluginGroup, PluginKey } from '../../plugin';
+import { SpecRegistry } from '../../spec-registry';
 import { corePlugins, coreSpec } from '../core-components';
+import { pluginLoader } from '../plugin-loader';
 
 const specRegistry = new SpecRegistry(coreSpec());
 

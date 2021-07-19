@@ -2,20 +2,20 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { fireEvent, act } from '@testing-library/react';
-import {
-  pjsx,
-  reactTestEditor,
-} from '@bangle.dev/react/__tests__/helpers/index';
-import { sendKeyToPm } from '@bangle.dev/core/test-helpers/test-helpers';
-import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
 import { SpecRegistry } from '@bangle.dev/core';
-import { stopwatch } from '../index';
-import { Stopwatch } from '../stopwatch';
 import {
   defaultPlugins,
   defaultSpecs,
 } from '@bangle.dev/core/test-helpers/default-components';
+import { sendKeyToPm } from '@bangle.dev/core/test-helpers/test-helpers';
+import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
+import {
+  pjsx,
+  reactTestEditor,
+} from '@bangle.dev/react/__tests__/helpers/index';
+import { act, fireEvent } from '@testing-library/react';
+import { stopwatch } from '../index';
+import { Stopwatch } from '../stopwatch';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), stopwatch.spec({})]);
 const plugins = () => [...defaultPlugins(), stopwatch.plugins({})];

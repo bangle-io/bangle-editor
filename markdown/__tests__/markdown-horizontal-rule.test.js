@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
-import { serialize, parse } from './setup';
+import { parse, serialize } from './setup';
 
 describe('horizontal rule', () => {
   test('renders 1', async () => {

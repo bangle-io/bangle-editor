@@ -1,8 +1,12 @@
 import '@bangle.dev/core/style.css';
-import { NodeView, domSerializationHelpers } from '@bangle.dev/core';
-import { corePlugins, coreSpec } from '@bangle.dev/core';
+import {
+  NodeView,
+  domSerializationHelpers,
+  corePlugins,
+  coreSpec,
+} from '@bangle.dev/core';
 
-import { safeInsert } from '@bangle.dev/pm-utils';
+import { safeInsert } from '@bangle.dev/utils';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
 import { keymap } from 'prosemirror-keymap';
 import React, { useEffect, useState } from 'react';

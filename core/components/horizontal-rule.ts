@@ -1,6 +1,5 @@
-import { safeInsert } from '@bangle.dev/pm-utils';
-import { InputRule } from 'prosemirror-inputrules';
-import { Schema, Node } from 'prosemirror-model';
+import { InputRule, Node, Schema } from '@bangle.dev/pm';
+import { safeInsert } from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 export const spec = specFactory;
