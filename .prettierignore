@@ -14,10 +14,7 @@ tsconfig-base.json
 __integration-tests__/build
 markdown/__tests__/fixtures
 
-_bangle-website/build
-_bangle-website/.docusaurus
-_bangle-website/.cache-loader
-_bangle-website/docsSidebar.json
+
 build
 
 dist
