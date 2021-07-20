@@ -13,7 +13,7 @@ import { pluginLoader, RawPlugins } from './utils/plugin-loader';
 
 type InitialContent = string | Node | object;
 
-export interface BangleEditorStateProps<PluginMetadata> {
+export interface BangleEditorStateProps<PluginMetadata = any> {
   specRegistry?: SpecRegistry;
   specs?: RawSpecs;
   plugins?: RawPlugins;

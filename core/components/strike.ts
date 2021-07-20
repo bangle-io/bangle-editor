@@ -1,11 +1,13 @@
 import {
   Command,
+  DOMOutputSpecArray,
   EditorState,
   keymap,
   Schema,
   toggleMark,
 } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
+import { RawSpecs } from '../spec-registry';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 import { RawPlugins } from '../utils/plugin-loader';
@@ -24,7 +26,7 @@ const name = 'strike';
 
 const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'mark',
     name,
@@ -41,10 +43,10 @@ function specFactory() {
         },
         {
           style: 'text-decoration',
-          getAttrs: (value: string) => value === 'line-through',
+          getAttrs: (value: any) => value === 'line-through' && null,
         },
       ],
-      toDOM: () => ['s', 0],
+      toDOM: (): DOMOutputSpecArray => ['s', 0],
     },
     markdown: {
       toMarkdown: {

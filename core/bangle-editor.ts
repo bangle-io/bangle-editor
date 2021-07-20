@@ -13,7 +13,7 @@ export interface BangleEditorProps<PluginMetadata> {
   pmViewOpts?: PMViewOpts;
 }
 
-export class BangleEditor<PluginMetadata> {
+export class BangleEditor<PluginMetadata = any> {
   destroyed: boolean;
   view: EditorView;
 
