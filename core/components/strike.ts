@@ -8,6 +8,7 @@ import {
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
+import { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -59,8 +60,8 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }: { schema: Schema }) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

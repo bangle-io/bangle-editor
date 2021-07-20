@@ -1,4 +1,13 @@
-import { chainCommands, exitCode, keymap, Node, Schema } from '@bangle.dev/pm';
+import {
+  chainCommands,
+  DOMOutputSpecArray,
+  exitCode,
+  keymap,
+  Node,
+  Schema,
+} from '@bangle.dev/pm';
+import { RawSpecs } from '../spec-registry';
+import { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -10,7 +19,7 @@ const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 const name = 'hardBreak';
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -19,7 +28,7 @@ function specFactory() {
       group: 'inline',
       selectable: false,
       parseDOM: [{ tag: 'br' }],
-      toDOM: () => ['br'],
+      toDOM: (): DOMOutputSpecArray => ['br'],
     },
     markdown: {
       toMarkdown(state: any, node: Node, parent: Node, index: number) {
@@ -37,8 +46,8 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }: { schema: Schema }) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     const command = chainCommands(exitCode, (state, dispatch) => {
       if (dispatch) {

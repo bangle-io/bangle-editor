@@ -1,4 +1,5 @@
 import {
+  DOMOutputSpecArray,
   EditorState,
   keymap,
   Node,
@@ -10,6 +11,8 @@ import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { moveNode } from '../core-commands';
+import { RawSpecs } from '../spec-registry';
+import { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -27,7 +30,7 @@ export const defaultKeys = {
 const name = 'codeBlock';
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -42,7 +45,7 @@ function specFactory() {
       defining: true,
       draggable: false,
       parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
-      toDOM: () => ['pre', ['code', 0]],
+      toDOM: (): DOMOutputSpecArray => ['pre', ['code', 0]],
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {
@@ -67,8 +70,8 @@ function specFactory() {
 function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
-} = {}) {
-  return ({ schema }: { schema: Schema }) => {
+} = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

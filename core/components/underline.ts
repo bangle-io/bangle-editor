@@ -1,11 +1,13 @@
 import {
   Command,
+  DOMOutputSpecArray,
   EditorState,
   keymap,
   Schema,
   toggleMark,
 } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
+import { RawSpecs } from '../spec-registry';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 
@@ -23,7 +25,7 @@ const name = 'underline';
 
 const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'mark',
     name,
@@ -34,10 +36,10 @@ function specFactory() {
         },
         {
           style: 'text-decoration',
-          getAttrs: (value: string) => value === name,
+          getAttrs: (value: any) => value === name && null,
         },
       ],
-      toDOM: () => ['u', 0],
+      toDOM: (): DOMOutputSpecArray => ['u', 0],
     },
     markdown: {
       // TODO underline is not a real thing in markdown, what is the best option here?

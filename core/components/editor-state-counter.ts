@@ -1,12 +1,13 @@
 import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { PluginGroup } from '../plugin';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 const name = 'editorStateCounter';
 export const plugins = pluginsFactory;
 export const docChangedKey = new PluginKey(name);
 export const selectionChangedKey = new PluginKey(name);
 
-function pluginsFactory() {
+function pluginsFactory(): RawPlugins {
   return () => {
     return new PluginGroup(name, [
       new Plugin({

@@ -3,11 +3,11 @@ import {
   baseKeymap as pmBaseKeymap,
   dropCursor as pmDropCursor,
   gapCursor as pmGapCursor,
-  InputRule,
   inputRules as pmInputRules,
   keymap,
   Plugin,
   Schema,
+  InputRule,
   undoInputRule as pmUndoInputRule,
 } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
@@ -16,48 +16,49 @@ import * as history from '../components/history';
 import { PluginGroup } from '../plugin';
 import type { SpecRegistry } from '../spec-registry';
 
-interface PluginPayload {
+export interface PluginPayload<T = any> {
   schema: Schema;
   specRegistry: SpecRegistry;
-  metadata: any;
+  metadata: T;
 }
 
-export type RawPlugins =
+export type RawPlugins<T = any> =
+  | false
+  | null
   | Plugin
-  | ((payLoad: PluginPayload) => Plugin)
+  | InputRule
   | PluginGroup
-  | ((payLoad: PluginPayload) => PluginGroup)
-  | (() => RawPlugins)
-  | RawPlugins[];
+  | RawPlugins<T>[]
+  | ((payLoad: PluginPayload<T>) => RawPlugins<T>);
 
-export function pluginLoader(
+export function pluginLoader<T = any>(
   specRegistry: SpecRegistry,
-  plugins: RawPlugins,
+  plugins: RawPlugins<T>,
   {
-    metadata = {},
+    metadata,
     editorProps,
     defaultPlugins = true,
     dropCursorOpts,
     transformPlugins = (p) => p,
   }: {
-    metadata?: any;
+    metadata?: T;
     editorProps?: EditorProps;
     defaultPlugins?: boolean;
-    dropCursorOpts?: any;
+    dropCursorOpts?: Parameters<typeof pmDropCursor>[0];
     transformPlugins?: (plugins: Plugin[]) => Plugin[];
   } = {},
-) {
+): Plugin[] {
   const schema = specRegistry.schema;
   const pluginPayload = {
     schema,
     specRegistry,
-    metadata,
+    metadata: metadata,
   };
 
   let [flatPlugins, pluginGroupNames] = flatten(plugins, pluginPayload);
 
   if (defaultPlugins) {
-    let defaultPluginGroups = [];
+    let defaultPluginGroups: RawPlugins[] = [];
 
     if (!pluginGroupNames.has('history')) {
       defaultPluginGroups.push(history.plugins());
@@ -108,7 +109,7 @@ export function pluginLoader(
 }
 
 function processInputRules(
-  plugins: any[],
+  plugins: Plugin[],
   { inputRules = true, undoInputRule = true } = {},
 ) {
   let newPlugins: any[] = [];
@@ -176,12 +177,15 @@ function validateNodeViews(plugins: Plugin[], specRegistry: any) {
   }
 }
 
-function flatten(rawPlugins: RawPlugins, callbackPayload: PluginPayload) {
-  const pluginGroupNames = new Set();
+function flatten<T>(
+  rawPlugins: RawPlugins,
+  callbackPayload: PluginPayload<T>,
+): [Plugin[], Set<string>] {
+  const pluginGroupNames = new Set<string>();
 
   const recurse = (plugins: RawPlugins): any => {
     if (Array.isArray(plugins)) {
-      return plugins.flatMap((p) => recurse(p)).filter(Boolean);
+      return plugins.flatMap((p: any) => recurse(p)).filter(Boolean);
     }
 
     if (plugins instanceof PluginGroup) {

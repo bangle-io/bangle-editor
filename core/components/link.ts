@@ -1,5 +1,6 @@
 import {
   Command,
+  DOMOutputSpecArray,
   EditorState,
   InputRule,
   Mark,
@@ -16,6 +17,8 @@ import {
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import { RawSpecs } from '../spec-registry';
+import { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -36,7 +39,7 @@ const name = 'link';
 
 const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory({ openOnClick = false } = {}) {
+function specFactory({ openOnClick = false } = {}): RawSpecs {
   return {
     type: 'mark',
     name,
@@ -50,12 +53,12 @@ function specFactory({ openOnClick = false } = {}) {
       parseDOM: [
         {
           tag: 'a[href]',
-          getAttrs: (dom: HTMLElement) => ({
+          getAttrs: (dom: any) => ({
             href: dom.getAttribute('href'),
           }),
         },
       ],
-      toDOM: (node: Node) => [
+      toDOM: (node): DOMOutputSpecArray => [
         'a',
         {
           ...node.attrs,
@@ -66,20 +69,10 @@ function specFactory({ openOnClick = false } = {}) {
     },
     markdown: {
       toMarkdown: {
-        open(
-          _state: MarkdownSerializerState,
-          mark: Mark,
-          parent: Node,
-          index: number,
-        ) {
+        open(_state, mark, parent, index) {
           return isPlainURL(mark, parent, index, 1) ? '<' : '[';
         },
-        close(
-          state: MarkdownSerializerState,
-          mark: Mark,
-          parent: Node,
-          index: number,
-        ) {
+        close(state, mark, parent, index) {
           return isPlainURL(mark, parent, index, -1)
             ? '>'
             : '](' +
@@ -104,8 +97,8 @@ function specFactory({ openOnClick = false } = {}) {
   };
 }
 
-function pluginsFactory() {
-  return ({ schema, specRegistry }: { schema: Schema; specRegistry: any }) => {
+function pluginsFactory(): RawPlugins {
+  return ({ schema, specRegistry }) => {
     // TODO why is this an option in schema
     const { openOnClick } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);

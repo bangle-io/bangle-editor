@@ -12,6 +12,8 @@ import {
 import { safeInsert } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import { RawSpecs } from '../spec-registry';
+import { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -21,7 +23,7 @@ const name = 'image';
 
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -41,7 +43,7 @@ function specFactory() {
       parseDOM: [
         {
           tag: 'img[src]',
-          getAttrs: (dom: HTMLElement) => ({
+          getAttrs: (dom: any) => ({
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
             alt: dom.getAttribute('alt'),
@@ -53,7 +55,7 @@ function specFactory() {
       },
     },
     markdown: {
-      toMarkdown(state: MarkdownSerializerState, node: Node) {
+      toMarkdown(state, node) {
         const text = state.esc(node.attrs.alt || '');
         const url =
           state.esc(node.attrs.src) +
@@ -87,8 +89,8 @@ function pluginsFactory({
     imageType: NodeType,
     view: EditorView,
   ) => Promise<Node[]>;
-} = {}) {
-  return ({ schema }: { schema: Schema }) => {
+} = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

@@ -1,18 +1,73 @@
-import { MarkSpec, NodeSpec, Schema } from '@bangle.dev/pm';
+import { Mark, MarkSpec, NodeSpec, Schema, Node } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
 import { doc, paragraph, text } from './components/components';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};
 
 type PMSpec = NodeSpec | MarkSpec;
 
-export type RawSpecs = PMSpec | null | false | undefined | RawSpecs[];
+export type RawSpecs =
+  | {
+      name: string;
+      type: 'node';
+      topNode?: boolean;
+      schema: NodeSpec;
+      markdown?: {
+        toMarkdown: (
+          state: MarkdownSerializerState,
+          node: Node,
+          parent: Node,
+          index: number,
+        ) => void;
+        parseMarkdown?: {
+          [key: string]: any;
+        };
+      };
+      options?: { [k: string]: any };
+    }
+  | {
+      name: string;
+      type: 'mark';
+      schema: MarkSpec;
+      markdown?: {
+        toMarkdown: {
+          open:
+            | string
+            | ((
+                _state: MarkdownSerializerState,
+                mark: Mark,
+                parent: Node,
+                index: number,
+              ) => void);
+          close:
+            | string
+            | ((
+                _state: MarkdownSerializerState,
+                mark: Mark,
+                parent: Node,
+                index: number,
+              ) => void);
+          mixable?: boolean;
+          escape?: boolean;
+          expelEnclosingWhitespace?: boolean;
+        };
+        parseMarkdown?: {
+          [k: string]: any;
+        };
+      };
+      options?: { [k: string]: any };
+    }
+  | null
+  | false
+  | undefined
+  | RawSpecs[];
 
-export class SpecRegistry {
+export class SpecRegistry<N extends string = any, M extends string = any> {
   _spec: PMSpec[];
-  _schema: Schema;
-  _options: Array<[string, any]>;
+  _schema: Schema<N, M>;
+  _options: { [key: string]: any };
 
   constructor(rawSpecs: RawSpecs = [], { defaultSpecs = true } = {}) {
     let flattenedSpecs = flatten(rawSpecs);
@@ -30,7 +85,7 @@ export class SpecRegistry {
     }
 
     if (defaultSpecs) {
-      const defaultSpecsArray = [];
+      const defaultSpecsArray: RawSpecs[] = [];
       if (!names.has('paragraph')) {
         defaultSpecsArray.unshift(paragraph.spec());
       }

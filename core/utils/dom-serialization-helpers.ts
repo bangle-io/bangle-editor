@@ -1,4 +1,4 @@
-import { DOMOutputSpec, Node } from '@bangle.dev/pm';
+import { DOMOutputSpec, DOMOutputSpecArray, Node } from '@bangle.dev/pm';
 import { objectFilter } from '@bangle.dev/utils';
 
 /**
@@ -37,8 +37,8 @@ export function domSerializationHelpers(
     );
 
   return {
-    toDOM: (node: Node) => {
-      const domSpec: any[] = [
+    toDOM: (node: Node): DOMOutputSpecArray => {
+      const domSpec: any = [
         tag,
         {
           'data-bangle-name': name,
@@ -60,7 +60,7 @@ export function domSerializationHelpers(
       {
         priority: parsingPriority,
         tag: `${tag}[data-bangle-name="${name}"]`,
-        getAttrs: (dom: Element) => {
+        getAttrs: (dom: any) => {
           const attrs = dom.getAttribute('data-bangle-attrs');
           if (!attrs) {
             return {};

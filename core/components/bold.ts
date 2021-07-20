@@ -1,13 +1,17 @@
 import {
   Command,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Schema,
   toggleMark,
+  Node,
 } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
+import { RawPlugins } from '../utils/plugin-loader';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
+import { RawSpecs } from '../spec-registry';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -23,7 +27,7 @@ const name = 'bold';
 
 const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'mark',
     name,
@@ -34,16 +38,16 @@ function specFactory() {
         },
         {
           tag: 'b',
-          getAttrs: (node: HTMLElement) =>
-            node.style.fontWeight !== 'normal' && null,
+          // making node any type as there is some problem with pm-model types
+          getAttrs: (node: any) => node.style.fontWeight !== 'normal' && null,
         },
         {
           style: 'font-weight',
-          getAttrs: (value: string) =>
+          getAttrs: (value: any) =>
             /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
         },
       ],
-      toDOM: () => ['strong', 0],
+      toDOM: (): DOMOutputSpec => ['strong', 0],
     },
     markdown: {
       toMarkdown: {
@@ -62,8 +66,8 @@ function specFactory() {
 function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
-} = {}) {
-  return ({ schema }: { schema: Schema }) => {
+} = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

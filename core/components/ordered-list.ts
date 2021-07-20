@@ -9,6 +9,8 @@ import {
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from '../core-commands';
+import { RawSpecs } from '../spec-registry';
+import { RawPlugins } from '../utils/plugin-loader';
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 
@@ -25,7 +27,7 @@ export const defaultKeys = {
 const name = 'orderedList';
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -47,18 +49,18 @@ function specFactory() {
       parseDOM: [
         {
           tag: 'ol',
-          getAttrs: (dom: HTMLElement) => ({
+          getAttrs: (dom: any) => ({
             order: dom.hasAttribute('start') ? +dom.getAttribute('start')! : 1,
           }),
         },
       ],
-      toDOM: (node: Node) =>
+      toDOM: (node) =>
         node.attrs.order === 1
           ? ['ol', 0]
           : ['ol', { start: node.attrs.order }, 0],
     },
     markdown: {
-      toMarkdown(state: MarkdownSerializerState, node: Node) {
+      toMarkdown(state, node) {
         let start = node.attrs.order || 1;
         let maxW = String(start + node.childCount - 1).length;
         let space = state.repeat(' ', maxW + 2);
@@ -82,8 +84,8 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }: { schema: Schema }) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

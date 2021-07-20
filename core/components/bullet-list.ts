@@ -1,6 +1,7 @@
 import {
   chainCommands,
   Command,
+  DOMOutputSpecArray,
   EditorState,
   keymap,
   Node,
@@ -10,6 +11,8 @@ import {
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from '../core-commands';
+import { RawSpecs } from '../spec-registry';
+import { RawPlugins } from '../utils/plugin-loader';
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 import {
@@ -34,7 +37,7 @@ const name = 'bulletList';
 
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -42,7 +45,7 @@ function specFactory() {
       content: 'listItem+',
       group: 'block',
       parseDOM: [{ tag: 'ul' }],
-      toDOM: () => ['ul', 0],
+      toDOM: (): DOMOutputSpecArray => ['ul', 0],
       attrs: {
         // a style preference attribute which be used for
         // rendering output.
@@ -73,8 +76,8 @@ function pluginsFactory({
   markdownShortcut = true,
   todoMarkdownShortcut = true,
   keybindings = defaultKeys,
-} = {}) {
-  return ({ schema }: { schema: Schema }) => {
+} = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

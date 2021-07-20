@@ -7,19 +7,23 @@ type PMViewOpts = Omit<
   'state' | 'dispatchTransaction' | 'attributes'
 >;
 
-export interface BangleEditorProps {
+export interface BangleEditorProps<PluginMetadata> {
   focusOnInit?: boolean;
-  state: BangleEditorState;
+  state: BangleEditorState<PluginMetadata>;
   pmViewOpts?: PMViewOpts;
 }
 
-export class BangleEditor {
+export class BangleEditor<PluginMetadata> {
   destroyed: boolean;
   view: EditorView;
 
   constructor(
     element: HTMLElement,
-    { focusOnInit = true, state, pmViewOpts = {} }: BangleEditorProps,
+    {
+      focusOnInit = true,
+      state,
+      pmViewOpts = {},
+    }: BangleEditorProps<PluginMetadata>,
   ) {
     this.destroyed = false;
     if (!(state instanceof BangleEditorState)) {

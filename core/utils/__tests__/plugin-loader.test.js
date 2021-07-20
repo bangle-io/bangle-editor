@@ -104,12 +104,12 @@ describe('Flattens plugins correctly', () => {
     expect(pluginFn).nthCalledWith(1, {
       specRegistry,
       schema: specRegistry.schema,
-      metadata: {},
+      metadata: undefined,
     });
     expect(groupChildPluginFn).nthCalledWith(1, {
       specRegistry,
       schema: specRegistry.schema,
-      metadata: {},
+      metadata: undefined,
     });
   });
 

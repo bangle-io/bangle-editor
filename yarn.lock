@@ -3198,7 +3198,7 @@ __metadata:
   dependencies:
     "@types/prosemirror-model": "*"
     "@types/prosemirror-state": "*"
-  checksum: af89b9e4495aa344a474a9a6efbcd3508ebfc30d25b6997834fb7b44a4308835ba450853bd3b5a6ab4114bffd37324f4e0de04e13aac85cd014ae3ffdd64fcb9
+  checksum: f2d12fa681dad934699de116951fae803c1b76945e4e8bcf3fd06d738470fde38d7aec873b048208badb524c360f08aa54d9c699a4a9210b978d25005579e590
   languageName: node
   linkType: hard
 

@@ -5202,7 +5202,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["@types/prosemirror-inputrules", [
         ["npm:1.0.4", {
-          "packageLocation": "./.yarn/cache/@types-prosemirror-inputrules-npm-1.0.4-e3a98031c4-af89b9e449.zip/node_modules/@types/prosemirror-inputrules/",
+          "packageLocation": "./.yarn/cache/@types-prosemirror-inputrules-npm-1.0.4-e3a98031c4-f2d12fa681.zip/node_modules/@types/prosemirror-inputrules/",
           "packageDependencies": [
             ["@types/prosemirror-inputrules", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.0"],

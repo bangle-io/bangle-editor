@@ -1,5 +1,6 @@
 import {
   Command,
+  DOMOutputSpecArray,
   EditorState,
   keymap,
   Node,
@@ -16,7 +17,9 @@ import {
   moveNode,
   parentHasDirectParentOfType,
 } from '../core-commands';
+import { RawSpecs } from '../spec-registry';
 import browser from '../utils/browser';
+import { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -45,7 +48,7 @@ export const defaultKeys = {
 const name = 'paragraph';
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -58,10 +61,10 @@ function specFactory() {
           tag: 'p',
         },
       ],
-      toDOM: () => ['p', 0],
+      toDOM: (): DOMOutputSpecArray => ['p', 0],
     },
     markdown: {
-      toMarkdown(state: MarkdownSerializerState, node: Node) {
+      toMarkdown(state, node) {
         state.renderInline(node);
         state.closeBlock(node);
       },
@@ -74,8 +77,8 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }: { schema: Schema }) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     // Enables certain command to only work if paragraph is direct child of the `doc` node
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
