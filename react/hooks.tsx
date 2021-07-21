@@ -1,10 +1,4 @@
-import {
-  BangleEditorState,
-  BangleEditorStateProps,
-  corePlugins,
-  RawSpecs,
-  SpecRegistry,
-} from '@bangle.dev/core';
+import { BangleEditorState, BangleEditorStateProps } from '@bangle.dev/core';
 import { EditorView, Plugin, PluginKey } from '@bangle.dev/pm';
 import { rafSchedule } from '@bangle.dev/utils';
 import { useContext, useEffect, useState } from 'react';
@@ -28,25 +22,6 @@ export function useEditorState(props: BangleEditorStateProps) {
   );
 
   return state;
-}
-
-export function useSpecRegistry(
-  initialSpecs: RawSpecs | null,
-  initialSpecRegistry: SpecRegistry | null,
-  options = {},
-) {
-  const [specRegistry] = useState(() => {
-    return initialSpecRegistry || new SpecRegistry(initialSpecs, options);
-  });
-  return specRegistry;
-}
-
-export function usePlugins(getPlugins = corePlugins) {
-  if (typeof getPlugins !== 'function') {
-    throw new Error('usePlugins error: getPlugins must be a function');
-  }
-  const [result] = useState(getPlugins);
-  return result;
 }
 
 export function usePluginState(pluginKey: PluginKey, throttle = false) {

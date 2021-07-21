@@ -1,6 +1,6 @@
 {
   "name": "bangle-scripts",
-  "version": "0.24.0",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -29,7 +29,7 @@
     "@bangle.dev/emoji": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/markdown-front-matter": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/pm": "^0.8.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/react-emoji-suggest": "workspace:*",
     "@bangle.dev/react-menu": "workspace:*",
@@ -56,7 +56,7 @@
     "globby": "^11.0.1",
     "handlebars": "^4.7.6",
     "prosemirror-collab": "^1.2.2",
-    "prosemirror-model": "^1.14.2",
+    "prosemirror-model": "^1.0.0",
     "prosemirror-transform": "^1.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

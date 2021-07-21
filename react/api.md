@@ -41,6 +41,7 @@ A React component for rendering a Bangle instance.
 
 - **className**: ?string\
   The CSS class names for the container div of the editor. (The editor div has the class `.bangle-editor` ).
+
 - **style** ?Object\
   The style object for the container div of the editor.
 
@@ -57,7 +58,7 @@ A React component for rendering a Bangle instance.
   React components which need the editor context but are not directly editable i.e. do not lie inside the [contentEditable](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content) of the editor. A good example of what can be `children` is {{reactMenu.link.FloatingMenu}}.
 
 - **state**: {{core.link.BangleEditorState}} \
-  Pass in the output of [useEditorState](#useeditorstate-reacthook) hook.
+  The state of your editor. It is recommended that you use [useEditorState](#useeditorstate-reacthook) hook to create it.
 
 - **pmViewOpts**: ?[Prosemirror.DirectEditorProps](https://prosemirror.net/docs/ref/#view.DirectEditorProps)
 
@@ -75,7 +76,7 @@ A hook for initialing the editor state.
 
 > fn(pluginKey`<T>`): T
 
-A hook for hooking to a Prosemirror plugin's state. This hook works **only** with children of `<BangleEditor />`. This **will re-render** the React component every-time the plugin's state changes.
+A hook for hooking to a Prosemirror plugin's state. Thishook works **only** with children of `<BangleEditor />`. This **will re-render** the React component every-time the plugin's state changes.
 
 ## useEditorViewContext: ReactHook
 

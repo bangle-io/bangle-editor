@@ -1,5 +1,6 @@
 import {
   Command,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Node,
@@ -9,7 +10,9 @@ import {
 } from '@bangle.dev/pm';
 import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { RawPlugins } from '../utils/plugin-loader';
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
+import type { RawSpecs } from '../spec-registry';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -30,7 +33,7 @@ export const defaultKeys = {
 const name = 'blockquote';
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
@@ -40,7 +43,9 @@ function specFactory() {
       defining: true,
       draggable: false,
       parseDOM: [{ tag: 'blockquote' }],
-      toDOM: () => ['blockquote', 0],
+      toDOM: (): DOMOutputSpec => {
+        return ['blockquote', 0];
+      },
     },
     markdown: {
       toMarkdown: (state: MarkdownSerializerState, node: Node) => {
@@ -58,8 +63,8 @@ function specFactory() {
 function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
-} = {}) {
-  return ({ schema }: { schema: Schema }) => {
+} = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
     return [
       markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),

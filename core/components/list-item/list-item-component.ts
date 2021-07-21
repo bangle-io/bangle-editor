@@ -15,9 +15,11 @@ import {
   moveNode,
   parentHasDirectParentOfType,
 } from '../../core-commands';
+import type { RawSpecs } from '../../spec-registry';
 import { MoveDirection } from '../../types';
 import browser from '../../utils/browser';
 import { domSerializationHelpers } from '../../utils/dom-serialization-helpers';
+import type { RawPlugins } from '../../utils/plugin-loader';
 import {
   backspaceKeyCommand,
   enterKeyCommand,
@@ -63,7 +65,7 @@ const isValidList = (state: EditorState) => {
   ]);
 };
 
-function specFactory() {
+function specFactory(): RawSpecs {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'li',
     // @ts-ignore DOMOutputSpec in @types is buggy
@@ -119,7 +121,10 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys, nodeView = true } = {}) {
+function pluginsFactory({
+  keybindings = defaultKeys,
+  nodeView = true,
+} = {}): RawPlugins {
   return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 

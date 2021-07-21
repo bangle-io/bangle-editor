@@ -1,13 +1,16 @@
 import {
   Command,
+  DOMOutputSpecArray,
   EditorState,
   keymap,
   Schema,
   toggleMark,
 } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
+import type { RawSpecs } from '../spec-registry';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -23,7 +26,7 @@ const name = 'strike';
 
 const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'mark',
     name,
@@ -40,10 +43,10 @@ function specFactory() {
         },
         {
           style: 'text-decoration',
-          getAttrs: (value: string) => value === 'line-through',
+          getAttrs: (value: any) => value === 'line-through' && null,
         },
       ],
-      toDOM: () => ['s', 0],
+      toDOM: (): DOMOutputSpecArray => ['s', 0],
     },
     markdown: {
       toMarkdown: {
@@ -59,8 +62,8 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
-  return ({ schema }: { schema: Schema }) => {
+function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

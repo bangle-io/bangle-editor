@@ -1,3 +1,11 @@
+const { walkWorkspace } = require('./workspace-tools');
+main();
+async function main() {
+  await checkDependencyVersion();
+  await checkPeerDeps();
+  await checkMultipleInstances();
+}
+
 function checkMultipleInstances() {
   const output = require('child_process')
     .execSync(`yarn info --virtuals --all --json `)
@@ -25,4 +33,66 @@ function checkMultipleInstances() {
   }
 }
 
-checkMultipleInstances();
+async function checkPeerDeps() {
+  const workspaces = (await walkWorkspace({})).filter((r) => !r.isWorktree);
+
+  for (const workspace of workspaces) {
+    for (const peerDep of workspace.peerDeps) {
+      if (workspace.deps.includes(peerDep)) {
+        throw new Error(
+          `In pkg "${workspace.name}" peerDependency "${peerDep}" cannot also be a dependency`,
+        );
+      }
+      if (!workspace.devDeps.includes(peerDep)) {
+        throw new Error(
+          `In pkg "${workspace.name}" peerDependency "${peerDep}" must also be a devDependency`,
+        );
+      }
+      if (peerDep === '@bangle.dev/utils') {
+        throw new Error(
+          `In pkg "${workspace.name}" @bangle.dev/utils cannot be a peerDependency`,
+        );
+      }
+    }
+  }
+}
+
+async function checkDependencyVersion() {
+  const workspaces = (await walkWorkspace({})).filter((r) => !r.isWorktree);
+  const depMap = new Map();
+  for (const workspace of workspaces) {
+    for (const dep of workspace.devDeps) {
+      const currentVersion = workspace.getDepVersion(dep, 'devDependencies');
+      if (depMap.has(dep)) {
+        if (depMap.get(dep) !== currentVersion) {
+          throw new Error(
+            `In pkg "${
+              workspace.name
+            }" dependency "${dep}" has version ""${currentVersion}" whereas other packages have version "${depMap.get(
+              dep,
+            )}"`,
+          );
+        }
+      } else {
+        depMap.set(dep, currentVersion);
+      }
+    }
+
+    for (const dep of workspace.deps) {
+      const currentVersion = workspace.getDepVersion(dep, 'dependencies');
+      if (depMap.has(dep)) {
+        if (depMap.get(dep) !== currentVersion) {
+          throw new Error(
+            `In pkg "${
+              workspace.name
+            }" dependency "${dep}" has version ""${currentVersion}" whereas other packages have version "${depMap.get(
+              dep,
+            )}"`,
+          );
+        }
+      } else {
+        depMap.set(dep, currentVersion);
+      }
+    }
+  }
+}

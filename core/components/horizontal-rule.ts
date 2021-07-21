@@ -1,6 +1,8 @@
-import { InputRule, Node, Schema } from '@bangle.dev/pm';
+import { DOMOutputSpecArray, InputRule, Node, Schema } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { RawSpecs } from '../spec-registry';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -9,17 +11,17 @@ const name = 'horizontalRule';
 
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'node',
     name,
     schema: {
       group: 'block',
       parseDOM: [{ tag: 'hr' }],
-      toDOM: () => ['hr'],
+      toDOM: (): DOMOutputSpecArray => ['hr'],
     },
     markdown: {
-      toMarkdown(state: MarkdownSerializerState, node: Node) {
+      toMarkdown(state, node) {
         state.write(node.attrs.markup || '---');
         state.closeBlock(node);
       },
@@ -28,8 +30,8 @@ function specFactory() {
   };
 }
 
-function pluginsFactory({ markdownShortcut = true } = {}) {
-  return ({ schema }: { schema: Schema }) => {
+function pluginsFactory({ markdownShortcut = true } = {}): RawPlugins {
+  return ({ schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/text-formatting",
-  "version": "0.24.0",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -26,25 +26,14 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
-    "@bangle.dev/pm": "*",
-    "@bangle.dev/utils": "*"
-  },
-  "peerDependenciesMeta": {
-    "@bangle.dev/pm": {
-      "optional": true
-    },
-    "@bangle.dev/utils": {
-      "optional": true
-    }
+    "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "@bangle.dev/pm": "0.6.0",
     "@bangle.dev/utils": "workspace:*"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
-    "@bangle.dev/utils": "workspace:*"
+    "@bangle.dev/pm": "^0.8.0"
   },
   "publishConfig": {
     "access": "public",

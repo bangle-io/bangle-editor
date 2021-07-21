@@ -1,6 +1,6 @@
 {
   "name": "bangle.dev",
-  "version": "0.24.0",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -40,6 +40,7 @@
     "integration-tests": "yarn e2e:test",
     "lint": "yarn node _bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "release-packages": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish",
+    "release-packages-alpha": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish --tag alpha",
     "tsc-check": "yarn tsc -b",
     "tsc-clean": "yarn tsc -b --clean",
     "tsc-watch": "yarn tsc-clean && yarn tsc -b -w",
@@ -70,15 +71,6 @@
       "pre-commit": "lint-staged",
       "pre-push": "./_bangle-scripts/pre-push.sh $HUSKY_GIT_PARAMS"
     }
-  },
-  "resolutions": {
-    "prosemirror-commands": "^1.1.10",
-    "prosemirror-keymap": "^1.1.4",
-    "prosemirror-model": "^1.14.2",
-    "prosemirror-state": "^1.3.4",
-    "prosemirror-view": "^1.18.7",
-    "prosemirror-transform": "1.3.2",
-    "prosemirror-inputrules": "^1.1.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",

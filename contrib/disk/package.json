@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/disk",
-  "version": "0.24.0",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -34,13 +34,10 @@
   "peerDependencies": {
     "@bangle.dev/pm": "*"
   },
-  "peerDependenciesMeta": {
-    "@bangle.dev/pm": {
-      "optional": true
-    }
-  },
   "dependencies": {
-    "@bangle.dev/pm": "0.6.0",
     "debounce-fn": "^5.0.0"
+  },
+  "devDependencies": {
+    "@bangle.dev/pm": "^0.8.0"
   }
 }

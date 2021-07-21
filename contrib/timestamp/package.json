@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/timestamp",
-  "version": "0.24.0",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -28,23 +28,17 @@
     "@bangle.dev/core": "*",
     "@bangle.dev/pm": "*"
   },
-  "peerDependenciesMeta": {
-    "@bangle.dev/pm": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "@bangle.dev/pm": "0.6.0"
-  },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
-    "@bangle.dev/utils": "workspace:*"
+    "@bangle.dev/pm": "^0.8.0"
   },
   "publishConfig": {
     "access": "public",
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
+  },
+  "dependencies": {
+    "@bangle.dev/utils": "workspace:*"
   }
 }

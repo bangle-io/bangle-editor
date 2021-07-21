@@ -1,6 +1,7 @@
 import * as pmHistory from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
 import { PluginGroup } from '../plugin';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const plugins = pluginsFactory;
 export const commands = {
@@ -15,7 +16,10 @@ export const defaultKeys = {
 
 const name = 'history';
 
-function pluginsFactory({ historyOpts = {}, keybindings = defaultKeys } = {}) {
+function pluginsFactory({
+  historyOpts = {},
+  keybindings = defaultKeys,
+} = {}): RawPlugins {
   return () => {
     return new PluginGroup(name, [
       pmHistory.history(historyOpts),

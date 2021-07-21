@@ -1,5 +1,15 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- Breaking: if `pluginMetadata` param is not provided, it will default to `undefined`.
+
+**@bangle.dev/react**
+
+- Breaking: The undocumented hook `useSpecRegistry` & `usePlugins` are now removed.
+
 ## 0.24.0
 
 - Breaking: package `@bangle.dev/pm-utils` and `@bangle.dev/js-utils` have been merged into a single package `@bangle.dev/utils`.

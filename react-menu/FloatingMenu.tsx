@@ -48,7 +48,7 @@ export function FloatingMenu({
   },
 }: {
   menuKey: PluginKey;
-  renderMenuType: (opts: {
+  renderMenuType?: (opts: {
     menuKey: PluginKey;
     type: string;
   }) => JSX.Element | null;

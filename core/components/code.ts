@@ -10,8 +10,10 @@ import {
   toggleMark,
 } from '@bangle.dev/pm';
 import { filter, isMarkActiveInSelection } from '@bangle.dev/utils';
+import type { RawSpecs } from '../spec-registry';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -28,7 +30,7 @@ const name = 'code';
 const getTypeFromSchema = (schema: Schema) => schema.marks[name];
 const getTypeFromState = (state: EditorState) => state.schema.marks[name];
 
-function specFactory() {
+function specFactory(): RawSpecs {
   return {
     type: 'mark',
     name,
@@ -39,10 +41,10 @@ function specFactory() {
     },
     markdown: {
       toMarkdown: {
-        open(_state: any, _mark: any, parent: Node, index: number) {
+        open(_state, _mark, parent, index) {
           return backticksFor(parent.child(index), -1);
         },
-        close(_state: any, _mark: any, parent: Node, index: number) {
+        close(_state, _mark, parent, index) {
           return backticksFor(parent.child(index - 1), 1);
         },
         escape: false,
@@ -58,7 +60,7 @@ function pluginsFactory({
   markdownShortcut = true,
   escapeAtEdge = true,
   keybindings = defaultKeys,
-} = {}) {
+} = {}): RawPlugins {
   return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 

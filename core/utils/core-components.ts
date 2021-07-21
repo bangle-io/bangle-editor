@@ -19,8 +19,9 @@ import {
   text,
   underline,
 } from '../components/components';
+import type { RawSpecs } from '../spec-registry';
 
-export function coreSpec() {
+export function coreSpec(): RawSpecs[] {
   return [...coreMarkSpec(), ...coreNodeSpec()];
 }
 

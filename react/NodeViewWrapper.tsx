@@ -60,8 +60,8 @@ export class NodeViewWrapper extends React.PureComponent<PropsType, StateType> {
     // of prop forwarding.
     // What about updating the wrong nodeView ?
     // It is okay because a nodeView and this ReactComponent will always
-    // have a 1:1 mapping. This guaranteed because you use `nodeView` instance
-    // to generate a react key. See the usage of this component in ./Editor.js
+    // have a 1:1 mapping. This is guaranteed because you use `nodeView` instance
+    // to generate a react key. See the usage of this component in ./ReactEditor.js
     props.nodeViewUpdateStore.set(props.nodeView, this.update);
     this.state = { nodeViewProps: this.props.nodeView.getNodeViewProps() };
   }

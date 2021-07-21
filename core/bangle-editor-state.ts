@@ -6,26 +6,27 @@ import {
   Node,
   ParseOptions,
   Schema,
+  Selection,
 } from '@bangle.dev/pm';
 import { RawSpecs, SpecRegistry } from './spec-registry';
 import { pluginLoader, RawPlugins } from './utils/plugin-loader';
 
 type InitialContent = string | Node | object;
 
-export interface BangleEditorStateProps {
+export interface BangleEditorStateProps<PluginMetadata = any> {
   specRegistry?: SpecRegistry;
   specs?: RawSpecs;
   plugins?: RawPlugins;
   initialValue?: InitialContent;
   editorProps?: EditorProps;
   pmStateOpts?: {
-    storedMarks?: Mark[] | null;
-    plugins?: Plugin[] | null;
+    selection?: Selection | null | undefined;
+    storedMarks?: Mark[] | null | undefined;
   };
-  pluginMetadata?: any;
+  pluginMetadata?: PluginMetadata;
 }
 
-export class BangleEditorState {
+export class BangleEditorState<PluginMetadata> {
   specRegistry: SpecRegistry;
   pmState: EditorState;
 
@@ -36,8 +37,8 @@ export class BangleEditorState {
     initialValue,
     editorProps,
     pmStateOpts,
-    pluginMetadata = {},
-  }: BangleEditorStateProps = {}) {
+    pluginMetadata,
+  }: BangleEditorStateProps<PluginMetadata> = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
     }
@@ -54,13 +55,15 @@ export class BangleEditorState {
     this.specRegistry = specRegistry;
     const schema = this.specRegistry.schema;
 
+    const pmPlugins = pluginLoader(specRegistry, plugins, {
+      editorProps,
+      metadata: pluginMetadata,
+    });
+
     this.pmState = EditorState.create({
       schema,
       doc: createDocument({ schema, content: initialValue }),
-      plugins: pluginLoader(specRegistry, plugins, {
-        editorProps,
-        metadata: pluginMetadata,
-      }),
+      plugins: pmPlugins,
       ...pmStateOpts,
     });
   }

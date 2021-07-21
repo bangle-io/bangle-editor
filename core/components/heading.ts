@@ -25,7 +25,9 @@ import {
   jumpToStartOfNode,
   moveNode,
 } from '../core-commands';
+import type { RawSpecs } from '../spec-registry';
 import browser from '../utils/browser';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -33,6 +35,10 @@ export const commands = {
   toggleHeading,
   queryIsHeadingActive,
 };
+
+interface OptionsType {
+  levels: Array<number>;
+}
 export const defaultKeys: { [index: string]: string } = {
   toH1: 'Shift-Ctrl-1',
   toH2: 'Shift-Ctrl-2',
@@ -63,10 +69,14 @@ const parseLevel = (levelStr: string | number) => {
   const level = parseInt(levelStr as string, 10);
   return Number.isNaN(level) ? undefined : level;
 };
-function specFactory({ levels = defaultLevels } = {}) {
+function specFactory({ levels = defaultLevels } = {}): RawSpecs {
   if (levels.some((r) => typeof r !== 'number')) {
     throw new Error('levels must be number');
   }
+
+  const options: OptionsType = {
+    levels,
+  };
 
   return {
     type: 'node',
@@ -87,7 +97,7 @@ function specFactory({ levels = defaultLevels } = {}) {
       parseDOM: levels.map((level) => {
         return {
           tag: `h${level}`,
-          getAttrs: (dom: HTMLElement) => {
+          getAttrs: (dom: any) => {
             const result = { level: parseLevel(level) };
             const attrs = dom.getAttribute('data-bangle-attrs');
 
@@ -129,18 +139,16 @@ function specFactory({ levels = defaultLevels } = {}) {
         },
       },
     },
-    options: {
-      levels,
-    },
+    options,
   };
 }
 
 function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
-} = {}) {
-  return ({ schema, specRegistry }: { schema: Schema; specRegistry: any }) => {
-    const { levels } = specRegistry.options[name];
+} = {}): RawPlugins {
+  return ({ schema, specRegistry }) => {
+    const { levels }: OptionsType = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
 
     const levelBindings = Object.fromEntries(

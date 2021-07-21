@@ -20,16 +20,17 @@ export const EditorViewContext = React.createContext<EditorView>(
   null as unknown as EditorView,
 );
 
-interface BangleEditorProps extends CoreBangleEditorProps {
+interface BangleEditorProps<PluginMetadata = any>
+  extends CoreBangleEditorProps<PluginMetadata> {
   id?: string;
   children?: React.ReactNode;
   renderNodeViews?: RenderNodeViewsFunction;
   className?: string;
   style?: React.CSSProperties;
-  onReady?: (editor: CoreBangleEditor) => void;
+  onReady?: (editor: CoreBangleEditor<PluginMetadata>) => void;
 }
 
-export function BangleEditor({
+export function BangleEditor<PluginMetadata = any>({
   id,
   state,
   children,
@@ -39,7 +40,7 @@ export function BangleEditor({
   className,
   style,
   onReady = () => {},
-}: BangleEditorProps) {
+}: BangleEditorProps<PluginMetadata>) {
   const renderRef = useRef<HTMLDivElement>(null);
   const onReadyRef = useRef(onReady);
   const editorViewPayloadRef = useRef({
@@ -51,7 +52,7 @@ export function BangleEditor({
   const nodeViews = useNodeViews(renderRef);
 
   useEffect(() => {
-    const editor = new CoreBangleEditor(
+    const editor = new CoreBangleEditor<CoreBangleEditor>(
       renderRef.current!,
       editorViewPayloadRef.current,
     );
