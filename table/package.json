@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/table",
-  "version": "0.25.0-alpha.1",
+  "version": "0.25.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -28,14 +28,9 @@
     "@bangle.dev/core": "*",
     "@bangle.dev/pm": "*"
   },
-  "peerDependenciesMeta": {
-    "@bangle.dev/pm": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/utils": "workspace:*",
     "@types/markdown-it": "^12.0.0",
     "@types/prosemirror-markdown": "^1.5.2",

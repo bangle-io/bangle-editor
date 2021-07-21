@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-server",
-  "version": "0.25.0-alpha.1",
+  "version": "0.25.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
@@ -41,20 +41,10 @@
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
-    "@bangle.dev/disk": "*",
     "@bangle.dev/pm": "*"
-  },
-  "peerDependenciesMeta": {
-    "@bangle.dev/disk": {
-      "optional": true
-    },
-    "@bangle.dev/pm": {
-      "optional": true
-    }
   },
   "dependencies": {
     "@bangle.dev/disk": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
     "prosemirror-collab": "^1.2.2"
   }
 }

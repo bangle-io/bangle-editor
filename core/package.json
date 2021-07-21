@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/core",
-  "version": "0.25.0-alpha.1",
+  "version": "0.25.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -28,22 +28,11 @@
     "prepack": "yarn compile-ts"
   },
   "peerDependencies": {
-    "@bangle.dev/pm": "*",
-    "@bangle.dev/utils": "*"
-  },
-  "peerDependenciesMeta": {
-    "@bangle.dev/pm": {
-      "optional": true
-    },
-    "@bangle.dev/utils": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "@bangle.dev/pm": "0.6.0",
-    "@bangle.dev/utils": "workspace:*"
+    "@bangle.dev/pm": "*"
   },
   "devDependencies": {
+    "@bangle.dev/pm": "^0.6.0",
+    "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/markdown-it": "^12.0.3",
     "@types/prosemirror-markdown": "^1.5.2",

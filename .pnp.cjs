@@ -3270,7 +3270,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__collab-server", null],
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__pm", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.12.2"],
             ["@types/prosemirror-collab", "npm:1.1.2"],
@@ -3282,11 +3281,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@bangle.dev/collab-server",
             "@bangle.dev/core",
             "@bangle.dev/pm",
-            "@bangle.dev/utils",
             "@types/bangle.dev__collab-server",
             "@types/bangle.dev__core",
-            "@types/bangle.dev__pm",
-            "@types/bangle.dev__utils"
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -3319,7 +3316,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:0.6.0"],
             ["@bangle.dev/utils", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/utils"],
             ["@types/bangle.dev__core", null],
-            ["@types/bangle.dev__disk", null],
             ["@types/bangle.dev__pm", null],
             ["@types/jest", "npm:26.0.23"],
             ["@types/node", "npm:15.12.2"],
@@ -3328,10 +3324,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@bangle.dev/core",
-            "@bangle.dev/disk",
             "@bangle.dev/pm",
             "@types/bangle.dev__core",
-            "@types/bangle.dev__disk",
             "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
@@ -3360,7 +3354,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:0.6.0"],
             ["@bangle.dev/utils", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/utils"],
             ["@types/bangle.dev__pm", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/jest", "npm:26.0.23"],
             ["@types/markdown-it", "npm:12.0.3"],
             ["@types/prosemirror-markdown", "npm:1.5.2"],
@@ -3370,9 +3363,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@bangle.dev/pm",
-            "@bangle.dev/utils",
-            "@types/bangle.dev__pm",
-            "@types/bangle.dev__utils"
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -3411,7 +3402,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./contrib/disk/",
           "packageDependencies": [
             ["@bangle.dev/disk", "workspace:contrib/disk"],
-            ["@bangle.dev/pm", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:0.6.0"],
+            ["@bangle.dev/pm", "npm:0.7.0"],
             ["debounce-fn", "npm:5.0.0"]
           ],
           "linkType": "SOFT",
@@ -3469,7 +3460,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@bangle.dev/utils", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/utils"],
             ["@types/bangle.dev__core", null],
-            ["@types/bangle.dev__utils", null],
+            ["@types/bangle.dev__pm", null],
             ["@types/markdown-it", "npm:12.0.3"],
             ["@types/prosemirror-markdown", "npm:1.5.2"],
             ["markdown-it", "npm:10.0.0"],
@@ -3477,9 +3468,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@bangle.dev/core",
-            "@bangle.dev/utils",
+            "@bangle.dev/pm",
             "@types/bangle.dev__core",
-            "@types/bangle.dev__utils"
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -3509,11 +3500,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:0.6.0"],
             ["@bangle.dev/table", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:table"],
             ["@bangle.dev/utils", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/utils"],
-            ["@types/bangle.dev__core", null]
+            ["@types/bangle.dev__core", null],
+            ["@types/bangle.dev__pm", null]
           ],
           "packagePeers": [
             "@bangle.dev/core",
-            "@types/bangle.dev__core"
+            "@bangle.dev/pm",
+            "@types/bangle.dev__core",
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -3537,6 +3531,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "npm:0.6.0"]
           ],
           "linkType": "SOFT",
+        }],
+        ["npm:0.7.0", {
+          "packageLocation": "./.yarn/cache/@bangle.dev-pm-npm-0.7.0-7025691384-be0cedec2c.zip/node_modules/@bangle.dev/pm/",
+          "packageDependencies": [
+            ["@bangle.dev/pm", "npm:0.7.0"],
+            ["@types/prosemirror-commands", "npm:1.0.4"],
+            ["@types/prosemirror-dropcursor", "npm:1.0.2"],
+            ["@types/prosemirror-gapcursor", "npm:1.0.4"],
+            ["@types/prosemirror-history", "npm:1.0.3"],
+            ["@types/prosemirror-inputrules", "npm:1.0.4"],
+            ["@types/prosemirror-keymap", "npm:1.0.4"],
+            ["@types/prosemirror-model", "npm:1.13.1"],
+            ["@types/prosemirror-schema-list", "npm:1.0.3"],
+            ["@types/prosemirror-state", "npm:1.2.7"],
+            ["@types/prosemirror-transform", "npm:1.1.4"],
+            ["@types/prosemirror-view", "npm:1.17.2"],
+            ["prosemirror-commands", "npm:1.1.10"],
+            ["prosemirror-dropcursor", "npm:1.3.5"],
+            ["prosemirror-gapcursor", "npm:1.1.5"],
+            ["prosemirror-history", "npm:1.1.3"],
+            ["prosemirror-inputrules", "npm:1.1.3"],
+            ["prosemirror-keymap", "npm:1.1.4"],
+            ["prosemirror-model", "npm:1.14.2"],
+            ["prosemirror-schema-list", "npm:1.1.5"],
+            ["prosemirror-state", "npm:1.3.4"],
+            ["prosemirror-tables", "npm:1.1.1"],
+            ["prosemirror-transform", "npm:1.3.2"],
+            ["prosemirror-view", "npm:1.18.7"]
+          ],
+          "linkType": "HARD",
         }],
         ["virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:0.6.0", {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-pm-virtual-b94bbc5c58/0/cache/@bangle.dev-pm-npm-0.6.0-8216bc401d-98f6e31ec3.zip/node_modules/@bangle.dev/pm/",
@@ -3591,7 +3615,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/react-hooks", "virtual:d9f20580d21207b45787b1560be43166614960f0d7bca3c11fde95ef0d797600831b613b1104225f70f4985cc349a688c02676823428c526d5dd1982a2fb3f54#npm:7.0.0"],
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__pm", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/prop-types", "npm:15.7.3"],
             ["@types/react", "npm:17.0.14"],
             ["@types/react-dom", "npm:17.0.9"],
@@ -3605,10 +3628,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@bangle.dev/core",
             "@bangle.dev/pm",
-            "@bangle.dev/utils",
             "@types/bangle.dev__core",
             "@types/bangle.dev__pm",
-            "@types/bangle.dev__utils",
             "@types/react-dom",
             "@types/react",
             "react-dom",
@@ -3657,7 +3678,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__pm", null],
             ["@types/bangle.dev__react", null],
             ["@types/bangle.dev__tooltip", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/react", "npm:17.0.14"],
             ["@types/react-dom", "npm:17.0.9"],
             ["react", "npm:17.0.2"],
@@ -3669,13 +3689,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@bangle.dev/pm",
             "@bangle.dev/react",
             "@bangle.dev/tooltip",
-            "@bangle.dev/utils",
             "@types/bangle.dev__core",
             "@types/bangle.dev__emoji",
             "@types/bangle.dev__pm",
             "@types/bangle.dev__react",
             "@types/bangle.dev__tooltip",
-            "@types/bangle.dev__utils",
             "@types/react-dom",
             "@types/react",
             "react-dom",
@@ -3717,7 +3735,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__pm", null],
             ["@types/bangle.dev__react", null],
             ["@types/bangle.dev__tooltip", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/prop-types", "npm:15.7.3"],
             ["@types/react", "npm:17.0.14"],
             ["@types/react-dom", "npm:17.0.9"],
@@ -3730,12 +3747,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@bangle.dev/pm",
             "@bangle.dev/react",
             "@bangle.dev/tooltip",
-            "@bangle.dev/utils",
             "@types/bangle.dev__core",
             "@types/bangle.dev__pm",
             "@types/bangle.dev__react",
             "@types/bangle.dev__tooltip",
-            "@types/bangle.dev__utils",
             "@types/react-dom",
             "@types/react",
             "react-dom",
@@ -3839,7 +3854,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__markdown", null],
             ["@types/bangle.dev__pm", null],
             ["@types/bangle.dev__react", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/react", "npm:17.0.14"],
             ["@types/react-dom", "npm:17.0.9"],
             ["react", "npm:17.0.2"],
@@ -3850,12 +3864,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@bangle.dev/markdown",
             "@bangle.dev/pm",
             "@bangle.dev/react",
-            "@bangle.dev/utils",
             "@types/bangle.dev__core",
             "@types/bangle.dev__markdown",
             "@types/bangle.dev__pm",
             "@types/bangle.dev__react",
-            "@types/bangle.dev__utils",
             "@types/react-dom",
             "@types/react",
             "react-dom",
@@ -3892,16 +3904,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/utils"],
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__pm", null],
-            ["@types/bangle.dev__utils", null],
             ["@types/jest", "npm:26.0.23"]
           ],
           "packagePeers": [
             "@bangle.dev/core",
             "@bangle.dev/pm",
-            "@bangle.dev/utils",
             "@types/bangle.dev__core",
-            "@types/bangle.dev__pm",
-            "@types/bangle.dev__utils"
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -3964,16 +3973,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:0.6.0"],
             ["@bangle.dev/utils", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#workspace:contrib/utils"],
             ["@types/bangle.dev__core", null],
-            ["@types/bangle.dev__pm", null],
-            ["@types/bangle.dev__utils", null]
+            ["@types/bangle.dev__pm", null]
           ],
           "packagePeers": [
             "@bangle.dev/core",
             "@bangle.dev/pm",
-            "@bangle.dev/utils",
             "@types/bangle.dev__core",
-            "@types/bangle.dev__pm",
-            "@types/bangle.dev__utils"
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -4098,9 +4104,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@bangle.dev/pm",
-            "@types/bangle.dev__pm",
-            "prosemirror-model",
-            "prosemirror-state"
+            "@types/bangle.dev__pm"
           ],
           "linkType": "SOFT",
         }],
@@ -5202,7 +5206,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["@types/prosemirror-inputrules", [
         ["npm:1.0.4", {
-          "packageLocation": "./.yarn/cache/@types-prosemirror-inputrules-npm-1.0.4-e3a98031c4-f2d12fa681.zip/node_modules/@types/prosemirror-inputrules/",
+          "packageLocation": "./.yarn/cache/@types-prosemirror-inputrules-npm-1.0.4-e3a98031c4-af89b9e449.zip/node_modules/@types/prosemirror-inputrules/",
           "packageDependencies": [
             ["@types/prosemirror-inputrules", "npm:1.0.4"],
             ["@types/prosemirror-model", "npm:1.13.0"],

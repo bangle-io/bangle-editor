@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-emoji-suggest",
-  "version": "0.25.0-alpha.1",
+  "version": "0.25.0-alpha.2",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -25,7 +25,7 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
-    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
@@ -34,22 +34,13 @@
     "@bangle.dev/pm": "*",
     "@bangle.dev/react": "*",
     "@bangle.dev/tooltip": "*",
-    "@bangle.dev/utils": "*",
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@bangle.dev/pm": {
-      "optional": true
-    },
-    "@bangle.dev/utils": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",
-    "@bangle.dev/pm": "0.6.0",
+    "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
