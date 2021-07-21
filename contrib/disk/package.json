@@ -38,6 +38,6 @@
     "debounce-fn": "^5.0.0"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "^0.7.0"
+    "@bangle.dev/pm": "^0.8.0"
   }
 }

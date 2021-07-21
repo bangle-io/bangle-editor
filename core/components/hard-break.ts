@@ -6,8 +6,8 @@ import {
   Node,
   Schema,
 } from '@bangle.dev/pm';
-import { RawSpecs } from '../spec-registry';
-import { RawPlugins } from '../utils/plugin-loader';
+import type { RawSpecs } from '../spec-registry';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

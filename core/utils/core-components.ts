@@ -19,7 +19,7 @@ import {
   text,
   underline,
 } from '../components/components';
-import { RawSpecs } from '../spec-registry';
+import type { RawSpecs } from '../spec-registry';
 
 export function coreSpec(): RawSpecs[] {
   return [...coreMarkSpec(), ...coreNodeSpec()];

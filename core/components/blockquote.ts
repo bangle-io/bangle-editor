@@ -12,7 +12,7 @@ import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import type { RawPlugins } from '../utils/plugin-loader';
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from '../core-commands';
-import { RawSpecs } from '../spec-registry';
+import type { RawSpecs } from '../spec-registry';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

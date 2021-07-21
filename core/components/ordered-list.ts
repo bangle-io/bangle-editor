@@ -9,8 +9,8 @@ import {
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from '../core-commands';
-import { RawSpecs } from '../spec-registry';
-import { RawPlugins } from '../utils/plugin-loader';
+import type { RawSpecs } from '../spec-registry';
+import type { RawPlugins } from '../utils/plugin-loader';
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 

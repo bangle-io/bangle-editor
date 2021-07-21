@@ -17,8 +17,8 @@ import {
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import { RawSpecs } from '../spec-registry';
-import { RawPlugins } from '../utils/plugin-loader';
+import type { RawSpecs } from '../spec-registry';
+import type { RawPlugins } from '../utils/plugin-loader';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

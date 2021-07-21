@@ -8,10 +8,10 @@ import {
   Node,
 } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
-import { RawPlugins } from '../utils/plugin-loader';
+import type { RawPlugins } from '../utils/plugin-loader';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
-import { RawSpecs } from '../spec-registry';
+import type { RawSpecs } from '../spec-registry';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

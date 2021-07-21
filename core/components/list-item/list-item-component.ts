@@ -15,11 +15,11 @@ import {
   moveNode,
   parentHasDirectParentOfType,
 } from '../../core-commands';
-import { RawSpecs } from '../../spec-registry';
+import type { RawSpecs } from '../../spec-registry';
 import { MoveDirection } from '../../types';
 import browser from '../../utils/browser';
 import { domSerializationHelpers } from '../../utils/dom-serialization-helpers';
-import { RawPlugins } from '../../utils/plugin-loader';
+import type { RawPlugins } from '../../utils/plugin-loader';
 import {
   backspaceKeyCommand,
   enterKeyCommand,

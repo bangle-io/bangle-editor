@@ -144,6 +144,10 @@ async function walkWorkspace({ skipRootWorkspace = true } = {}) {
           peerDeps: Object.entries(packageJSON.peerDependencies || {}).map(
             (r) => r[0],
           ),
+          getDepVersion(depName, depType) {
+            return (packageJSON[depType] || {})[depName];
+          },
+
           modifyPackageJSON: async (cb) => {
             const newJSON = await cb(packageJSON, obj);
             await fs.writeFile(

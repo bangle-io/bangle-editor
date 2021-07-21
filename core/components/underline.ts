@@ -7,7 +7,7 @@ import {
   toggleMark,
 } from '@bangle.dev/pm';
 import { isMarkActiveInSelection } from '@bangle.dev/utils';
-import { RawSpecs } from '../spec-registry';
+import type { RawSpecs } from '../spec-registry';
 import { markInputRule } from '../utils/mark-input-rule';
 import { markPasteRule } from '../utils/mark-paste-rule';
 
