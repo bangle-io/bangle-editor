@@ -20,5 +20,14 @@
     {
       "path": "../collab-server/tsconfig.json"
     },
+    {
+      "path": "../contrib/disk/tsconfig.json"
+    },
+    {
+      "path": "../contrib/utils/tsconfig.json"
+    },
+    {
+      "path": "../core/tsconfig.json"
+    }
   ]
 }

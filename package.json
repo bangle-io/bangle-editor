@@ -41,6 +41,7 @@
     "lint": "yarn node _bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "release-packages": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish",
     "release-packages-alpha": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish --tag alpha",
+    "update-ts-references": "yarn node _bangle-scripts/ts-references.js",
     "tsc-check": "yarn tsc -b",
     "tsc-clean": "yarn tsc -b --clean",
     "tsc-watch": "yarn tsc-clean && yarn tsc -b -w",

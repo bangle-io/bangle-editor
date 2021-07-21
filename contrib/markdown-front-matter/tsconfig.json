@@ -16,5 +16,19 @@
     "__tests__",
     "./**/__tests__/",
     "dist"
+  ],
+  "references": [
+    {
+      "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../../core/tsconfig.json"
+    },
+    {
+      "path": "../../markdown/tsconfig.json"
+    },
+    {
+      "path": "../../table/tsconfig.json"
+    }
   ]
 }
