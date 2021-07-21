@@ -1,6 +1,6 @@
 {
   "name": "bangle.dev",
-  "version": "0.25.0-alpha.2",
+  "version": "0.25.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -71,15 +71,6 @@
       "pre-commit": "lint-staged",
       "pre-push": "./_bangle-scripts/pre-push.sh $HUSKY_GIT_PARAMS"
     }
-  },
-  "resolutions": {
-    "prosemirror-commands": "^1.1.10",
-    "prosemirror-keymap": "^1.1.4",
-    "prosemirror-model": "^1.14.2",
-    "prosemirror-state": "^1.3.4",
-    "prosemirror-view": "^1.18.7",
-    "prosemirror-transform": "1.3.2",
-    "prosemirror-inputrules": "^1.1.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",

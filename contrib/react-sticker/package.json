@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-sticker",
-  "version": "0.25.0-alpha.2",
+  "version": "0.25.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -25,7 +25,8 @@
     "prepack": "yarn compile-ts && cp -r $INIT_CWD/img $INIT_CWD/dist/"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
@@ -41,7 +42,6 @@
     "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
-    "@bangle.dev/utils": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/prop-types": "^15.7.4",
     "@types/react": "^17.0.14",

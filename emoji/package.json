@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/emoji",
-  "version": "0.25.0-alpha.2",
+  "version": "0.25.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -25,7 +25,8 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
-    "markdown-it-emoji": "^2.0.0"
+    "markdown-it-emoji": "^2.0.0",
+    "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
@@ -36,7 +37,6 @@
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/table": "workspace:*",
-    "@bangle.dev/utils": "workspace:*",
     "@types/markdown-it": "^10.0.0",
     "@types/prosemirror-markdown": "^1.5.2",
     "prosemirror-markdown": "^1.5.1"

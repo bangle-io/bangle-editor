@@ -1,3 +1,8 @@
+const { walkWorkspace } = require('./workspace-tools');
+
+checkMultipleInstances();
+checkPeerDeps();
+
 function checkMultipleInstances() {
   const output = require('child_process')
     .execSync(`yarn info --virtuals --all --json `)
@@ -25,4 +30,26 @@ function checkMultipleInstances() {
   }
 }
 
-checkMultipleInstances();
+async function checkPeerDeps() {
+  const workspaces = (await walkWorkspace({})).filter((r) => !r.isWorktree);
+
+  for (const workspace of workspaces) {
+    for (const peerDep of workspace.peerDeps) {
+      if (workspace.deps.includes(peerDep)) {
+        throw new Error(
+          `In pkg "${workspace.name}" peerDependency "${peerDep}" cannot also be a dependency`,
+        );
+      }
+      if (!workspace.devDeps.includes(peerDep)) {
+        throw new Error(
+          `In pkg "${workspace.name}" peerDependency "${peerDep}" must also be a devDependency`,
+        );
+      }
+      if (peerDep === '@bangle.dev/utils') {
+        throw new Error(
+          `In pkg "${workspace.name}" @bangle.dev/utils cannot be a peerDependency`,
+        );
+      }
+    }
+  }
+}

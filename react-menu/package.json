@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-menu",
-  "version": "0.25.0-alpha.2",
+  "version": "0.25.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -28,7 +28,6 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
-    "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/utils": "workspace:*",
     "prop-types": "^15.7.2"
   },
@@ -45,7 +44,6 @@
     "@bangle.dev/pm": "^0.6.0",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
-    "@bangle.dev/utils": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.14",

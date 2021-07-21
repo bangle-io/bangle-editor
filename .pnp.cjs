@@ -3558,7 +3558,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.3.2"],
-            ["prosemirror-view", "npm:1.18.7"]
+            ["prosemirror-view", "npm:1.18.10"]
           ],
           "linkType": "HARD",
         }],
@@ -3589,7 +3589,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-tables", "npm:1.1.1"],
             ["prosemirror-transform", "npm:1.3.2"],
-            ["prosemirror-view", "npm:1.18.7"]
+            ["prosemirror-view", "npm:1.18.10"]
           ],
           "packagePeers": [
             "@types/prosemirror-tables",
@@ -3675,7 +3675,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/react", "virtual:a270c03b867317ee6d7edfde6acc534f787754057b0e23bea5c47646d70a6c4e8252bb97b4cfd361bcfa506f59d362cf06c1d9833d55bc821342cae376b359d1#npm:11.2.7"],
             ["@types/bangle.dev__core", null],
             ["@types/bangle.dev__emoji", null],
-            ["@types/bangle.dev__pm", null],
             ["@types/bangle.dev__react", null],
             ["@types/bangle.dev__tooltip", null],
             ["@types/react", "npm:17.0.14"],
@@ -3686,12 +3685,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@bangle.dev/core",
             "@bangle.dev/emoji",
-            "@bangle.dev/pm",
             "@bangle.dev/react",
             "@bangle.dev/tooltip",
             "@types/bangle.dev__core",
             "@types/bangle.dev__emoji",
-            "@types/bangle.dev__pm",
             "@types/bangle.dev__react",
             "@types/bangle.dev__tooltip",
             "@types/react-dom",
@@ -11250,7 +11247,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-inputrules", "npm:1.1.3"],
             ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
-            ["prosemirror-view", "npm:1.18.7"],
+            ["prosemirror-view", "npm:1.18.10"],
             ["punycode", "npm:2.1.1"],
             ["puppeteer", "npm:10.0.0"],
             ["puppeteer-core", "npm:10.0.0"],
@@ -14819,7 +14816,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-dropcursor", "npm:1.3.5"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"],
-            ["prosemirror-view", "npm:1.18.7"]
+            ["prosemirror-view", "npm:1.18.10"]
           ],
           "linkType": "HARD",
         }]
@@ -14832,7 +14829,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-keymap", "npm:1.1.4"],
             ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
-            ["prosemirror-view", "npm:1.18.7"]
+            ["prosemirror-view", "npm:1.18.10"]
           ],
           "linkType": "HARD",
         }]
@@ -14923,7 +14920,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"],
-            ["prosemirror-view", "npm:1.18.7"]
+            ["prosemirror-view", "npm:1.18.10"]
           ],
           "linkType": "HARD",
         }]
@@ -14965,10 +14962,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["prosemirror-view", [
-        ["npm:1.18.7", {
-          "packageLocation": "./.yarn/cache/prosemirror-view-npm-1.18.7-2a4cd9960c-a0343ff29d.zip/node_modules/prosemirror-view/",
+        ["npm:1.18.10", {
+          "packageLocation": "./.yarn/cache/prosemirror-view-npm-1.18.10-2e0b088055-ce79480e61.zip/node_modules/prosemirror-view/",
           "packageDependencies": [
-            ["prosemirror-view", "npm:1.18.7"],
+            ["prosemirror-view", "npm:1.18.10"],
             ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-state", "npm:1.3.4"],
             ["prosemirror-transform", "npm:1.3.2"]
