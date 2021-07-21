@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-client",
-  "version": "0.25.0-alpha.3",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -40,7 +40,7 @@
     "@bangle.dev/collab-server": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
-    "@bangle.dev/pm": "^0.6.0",
+    "@bangle.dev/pm": "^0.8.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
     "@types/prosemirror-collab": "^1.1.2",

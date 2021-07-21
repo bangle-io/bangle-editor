@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/utils",
-  "version": "0.25.0-alpha.3",
+  "version": "0.25.0-alpha.4",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -34,7 +34,7 @@
     "prosemirror-utils": "1.0.0-0"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "^0.6.0",
+    "@bangle.dev/pm": "^0.8.0",
     "@types/jest": "^26.0.23",
     "@types/prosemirror-model": "^1.13.1",
     "@types/prosemirror-state": "^1.2.7"
