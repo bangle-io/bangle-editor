@@ -16,5 +16,6 @@
     "__tests__",
     "./**/__tests__/",
     "dist"
-  ]
+  ],
+  "references": []
 }

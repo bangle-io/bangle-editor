@@ -7163,6 +7163,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["del", "npm:6.0.0"],
             ["globby", "npm:11.0.1"],
             ["handlebars", "npm:4.7.6"],
+            ["json5", "npm:2.2.0"],
             ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-transform", "npm:1.3.2"],
@@ -12612,6 +12613,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/json5-npm-2.1.3-b71ec6bcca-b2de57a665.zip/node_modules/json5/",
           "packageDependencies": [
             ["json5", "npm:2.1.3"],
+            ["minimist", "npm:1.2.5"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:2.2.0", {
+          "packageLocation": "./.yarn/cache/json5-npm-2.2.0-da49dc7cb5-e88fc5274b.zip/node_modules/json5/",
+          "packageDependencies": [
+            ["json5", "npm:2.2.0"],
             ["minimist", "npm:1.2.5"]
           ],
           "linkType": "HARD",

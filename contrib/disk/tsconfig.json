@@ -16,9 +16,5 @@
     "./**/__tests__/",
     "dist"
   ],
-  "references": [
-    {
-      "path": "../../collab-server/tsconfig.json"
-    }
-  ]
+  "references": []
 }

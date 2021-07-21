@@ -5,6 +5,7 @@ const ROOT_PKG_NAME = 'bangle-io';
 const rootDir = path.resolve(__dirname, '..');
 
 module.exports = {
+  rootDir,
   walkWorkspace,
   walk,
   getWorktrees,
@@ -159,6 +160,7 @@ async function walkWorkspace({ skipRootWorkspace = true } = {}) {
           isWorktree: Array.isArray(packageJSON.workspaces),
           rootPath,
           path: _path,
+          // files sibbling of package.json
           topFiles: items.filter((i) => i.isFile).map((r) => r.name),
           topDirectories: items.filter((i) => i.isDirectory).map((r) => r.name),
         };

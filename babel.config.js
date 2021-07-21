@@ -1,6 +1,7 @@
 // babel.config.js
 
 const DEBUG = true;
+// This config is used by jest
 
 module.exports = (api) => {
   if (api.env('test')) {
@@ -38,12 +39,4 @@ module.exports = (api) => {
       ],
     };
   }
-
-  return {
-    presets: ['@babel/preset-react', ['@babel/preset-env', envOptions]],
-    plugins: [
-      ['@babel/plugin-proposal-class-properties', { loose: true }],
-      '@babel/plugin-proposal-optional-chaining',
-    ],
-  };
 };
