@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "references": []
 }

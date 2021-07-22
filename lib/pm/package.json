@@ -62,7 +62,7 @@
     "prosemirror-keymap": "^1.1.4",
     "prosemirror-model": "^1.1.0",
     "prosemirror-schema-list": "^1.1.5",
-    "prosemirror-state": "^1.0.0",
+    "prosemirror-state": "^1.0.1",
     "prosemirror-tables": "^1.1.1",
     "prosemirror-transform": "^1.1.0",
     "prosemirror-view": "^1.10.0"
