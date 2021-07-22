@@ -30,7 +30,8 @@
     "table",
     "collab-server",
     "collab-client",
-    "contrib/*"
+    "contrib/*",
+    "lib/*"
   ],
   "scripts": {
     "g:babel": "yarn babel $INIT_CWD --out-dir $INIT_CWD/dist --ignore \"$INIT_CWD/**/__tests__,$INIT_CWD/dist\"",

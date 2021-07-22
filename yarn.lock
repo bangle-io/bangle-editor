@@ -1731,9 +1731,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bangle.dev/collab-client@workspace:*, @bangle.dev/collab-client@workspace:collab-client":
+"@bangle.dev/collab-client@workspace:*, @bangle.dev/collab-client@workspace:lib/collab-client":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/collab-client@workspace:collab-client"
+  resolution: "@bangle.dev/collab-client@workspace:lib/collab-client"
   dependencies:
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
@@ -1753,9 +1753,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:collab-server":
+"@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:lib/collab-server":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/collab-server@workspace:collab-server"
+  resolution: "@bangle.dev/collab-server@workspace:lib/collab-server"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
@@ -1788,9 +1788,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:contrib/disk":
+"@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:lib/disk":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/disk@workspace:contrib/disk"
+  resolution: "@bangle.dev/disk@workspace:lib/disk"
   dependencies:
     "@bangle.dev/pm": ^0.8.0
     debounce-fn: ^5.0.0
@@ -1833,9 +1833,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/markdown@workspace:*, @bangle.dev/markdown@workspace:markdown":
+"@bangle.dev/markdown@workspace:*, @bangle.dev/markdown@workspace:lib/markdown":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/markdown@workspace:markdown"
+  resolution: "@bangle.dev/markdown@workspace:lib/markdown"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -1985,9 +1985,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/react@workspace:*, @bangle.dev/react@workspace:react":
+"@bangle.dev/react@workspace:*, @bangle.dev/react@workspace:lib/react":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/react@workspace:react"
+  resolution: "@bangle.dev/react@workspace:lib/react"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2098,9 +2098,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/utils@workspace:*, @bangle.dev/utils@workspace:contrib/utils":
+"@bangle.dev/utils@workspace:*, @bangle.dev/utils@workspace:lib/utils":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/utils@workspace:contrib/utils"
+  resolution: "@bangle.dev/utils@workspace:lib/utils"
   dependencies:
     "@bangle.dev/pm": ^0.8.0
     "@types/jest": ^26.0.23
