@@ -2,7 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 const ROOT_PKG_NAME = 'bangle-io';
-const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '..', '..');
 
 module.exports = {
   rootDir,

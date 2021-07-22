@@ -2,7 +2,7 @@
 module.exports = {
   server: [
     {
-      command: 'yarn workspace integration-tests serve-build',
+      command: 'yarn workspace e2e-tests serve-build',
       port: 1234,
       launchTimeout: 10000,
     },
