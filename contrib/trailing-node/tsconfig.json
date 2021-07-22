@@ -18,10 +18,10 @@
   ],
   "references": [
     {
-      "path": "../utils/tsconfig.json"
+      "path": "../../lib/core/tsconfig.json"
     },
     {
-      "path": "../../core/tsconfig.json"
+      "path": "../../lib/utils/tsconfig.json"
     }
   ]
 }

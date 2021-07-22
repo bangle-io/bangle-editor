@@ -4,21 +4,6 @@
   "files": [],
   "references": [
     {
-      "path": "collab-client/tsconfig.json"
-    },
-    {
-      "path": "collab-client/tsconfig.test.json"
-    },
-    {
-      "path": "collab-server/tsconfig.json"
-    },
-    {
-      "path": "collab-server/tsconfig.test.json"
-    },
-    {
-      "path": "contrib/disk/tsconfig.json"
-    },
-    {
       "path": "contrib/markdown-front-matter/tsconfig.json"
     },
     {
@@ -61,43 +46,58 @@
       "path": "contrib/trailing-node/tsconfig.test.json"
     },
     {
-      "path": "contrib/utils/tsconfig.json"
-    },
-    {
-      "path": "contrib/utils/tsconfig.test.json"
-    },
-    {
       "path": "contrib/wiki-link/tsconfig.json"
     },
     {
       "path": "contrib/wiki-link/tsconfig.test.json"
     },
     {
-      "path": "core/tsconfig.json"
-    },
-    {
-      "path": "core/tsconfig.test.json"
-    },
-    {
       "path": "emoji/tsconfig.json"
     },
     {
-      "path": "markdown/tsconfig.json"
+      "path": "lib/collab-client/tsconfig.json"
     },
     {
-      "path": "markdown/tsconfig.test.json"
+      "path": "lib/collab-client/tsconfig.test.json"
+    },
+    {
+      "path": "lib/collab-server/tsconfig.json"
+    },
+    {
+      "path": "lib/collab-server/tsconfig.test.json"
+    },
+    {
+      "path": "lib/core/tsconfig.json"
+    },
+    {
+      "path": "lib/core/tsconfig.test.json"
+    },
+    {
+      "path": "lib/disk/tsconfig.json"
+    },
+    {
+      "path": "lib/markdown/tsconfig.json"
+    },
+    {
+      "path": "lib/markdown/tsconfig.test.json"
+    },
+    {
+      "path": "lib/react/tsconfig.json"
+    },
+    {
+      "path": "lib/react/tsconfig.test.json"
+    },
+    {
+      "path": "lib/utils/tsconfig.json"
+    },
+    {
+      "path": "lib/utils/tsconfig.test.json"
     },
     {
       "path": "react-menu/tsconfig.json"
     },
     {
       "path": "react-menu/tsconfig.test.json"
-    },
-    {
-      "path": "react/tsconfig.json"
-    },
-    {
-      "path": "react/tsconfig.test.json"
     },
     {
       "path": "table/tsconfig.json"

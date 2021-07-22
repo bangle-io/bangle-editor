@@ -1,16 +1,16 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "noEmit": true
   },
-  "include": ["*.ts", "./**/*.ts"],
+  "include": [
+    "*.ts",
+    "./**/*.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.json"
     },
-    {
-      "path": "../contrib/disk/tsconfig.json"
-    }
   ]
 }

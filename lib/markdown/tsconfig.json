@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": ".",
@@ -18,13 +18,13 @@
   ],
   "references": [
     {
-      "path": "../contrib/utils/tsconfig.json"
-    },
-    {
       "path": "../core/tsconfig.json"
     },
     {
-      "path": "../table/tsconfig.json"
+      "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../../table/tsconfig.json"
     }
   ]
 }

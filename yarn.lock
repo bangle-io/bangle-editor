@@ -1771,9 +1771,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/core@workspace:*, @bangle.dev/core@workspace:core":
+"@bangle.dev/core@workspace:*, @bangle.dev/core@workspace:lib/core":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/core@workspace:core"
+  resolution: "@bangle.dev/core@workspace:lib/core"
   dependencies:
     "@bangle.dev/pm": ^0.8.0
     "@bangle.dev/utils": "workspace:*"

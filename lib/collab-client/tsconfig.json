@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": ".",
@@ -21,13 +21,13 @@
       "path": "../collab-server/tsconfig.json"
     },
     {
-      "path": "../contrib/disk/tsconfig.json"
-    },
-    {
-      "path": "../contrib/utils/tsconfig.json"
-    },
-    {
       "path": "../core/tsconfig.json"
+    },
+    {
+      "path": "../disk/tsconfig.json"
+    },
+    {
+      "path": "../utils/tsconfig.json"
     }
   ]
 }
