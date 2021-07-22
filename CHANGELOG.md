@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## 0.25.2
+## 0.25.3
 
 - `@bangle.dev/pm` package now follows the same versioning as other bangle.dev packages.
 
