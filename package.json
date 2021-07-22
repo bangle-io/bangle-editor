@@ -103,6 +103,6 @@
     "lint-staged": "^10.5.3",
     "prettier": "^2.3.2",
     "puppeteer": "^10.0.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.5"
   }
 }
