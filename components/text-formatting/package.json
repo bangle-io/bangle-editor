@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "^0.8.0"
+    "@bangle.dev/pm": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

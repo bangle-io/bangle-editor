@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "^0.8.0",
+    "@bangle.dev/pm": "workspace:*",
     "@testing-library/dom": "^7.31.2",
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^11.2.7",

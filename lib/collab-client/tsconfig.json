@@ -27,6 +27,9 @@
       "path": "../disk/tsconfig.json"
     },
     {
+      "path": "../pm/tsconfig.json"
+    },
+    {
       "path": "../utils/tsconfig.json"
     }
   ]

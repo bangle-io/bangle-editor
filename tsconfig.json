@@ -97,6 +97,9 @@
       "path": "lib/markdown/tsconfig.test.json"
     },
     {
+      "path": "lib/pm/tsconfig.json"
+    },
+    {
       "path": "lib/react/tsconfig.json"
     },
     {

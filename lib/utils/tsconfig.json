@@ -17,5 +17,9 @@
     "./**/__tests__/",
     "dist"
   ],
-  "references": []
+  "references": [
+    {
+      "path": "../pm/tsconfig.json"
+    }
+  ]
 }

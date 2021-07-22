@@ -29,6 +29,9 @@
       "path": "../../lib/core/tsconfig.json"
     },
     {
+      "path": "../../lib/pm/tsconfig.json"
+    },
+    {
       "path": "../../lib/react/tsconfig.json"
     },
     {

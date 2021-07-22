@@ -25,7 +25,7 @@
     "prepack": "yarn compile-ts"
   },
   "dependencies": {
-    "@bangle.dev/pm": "^0.8.0",
+    "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/utils": "workspace:*"
   },
   "peerDependencies": {
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",
-    "@bangle.dev/pm": "^0.8.0",
+    "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
     "@testing-library/react": "^11.2.7",

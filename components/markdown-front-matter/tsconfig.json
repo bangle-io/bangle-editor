@@ -28,6 +28,9 @@
       "path": "../../lib/markdown/tsconfig.json"
     },
     {
+      "path": "../../lib/pm/tsconfig.json"
+    },
+    {
       "path": "../../lib/utils/tsconfig.json"
     }
   ]
