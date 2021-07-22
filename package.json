@@ -21,16 +21,7 @@
   "workspaces": [
     "__integration-tests__",
     "_bangle-scripts",
-    "core",
-    "emoji",
-    "markdown",
-    "react",
-    "react-menu",
-    "tooltip",
-    "table",
-    "collab-server",
-    "collab-client",
-    "contrib/*",
+    "components/*",
     "lib/*"
   ],
   "scripts": {

@@ -20,6 +20,9 @@
   ],
   "references": [
     {
+      "path": "../table/tsconfig.json"
+    },
+    {
       "path": "../../lib/core/tsconfig.json"
     },
     {
@@ -30,9 +33,6 @@
     },
     {
       "path": "../../lib/utils/tsconfig.json"
-    },
-    {
-      "path": "../../table/tsconfig.json"
     }
   ]
 }

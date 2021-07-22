@@ -1799,9 +1799,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/emoji@workspace:*, @bangle.dev/emoji@workspace:emoji":
+"@bangle.dev/emoji@workspace:*, @bangle.dev/emoji@workspace:components/emoji":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/emoji@workspace:emoji"
+  resolution: "@bangle.dev/emoji@workspace:components/emoji"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -1818,9 +1818,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/markdown-front-matter@workspace:*, @bangle.dev/markdown-front-matter@workspace:contrib/markdown-front-matter":
+"@bangle.dev/markdown-front-matter@workspace:*, @bangle.dev/markdown-front-matter@workspace:components/markdown-front-matter":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/markdown-front-matter@workspace:contrib/markdown-front-matter"
+  resolution: "@bangle.dev/markdown-front-matter@workspace:components/markdown-front-matter"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -1882,9 +1882,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bangle.dev/react-emoji-suggest@workspace:*, @bangle.dev/react-emoji-suggest@workspace:contrib/react-emoji-suggest":
+"@bangle.dev/react-emoji-suggest@workspace:*, @bangle.dev/react-emoji-suggest@workspace:components/react-emoji-suggest":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/react-emoji-suggest@workspace:contrib/react-emoji-suggest"
+  resolution: "@bangle.dev/react-emoji-suggest@workspace:components/react-emoji-suggest"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
@@ -1907,9 +1907,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/react-menu@workspace:*, @bangle.dev/react-menu@workspace:react-menu":
+"@bangle.dev/react-menu@workspace:*, @bangle.dev/react-menu@workspace:components/react-menu":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/react-menu@workspace:react-menu"
+  resolution: "@bangle.dev/react-menu@workspace:components/react-menu"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -1933,9 +1933,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/react-sticker@workspace:*, @bangle.dev/react-sticker@workspace:contrib/react-sticker":
+"@bangle.dev/react-sticker@workspace:*, @bangle.dev/react-sticker@workspace:components/react-sticker":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/react-sticker@workspace:contrib/react-sticker"
+  resolution: "@bangle.dev/react-sticker@workspace:components/react-sticker"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -1960,9 +1960,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/react-stopwatch@workspace:*, @bangle.dev/react-stopwatch@workspace:contrib/react-stopwatch":
+"@bangle.dev/react-stopwatch@workspace:*, @bangle.dev/react-stopwatch@workspace:components/react-stopwatch":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/react-stopwatch@workspace:contrib/react-stopwatch"
+  resolution: "@bangle.dev/react-stopwatch@workspace:components/react-stopwatch"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
@@ -2013,9 +2013,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/search@workspace:*, @bangle.dev/search@workspace:contrib/search":
+"@bangle.dev/search@workspace:*, @bangle.dev/search@workspace:components/search":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/search@workspace:contrib/search"
+  resolution: "@bangle.dev/search@workspace:components/search"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2027,9 +2027,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/table@workspace:*, @bangle.dev/table@workspace:table":
+"@bangle.dev/table@workspace:*, @bangle.dev/table@workspace:components/table":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/table@workspace:table"
+  resolution: "@bangle.dev/table@workspace:components/table"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2044,9 +2044,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/text-formatting@workspace:*, @bangle.dev/text-formatting@workspace:contrib/text-formatting":
+"@bangle.dev/text-formatting@workspace:*, @bangle.dev/text-formatting@workspace:components/text-formatting":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/text-formatting@workspace:contrib/text-formatting"
+  resolution: "@bangle.dev/text-formatting@workspace:components/text-formatting"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2057,9 +2057,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/timestamp@workspace:*, @bangle.dev/timestamp@workspace:contrib/timestamp":
+"@bangle.dev/timestamp@workspace:*, @bangle.dev/timestamp@workspace:components/timestamp":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/timestamp@workspace:contrib/timestamp"
+  resolution: "@bangle.dev/timestamp@workspace:components/timestamp"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2070,9 +2070,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/tooltip@workspace:*, @bangle.dev/tooltip@workspace:tooltip":
+"@bangle.dev/tooltip@workspace:*, @bangle.dev/tooltip@workspace:components/tooltip":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/tooltip@workspace:tooltip"
+  resolution: "@bangle.dev/tooltip@workspace:components/tooltip"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2085,9 +2085,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/trailing-node@workspace:*, @bangle.dev/trailing-node@workspace:contrib/trailing-node":
+"@bangle.dev/trailing-node@workspace:*, @bangle.dev/trailing-node@workspace:components/trailing-node":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/trailing-node@workspace:contrib/trailing-node"
+  resolution: "@bangle.dev/trailing-node@workspace:components/trailing-node"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": ^0.8.0
@@ -2114,9 +2114,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/wiki-link@workspace:contrib/wiki-link":
+"@bangle.dev/wiki-link@workspace:components/wiki-link":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/wiki-link@workspace:contrib/wiki-link"
+  resolution: "@bangle.dev/wiki-link@workspace:components/wiki-link"
   dependencies:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"

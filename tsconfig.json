@@ -4,55 +4,70 @@
   "files": [],
   "references": [
     {
-      "path": "contrib/markdown-front-matter/tsconfig.json"
+      "path": "components/emoji/tsconfig.json"
     },
     {
-      "path": "contrib/react-emoji-suggest/tsconfig.json"
+      "path": "components/markdown-front-matter/tsconfig.json"
     },
     {
-      "path": "contrib/react-emoji-suggest/tsconfig.test.json"
+      "path": "components/react-emoji-suggest/tsconfig.json"
     },
     {
-      "path": "contrib/react-sticker/tsconfig.json"
+      "path": "components/react-emoji-suggest/tsconfig.test.json"
     },
     {
-      "path": "contrib/react-sticker/tsconfig.test.json"
+      "path": "components/react-menu/tsconfig.json"
     },
     {
-      "path": "contrib/react-stopwatch/tsconfig.json"
+      "path": "components/react-menu/tsconfig.test.json"
     },
     {
-      "path": "contrib/react-stopwatch/tsconfig.test.json"
+      "path": "components/react-sticker/tsconfig.json"
     },
     {
-      "path": "contrib/search/tsconfig.json"
+      "path": "components/react-sticker/tsconfig.test.json"
     },
     {
-      "path": "contrib/search/tsconfig.test.json"
+      "path": "components/react-stopwatch/tsconfig.json"
     },
     {
-      "path": "contrib/text-formatting/tsconfig.json"
+      "path": "components/react-stopwatch/tsconfig.test.json"
     },
     {
-      "path": "contrib/text-formatting/tsconfig.test.json"
+      "path": "components/search/tsconfig.json"
     },
     {
-      "path": "contrib/timestamp/tsconfig.json"
+      "path": "components/search/tsconfig.test.json"
     },
     {
-      "path": "contrib/trailing-node/tsconfig.json"
+      "path": "components/table/tsconfig.json"
     },
     {
-      "path": "contrib/trailing-node/tsconfig.test.json"
+      "path": "components/text-formatting/tsconfig.json"
     },
     {
-      "path": "contrib/wiki-link/tsconfig.json"
+      "path": "components/text-formatting/tsconfig.test.json"
     },
     {
-      "path": "contrib/wiki-link/tsconfig.test.json"
+      "path": "components/timestamp/tsconfig.json"
     },
     {
-      "path": "emoji/tsconfig.json"
+      "path": "components/tooltip/tsconfig.json"
+    },
+    {
+      "path": "components/tooltip/tsconfig.test.json"
+    },
+    {
+      "path": "components/trailing-node/tsconfig.json"
+    },
+    {
+      "path": "components/trailing-node/tsconfig.test.json"
+    },
+    {
+      "path": "components/wiki-link/tsconfig.json"
+    },
+    {
+      "path": "components/wiki-link/tsconfig.test.json"
     },
     {
       "path": "lib/collab-client/tsconfig.json"
@@ -92,21 +107,6 @@
     },
     {
       "path": "lib/utils/tsconfig.test.json"
-    },
-    {
-      "path": "react-menu/tsconfig.json"
-    },
-    {
-      "path": "react-menu/tsconfig.test.json"
-    },
-    {
-      "path": "table/tsconfig.json"
-    },
-    {
-      "path": "tooltip/tsconfig.json"
-    },
-    {
-      "path": "tooltip/tsconfig.test.json"
     }
   ]
 }

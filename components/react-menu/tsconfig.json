@@ -1,15 +1,17 @@
 {
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "allowJs": false,
+    "allowJs": true,
     "baseUrl": ".",
     "types": [],
     "outDir": "./dist",
     "rootDir": "."
   },
   "include": [
-    "./*.ts",
-    "./**/*.ts"
+    "./**/*.js",
+    "./**/*.jsx",
+    "./**/*.ts",
+    "./**/*.tsx"
   ],
   "exclude": [
     "__tests__",
@@ -18,16 +20,16 @@
   ],
   "references": [
     {
+      "path": "../tooltip/tsconfig.json"
+    },
+    {
       "path": "../../lib/core/tsconfig.json"
     },
     {
-      "path": "../../lib/markdown/tsconfig.json"
+      "path": "../../lib/react/tsconfig.json"
     },
     {
       "path": "../../lib/utils/tsconfig.json"
-    },
-    {
-      "path": "../../table/tsconfig.json"
     }
   ]
 }

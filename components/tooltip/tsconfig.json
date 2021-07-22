@@ -3,14 +3,13 @@
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": ".",
+    "types": [],
     "outDir": "./dist",
     "rootDir": "."
   },
   "include": [
     "./*.ts",
-    "./*.js",
-    "./**/*.ts",
-    "./**/*.js"
+    "./**/*.ts"
   ],
   "exclude": [
     "__tests__",
@@ -22,13 +21,7 @@
       "path": "../../lib/core/tsconfig.json"
     },
     {
-      "path": "../../lib/markdown/tsconfig.json"
-    },
-    {
       "path": "../../lib/utils/tsconfig.json"
-    },
-    {
-      "path": "../../table/tsconfig.json"
     }
   ]
 }

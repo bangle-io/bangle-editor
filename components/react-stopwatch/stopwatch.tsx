@@ -11,7 +11,7 @@ const LOG = false;
 
 function log(...args: any[]) {
   if (LOG) {
-    console.log('contrib/react-stopwatch/index.js:', ...args);
+    console.log('react-stopwatch/index.js:', ...args);
   }
 }
 

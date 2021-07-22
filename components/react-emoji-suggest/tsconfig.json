@@ -20,7 +20,10 @@
   ],
   "references": [
     {
-      "path": "../../emoji/tsconfig.json"
+      "path": "../emoji/tsconfig.json"
+    },
+    {
+      "path": "../tooltip/tsconfig.json"
     },
     {
       "path": "../../lib/core/tsconfig.json"
@@ -30,9 +33,6 @@
     },
     {
       "path": "../../lib/utils/tsconfig.json"
-    },
-    {
-      "path": "../../tooltip/tsconfig.json"
     }
   ]
 }

@@ -18,13 +18,13 @@
   ],
   "references": [
     {
+      "path": "../../components/table/tsconfig.json"
+    },
+    {
       "path": "../core/tsconfig.json"
     },
     {
       "path": "../utils/tsconfig.json"
-    },
-    {
-      "path": "../../table/tsconfig.json"
     }
   ]
 }
