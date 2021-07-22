@@ -4,7 +4,7 @@ node_modules
 .yarn
 .pnp.js
 coverage
-__integration-tests__/build
+tooling/e2e-tests/build
 
 
 

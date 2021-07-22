@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "include": [
+    "src",
+    "types"
+  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "importHelpers": true,
+    "declaration": true,
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true
+  },
+  "references": []
+}

@@ -1,0 +1,56 @@
+{
+  "name": "@bangle.dev/react-stopwatch",
+  "version": "0.25.0",
+  "homepage": "https://bangle.dev",
+  "authors": [
+    {
+      "name": "Kushan Joshi",
+      "email": "0o3ko0@gmail.com",
+      "web": "http://github.com/kepta"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
+  },
+  "main": "index.ts",
+  "module": "index.ts",
+  "scripts": {
+    "compile-ts": "yarn g:tsc --build $INIT_CWD",
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
+    "prepack": "yarn compile-ts"
+  },
+  "dependencies": {
+    "@bangle.dev/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "@bangle.dev/core": "*",
+    "@bangle.dev/markdown": "*",
+    "@bangle.dev/pm": "*",
+    "@bangle.dev/react": "*",
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/markdown": "workspace:*",
+    "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/react": "workspace:*",
+    "@bangle.dev/table": "workspace:*",
+    "@testing-library/react": "^11.2.7",
+    "@types/react": "^17.0.14",
+    "@types/react-dom": "^17.0.9",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  }
+}

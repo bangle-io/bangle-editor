@@ -1,0 +1,77 @@
+{
+  "name": "@bangle.dev/pm",
+  "version": "0.8.0",
+  "description": "This is bangle.dev specific collection of Prosemirror packages.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "access": "public",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "yarn tsc -b -w",
+    "tsc-build": "yarn tsc -b",
+    "lint": "tsc-build",
+    "tsc-clean": "rm -rf dist/",
+    "prepare": "yarn tsc-clean && yarn tsc-build",
+    "prepack": "yarn tsc-clean && yarn tsc-build",
+    "size": "size-limit",
+    "release-package": "npm publish --access public",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "10 KB"
+    }
+  ],
+  "dependencies": {
+    "@types/prosemirror-commands": "1.x",
+    "@types/prosemirror-dropcursor": "1.x",
+    "@types/prosemirror-gapcursor": "1.x",
+    "@types/prosemirror-history": "1.x",
+    "@types/prosemirror-inputrules": "1.x",
+    "@types/prosemirror-keymap": "1.x",
+    "@types/prosemirror-model": "1.x",
+    "@types/prosemirror-schema-list": "1.x",
+    "@types/prosemirror-state": "1.x",
+    "@types/prosemirror-transform": "1.x",
+    "@types/prosemirror-view": "1.x",
+    "prosemirror-commands": "^1.1.10",
+    "prosemirror-dropcursor": "^1.3.5",
+    "prosemirror-gapcursor": "^1.1.5",
+    "prosemirror-history": "^1.1.0",
+    "prosemirror-inputrules": "^1.1.0",
+    "prosemirror-keymap": "^1.1.4",
+    "prosemirror-model": "^1.1.0",
+    "prosemirror-schema-list": "^1.1.5",
+    "prosemirror-state": "^1.0.1",
+    "prosemirror-tables": "^1.1.1",
+    "prosemirror-transform": "^1.1.0",
+    "prosemirror-view": "^1.10.0"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^5.0.1",
+    "husky": "^7.0.1",
+    "size-limit": "^5.0.1",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
+  }
+}

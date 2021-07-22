@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       matrix:
-        test-kind: [unit-tests, integration-tests]
+        test-kind: [unit-tests, e2e-tests]
     steps:
       - uses: actions/checkout@v2
       - name: Run test "${{ matrix.test-kind }}"

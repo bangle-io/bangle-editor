@@ -11,8 +11,8 @@ jsconfig.json
 tsconfig.json
 tsconfig.test.json
 tsconfig-base.json
-__integration-tests__/build
-markdown/__tests__/fixtures
+tooling/e2e-tests/build
+lib/markdown/__tests__/fixtures
 
 
 build

@@ -19,29 +19,20 @@
   },
   "private": true,
   "workspaces": [
-    "__integration-tests__",
-    "_bangle-scripts",
-    "core",
-    "emoji",
-    "markdown",
-    "react",
-    "react-menu",
-    "tooltip",
-    "table",
-    "collab-server",
-    "collab-client",
-    "contrib/*"
+    "tooling/*",
+    "components/*",
+    "lib/*"
   ],
   "scripts": {
     "g:babel": "yarn babel $INIT_CWD --out-dir $INIT_CWD/dist --ignore \"$INIT_CWD/**/__tests__,$INIT_CWD/dist\"",
     "update-versions": "yarn constraints --fix",
-    "test": "yarn lint && yarn integration-tests && yarn unit-tests",
+    "test": "yarn lint && yarn e2e-tests && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "integration-tests": "yarn e2e:test",
-    "lint": "yarn node _bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
+    "e2e-tests": "yarn e2e:test",
+    "lint": "yarn node tooling/bangle-scripts/check-dependencies.js && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "release-packages": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish",
     "release-packages-alpha": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish --tag alpha",
-    "update-ts-references": "yarn node _bangle-scripts/ts-references.js",
+    "update-ts-references": "yarn node tooling/bangle-scripts/ts-references.js",
     "tsc-check": "yarn tsc -b",
     "tsc-clean": "yarn tsc -b --clean",
     "tsc-watch": "yarn tsc-clean && yarn tsc -b -w",
@@ -70,7 +61,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "./_bangle-scripts/pre-push.sh $HUSKY_GIT_PARAMS"
+      "pre-push": "./tooling/bangle-scripts/pre-push.sh $HUSKY_GIT_PARAMS"
     }
   },
   "devDependencies": {
@@ -103,6 +94,6 @@
     "lint-staged": "^10.5.3",
     "prettier": "^2.3.2",
     "puppeteer": "^10.0.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.5"
   }
 }

@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "types": [],
+    "outDir": "./dist",
+    "rootDir": "."
+  },
+  "include": [
+    "./*.ts",
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "__tests__",
+    "./**/__tests__/",
+    "dist"
+  ],
+  "references": [
+    {
+      "path": "../../lib/core/tsconfig.json"
+    },
+    {
+      "path": "../../lib/pm/tsconfig.json"
+    },
+    {
+      "path": "../../lib/utils/tsconfig.json"
+    }
+  ]
+}
