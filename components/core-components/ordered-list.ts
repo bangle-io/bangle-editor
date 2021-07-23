@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   EditorState,
@@ -6,11 +7,9 @@ import {
   wrappingInputRule,
 } from '@bangle.dev/pm';
 import type Token from 'markdown-it/lib/token';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
-
+import { parentHasDirectParentOfType } from './core-commands';
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
-import { parentHasDirectParentOfType } from './core-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

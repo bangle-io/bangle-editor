@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   EditorState,
@@ -15,7 +16,6 @@ import {
   markInputRule,
   markPasteRule,
 } from '@bangle.dev/utils';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

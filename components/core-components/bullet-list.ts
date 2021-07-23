@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   chainCommands,
   Command,
@@ -11,8 +12,6 @@ import {
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from './core-commands';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
-
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 import {

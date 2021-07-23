@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   DOMOutputSpecArray,
   EditorState,
@@ -11,7 +12,6 @@ import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { moveNode } from './core-commands';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

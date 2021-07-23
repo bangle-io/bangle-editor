@@ -1,3 +1,4 @@
+import type { RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   DOMOutputSpecArray,
@@ -8,10 +9,9 @@ import {
 } from '@bangle.dev/pm';
 import {
   isMarkActiveInSelection,
-  markPasteRule,
   markInputRule,
+  markPasteRule,
 } from '@bangle.dev/utils';
-import type { RawSpecs } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

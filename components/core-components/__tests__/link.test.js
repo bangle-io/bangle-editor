@@ -3,8 +3,8 @@
  */
 
 /** @jsx psx */
-import { toggleMark } from '@bangle.dev/pm';
 import { SpecRegistry } from '@bangle.dev/core';
+import { toggleMark } from '@bangle.dev/pm';
 import {
   dispatchPasteEvent,
   psx,

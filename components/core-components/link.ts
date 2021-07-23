@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   DOMOutputSpecArray,
@@ -16,7 +17,6 @@ import {
   matchAllPlus,
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

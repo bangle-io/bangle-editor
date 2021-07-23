@@ -1,7 +1,7 @@
+import type { RawPlugins } from '@bangle.dev/core';
+import { PluginGroup } from '@bangle.dev/core';
 import * as pmHistory from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
-import { PluginGroup } from '@bangle.dev/core';
-import type { RawPlugins } from '@bangle.dev/core';
 
 export const plugins = pluginsFactory;
 export const commands = {

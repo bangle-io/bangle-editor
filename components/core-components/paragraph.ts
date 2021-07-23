@@ -1,17 +1,17 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   DOMOutputSpecArray,
   EditorState,
   keymap,
-  Node,
   Schema,
   setBlockType,
 } from '@bangle.dev/pm';
 import {
+  browser,
   filter,
   findParentNodeOfType,
   insertEmpty,
-  browser,
 } from '@bangle.dev/utils';
 import {
   copyEmptyCommand,
@@ -21,7 +21,6 @@ import {
   moveNode,
   parentHasDirectParentOfType,
 } from './core-commands';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

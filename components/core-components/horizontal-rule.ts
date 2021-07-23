@@ -1,6 +1,6 @@
-import { DOMOutputSpecArray, InputRule, Node, Schema } from '@bangle.dev/pm';
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
+import { DOMOutputSpecArray, InputRule, Schema } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

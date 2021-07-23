@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   EditorState,
@@ -10,12 +11,12 @@ import {
   TextSelection,
 } from '@bangle.dev/pm';
 import {
+  browser,
   ContentNodeWithPos,
   filter,
   findChildren,
   findParentNodeOfType,
   insertEmpty,
-  browser,
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
@@ -26,7 +27,6 @@ import {
   jumpToStartOfNode,
   moveNode,
 } from './core-commands';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

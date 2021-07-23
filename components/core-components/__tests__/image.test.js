@@ -3,13 +3,13 @@
  */
 
 /** @jsx psx */
-import { sleep } from '@bangle.dev/utils';
 import {
   createEvent,
   dispatchPasteEvent,
   psx,
   typeText,
 } from '@bangle.dev/test-helpers';
+import { sleep } from '@bangle.dev/utils';
 import { defaultTestEditor } from './test-editor';
 
 const testEditor = defaultTestEditor({});

@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   DOMOutputSpec,
@@ -10,7 +11,6 @@ import {
 } from '@bangle.dev/pm';
 import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import { copyEmptyCommand, cutEmptyCommand, moveNode } from './core-commands';
 
 export const spec = specFactory;

@@ -1,5 +1,5 @@
-import { Node } from '@bangle.dev/pm';
 import type { RawSpecs } from '@bangle.dev/core';
+import { Node } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 

@@ -1,5 +1,5 @@
-import { renderTestEditor } from '@bangle.dev/test-helpers';
 import { SpecRegistry } from '@bangle.dev/core';
+import { renderTestEditor } from '@bangle.dev/test-helpers';
 import { defaultPlugins, defaultSpecs } from './default-components';
 
 export const defaultTestEditor = ({ specRegistry, plugins } = {}) => {

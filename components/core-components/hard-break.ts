@@ -1,3 +1,4 @@
+import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   chainCommands,
   DOMOutputSpecArray,
@@ -6,7 +7,6 @@ import {
   Node,
   Schema,
 } from '@bangle.dev/pm';
-import type { RawSpecs, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
