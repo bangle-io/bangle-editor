@@ -3,11 +3,8 @@
  */
 /** @jsx pjsx */
 import { SpecRegistry } from '@bangle.dev/core';
-import {
-  defaultPlugins,
-  defaultSpecs,
-} from '@bangle.dev/core/test-helpers/default-components';
-import { sendKeyToPm } from '@bangle.dev/core/test-helpers/test-helpers';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/default-components';
+import { sendKeyToPm } from '@bangle.dev/test-helpers';
 import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
 import {
   pjsx,

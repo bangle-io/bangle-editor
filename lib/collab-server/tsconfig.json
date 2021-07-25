@@ -26,6 +26,9 @@
     },
     {
       "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/default-components/tsconfig.json"
     }
   ]
 }

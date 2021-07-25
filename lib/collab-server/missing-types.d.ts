@@ -1,3 +1,3 @@
-declare module '@bangle.dev/core/test-helpers/default-components' {
+declare module '@bangle.dev/default-components' {
   export const defaultSpecs: any;
 }

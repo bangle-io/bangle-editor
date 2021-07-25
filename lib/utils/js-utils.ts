@@ -4,9 +4,9 @@ import { isProdEnv, isTestEnv } from './environment';
  * @param {Function} fn - A unary function whose paramater is non-primitive,
  *                        so that it can be cached using WeakMap
  */
-export function weakCache(fn: Function) {
-  const cache = new WeakMap();
-  return (arg: any) => {
+export function weakCache<T extends object, V>(fn: (a: T) => V) {
+  const cache = new WeakMap<T, V>();
+  return (arg: T): V => {
     let value = cache.get(arg);
     if (value) {
       return value;

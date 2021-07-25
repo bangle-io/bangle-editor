@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { getDocLabels } from '@bangle.dev/core/test-helpers/test-helpers';
+import { getDocLabels } from '@bangle.dev/test-helpers';
 import { TextSelection } from '@bangle.dev/pm';
 import { act, render } from '@testing-library/react';
 import React from 'react';

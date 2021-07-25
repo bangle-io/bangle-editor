@@ -25,6 +25,12 @@
     },
     {
       "path": "../../lib/utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/default-components/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/test-helpers/tsconfig.json"
     }
   ]
 }

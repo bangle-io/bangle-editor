@@ -2,7 +2,6 @@ import { EditorView, Fragment, NodeSelection, Schema } from '@bangle.dev/pm';
 
 export * from './create-event';
 export * from './dispatch-paste-event';
-export * from './jest-helpers';
 export * from './keyboard';
 export * from './render-test-editor';
 export * from './schema-builders';

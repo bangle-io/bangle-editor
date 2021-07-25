@@ -3,7 +3,9 @@
  */
 
 /** @jsx pjsx */
-import { components, coreSpec, SpecRegistry } from '@bangle.dev/core';
+import { SpecRegistry } from '@bangle.dev/core';
+import { defaultSpecs } from '@bangle.dev/default-components';
+import { link } from '@bangle.dev/core-components';
 import { NodeSelection, PluginKey, TextSelection } from '@bangle.dev/pm';
 import {
   pjsx,
@@ -12,9 +14,10 @@ import {
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
-const specRegistry = new SpecRegistry(coreSpec());
+const specRegistry = new SpecRegistry(defaultSpecs());
+
 const plugins = () => [
-  components.link.plugins(),
+  link.plugins(),
   floatingMenu.plugins({
     key: menuKey,
   }),

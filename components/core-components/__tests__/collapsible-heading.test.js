@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { components, SpecRegistry } from '@bangle.dev/core';
+import { SpecRegistry } from '@bangle.dev/core';
 import {
   createPSXFragment,
   psx,
@@ -11,7 +11,7 @@ import {
 } from '@bangle.dev/test-helpers';
 import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
 
-const {
+import {
   bulletList,
   listItem,
   orderedList,
@@ -23,7 +23,7 @@ const {
   text,
   paragraph,
   heading,
-} = components;
+} from '../index';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

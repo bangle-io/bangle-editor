@@ -4,6 +4,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!((@popperjs)|(debounce-fn)|(@bangle.dev/pm))/)',
   ],
+  setupFilesAfterEnv: ['@bangle.dev/jest-utils'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coveragePathIgnorePatterns: [
     `<rootDir>/.yarn`,

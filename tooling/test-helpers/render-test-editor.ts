@@ -37,13 +37,13 @@ export function renderTestEditor(
   }: { specRegistry: SpecRegistry; plugins: RawPlugins },
   testId = 'test-editor',
 ) {
-  // if (!(specRegistry instanceof SpecRegistry)) {
-  //   specRegistry = new SpecRegistry(defaultSpecs(specRegistry));
-  // }
+  if (!specRegistry) {
+    throw new Error('Please provide SpecRegistry');
+  }
 
-  // if (!plugins || !Array.isArray(plugins)) {
-  //   plugins = defaultPlugins(plugins);
-  // }
+  if (!plugins) {
+    throw new Error('Please provide Plugins');
+  }
 
   let newPlugins = plugins;
   // To bypass the deprecation of plugin being a function

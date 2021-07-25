@@ -1,0 +1,15 @@
+{
+  "name": "@bangle.dev/default-components",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@bangle.dev/core-components": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  }
+}

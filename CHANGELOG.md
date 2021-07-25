@@ -1,5 +1,35 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/core**
+
+- Breaking: We are dropping `@bangle.dev/core` in favour of two new packages `@bangle.dev/editor` and `@bangle.dev/core-components`.
+
+- `corePlugins`, `coreMarkSpec` `coreNodeSpec`, `coreSpec`, `components` what about these?
+
+Please follow the following steps to make the change.
+
+- If you were importing individual components, make the following change:
+
+```js
+// old
+import { bulletList, orderedList } from '@bangle.dev/core';
+
+// new
+import { bulletList, orderedList } from '@bangle.dev/core-components';
+```
+
+- `components`, if you were importing `components` make the following change:
+
+```js
+// old
+import { components } from '@bangle.dev/core';
+
+// new
+import * as components from '@bangle.dev/core-components';
+```
+
 ## 0.25.3
 
 - `@bangle.dev/pm` package now follows the same versioning as other bangle.dev packages.

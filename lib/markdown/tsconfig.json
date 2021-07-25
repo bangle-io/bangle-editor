@@ -28,6 +28,9 @@
     },
     {
       "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/test-helpers/tsconfig.json"
     }
   ]
 }

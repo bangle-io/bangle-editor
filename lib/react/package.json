@@ -45,7 +45,9 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*",
     "@testing-library/dom": "^7.31.2",
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^11.2.7",

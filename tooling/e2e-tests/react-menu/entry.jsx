@@ -1,9 +1,6 @@
 import '../setup/entry.css';
 import React from 'react';
-import {
-  defaultPlugins,
-  defaultSpecs,
-} from '@bangle.dev/core/test-helpers/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/default-components';
 import { SpecRegistry, PluginKey } from '@bangle.dev/core';
 import { sticker } from '@bangle.dev/react-sticker';
 import { floatingMenu } from '@bangle.dev/react-menu';

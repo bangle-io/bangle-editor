@@ -39,8 +39,10 @@
   "devDependencies": {
     "@bangle.dev/collab-server": "workspace:*",
     "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
     "@types/prosemirror-collab": "^1.1.2",

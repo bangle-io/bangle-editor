@@ -28,6 +28,7 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
+    "@bangle.dev/core-components": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "prop-types": "^15.7.2"
   },
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",

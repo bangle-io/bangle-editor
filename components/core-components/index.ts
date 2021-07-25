@@ -7,9 +7,6 @@ import * as strike from './strike';
 import * as underline from './underline';
 
 // nodes
-import * as doc from './doc';
-import * as paragraph from './paragraph';
-import * as text from './text';
 import * as blockquote from './blockquote';
 import * as bulletList from './bullet-list';
 import * as codeBlock from './code-block';
@@ -20,9 +17,9 @@ import * as listItem from './list-item/list-item-component';
 import * as orderedList from './ordered-list';
 import * as image from './image';
 
-// components
-import * as history from './history';
-import * as editorStateCounter from './editor-state-counter';
+import { baseComponents } from '@bangle.dev/core';
+
+const { doc, paragraph, text, history, editorStateCounter } = baseComponents;
 
 export {
   bold,

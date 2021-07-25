@@ -1,4 +1,4 @@
-import { link } from '@bangle.dev/core';
+import { link } from '@bangle.dev/core-components';
 import {
   Command,
   EditorState,

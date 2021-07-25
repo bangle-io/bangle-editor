@@ -1,6 +1,9 @@
 import { Mark, MarkSpec, NodeSpec, Schema, Node } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
-import { doc, paragraph, text } from './components/components';
+import * as doc from './base-components/doc';
+import * as paragraph from './base-components/paragraph';
+import * as text from './base-components/text';
+
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 const LOG = false;

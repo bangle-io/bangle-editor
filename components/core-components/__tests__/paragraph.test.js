@@ -6,13 +6,11 @@
 import { SpecRegistry } from '@bangle.dev/core';
 import { psx, sendKeyToPm, typeText } from '@bangle.dev/test-helpers';
 import { doc, heading, paragraph, text } from '../index';
-import {
-  convertToParagraph,
-  jumpToEndOfParagraph,
-  jumpToStartOfParagraph,
-} from '../paragraph';
+
 import { defaultTestEditor } from './test-editor';
 
+const { convertToParagraph, jumpToEndOfParagraph, jumpToStartOfParagraph } =
+  paragraph;
 const testEditor = defaultTestEditor();
 const keybindings = paragraph.defaultKeys;
 

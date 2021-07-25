@@ -30,9 +30,11 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
-    "@bangle.dev/table": "workspace:*"
+    "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

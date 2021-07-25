@@ -4,6 +4,9 @@
   "files": [],
   "references": [
     {
+      "path": "components/core-components/tsconfig.json"
+    },
+    {
       "path": "components/emoji/tsconfig.json"
     },
     {
@@ -110,6 +113,12 @@
     },
     {
       "path": "lib/utils/tsconfig.test.json"
+    },
+    {
+      "path": "tooling/default-components/tsconfig.json"
+    },
+    {
+      "path": "tooling/test-helpers/tsconfig.json"
     }
   ]
 }

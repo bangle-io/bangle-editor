@@ -97,6 +97,7 @@ function specFactory({ openOnClick = false } = {}): RawSpecs {
 
 function pluginsFactory(): RawPlugins {
   return ({ schema, specRegistry }) => {
+    debugger;
     // TODO why is this an option in schema
     const { openOnClick } = specRegistry.options[name];
     const type = getTypeFromSchema(schema);
