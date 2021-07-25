@@ -107,6 +107,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:lib/pm"
       },
       {
+        "name": "@bangle.dev/pm-commands",
+        "reference": "workspace:lib/pm-commands"
+      },
+      {
         "name": "@bangle.dev/react",
         "reference": "workspace:lib/react"
       },
@@ -149,6 +153,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@bangle.dev/markdown", ["virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown", "workspace:lib/markdown"]],
       ["@bangle.dev/markdown-front-matter", ["virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/markdown-front-matter", "workspace:components/markdown-front-matter"]],
       ["@bangle.dev/pm", ["workspace:lib/pm"]],
+      ["@bangle.dev/pm-commands", ["virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands", "workspace:lib/pm-commands"]],
       ["@bangle.dev/react", ["virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react", "workspace:lib/react"]],
       ["@bangle.dev/react-emoji-suggest", ["virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/react-emoji-suggest", "workspace:components/react-emoji-suggest"]],
       ["@bangle.dev/react-menu", ["virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/react-menu", "workspace:components/react-menu"]],
@@ -3389,6 +3394,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
             ["@types/bangle.dev__pm", null],
             ["@types/jest", "npm:26.0.23"],
@@ -3409,6 +3415,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bangle.dev/core", "workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/markdown-it", "npm:12.0.3"],
@@ -3427,6 +3434,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
             ["@types/bangle.dev__core", null],
@@ -3452,6 +3460,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core-components", "workspace:components/core-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
             ["@types/jest", "npm:26.0.23"],
@@ -3670,6 +3679,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-transform", "npm:1.3.2"],
             ["prosemirror-view", "npm:1.18.10"],
             ["tslib", "npm:2.3.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@bangle.dev/pm-commands", [
+        ["virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands", {
+          "packageLocation": "./.yarn/__virtual__/@bangle.dev-pm-commands-virtual-f76bc5ec41/1/lib/pm-commands/",
+          "packageDependencies": [
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
+            ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
+            ["@types/bangle.dev__pm", null]
+          ],
+          "packagePeers": [
+            "@bangle.dev/pm",
+            "@types/bangle.dev__pm"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:lib/pm-commands", {
+          "packageLocation": "./lib/pm-commands/",
+          "packageDependencies": [
+            ["@bangle.dev/pm-commands", "workspace:lib/pm-commands"],
+            ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]
           ],
           "linkType": "SOFT",
         }]

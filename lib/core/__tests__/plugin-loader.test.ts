@@ -1,16 +1,16 @@
 import { baseComponents } from '../index';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
-import { SpecRegistry } from '../spec-registry';
+import { RawSpecs, SpecRegistry } from '../spec-registry';
 import { NodeView } from '../node-view';
-import { pluginLoader } from '../utils/plugin-loader';
+import { pluginLoader, RawPlugins } from '../plugin-loader';
 import { PluginGroup } from '../plugin';
 
 const { paragraph } = baseComponents;
 
-const listItemSpec = () => {
+const listItemSpec = (): RawSpecs => {
   return {
-    type: 'node',
     name: 'listItem',
+    type: 'node',
     schema: {
       content: '(paragraph)*',
       defining: true,
@@ -34,12 +34,14 @@ const specRegistry = new SpecRegistry([listItemSpec()]);
 
 describe('nodeViews validation', () => {
   test('Throws error if duplicate nodeViews', () => {
-    const plugins = [
+    const plugins: RawPlugins[] = [
       NodeView.createPlugin({
         name: 'listItem',
+        containerDOM: ['div', 0],
       }),
       NodeView.createPlugin({
         name: 'listItem',
+        containerDOM: ['div', 0],
       }),
     ];
 
@@ -55,9 +57,11 @@ describe('nodeViews validation', () => {
       paragraph.plugins(),
       NodeView.createPlugin({
         name: 'listItem',
+        containerDOM: ['div', 0],
       }),
       NodeView.createPlugin({
         name: 'paragraph',
+        containerDOM: ['div', 0],
       }),
     ];
 
@@ -68,6 +72,7 @@ describe('nodeViews validation', () => {
     const plugins = [
       NodeView.createPlugin({
         name: 'random_thing',
+        containerDOM: ['div', 0],
       }),
     ];
 
@@ -98,7 +103,7 @@ describe('Flattens plugins correctly', () => {
     const group4 = new Plugin({ key: new PluginKey('group4.first') });
     expect(
       pluginLoader(specRegistry, [group1, group2, group3, group4]).map(
-        (r) => r.key,
+        (r) => (r as any).key,
       ),
     ).toEqual(
       expect.arrayContaining([
@@ -113,18 +118,19 @@ describe('Flattens plugins correctly', () => {
     );
   });
 
+  // TODO: deprecate the ability to plugins inside of pluginGroup a function
   test('passes params correctly to plugins which are functions', () => {
     const pluginFn = jest.fn(
       () => new Plugin({ key: new PluginKey('myPlug') }),
     );
-    const groupChildPluginFn = jest.fn(
+    const groupChildPluginFn: any = jest.fn(
       () => new Plugin({ key: new PluginKey('grp1.first') }),
     );
     const group1 = new PluginGroup('grp1', [[groupChildPluginFn]]);
 
     expect(
       pluginLoader(specRegistry, [group1, pluginFn])
-        .map((r) => r.key)
+        .map((r) => (r as any).key)
         .includes('myPlug$'),
     ).toBe(true);
 
@@ -149,7 +155,7 @@ describe('Flattens plugins correctly', () => {
 
     expect(
       pluginLoader(specRegistry, [pluginFn], { metadata })
-        .map((r) => r.key)
+        .map((r) => (r as any).key)
         .includes('myPug$'),
     ).toBe(true);
 
@@ -182,7 +188,7 @@ describe('Flattens plugins correctly', () => {
   test('Includes history if not provided', () => {
     expect(
       pluginLoader(new SpecRegistry(), []).some((r) =>
-        r.key.startsWith('history$'),
+        (r as any).key.startsWith('history$'),
       ),
     ).toBe(true);
   });
@@ -190,7 +196,7 @@ describe('Flattens plugins correctly', () => {
   test('Does not include history if pluginGroup with name history exists', () => {
     expect(
       pluginLoader(new SpecRegistry(), [new PluginGroup('history', [])]).some(
-        (r) => r.key.startsWith('history$'),
+        (r) => (r as any).key.startsWith('history$'),
       ),
     ).toBe(false);
   });

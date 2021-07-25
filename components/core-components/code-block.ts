@@ -11,7 +11,7 @@ import {
 import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import { moveNode } from './core-commands';
+import { moveNode } from '@bangle.dev/pm-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

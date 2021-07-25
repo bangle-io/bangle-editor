@@ -7,7 +7,7 @@ import {
   wrappingInputRule,
 } from '@bangle.dev/pm';
 import type Token from 'markdown-it/lib/token';
-import { parentHasDirectParentOfType } from './core-commands';
+import { parentHasDirectParentOfType } from '@bangle.dev/pm-commands';
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "ES2020",
+    "allowJs": false,
     "target": "es2019",
     "strict": true,
     "declaration": true,

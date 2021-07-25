@@ -1,4 +1,4 @@
-import type { RawPlugins } from '../utils/plugin-loader';
+import type { RawPlugins } from '../plugin-loader';
 import type { RawSpecs } from '../spec-registry';
 import {
   Command,
@@ -21,7 +21,7 @@ import {
   jumpToStartOfNode,
   moveNode,
   parentHasDirectParentOfType,
-} from '../core-commands';
+} from '@bangle.dev/pm-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

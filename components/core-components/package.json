@@ -32,6 +32,7 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
+    "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*"
   },
   "devDependencies": {

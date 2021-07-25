@@ -44,4 +44,7 @@ if (typeof navigator !== 'undefined' && typeof document !== 'undefined') {
     'WebkitAppearance' in document.documentElement.style;
 }
 
-export { browser };
+const isChromeWithSelectionBug =
+  browser.chrome && !browser.android && browser.chrome_version >= 58;
+
+export { browser, isChromeWithSelectionBug };

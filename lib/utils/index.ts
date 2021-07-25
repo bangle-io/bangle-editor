@@ -8,3 +8,4 @@ export * from './browser';
 export * from './dom-helpers';
 export * from './mark-input-rule';
 export * from './mark-paste-rule';
+export * from './plugin-key-store';

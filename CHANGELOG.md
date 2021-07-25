@@ -6,6 +6,8 @@
 
 - Breaking: We are dropping `@bangle.dev/core` in favour of two new packages `@bangle.dev/editor` and `@bangle.dev/core-components`.
 
+- No longer exports the following undocumented API `browser`, `utils`, `logging` & `pluginKeyStore`.
+
 - `corePlugins`, `coreMarkSpec` `coreNodeSpec`, `coreSpec`, `components` what about these?
 
 Please follow the following steps to make the change.

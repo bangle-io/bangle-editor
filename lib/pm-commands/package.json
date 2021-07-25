@@ -1,5 +1,5 @@
 {
-  "name": "@bangle.dev/core",
+  "name": "@bangle.dev/pm-commands",
   "version": "0.25.3",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -31,17 +31,10 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "workspace:*",
-    "@types/jest": "^26.0.23",
-    "@types/markdown-it": "^12.0.3",
-    "@types/prosemirror-markdown": "^1.5.2",
-    "markdown-it": "^10.0.0",
-    "prettier": "^2.3.2",
-    "prosemirror-markdown": "^1.5.1"
+    "@bangle.dev/pm": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

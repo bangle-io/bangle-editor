@@ -1,4 +1,4 @@
-import type { RawPlugins } from '../utils/plugin-loader';
+import type { RawPlugins } from '../plugin-loader';
 import { PluginGroup } from '../plugin';
 import * as pmHistory from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';

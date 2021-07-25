@@ -1,10 +1,11 @@
-import { pluginKeyStore, SpecRegistry } from '@bangle.dev/core';
+import { SpecRegistry } from '@bangle.dev/core';
 import type { Command, Schema } from '@bangle.dev/pm';
 import { PluginKey } from '@bangle.dev/pm';
 import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
 import { createTooltipDOM, suggestTooltip } from '@bangle.dev/tooltip';
 import {
   bangleWarn,
+  pluginKeyStore,
   rafCommandExec,
   uuid,
   valuePlugin,

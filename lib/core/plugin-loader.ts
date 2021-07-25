@@ -11,10 +11,10 @@ import {
   undoInputRule as pmUndoInputRule,
 } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
-import * as editorStateCounter from '../base-components/editor-state-counter';
-import * as history from '../base-components/history';
-import { PluginGroup } from '../plugin';
-import type { SpecRegistry } from '../spec-registry';
+import * as editorStateCounter from './base-components/editor-state-counter';
+import * as history from './base-components/history';
+import { PluginGroup } from './plugin';
+import type { SpecRegistry } from './spec-registry';
 
 export interface PluginPayload<T = any> {
   schema: Schema;
@@ -22,14 +22,17 @@ export interface PluginPayload<T = any> {
   metadata: T;
 }
 
-export type RawPlugins<T = any> =
+type BaseRawPlugins =
   | false
   | null
   | Plugin
   | InputRule
   | PluginGroup
-  | RawPlugins<T>[]
-  | ((payLoad: PluginPayload<T>) => RawPlugins<T>);
+  | BaseRawPlugins[];
+
+export type RawPlugins<T = any> =
+  | BaseRawPlugins
+  | ((payLoad: PluginPayload<T>) => BaseRawPlugins);
 
 export function pluginLoader<T = any>(
   specRegistry: SpecRegistry,
@@ -69,6 +72,7 @@ export function pluginLoader<T = any>(
     }
 
     flatPlugins = flatPlugins.concat(
+      // TODO: deprecate the ability pass a callback to the plugins param of pluginGroup
       flatten(defaultPluginGroups, pluginPayload)[0],
     );
 
@@ -93,9 +97,6 @@ export function pluginLoader<T = any>(
   flatPlugins = transformPlugins(flatPlugins);
 
   if (flatPlugins.some((p: any) => !(p instanceof Plugin))) {
-    // console.log('flatPlugins=', flatPlugins)
-    // const x= flatPlugins.find((p) => !(p instanceof Plugin));
-    // console.log('p=', x)
     bangleWarn(
       'You are either using multiple versions of the library or not returning a Plugin class in your plugins. Investigate :',
       flatPlugins.find((p: any) => !(p instanceof Plugin)),

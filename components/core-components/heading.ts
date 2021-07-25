@@ -26,7 +26,7 @@ import {
   jumpToEndOfNode,
   jumpToStartOfNode,
   moveNode,
-} from './core-commands';
+} from '@bangle.dev/pm-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

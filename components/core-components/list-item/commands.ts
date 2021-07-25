@@ -41,7 +41,7 @@ import {
   validListParent,
   validPos,
 } from '@bangle.dev/utils';
-import type { MoveDirection } from '../core-commands';
+import type { MoveDirection } from '@bangle.dev/pm-commands';
 import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
 import { liftFollowingList, liftSelectionList } from './transforms';
 

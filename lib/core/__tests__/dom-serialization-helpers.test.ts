@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 import { baseComponents } from '../index';
-import { SpecRegistry } from '../spec-registry';
-import { domSerializationHelpers } from '../utils/dom-serialization-helpers';
+import { RawSpecs, SpecRegistry } from '../spec-registry';
+import { domSerializationHelpers } from '../dom-serialization-helpers';
 
 const { paragraph, doc, text } = baseComponents;
 
@@ -35,7 +35,7 @@ describe('domSerializationHelpers parseDOM', () => {
   });
 
   test('excludes attrs', () => {
-    const codeSpec = {
+    const codeSpec: RawSpecs = {
       type: 'node',
       name: 'codeBlock',
       schema: {
