@@ -33,3 +33,13 @@ For templating we use [handlebars](https://handlebarsjs.com) and a configuration
 - Update the changelog.
 
 - Run `yarn release-packages`.
+
+## Directory Structure
+
+The packages are divided in the following manner:
+
+- `lib`: The core library packages like `editor`, react framework, collaboration etc.
+
+- `components`: All packages in this directory are bangle components. Read this [doc](https://bangle.dev/docs/api/core/#component) to know more about what a bangle.dev component is.
+
+- `tooling`: Mostly for internal use like testing, glue code etc. This is only helpful for folks contributing to the project.
