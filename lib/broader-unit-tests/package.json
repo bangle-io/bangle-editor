@@ -1,6 +1,7 @@
 {
-  "name": "editor-tests",
+  "name": "broader-unit-tests",
   "private": true,
+  "description": "Tests which could not fit anywhere due to dependency cycle issues",
   "dependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/core-components": "workspace:*",

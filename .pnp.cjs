@@ -79,6 +79,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:components/wiki-link"
       },
       {
+        "name": "broader-unit-tests",
+        "reference": "workspace:lib/broader-unit-tests"
+      },
+      {
         "name": "@bangle.dev/collab-client",
         "reference": "workspace:lib/collab-client"
       },
@@ -123,10 +127,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:tooling/e2e-tests"
       },
       {
-        "name": "editor-tests",
-        "reference": "workspace:tooling/editor-tests"
-      },
-      {
         "name": "@bangle.dev/jest-utils",
         "reference": "workspace:tooling/jest-utils"
       },
@@ -165,8 +165,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@bangle.dev/wiki-link", ["workspace:components/wiki-link"]],
       ["bangle-scripts", ["workspace:tooling/bangle-scripts"]],
       ["bangle.dev", ["workspace:."]],
-      ["e2e-tests", ["workspace:tooling/e2e-tests"]],
-      ["editor-tests", ["workspace:tooling/editor-tests"]]
+      ["broader-unit-tests", ["workspace:lib/broader-unit-tests"]],
+      ["e2e-tests", ["workspace:tooling/e2e-tests"]]
     ],
     "fallbackPool": [
     ],
@@ -7544,6 +7544,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["broader-unit-tests", [
+        ["workspace:lib/broader-unit-tests", {
+          "packageLocation": "./lib/broader-unit-tests/",
+          "packageDependencies": [
+            ["broader-unit-tests", "workspace:lib/broader-unit-tests"],
+            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
+            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
+            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
+            ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["browser-process-hrtime", [
         ["npm:1.0.0", {
           "packageLocation": "./.yarn/cache/browser-process-hrtime-npm-1.0.0-db700805c2-e30f868cdb.zip/node_modules/browser-process-hrtime/",
@@ -9149,21 +9164,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["safer-buffer", "npm:2.1.2"]
           ],
           "linkType": "HARD",
-        }]
-      ]],
-      ["editor-tests", [
-        ["workspace:tooling/editor-tests", {
-          "packageLocation": "./tooling/editor-tests/",
-          "packageDependencies": [
-            ["editor-tests", "workspace:tooling/editor-tests"],
-            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
-            ["@bangle.dev/pm", "workspace:lib/pm"],
-            ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
-            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]
-          ],
-          "linkType": "SOFT",
         }]
       ]],
       ["electron-to-chromium", [

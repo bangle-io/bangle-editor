@@ -18,6 +18,9 @@
   ],
   "references": [
     {
+      "path": "../../components/core-components/tsconfig.json"
+    },
+    {
       "path": "../../components/table/tsconfig.json"
     },
     {

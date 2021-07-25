@@ -19,6 +19,12 @@
   "references": [
     {
       "path": "../../components/core-components/tsconfig.json"
+    },
+    {
+      "path": "../../lib/core/tsconfig.json"
+    },
+    {
+      "path": "../../lib/pm/tsconfig.json"
     }
   ]
 }
