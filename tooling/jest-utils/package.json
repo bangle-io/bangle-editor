@@ -1,6 +1,7 @@
 {
   "name": "@bangle.dev/jest-utils",
   "main": "index.js",
+  "private": true,
   "dependencies": {
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",

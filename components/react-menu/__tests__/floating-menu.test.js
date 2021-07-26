@@ -170,3 +170,55 @@ describe('Link menu', () => {
     });
   });
 });
+
+describe('works in link is not in schema', () => {
+  test('works', async () => {
+    const specRegistry = new SpecRegistry(defaultSpecs({ link: false }));
+
+    const plugins = () => [
+      floatingMenu.plugins({
+        key: menuKey,
+      }),
+    ];
+
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+
+    const { view, container } = await testEditor(
+      <doc>
+        <para>foo[]bar</para>
+      </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: false,
+      tooltipContentDOM: expect.any(window.Node),
+      type: null,
+    });
+  });
+
+  test('selecting works', async () => {
+    const specRegistry = new SpecRegistry(defaultSpecs({ link: false }));
+
+    const plugins = () => [
+      floatingMenu.plugins({
+        key: menuKey,
+      }),
+    ];
+
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+
+    const { view, container } = await testEditor(
+      <doc>
+        <para>f[oo]bar</para>
+      </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: true,
+      tooltipContentDOM: expect.any(window.Node),
+      type: 'defaultMenu',
+    });
+  });
+});

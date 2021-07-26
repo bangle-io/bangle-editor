@@ -10,6 +10,7 @@ import {
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
 import { filter, rafCommandExec } from '@bangle.dev/utils';
+import { hasComponentInSchema } from './helper';
 
 const {
   queryIsSelectionTooltipActive,
@@ -35,11 +36,13 @@ export const defaultCalculateType = (
   state: EditorState,
   _prevType: string | null,
 ) => {
-  if (
-    link.queryIsSelectionAroundLink()(state) ||
-    link.queryIsLinkActive()(state)
-  ) {
-    return 'linkSubMenu';
+  if (hasComponentInSchema(state, 'link')) {
+    if (
+      link.queryIsSelectionAroundLink()(state) ||
+      link.queryIsLinkActive()(state)
+    ) {
+      return 'linkSubMenu';
+    }
   }
   if (state.selection.empty) {
     return null;
@@ -87,6 +90,10 @@ function floatingMenu({
 export function toggleLinkSubMenu(key: PluginKey): Command {
   return (state, _dispatch, view) => {
     const type = querySelectionTooltipType(key)(state);
+
+    if (!hasComponentInSchema(state, 'link')) {
+      return false;
+    }
 
     if (state.selection.empty) {
       // Focus on link tooltip by keyboard shortcut
