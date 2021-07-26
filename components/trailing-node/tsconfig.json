@@ -18,6 +18,9 @@
   ],
   "references": [
     {
+      "path": "../base-components/tsconfig.json"
+    },
+    {
       "path": "../../lib/core/tsconfig.json"
     },
     {
@@ -25,6 +28,12 @@
     },
     {
       "path": "../../lib/utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/all-base-components/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/test-helpers/tsconfig.json"
     }
   ]
 }

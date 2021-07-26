@@ -1,0 +1,19 @@
+{
+  "name": "@bangle.dev/all-base-components",
+  "description": "A utility function to get all base components",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@bangle.dev/base-components": "workspace:*",
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/pm": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  },
+  "version": "0.26.0-alpha.3"
+}

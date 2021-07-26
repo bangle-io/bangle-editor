@@ -1,0 +1,55 @@
+{
+  "name": "@bangle.dev/base-components",
+  "version": "0.26.0-alpha.3",
+  "homepage": "https://bangle.dev",
+  "authors": [
+    {
+      "name": "Kushan Joshi",
+      "email": "0o3ko0@gmail.com",
+      "web": "http://github.com/kepta"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
+  },
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "dist/index.d.ts",
+  "style": "style.css",
+  "scripts": {
+    "unit-tests": "yarn jest",
+    "compile-ts": "yarn g:tsc --build $INIT_CWD",
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
+    "prepack": "yarn compile-ts"
+  },
+  "peerDependencies": {
+    "@bangle.dev/core": "*",
+    "@bangle.dev/pm": "*"
+  },
+  "dependencies": {
+    "@bangle.dev/pm-commands": "workspace:*",
+    "@bangle.dev/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*",
+    "@types/jest": "^26.0.23",
+    "@types/markdown-it": "^12.0.3",
+    "@types/prosemirror-markdown": "^1.5.2",
+    "markdown-it": "^10.0.0",
+    "prettier": "^2.3.2",
+    "prosemirror-markdown": "^1.5.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  }
+}

@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": ".",
     "outDir": "./dist",
     "rootDir": "."
@@ -18,6 +17,9 @@
     "dist"
   ],
   "references": [
+    {
+      "path": "../pm-commands/tsconfig.json"
+    },
     {
       "path": "../pm/tsconfig.json"
     },

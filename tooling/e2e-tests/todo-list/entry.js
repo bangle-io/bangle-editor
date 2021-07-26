@@ -1,5 +1,5 @@
 import '../setup/entry.css';
-import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
+import { defaultPlugins } from '@bangle.dev/all-base-components';
 import {
   __serializeForClipboard,
   __parseFromClipboard,

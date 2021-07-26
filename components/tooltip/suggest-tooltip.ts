@@ -1,4 +1,3 @@
-import { isChromeWithSelectionBug } from '@bangle.dev/core';
 import {
   Command,
   EditorState,
@@ -11,7 +10,12 @@ import {
   Schema,
   Selection,
 } from '@bangle.dev/pm';
-import { filter, findFirstMarkPosition, safeInsert } from '@bangle.dev/utils';
+import {
+  isChromeWithSelectionBug,
+  filter,
+  findFirstMarkPosition,
+  safeInsert,
+} from '@bangle.dev/utils';
 import type {
   GetReferenceElementFunction,
   TooltipRenderOpts,

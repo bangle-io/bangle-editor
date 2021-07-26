@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/text-formatting",
-  "version": "0.25.1",
+  "version": "0.26.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -33,7 +33,8 @@
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/pm": "workspace:*"
+    "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

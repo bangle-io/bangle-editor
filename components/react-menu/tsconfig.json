@@ -20,6 +20,9 @@
   ],
   "references": [
     {
+      "path": "../base-components/tsconfig.json"
+    },
+    {
       "path": "../tooltip/tsconfig.json"
     },
     {
@@ -33,6 +36,9 @@
     },
     {
       "path": "../../lib/utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/all-base-components/tsconfig.json"
     }
   ]
 }

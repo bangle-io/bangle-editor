@@ -3,7 +3,9 @@
  */
 
 /** @jsx pjsx */
-import { components, coreSpec, SpecRegistry } from '@bangle.dev/core';
+import { SpecRegistry } from '@bangle.dev/core';
+import { defaultSpecs } from '@bangle.dev/all-base-components';
+import { link } from '@bangle.dev/base-components';
 import { NodeSelection, PluginKey, TextSelection } from '@bangle.dev/pm';
 import {
   pjsx,
@@ -12,9 +14,10 @@ import {
 import { floatingMenu } from '../index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
-const specRegistry = new SpecRegistry(coreSpec());
+const specRegistry = new SpecRegistry(defaultSpecs());
+
 const plugins = () => [
-  components.link.plugins(),
+  link.plugins(),
   floatingMenu.plugins({
     key: menuKey,
   }),
@@ -157,6 +160,58 @@ describe('Link menu', () => {
 
     view.dispatch(
       view.state.tr.setSelection(NodeSelection.create(view.state.doc, 1)),
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: true,
+      tooltipContentDOM: expect.any(window.Node),
+      type: 'defaultMenu',
+    });
+  });
+});
+
+describe('works in link is not in schema', () => {
+  test('works', async () => {
+    const specRegistry = new SpecRegistry(defaultSpecs({ link: false }));
+
+    const plugins = () => [
+      floatingMenu.plugins({
+        key: menuKey,
+      }),
+    ];
+
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+
+    const { view, container } = await testEditor(
+      <doc>
+        <para>foo[]bar</para>
+      </doc>,
+    );
+
+    expect(menuKey.getState(view.state)).toMatchObject({
+      calculateType: expect.any(Function),
+      show: false,
+      tooltipContentDOM: expect.any(window.Node),
+      type: null,
+    });
+  });
+
+  test('selecting works', async () => {
+    const specRegistry = new SpecRegistry(defaultSpecs({ link: false }));
+
+    const plugins = () => [
+      floatingMenu.plugins({
+        key: menuKey,
+      }),
+    ];
+
+    const testEditor = reactTestEditor({ specRegistry, plugins });
+
+    const { view, container } = await testEditor(
+      <doc>
+        <para>f[oo]bar</para>
+      </doc>,
     );
 
     expect(menuKey.getState(view.state)).toMatchObject({

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/markdown",
-  "version": "0.25.1",
+  "version": "0.26.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -35,9 +35,11 @@
     "@bangle.dev/pm": "*"
   },
   "devDependencies": {
+    "@bangle.dev/base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*",
     "@types/markdown-it": "^12.0.3",
     "@types/prosemirror-markdown": "^1.5.2"
   },

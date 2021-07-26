@@ -9,7 +9,8 @@
   },
   "include": [
     "./*.ts",
-    "./**/*.ts"
+    "./**/*.ts",
+    "../../missing-types.d.ts"
   ],
   "exclude": [
     "__tests__",
@@ -25,6 +26,12 @@
     },
     {
       "path": "../../lib/utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/all-base-components/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/test-helpers/tsconfig.json"
     }
   ]
 }

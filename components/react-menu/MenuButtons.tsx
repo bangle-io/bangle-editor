@@ -9,7 +9,7 @@ import {
   link,
   orderedList,
   paragraph,
-} from '@bangle.dev/core';
+} from '@bangle.dev/base-components';
 import { EditorState, PluginKey } from '@bangle.dev/pm';
 import { useEditorViewContext } from '@bangle.dev/react';
 import { filter, rafCommandExec } from '@bangle.dev/utils';

@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-stopwatch",
-  "version": "0.25.1",
+  "version": "0.26.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -36,11 +36,13 @@
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
+    "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*",
     "@testing-library/react": "^11.2.7",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",

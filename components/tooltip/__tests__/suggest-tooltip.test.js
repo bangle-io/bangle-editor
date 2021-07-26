@@ -5,17 +5,14 @@
 /** @jsx psx */
 
 import { SpecRegistry } from '@bangle.dev/core';
-import {
-  defaultPlugins,
-  defaultSpecs,
-} from '@bangle.dev/core/test-helpers/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import {
   psx,
   renderTestEditor,
   sendKeyToPm,
   typeChar,
   typeText,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+} from '@bangle.dev/test-helpers';
 import { PluginKey, Selection } from '@bangle.dev/pm';
 import { sleep } from '@bangle.dev/utils';
 import { suggestTooltip } from '../index';

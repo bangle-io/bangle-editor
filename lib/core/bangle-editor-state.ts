@@ -9,7 +9,7 @@ import {
   Selection,
 } from '@bangle.dev/pm';
 import { RawSpecs, SpecRegistry } from './spec-registry';
-import { pluginLoader, RawPlugins } from './utils/plugin-loader';
+import { pluginLoader, RawPlugins } from './plugin-loader';
 
 type InitialContent = string | Node | object;
 

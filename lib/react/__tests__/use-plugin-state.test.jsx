@@ -3,10 +3,7 @@
  * @jsx pjsx
  */
 import { Plugin, PluginKey, SpecRegistry } from '@bangle.dev/core';
-import {
-  defaultPlugins,
-  defaultSpecs,
-} from '@bangle.dev/core/test-helpers/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { act, render } from '@testing-library/react';
 import { useEffect, useState } from 'react';
 import { BangleEditor, useEditorState, usePluginState } from '../index';

@@ -9,7 +9,7 @@ import {
   renderTestEditor,
   sendKeyToPm,
   setSelectionNear,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+} from '@bangle.dev/test-helpers';
 import { subscript, superscript } from '../index';
 
 const toggleKey = 'Ctrl-s';

@@ -3,21 +3,22 @@
  */
 
 /** @jsx psx */
-import { corePlugins, heading, SpecRegistry } from '@bangle.dev/core';
-import { defaultSpecs } from '@bangle.dev/core/test-helpers/default-components';
+import { SpecRegistry } from '@bangle.dev/core';
+import { heading } from '@bangle.dev/base-components';
+import { defaultSpecs, defaultPlugins } from '@bangle.dev/all-base-components';
 import {
   psx,
   renderTestEditor,
   sendKeyToPm,
   typeText,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+} from '@bangle.dev/test-helpers';
 import { trailingNode } from '../index';
 
 const specRegistry = new SpecRegistry([
   ...defaultSpecs(),
   trailingNode.spec({}),
 ]);
-const plugins = [...corePlugins(), trailingNode.plugins({})];
+const plugins = [...defaultPlugins(), trailingNode.plugins({})];
 
 const testEditor = renderTestEditor({
   specRegistry,

@@ -6,11 +6,10 @@
 import {
   BangleEditor,
   BangleEditorState,
-  coreSpec,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
-import { psx } from '@bangle.dev/core/test-helpers/test-helpers';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { psx } from '@bangle.dev/test-helpers';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
 import { createTooltipDOM } from '../create-tooltip-dom';
@@ -80,7 +79,7 @@ const setupTooltipPlugin = ({ stateKey, renderOpts }) => {
 };
 
 const setupEditorState = (plugin) => {
-  const specRegistry = new SpecRegistry(coreSpec());
+  const specRegistry = new SpecRegistry(defaultSpecs());
   const plugins = () => [...defaultPlugins(), plugin];
 
   // console.log(plugins())

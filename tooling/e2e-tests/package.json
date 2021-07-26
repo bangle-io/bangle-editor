@@ -1,6 +1,6 @@
 {
   "name": "e2e-tests",
-  "version": "0.25.1",
+  "version": "0.26.0-alpha.3",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -25,6 +25,7 @@
     "e2e:test": "yarn test"
   },
   "dependencies": {
+    "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "workspace:*",

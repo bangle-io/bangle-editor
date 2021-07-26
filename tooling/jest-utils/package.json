@@ -1,0 +1,13 @@
+{
+  "name": "@bangle.dev/jest-utils",
+  "main": "index.js",
+  "dependencies": {
+    "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/test-helpers": "workspace:*",
+    "prettier": "^2.3.2"
+  },
+  "version": "0.26.0-alpha.3",
+  "publishConfig": {
+    "access": "public"
+  }
+}

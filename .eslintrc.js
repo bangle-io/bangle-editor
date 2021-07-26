@@ -24,6 +24,7 @@ module.exports = {
   rules: {
     'curly': 'error',
     'no-process-env': 'error',
+    'no-debugger': 'error',
     'import/no-cycle': [
       2,
       // eslint-disable-next-line no-process-env

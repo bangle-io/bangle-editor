@@ -3,14 +3,8 @@
  */
 /** @jsx psx */
 import { SpecRegistry } from '@bangle.dev/core';
-import {
-  defaultPlugins,
-  defaultSpecs,
-} from '@bangle.dev/core/test-helpers/default-components';
-import {
-  psx,
-  renderTestEditor,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 import {
   getDefaultMarkdownItTokenizer,
   markdownParser,

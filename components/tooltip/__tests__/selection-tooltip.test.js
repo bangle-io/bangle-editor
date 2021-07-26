@@ -4,23 +4,19 @@
 
 /** @jsx psx */
 
-import { coreSpec, SpecRegistry } from '@bangle.dev/core';
-import { defaultPlugins } from '@bangle.dev/core/test-helpers/default-components';
-import {
-  psx,
-  renderTestEditor,
-  typeText,
-} from '@bangle.dev/core/test-helpers/test-helpers';
+import { SpecRegistry } from '@bangle.dev/core';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { psx, typeText, renderTestEditor } from '@bangle.dev/test-helpers';
 import { EditorState, PluginKey, TextSelection } from '@bangle.dev/pm';
 import { createTooltipDOM, selectionTooltip } from '../index';
 import { _syncTooltipOnUpdate } from '../selection-tooltip';
 
-const specRegistry = new SpecRegistry(coreSpec());
-
 describe('selection-tooltip', () => {
-  let testEditor, tooltipDOMSpec;
+  let testEditor, tooltipDOMSpec, specRegistry;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
+    specRegistry = new SpecRegistry(defaultSpecs());
+
     tooltipDOMSpec = createTooltipDOM();
     tooltipDOMSpec.contentDOM.textContent = 'hello world';
 
@@ -183,6 +179,8 @@ describe('commands', () => {
   let testEditor, tooltipDOMSpec, specRegistry;
   let key = new PluginKey('selection_tooltip');
   beforeEach(() => {
+    specRegistry = new SpecRegistry(defaultSpecs());
+
     tooltipDOMSpec = createTooltipDOM();
 
     tooltipDOMSpec.contentDOM.textContent = 'hello world';

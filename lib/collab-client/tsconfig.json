@@ -31,6 +31,12 @@
     },
     {
       "path": "../utils/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/all-base-components/tsconfig.json"
+    },
+    {
+      "path": "../../tooling/test-helpers/tsconfig.json"
     }
   ]
 }
