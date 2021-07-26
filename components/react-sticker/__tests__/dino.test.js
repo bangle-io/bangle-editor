@@ -3,7 +3,7 @@
  */
 /** @jsx pjsx */
 import { SpecRegistry } from '@bangle.dev/core';
-import { defaultPlugins, defaultSpecs } from '@bangle.dev/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { markdownSerializer } from '@bangle.dev/markdown';
 import {
   pjsx,

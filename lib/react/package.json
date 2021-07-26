@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react",
-  "version": "0.25.3",
+  "version": "0.26.0-alpha.0",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -44,8 +44,8 @@
     "react-dom": ">=16.0.0"
   },
   "devDependencies": {
+    "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@testing-library/dom": "^7.31.2",

@@ -1,5 +1,6 @@
 {
-  "name": "@bangle.dev/default-components",
+  "name": "@bangle.dev/all-base-components",
+  "description": "A utility function to get all base components",
   "main": "index.ts",
   "module": "index.ts",
   "types": "dist/index.d.ts",
@@ -13,5 +14,6 @@
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  }
+  },
+  "version": "0.26.0-alpha.0"
 }

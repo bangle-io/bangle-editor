@@ -4,7 +4,7 @@
 
 /** @jsx pjsx */
 import { SpecRegistry } from '@bangle.dev/core';
-import { defaultSpecs } from '@bangle.dev/default-components';
+import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { link } from '@bangle.dev/base-components';
 import { NodeSelection, PluginKey, TextSelection } from '@bangle.dev/pm';
 import {

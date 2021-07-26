@@ -124,6 +124,9 @@
       "path": "lib/markdown/tsconfig.test.json"
     },
     {
+      "path": "lib/pm-commands/tsconfig.json"
+    },
+    {
       "path": "lib/pm/tsconfig.json"
     },
     {
@@ -142,10 +145,10 @@
       "path": "lib/utils/tsconfig.test.json"
     },
     {
-      "path": "tooling/default-components/tsconfig.json"
+      "path": "tooling/all-base-components/tsconfig.json"
     },
     {
-      "path": "tooling/default-components/tsconfig.test.json"
+      "path": "tooling/all-base-components/tsconfig.test.json"
     },
     {
       "path": "tooling/test-helpers/tsconfig.json"

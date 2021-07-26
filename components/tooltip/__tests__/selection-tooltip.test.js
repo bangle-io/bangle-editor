@@ -5,7 +5,7 @@
 /** @jsx psx */
 
 import { SpecRegistry } from '@bangle.dev/core';
-import { defaultPlugins, defaultSpecs } from '@bangle.dev/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx, typeText, renderTestEditor } from '@bangle.dev/test-helpers';
 import { EditorState, PluginKey, TextSelection } from '@bangle.dev/pm';
 import { createTooltipDOM, selectionTooltip } from '../index';

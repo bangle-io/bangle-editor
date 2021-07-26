@@ -1731,6 +1731,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bangle.dev/all-base-components@workspace:*, @bangle.dev/all-base-components@workspace:tooling/all-base-components":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/all-base-components@workspace:tooling/all-base-components"
+  dependencies:
+    "@bangle.dev/base-components": "workspace:*"
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/pm": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@bangle.dev/base-components@workspace:*, @bangle.dev/base-components@workspace:components/base-components":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/base-components@workspace:components/base-components"
@@ -1756,9 +1766,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collab-client@workspace:lib/collab-client"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
@@ -1780,8 +1790,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collab-server@workspace:lib/collab-server"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
@@ -1813,16 +1823,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/default-components@workspace:*, @bangle.dev/default-components@workspace:tooling/default-components":
-  version: 0.0.0-use.local
-  resolution: "@bangle.dev/default-components@workspace:tooling/default-components"
-  dependencies:
-    "@bangle.dev/base-components": "workspace:*"
-    "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/pm": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "@bangle.dev/disk@workspace:*, @bangle.dev/disk@workspace:lib/disk":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/disk@workspace:lib/disk"
@@ -1838,8 +1838,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/emoji@workspace:components/emoji"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/table": "workspace:*"
@@ -1869,8 +1869,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/markdown-front-matter@workspace:components/markdown-front-matter"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/table": "workspace:*"
@@ -1973,9 +1973,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/react-menu@workspace:components/react-menu"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/react": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
@@ -2001,8 +2001,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/react-sticker@workspace:components/react-sticker"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/react": "workspace:*"
@@ -2029,8 +2029,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/react-stopwatch@workspace:components/react-stopwatch"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/react": "workspace:*"
@@ -2056,8 +2056,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/react@workspace:lib/react"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
@@ -2086,8 +2086,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/search@workspace:components/search"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
@@ -2163,8 +2163,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/tooltip@workspace:components/tooltip"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
@@ -2180,9 +2180,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/trailing-node@workspace:components/trailing-node"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
@@ -2212,8 +2212,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/wiki-link@workspace:components/wiki-link"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/table": "workspace:*"
@@ -4917,9 +4917,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "broader-unit-tests@workspace:lib/broader-unit-tests"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
@@ -6277,8 +6277,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "e2e-tests@workspace:tooling/e2e-tests"
   dependencies:
+    "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/react": "workspace:*"

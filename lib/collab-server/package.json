@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-server",
-  "version": "0.25.3",
+  "version": "0.26.0-alpha.0",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -32,8 +32,8 @@
     "prepack": "yarn compile-ts"
   },
   "devDependencies": {
+    "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",

@@ -8,7 +8,7 @@ import {
   BangleEditorState,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { defaultPlugins, defaultSpecs } from '@bangle.dev/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx } from '@bangle.dev/test-helpers';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { createPopper } from '@popperjs/core/lib/popper-lite';

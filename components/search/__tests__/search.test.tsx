@@ -4,7 +4,7 @@
 /** @jsx psx */
 
 import { PluginKey, SpecRegistry } from '@bangle.dev/core';
-import { defaultSpecs } from '@bangle.dev/default-components';
+import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 import { search } from '../index';
 

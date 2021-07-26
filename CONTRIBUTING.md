@@ -20,7 +20,7 @@ yarn test
 
 The API documentation for each package is expected in to be inside an `api.md` file at the same level as the `package.json` of that package. The repository [bangle.dev-website](https://github.com/bangle-io/bangle.dev-website) takes care of building and templating the api docs.
 
-For templating we use [handlebars](https://handlebarsjs.com) and a configuration file [`api-docs.config.js`](https://github.com/bangle-io/bangle.dev-website/blob/main/api-docs.config.js). The config includes a bunch of shorthands & helper functions which are used by [handlebars](https://handlebarsjs.com) to generate the final product.
+For templating we use [handlebars](https://handlebarsjs.com) and a configuration file `api-docs.config.js`. The config includes a bunch of shorthands & helper functions which are used by [handlebars](https://handlebarsjs.com) to generate the final product.
 
 ### Steps to do a release
 

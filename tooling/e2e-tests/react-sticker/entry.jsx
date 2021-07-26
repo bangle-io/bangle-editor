@@ -1,6 +1,6 @@
 import '../setup/entry.css';
 import React from 'react';
-import { defaultPlugins, defaultSpecs } from '@bangle.dev/default-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { DOMSerializer, Slice } from 'prosemirror-model';
 import { sticker } from '@bangle.dev/react-sticker';

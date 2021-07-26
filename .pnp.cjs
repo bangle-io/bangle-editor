@@ -119,12 +119,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:lib/utils"
       },
       {
-        "name": "bangle-scripts",
-        "reference": "workspace:tooling/bangle-scripts"
+        "name": "@bangle.dev/all-base-components",
+        "reference": "workspace:tooling/all-base-components"
       },
       {
-        "name": "@bangle.dev/default-components",
-        "reference": "workspace:tooling/default-components"
+        "name": "bangle-scripts",
+        "reference": "workspace:tooling/bangle-scripts"
       },
       {
         "name": "e2e-tests",
@@ -142,11 +142,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?)|$))$)",
     "fallbackExclusionList": [
-      ["@bangle.dev/base-components", ["virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components", "workspace:components/base-components"]],
+      ["@bangle.dev/all-base-components", ["workspace:tooling/all-base-components"]],
+      ["@bangle.dev/base-components", ["virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components", "workspace:components/base-components"]],
       ["@bangle.dev/collab-client", ["virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:lib/collab-client", "workspace:lib/collab-client"]],
       ["@bangle.dev/collab-server", ["virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/collab-server", "workspace:lib/collab-server"]],
       ["@bangle.dev/core", ["virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core", "workspace:lib/core"]],
-      ["@bangle.dev/default-components", ["workspace:tooling/default-components"]],
       ["@bangle.dev/disk", ["virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk", "workspace:lib/disk"]],
       ["@bangle.dev/emoji", ["virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/emoji", "workspace:components/emoji"]],
       ["@bangle.dev/jest-utils", ["workspace:tooling/jest-utils"]],
@@ -3293,11 +3293,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["@bangle.dev/base-components", [
-        ["virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components", {
-          "packageLocation": "./.yarn/__virtual__/@bangle.dev-base-components-virtual-5076d7ea46/1/components/base-components/",
+      ["@bangle.dev/all-base-components", [
+        ["workspace:tooling/all-base-components", {
+          "packageLocation": "./tooling/all-base-components/",
           "packageDependencies": [
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
+            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
+            ["@bangle.dev/pm", "workspace:lib/pm"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@bangle.dev/base-components", [
+        ["virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components", {
+          "packageLocation": "./.yarn/__virtual__/@bangle.dev-base-components-virtual-532563963c/1/components/base-components/",
+          "packageDependencies": [
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
@@ -3344,9 +3356,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-client-virtual-376fd8bbb0/1/lib/collab-client/",
           "packageDependencies": [
             ["@bangle.dev/collab-client", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:lib/collab-client"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/collab-server", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/collab-server"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
@@ -3375,9 +3387,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/collab-client/",
           "packageDependencies": [
             ["@bangle.dev/collab-client", "workspace:lib/collab-client"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/collab-server", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/collab-server"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
@@ -3397,8 +3409,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-server-virtual-d26ed922c4/1/lib/collab-server/",
           "packageDependencies": [
             ["@bangle.dev/collab-server", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/collab-server"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -3421,8 +3433,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/collab-server/",
           "packageDependencies": [
             ["@bangle.dev/collab-server", "workspace:lib/collab-server"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -3473,18 +3485,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
-      ["@bangle.dev/default-components", [
-        ["workspace:tooling/default-components", {
-          "packageLocation": "./tooling/default-components/",
-          "packageDependencies": [
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
-            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/pm", "workspace:lib/pm"]
-          ],
-          "linkType": "SOFT",
-        }]
-      ]],
       ["@bangle.dev/disk", [
         ["virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk", {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-disk-virtual-9f730c3283/1/lib/disk/",
@@ -3515,8 +3515,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-emoji-virtual-e5584b9c44/1/components/emoji/",
           "packageDependencies": [
             ["@bangle.dev/emoji", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/emoji"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -3541,8 +3541,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/emoji/",
           "packageDependencies": [
             ["@bangle.dev/emoji", "workspace:components/emoji"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -3573,7 +3573,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-markdown-virtual-58d0a7e99f/1/lib/markdown/",
           "packageDependencies": [
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -3598,7 +3598,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/markdown/",
           "packageDependencies": [
             ["@bangle.dev/markdown", "workspace:lib/markdown"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -3617,8 +3617,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-markdown-front-matter-virtual-5d3b71a795/1/components/markdown-front-matter/",
           "packageDependencies": [
             ["@bangle.dev/markdown-front-matter", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/markdown-front-matter"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -3639,8 +3639,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/markdown-front-matter/",
           "packageDependencies": [
             ["@bangle.dev/markdown-front-matter", "workspace:components/markdown-front-matter"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -3713,8 +3713,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-react-virtual-ff2b241ad5/1/lib/react/",
           "packageDependencies": [
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -3750,8 +3750,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/react/",
           "packageDependencies": [
             ["@bangle.dev/react", "workspace:lib/react"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -3833,9 +3833,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-react-menu-virtual-574945f4bb/1/components/react-menu/",
           "packageDependencies": [
             ["@bangle.dev/react-menu", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/react-menu"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
             ["@bangle.dev/tooltip", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/tooltip"],
@@ -3872,9 +3872,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/react-menu/",
           "packageDependencies": [
             ["@bangle.dev/react-menu", "workspace:components/react-menu"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
             ["@bangle.dev/tooltip", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/tooltip"],
@@ -3895,8 +3895,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-react-sticker-virtual-78892ed6d6/1/components/react-sticker/",
           "packageDependencies": [
             ["@bangle.dev/react-sticker", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/react-sticker"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
@@ -3934,8 +3934,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/react-sticker/",
           "packageDependencies": [
             ["@bangle.dev/react-sticker", "workspace:components/react-sticker"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
@@ -3957,8 +3957,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-react-stopwatch-virtual-3448a40884/1/components/react-stopwatch/",
           "packageDependencies": [
             ["@bangle.dev/react-stopwatch", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/react-stopwatch"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
@@ -3995,8 +3995,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/react-stopwatch/",
           "packageDependencies": [
             ["@bangle.dev/react-stopwatch", "workspace:components/react-stopwatch"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
@@ -4017,8 +4017,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-search-virtual-30c4437980/1/components/search/",
           "packageDependencies": [
             ["@bangle.dev/search", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/search"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -4038,8 +4038,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/search/",
           "packageDependencies": [
             ["@bangle.dev/search", "workspace:components/search"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -4172,8 +4172,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-tooltip-virtual-2ef7e930d9/1/components/tooltip/",
           "packageDependencies": [
             ["@bangle.dev/tooltip", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/tooltip"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -4194,8 +4194,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/tooltip/",
           "packageDependencies": [
             ["@bangle.dev/tooltip", "workspace:components/tooltip"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -4210,9 +4210,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-trailing-node-virtual-c3c763ebc9/1/components/trailing-node/",
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/trailing-node"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -4231,9 +4231,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/trailing-node/",
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "workspace:components/trailing-node"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]
@@ -4281,8 +4281,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/wiki-link/",
           "packageDependencies": [
             ["@bangle.dev/wiki-link", "workspace:components/wiki-link"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
@@ -7584,9 +7584,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/broader-unit-tests/",
           "packageDependencies": [
             ["broader-unit-tests", "workspace:lib/broader-unit-tests"],
-            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
+            ["@bangle.dev/base-components", "virtual:4b7d049de352840a97d134924cae96f8c60ab7270b5597c849a94dc7dfc29cf6f4660b34c9bc2039ad7f13acb6a58935c0dfab0511262f52c79ed2fa4bf4a09f#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
@@ -9147,8 +9147,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./tooling/e2e-tests/",
           "packageDependencies": [
             ["e2e-tests", "workspace:tooling/e2e-tests"],
+            ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],

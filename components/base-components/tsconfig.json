@@ -21,6 +21,9 @@
       "path": "../../lib/core/tsconfig.json"
     },
     {
+      "path": "../../lib/pm-commands/tsconfig.json"
+    },
+    {
       "path": "../../lib/pm/tsconfig.json"
     },
     {

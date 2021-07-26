@@ -18,9 +18,6 @@
   ],
   "references": [
     {
-      "path": "../pm-commands/tsconfig.json"
-    },
-    {
       "path": "../pm/tsconfig.json"
     },
     {

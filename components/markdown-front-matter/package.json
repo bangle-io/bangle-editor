@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/markdown-front-matter",
-  "version": "0.25.3",
+  "version": "0.26.0-alpha.0",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -30,8 +30,8 @@
     "@bangle.dev/pm": "*"
   },
   "devDependencies": {
+    "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/table": "workspace:*",

@@ -3,7 +3,7 @@
  */
 /** @jsx psx */
 import { psx, renderTestEditor, typeText } from '@bangle.dev/test-helpers';
-import { defaultSpecs, defaultPlugins } from '@bangle.dev/default-components';
+import { defaultSpecs, defaultPlugins } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 
 const testEditor = renderTestEditor({
