@@ -1,4 +1,4 @@
-import { link } from '@bangle.dev/core-components';
+import { link } from '@bangle.dev/base-components';
 import { EditorView } from '@bangle.dev/pm';
 import { useEditorViewContext } from '@bangle.dev/react';
 import React, { useRef, useState } from 'react';

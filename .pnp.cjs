@@ -23,8 +23,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."
       },
       {
-        "name": "@bangle.dev/core-components",
-        "reference": "workspace:components/core-components"
+        "name": "@bangle.dev/base-components",
+        "reference": "workspace:components/base-components"
       },
       {
         "name": "@bangle.dev/emoji",
@@ -142,10 +142,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?)|$))$)",
     "fallbackExclusionList": [
+      ["@bangle.dev/base-components", ["virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components", "workspace:components/base-components"]],
       ["@bangle.dev/collab-client", ["virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:lib/collab-client", "workspace:lib/collab-client"]],
       ["@bangle.dev/collab-server", ["virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/collab-server", "workspace:lib/collab-server"]],
       ["@bangle.dev/core", ["virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core", "workspace:lib/core"]],
-      ["@bangle.dev/core-components", ["virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components", "workspace:components/core-components"]],
       ["@bangle.dev/default-components", ["workspace:tooling/default-components"]],
       ["@bangle.dev/disk", ["virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk", "workspace:lib/disk"]],
       ["@bangle.dev/emoji", ["virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/emoji", "workspace:components/emoji"]],
@@ -3293,6 +3293,52 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@bangle.dev/base-components", [
+        ["virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components", {
+          "packageLocation": "./.yarn/__virtual__/@bangle.dev-base-components-virtual-5076d7ea46/1/components/base-components/",
+          "packageDependencies": [
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
+            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
+            ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
+            ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
+            ["@types/bangle.dev__core", null],
+            ["@types/bangle.dev__pm", null],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/markdown-it", "npm:12.0.3"],
+            ["@types/prosemirror-markdown", "npm:1.5.2"],
+            ["markdown-it", "npm:10.0.0"],
+            ["prettier", "npm:2.3.2"],
+            ["prosemirror-markdown", "npm:1.5.1"]
+          ],
+          "packagePeers": [
+            "@bangle.dev/core",
+            "@bangle.dev/pm",
+            "@types/bangle.dev__core",
+            "@types/bangle.dev__pm"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:components/base-components", {
+          "packageLocation": "./components/base-components/",
+          "packageDependencies": [
+            ["@bangle.dev/base-components", "workspace:components/base-components"],
+            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
+            ["@bangle.dev/pm", "workspace:lib/pm"],
+            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
+            ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
+            ["@types/jest", "npm:26.0.23"],
+            ["@types/markdown-it", "npm:12.0.3"],
+            ["@types/prosemirror-markdown", "npm:1.5.2"],
+            ["markdown-it", "npm:10.0.0"],
+            ["prettier", "npm:2.3.2"],
+            ["prosemirror-markdown", "npm:1.5.1"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@bangle.dev/collab-client", [
         ["virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:lib/collab-client", {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-collab-client-virtual-376fd8bbb0/1/lib/collab-client/",
@@ -3427,59 +3473,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
-      ["@bangle.dev/core-components", [
-        ["virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components", {
-          "packageLocation": "./.yarn/__virtual__/@bangle.dev-core-components-virtual-0bda5c15eb/1/components/core-components/",
-          "packageDependencies": [
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
-            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/pm", "workspace:lib/pm"],
-            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
-            ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
-            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
-            ["@types/bangle.dev__core", null],
-            ["@types/bangle.dev__pm", null],
-            ["@types/jest", "npm:26.0.23"],
-            ["@types/markdown-it", "npm:12.0.3"],
-            ["@types/prosemirror-markdown", "npm:1.5.2"],
-            ["markdown-it", "npm:10.0.0"],
-            ["prettier", "npm:2.3.2"],
-            ["prosemirror-markdown", "npm:1.5.1"]
-          ],
-          "packagePeers": [
-            "@bangle.dev/core",
-            "@bangle.dev/pm",
-            "@types/bangle.dev__core",
-            "@types/bangle.dev__pm"
-          ],
-          "linkType": "SOFT",
-        }],
-        ["workspace:components/core-components", {
-          "packageLocation": "./components/core-components/",
-          "packageDependencies": [
-            ["@bangle.dev/core-components", "workspace:components/core-components"],
-            ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/pm", "workspace:lib/pm"],
-            ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],
-            ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
-            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
-            ["@types/jest", "npm:26.0.23"],
-            ["@types/markdown-it", "npm:12.0.3"],
-            ["@types/prosemirror-markdown", "npm:1.5.2"],
-            ["markdown-it", "npm:10.0.0"],
-            ["prettier", "npm:2.3.2"],
-            ["prosemirror-markdown", "npm:1.5.1"]
-          ],
-          "linkType": "SOFT",
-        }]
-      ]],
       ["@bangle.dev/default-components", [
         ["workspace:tooling/default-components", {
           "packageLocation": "./tooling/default-components/",
           "packageDependencies": [
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"]
           ],
           "linkType": "SOFT",
@@ -3573,8 +3573,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-markdown-virtual-58d0a7e99f/1/lib/markdown/",
           "packageDependencies": [
             ["@bangle.dev/markdown", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:lib/markdown"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
@@ -3598,8 +3598,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/markdown/",
           "packageDependencies": [
             ["@bangle.dev/markdown", "workspace:lib/markdown"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
@@ -3833,8 +3833,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-react-menu-virtual-574945f4bb/1/components/react-menu/",
           "packageDependencies": [
             ["@bangle.dev/react-menu", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/react-menu"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
@@ -3872,8 +3872,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/react-menu/",
           "packageDependencies": [
             ["@bangle.dev/react-menu", "workspace:components/react-menu"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:lib/react"],
@@ -4210,8 +4210,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bangle.dev-trailing-node-virtual-c3c763ebc9/1/components/trailing-node/",
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:components/trailing-node"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
@@ -4231,8 +4231,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./components/trailing-node/",
           "packageDependencies": [
             ["@bangle.dev/trailing-node", "workspace:components/trailing-node"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
@@ -7584,8 +7584,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./lib/broader-unit-tests/",
           "packageDependencies": [
             ["broader-unit-tests", "workspace:lib/broader-unit-tests"],
+            ["@bangle.dev/base-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/base-components"],
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],
-            ["@bangle.dev/core-components", "virtual:0c58d1dacefffb6af483060ca7af02d1c015fa68a7bab4bf5f0adeed6fac65037450ef22a70c6416ffb21abfca3470072945eedabda8009023be116d25ad68ae#workspace:components/core-components"],
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],

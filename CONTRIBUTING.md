@@ -38,7 +38,7 @@ For templating we use [handlebars](https://handlebarsjs.com) and a configuration
 
 The packages are divided in the following manner:
 
-- `lib`: The core library packages like `editor`, react framework, collaboration etc.
+- `lib`: The library packages containing the foundational code for building an editor.
 
 - `components`: All packages in this directory are bangle components. Read this [doc](https://bangle.dev/docs/api/core/#component) to know more about what a bangle.dev component is.
 

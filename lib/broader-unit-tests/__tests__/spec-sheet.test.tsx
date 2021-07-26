@@ -5,7 +5,7 @@ import {
   hardBreak,
   paragraph,
   text,
-} from '@bangle.dev/core-components';
+} from '@bangle.dev/base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 
 test('Loads node and marks schema correctly', () => {

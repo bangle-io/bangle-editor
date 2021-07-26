@@ -1731,6 +1731,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bangle.dev/base-components@workspace:*, @bangle.dev/base-components@workspace:components/base-components":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/base-components@workspace:components/base-components"
+  dependencies:
+    "@bangle.dev/core": "workspace:*"
+    "@bangle.dev/pm": "workspace:*"
+    "@bangle.dev/pm-commands": "workspace:*"
+    "@bangle.dev/test-helpers": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
+    "@types/jest": ^26.0.23
+    "@types/markdown-it": ^12.0.3
+    "@types/prosemirror-markdown": ^1.5.2
+    markdown-it: ^10.0.0
+    prettier: ^2.3.2
+    prosemirror-markdown: ^1.5.1
+  peerDependencies:
+    "@bangle.dev/core": "*"
+    "@bangle.dev/pm": "*"
+  languageName: unknown
+  linkType: soft
+
 "@bangle.dev/collab-client@workspace:*, @bangle.dev/collab-client@workspace:lib/collab-client":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collab-client@workspace:lib/collab-client"
@@ -1774,27 +1795,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/core-components@workspace:*, @bangle.dev/core-components@workspace:components/core-components":
-  version: 0.0.0-use.local
-  resolution: "@bangle.dev/core-components@workspace:components/core-components"
-  dependencies:
-    "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/pm": "workspace:*"
-    "@bangle.dev/pm-commands": "workspace:*"
-    "@bangle.dev/test-helpers": "workspace:*"
-    "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
-    "@types/markdown-it": ^12.0.3
-    "@types/prosemirror-markdown": ^1.5.2
-    markdown-it: ^10.0.0
-    prettier: ^2.3.2
-    prosemirror-markdown: ^1.5.1
-  peerDependencies:
-    "@bangle.dev/core": "*"
-    "@bangle.dev/pm": "*"
-  languageName: unknown
-  linkType: soft
-
 "@bangle.dev/core@workspace:*, @bangle.dev/core@workspace:lib/core":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/core@workspace:lib/core"
@@ -1817,8 +1817,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/default-components@workspace:tooling/default-components"
   dependencies:
+    "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/core-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
   languageName: unknown
   linkType: soft
@@ -1886,8 +1886,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/markdown@workspace:lib/markdown"
   dependencies:
+    "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/core-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
@@ -1973,8 +1973,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/react-menu@workspace:components/react-menu"
   dependencies:
+    "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/core-components": "workspace:*"
     "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/react": "workspace:*"
@@ -2180,8 +2180,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/trailing-node@workspace:components/trailing-node"
   dependencies:
+    "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/core-components": "workspace:*"
     "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
@@ -4917,8 +4917,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "broader-unit-tests@workspace:lib/broader-unit-tests"
   dependencies:
+    "@bangle.dev/base-components": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/core-components": "workspace:*"
     "@bangle.dev/default-components": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"

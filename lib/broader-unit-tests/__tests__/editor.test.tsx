@@ -9,7 +9,7 @@ import {
 } from '@bangle.dev/core';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 import { defaultSpecs, defaultPlugins } from '@bangle.dev/default-components';
-import { blockquote, heading } from '@bangle.dev/core-components';
+import { blockquote, heading } from '@bangle.dev/base-components';
 
 const testEditor = renderTestEditor({
   specRegistry: new SpecRegistry(defaultSpecs()),

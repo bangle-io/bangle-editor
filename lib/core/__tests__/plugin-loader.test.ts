@@ -1,11 +1,11 @@
-import { baseComponents } from '../index';
+import { criticalComponents } from '../index';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { RawSpecs, SpecRegistry } from '../spec-registry';
 import { NodeView } from '../node-view';
 import { pluginLoader, RawPlugins } from '../plugin-loader';
 import { PluginGroup } from '../plugin';
 
-const { paragraph } = baseComponents;
+const { paragraph } = criticalComponents;
 
 const listItemSpec = (): RawSpecs => {
   return {

@@ -1,9 +1,9 @@
 // components
-import * as doc from './base-components/doc';
-import * as paragraph from './base-components/paragraph';
-import * as text from './base-components/text';
-import * as history from './base-components/history';
-import * as editorStateCounter from './base-components/editor-state-counter';
+import * as doc from './critical-components/doc';
+import * as paragraph from './critical-components/paragraph';
+import * as text from './critical-components/text';
+import * as history from './critical-components/history';
+import * as editorStateCounter from './critical-components/editor-state-counter';
 
 export * from './bangle-editor';
 export * from './bangle-editor-state';
@@ -14,7 +14,7 @@ export * from './spec-registry';
 export * from './dom-serialization-helpers';
 export type { RawPlugins } from './plugin-loader';
 
-export const baseComponents = {
+export const criticalComponents = {
   doc,
   paragraph,
   text,

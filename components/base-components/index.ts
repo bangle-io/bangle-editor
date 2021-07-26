@@ -17,9 +17,10 @@ import * as listItem from './list-item/list-item-component';
 import * as orderedList from './ordered-list';
 import * as image from './image';
 
-import { baseComponents } from '@bangle.dev/core';
+import { criticalComponents } from '@bangle.dev/core';
 
-const { doc, paragraph, text, history, editorStateCounter } = baseComponents;
+const { doc, paragraph, text, history, editorStateCounter } =
+  criticalComponents;
 
 export {
   bold,

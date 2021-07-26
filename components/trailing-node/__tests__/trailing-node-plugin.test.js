@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { SpecRegistry } from '@bangle.dev/core';
-import { heading } from '@bangle.dev/core-components';
+import { heading } from '@bangle.dev/base-components';
 import { defaultSpecs, defaultPlugins } from '@bangle.dev/default-components';
 import {
   psx,

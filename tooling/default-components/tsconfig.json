@@ -18,7 +18,7 @@
   ],
   "references": [
     {
-      "path": "../../components/core-components/tsconfig.json"
+      "path": "../../components/base-components/tsconfig.json"
     },
     {
       "path": "../../lib/core/tsconfig.json"

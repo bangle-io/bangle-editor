@@ -4,7 +4,7 @@
 
 **@bangle.dev/core**
 
-- Breaking: We are dropping `@bangle.dev/core` in favour of two new packages `@bangle.dev/editor` and `@bangle.dev/core-components`.
+- Breaking: We are dropping `@bangle.dev/core` in favour of two new packages `@bangle.dev/editor` and `@bangle.dev/base-components`.
 
 - No longer exports the following undocumented API `browser`, `utils`, `logging` & `pluginKeyStore`.
 
@@ -19,7 +19,7 @@ Please follow the following steps to make the change.
 import { bulletList, orderedList } from '@bangle.dev/core';
 
 // new
-import { bulletList, orderedList } from '@bangle.dev/core-components';
+import { bulletList, orderedList } from '@bangle.dev/base-components';
 ```
 
 - `components`, if you were importing `components` make the following change:
@@ -29,7 +29,7 @@ import { bulletList, orderedList } from '@bangle.dev/core-components';
 import { components } from '@bangle.dev/core';
 
 // new
-import * as components from '@bangle.dev/core-components';
+import * as components from '@bangle.dev/base-components';
 ```
 
 ## 0.25.3

@@ -4,8 +4,8 @@
   "module": "index.ts",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@bangle.dev/base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/core-components": "workspace:*",
     "@bangle.dev/pm": "workspace:*"
   },
   "publishConfig": {

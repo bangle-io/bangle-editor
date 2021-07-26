@@ -18,7 +18,7 @@ import {
   strike,
   text,
   underline,
-} from '@bangle.dev/core-components';
+} from '@bangle.dev/base-components';
 
 export function defaultSpecs(opts = {}) {
   return [...coreMarkSpec(opts), ...coreNodeSpec(opts)];

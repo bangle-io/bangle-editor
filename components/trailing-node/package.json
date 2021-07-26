@@ -29,8 +29,8 @@
     "@bangle.dev/pm": "*"
   },
   "devDependencies": {
+    "@bangle.dev/base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
-    "@bangle.dev/core-components": "workspace:*",
     "@bangle.dev/default-components": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*"

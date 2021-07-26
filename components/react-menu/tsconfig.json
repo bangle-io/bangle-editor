@@ -20,7 +20,7 @@
   ],
   "references": [
     {
-      "path": "../core-components/tsconfig.json"
+      "path": "../base-components/tsconfig.json"
     },
     {
       "path": "../tooltip/tsconfig.json"

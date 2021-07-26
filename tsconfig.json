@@ -4,10 +4,10 @@
   "files": [],
   "references": [
     {
-      "path": "components/core-components/tsconfig.json"
+      "path": "components/base-components/tsconfig.json"
     },
     {
-      "path": "components/core-components/tsconfig.test.json"
+      "path": "components/base-components/tsconfig.test.json"
     },
     {
       "path": "components/emoji/tsconfig.json"

@@ -1,11 +1,11 @@
 /**
  * @jest-environment jsdom
  */
-import { baseComponents } from '../index';
+import { criticalComponents } from '../index';
 import { RawSpecs, SpecRegistry } from '../spec-registry';
 import { domSerializationHelpers } from '../dom-serialization-helpers';
 
-const { paragraph, doc, text } = baseComponents;
+const { paragraph, doc, text } = criticalComponents;
 
 describe('domSerializationHelpers parseDOM', () => {
   test('does not get affected by other attributes', () => {
