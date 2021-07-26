@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-/// <reference path="./missing-types.d.ts" />
 
 import { PluginKey, SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/default-components';

@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
+
 import { findCutBefore, isFirstChildOfParent } from '@bangle.dev/utils';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 import { defaultSpecs, defaultPlugins } from '@bangle.dev/default-components';
@@ -172,11 +173,11 @@ describe('findCutBefore', () => {
     const $cut = findCutBefore($from);
     expect($cut).not.toBeNull();
 
-    expect($cut.nodeBefore.type).toBe(listItem);
-    expect($cut.nodeAfter.type).toBe(listItem);
+    expect($cut?.nodeBefore?.type).toBe(listItem);
+    expect($cut?.nodeAfter?.type).toBe(listItem);
 
-    expect($cut.nodeBefore.firstChild.textContent).toBe('first');
-    expect($cut.nodeAfter.firstChild.textContent).toBe('second');
+    expect($cut?.nodeBefore?.firstChild?.textContent).toBe('first');
+    expect($cut?.nodeAfter?.firstChild?.textContent).toBe('second');
   });
 
   it('finds a split in an unbalanced tree above', async () => {
@@ -204,11 +205,11 @@ describe('findCutBefore', () => {
     const $cut = findCutBefore($from);
     expect($cut).not.toBeNull();
 
-    expect($cut.nodeBefore.type).toBe(listItem);
-    expect($cut.nodeAfter.type).toBe(listItem);
+    expect($cut?.nodeBefore?.type).toBe(listItem);
+    expect($cut?.nodeAfter?.type).toBe(listItem);
 
-    expect($cut.nodeBefore.firstChild.textContent).toBe('first');
-    expect($cut.nodeAfter.firstChild.textContent).toBe('second');
+    expect($cut?.nodeBefore?.firstChild?.textContent).toBe('first');
+    expect($cut?.nodeAfter?.firstChild?.textContent).toBe('second');
   });
 
   it('finds a split in an unbalanced tree below', async () => {
@@ -240,8 +241,8 @@ describe('findCutBefore', () => {
     const $cut = findCutBefore($from);
     expect($cut).not.toBeNull();
 
-    expect($cut.nodeBefore).toBeDefined();
-    expect($cut.nodeAfter).toBeDefined();
-    expect($cut.pos).toBe(posLabels['[]'] - 3);
+    expect($cut?.nodeBefore).toBeDefined();
+    expect($cut?.nodeAfter).toBeDefined();
+    expect($cut?.pos).toBe(posLabels?.['[]'] - 3);
   });
 });

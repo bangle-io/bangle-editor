@@ -7374,6 +7374,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["globby", "npm:11.0.1"],
             ["handlebars", "npm:4.7.6"],
             ["json5", "npm:2.2.0"],
+            ["mkdirp", "npm:1.0.4"],
             ["prosemirror-collab", "npm:1.2.2"],
             ["prosemirror-model", "npm:1.14.2"],
             ["prosemirror-transform", "npm:1.3.2"],
@@ -7588,7 +7589,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/default-components", "workspace:tooling/default-components"],
             ["@bangle.dev/pm", "workspace:lib/pm"],
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],
-            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],
+            ["@types/jest", "npm:26.0.23"]
           ],
           "linkType": "SOFT",
         }]

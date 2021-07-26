@@ -4727,6 +4727,7 @@ __metadata:
     globby: ^11.0.1
     handlebars: ^4.7.6
     json5: ^2.2.0
+    mkdirp: ^1.0.4
     prosemirror-collab: ^1.2.2
     prosemirror-model: ^1.1.0
     prosemirror-transform: ^1.1.0
@@ -4922,6 +4923,7 @@ __metadata:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
+    "@types/jest": ^26.0.23
   languageName: unknown
   linkType: soft
 
@@ -10220,7 +10222,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:^1.0.3":
+"mkdirp@npm:^1.0.3, mkdirp@npm:^1.0.4":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
   bin:

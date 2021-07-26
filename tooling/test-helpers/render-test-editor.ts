@@ -57,7 +57,7 @@ export function renderTestEditor(
     const editorProps = {
       attributes: { class: 'bangle-editor content' },
     };
-    let editor: null | BangleEditor = new BangleEditor(container, {
+    let editor: BangleEditor = new BangleEditor(container, {
       state: new BangleEditorState({ specRegistry, plugins, editorProps }),
     });
 
@@ -126,7 +126,7 @@ export function renderTestEditor(
       updateDoc,
       destroy: () => {
         editor?.destroy();
-        editor = null;
+        (editor as any) = null;
       },
     };
   };

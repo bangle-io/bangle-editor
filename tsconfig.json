@@ -7,10 +7,19 @@
       "path": "components/core-components/tsconfig.json"
     },
     {
+      "path": "components/core-components/tsconfig.test.json"
+    },
+    {
       "path": "components/emoji/tsconfig.json"
     },
     {
+      "path": "components/emoji/tsconfig.test.json"
+    },
+    {
       "path": "components/markdown-front-matter/tsconfig.json"
+    },
+    {
+      "path": "components/markdown-front-matter/tsconfig.test.json"
     },
     {
       "path": "components/react-emoji-suggest/tsconfig.json"
@@ -46,6 +55,9 @@
       "path": "components/table/tsconfig.json"
     },
     {
+      "path": "components/table/tsconfig.test.json"
+    },
+    {
       "path": "components/text-formatting/tsconfig.json"
     },
     {
@@ -53,6 +65,9 @@
     },
     {
       "path": "components/timestamp/tsconfig.json"
+    },
+    {
+      "path": "components/timestamp/tsconfig.test.json"
     },
     {
       "path": "components/tooltip/tsconfig.json"
@@ -71,6 +86,12 @@
     },
     {
       "path": "components/wiki-link/tsconfig.test.json"
+    },
+    {
+      "path": "lib/broader-unit-tests/tsconfig.json"
+    },
+    {
+      "path": "lib/broader-unit-tests/tsconfig.test.json"
     },
     {
       "path": "lib/collab-client/tsconfig.json"
@@ -94,6 +115,9 @@
       "path": "lib/disk/tsconfig.json"
     },
     {
+      "path": "lib/disk/tsconfig.test.json"
+    },
+    {
       "path": "lib/markdown/tsconfig.json"
     },
     {
@@ -101,6 +125,9 @@
     },
     {
       "path": "lib/pm/tsconfig.json"
+    },
+    {
+      "path": "lib/pm/tsconfig.test.json"
     },
     {
       "path": "lib/react/tsconfig.json"
@@ -118,7 +145,13 @@
       "path": "tooling/default-components/tsconfig.json"
     },
     {
+      "path": "tooling/default-components/tsconfig.test.json"
+    },
+    {
       "path": "tooling/test-helpers/tsconfig.json"
+    },
+    {
+      "path": "tooling/test-helpers/tsconfig.test.json"
     }
   ]
 }

@@ -56,6 +56,7 @@
     "globby": "^11.0.1",
     "handlebars": "^4.7.6",
     "json5": "^2.2.0",
+    "mkdirp": "^1.0.4",
     "prosemirror-collab": "^1.2.2",
     "prosemirror-model": "^1.1.0",
     "prosemirror-transform": "^1.1.0",
