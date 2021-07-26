@@ -1,1 +1,1 @@
-gen_enforced_field(WorkspaceCwd, 'version', '0.26.0-alpha.2').
+gen_enforced_field(WorkspaceCwd, 'version', '0.26.0-alpha.3').
