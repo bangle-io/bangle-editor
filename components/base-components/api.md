@@ -2,7 +2,7 @@
 title: '@bangle.dev/base-components'
 sidebar_label: '@bangle.dev/base-components'
 packageName: '@bangle.dev/base-components'
-id: 'base-components'
+id: 'base_components'
 ---
 
 `@bangle.dev/base-components` as the name suggests is the core of Bangle and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
