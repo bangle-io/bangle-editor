@@ -2,13 +2,6 @@ import { Node, NodeSelection } from '@bangle.dev/pm';
 import { getDocLabels } from '@bangle.dev/test-helpers';
 import prettier from 'prettier';
 
-global.db = function db(fn) {
-  return (...args) => {
-    debugger;
-    return fn(...args);
-  };
-};
-
 export const jestExpect = {
   toEqualDocAndSelection,
   toEqualDocument(actual, expected) {
