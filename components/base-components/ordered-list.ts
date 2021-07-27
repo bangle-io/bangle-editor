@@ -10,6 +10,7 @@ import type Token from 'markdown-it/lib/token';
 import { parentHasDirectParentOfType } from '@bangle.dev/pm-commands';
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
+import { createObject } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -93,9 +94,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
         (match, node) => node.childCount + node.attrs.order === +match[1],
       ),
       keybindings &&
-        keymap({
-          [keybindings.toggle]: toggleList(type),
-        }),
+        keymap(createObject([[keybindings.toggle, toggleList(type)]])),
     ];
   };
 }

@@ -15,6 +15,7 @@ import {
   filter,
   findFirstMarkPosition,
   safeInsert,
+  createObject,
 } from '@bangle.dev/utils';
 import type {
   GetReferenceElementFunction,
@@ -210,14 +211,16 @@ function pluginsFactory({
         key,
       }),
       keybindings &&
-        keymap({
-          [keybindings.select]: filter(isActiveCheck, onEnter),
-          [keybindings.up]: filter(isActiveCheck, onArrowUp),
-          [keybindings.down]: filter(isActiveCheck, onArrowDown),
-          [keybindings.left]: filter(isActiveCheck, onArrowLeft),
-          [keybindings.right]: filter(isActiveCheck, onArrowRight),
-          [keybindings.hide]: filter(isActiveCheck, onEscape),
-        }),
+        keymap(
+          createObject([
+            [keybindings.select, filter(isActiveCheck, onEnter)],
+            [keybindings.up, filter(isActiveCheck, onArrowUp)],
+            [keybindings.down, filter(isActiveCheck, onArrowDown)],
+            [keybindings.left, filter(isActiveCheck, onArrowLeft)],
+            [keybindings.right, filter(isActiveCheck, onArrowRight)],
+            [keybindings.hide, filter(isActiveCheck, onEscape)],
+          ]),
+        ),
     ];
   };
 }

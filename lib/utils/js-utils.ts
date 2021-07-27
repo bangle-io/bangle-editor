@@ -147,6 +147,18 @@ export function objectFilter<T>(
   );
 }
 
+/**
+ * Creates an object from an array of [key, Value], filtering out any
+ * undefined or null key
+ */
+export function createObject<T>(
+  entries: Array<[string | null | undefined, T]>,
+): {
+  [k: string]: T;
+} {
+  return Object.fromEntries(entries.filter((e) => e[0] != null));
+}
+
 export function serialExecuteQueue() {
   let prev = Promise.resolve();
   return {

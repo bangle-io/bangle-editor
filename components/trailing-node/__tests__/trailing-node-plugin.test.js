@@ -14,10 +14,7 @@ import {
 } from '@bangle.dev/test-helpers';
 import { trailingNode } from '../index';
 
-const specRegistry = new SpecRegistry([
-  ...defaultSpecs(),
-  trailingNode.spec({}),
-]);
+const specRegistry = new SpecRegistry([...defaultSpecs()]);
 const plugins = [...defaultPlugins(), trailingNode.plugins({})];
 
 const testEditor = renderTestEditor({

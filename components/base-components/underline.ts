@@ -10,6 +10,7 @@ import {
 import {
   isMarkActiveInSelection,
   markInputRule,
+  createObject,
   markPasteRule,
 } from '@bangle.dev/utils';
 
@@ -65,9 +66,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
       markInputRule(/~([^~]+)~$/, type),
       markPasteRule(/~([^~]+)~/g, type),
       keybindings &&
-        keymap({
-          [keybindings.toggleUnderline]: toggleMark(type),
-        }),
+        keymap(createObject([[keybindings.toggleUnderline, toggleMark(type)]])),
     ];
   };
 }

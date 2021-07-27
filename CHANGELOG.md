@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.26.4
+
+- Bug: Typing fixes for keybindings.
+
 ## 0.26.3
 
 - Bug: Typing fixes across multiple packages.

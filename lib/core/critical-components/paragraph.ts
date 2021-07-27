@@ -10,6 +10,7 @@ import {
 } from '@bangle.dev/pm';
 import {
   browser,
+  createObject,
   filter,
   findParentNodeOfType,
   insertEmpty,
@@ -86,27 +87,29 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
     const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
     return [
       keybindings &&
-        keymap({
-          [keybindings.convertToParagraph]: convertToParagraph(),
+        keymap(
+          createObject([
+            [keybindings.convertToParagraph, convertToParagraph()],
 
-          [keybindings.moveUp]: filter(isTopLevel, moveNode(type, 'UP')),
-          [keybindings.moveDown]: filter(isTopLevel, moveNode(type, 'DOWN')),
+            [keybindings.moveUp, filter(isTopLevel, moveNode(type, 'UP'))],
+            [keybindings.moveDown, filter(isTopLevel, moveNode(type, 'DOWN'))],
 
-          [keybindings.jumpToStartOfParagraph]: jumpToStartOfNode(type),
-          [keybindings.jumpToEndOfParagraph]: jumpToEndOfNode(type),
+            [keybindings.jumpToStartOfParagraph, jumpToStartOfNode(type)],
+            [keybindings.jumpToEndOfParagraph, jumpToEndOfNode(type)],
 
-          [keybindings.emptyCopy]: filter(isTopLevel, copyEmptyCommand(type)),
-          [keybindings.emptyCut]: filter(isTopLevel, cutEmptyCommand(type)),
+            [keybindings.emptyCopy, filter(isTopLevel, copyEmptyCommand(type))],
+            [keybindings.emptyCut, filter(isTopLevel, cutEmptyCommand(type))],
 
-          [keybindings.insertEmptyParaAbove]: filter(
-            isTopLevel,
-            insertEmpty(type, 'above'),
-          ),
-          [keybindings.insertEmptyParaBelow]: filter(
-            isTopLevel,
-            insertEmpty(type, 'below'),
-          ),
-        }),
+            [
+              keybindings.insertEmptyParaAbove,
+              filter(isTopLevel, insertEmpty(type, 'above')),
+            ],
+            [
+              keybindings.insertEmptyParaBelow,
+              filter(isTopLevel, insertEmpty(type, 'below')),
+            ],
+          ]),
+        ),
     ];
   };
 }

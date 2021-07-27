@@ -2,7 +2,7 @@ import type { RawPlugins } from '../plugin-loader';
 import { PluginGroup } from '../plugin';
 import * as pmHistory from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
-
+import { createObject } from '@bangle.dev/utils';
 export const plugins = pluginsFactory;
 export const commands = {
   undo,
@@ -24,11 +24,13 @@ function pluginsFactory({
     return new PluginGroup(name, [
       pmHistory.history(historyOpts),
       keybindings &&
-        keymap({
-          [keybindings.undo]: undo(),
-          [keybindings.redo]: redo(),
-          [keybindings.redoAlt]: redo(),
-        }),
+        keymap(
+          createObject([
+            [keybindings.undo, undo()],
+            [keybindings.redo, redo()],
+            [keybindings.redoAlt, redo()],
+          ]),
+        ),
     ]);
   };
 }

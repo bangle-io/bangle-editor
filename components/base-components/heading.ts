@@ -17,6 +17,7 @@ import {
   findChildren,
   findParentNodeOfType,
   insertEmpty,
+  createObject,
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
@@ -38,7 +39,7 @@ export const commands = {
 interface OptionsType {
   levels: Array<number>;
 }
-export const defaultKeys: { [index: string]: string } = {
+export const defaultKeys: { [index: string]: string | undefined } = {
   toH1: 'Shift-Ctrl-1',
   toH2: 'Shift-Ctrl-2',
   toH3: 'Shift-Ctrl-3',
@@ -53,7 +54,7 @@ export const defaultKeys: { [index: string]: string } = {
   jumpToStartOfHeading: browser.mac ? 'Ctrl-a' : 'Ctrl-Home',
   jumpToEndOfHeading: browser.mac ? 'Ctrl-e' : 'Ctrl-End',
   insertEmptyParaBelow: 'Mod-Enter',
-  // toggleCollapse: null,
+  toggleCollapse: undefined,
 };
 
 const name = 'heading';
@@ -145,6 +146,11 @@ function specFactory({ levels = defaultLevels } = {}): RawSpecs {
 function pluginsFactory({
   markdownShortcut = true,
   keybindings = defaultKeys,
+}: {
+  markdownShortcut?: boolean;
+  keybindings?: {
+    [index: string]: string | undefined;
+  };
 } = {}): RawPlugins {
   return ({ schema, specRegistry }) => {
     const { levels }: OptionsType = specRegistry.options[name];
@@ -160,17 +166,17 @@ function pluginsFactory({
       keybindings &&
         keymap({
           ...levelBindings,
-          [keybindings.moveUp]: moveNode(type, 'UP'),
-          [keybindings.moveDown]: moveNode(type, 'DOWN'),
-          [keybindings.jumpToStartOfHeading]: jumpToStartOfNode(type),
-          [keybindings.jumpToEndOfHeading]: jumpToEndOfNode(type),
-
-          [keybindings.emptyCopy]: copyEmptyCommand(type),
-          [keybindings.emptyCut]: cutEmptyCommand(type),
-
-          [keybindings.insertEmptyParaAbove]: insertEmptyParaAbove(),
-          [keybindings.insertEmptyParaBelow]: insertEmptyParaBelow(),
-          // [keybindings.toggleCollapse]: toggleHeadingCollapse(),
+          ...createObject([
+            [keybindings.moveUp, moveNode(type, 'UP')],
+            [keybindings.moveDown, moveNode(type, 'DOWN')],
+            [keybindings.jumpToStartOfHeading, jumpToStartOfNode(type)],
+            [keybindings.jumpToEndOfHeading, jumpToEndOfNode(type)],
+            [keybindings.emptyCopy, copyEmptyCommand(type)],
+            [keybindings.emptyCut, cutEmptyCommand(type)],
+            [keybindings.insertEmptyParaAbove, insertEmptyParaAbove()],
+            [keybindings.insertEmptyParaBelow, insertEmptyParaBelow()],
+            [keybindings.toggleCollapse, toggleHeadingCollapse()],
+          ]),
         }),
       ...(markdownShortcut ? levels : []).map((level: number) =>
         textblockTypeInputRule(

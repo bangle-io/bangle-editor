@@ -1,6 +1,6 @@
 import type { Command, Schema } from '@bangle.dev/pm';
 import { keymap, toggleMark } from '@bangle.dev/pm';
-import { isMarkActiveInSelection } from '@bangle.dev/utils';
+import { createObject, isMarkActiveInSelection } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -30,9 +30,9 @@ function pluginsFactory({ keybindings = defaultKeys } = {}) {
   return ({ schema }: { schema: Schema }) => {
     return [
       keybindings &&
-        keymap({
-          [keybindings.toggleSubscript]: toggleSubscript(),
-        }),
+        keymap(
+          createObject([[keybindings.toggleSubscript, toggleSubscript()]]),
+        ),
     ];
   };
 }

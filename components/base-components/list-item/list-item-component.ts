@@ -12,6 +12,7 @@ import {
   domSerializationHelpers,
   filter,
   insertEmpty,
+  createObject,
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
@@ -144,14 +145,19 @@ function pluginsFactory({
 
           Backspace: backspaceKeyCommand(type),
           Enter: enterKeyCommand(type),
-          [keybindings.indent]: indentListItem(),
-          [keybindings.outdent]: outdentListItem(),
-          [keybindings.moveUp]: moveListItemUp(),
-          [keybindings.moveDown]: moveListItemDown(),
-          [keybindings.emptyCut]: filter(isValidList, cutEmptyCommand(type)),
-          [keybindings.emptyCopy]: filter(isValidList, copyEmptyCommand(type)),
-          [keybindings.insertEmptyListAbove]: insertEmptySiblingListAbove(),
-          [keybindings.insertEmptyListBelow]: insertEmptySiblingListBelow(),
+          ...createObject([
+            [keybindings.indent, indentListItem()],
+            [keybindings.outdent, outdentListItem()],
+            [keybindings.moveUp, moveListItemUp()],
+            [keybindings.moveDown, moveListItemDown()],
+            [keybindings.emptyCut, filter(isValidList, cutEmptyCommand(type))],
+            [
+              keybindings.emptyCopy,
+              filter(isValidList, copyEmptyCommand(type)),
+            ],
+            [keybindings.insertEmptyListAbove, insertEmptySiblingListAbove()],
+            [keybindings.insertEmptyListBelow, insertEmptySiblingListBelow()],
+          ]),
         }),
 
       nodeView && listItemNodeViewPlugin(name),

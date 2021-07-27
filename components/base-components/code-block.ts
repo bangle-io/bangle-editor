@@ -8,10 +8,15 @@ import {
   setBlockType,
   textblockTypeInputRule,
 } from '@bangle.dev/pm';
-import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
+import { moveNode } from '@bangle.dev/pm-commands';
+import {
+  createObject,
+  filter,
+  findParentNodeOfType,
+  insertEmpty,
+} from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import { moveNode } from '@bangle.dev/pm-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -76,21 +81,29 @@ function pluginsFactory({
     return [
       markdownShortcut && textblockTypeInputRule(/^```$/, type),
       keybindings &&
-        keymap({
-          [keybindings.toCodeBlock]: setBlockType(type),
+        keymap(
+          createObject([
+            [keybindings.toCodeBlock, setBlockType(type)],
 
-          [keybindings.moveUp]: moveNode(type, 'UP'),
-          [keybindings.moveDown]: moveNode(type, 'DOWN'),
+            [keybindings.moveUp, moveNode(type, 'UP')],
+            [keybindings.moveDown, moveNode(type, 'DOWN')],
 
-          [keybindings.insertEmptyParaAbove]: filter(
-            queryIsCodeActiveBlock(),
-            insertEmpty(schema.nodes.paragraph, 'above', false),
-          ),
-          [keybindings.insertEmptyParaBelow]: filter(
-            queryIsCodeActiveBlock(),
-            insertEmpty(schema.nodes.paragraph, 'below', false),
-          ),
-        }),
+            [
+              keybindings.insertEmptyParaAbove,
+              filter(
+                queryIsCodeActiveBlock(),
+                insertEmpty(schema.nodes.paragraph, 'above', false),
+              ),
+            ],
+            [
+              keybindings.insertEmptyParaBelow,
+              filter(
+                queryIsCodeActiveBlock(),
+                insertEmpty(schema.nodes.paragraph, 'below', false),
+              ),
+            ],
+          ]),
+        ),
     ];
   };
 }

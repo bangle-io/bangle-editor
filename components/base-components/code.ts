@@ -15,6 +15,7 @@ import {
   isMarkActiveInSelection,
   markInputRule,
   markPasteRule,
+  createObject,
 } from '@bangle.dev/utils';
 
 export const spec = specFactory;
@@ -78,9 +79,7 @@ function pluginsFactory({
       markdownShortcut && markPasteRule(/(?:`)([^`]+)(?:`)/g, type),
       markdownShortcut && markInputRule(/(?:`)([^`]+)(?:`)$/, type),
       keybindings &&
-        keymap({
-          [keybindings.toggleCode]: toggleMark(type),
-        }),
+        keymap(createObject([[keybindings.toggleCode, toggleMark(type)]])),
 
       escapeAtEdge &&
         keymap({

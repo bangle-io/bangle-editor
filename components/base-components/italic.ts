@@ -10,6 +10,7 @@ import {
   isMarkActiveInSelection,
   markInputRule,
   markPasteRule,
+  createObject,
 } from '@bangle.dev/utils';
 
 export const spec = specFactory;
@@ -58,9 +59,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
       markInputRule(/(?:^|[^_])(_([^_]+)_)$/, type),
       markInputRule(/(?:^|[^*])(\*([^*]+)\*)$/, type),
       keybindings &&
-        keymap({
-          [keybindings.toggleItalic]: toggleMark(type),
-        }),
+        keymap(createObject([[keybindings.toggleItalic, toggleMark(type)]])),
     ];
   };
 }

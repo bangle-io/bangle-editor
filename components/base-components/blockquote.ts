@@ -9,7 +9,12 @@ import {
   wrapIn,
   wrappingInputRule,
 } from '@bangle.dev/pm';
-import { filter, findParentNodeOfType, insertEmpty } from '@bangle.dev/utils';
+import {
+  createObject,
+  filter,
+  findParentNodeOfType,
+  insertEmpty,
+} from '@bangle.dev/utils';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import {
   copyEmptyCommand,
@@ -72,17 +77,19 @@ function pluginsFactory({
     return [
       markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),
       keybindings &&
-        keymap({
-          [keybindings.wrapIn]: wrapInBlockquote(),
-          [keybindings.moveUp]: moveNode(type, 'UP'),
-          [keybindings.moveDown]: moveNode(type, 'DOWN'),
+        keymap(
+          createObject([
+            [keybindings.wrapIn, wrapInBlockquote()],
+            [keybindings.moveUp, moveNode(type, 'UP')],
+            [keybindings.moveDown, moveNode(type, 'DOWN')],
 
-          [keybindings.emptyCopy]: copyEmptyCommand(type),
-          [keybindings.emptyCut]: cutEmptyCommand(type),
+            [keybindings.emptyCopy, copyEmptyCommand(type)],
+            [keybindings.emptyCut, cutEmptyCommand(type)],
 
-          [keybindings.insertEmptyParaAbove]: insertEmptyParaAbove(),
-          [keybindings.insertEmptyParaBelow]: insertEmptyParaBelow(),
-        }),
+            [keybindings.insertEmptyParaAbove, insertEmptyParaAbove()],
+            [keybindings.insertEmptyParaBelow, insertEmptyParaBelow()],
+          ]),
+        ),
     ];
   };
 }

@@ -20,7 +20,7 @@ import {
   setTodo,
   wrappingInputRuleForTodo,
 } from './list-item/todo';
-
+import { createObject } from '@bangle.dev/utils';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
@@ -81,10 +81,12 @@ function pluginsFactory({
 
     return [
       keybindings &&
-        keymap({
-          [keybindings.toggle]: toggleBulletList(),
-          [keybindings.toggleTodo]: toggleTodoList(),
-        }),
+        keymap(
+          createObject([
+            [keybindings.toggle, toggleBulletList()],
+            [keybindings.toggleTodo, toggleTodoList()],
+          ]),
+        ),
       markdownShortcut &&
         wrappingInputRule(/^\s*([-+*])\s$/, type, undefined, (_str, node) => {
           if (node.lastChild && isNodeTodo(node.lastChild, schema)) {

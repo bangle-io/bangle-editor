@@ -9,7 +9,7 @@ import {
 } from '@bangle.dev/pm';
 import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
-import { filter, rafCommandExec } from '@bangle.dev/utils';
+import { createObject, filter, rafCommandExec } from '@bangle.dev/utils';
 import { hasComponentInSchema } from './helper';
 
 const {
@@ -77,13 +77,18 @@ function floatingMenu({
       tooltipRenderOpts,
     }),
     keybindings &&
-      keymap({
-        [keybindings.hide]: filter(
-          queryIsSelectionTooltipActive(key),
-          hideSelectionTooltip(key),
-        ),
-        [keybindings.toggleLink]: toggleLinkSubMenu(key),
-      }),
+      keymap(
+        createObject([
+          [
+            keybindings.hide,
+            filter(
+              queryIsSelectionTooltipActive(key),
+              hideSelectionTooltip(key),
+            ),
+          ],
+          [keybindings.toggleLink, toggleLinkSubMenu(key)],
+        ]),
+      ),
   ];
 }
 

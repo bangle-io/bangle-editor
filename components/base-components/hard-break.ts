@@ -7,7 +7,7 @@ import {
   Node,
   Schema,
 } from '@bangle.dev/pm';
-
+import { createObject } from '@bangle.dev/utils';
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const defaultKeys = {
@@ -55,10 +55,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
       return true;
     });
     return [
-      keybindings &&
-        keymap({
-          [keybindings.insert]: command,
-        }),
+      keybindings && keymap(createObject([[keybindings.insert, command]])),
     ];
   };
 }
