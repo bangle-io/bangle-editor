@@ -4,17 +4,14 @@
 
 **@bangle.dev/core**
 
-- Breaking: We are dropping `@bangle.dev/core` in favour of two new packages `@bangle.dev/editor` and `@bangle.dev/base-components`.
+- We have a new package  `@bangle.dev/base-components` carved out from `@bangle.dev/core` which now exports all components like `bold`, `heading`, `listItem` etc.
 
-- No longer exports the following undocumented API `browser`, `utils`, `logging` `pluginKeyStore` , `setSelectionAtEnd` , `corePlugins` and `coreSpec`.
+- Breaking: `@bangle.dev/core` No longer exports the following undocumented API `browser`, `utils`, `logging` `pluginKeyStore` , `setSelectionAtEnd` , `corePlugins` and `coreSpec`.
 
-- No longer exports any bangle components, please check out the code example below for transitioning to useing `@bangle.dev/base-components`.
+- Breaking: No longer exports any bangle components, please check out the code example below for transitioning to using `@bangle.dev/base-components`.
 
-- If you were importing individual `corePlugins` and `coreSpec` please import each component individually.
+- If you were importing individual `components`, `corePlugins` or `coreSpec` please import each component individually.
 
-Please follow the following steps to make the change.
-
-_If you were importing individual components, make the following change:_
 
 ```js
 // old
@@ -24,7 +21,7 @@ import { bulletList, orderedList } from '@bangle.dev/core';
 import { bulletList, orderedList } from '@bangle.dev/base-components';
 ```
 
-- `components`, if you were importing `components` make the following change:
+If you were importing `components`, you can either club all imports from `@bangle.dev/base-components` and call it components or just import each individual component like in the above example.
 
 ```js
 // old
