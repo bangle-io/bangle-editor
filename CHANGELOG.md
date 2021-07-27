@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.26.1
+
+**@bangle.dev/react**
+
+- Feature: The react component now allows for forwarding of refs, see [docs](https://bangle.dev/docs/api/react) for example.
+
+
 ## 0.26.0
 
 **@bangle.dev/core**

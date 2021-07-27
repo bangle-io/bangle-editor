@@ -54,6 +54,9 @@ A React component for rendering a Bangle instance.
 - **onReady**: ?fn(editor) \
   A callback which is called when the editor has mounted.
 
+- **ref**: ?[React Ref](https://reactjs.org/docs/refs-and-the-dom.html)\
+  Provide a ref that will be assigned the value of the {{core.link.BangleEditor}}.
+
 - **children**: ?{{global.link.ReactElement}} \
   React components which need the editor context but are not directly editable i.e. do not lie inside the [contentEditable](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content) of the editor. A good example of what can be `children` is {{reactMenu.link.FloatingMenu}}.
 
@@ -84,4 +87,56 @@ A hook for hooking to a Prosemirror plugin's state. Thishook works **only** wit
 
 A hook for providing the {{Prosemirror.EditorView}} to a React component. This context is **only** available to children of `<BangleEditor />`. It will **never** trigger a re-render as the hook maintains the same {{Prosemirror.EditorView}} instance throughout the editor's lifecycle.
 
-:book: **Checkout [Floating menu dropdown](/docs/examples/react-floating-menu#menu-dropdown) example.**
+
+
+## Examples
+
+### Simple setup
+
+```js
+
+import '@bangle.dev/core/style.css';
+import React from 'react';
+import { useEditorState, BangleEditor } from '@bangle.dev/react';
+
+export default function Editor() {
+  const editorState = useEditorState({
+    initialValue: 'Hello world!',
+  });
+  return <BangleEditor state={editorState} />;
+}
+```
+
+:book: **[Floating menu dropdown](/docs/examples/react-floating-menu#menu-dropdown) example**
+
+:book: **See [Basic react editor](/docs/examples/react-basic-editor) for a live example.**
+
+### Dispatching a Prosemirror command (advanced)
+
+:buld: _This example requires knowledge of [Prosemirror](https://prosemirror.net/docs/) and [Commands](https://bangle.dev/docs/guides/commands)_
+
+In the example below we dispatch a command.
+
+```js
+
+import '@bangle.dev/core/style.css';
+import React from 'react';
+import { useEditorState, BangleEditor } from '@bangle.dev/react';
+
+export default function Editor() {
+  const editorState = useEditorState({
+    initialValue: 'Hello world!',
+  });
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (editor) {
+      const {dispatch, state} = editor.view;
+      someCommand()(state, dispatch);
+    }
+  }, []);
+
+  return <BangleEditor ref={editorRef} state={editorState} />;
+}
+```
