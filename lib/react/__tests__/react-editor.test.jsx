@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  * @jsx pjsx
  */
-
 import {
   BangleEditor as CoreBangleEditorView,
   getRenderHandlers,
   SpecRegistry,
 } from '@bangle.dev/core';
+import React, { useEffect, useRef } from 'react';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { selectNodeAt } from '@bangle.dev/test-helpers';
 import { EditorView as PMEditorView, Node } from '@bangle.dev/pm';
@@ -40,6 +40,32 @@ function Comp({
       state={editorState}
       id={id}
       onReady={onReady}
+      renderNodeViews={renderNodeViews}
+    />
+  );
+}
+
+function CompWithRef({
+  plugins,
+  specRegistry,
+  id = 'test',
+  renderNodeViews,
+  refReady,
+}) {
+  const editorState = useEditorState({
+    specRegistry,
+    plugins: () => plugins,
+  });
+  const ref = useRef();
+
+  useEffect(() => {
+    refReady(ref);
+  }, [refReady]);
+  return (
+    <BangleEditor
+      ref={ref}
+      state={editorState}
+      id={id}
       renderNodeViews={renderNodeViews}
     />
   );
@@ -112,6 +138,40 @@ describe('basic tests', () => {
     expect(editor.view.docView).toBeTruthy();
     await result.unmount();
     expect(editor.view.docView).toBeNull();
+  });
+
+  test('forwards ref correctly', async () => {
+    const specRegistry = new SpecRegistry(defaultSpecs());
+    const plugins = defaultPlugins();
+    let editorRef;
+    const refReady = jest.fn((ref) => {
+      editorRef = ref;
+    });
+    const result = await render(
+      <CompWithRef
+        refReady={refReady}
+        specRegistry={specRegistry}
+        plugins={() => plugins}
+      />,
+    );
+    expect(refReady).toBeCalledTimes(1);
+    expect(editorRef?.current).toBeInstanceOf(CoreBangleEditorView);
+    expect(result.container).toMatchInlineSnapshot(`
+    <div>
+      <div
+        id="test"
+      >
+        <div
+          class="ProseMirror bangle-editor"
+          contenteditable="true"
+        >
+          <p>
+            <br />
+          </p>
+        </div>
+      </div>
+    </div>
+  `);
   });
 });
 

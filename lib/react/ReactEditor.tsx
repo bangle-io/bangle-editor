@@ -6,7 +6,7 @@ import {
 import { EditorView, Plugin } from '@bangle.dev/pm';
 import { objectUid } from '@bangle.dev/utils';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
@@ -28,71 +28,89 @@ interface BangleEditorProps<PluginMetadata = any>
   className?: string;
   style?: React.CSSProperties;
   onReady?: (editor: CoreBangleEditor<PluginMetadata>) => void;
+  editorViewRef?: typeof useRef;
 }
 
-export function BangleEditor<PluginMetadata = any>({
-  id,
-  state,
-  children,
-  focusOnInit = true,
-  pmViewOpts,
-  renderNodeViews,
-  className,
-  style,
-  onReady = () => {},
-}: BangleEditorProps<PluginMetadata>) {
-  const renderRef = useRef<HTMLDivElement>(null);
-  const onReadyRef = useRef(onReady);
-  const editorViewPayloadRef = useRef({
-    state,
-    focusOnInit,
-    pmViewOpts,
-  });
-  const [editor, setEditor] = useState<CoreBangleEditor>();
-  const nodeViews = useNodeViews(renderRef);
+export const BangleEditor = React.forwardRef<
+  CoreBangleEditor | undefined,
+  BangleEditorProps
+>(
+  (
+    {
+      id,
+      state,
+      children,
+      focusOnInit = true,
+      pmViewOpts,
+      renderNodeViews,
+      className,
+      style,
+      onReady = () => {},
+    },
+    ref,
+  ) => {
+    const renderRef = useRef<HTMLDivElement>(null);
+    const onReadyRef = useRef(onReady);
+    const editorViewPayloadRef = useRef({
+      state,
+      focusOnInit,
+      pmViewOpts,
+    });
+    const [editor, setEditor] = useState<CoreBangleEditor>();
+    const nodeViews = useNodeViews(renderRef);
 
-  useEffect(() => {
-    const editor = new CoreBangleEditor<CoreBangleEditor>(
-      renderRef.current!,
-      editorViewPayloadRef.current,
+    useImperativeHandle(
+      ref,
+      () => {
+        return editor;
+      },
+      [editor],
     );
-    (editor.view as any)._updatePluginWatcher = updatePluginWatcher(editor);
-    onReadyRef.current(editor);
-    setEditor(editor);
-    return () => {
-      editor.destroy();
-    };
-  }, []);
 
-  if (nodeViews.length > 0 && renderNodeViews == null) {
-    throw new Error(
-      'When using nodeViews, you must provide renderNodeViews callback',
+    useEffect(() => {
+      const editor = new CoreBangleEditor(
+        renderRef.current!,
+        editorViewPayloadRef.current,
+      );
+      (editor.view as any)._updatePluginWatcher = updatePluginWatcher(editor);
+      onReadyRef.current(editor);
+      setEditor(editor);
+
+      return () => {
+        editor.destroy();
+      };
+    }, [ref]);
+
+    if (nodeViews.length > 0 && renderNodeViews == null) {
+      throw new Error(
+        'When using nodeViews, you must provide renderNodeViews callback',
+      );
+    }
+
+    return (
+      <React.Fragment>
+        <div ref={renderRef} id={id} className={className} style={style} />
+        {nodeViews.map((nodeView) => {
+          return reactDOM.createPortal(
+            <NodeViewWrapper
+              debugKey={objectUid.get(nodeView)}
+              nodeViewUpdateStore={nodeViewUpdateStore}
+              nodeView={nodeView}
+              renderNodeViews={renderNodeViews!}
+            />,
+            nodeView.containerDOM!,
+            objectUid.get(nodeView),
+          );
+        })}
+        {editor ? (
+          <EditorViewContext.Provider value={editor.view}>
+            {children}
+          </EditorViewContext.Provider>
+        ) : null}
+      </React.Fragment>
     );
-  }
-
-  return (
-    <React.Fragment>
-      <div ref={renderRef} id={id} className={className} style={style} />
-      {nodeViews.map((nodeView) => {
-        return reactDOM.createPortal(
-          <NodeViewWrapper
-            debugKey={objectUid.get(nodeView)}
-            nodeViewUpdateStore={nodeViewUpdateStore}
-            nodeView={nodeView}
-            renderNodeViews={renderNodeViews!}
-          />,
-          nodeView.containerDOM!,
-          objectUid.get(nodeView),
-        );
-      })}
-      {editor ? (
-        <EditorViewContext.Provider value={editor.view}>
-          {children}
-        </EditorViewContext.Provider>
-      ) : null}
-    </React.Fragment>
-  );
-}
+  },
+);
 
 const updatePluginWatcher = (editor: CoreBangleEditor) => {
   return (watcher: Plugin, remove = false) => {

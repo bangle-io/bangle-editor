@@ -5,6 +5,8 @@ const DEBUG = true;
 
 module.exports = (api) => {
   if (api.env('test')) {
+    api.cache(false);
+
     return {
       presets: [
         '@babel/preset-react',

@@ -5,7 +5,7 @@ packageName: '@bangle.dev/base-components'
 id: 'base_components'
 ---
 
-`@bangle.dev/base-components` as the name suggests is the core of Bangle and most packages expect it as a [peer dependency](https://nodejs.org/en/blog/npm/peer-dependencies/). To install run:
+`@bangle.dev/base-components` is a collection of commonly used components. To install run:
 
 ```
 {{npmInstallation "@bangle.dev/base-components"}}
