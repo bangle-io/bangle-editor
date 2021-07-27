@@ -6,7 +6,7 @@
     "@bangle.dev/test-helpers": "workspace:*",
     "prettier": "^2.3.2"
   },
-  "version": "0.26.1",
+  "version": "0.26.2",
   "publishConfig": {
     "access": "public"
   }

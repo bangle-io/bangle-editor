@@ -1,11 +1,16 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.26.2
+
+**@bangle.dev/core**
+
+- Feature: Now exports `BaseRawNodeSpec` and `BaseRawMarkSpec`.
+
 ## 0.26.1
 
 **@bangle.dev/react**
 
 - Feature: The react component now allows for forwarding of refs, see [docs](https://bangle.dev/docs/api/react) for example.
-
 
 ## 0.26.0
 
@@ -13,12 +18,11 @@
 
 - We have a new package  `@bangle.dev/base-components` carved out from `@bangle.dev/core` which now exports all components like `bold`, `heading`, `listItem` etc.
 
-- Breaking: `@bangle.dev/core` No longer exports the following undocumented API `browser`, `utils`, `logging` `pluginKeyStore` , `setSelectionAtEnd` , `corePlugins` and `coreSpec`.
+- **Breaking🚨**: `@bangle.dev/core` No longer exports the following undocumented API `browser`, `utils`, `logging` `pluginKeyStore` , `setSelectionAtEnd` , `corePlugins` and `coreSpec`.
 
-- Breaking: No longer exports any bangle components, please check out the code example below for transitioning to using `@bangle.dev/base-components`.
+- **Breaking🚨**: No longer exports any bangle components, please check out the code example below for transitioning to using `@bangle.dev/base-components`.
 
 - If you were importing individual `components`, `corePlugins` or `coreSpec` please import each component individually.
-
 
 ```js
 // old
@@ -46,15 +50,15 @@ import * as components from '@bangle.dev/base-components';
 
 **@bangle.dev/core**
 
-- Breaking: if `pluginMetadata` param is not provided, it will default to `undefined`.
+- **Breaking🚨**: if `pluginMetadata` param is not provided, it will default to `undefined`.
 
 **@bangle.dev/react**
 
-- Breaking: The undocumented hook `useSpecRegistry` & `usePlugins` are now removed.
+- **Breaking🚨**: The undocumented hook `useSpecRegistry` & `usePlugins` are now removed.
 
 ## 0.24.0
 
-- Breaking: package `@bangle.dev/pm-utils` and `@bangle.dev/js-utils` have been merged into a single package `@bangle.dev/utils`.
+- **Breaking🚨**: package `@bangle.dev/pm-utils` and `@bangle.dev/js-utils` have been merged into a single package `@bangle.dev/utils`.
 
 ## 0.23.1
 
@@ -80,24 +84,24 @@ import * as components from '@bangle.dev/base-components';
 
 **@bangle.dev/markdown**
 
-- breaking: `defaultMarkdownItTokenizer` is now a function `getDefaultMarkdownItTokenizer` which returns the default tokenizer.
+- **breaking🚨**: `defaultMarkdownItTokenizer` is now a function `getDefaultMarkdownItTokenizer` which returns the default tokenizer.
 
 **@bangle.dev/search**
 
-- breaking: Search no longer uses a `caseSensitive` param, users should instead send a query regex `i` flag for case insensitivity.
+- **breaking🚨**: Search no longer uses a `caseSensitive` param, users should instead send a query regex `i` flag for case insensitivity.
 
 ## 0.21.1
 
 **@bangle.dev/core**
 
-- breaking: All imports are now expected to be done by doing `import { ... } from '@bangle.dev/core'`. Direct file imports like `import { ... } from '@bangle.dev/core/xyz'` are no longer supported.
-- breaking: `keymap` is no longer exported, please use `prosemirror-keymap` directly.
+- **breaking🚨**: All imports are now expected to be done by doing `import { ... } from '@bangle.dev/core'`. Direct file imports like `import { ... } from '@bangle.dev/core/xyz'` are no longer supported.
+- **breaking🚨**: `keymap` is no longer exported, please use `prosemirror-keymap` directly.
 
 ## 0.20.0
 
 **@bangle.dev/tooltip**
 
-- breaking: Command `showSuggestionsTooltip` is now renamed to `renderSuggestionsTooltip` to more accurately reflect what the command does.
+- **breaking🚨**: Command `showSuggestionsTooltip` is now renamed to `renderSuggestionsTooltip` to more accurately reflect what the command does.
 
 **@bangle.dev/search**
 
@@ -164,12 +168,12 @@ import * as components from '@bangle.dev/base-components';
 
 ## 0.16.0
 
-- breaking: `@bangle.dev/collab-sever` will no longer throw errors in `manager.handleRequest`. You should use `parseCollabResponse` that parses the response and throws `CollabError`.
-- breaking: `@bangle.dev/collab-sever` The request type `get_events` is now renamed to `pull_events`.
+- **breaking🚨**: `@bangle.dev/collab-sever` will no longer throw errors in `manager.handleRequest`. You should use `parseCollabResponse` that parses the response and throws `CollabError`.
+- **breaking🚨**: `@bangle.dev/collab-sever` The request type `get_events` is now renamed to `pull_events`.
 
 ## 0.15.0
 
-- breaking: `@bangle.dev/collab` is now broken into two packages: `@bangle.dev/collab-sever` & `@bangle.dev/collab-client`.
+- **breaking🚨**: `@bangle.dev/collab` is now broken into two packages: `@bangle.dev/collab-sever` & `@bangle.dev/collab-client`.
 
 **@bangle.dev/react-emoji-suggest**
 
@@ -183,7 +187,7 @@ import * as components from '@bangle.dev/base-components';
 
 **@bangle.dev/emoji**
 
-- breaking: The package no longer exports `data` and the user is expected to provide its own datasource, see [emoji docs](https://bangle.dev/docs/api/emoji) for more details.
+- **breaking🚨**: The package no longer exports `data` and the user is expected to provide its own datasource, see [emoji docs](https://bangle.dev/docs/api/emoji) for more details.
 - feat: The `emoji.spec()` now accepts a new parameter `getEmoji`.
 
 **@bangle.dev/core**

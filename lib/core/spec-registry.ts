@@ -11,60 +11,64 @@ let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};
 
 type PMSpec = NodeSpec | MarkSpec;
 
+export interface BaseRawNodeSpec {
+  name: string;
+  type: 'node';
+  topNode?: boolean;
+  schema: NodeSpec;
+  markdown?: {
+    toMarkdown: (
+      state: MarkdownSerializerState,
+      node: Node,
+      parent: Node,
+      index: number,
+    ) => void;
+    parseMarkdown?: {
+      [key: string]: any;
+    };
+  };
+  options?: { [k: string]: any };
+}
+
+export interface BaseRawMarkSpec {
+  name: string;
+  type: 'mark';
+  schema: MarkSpec;
+  markdown?: {
+    toMarkdown: {
+      open:
+        | string
+        | ((
+            _state: MarkdownSerializerState,
+            mark: Mark,
+            parent: Node,
+            index: number,
+          ) => void);
+      close:
+        | string
+        | ((
+            _state: MarkdownSerializerState,
+            mark: Mark,
+            parent: Node,
+            index: number,
+          ) => void);
+      mixable?: boolean;
+      escape?: boolean;
+      expelEnclosingWhitespace?: boolean;
+    };
+    parseMarkdown?: {
+      [k: string]: any;
+    };
+  };
+  options?: { [k: string]: any };
+}
+
 export type RawSpecs =
-  | {
-      name: string;
-      type: 'node';
-      topNode?: boolean;
-      schema: NodeSpec;
-      markdown?: {
-        toMarkdown: (
-          state: MarkdownSerializerState,
-          node: Node,
-          parent: Node,
-          index: number,
-        ) => void;
-        parseMarkdown?: {
-          [key: string]: any;
-        };
-      };
-      options?: { [k: string]: any };
-    }
-  | {
-      name: string;
-      type: 'mark';
-      schema: MarkSpec;
-      markdown?: {
-        toMarkdown: {
-          open:
-            | string
-            | ((
-                _state: MarkdownSerializerState,
-                mark: Mark,
-                parent: Node,
-                index: number,
-              ) => void);
-          close:
-            | string
-            | ((
-                _state: MarkdownSerializerState,
-                mark: Mark,
-                parent: Node,
-                index: number,
-              ) => void);
-          mixable?: boolean;
-          escape?: boolean;
-          expelEnclosingWhitespace?: boolean;
-        };
-        parseMarkdown?: {
-          [k: string]: any;
-        };
-      };
-      options?: { [k: string]: any };
-    }
   | null
   | false
   | undefined
+  | BaseRawNodeSpec
+  | BaseRawMarkSpec
   | RawSpecs[];
 
 export class SpecRegistry<N extends string = any, M extends string = any> {
