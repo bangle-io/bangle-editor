@@ -2,6 +2,8 @@ import {
   domSerializationHelpers,
   NodeView,
   NodeViewProps,
+  BaseRawNodeSpec,
+  RawPlugins,
 } from '@bangle.dev/core';
 import type { Command } from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
@@ -21,8 +23,8 @@ export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
 
-function specFactory() {
-  const spec = {
+function specFactory(): BaseRawNodeSpec {
+  const spec: BaseRawNodeSpec = {
     name,
     type: 'node',
     schema: {
@@ -55,7 +57,7 @@ function specFactory() {
   return spec;
 }
 
-function pluginsFactory(opts = {}) {
+function pluginsFactory(opts = {}): RawPlugins {
   return [
     keymap({
       'Shift-Ctrl-s': insertStopwatch(),

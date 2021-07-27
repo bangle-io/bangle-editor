@@ -1,11 +1,12 @@
 import { domSerializationHelpers } from '@bangle.dev/core';
+import type { BaseRawNodeSpec } from '@bangle.dev/core';
 
 export const spec = specFactory;
 
 const name = 'markdownFrontMatter';
 
-function specFactory({} = {}) {
-  const spec = {
+function specFactory(): BaseRawNodeSpec {
+  const spec: BaseRawNodeSpec = {
     type: 'node',
     name: name,
     schema: {
@@ -19,7 +20,7 @@ function specFactory({} = {}) {
       },
     },
     markdown: {
-      toMarkdown(state: any, node: any) {
+      toMarkdown(state, node) {
         state.write('---\n');
         state.text(node.attrs.data, false);
         state.write('\n---');

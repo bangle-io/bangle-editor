@@ -3,6 +3,7 @@ import { goToNextCell, keymap, tableEditing, tableNodes } from '@bangle.dev/pm';
 // Not importing @bangle.dev/markdown to avoid cyclic dependency
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
+import type { BaseRawNodeSpec, RawPlugins } from '@bangle.dev/core';
 
 function calculateColumnWidth(tableNode: Node) {
   const sizeMap = new Map();
@@ -76,7 +77,7 @@ const toMarkdownCell = (state: MarkdownSerializerState, node: Node) => {
   });
 };
 
-export const table = {
+export const table: BaseRawNodeSpec = {
   name: 'table',
   type: 'node',
   schema: nodes.table,
@@ -97,7 +98,7 @@ export const table = {
   },
 };
 
-export const tableCell = {
+export const tableCell: BaseRawNodeSpec = {
   name: 'table_cell',
   type: 'node',
   schema: nodes.table_cell,
@@ -112,7 +113,7 @@ export const tableCell = {
   },
 };
 
-export const tableHeader = {
+export const tableHeader: BaseRawNodeSpec = {
   name: tableHeaderName,
   type: 'node',
   schema: nodes.table_header,
@@ -128,7 +129,7 @@ export const tableHeader = {
   },
 };
 
-export const tableRow = {
+export const tableRow: BaseRawNodeSpec = {
   name: 'table_row',
   type: 'node',
   schema: nodes.table_row,
@@ -199,7 +200,7 @@ export const tableRow = {
   },
 };
 
-export const tablePlugins = () => {
+export const tablePlugins = (): RawPlugins => {
   return [
     tableEditing(),
     keymap({

@@ -1,18 +1,9 @@
 import { keymap } from '@bangle.dev/pm';
+import type { RawPlugins } from '@bangle.dev/core';
 
-export const spec = specFactory;
 export const plugins = pluginsFactory;
 
-const name = 'timestamp';
-
-function specFactory() {
-  return {
-    name: name,
-    type: 'component',
-  };
-}
-
-function pluginsFactory() {
+function pluginsFactory(): RawPlugins {
   return keymap({
     'Ctrl-Shift-5': printDate('medium'),
     'Ctrl-Shift-6': printDate('utc'),

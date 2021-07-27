@@ -1,19 +1,16 @@
+import type { RawPlugins } from '@bangle.dev/core';
 import type { Schema } from '@bangle.dev/pm';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
-export const spec = specFactory;
+
 export const plugins = pluginsFactory;
 
 const name = 'trailing_node_addon';
 
-function specFactory() {
-  return {
-    name: name,
-    type: 'component',
-  };
-}
-
 // TODO can we move this to appendTransaction ?
-function pluginsFactory({ node = 'paragraph', notAfter = ['paragraph'] } = {}) {
+function pluginsFactory({
+  node = 'paragraph',
+  notAfter = ['paragraph'],
+} = {}): RawPlugins {
   const plugin = new PluginKey(name);
   return ({ schema }: { schema: Schema }) => {
     const disabledNodes = Object.entries(schema.nodes)
