@@ -1,6 +1,7 @@
 import type { Command, Schema } from '@bangle.dev/pm';
 import { keymap, toggleMark } from '@bangle.dev/pm';
 import { createObject, isMarkActiveInSelection } from '@bangle.dev/utils';
+import type { BaseRawMarkSpec, RawPlugins } from '@bangle.dev/core';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -14,7 +15,7 @@ export const defaultKeys = {
 
 const name = 'superscript';
 
-function specFactory(opts = {}) {
+function specFactory(opts = {}): BaseRawMarkSpec {
   return {
     type: 'mark',
     name,
@@ -26,7 +27,7 @@ function specFactory(opts = {}) {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
   return ({ schema }: { schema: Schema }) => {
     return [
       keybindings &&

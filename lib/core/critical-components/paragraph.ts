@@ -1,5 +1,5 @@
 import type { RawPlugins } from '../plugin-loader';
-import type { RawSpecs } from '../spec-registry';
+import type { BaseRawNodeSpec, RawSpecs } from '../spec-registry';
 import {
   Command,
   DOMOutputSpecArray,
@@ -51,7 +51,7 @@ export const defaultKeys = {
 const name = 'paragraph';
 const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
-function specFactory(): RawSpecs {
+function specFactory(): BaseRawNodeSpec {
   return {
     type: 'node',
     name,

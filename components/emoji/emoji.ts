@@ -1,4 +1,4 @@
-import { domSerializationHelpers } from '@bangle.dev/core';
+import { domSerializationHelpers, RawSpecs } from '@bangle.dev/core';
 import type { Command, Node } from '@bangle.dev/pm';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
@@ -18,7 +18,7 @@ function specFactory({
 }: {
   getEmoji: (alias: string, node: Node) => string;
   defaultEmojiAlias?: string;
-}) {
+}): RawSpecs {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'span',
     parsingPriority: 51,

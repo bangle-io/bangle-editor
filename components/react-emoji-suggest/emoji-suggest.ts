@@ -1,4 +1,4 @@
-import { SpecRegistry } from '@bangle.dev/core';
+import { SpecRegistry, BaseRawMarkSpec } from '@bangle.dev/core';
 import type { Command, Schema } from '@bangle.dev/pm';
 import { PluginKey } from '@bangle.dev/pm';
 import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
@@ -37,7 +37,7 @@ function specFactory({
 }: {
   markName: string;
   trigger?: string;
-}) {
+}): BaseRawMarkSpec {
   const spec = suggestTooltip.spec({ markName, trigger });
 
   return {

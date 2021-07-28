@@ -1,17 +1,17 @@
-import { domSerializationHelpers } from '@bangle.dev/core';
+import { domSerializationHelpers, BaseRawNodeSpec } from '@bangle.dev/core';
 import type { MarkdownSerializerState } from '@bangle.dev/markdown';
 import type { Node } from '@bangle.dev/pm';
 
 const name = 'wikiLink';
 export const spec = specFactory;
 
-function specFactory() {
+function specFactory(): BaseRawNodeSpec {
   const { toDOM, parseDOM } = domSerializationHelpers(name, {
     tag: 'span',
     parsingPriority: 52,
   });
 
-  let spec = {
+  return {
     type: 'node',
     name: name,
     schema: {
@@ -56,6 +56,4 @@ function specFactory() {
       },
     },
   };
-
-  return spec;
 }

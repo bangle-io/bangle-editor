@@ -7,17 +7,10 @@ import {
   PluginKey,
 } from '@bangle.dev/pm';
 import { matchAllPlus } from '@bangle.dev/utils';
+import type { RawPlugins } from '@bangle.dev/core';
 
 const name = 'search';
-export const spec = specFactory;
 export const plugins = pluginsFactory;
-
-function specFactory() {
-  return {
-    name: name,
-    type: 'component',
-  };
-}
 
 function pluginsFactory({
   key = new PluginKey(name),
@@ -29,7 +22,7 @@ function pluginsFactory({
   query?: RegExp | string;
   className?: string;
   maxHighlights?: number;
-}) {
+}): RawPlugins {
   function buildDeco(state: EditorState, query?: RegExp | string) {
     if (!query) {
       return DecorationSet.empty;

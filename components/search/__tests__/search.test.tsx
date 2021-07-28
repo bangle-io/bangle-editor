@@ -8,7 +8,7 @@ import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 import { search } from '../index';
 
-const specRegistry = new SpecRegistry([...defaultSpecs(), search.spec()]);
+const specRegistry = new SpecRegistry([...defaultSpecs()]);
 
 const searchPluginKey = new PluginKey();
 function countOcurrences(string: string, match: string) {

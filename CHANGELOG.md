@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.26.5
+
+- Bug: Typing fixes for suggestions.
+
 ## 0.26.4
 
 - Bug: Typing fixes for keybindings.

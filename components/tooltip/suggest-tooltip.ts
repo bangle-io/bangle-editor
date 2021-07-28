@@ -23,6 +23,7 @@ import type {
 } from './tooltip-placement';
 import * as tooltipPlacement from './tooltip-placement';
 import { triggerInputRule } from './trigger-input-rule';
+import type { BaseRawMarkSpec, RawPlugins } from '@bangle.dev/core';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};
@@ -55,7 +56,7 @@ function specFactory({
   markName: string;
   trigger: string;
   markColor?: string;
-}) {
+}): BaseRawMarkSpec {
   return {
     name: markName,
     type: 'mark',
@@ -63,12 +64,12 @@ function specFactory({
       inclusive: true,
       group: 'suggestTriggerMarks',
       parseDOM: [{ tag: `span[data-${markName}]` }],
-      toDOM: (node: Node) => {
+      toDOM: (mark) => {
         return [
           'span',
           {
             'data-bangle-name': markName,
-            'data-suggest-trigger': node.attrs.trigger,
+            'data-suggest-trigger': mark.attrs.trigger,
             'style': `color: ${markColor}`,
           },
         ];
@@ -77,7 +78,6 @@ function specFactory({
         trigger: { default: trigger },
       },
     },
-
     markdown: {
       toMarkdown: {
         open: '',
@@ -130,7 +130,7 @@ function pluginsFactory({
   },
   onArrowLeft,
   onArrowRight,
-}: PluginsOptions) {
+}: PluginsOptions): RawPlugins {
   return ({ schema }: { schema: Schema }) => {
     const isActiveCheck = queryIsSuggestTooltipActive(key);
     return [

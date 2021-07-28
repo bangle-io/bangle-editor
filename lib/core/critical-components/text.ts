@@ -1,11 +1,11 @@
-import type { RawSpecs } from '../spec-registry';
+import type { BaseRawNodeSpec } from '../spec-registry';
 import { Node } from '@bangle.dev/pm';
 
 export const spec = specFactory;
 
 const name = 'text';
 
-function specFactory(): RawSpecs {
+function specFactory(): BaseRawNodeSpec {
   return {
     type: 'node',
     name,
