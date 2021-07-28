@@ -8,7 +8,9 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'NodeViewWrapper') : () => {};
 
-export type RenderNodeViewsFunction = (props: any) => React.ReactNode;
+export type RenderNodeViewsFunction = (
+  props: NodeViewProps & { children: React.ReactNode },
+) => React.ReactNode;
 
 interface PropsType {
   debugKey: string;

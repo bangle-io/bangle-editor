@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD 
+
+**@bangle.dev/react**
+
+- Bug: Fix `renderNodeViews` types.
+
 ## 0.26.5
 
 - Bug: Typing fixes for suggestions.
