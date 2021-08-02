@@ -6,6 +6,11 @@
 
 - Bug: Fix `renderNodeViews` types.
 
+**@bangle.dev/markdown**
+
+- Feature: Expose `inlineNodeParser` a utility for inline markdown tokens.
+
+
 ## 0.26.5
 
 - Bug: Typing fixes for suggestions.

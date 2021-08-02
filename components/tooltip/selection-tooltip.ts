@@ -153,7 +153,6 @@ function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
           ) {
             return;
           }
-
           return _syncTooltipOnUpdate(stateKey)(
             view.state,
             view.dispatch,
@@ -211,6 +210,7 @@ export function _syncTooltipOnUpdate(
   return (state, dispatch, view) => {
     const tooltipState = key.getState(state)!;
     const newType = tooltipState.calculateType(state, tooltipState.type);
+
     if (typeof newType === 'string') {
       return updateSelectionTooltipType(key, newType)(state, dispatch, view);
     }
@@ -268,3 +268,5 @@ export function querySelectionTooltipType(key: PluginKey) {
     return pluginState && pluginState.type;
   };
 }
+
+console.log('brooo');
