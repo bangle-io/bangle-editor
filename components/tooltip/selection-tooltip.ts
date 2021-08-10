@@ -268,5 +268,3 @@ export function querySelectionTooltipType(key: PluginKey) {
     return pluginState && pluginState.type;
   };
 }
-
-console.log('brooo');
