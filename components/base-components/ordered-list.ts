@@ -88,7 +88,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
 
     return [
       wrappingInputRule(
-        /^(1)[\.\)] $/,
+        /^(1)[.)]\s$/,
         type,
         (match) => ({ order: +match[1] }),
         (match, node) => node.childCount + node.attrs.order === +match[1],
