@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## 0.27.1
+## 0.27.2
 
 - bug: Fixed situation where ordered list markdown shortcut would not trigger.
 
