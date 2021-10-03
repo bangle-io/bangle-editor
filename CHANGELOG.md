@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+**@bangle.dev/react-emoji-suggest**
+
+- bug: Fixed the case when `selectEmoji` command was using incorrect plugin key.
+
 ## 0.27.2
 
 - bug: Fixed situation where ordered list markdown shortcut would not trigger.

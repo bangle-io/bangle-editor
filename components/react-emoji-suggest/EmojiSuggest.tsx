@@ -101,6 +101,7 @@ export function EmojiSuggestContainer({
     },
     [view, emojiSuggestKey],
   );
+
   return (
     <div
       className="bangle-emoji-suggest-container"

@@ -228,10 +228,9 @@ export function selectEmoji(key: PluginKey, emojiAlias: string): Command {
     const emojiNode = state.schema.nodes.emoji.create({
       emojiAlias: emojiAlias,
     });
-    return suggestTooltip.replaceSuggestMarkWith(key, emojiNode)(
-      state,
-      dispatch,
-      view,
-    );
+    return suggestTooltip.replaceSuggestMarkWith(
+      getSuggestTooltipKey(key),
+      emojiNode,
+    )(state, dispatch, view);
   };
 }
