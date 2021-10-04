@@ -113,6 +113,7 @@ describe('basic tests', () => {
           <div
             class="ProseMirror bangle-editor"
             contenteditable="true"
+            translate="no"
           >
             <p>
               <br />
@@ -164,6 +165,7 @@ describe('basic tests', () => {
         <div
           class="ProseMirror bangle-editor"
           contenteditable="true"
+          translate="no"
         >
           <p>
             <br />

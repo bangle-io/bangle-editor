@@ -62,6 +62,7 @@ describe('selection-tooltip', () => {
         <div
           class="ProseMirror bangle-editor content"
           contenteditable="true"
+          translate="no"
         >
           <p>
             foobar

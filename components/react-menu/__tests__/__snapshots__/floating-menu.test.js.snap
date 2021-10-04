@@ -8,6 +8,7 @@ exports[`Link menu when no link 1`] = `
     <div
       class="ProseMirror bangle-editor content"
       contenteditable="true"
+      translate="no"
     >
       <p>
         foobar
