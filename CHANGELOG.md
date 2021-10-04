@@ -2,6 +2,10 @@
 
 ## HEAD
 
+**@bangle.dev/core**
+
+- bug: fix styling issues when using prosemirror-view@1.20 and above
+
 **@bangle.dev/react-emoji-suggest**
 
 - bug: Fixed the case when `selectEmoji` command was using incorrect plugin key.
