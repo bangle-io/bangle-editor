@@ -7,6 +7,7 @@ exports[`1 shows multiple decorations 1`] = `
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
+    translate="no"
   >
     <p>
       <span
@@ -33,6 +34,7 @@ exports[`2 shows multiple decorations 1`] = `
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
+    translate="no"
   >
     <p>
       hell
@@ -72,6 +74,7 @@ exports[`respects maxHighlights limit 1`] = `
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
+    translate="no"
   >
     <p>
       hell
@@ -99,6 +102,7 @@ exports[`shows decoration 1`] = `
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
+    translate="no"
   >
     <p>
       <span

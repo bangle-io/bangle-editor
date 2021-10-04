@@ -23,6 +23,7 @@ exports[`suggest basic show and hide types a trigger 1`] = `
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
+    translate="no"
   >
     <p>
       foobar 
@@ -56,6 +57,7 @@ exports[`suggest basic show and hide when no trigger 1`] = `
   <div
     class="ProseMirror bangle-editor content"
     contenteditable="true"
+    translate="no"
   >
     <p>
       foobar

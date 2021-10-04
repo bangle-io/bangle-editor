@@ -8,6 +8,7 @@ exports[`rendering node views Handles add and delete of node views 1`] = `
     <div
       class="ProseMirror bangle-editor"
       contenteditable="true"
+      translate="no"
     >
       <p>
         <span
@@ -61,6 +62,7 @@ exports[`rendering node views Handles add and delete of node views 2`] = `
     <div
       class="ProseMirror bangle-editor"
       contenteditable="true"
+      translate="no"
     >
       <p>
         <span
