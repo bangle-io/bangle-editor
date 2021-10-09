@@ -60,7 +60,6 @@ function pluginsFactory({
   squareSide = 32,
   squareMargin = 2,
   rowWidth = 400,
-  palettePadding = 16,
 }: {
   markName: string;
   key?: PluginKey;
@@ -70,7 +69,6 @@ function pluginsFactory({
   squareSide?: number;
   squareMargin?: number;
   rowWidth?: number;
-  palettePadding?: number;
 }) {
   return ({
     schema,
@@ -165,7 +163,6 @@ function pluginsFactory({
         markName,
         squareSide,
         squareMargin,
-        palettePadding,
         selectedEmojiSquareId,
         rowWidth,
       }),

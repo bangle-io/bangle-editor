@@ -1,10 +1,11 @@
-/** 
- * 
+/**
+ *
  * emoji-suggest
  *
  */
 
 .bangle-emoji-suggest {
+  padding: 16px;
   max-height: 300px;
   overflow-y: scroll;
   margin-left: auto;
@@ -18,7 +19,6 @@
   padding: 0;
   content-visibility: auto;
   background-color: transparent;
-  overflow: none;
   border-width: 0;
   cursor: pointer;
 }
@@ -34,8 +34,8 @@
 
 .bangle-emoji-suggest-container .bangle-emoji-suggest-group {
   font-size: 0.75rem;
-  display: 'flex';
-  flex-direction: 'column';
+  display: flex;
+  flex-direction: column;
 }
 
 .bangle-emoji-suggest-container .bangle-emoji-square:hover {

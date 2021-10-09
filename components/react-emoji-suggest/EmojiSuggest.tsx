@@ -28,12 +28,11 @@ export function EmojiSuggest({
     squareSide,
     squareMargin,
     rowWidth,
-    palettePadding,
     selectedEmojiSquareId,
   } = usePluginState(emojiSuggestKey);
 
   return reactDOM.createPortal(
-    <div className="bangle-emoji-suggest" style={{ padding: palettePadding }}>
+    <div className="bangle-emoji-suggest">
       <div
         style={{
           width: rowWidth,
@@ -114,7 +113,7 @@ export function EmojiSuggestContainer({
           <div className="bangle-emoji-suggest-group" key={groupName || i}>
             {groupName && <span>{groupName}</span>}
             <div>
-              {emojis.slice(0, maxItems).map(([emojiAlias, emoji], j) => (
+              {emojis.slice(0, maxItems).map(([emojiAlias, emoji]) => (
                 <EmojiSquare
                   key={emojiAlias}
                   isSelected={activeItem?.[0] === emojiAlias}
