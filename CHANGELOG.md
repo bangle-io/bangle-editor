@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+
+## 0.27.4
+
+**@bangle.dev/react-emoji-suggest**
+
+- feature: allow customizing of emoji palette padding via CSS (https://github.com/bangle-io/bangle.dev/pull/235)
+
 ## 0.27.3
 
 **@bangle.dev/core**
