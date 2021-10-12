@@ -1,6 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
 
+## 0.27.5
+**@bangle.dev/tooltip**
+
+- bug: fix issues with Typescript 4.4
+
 ## 0.27.4
 
 **@bangle.dev/react-emoji-suggest**

@@ -166,7 +166,7 @@ function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
 
 function getSelectionReferenceElement(view: EditorView) {
   return {
-    getBoundingClientRect: () => {
+    getBoundingClientRect: (): ClientRect => {
       const { selection } = view.state;
       let { head, from } = selection;
       // since head is dependent on the users choice of direction,
@@ -187,9 +187,6 @@ function getSelectionReferenceElement(view: EditorView) {
       if (selection instanceof NodeSelection) {
         const domNode = view.nodeDOM(pos) as HTMLElement;
         width = domNode ? domNode.clientWidth : width;
-        // if (domNode) {
-        //   return domNode.getBoundingClientRect();
-        // }
       }
 
       return {
