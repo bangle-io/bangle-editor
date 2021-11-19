@@ -7,6 +7,7 @@ import {
   ParseOptions,
   Schema,
   Selection,
+  dropCursor as pmDropCursor,
 } from '@bangle.dev/pm';
 import { RawSpecs, SpecRegistry } from './spec-registry';
 import { pluginLoader, RawPlugins } from './plugin-loader';
@@ -24,6 +25,7 @@ export interface BangleEditorStateProps<PluginMetadata = any> {
     storedMarks?: Mark[] | null | undefined;
   };
   pluginMetadata?: PluginMetadata;
+  dropCursorOpts?: Parameters<typeof pmDropCursor>[0];
 }
 
 export class BangleEditorState<PluginMetadata> {
@@ -38,6 +40,7 @@ export class BangleEditorState<PluginMetadata> {
     editorProps,
     pmStateOpts,
     pluginMetadata,
+    dropCursorOpts,
   }: BangleEditorStateProps<PluginMetadata> = {}) {
     if (specs && specRegistry) {
       throw new Error('Cannot have both specs and specRegistry defined');
@@ -58,6 +61,7 @@ export class BangleEditorState<PluginMetadata> {
     const pmPlugins = pluginLoader(specRegistry, plugins, {
       editorProps,
       metadata: pluginMetadata,
+      dropCursorOpts,
     });
 
     this.pmState = EditorState.create({

@@ -1,5 +1,19 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.0
+
+**@bangle.dev/utils**
+
+- Breaking: deleted `plugin-key-store`.
+
+**@bangle.dev/react-emoji-suggest**
+
+- feature: Now saves `suggestTooltipKey` in its plugin state.
+
+**@bangle.dev/core**
+
+- feature: BangleEditorState now accepts prosemirror-drop-cursor options.
+
 ## 0.27.6
 
 **@bangle.dev/tooltip**

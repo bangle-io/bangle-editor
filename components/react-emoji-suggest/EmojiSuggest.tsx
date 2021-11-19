@@ -3,11 +3,7 @@ import { PluginKey } from '@bangle.dev/pm';
 import { useEditorViewContext, usePluginState } from '@bangle.dev/react';
 import React, { useCallback, useMemo } from 'react';
 import reactDOM from 'react-dom';
-import {
-  GetEmojiGroupsType,
-  getSuggestTooltipKey,
-  selectEmoji,
-} from './emoji-suggest';
+import { GetEmojiGroupsType, selectEmoji } from './emoji-suggest';
 import { getSquareDimensions, resolveCounter } from './utils';
 
 export function EmojiSuggest({
@@ -15,11 +11,6 @@ export function EmojiSuggest({
 }: {
   emojiSuggestKey: PluginKey;
 }) {
-  const {
-    counter,
-    triggerText,
-    show: isVisible,
-  } = usePluginState(getSuggestTooltipKey(emojiSuggestKey));
   const view = useEditorViewContext();
   const {
     tooltipContentDOM,
@@ -29,7 +20,13 @@ export function EmojiSuggest({
     squareMargin,
     rowWidth,
     selectedEmojiSquareId,
+    suggestTooltipKey,
   } = usePluginState(emojiSuggestKey);
+  const {
+    counter,
+    triggerText,
+    show: isVisible,
+  } = usePluginState(suggestTooltipKey);
 
   return reactDOM.createPortal(
     <div className="bangle-emoji-suggest">
