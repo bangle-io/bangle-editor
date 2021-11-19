@@ -1,11 +1,10 @@
 import { SpecRegistry, BaseRawMarkSpec } from '@bangle.dev/core';
-import type { Command, Schema } from '@bangle.dev/pm';
+import type { Command, EditorState, Schema } from '@bangle.dev/pm';
 import { PluginKey } from '@bangle.dev/pm';
 import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
 import { createTooltipDOM, suggestTooltip } from '@bangle.dev/tooltip';
 import {
   bangleWarn,
-  pluginKeyStore,
   rafCommandExec,
   uuid,
   valuePlugin,
@@ -48,7 +47,6 @@ function specFactory({
   };
 }
 
-const keyStore = pluginKeyStore();
 export type GetEmojiGroupsType = (queryText: string) => EmojiGroupType;
 
 function pluginsFactory({
@@ -79,7 +77,7 @@ function pluginsFactory({
   }) => {
     const { trigger } = specRegistry.options[markName as any] as any;
 
-    const suggestTooltipKey = keyStore.create(key, 'suggestTooltipKey');
+    const suggestTooltipKey = new PluginKey('suggestTooltipKey');
 
     // We are converting to DOM elements so that their instances
     // can be shared across plugins.
@@ -165,6 +163,7 @@ function pluginsFactory({
         squareMargin,
         selectedEmojiSquareId,
         rowWidth,
+        suggestTooltipKey,
       }),
       suggestTooltip.plugins({
         key: suggestTooltipKey,
@@ -212,12 +211,17 @@ function pluginsFactory({
 }
 
 export function getSuggestTooltipKey(key: PluginKey) {
-  return keyStore.get(key, 'suggestTooltipKey');
+  return (state: EditorState) => {
+    return key.getState(state).suggestTooltipKey as PluginKey;
+  };
 }
 
 /** Commands */
 export function queryTriggerText(key: PluginKey) {
-  return suggestTooltip.queryTriggerText(getSuggestTooltipKey(key));
+  return (state: EditorState) => {
+    const suggestKey = getSuggestTooltipKey(key)(state);
+    return suggestTooltip.queryTriggerText(suggestKey)(state);
+  };
 }
 
 export function selectEmoji(key: PluginKey, emojiAlias: string): Command {
@@ -225,9 +229,12 @@ export function selectEmoji(key: PluginKey, emojiAlias: string): Command {
     const emojiNode = state.schema.nodes.emoji.create({
       emojiAlias: emojiAlias,
     });
-    return suggestTooltip.replaceSuggestMarkWith(
-      getSuggestTooltipKey(key),
-      emojiNode,
-    )(state, dispatch, view);
+    const suggestKey = getSuggestTooltipKey(key)(state);
+
+    return suggestTooltip.replaceSuggestMarkWith(suggestKey, emojiNode)(
+      state,
+      dispatch,
+      view,
+    );
   };
 }
