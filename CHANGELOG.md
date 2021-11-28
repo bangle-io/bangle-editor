@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.1
+
+**@bangle.dev/base-components**
+
+- chore: Typing updates
+
 ## 0.28.0
 
 **@bangle.dev/utils**

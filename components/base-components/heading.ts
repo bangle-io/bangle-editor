@@ -18,6 +18,7 @@ import {
   findParentNodeOfType,
   insertEmpty,
   createObject,
+  NodeWithPos,
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
 import type { MarkdownSerializerState } from 'prosemirror-markdown';
@@ -405,7 +406,7 @@ export function uncollapseAllHeadings(): Command {
   };
 }
 
-export function listCollapsedHeading(state: EditorState) {
+export function listCollapsedHeading(state: EditorState): NodeWithPos[] {
   return findChildren(
     state.doc,
     (node) =>
@@ -415,7 +416,7 @@ export function listCollapsedHeading(state: EditorState) {
   );
 }
 
-export function listCollapsibleHeading(state: EditorState) {
+export function listCollapsibleHeading(state: EditorState): NodeWithPos[] {
   return findChildren(
     state.doc,
     (node) => node.type === state.schema.nodes[name],
