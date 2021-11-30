@@ -59,9 +59,13 @@ export class BangleEditor<PluginMetadata = any> {
       return;
     }
 
-    // If view was destroyed directly
-    // @ts-ignore EditorView.docView is missing in @types/prosemirror-view
-    if (this.view.docView === null) {
+    // EditorView.docView and isDestroyed is missing in @types/prosemirror-view
+    if (
+      // if using earlier version of pm `isDestroyed` is undefined
+      typeof (this.view as any).isDestroyed === 'boolean'
+        ? (this.view as any).isDestroyed
+        : (this.view as any).docView === null
+    ) {
       this.destroyed = true;
       return;
     }

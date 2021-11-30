@@ -1,5 +1,10 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.2
+**@bangle.dev/core**
+
+- enhancement: The `editor.destroy()` and `editor.destroyed` use `pmViews` new `isDestroyed` field.
+
 ## 0.28.1
 
 **@bangle.dev/base-components**
