@@ -1,5 +1,14 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.3
+**@bangle.dev/base-components**
+
+- enhancement: Improved mark input regex.
+
+**@bangle.dev/tooltip**
+
+- enhancement: suggestMark disallows any other mark when it is active.
+
 ## 0.28.2
 **@bangle.dev/core**
 
