@@ -56,8 +56,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
     return [
       markPasteRule(/_([^_]+)_/g, type),
       markPasteRule(/\*([^*]+)\*/g, type),
-      markInputRule(/(?:^|[^_])(_([^_]+)_)$/, type),
-      markInputRule(/(?:^|[^*])(\*([^*]+)\*)$/, type),
+      markInputRule(/(?:^|\s)((?:_)((?:[^_]+))(?:_))$/, type),
+      markInputRule(/(?:^|\s)((?:\*)((?:[^*]+))(?:\*))$/, type),
       keybindings &&
         keymap(createObject([[keybindings.toggleItalic, toggleMark(type)]])),
     ];

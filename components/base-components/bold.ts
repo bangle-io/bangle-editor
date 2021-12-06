@@ -73,9 +73,13 @@ function pluginsFactory({
 
     return [
       markdownShortcut &&
-        markPasteRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)/g, type),
+        markPasteRule(/(?:^|\s)((?:\*\*)((?:[^*]+))(?:\*\*))/g, type),
       markdownShortcut &&
-        markInputRule(/(?:\*\*|__)([^*_]+)(?:\*\*|__)$/, type),
+        markPasteRule(/(?:^|\s)((?:__)((?:[^__]+))(?:__))/g, type),
+      markdownShortcut &&
+        markInputRule(/(?:^|\s)((?:__)((?:[^__]+))(?:__))$/, type),
+      markdownShortcut &&
+        markInputRule(/(?:^|\s)((?:\*\*)((?:[^*]+))(?:\*\*))$/, type),
       keybindings &&
         keymap(createObject([[keybindings.toggleBold, toggleBold()]])),
     ];

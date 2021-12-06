@@ -3,7 +3,12 @@
  */
 
 /** @jsx psx */
-import { psx, sendKeyToPm, setSelectionNear } from '@bangle.dev/test-helpers';
+import {
+  psx,
+  sendKeyToPm,
+  setSelectionNear,
+  typeText,
+} from '@bangle.dev/test-helpers';
 import { italic } from '../index';
 import { defaultTestEditor } from './test-editor';
 
@@ -58,5 +63,64 @@ describe('Basic', () => {
     setSelectionNear(view, 9);
 
     expect(italic.commands.queryIsItalicActive()(view.state)).toBe(true);
+  });
+});
+
+describe('markdown shortcuts', () => {
+  const testEditor = defaultTestEditor();
+
+  test('_ shortcut', async () => {
+    const { editorView } = testEditor(
+      <doc>
+        <para>first</para>
+        <para>[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '_magic_');
+    expect(editorView.state).toEqualDocAndSelection(
+      <doc>
+        <para>first</para>
+        <para>
+          <italic>magic</italic>
+        </para>
+      </doc>,
+    );
+  });
+
+  test('_ shortcut after a word', async () => {
+    const { editorView } = testEditor(
+      <doc>
+        <para>first</para>
+        <para>hey there []</para>
+      </doc>,
+    );
+
+    typeText(editorView, '_sweety_');
+    expect(editorView.state).toEqualDocAndSelection(
+      <doc>
+        <para>first</para>
+        <para>
+          hey there <italic>sweety</italic>
+        </para>
+      </doc>,
+    );
+  });
+
+  test('_ shortcut while inside a word', async () => {
+    const { editorView } = testEditor(
+      <doc>
+        <para>first</para>
+        <para>hey there[]</para>
+      </doc>,
+    );
+
+    typeText(editorView, '_omg_');
+    expect(editorView.state).toEqualDocAndSelection(
+      <doc>
+        <para>first</para>
+        <para>hey there_omg_</para>
+      </doc>,
+    );
   });
 });

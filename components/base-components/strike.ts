@@ -69,8 +69,8 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
     const type = getTypeFromSchema(schema);
 
     return [
-      markPasteRule(/~([^~]+)~/g, type),
-      markInputRule(/~([^~]+)~$/, type),
+      markPasteRule(/(?:^|\s)((?:~~)((?:[^~]+))(?:~~))/g, type),
+      markInputRule(/(?:^|\s)((?:~~)((?:[^~]+))(?:~~))$/, type),
       keybindings &&
         keymap(createObject([[keybindings.toggleStrike, toggleMark(type)]])),
     ];
