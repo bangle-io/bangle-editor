@@ -23,7 +23,7 @@ interface StateType {
   nodeViewProps: NodeViewProps;
 }
 
-export class NodeViewWrapper extends React.PureComponent<PropsType, StateType> {
+export class NodeViewWrapper extends React.Component<PropsType, StateType> {
   static propTypes = {
     nodeView: PropTypes.object.isRequired,
     renderNodeViews: PropTypes.func.isRequired,

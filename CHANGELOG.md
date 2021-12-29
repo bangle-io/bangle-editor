@@ -1,5 +1,10 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.4
+
+**@bangle.dev/react**
+- enchancement: Avoids using React.PureComponent due to memory leaks (see https://github.com/facebook/react/issues/18790)
+
 ## 0.28.3
 **@bangle.dev/base-components**
 
