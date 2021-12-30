@@ -87,6 +87,8 @@ export const BangleEditor = React.forwardRef<
       );
     }
 
+    console.log({ id });
+
     return (
       <React.Fragment>
         <div ref={renderRef} id={id} className={className} style={style} />
