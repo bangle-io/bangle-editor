@@ -20,7 +20,7 @@ interface PropsType {
 }
 
 interface StateType {
-  nodeViewProps: NodeViewProps;
+  counter: number;
 }
 
 export class NodeViewWrapper extends React.Component<PropsType, StateType> {
@@ -34,10 +34,13 @@ export class NodeViewWrapper extends React.Component<PropsType, StateType> {
 
   constructor(props: PropsType) {
     super(props);
+    this.state = {
+      counter: 0,
+    };
 
     this.update = () => {
-      this.setState((_state, props) => ({
-        nodeViewProps: props.nodeView.getNodeViewProps(),
+      this.setState((_state) => ({
+        counter: _state.counter + 1,
       }));
     };
 
@@ -64,19 +67,19 @@ export class NodeViewWrapper extends React.Component<PropsType, StateType> {
     // have a 1:1 mapping. This is guaranteed because you use `nodeView` instance
     // to generate a react key. See the usage of this component in ./ReactEditor.js
     nodeViewUpdateStore.set(props.nodeView, this.update);
-    this.state = { nodeViewProps: this.props.nodeView.getNodeViewProps() };
   }
 
   componentWillUnmount() {
     nodeViewUpdateStore.delete(this.props.nodeView);
+    this.update = () => {};
   }
 
-  getChildren() {
+  getChildren(nodeViewProps: NodeViewProps) {
     if (!this.props.nodeView.contentDOM) {
       return null;
     }
 
-    if (this.state.nodeViewProps.node.isInline) {
+    if (nodeViewProps.node.isInline) {
       return (
         // The bangle-nv-content is needed to keep the content take space
         // or else browsers will collapse it, making it hard to type
@@ -97,17 +100,19 @@ export class NodeViewWrapper extends React.Component<PropsType, StateType> {
 
   render() {
     log('react rendering', objectUid.get(this.props.nodeView));
+    const nodeViewProps = this.props.nodeView.getNodeViewProps();
     const element = this.props.renderNodeViews({
-      ...this.state.nodeViewProps,
-      children: this.getChildren(),
+      ...nodeViewProps,
+      children: this.getChildren(nodeViewProps),
     });
+
     if (!element) {
       bangleWarn(
         'renderNodeView prop must return a react element for the node',
-        this.state.nodeViewProps.node,
+        nodeViewProps.node,
       );
       throw new Error(
-        `renderNodeView must handle rendering for node of type "${this.state.nodeViewProps.node.type.name}"`,
+        `renderNodeView must handle rendering for node of type "${nodeViewProps.node.type.name}"`,
       );
     }
     return element;
