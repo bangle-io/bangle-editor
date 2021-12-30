@@ -11,9 +11,7 @@ interface StaticMenuProps {
 
 export function StaticMenu({ editor, renderMenu }: StaticMenuProps) {
   return editor ? (
-    <EditorViewContext.Provider value={editor.view}>
-      <StaticMenuContainer renderMenu={renderMenu}></StaticMenuContainer>
-    </EditorViewContext.Provider>
+    <StaticMenuContainer renderMenu={renderMenu}></StaticMenuContainer>
   ) : null;
 }
 

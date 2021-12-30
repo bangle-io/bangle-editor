@@ -15,9 +15,11 @@ const LOG = false;
 
 let log = LOG ? console.log.bind(console, 'react-editor') : () => {};
 
-export const EditorViewContext = React.createContext<EditorView>(
+export const EditorViewContext = React.createContext<
+  React.MutableRefObject<CoreBangleEditor<any> | null>
+>(
   /* we have to provide a default value to createContext */
-  null as unknown as EditorView,
+  { current: null },
 );
 
 interface BangleEditorProps<PluginMetadata = any>
@@ -56,15 +58,15 @@ export const BangleEditor = React.forwardRef<
       focusOnInit,
       pmViewOpts,
     });
-    const [editor, setEditor] = useState<CoreBangleEditor>();
+    const [editorMounted, setEditorMounted] = useState<boolean>(false);
+    const editorRef = useRef<CoreBangleEditor | null>(null);
     const nodeViews = useNodeViews(renderRef);
-
     useImperativeHandle(
       ref,
       () => {
-        return editor;
+        return editorRef.current || undefined;
       },
-      [editor],
+      [editorMounted],
     );
 
     useEffect(() => {
@@ -74,10 +76,12 @@ export const BangleEditor = React.forwardRef<
       );
       (editor.view as any)._updatePluginWatcher = updatePluginWatcher(editor);
       onReadyRef.current(editor);
-      setEditor(editor);
+      editorRef.current = editor;
+      setEditorMounted(true);
 
       return () => {
         editor.destroy();
+        editorRef.current = null;
       };
     }, [ref]);
 
@@ -103,8 +107,8 @@ export const BangleEditor = React.forwardRef<
             objectUid.get(nodeView),
           );
         })}
-        {editor ? (
-          <EditorViewContext.Provider value={editor.view}>
+        {editorRef.current ? (
+          <EditorViewContext.Provider value={editorRef}>
             {children}
           </EditorViewContext.Provider>
         ) : null}

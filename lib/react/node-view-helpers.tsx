@@ -16,16 +16,24 @@ export const nodeViewUpdateStore = new WeakMap();
 type NodeViewsUpdater = (nodeViewUpdateStore: NodeView[]) => NodeView[];
 type UpdateNodeViewsFunction = (updater: NodeViewsUpdater) => void;
 
+const cacheRevoke = new WeakMap();
+
 export const nodeViewRenderHandlers = (
   updateNodeViews: UpdateNodeViewsFunction,
 ): RenderHandlers => ({
   create: (nodeView, _nodeViewProps) => {
     log('create', objectUid.get(nodeView));
-    updateNodeViews((nodeViews) => [...nodeViews, nodeView]);
+
+    const revoke = Proxy.revocable(nodeView, {});
+    cacheRevoke.set(nodeView, revoke);
+    updateNodeViews((nodeViews) => [...nodeViews, revoke.proxy]);
   },
   update: (nodeView, _nodeViewProps) => {
     log('update', objectUid.get(nodeView));
-    const updateCallback = nodeViewUpdateStore.get(nodeView);
+
+    const revoke = cacheRevoke.get(nodeView);
+
+    const updateCallback = nodeViewUpdateStore.get(revoke.proxy);
     // If updateCallback is undefined (which can happen if react took long to mount),
     // we are still okay, as the latest nodeViewProps will be accessed whenever it mounts.
     if (updateCallback) {
@@ -34,20 +42,24 @@ export const nodeViewRenderHandlers = (
   },
   destroy: (nodeView) => {
     log('destroy', objectUid.get(nodeView));
-    updateNodeViews((nodeViews) => nodeViews.filter((n) => n !== nodeView));
+
+    const revoke = cacheRevoke.get(nodeView);
+    updateNodeViews((nodeViews) => nodeViews.filter((n) => n !== revoke.proxy));
+    revoke.revoke();
   },
 });
 
 export function useNodeViews(ref: RefObject<HTMLElement>) {
   const [nodeViews, setNodeViews] = useState<NodeView[]>([]);
   useEffect(() => {
+    const current = ref.current;
     // save the renderHandlers in the dom to decouple nodeView instantiating code
     // from the editor. Since PM passing view when nodeView is created, the author
     // of the component can get the handler reference from `getRenderHandlers(view)`.
     // Note: this assumes that the pm's dom is the direct child of `editorRenderTarget`.
     let destroyed = false;
     saveRenderHandlers(
-      ref.current!,
+      current!,
       nodeViewRenderHandlers((cb) => {
         if (!destroyed) {
           // use callback variant of setState to
@@ -58,8 +70,9 @@ export function useNodeViews(ref: RefObject<HTMLElement>) {
     );
     return () => {
       destroyed = true;
-      if (ref.current) {
-        removeRenderHandlers(ref.current);
+      if (current) {
+        console.log('removing');
+        removeRenderHandlers(current);
       }
     };
   }, [ref]);

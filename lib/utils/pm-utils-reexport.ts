@@ -1,4 +1,4 @@
-export {
+import {
   canInsert,
   contains,
   findBlockNodes,
@@ -31,6 +31,39 @@ export {
   setParentNodeMarkup,
   setTextSelection,
 } from 'prosemirror-utils';
+export {
+  canInsert,
+  contains,
+  findBlockNodes,
+  findChildren,
+  findChildrenByAttr,
+  findChildrenByMark,
+  findChildrenByType,
+  findDomRefAtPos,
+  findInlineNodes,
+  findParentDomRef,
+  findParentDomRefOfType,
+  findParentNode,
+  findParentNodeClosestToPos,
+  findParentNodeOfType,
+  findParentNodeOfTypeClosestToPos,
+  findPositionOfNodeBefore,
+  findSelectedNodeOfType,
+  findTextNodes,
+  flatten,
+  hasParentNode,
+  hasParentNodeOfType,
+  isNodeSelection,
+  removeNodeBefore,
+  removeParentNodeOfType,
+  removeSelectedNode,
+  replaceParentNodeOfType,
+  replaceSelectedNode,
+  safeInsert,
+  selectParentNodeOfType,
+  setParentNodeMarkup,
+  setTextSelection,
+};
 
 export type {
   CellTransform,

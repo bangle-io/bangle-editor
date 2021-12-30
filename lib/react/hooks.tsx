@@ -48,7 +48,8 @@ export function usePluginState(pluginKey: PluginKey, throttle = false) {
 }
 
 export function useEditorViewContext(): EditorView {
-  return useContext(EditorViewContext);
+  const ref = useContext(EditorViewContext);
+  return ref.current?.view!;
 }
 
 function watcherPlugin(pluginKey: PluginKey, setState: Function) {
