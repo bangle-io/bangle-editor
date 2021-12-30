@@ -8,7 +8,7 @@ import { objectUid } from '@bangle.dev/utils';
 import PropTypes from 'prop-types';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import reactDOM from 'react-dom';
-import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
+import { useNodeViews } from './node-view-helpers';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
 
 const LOG = false;
@@ -94,7 +94,6 @@ export const BangleEditor = React.forwardRef<
           return reactDOM.createPortal(
             <NodeViewWrapper
               debugKey={objectUid.get(nodeView)}
-              nodeViewUpdateStore={nodeViewUpdateStore}
               nodeView={nodeView}
               renderNodeViews={renderNodeViews!}
             />,

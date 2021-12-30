@@ -304,6 +304,10 @@ export function saveRenderHandlers(
   renderHandlersCache.set(editorContainer, handlers);
 }
 
+export function removeRenderHandlers(editorContainer: HTMLElement) {
+  renderHandlersCache.delete(editorContainer);
+}
+
 export function getRenderHandlers(view: EditorView) {
   // TODO this assumes parentNode is one level above root
   //   lets make sure it always is or rewrite this to

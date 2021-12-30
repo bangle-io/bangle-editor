@@ -1,4 +1,9 @@
-import { NodeView, RenderHandlers, saveRenderHandlers } from '@bangle.dev/core';
+import {
+  NodeView,
+  RenderHandlers,
+  saveRenderHandlers,
+  removeRenderHandlers,
+} from '@bangle.dev/core';
 import { objectUid } from '@bangle.dev/utils';
 import { RefObject, useEffect, useState } from 'react';
 
@@ -53,6 +58,9 @@ export function useNodeViews(ref: RefObject<HTMLElement>) {
     );
     return () => {
       destroyed = true;
+      if (ref.current) {
+        removeRenderHandlers(ref.current);
+      }
     };
   }, [ref]);
 

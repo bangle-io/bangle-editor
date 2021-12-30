@@ -3,6 +3,7 @@ import { EditorView, Node } from '@bangle.dev/pm';
 import { bangleWarn, objectUid } from '@bangle.dev/utils';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { nodeViewUpdateStore } from './node-view-helpers';
 
 const LOG = false;
 
@@ -16,7 +17,6 @@ interface PropsType {
   debugKey: string;
   nodeView: NodeView;
   renderNodeViews: RenderNodeViewsFunction;
-  nodeViewUpdateStore: WeakMap<NodeView, () => void>;
 }
 
 interface StateType {
@@ -27,7 +27,6 @@ export class NodeViewWrapper extends React.Component<PropsType, StateType> {
   static propTypes = {
     nodeView: PropTypes.object.isRequired,
     renderNodeViews: PropTypes.func.isRequired,
-    nodeViewUpdateStore: PropTypes.instanceOf(WeakMap).isRequired,
   };
 
   update: () => void;
@@ -64,8 +63,12 @@ export class NodeViewWrapper extends React.Component<PropsType, StateType> {
     // It is okay because a nodeView and this ReactComponent will always
     // have a 1:1 mapping. This is guaranteed because you use `nodeView` instance
     // to generate a react key. See the usage of this component in ./ReactEditor.js
-    props.nodeViewUpdateStore.set(props.nodeView, this.update);
+    nodeViewUpdateStore.set(props.nodeView, this.update);
     this.state = { nodeViewProps: this.props.nodeView.getNodeViewProps() };
+  }
+
+  componentWillUnmount() {
+    nodeViewUpdateStore.delete(this.props.nodeView);
   }
 
   getChildren() {
