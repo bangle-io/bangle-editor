@@ -6,8 +6,9 @@
     "@bangle.dev/test-helpers": "workspace:*",
     "prettier": "^2.3.2"
   },
-  "version": "0.28.4",
+  "version": "0.28.5",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "type": "module"
 }

@@ -1,6 +1,6 @@
 {
   "name": "bangle.dev",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -97,5 +97,6 @@
     "puppeteer": "^10.0.0",
     "typescript": "^4.3.5"
   },
-  "packageManager": "yarn@3.0.0"
+  "packageManager": "yarn@3.0.0",
+  "type": "module"
 }

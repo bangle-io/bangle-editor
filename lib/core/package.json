@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/core",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -48,5 +48,6 @@
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  }
+  },
+  "type": "module"
 }

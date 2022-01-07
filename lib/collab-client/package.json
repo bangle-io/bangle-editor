@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-client",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -52,5 +52,6 @@
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
     "prosemirror-collab": "^1.2.2"
-  }
+  },
+  "type": "module"
 }

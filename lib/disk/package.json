@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/disk",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -39,5 +39,6 @@
   },
   "devDependencies": {
     "@bangle.dev/pm": "workspace:*"
-  }
+  },
+  "type": "module"
 }

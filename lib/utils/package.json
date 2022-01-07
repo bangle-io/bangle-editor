@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/utils",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -19,6 +19,7 @@
   },
   "main": "index.ts",
   "module": "index.ts",
+  "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",

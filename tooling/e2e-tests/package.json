@@ -1,6 +1,6 @@
 {
   "name": "e2e-tests",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -67,5 +67,6 @@
   "devDependencies": {
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.5"
-  }
+  },
+  "type": "module"
 }

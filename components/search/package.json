@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/search",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -44,5 +44,6 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/jest": "^26.0.23"
-  }
+  },
+  "type": "module"
 }

@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.5
+
+- All packages now set the `type` to `module`.
+
 ## 0.28.4
 
 **@bangle.dev/react**

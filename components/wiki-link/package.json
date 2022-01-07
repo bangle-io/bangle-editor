@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/wiki-link",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -44,5 +44,6 @@
   "dependencies": {
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/utils": "workspace:*"
-  }
+  },
+  "type": "module"
 }

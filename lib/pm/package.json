@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/pm",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "description": "This is bangle.dev specific collection of Prosemirror packages.",
   "license": "MIT",
   "main": "dist/index.js",
@@ -63,5 +63,6 @@
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  }
+  },
+  "type": "module"
 }
