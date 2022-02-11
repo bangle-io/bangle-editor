@@ -1,6 +1,6 @@
 ![Node.js CI](https://github.com/bangle-io/bangle.dev/workflows/Node.js%20CI/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/6d032d9e-c63a-44e6-ae6d-d36a4905a147/deploy-status)](https://app.netlify.com/sites/bangle/deploys)
 
-## psst we have great documentation at https://bangle.devs
+## psst we have great documentation at https://bangle.dev
 
 ## What is bangle.dev ?
 
