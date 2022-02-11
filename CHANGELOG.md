@@ -7,9 +7,11 @@
 ## 0.28.4
 
 **@bangle.dev/react**
+
 - enchancement: Avoids using React.PureComponent due to memory leaks (see https://github.com/facebook/react/issues/18790)
 
 ## 0.28.3
+
 **@bangle.dev/base-components**
 
 - enhancement: Improved mark input regex.
@@ -19,6 +21,7 @@
 - enhancement: suggestMark disallows any other mark when it is active.
 
 ## 0.28.2
+
 **@bangle.dev/core**
 
 - enhancement: The `editor.destroy()` and `editor.destroyed` use `pmViews` new `isDestroyed` field.
@@ -78,7 +81,6 @@
 **@bangle.dev/markdown**
 
 - Feature: Expose `inlineNodeParser` a utility for inline markdown tokens.
-
 
 ## 0.26.5
 
