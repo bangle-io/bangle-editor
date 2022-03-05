@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^12.3.2",
     "prosemirror-markdown": "^1.5.1"
   },
   "peerDependencies": {

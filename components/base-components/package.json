@@ -42,7 +42,7 @@
     "@types/jest": "^26.0.23",
     "@types/markdown-it": "^12.0.3",
     "@types/prosemirror-markdown": "^1.5.2",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^12.3.2",
     "prettier": "^2.3.2",
     "prosemirror-markdown": "^1.5.1"
   },
