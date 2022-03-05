@@ -186,11 +186,14 @@ function bangleCollabPlugin({
     view(view) {
       connection = newConnection(view);
       // TODO is it safe to do this here
-      connection.init();
+      let timer = setTimeout(() => {
+        connection?.init();
+      }, 0);
 
       return {
         update() {},
         destroy() {
+          clearTimeout(timer);
           if (connection) {
             connection.destroy();
             connection = undefined;
