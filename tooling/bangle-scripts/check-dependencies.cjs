@@ -1,4 +1,4 @@
-const { walkWorkspace } = require('./workspace-tools');
+const { walkWorkspace } = require('./workspace-tools.cjs');
 main();
 async function main() {
   await checkDependencyVersion();

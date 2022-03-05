@@ -24,7 +24,7 @@ module.exports = (api) => {
     };
   }
 
-  let envOptions = { debug: DEBUG, targets: { esmodules: true } };
+  let envOptions = { loose: true, debug: DEBUG, targets: { esmodules: true } };
 
   // browserslist is not configured when running integration tests
   if (api.env('integration')) {

@@ -283,7 +283,7 @@ describe('rendering node views', () => {
     insertBananaAtSelection({ color: 'pink' })(view.dispatch, view.state);
     insertBananaAtSelection({ color: 'brown' })(view.dispatch, view.state);
 
-    expect(renderNodeViews).toBeCalledTimes(3);
+    expect(renderNodeViews).toBeCalledTimes(6);
 
     await sleep(10);
 
@@ -306,7 +306,7 @@ describe('rendering node views', () => {
 
     view.dispatch(removeSelectedNode(view.state.tr));
 
-    expect(renderNodeViews).toBeCalledTimes(4);
+    expect(renderNodeViews).toBeCalledTimes(9);
 
     expect(view.state).toEqualDocAndSelection(
       <doc>
