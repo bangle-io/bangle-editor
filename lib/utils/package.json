@@ -19,7 +19,6 @@
   },
   "main": "index.ts",
   "module": "index.ts",
-  "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
@@ -45,5 +44,6 @@
     "main": "dist/index.js",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  }
+  },
+  "type": "module"
 }

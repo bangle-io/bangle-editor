@@ -80,6 +80,12 @@ module.exports = async (env, argv) => {
     module: {
       rules: [
         {
+          test: /\.m?js/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+        {
           test: /\.(png|svg|jpg|gif)$/,
           use: ['file-loader'],
         },
