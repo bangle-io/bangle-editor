@@ -1,7 +1,7 @@
 import type { Node } from '@bangle.dev/pm';
 
 export abstract class Disk {
-  abstract load(_key: string): Promise<Node>;
+  abstract load(_key: string): Promise<Node | undefined>;
 
   abstract update(
     _key: string,

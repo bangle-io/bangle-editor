@@ -294,7 +294,12 @@ function connectionManager({
     }
     log('received error', errorCode, error.message, error.from);
 
-    // If initialization failed, regardless of error code
+    // Donot try to recover if document is unavailable
+    if (errorCode === 404) {
+      return;
+    }
+
+    // If initialization failed, other than 404 error code for all error code
     // we will need to restart setting up the initial state
     if (from === 'init') {
       const result = onFatalError(error);
@@ -328,7 +333,10 @@ function connectionManager({
         }
         return;
       }
+
       default: {
+        // hack to catch switch slipping
+        let val: never = errorCode;
         console.error(error);
         throw new Error('Unknown error code ' + errorCode);
       }
@@ -457,8 +465,19 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
   const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
 
   const collabSettings = getCollabSettings(view.state);
+
+  const isViewDestroyed = (view: EditorView) =>
+    // if using earlier version of pm `isDestroyed` is undefined
+    typeof (view as any).isDestroyed === 'boolean'
+      ? (view as any).isDestroyed
+      : (view as any).docView === null;
+
   emitter
     .on('init', async (oldSelection) => {
+      if (isViewDestroyed(view)) {
+        emitter.destroy();
+        return;
+      }
       // init can be called any time when we want to
       // restart the collab setup, so we first mark state as not ready
       // to prevent any unnecessary changes
@@ -482,6 +501,11 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
       );
     })
     .on('initCollabState', ({ getDocumentResponse, oldSelection }) => {
+      if (isViewDestroyed(view)) {
+        emitter.destroy();
+        return;
+      }
+
       const { doc, version, managerId } = getDocumentResponse;
 
       const prevSelection =

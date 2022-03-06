@@ -9,7 +9,6 @@ import {
   PushEventsRequestParam,
   PushEventsResponse,
 } from './types';
-import { raceTimeout } from './utils';
 
 const LOG = false;
 
@@ -77,7 +76,7 @@ export class CollabRequestHandler {
 
     // TODO we need to expose this abort in case the client themself
     // decide to close the pull_events request.
-    let abort;
+    let abort: (() => void) | null;
 
     const waitForChanges = new Promise<void>((res) => {
       const inst = instance;
@@ -110,25 +109,35 @@ export class CollabRequestHandler {
       };
     });
 
-    try {
-      await raceTimeout(waitForChanges, this.userWaitTimeout);
-      log('finished');
-      let data = instance.getEvents(version);
-      if (data === false) {
-        throw new CollabError(410, 'History no longer available');
-      }
-      return outputEvents(instance, data);
-    } catch (err) {
-      if (err.timeout === true) {
+    return new Promise((resolve, reject) => {
+      let timedout = false;
+      let timerId = setTimeout(() => {
+        timedout = true;
         log('timeout aborting');
         if (abort) {
-          // TODO fix this
-          (abort as any)();
+          abort();
         }
-        return {};
-      }
-      throw err;
-    }
+        resolve({});
+      }, this.userWaitTimeout);
+
+      (async () => {
+        try {
+          await waitForChanges;
+          if (!timedout) {
+            clearTimeout(timerId);
+            log('finished');
+            let data = instance.getEvents(version);
+            if (data === false) {
+              throw new CollabError(410, 'History no longer available');
+            } else {
+              resolve(outputEvents(instance, data));
+            }
+          }
+        } catch (error) {
+          reject(error);
+        }
+      })();
+    });
   }
 
   async pushEvents({

@@ -24,7 +24,8 @@ export class DebouncedDisk implements Disk {
   }
 
   constructor(
-    private getItem: (key: string) => Promise<Node>,
+    // return undefined if document is not found
+    private getItem: (key: string) => Promise<Node | undefined>,
     private setItem: (key: string, doc: Node, version: number) => Promise<void>,
     {
       debounceWait = 300,
