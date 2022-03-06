@@ -171,6 +171,11 @@ export class Manager {
       doc = await this.disk.load(docName);
     }
 
+    if (!doc) {
+      console.warn('doc not found', docName);
+      throw new CollabError(404, `Document ${docName} not found`);
+    }
+
     if (++this.instanceCount > this.maxCount) {
       let oldest = null;
       for (let inst of Object.values(instances)) {

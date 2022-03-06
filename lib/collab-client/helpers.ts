@@ -5,7 +5,7 @@ import { EditorState, Node, Schema, Selection } from '@bangle.dev/pm';
 export function replaceDocument(
   state: EditorState<Schema>,
   serializedDoc: any,
-  version: number,
+  version?: number,
 ) {
   const { schema, tr } = state;
   const content: Node[] = (serializedDoc.content || []).map((child: any) =>

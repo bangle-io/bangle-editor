@@ -1,4 +1,4 @@
-export type ValidErrorCodes = 400 | 410 | 409 | 500;
+export type ValidErrorCodes = 404 | 400 | 410 | 409 | 500;
 
 export class CollabError extends Error {
   from?: string;
