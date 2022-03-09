@@ -1,5 +1,6 @@
 import { Disk } from '@bangle.dev/disk';
 import { Node, Schema } from '@bangle.dev/pm';
+import { serialExecuteQueue } from '@bangle.dev/utils';
 import {
   CollabError,
   ValidErrorCodes as ValidCollabErrorCodes,
@@ -7,7 +8,7 @@ import {
 import { CollabRequestHandler } from './collab-request-handler';
 import { Instance } from './instance';
 import { CollabRequestType, CollabResponse } from './types';
-import { serialExecuteQueue, uuid } from './utils';
+import { uuid } from './utils';
 
 const LOG = false;
 
@@ -30,7 +31,7 @@ export class Manager {
   maxCount = 20;
   destroyed = false;
   instances: { [key: string]: Instance } = {};
-  getDocumentQueue = serialExecuteQueue<Instance>();
+  getDocumentQueue = serialExecuteQueue();
 
   routes;
   disk;

@@ -5,7 +5,6 @@ import {
   getIdleCallback,
   PullEvents,
   PushEvents,
-  serialExecuteQueue,
   sleep,
   uuid,
 } from '@bangle.dev/collab-server';
@@ -19,7 +18,7 @@ import {
   Step,
   TextSelection,
 } from '@bangle.dev/pm';
-import { Emitter } from '@bangle.dev/utils';
+import { Emitter, serialExecuteQueue } from '@bangle.dev/utils';
 import {
   collab,
   getVersion,

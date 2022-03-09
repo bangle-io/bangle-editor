@@ -163,16 +163,30 @@ export function serialExecuteQueue() {
   let prev = Promise.resolve();
   return {
     add<T>(cb: () => Promise<T>): Promise<T> {
-      return new Promise((resolve, reject) => {
+      return new Promise<T>((resolve, reject) => {
+        const run = async () => {
+          try {
+            const result = await cb();
+            return {
+              rejected: false,
+              value: result,
+            };
+          } catch (e) {
+            return {
+              rejected: true,
+              value: e,
+            };
+          }
+        };
+
         prev = prev.then(() => {
-          return Promise.resolve(cb()).then(
-            (resultCb) => {
-              resolve(resultCb);
-            },
-            (err) => {
-              reject(err);
-            },
-          );
+          return run().then(({ value, rejected }) => {
+            if (rejected) {
+              reject(value);
+            } else {
+              resolve(value);
+            }
+          });
         });
       });
     },
@@ -266,33 +280,3 @@ export const bangleWarn =
   isTestEnv || isProdEnv
     ? () => {}
     : console.warn.bind(console, 'Warning in bangle.js:');
-
-export async function raceTimeout<T>(promise: Promise<T>, ts: number) {
-  let timerId: number | null;
-  let timeout = false;
-  return new Promise((resolve, reject) => {
-    timerId = window.setTimeout(() => {
-      timeout = true;
-      reject({ timeout: true });
-    }, ts);
-
-    promise.then(
-      (result) => {
-        if (timeout) {
-          return;
-        }
-        clearTimeout(timerId!);
-        timerId = null;
-        resolve(result);
-      },
-      (error) => {
-        if (timeout) {
-          return;
-        }
-        clearTimeout(timerId!);
-        timerId = null;
-        reject(error);
-      },
-    );
-  });
-}

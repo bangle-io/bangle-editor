@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.8
+
+- enhancement: Improve serial execute queue utility
+
 ## 0.28.7
 
 - enhancement: Collab server recognizes when a document is not defined
