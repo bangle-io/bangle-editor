@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.9
+
+**@bangle.dev/collab-server**
+
+- enhancement: export CollabRequestType
+
+
 ## 0.28.8
 
 - enhancement: Improve serial execute queue utility
