@@ -15,6 +15,6 @@
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
   },
-  "version": "0.28.8",
+  "version": "0.28.9",
   "type": "module"
 }
