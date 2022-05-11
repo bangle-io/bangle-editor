@@ -20,7 +20,6 @@
   "private": true,
   "main": "index.js",
   "module": "index.js",
-  "scripts": {},
   "dependencies": {
     "@bangle.dev/collab-client": "workspace:*",
     "@bangle.dev/collab-server": "workspace:*",
