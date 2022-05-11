@@ -1,5 +1,8 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.28.10
+
+
 ## 0.28.9
 
 **@bangle.dev/collab-server**
