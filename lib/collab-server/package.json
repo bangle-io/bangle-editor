@@ -45,7 +45,7 @@
   "dependencies": {
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "prosemirror-collab": "^1.2.2"
+    "prosemirror-collab": "^1.3.0"
   },
   "type": "module"
 }
