@@ -32,7 +32,6 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@types/markdown-it": "^12.0.3",
-    "@types/prosemirror-markdown": "^1.5.2",
     "markdown-it": "^10.0.0",
     "prosemirror-markdown": "^1.5.1"
   },

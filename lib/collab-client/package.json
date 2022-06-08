@@ -45,7 +45,6 @@
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.12.2",
-    "@types/prosemirror-collab": "^1.1.2",
     "localforage": "^1.9.0",
     "strict-event-emitter-types": "^2.0.0"
   },
