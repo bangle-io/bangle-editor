@@ -4786,7 +4786,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-testing-library__jest-dom-npm-5.9.4-6823466263-a2ffeeb46d.zip/node_modules/@types/testing-library__jest-dom/",\
           "packageDependencies": [\
             ["@types/testing-library__jest-dom", "npm:5.9.4"],\
-            ["@types/jest", "npm:26.0.23"]\
+            ["@types/jest", "npm:27.5.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -5712,13 +5712,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ansi-regex-npm-4.1.0-4a7d8413fe-97aa465953.zip/node_modules/ansi-regex/",\
           "packageDependencies": [\
             ["ansi-regex", "npm:4.1.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:5.0.0", {\
-          "packageLocation": "./.yarn/cache/ansi-regex-npm-5.0.0-9c076068d9-b1bb4e992a.zip/node_modules/ansi-regex/",\
-          "packageDependencies": [\
-            ["ansi-regex", "npm:5.0.0"]\
           ],\
           "linkType": "HARD"\
         }],\
@@ -6651,7 +6644,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["camel-case", "npm:4.1.2"],\
             ["pascal-case", "npm:3.1.2"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6694,7 +6687,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["capital-case", "npm:1.0.4"],\
             ["no-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"],\
+            ["tslib", "npm:2.4.0"],\
             ["upper-case-first", "npm:2.0.2"]\
           ],\
           "linkType": "HARD"\
@@ -6765,7 +6758,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["path-case", "npm:3.0.4"],\
             ["sentence-case", "npm:3.0.4"],\
             ["snake-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7252,7 +7245,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["constant-case", "npm:3.0.4"],\
             ["no-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"],\
+            ["tslib", "npm:2.4.0"],\
             ["upper-case", "npm:2.0.2"]\
           ],\
           "linkType": "HARD"\
@@ -7775,13 +7768,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:27.0.1", {\
-          "packageLocation": "./.yarn/cache/diff-sequences-npm-27.0.1-65556e2cb7-013d0f5461.zip/node_modules/diff-sequences/",\
-          "packageDependencies": [\
-            ["diff-sequences", "npm:27.0.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/diff-sequences-npm-27.5.1-29338362fa-a00db5554c.zip/node_modules/diff-sequences/",\
           "packageDependencies": [\
@@ -7910,7 +7896,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["dot-case", "npm:3.0.4"],\
             ["no-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8787,8 +8773,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["expect", "npm:27.0.2"],\
             ["@jest/types", "npm:27.5.1"],\
             ["ansi-styles", "npm:5.2.0"],\
-            ["jest-get-type", "npm:27.0.1"],\
-            ["jest-matcher-utils", "npm:27.0.2"],\
+            ["jest-get-type", "npm:27.5.1"],\
+            ["jest-matcher-utils", "npm:27.5.1"],\
             ["jest-message-util", "npm:27.0.2"],\
             ["jest-regex-util", "npm:27.5.1"]\
           ],\
@@ -9655,7 +9641,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["header-case", "npm:2.0.4"],\
             ["capital-case", "npm:1.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10520,12 +10506,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["expect", "npm:27.0.2"],\
             ["is-generator-fn", "npm:2.1.0"],\
             ["jest-each", "npm:27.0.2"],\
-            ["jest-matcher-utils", "npm:27.0.2"],\
+            ["jest-matcher-utils", "npm:27.5.1"],\
             ["jest-message-util", "npm:27.0.2"],\
             ["jest-runtime", "npm:27.0.4"],\
             ["jest-snapshot", "npm:27.0.4"],\
             ["jest-util", "npm:27.5.1"],\
-            ["pretty-format", "npm:27.0.2"],\
+            ["pretty-format", "npm:27.5.1"],\
             ["slash", "npm:3.0.0"],\
             ["stack-utils", "npm:2.0.3"],\
             ["throat", "npm:6.0.1"]\
@@ -10592,7 +10578,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-circus", "npm:27.0.4"],\
             ["jest-environment-jsdom", "npm:27.0.3"],\
             ["jest-environment-node", "npm:27.0.3"],\
-            ["jest-get-type", "npm:27.0.1"],\
+            ["jest-get-type", "npm:27.5.1"],\
             ["jest-jasmine2", "npm:27.0.4"],\
             ["jest-regex-util", "npm:27.5.1"],\
             ["jest-resolve", "npm:27.0.4"],\
@@ -10600,7 +10586,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-util", "npm:27.5.1"],\
             ["jest-validate", "npm:27.0.2"],\
             ["micromatch", "npm:4.0.4"],\
-            ["pretty-format", "npm:27.0.2"],\
+            ["pretty-format", "npm:27.5.1"],\
             ["ts-node", null]\
           ],\
           "packagePeers": [\
@@ -10638,17 +10624,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:27.0.2", {\
-          "packageLocation": "./.yarn/cache/jest-diff-npm-27.0.2-10b7ae1f33-0b423e480d.zip/node_modules/jest-diff/",\
-          "packageDependencies": [\
-            ["jest-diff", "npm:27.0.2"],\
-            ["chalk", "npm:4.1.1"],\
-            ["diff-sequences", "npm:27.0.1"],\
-            ["jest-get-type", "npm:27.0.1"],\
-            ["pretty-format", "npm:27.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/jest-diff-npm-27.5.1-818e549196-8be27c1e1e.zip/node_modules/jest-diff/",\
           "packageDependencies": [\
@@ -10678,9 +10653,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest-each", "npm:27.0.2"],\
             ["@jest/types", "npm:27.5.1"],\
             ["chalk", "npm:4.1.1"],\
-            ["jest-get-type", "npm:27.0.1"],\
+            ["jest-get-type", "npm:27.5.1"],\
             ["jest-util", "npm:27.5.1"],\
-            ["pretty-format", "npm:27.0.2"]\
+            ["pretty-format", "npm:27.5.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10738,13 +10713,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:27.0.1", {\
-          "packageLocation": "./.yarn/cache/jest-get-type-npm-27.0.1-aa40b7f8ce-22c5e04700.zip/node_modules/jest-get-type/",\
-          "packageDependencies": [\
-            ["jest-get-type", "npm:27.0.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/jest-get-type-npm-27.5.1-980fbf7a43-63064ab701.zip/node_modules/jest-get-type/",\
           "packageDependencies": [\
@@ -10791,12 +10759,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["expect", "npm:27.0.2"],\
             ["is-generator-fn", "npm:2.1.0"],\
             ["jest-each", "npm:27.0.2"],\
-            ["jest-matcher-utils", "npm:27.0.2"],\
+            ["jest-matcher-utils", "npm:27.5.1"],\
             ["jest-message-util", "npm:27.0.2"],\
             ["jest-runtime", "npm:27.0.4"],\
             ["jest-snapshot", "npm:27.0.4"],\
             ["jest-util", "npm:27.5.1"],\
-            ["pretty-format", "npm:27.0.2"],\
+            ["pretty-format", "npm:27.5.1"],\
             ["throat", "npm:6.0.1"]\
           ],\
           "linkType": "HARD"\
@@ -10807,24 +10775,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/jest-leak-detector-npm-27.0.2-d26b012860-22a9bd22b5.zip/node_modules/jest-leak-detector/",\
           "packageDependencies": [\
             ["jest-leak-detector", "npm:27.0.2"],\
-            ["jest-get-type", "npm:27.0.1"],\
-            ["pretty-format", "npm:27.0.2"]\
+            ["jest-get-type", "npm:27.5.1"],\
+            ["pretty-format", "npm:27.5.1"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["jest-matcher-utils", [\
-        ["npm:27.0.2", {\
-          "packageLocation": "./.yarn/cache/jest-matcher-utils-npm-27.0.2-e0586ec40a-7c12409e42.zip/node_modules/jest-matcher-utils/",\
-          "packageDependencies": [\
-            ["jest-matcher-utils", "npm:27.0.2"],\
-            ["chalk", "npm:4.1.1"],\
-            ["jest-diff", "npm:27.0.2"],\
-            ["jest-get-type", "npm:27.0.1"],\
-            ["pretty-format", "npm:27.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/jest-matcher-utils-npm-27.5.1-0c47b071fb-bb2135fc48.zip/node_modules/jest-matcher-utils/",\
           "packageDependencies": [\
@@ -10848,7 +10805,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chalk", "npm:4.1.1"],\
             ["graceful-fs", "npm:4.2.9"],\
             ["micromatch", "npm:4.0.4"],\
-            ["pretty-format", "npm:27.0.2"],\
+            ["pretty-format", "npm:27.5.1"],\
             ["slash", "npm:3.0.0"],\
             ["stack-utils", "npm:2.0.3"]\
           ],\
@@ -11047,15 +11004,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chalk", "npm:4.1.1"],\
             ["expect", "npm:27.0.2"],\
             ["graceful-fs", "npm:4.2.9"],\
-            ["jest-diff", "npm:27.0.2"],\
-            ["jest-get-type", "npm:27.0.1"],\
+            ["jest-diff", "npm:27.5.1"],\
+            ["jest-get-type", "npm:27.5.1"],\
             ["jest-haste-map", "npm:27.5.1"],\
-            ["jest-matcher-utils", "npm:27.0.2"],\
+            ["jest-matcher-utils", "npm:27.5.1"],\
             ["jest-message-util", "npm:27.0.2"],\
             ["jest-resolve", "npm:27.0.4"],\
             ["jest-util", "npm:27.5.1"],\
             ["natural-compare", "npm:1.4.0"],\
-            ["pretty-format", "npm:27.0.2"],\
+            ["pretty-format", "npm:27.5.1"],\
             ["semver", "npm:7.3.5"]\
           ],\
           "linkType": "HARD"\
@@ -11084,9 +11041,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@jest/types", "npm:27.5.1"],\
             ["camelcase", "npm:6.2.0"],\
             ["chalk", "npm:4.1.1"],\
-            ["jest-get-type", "npm:27.0.1"],\
+            ["jest-get-type", "npm:27.5.1"],\
             ["leven", "npm:3.1.0"],\
-            ["pretty-format", "npm:27.0.2"]\
+            ["pretty-format", "npm:27.5.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11708,7 +11665,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lower-case-npm-2.0.2-151055f1c2-83a0a5f159.zip/node_modules/lower-case/",\
           "packageDependencies": [\
             ["lower-case", "npm:2.0.2"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12113,7 +12070,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["no-case", "npm:3.0.4"],\
             ["lower-case", "npm:2.0.2"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12595,7 +12552,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["param-case", "npm:3.0.4"],\
             ["dot-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12656,7 +12613,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["pascal-case", "npm:3.1.2"],\
             ["no-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12667,7 +12624,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["path-case", "npm:3.0.4"],\
             ["dot-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13069,19 +13026,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["pretty-format", "npm:26.6.2"],\
             ["@jest/types", "npm:26.6.2"],\
-            ["ansi-regex", "npm:5.0.0"],\
+            ["ansi-regex", "npm:5.0.1"],\
             ["ansi-styles", "npm:4.2.1"],\
-            ["react-is", "npm:17.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:27.0.2", {\
-          "packageLocation": "./.yarn/cache/pretty-format-npm-27.0.2-d193adf249-26a454f1da.zip/node_modules/pretty-format/",\
-          "packageDependencies": [\
-            ["pretty-format", "npm:27.0.2"],\
-            ["@jest/types", "npm:27.5.1"],\
-            ["ansi-regex", "npm:5.0.0"],\
-            ["ansi-styles", "npm:5.2.0"],\
             ["react-is", "npm:17.0.2"]\
           ],\
           "linkType": "HARD"\
@@ -13188,7 +13134,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-collab-npm-1.3.0-d81c6d2934-3a7fcf4246.zip/node_modules/prosemirror-collab/",\
           "packageDependencies": [\
             ["prosemirror-collab", "npm:1.3.0"],\
-            ["prosemirror-state", "npm:1.3.4"]\
+            ["prosemirror-state", "npm:1.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13198,9 +13144,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-commands-npm-1.3.0-2c4d72afe3-1e896b1ddc.zip/node_modules/prosemirror-commands/",\
           "packageDependencies": [\
             ["prosemirror-commands", "npm:1.3.0"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
+            ["prosemirror-model", "npm:1.18.0"],\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13210,9 +13156,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-dropcursor-npm-1.5.0-11f95b3f71-3cf8c4cc76.zip/node_modules/prosemirror-dropcursor/",\
           "packageDependencies": [\
             ["prosemirror-dropcursor", "npm:1.5.0"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"],\
-            ["prosemirror-view", "npm:1.20.1"]\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"],\
+            ["prosemirror-view", "npm:1.26.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13222,10 +13168,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-gapcursor-npm-1.3.1-2b51bbf26f-d8562d31c7.zip/node_modules/prosemirror-gapcursor/",\
           "packageDependencies": [\
             ["prosemirror-gapcursor", "npm:1.3.1"],\
-            ["prosemirror-keymap", "npm:1.1.4"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-view", "npm:1.20.1"]\
+            ["prosemirror-keymap", "npm:1.2.0"],\
+            ["prosemirror-model", "npm:1.18.0"],\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-view", "npm:1.26.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13235,8 +13181,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-history-npm-1.3.0-c4190c34d0-023feff702.zip/node_modules/prosemirror-history/",\
           "packageDependencies": [\
             ["prosemirror-history", "npm:1.3.0"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"],\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"],\
             ["rope-sequence", "npm:1.3.2"]\
           ],\
           "linkType": "HARD"\
@@ -13247,27 +13193,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-inputrules-npm-1.2.0-39ef2859e1-c6c3e4c4d6.zip/node_modules/prosemirror-inputrules/",\
           "packageDependencies": [\
             ["prosemirror-inputrules", "npm:1.2.0"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["prosemirror-keymap", [\
-        ["npm:1.1.4", {\
-          "packageLocation": "./.yarn/cache/prosemirror-keymap-npm-1.1.4-cc2478e236-a171ceb22d.zip/node_modules/prosemirror-keymap/",\
-          "packageDependencies": [\
-            ["prosemirror-keymap", "npm:1.1.4"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["w3c-keyname", "npm:2.2.4"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.2.0", {\
           "packageLocation": "./.yarn/cache/prosemirror-keymap-npm-1.2.0-36cb458dbe-35ce499a72.zip/node_modules/prosemirror-keymap/",\
           "packageDependencies": [\
             ["prosemirror-keymap", "npm:1.2.0"],\
-            ["prosemirror-state", "npm:1.3.4"],\
+            ["prosemirror-state", "npm:1.4.0"],\
             ["w3c-keyname", "npm:2.2.4"]\
           ],\
           "linkType": "HARD"\
@@ -13279,20 +13216,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["prosemirror-markdown", "npm:1.9.1"],\
             ["markdown-it", "npm:13.0.1"],\
-            ["prosemirror-model", "npm:1.14.3"]\
+            ["prosemirror-model", "npm:1.18.0"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["prosemirror-model", [\
-        ["npm:1.14.3", {\
-          "packageLocation": "./.yarn/cache/prosemirror-model-npm-1.14.3-b5be51ca4b-fec7f91044.zip/node_modules/prosemirror-model/",\
-          "packageDependencies": [\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["orderedmap", "npm:1.1.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.18.0", {\
           "packageLocation": "./.yarn/cache/prosemirror-model-npm-1.18.0-0b8d570b53-75ac51737a.zip/node_modules/prosemirror-model/",\
           "packageDependencies": [\
@@ -13307,29 +13236,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-schema-list-npm-1.2.0-76bfbe2481-31d47e6a53.zip/node_modules/prosemirror-schema-list/",\
           "packageDependencies": [\
             ["prosemirror-schema-list", "npm:1.2.0"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
+            ["prosemirror-model", "npm:1.18.0"],\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["prosemirror-state", [\
-        ["npm:1.3.4", {\
-          "packageLocation": "./.yarn/cache/prosemirror-state-npm-1.3.4-c4b4427e53-088748bca0.zip/node_modules/prosemirror-state/",\
-          "packageDependencies": [\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.4.0", {\
           "packageLocation": "./.yarn/cache/prosemirror-state-npm-1.4.0-57ce8ca056-1c9ba2899e.zip/node_modules/prosemirror-state/",\
           "packageDependencies": [\
             ["prosemirror-state", "npm:1.4.0"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
+            ["prosemirror-model", "npm:1.18.0"],\
+            ["prosemirror-transform", "npm:1.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13339,29 +13259,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-tables-npm-1.1.1-4bb1b6fcf3-26033de877.zip/node_modules/prosemirror-tables/",\
           "packageDependencies": [\
             ["prosemirror-tables", "npm:1.1.1"],\
-            ["prosemirror-keymap", "npm:1.1.4"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"],\
-            ["prosemirror-view", "npm:1.20.1"]\
+            ["prosemirror-keymap", "npm:1.2.0"],\
+            ["prosemirror-model", "npm:1.18.0"],\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"],\
+            ["prosemirror-view", "npm:1.26.0"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["prosemirror-transform", [\
-        ["npm:1.3.3", {\
-          "packageLocation": "./.yarn/cache/prosemirror-transform-npm-1.3.3-48c87f30ce-1f292a5850.zip/node_modules/prosemirror-transform/",\
-          "packageDependencies": [\
-            ["prosemirror-transform", "npm:1.3.3"],\
-            ["prosemirror-model", "npm:1.14.3"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.6.0", {\
           "packageLocation": "./.yarn/cache/prosemirror-transform-npm-1.6.0-b5f6ad8b4a-b199b17052.zip/node_modules/prosemirror-transform/",\
           "packageDependencies": [\
             ["prosemirror-transform", "npm:1.6.0"],\
-            ["prosemirror-model", "npm:1.14.3"]\
+            ["prosemirror-model", "npm:1.18.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13393,23 +13305,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prosemirror-view", [\
-        ["npm:1.20.1", {\
-          "packageLocation": "./.yarn/cache/prosemirror-view-npm-1.20.1-9212221216-905d7679ac.zip/node_modules/prosemirror-view/",\
-          "packageDependencies": [\
-            ["prosemirror-view", "npm:1.20.1"],\
-            ["prosemirror-model", "npm:1.14.3"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.26.0", {\
           "packageLocation": "./.yarn/cache/prosemirror-view-npm-1.26.0-c1e9fa8089-fe727fb3f0.zip/node_modules/prosemirror-view/",\
           "packageDependencies": [\
             ["prosemirror-view", "npm:1.26.0"],\
             ["prosemirror-model", "npm:1.18.0"],\
-            ["prosemirror-state", "npm:1.3.4"],\
-            ["prosemirror-transform", "npm:1.3.3"]\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14270,7 +14172,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["sentence-case", "npm:3.0.4"],\
             ["no-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"],\
+            ["tslib", "npm:2.4.0"],\
             ["upper-case-first", "npm:2.0.2"]\
           ],\
           "linkType": "HARD"\
@@ -14459,7 +14361,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["snake-case", "npm:3.0.4"],\
             ["dot-case", "npm:3.0.4"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14816,7 +14718,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/strip-ansi-npm-6.0.0-904613e9eb-04c3239ede.zip/node_modules/strip-ansi/",\
           "packageDependencies": [\
             ["strip-ansi", "npm:6.0.0"],\
-            ["ansi-regex", "npm:5.0.0"]\
+            ["ansi-regex", "npm:5.0.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -15351,13 +15253,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:2.3.0", {\
-          "packageLocation": "./.yarn/cache/tslib-npm-2.3.0-277e75e108-8869694c26.zip/node_modules/tslib/",\
-          "packageDependencies": [\
-            ["tslib", "npm:2.3.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:2.4.0", {\
           "packageLocation": "./.yarn/cache/tslib-npm-2.4.0-9cb6dc5030-8c4aa6a3c5.zip/node_modules/tslib/",\
           "packageDependencies": [\
@@ -15607,7 +15502,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/upper-case-npm-2.0.2-6cf3bda96c-508723a2b0.zip/node_modules/upper-case/",\
           "packageDependencies": [\
             ["upper-case", "npm:2.0.2"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -15617,7 +15512,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/upper-case-first-npm-2.0.2-8e0c5a851a-4487db4701.zip/node_modules/upper-case-first/",\
           "packageDependencies": [\
             ["upper-case-first", "npm:2.0.2"],\
-            ["tslib", "npm:2.3.0"]\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
