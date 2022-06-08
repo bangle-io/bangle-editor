@@ -29,91 +29,91 @@
     "sourceMap": true,
     "paths": {
       "@bangle.dev/base-components": [
-        "./components/base-components"
+        "./components/base-components/index.ts"
       ],
       "@bangle.dev/emoji": [
-        "./components/emoji"
+        "./components/emoji/index.ts"
       ],
       "@bangle.dev/markdown-front-matter": [
-        "./components/markdown-front-matter"
+        "./components/markdown-front-matter/index.ts"
       ],
       "@bangle.dev/react-emoji-suggest": [
-        "./components/react-emoji-suggest"
+        "./components/react-emoji-suggest/index.ts"
       ],
       "@bangle.dev/react-menu": [
-        "./components/react-menu"
+        "./components/react-menu/index.ts"
       ],
       "@bangle.dev/react-sticker": [
-        "./components/react-sticker"
+        "./components/react-sticker/index.ts"
       ],
       "@bangle.dev/react-stopwatch": [
-        "./components/react-stopwatch"
+        "./components/react-stopwatch/index.ts"
       ],
       "@bangle.dev/search": [
-        "./components/search"
+        "./components/search/index.ts"
       ],
       "@bangle.dev/table": [
-        "./components/table"
+        "./components/table/index.ts"
       ],
       "@bangle.dev/text-formatting": [
-        "./components/text-formatting"
+        "./components/text-formatting/index.ts"
       ],
       "@bangle.dev/timestamp": [
-        "./components/timestamp"
+        "./components/timestamp/index.ts"
       ],
       "@bangle.dev/tooltip": [
-        "./components/tooltip"
+        "./components/tooltip/index.ts"
       ],
       "@bangle.dev/trailing-node": [
-        "./components/trailing-node"
+        "./components/trailing-node/index.ts"
       ],
       "@bangle.dev/wiki-link": [
-        "./components/wiki-link"
+        "./components/wiki-link/index.ts"
       ],
       "broader-unit-tests": [
-        "./lib/broader-unit-tests"
+        "./lib/broader-unit-tests/index.ts"
       ],
       "@bangle.dev/collab-client": [
-        "./lib/collab-client"
+        "./lib/collab-client/index.ts"
       ],
       "@bangle.dev/collab-server": [
-        "./lib/collab-server"
+        "./lib/collab-server/index.ts"
       ],
       "@bangle.dev/core": [
-        "./lib/core"
+        "./lib/core/index.ts"
       ],
       "@bangle.dev/disk": [
-        "./lib/disk"
+        "./lib/disk/index.ts"
       ],
       "@bangle.dev/markdown": [
-        "./lib/markdown"
+        "./lib/markdown/index.ts"
       ],
       "@bangle.dev/pm": [
-        "./lib/pm"
+        "./lib/pm/index.ts"
       ],
       "@bangle.dev/pm-commands": [
-        "./lib/pm-commands"
+        "./lib/pm-commands/index.ts"
       ],
       "@bangle.dev/react": [
-        "./lib/react"
+        "./lib/react/index.ts"
       ],
       "@bangle.dev/utils": [
-        "./lib/utils"
+        "./lib/utils/index.ts"
       ],
       "@bangle.dev/all-base-components": [
-        "./tooling/all-base-components"
+        "./tooling/all-base-components/index.ts"
       ],
       "bangle-scripts": [
-        "./tooling/bangle-scripts"
+        "./tooling/bangle-scripts/index.ts"
       ],
       "e2e-tests": [
-        "./tooling/e2e-tests"
+        "./tooling/e2e-tests/index.ts"
       ],
       "@bangle.dev/jest-utils": [
-        "./tooling/jest-utils"
+        "./tooling/jest-utils/index.ts"
       ],
       "@bangle.dev/test-helpers": [
-        "./tooling/test-helpers"
+        "./tooling/test-helpers/index.ts"
       ]
     }
   }
