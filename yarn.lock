@@ -1450,7 +1450,6 @@ __metadata:
     "@bangle.dev/pm-commands": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
     "@types/markdown-it": ^12.0.3
     markdown-it: ^10.0.0
     prettier: ^2.3.2
@@ -1472,7 +1471,6 @@ __metadata:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
     "@types/node": ^15.12.2
     localforage: ^1.9.0
     prosemirror-collab: ^1.3.0
@@ -1493,7 +1491,6 @@ __metadata:
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
     "@types/node": ^15.12.2
     prosemirror-collab: ^1.3.0
   peerDependencies:
@@ -1509,7 +1506,6 @@ __metadata:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/pm-commands": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
     "@types/markdown-it": ^12.0.3
     markdown-it: ^10.0.0
     prettier: ^2.3.2
@@ -1774,7 +1770,6 @@ __metadata:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
@@ -1804,7 +1799,6 @@ __metadata:
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
     "@types/markdown-it": ^12.0.3
     "@types/prettier": ^1.12.0
     markdown-it: ^10.0.0
@@ -1850,7 +1844,6 @@ __metadata:
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
     "@popperjs/core": ^2.5.4
-    "@types/jest": ^26.0.23
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
@@ -1878,7 +1871,6 @@ __metadata:
   resolution: "@bangle.dev/utils@workspace:lib/utils"
   dependencies:
     "@bangle.dev/pm": "workspace:*"
-    "@types/jest": ^26.0.23
     prosemirror-model: ^1.18.0
     prosemirror-state: ^1.4.0
     prosemirror-utils: 1.0.0-0
@@ -2572,16 +2564,6 @@ __metadata:
     jest-matcher-utils: ^27.0.0
     pretty-format: ^27.0.0
   checksum: 7e11c6826aa429ad990dc262e4e4b54aa36573287fddf15773e4137f07d11d3105f0dd9f1baff73252160a057df23f5529bb83b1bf83cd3f45f9460a5ca5c22e
-  languageName: node
-  linkType: hard
-
-"@types/jest@npm:^26.0.23":
-  version: 26.0.23
-  resolution: "@types/jest@npm:26.0.23"
-  dependencies:
-    jest-diff: ^26.0.0
-    pretty-format: ^26.0.0
-  checksum: 69db26061e6be34de2a440c8a470b651c53ba6ee0057614a278c4f756ff00281f46cc075b24e5bd761f399f175f49d0a5758b50dd921342a8592461548dea29a
   languageName: node
   linkType: hard
 
@@ -4085,7 +4067,6 @@ __metadata:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@types/jest": ^26.0.23
   languageName: unknown
   linkType: soft
 
@@ -5126,13 +5107,6 @@ __metadata:
   version: 0.0.883894
   resolution: "devtools-protocol@npm:0.0.883894"
   checksum: 18f06c2d51c6037e6a0cfd3177bceea9c12d4758a858db8023a3f79bcee867f2cc0e92f9a118eb0952057726225ca19202d994eb2e0fa03b862bd9925983fdc4
-  languageName: node
-  linkType: hard
-
-"diff-sequences@npm:^26.6.2":
-  version: 26.6.2
-  resolution: "diff-sequences@npm:26.6.2"
-  checksum: 79af871776ef149a7ff3345d6b1bf37fe6e81f68632aa5542787851f6f60fba19b0be22fdd1e06046f56ae7382763ccfe94a982c39ee72bd107aef435ecbc0cf
   languageName: node
   linkType: hard
 
@@ -7526,18 +7500,6 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^26.0.0":
-  version: 26.6.2
-  resolution: "jest-diff@npm:26.6.2"
-  dependencies:
-    chalk: ^4.0.0
-    diff-sequences: ^26.6.2
-    jest-get-type: ^26.3.0
-    pretty-format: ^26.6.2
-  checksum: d00d297f31e1ac0252127089892432caa7a11c69bde29cf3bb6c7a839c8afdb95cf1fd401f9df16a4422745da2e6a5d94b428b30666a2540c38e1c5699915c2d
-  languageName: node
-  linkType: hard
-
 "jest-diff@npm:^27.0.2, jest-diff@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-diff@npm:27.5.1"
@@ -7611,13 +7573,6 @@ fsevents@~2.1.2:
     jest-environment-node: ^27.0.1
     merge-deep: ^3.0.3
   checksum: 0d5864f1069bf49d75b9a6f9c19c11bdf44c77f7d0b908e74ad3524a4486d495fac2f3c3cfeaeed6dcf7fa62ba7d88fb8340169c57a6769cb7211dcf296d8cc9
-  languageName: node
-  linkType: hard
-
-"jest-get-type@npm:^26.3.0":
-  version: 26.3.0
-  resolution: "jest-get-type@npm:26.3.0"
-  checksum: 1cc6465ae4f5e880be22ba52fd270fa64c21994915f81b41f8f7553a7957dd8e077cc8d03035de9412e2d739f8bad6a032ebb5dab5805692a5fb9e20dd4ea666
   languageName: node
   linkType: hard
 
@@ -9664,7 +9619,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^26.0.0, pretty-format@npm:^26.6.2":
+"pretty-format@npm:^26.6.2":
   version: 26.6.2
   resolution: "pretty-format@npm:26.6.2"
   dependencies:
@@ -11741,11 +11696,11 @@ resolve@^2.0.0-next.3:
 
 "typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>":
   version: 4.7.3
-  resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 8257ce7ecbbf9416da60045a76a99d473698ca9e973fa0ddab7137cacb1587255431176cbbcc801a650938c4dc8109ab88355774829a714fabe56a53a2fe4524
+  checksum: 137d18a77f52254a284960b16ab53d0619f57b69b5d585804b8413f798a1175ce3e774fb95e6a101868577aafe357d8fcfc9171f0dc9fc0c210e9ae59d107cc0
   languageName: node
   linkType: hard
 

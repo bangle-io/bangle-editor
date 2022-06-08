@@ -11,8 +11,7 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
-    "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^26.0.23"
+    "@bangle.dev/utils": "workspace:*"
   },
   "version": "0.28.11",
   "type": "module"

@@ -209,7 +209,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lint-staged", "npm:10.5.3"],\
             ["prettier", "npm:2.3.2"],\
             ["puppeteer", "npm:10.0.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2833,7 +2833,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/bangle.dev__core", null],\
             ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
             ["prettier", "npm:2.3.2"],\
@@ -2856,7 +2855,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
             ["prettier", "npm:2.3.2"],\
@@ -2880,7 +2878,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__collab-server", null],\
             ["@types/bangle.dev__core", null],\
             ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/node", "npm:15.12.2"],\
             ["localforage", "npm:1.9.0"],\
             ["prosemirror-collab", "npm:1.3.0"],\
@@ -2907,7 +2904,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/node", "npm:15.12.2"],\
             ["localforage", "npm:1.9.0"],\
             ["prosemirror-collab", "npm:1.3.0"],\
@@ -2928,7 +2924,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/bangle.dev__core", null],\
             ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/node", "npm:15.12.2"],\
             ["prosemirror-collab", "npm:1.3.0"]\
           ],\
@@ -2949,7 +2944,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/node", "npm:15.12.2"],\
             ["prosemirror-collab", "npm:1.3.0"]\
           ],\
@@ -2965,7 +2959,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
             ["prettier", "npm:2.3.2"],\
@@ -2984,7 +2977,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/pm-commands", "virtual:e7285aeadc1307d0b0e09b31baa9aa280f3685f47fd22ef73876be4d965c05e78de5c549b5a970af7c3b148330d8115aaaae444aa7a0b581db872fc6f50689ca#workspace:lib/pm-commands"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
             ["prettier", "npm:2.3.2"],\
@@ -3516,8 +3508,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/bangle.dev__core", null],\
-            ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"]\
+            ["@types/bangle.dev__pm", null]\
           ],\
           "packagePeers": [\
             "@bangle.dev/core",\
@@ -3535,8 +3526,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
-            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"]\
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -3585,7 +3575,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["@types/prettier", "npm:1.19.1"],\
             ["markdown-it", "npm:10.0.0"],\
@@ -3669,8 +3658,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@popperjs/core", "npm:2.5.4"],\
             ["@types/bangle.dev__core", null],\
-            ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"]\
+            ["@types/bangle.dev__pm", null]\
           ],\
           "packagePeers": [\
             "@bangle.dev/core",\
@@ -3689,8 +3677,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@popperjs/core", "npm:2.5.4"],\
-            ["@types/jest", "npm:26.0.23"]\
+            ["@popperjs/core", "npm:2.5.4"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -3738,7 +3725,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:26.0.23"],\
             ["prosemirror-model", "npm:1.18.0"],\
             ["prosemirror-state", "npm:1.4.0"],\
             ["prosemirror-utils", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:1.0.0-0"]\
@@ -3754,7 +3740,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@bangle.dev/utils", "workspace:lib/utils"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
-            ["@types/jest", "npm:26.0.23"],\
             ["prosemirror-model", "npm:1.18.0"],\
             ["prosemirror-state", "npm:1.4.0"],\
             ["prosemirror-utils", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:1.0.0-0"]\
@@ -4558,15 +4543,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/jest", [\
-        ["npm:26.0.23", {\
-          "packageLocation": "./.yarn/cache/@types-jest-npm-26.0.23-f0d419e70e-69db26061e.zip/node_modules/@types/jest/",\
-          "packageDependencies": [\
-            ["@types/jest", "npm:26.0.23"],\
-            ["jest-diff", "npm:26.6.2"],\
-            ["pretty-format", "npm:26.6.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.2", {\
           "packageLocation": "./.yarn/cache/@types-jest-npm-27.5.2-f8ba570ba6-7e11c6826a.zip/node_modules/@types/jest/",\
           "packageDependencies": [\
@@ -4899,7 +4875,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["regexpp", "npm:3.1.0"],\
             ["semver", "npm:7.3.5"],\
             ["tsutils", "virtual:ba8f61927a7d600457312e7b990e066a639a2e89b1c4ad6436f0a154e385daa26a0801dc803fae8185817c3c36e6a44d61bf870778735fa053c363ed10fd2dfd#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -4959,7 +4935,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/typescript-estree", "virtual:184fe3bf63c32fd1324eec0ec7c1b7fbec771ba9735569028015af06d84b131305645298220fe8e4825a3d5a59cf9282ab8e41106dfb9310a2f42166d9be5d4c#npm:4.26.1"],\
             ["debug", "virtual:c2bff3e67180802999655a22d390062982690e911b9d9225c258f3b25e7409f3867b2682c16232b77415f560a09d05a95042dc512a5b8c566c42bbbed88b0bbc#npm:4.3.2"],\
             ["eslint", "npm:7.28.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -5010,7 +4986,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-glob", "npm:4.0.1"],\
             ["semver", "npm:7.3.5"],\
             ["tsutils", "virtual:ba8f61927a7d600457312e7b990e066a639a2e89b1c4ad6436f0a154e385daa26a0801dc803fae8185817c3c36e6a44d61bf870778735fa053c363ed10fd2dfd#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -5433,7 +5409,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:7.28.0"],\
             ["lodash", "npm:4.17.21"],\
             ["tslib", "npm:1.14.1"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -6387,7 +6363,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lint-staged", "npm:10.5.3"],\
             ["prettier", "npm:2.3.2"],\
             ["puppeteer", "npm:10.0.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -6516,8 +6492,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
-            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/jest", "npm:26.0.23"]\
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -7761,13 +7736,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["diff-sequences", [\
-        ["npm:26.6.2", {\
-          "packageLocation": "./.yarn/cache/diff-sequences-npm-26.6.2-fbf1967570-79af871776.zip/node_modules/diff-sequences/",\
-          "packageDependencies": [\
-            ["diff-sequences", "npm:26.6.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/diff-sequences-npm-27.5.1-29338362fa-a00db5554c.zip/node_modules/diff-sequences/",\
           "packageDependencies": [\
@@ -7943,7 +7911,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["serve", "npm:11.3.2"],\
             ["style-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:2.0.0"],\
             ["ts-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:9.3.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
             ["webpack", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:5.70.0"],\
             ["webpack-cli", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:4.9.2"]\
           ],\
@@ -8270,7 +8238,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.24.0"],\
             ["eslint-plugin-react-hooks", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.2.0"],\
             ["eslint-plugin-testing-library", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.6.0"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/babel-eslint",\
@@ -10613,17 +10581,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jest-diff", [\
-        ["npm:26.6.2", {\
-          "packageLocation": "./.yarn/cache/jest-diff-npm-26.6.2-06ca2a96ca-d00d297f31.zip/node_modules/jest-diff/",\
-          "packageDependencies": [\
-            ["jest-diff", "npm:26.6.2"],\
-            ["chalk", "npm:4.1.1"],\
-            ["diff-sequences", "npm:26.6.2"],\
-            ["jest-get-type", "npm:26.3.0"],\
-            ["pretty-format", "npm:26.6.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/jest-diff-npm-27.5.1-818e549196-8be27c1e1e.zip/node_modules/jest-diff/",\
           "packageDependencies": [\
@@ -10706,13 +10663,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jest-get-type", [\
-        ["npm:26.3.0", {\
-          "packageLocation": "./.yarn/cache/jest-get-type-npm-26.3.0-a481f14d96-1cc6465ae4.zip/node_modules/jest-get-type/",\
-          "packageDependencies": [\
-            ["jest-get-type", "npm:26.3.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:27.5.1", {\
           "packageLocation": "./.yarn/cache/jest-get-type-npm-27.5.1-980fbf7a43-63064ab701.zip/node_modules/jest-get-type/",\
           "packageDependencies": [\
@@ -15220,7 +15170,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["enhanced-resolve", "npm:5.9.2"],\
             ["micromatch", "npm:4.0.4"],\
             ["semver", "npm:7.3.5"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
             ["webpack", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:5.70.0"]\
           ],\
           "packagePeers": [\
@@ -15289,7 +15239,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tsutils", "virtual:ba8f61927a7d600457312e7b990e066a639a2e89b1c4ad6436f0a154e385daa26a0801dc803fae8185817c3c36e6a44d61bf870778735fa053c363ed10fd2dfd#npm:3.21.0"],\
             ["@types/typescript", null],\
             ["tslib", "npm:1.14.1"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -15380,10 +15330,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["typescript", [\
-        ["patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367", {\
-          "packageLocation": "./.yarn/cache/typescript-patch-189fc24f96-8257ce7ecb.zip/node_modules/typescript/",\
+        ["patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353", {\
+          "packageLocation": "./.yarn/cache/typescript-patch-e8f1acd78e-137d18a77f.zip/node_modules/typescript/",\
           "packageDependencies": [\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -20041,9 +19991,13 @@ function patchFs(patchedFs, fakeFs) {
     }
   }
   {
-    patchedFs.read[nodeUtils.promisify.custom] = async (p, buffer, ...args) => {
-      const res = fakeFs.readPromise(p, buffer, ...args);
+    patchedFs.read[nodeUtils.promisify.custom] = async (fd, buffer, ...args) => {
+      const res = fakeFs.readPromise(fd, buffer, ...args);
       return {bytesRead: await res, buffer};
+    };
+    patchedFs.write[nodeUtils.promisify.custom] = async (fd, buffer, ...args) => {
+      const res = fakeFs.writePromise(fd, buffer, ...args);
+      return {bytesWritten: await res, buffer};
     };
   }
 }
@@ -24500,11 +24454,11 @@ Require stack:
     }
     originalExtensionJSFunction.call(this, module, filename);
   };
-  const originalEmitWarning = process.emitWarning;
-  process.emitWarning = function(warning, name, ctor) {
-    if (name === `ExperimentalWarning` && typeof warning === `string` && warning.includes(`--experimental-loader`))
-      return;
-    originalEmitWarning.apply(process, arguments);
+  const originalEmit = process.emit;
+  process.emit = function(name, data, ...args) {
+    if (name === `warning` && typeof data === `object` && data.name === `ExperimentalWarning` && (data.message.includes(`--experimental-loader`) || data.message.includes(`Custom ESM Loaders is an experimental feature`)))
+      return false;
+    return originalEmit.apply(process, arguments);
   };
   patchFs(fs__default.default, new PosixFS(opts.fakeFs));
 }

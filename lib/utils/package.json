@@ -34,8 +34,7 @@
     "prosemirror-utils": "1.0.0-0"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "workspace:*",
-    "@types/jest": "^26.0.23"
+    "@bangle.dev/pm": "workspace:*"
   },
   "publishConfig": {
     "access": "public",
