@@ -116,7 +116,9 @@ describe('basic tests', () => {
             translate="no"
           >
             <p>
-              <br />
+              <br
+                class="ProseMirror-trailingBreak"
+              />
             </p>
           </div>
         </div>
@@ -168,7 +170,9 @@ describe('basic tests', () => {
           translate="no"
         >
           <p>
-            <br />
+            <br
+              class="ProseMirror-trailingBreak"
+            />
           </p>
         </div>
       </div>

@@ -13,6 +13,7 @@ tsconfig.test.json
 tsconfig-base.json
 tooling/e2e-tests/build
 lib/markdown/__tests__/fixtures
+.pnp.loader.*
 
 *.md
 
