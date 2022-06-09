@@ -2,6 +2,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "tooling/e2e-tests/basic-editor/entry.cjs",
   ],
   "exclude": [
     ".yarn"

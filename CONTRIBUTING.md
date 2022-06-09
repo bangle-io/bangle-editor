@@ -12,6 +12,9 @@ yarn start
 
 # to run tests
 yarn test
+
+# to run e2e tests
+yarn g:e2e
 ```
 
 ## Documentation

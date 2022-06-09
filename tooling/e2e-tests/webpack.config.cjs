@@ -10,6 +10,7 @@ const getEntries = async () => {
   const entryTypes = ['entry.js', 'entry.jsx'];
   let result = [];
   for (const entryType of entryTypes) {
+    console.log(entryType);
     result.push(
       ...(await Promise.all(
         files.map(async (f) => {

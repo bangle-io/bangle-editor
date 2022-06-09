@@ -3,7 +3,7 @@ import React from 'react';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry, PluginKey } from '@bangle.dev/core';
 import { sticker } from '@bangle.dev/react-sticker';
-import { floatingMenu } from '@bangle.dev/react-menu';
+import { floatingMenu, FloatingMenu } from '@bangle.dev/react-menu';
 
 import { setupReactEditor } from '../setup/entry-helpers';
 
@@ -32,5 +32,13 @@ function setup() {
     }),
   ];
 
-  setupReactEditor({ specRegistry, plugins, renderNodeViews, id: 'pm-root' });
+  setupReactEditor({
+    children: React.createElement(FloatingMenu, {
+      menuKey: window.floatMenuKey,
+    }),
+    specRegistry,
+    plugins,
+    renderNodeViews,
+    id: 'pm-root',
+  });
 }

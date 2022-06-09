@@ -1454,7 +1454,7 @@ __metadata:
     "@types/jest": ^27.0.4
     "@types/markdown-it": ^12.0.3
     markdown-it: ^10.0.0
-    prettier: ^2.3.2
+    prettier: ^2.6.2
     prosemirror-markdown: ^1.9.1
   peerDependencies:
     "@bangle.dev/core": "*"
@@ -1513,7 +1513,7 @@ __metadata:
     "@types/jest": ^27.0.4
     "@types/markdown-it": ^12.0.3
     markdown-it: ^10.0.0
-    prettier: ^2.3.2
+    prettier: ^2.6.2
     prosemirror-markdown: ^1.9.1
   peerDependencies:
     "@bangle.dev/pm": "*"
@@ -1560,7 +1560,7 @@ __metadata:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/test-helpers": "workspace:*"
     "@types/jest": ^27.0.4
-    prettier: ^2.3.2
+    prettier: ^2.6.2
   languageName: unknown
   linkType: soft
 
@@ -1764,7 +1764,7 @@ __metadata:
     "@types/prop-types": ^15.7.4
     "@types/react": ^17.0.14
     "@types/react-dom": ^17.0.9
-    prettier: ^2.3.2
+    prettier: ^2.6.2
     prop-types: ^15.7.2
     punycode: ^2.1.1
     react: ^17.0.2
@@ -1820,9 +1820,9 @@ __metadata:
     "@bangle.dev/utils": "workspace:*"
     "@types/jest": ^27.0.4
     "@types/markdown-it": ^12.0.3
-    "@types/prettier": ^1.12.0
+    "@types/prettier": ^2.6.3
     markdown-it: ^10.0.0
-    prettier: ^2.3.2
+    prettier: ^2.6.2
     prosemirror-markdown: ^1.9.1
   languageName: unknown
   linkType: soft
@@ -2646,13 +2646,6 @@ __metadata:
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
   checksum: fd6bce2b674b6efc3db4c7c3d336bd70c90838e8439de639b909ce22f3720d21344f52427f1d9e57b265fcb7f6c018699b99e5e0c208a1a4823014269a6bf35b
-  languageName: node
-  linkType: hard
-
-"@types/prettier@npm:^1.12.0":
-  version: 1.19.1
-  resolution: "@types/prettier@npm:1.19.1"
-  checksum: d34229c37d3419b01efa31968b68c33b8b9b717bdf961e48f68e89821864b1329c45323d28e1200a204e7b2eefca1dabdac4aa0c3d698dbc8c60247322103b11
   languageName: node
   linkType: hard
 
@@ -3942,7 +3935,7 @@ __metadata:
     jest: ^27.0.4
     jest-circus: ^27.0.4
     lint-staged: ^10.5.3
-    prettier: ^2.3.2
+    prettier: ^2.6.2
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
@@ -5184,7 +5177,7 @@ __metadata:
     css-loader: ^5.2.6
     file-loader: ^6.2.0
     html-webpack-plugin: ^4.5.2
-    prettier: ^2.3.2
+    prettier: ^2.6.2
     prosemirror-inputrules: ^1.2.0
     prosemirror-model: ^1.18.0
     prosemirror-state: ^1.4.0
@@ -9231,12 +9224,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "prettier@npm:2.3.2"
+"prettier@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "prettier@npm:2.6.2"
   bin:
     prettier: bin-prettier.js
-  checksum: 17ce5784ac67621c292df58e2da60b2ee150c2d6aebea22a6ad9e52fcd6a5e66c349d0a8436ea3bd8ff9d778920a5f68000d7625b74f43558718a49755aa5259
+  checksum: 48d08dde8e9fb1f5bccdd205baa7f192e9fc8bc98f86e1b97d919de804e28c806b0e6cc685e4a88211aa7987fa9668f30baae19580d87ced3ed0f2ec6572106f
   languageName: node
   linkType: hard
 

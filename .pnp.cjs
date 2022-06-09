@@ -207,7 +207,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:27.0.4"],\
             ["jest-circus", "npm:27.0.4"],\
             ["lint-staged", "npm:10.5.3"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
@@ -2836,7 +2836,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
           "packagePeers": [\
@@ -2859,7 +2859,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
           "linkType": "SOFT"\
@@ -2968,7 +2968,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
           "packagePeers": [\
@@ -2987,7 +2987,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
           "linkType": "SOFT"\
@@ -3074,7 +3074,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@types/jest", "npm:27.5.2"],\
-            ["prettier", "npm:2.3.2"]\
+            ["prettier", "npm:2.6.2"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -3233,7 +3233,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prop-types", "npm:15.7.4"],\
             ["@types/react", "npm:17.0.14"],\
             ["@types/react-dom", "npm:17.0.9"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prop-types", "npm:15.7.2"],\
             ["punycode", "npm:2.1.1"],\
             ["react", "npm:17.0.2"],\
@@ -3269,7 +3269,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prop-types", "npm:15.7.4"],\
             ["@types/react", "npm:17.0.14"],\
             ["@types/react-dom", "npm:17.0.9"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prop-types", "npm:15.7.2"],\
             ["punycode", "npm:2.1.1"],\
             ["react", "npm:17.0.2"],\
@@ -3611,9 +3611,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
-            ["@types/prettier", "npm:1.19.1"],\
+            ["@types/prettier", "npm:2.6.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
           "linkType": "SOFT"\
@@ -4663,13 +4663,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/prettier", [\
-        ["npm:1.19.1", {\
-          "packageLocation": "./.yarn/cache/@types-prettier-npm-1.19.1-396f22bcd2-d34229c37d.zip/node_modules/@types/prettier/",\
-          "packageDependencies": [\
-            ["@types/prettier", "npm:1.19.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:2.2.3", {\
           "packageLocation": "./.yarn/cache/@types-prettier-npm-2.2.3-6036e6d94a-78f1d731f9.zip/node_modules/@types/prettier/",\
           "packageDependencies": [\
@@ -6357,7 +6350,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:27.0.4"],\
             ["jest-circus", "npm:27.0.4"],\
             ["lint-staged", "npm:10.5.3"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
@@ -7809,7 +7802,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["css-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:5.2.6"],\
             ["file-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:6.2.0"],\
             ["html-webpack-plugin", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:4.5.2"],\
-            ["prettier", "npm:2.3.2"],\
+            ["prettier", "npm:2.6.2"],\
             ["prosemirror-inputrules", "npm:1.2.0"],\
             ["prosemirror-model", "npm:1.18.0"],\
             ["prosemirror-state", "npm:1.4.0"],\
@@ -12526,10 +12519,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prettier", [\
-        ["npm:2.3.2", {\
-          "packageLocation": "./.yarn/cache/prettier-npm-2.3.2-4467ec48dc-17ce5784ac.zip/node_modules/prettier/",\
+        ["npm:2.6.2", {\
+          "packageLocation": "./.yarn/cache/prettier-npm-2.6.2-05918420da-48d08dde8e.zip/node_modules/prettier/",\
           "packageDependencies": [\
-            ["prettier", "npm:2.3.2"]\
+            ["prettier", "npm:2.6.2"]\
           ],\
           "linkType": "HARD"\
         }]\

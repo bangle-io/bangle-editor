@@ -25,7 +25,7 @@ export class Instance {
   users = Object.create(null);
   userCount = 0;
   waiting: Array<Waiter> = [];
-  collecting: number | null = null;
+  collecting: ReturnType<typeof setTimeout> | null = null;
   lastModified = this.lastActive;
   lastSavedVersion: number;
 

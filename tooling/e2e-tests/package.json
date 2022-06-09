@@ -22,7 +22,6 @@
     "build": "NODE_ENV=integration yarn run webpack --env development",
     "serve-build": "yarn build && yarn run serve build -l 1234",
     "test": "yarn build && yarn jest",
-    "e2e:test": "yarn test",
     "g:e2e": "yarn playwright test",
     "g:playwright-dep": "yarn playwright install && yarn playwright install-deps"
   },
@@ -48,7 +47,7 @@
     "css-loader": "^5.2.6",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.2",
-    "prettier": "^2.3.2",
+    "prettier": "^2.6.2",
     "prosemirror-inputrules": "^1.2.0",
     "prosemirror-model": "^1.18.0",
     "prosemirror-state": "^1.4.0",
