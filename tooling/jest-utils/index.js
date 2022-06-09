@@ -2,6 +2,25 @@ import { Node, NodeSelection } from '@bangle.dev/pm';
 import { getDocLabels } from '@bangle.dev/test-helpers';
 import prettier from 'prettier';
 
+global.DOMRect = class DOMRect {
+  bottom = 0;
+  left = 0;
+  right = 0;
+  top = 0;
+  constructor(x = 0, y = 0, width = 0, height = 0) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+  static fromRect(other) {
+    return new DOMRect(other.x, other.y, other.width, other.height);
+  }
+  toJSON() {
+    return JSON.stringify(this);
+  }
+};
+
 export const jestExpect = {
   toEqualDocAndSelection,
   toEqualDocument(actual, expected) {

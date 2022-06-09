@@ -35,6 +35,7 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
+    "@types/jest": "^27.0.4",
     "debounce-fn": "^5.0.0"
   },
   "devDependencies": {

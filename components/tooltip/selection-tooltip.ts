@@ -128,11 +128,11 @@ function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
   return new Plugin({
     props: {
       handleDOMEvents: {
-        mousedown(_view: EditorView, _event: MouseEvent) {
+        mousedown(_view, _event) {
           mouseDown = true;
           return false;
         },
-        mouseup(view: EditorView, _event: MouseEvent) {
+        mouseup(view, _event) {
           mouseDown = false;
           _syncTooltipOnUpdate(stateKey)(view.state, view.dispatch, view);
           return false;
@@ -141,7 +141,7 @@ function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
     },
     view() {
       return {
-        update(view: EditorView, lastState: EditorState) {
+        update(view, lastState) {
           const state = view.state;
           if (mouseDown || lastState === state) {
             return;

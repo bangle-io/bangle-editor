@@ -126,7 +126,8 @@ export class Manager {
         status: 'error',
         body: {
           errorCode: 500,
-          message: err.message || 'Unknown error occurred',
+          message:
+            err instanceof Error ? err.message : 'Unknown error occurred',
         },
       };
     }

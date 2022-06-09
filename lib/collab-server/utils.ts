@@ -61,12 +61,12 @@ type RequestIdleCallback = (
   opts?: RequestIdleCallbackOptions,
 ) => RequestIdleCallbackHandle;
 
-declare global {
-  interface Window {
-    requestIdleCallback: RequestIdleCallback;
-    cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
-  }
-}
+// declare global {
+//   interface Window {
+//     requestIdleCallback: RequestIdleCallback;
+//     cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
+//   }
+// }
 
 export function sleep(t = 20) {
   return new Promise((res) => setTimeout(res, t));

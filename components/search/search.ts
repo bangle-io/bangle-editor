@@ -18,7 +18,10 @@ function pluginsFactory({
   className = 'bangle-search-match',
   maxHighlights = 1500,
 }: {
-  key: PluginKey;
+  key: PluginKey<{
+    query: string;
+    decos: DecorationSet;
+  }>;
   query?: RegExp | string;
   className?: string;
   maxHighlights?: number;
@@ -72,7 +75,7 @@ function pluginsFactory({
       },
       props: {
         decorations(state) {
-          return this.getState(state).decos;
+          return key.getState(state)?.decos || null;
         },
       },
     });

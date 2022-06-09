@@ -3,7 +3,7 @@ import { EditorState, Node, Schema, Selection } from '@bangle.dev/pm';
 // let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
 
 export function replaceDocument(
-  state: EditorState<Schema>,
+  state: EditorState,
   serializedDoc: any,
   version?: number,
 ) {

@@ -1,7 +1,7 @@
 import type { RawSpecs } from '@bangle.dev/core';
 import {
   Command,
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Schema,
@@ -42,7 +42,7 @@ function specFactory(): RawSpecs {
           getAttrs: (value: any) => value === name && null,
         },
       ],
-      toDOM: (): DOMOutputSpecArray => ['u', 0],
+      toDOM: (): DOMOutputSpec => ['u', 0],
     },
     markdown: {
       // TODO underline is not a real thing in markdown, what is the best option here?

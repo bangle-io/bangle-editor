@@ -30,13 +30,12 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^27.0.4",
     "@types/markdown-it": "^12.0.3",
     "@types/prettier": "^1.12.0",
-    "@types/prosemirror-markdown": "^1.5.2",
     "markdown-it": "^10.0.0",
     "prettier": "^2.3.2",
-    "prosemirror-markdown": "^1.5.1"
+    "prosemirror-markdown": "^1.9.1"
   },
   "publishConfig": {
     "access": "public",

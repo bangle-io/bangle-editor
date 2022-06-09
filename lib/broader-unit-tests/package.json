@@ -12,7 +12,7 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^26.0.23"
+    "@types/jest": "^27.0.4"
   },
   "version": "0.28.11",
   "type": "module"

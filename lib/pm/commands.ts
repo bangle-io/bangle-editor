@@ -24,4 +24,4 @@ export {
   toggleMark,
   wrapIn,
 } from 'prosemirror-commands';
-export type { Command, Keymap } from 'prosemirror-commands';
+export type { Command } from 'prosemirror-state';

@@ -23,7 +23,7 @@ export interface NodeViewProps {
   node: Node;
   view: EditorView;
   getPos: GetPosFunction;
-  decorations: Decoration[];
+  decorations: readonly Decoration[];
   selected: boolean;
   attrs: Node['attrs'];
   updateAttrs: UpdateAttrsFunction;
@@ -44,7 +44,7 @@ abstract class BaseNodeView {
   _node: Node;
   _view: EditorView;
   _getPos: () => number;
-  _decorations: Decoration[];
+  _decorations: readonly Decoration[];
   _selected: boolean;
   contentDOM?: HTMLElement;
   containerDOM?: HTMLElement;
@@ -73,8 +73,8 @@ abstract class BaseNodeView {
 
   // for pm to get hold of containerDOM
   // this exists as the name `dom` is too ambiguous
-  get dom() {
-    return this.containerDOM;
+  get dom(): InstanceType<typeof window.Node> {
+    return this.containerDOM!;
   }
 
   constructor(
@@ -93,7 +93,7 @@ abstract class BaseNodeView {
       node: Node;
       view: EditorView;
       getPos: () => number;
-      decorations: Decoration[];
+      decorations: readonly Decoration[];
       contentDOM?: HTMLElement;
       containerDOM?: HTMLElement;
       renderHandlers?: RenderHandlers;
@@ -203,7 +203,7 @@ export class NodeView extends BaseNodeView {
     });
   }
 
-  update(node: Node, decorations: Decoration[]) {
+  update(node: Node, decorations: readonly Decoration[]) {
     log('update node');
     // https://github.com/ProseMirror/prosemirror/issues/648
     if (this._node.type !== node.type) {

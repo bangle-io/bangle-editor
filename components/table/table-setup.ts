@@ -65,8 +65,8 @@ const toMarkdownCell = (state: MarkdownSerializerState, node: Node) => {
   node.forEach(function (child, _, i) {
     const originalEsc = state.esc;
 
-    (state as any).esc = (str: string, ...args: any[]) => {
-      str = originalEsc(str, ...args);
+    state.esc = (str: string, ...args: any[]) => {
+      str = originalEsc.call(state, str, ...args);
       str = str.replace(/\|/gi, '\\$&');
       return str;
     };

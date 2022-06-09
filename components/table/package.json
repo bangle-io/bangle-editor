@@ -32,9 +32,8 @@
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@types/markdown-it": "^12.0.3",
-    "@types/prosemirror-markdown": "^1.5.2",
     "markdown-it": "^10.0.0",
-    "prosemirror-markdown": "^1.5.1"
+    "prosemirror-markdown": "^1.9.1"
   },
   "publishConfig": {
     "access": "public",
@@ -43,7 +42,8 @@
     "types": "dist/index.d.ts"
   },
   "dependencies": {
-    "@bangle.dev/utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4"
   },
   "type": "module"
 }

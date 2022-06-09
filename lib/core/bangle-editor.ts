@@ -34,9 +34,9 @@ export class BangleEditor<PluginMetadata = any> {
 
     this.view = new EditorView(element, {
       state: state.pmState,
-      dispatchTransaction(transaction) {
-        const newState = this.state.apply(transaction);
-        this.updateState(newState);
+      dispatchTransaction: (transaction) => {
+        const newState = this.view.state.apply(transaction);
+        this.view.updateState(newState);
       },
       attributes: { class: 'bangle-editor' },
       ...pmViewOpts,

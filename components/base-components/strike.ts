@@ -1,7 +1,7 @@
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Schema,
@@ -48,7 +48,7 @@ function specFactory(): RawSpecs {
           getAttrs: (value: any) => value === 'line-through' && null,
         },
       ],
-      toDOM: (): DOMOutputSpecArray => ['s', 0],
+      toDOM: (): DOMOutputSpec => ['s', 0],
     },
     markdown: {
       toMarkdown: {

@@ -135,7 +135,7 @@ function pluginsFactory({
   return ({ schema }: { schema: Schema }) => {
     const isActiveCheck = queryIsSuggestTooltipActive(key);
     return [
-      new Plugin<PluginState, Schema>({
+      new Plugin<PluginState>({
         key,
         state: {
           init(_, _state) {
@@ -243,17 +243,11 @@ function referenceElement(
 
         let { left, right } = start;
         let { top, bottom } = end;
-
-        let z = {
-          width: right - left,
-          height: bottom - top,
-          top: top,
-          right: left,
-          bottom: bottom,
-          left: left,
-        };
-
-        return z;
+        const x = left;
+        const y = top;
+        const width = right - left;
+        const height = bottom - top;
+        return new DOMRect(x, y, width, height);
       },
     };
   };
@@ -450,7 +444,7 @@ export function replaceSuggestMarkWith(
 
       const isInputFragment = maybeNode instanceof Fragment;
 
-      let node;
+      let node: any;
       try {
         node =
           maybeNode instanceof Node || isInputFragment

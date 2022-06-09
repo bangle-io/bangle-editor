@@ -29,15 +29,13 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "prosemirror-model": "^1.1.0",
-    "prosemirror-state": "^1.0.1",
+    "@types/jest": "^27.0.4",
+    "prosemirror-model": "^1.18.0",
+    "prosemirror-state": "^1.4.0",
     "prosemirror-utils": "1.0.0-0"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "workspace:*",
-    "@types/jest": "^26.0.23",
-    "@types/prosemirror-model": "1.x",
-    "@types/prosemirror-state": "1.x"
+    "@bangle.dev/pm": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

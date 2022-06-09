@@ -44,7 +44,8 @@
     "types": "dist/index.d.ts"
   },
   "dependencies": {
-    "@bangle.dev/utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4"
   },
   "type": "module"
 }

@@ -21,7 +21,7 @@ export interface BangleEditorStateProps<PluginMetadata = any> {
   initialValue?: InitialContent;
   editorProps?: EditorProps;
   pmStateOpts?: {
-    selection?: Selection | null | undefined;
+    selection?: Selection | undefined;
     storedMarks?: Mark[] | null | undefined;
   };
   pluginMetadata?: PluginMetadata;
@@ -81,7 +81,7 @@ const createDocument = ({
   schema: Schema;
   content?: InitialContent;
   parseOptions?: ParseOptions;
-}): Node | null => {
+}): Node | undefined => {
   const emptyDocument = {
     type: 'doc',
     content: [
@@ -108,5 +108,5 @@ const createDocument = ({
     return DOMParser.fromSchema(schema).parse(element, parseOptions);
   }
 
-  return null;
+  return undefined;
 };

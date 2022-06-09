@@ -2,7 +2,7 @@ import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   chainCommands,
   Command,
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Node,
@@ -44,7 +44,7 @@ function specFactory(): RawSpecs {
       content: 'listItem+',
       group: 'block',
       parseDOM: [{ tag: 'ul' }],
-      toDOM: (): DOMOutputSpecArray => ['ul', 0],
+      toDOM: (): DOMOutputSpec => ['ul', 0],
       attrs: {
         // a style preference attribute which be used for
         // rendering output.

@@ -46,7 +46,7 @@ export const RECOVERY_BACK_OFF = 50;
 export const collabSettingsKey = new PluginKey('bangle/collabSettingsKey');
 export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
 
-export const getCollabSettings = (state: EditorState<Schema>) => {
+export const getCollabSettings = (state: EditorState) => {
   return collabSettingsKey.getState(state);
 };
 

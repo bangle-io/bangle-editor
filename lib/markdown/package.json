@@ -27,8 +27,9 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4",
     "markdown-it": "^10.0.0",
-    "prosemirror-markdown": "^1.5.1"
+    "prosemirror-markdown": "^1.9.1"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
@@ -40,8 +41,7 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/table": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
-    "@types/markdown-it": "^12.0.3",
-    "@types/prosemirror-markdown": "^1.5.2"
+    "@types/markdown-it": "^12.0.3"
   },
   "publishConfig": {
     "access": "public",

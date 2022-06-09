@@ -73,6 +73,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@bangle.dev/jest-utils": "workspace:*",
+    "@types/jest": "^27.0.4",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "@yarnpkg/pnpify": "^2.4.0",
@@ -95,8 +96,8 @@
     "lint-staged": "^10.5.3",
     "prettier": "^2.3.2",
     "puppeteer": "^10.0.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.3"
   },
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.1",
   "type": "module"
 }

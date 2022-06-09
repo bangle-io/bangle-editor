@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4",
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
