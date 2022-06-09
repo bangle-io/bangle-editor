@@ -168,12 +168,12 @@ export function serialExecuteQueue() {
           try {
             const result = await cb();
             return {
-              rejected: false,
+              rejected: false as const,
               value: result,
             };
           } catch (e) {
             return {
-              rejected: true,
+              rejected: true as const,
               value: e,
             };
           }

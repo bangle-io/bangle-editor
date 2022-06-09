@@ -36,7 +36,8 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "@bangle.dev/utils": "workspace:*"
+    "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4"
   },
   "devDependencies": {
     "@bangle.dev/all-base-components": "workspace:*",

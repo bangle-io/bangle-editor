@@ -1,7 +1,7 @@
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   EditorState,
   InputRule,
   Mark,
@@ -17,6 +17,7 @@ import {
   matchAllPlus,
 } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
+import { quote } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -56,7 +57,7 @@ function specFactory({ openOnClick = false } = {}): RawSpecs {
           }),
         },
       ],
-      toDOM: (node): DOMOutputSpecArray => [
+      toDOM: (node): DOMOutputSpec => [
         'a',
         {
           ...node.attrs,
@@ -75,7 +76,7 @@ function specFactory({ openOnClick = false } = {}): RawSpecs {
             ? '>'
             : '](' +
                 state.esc(mark.attrs.href) +
-                (mark.attrs.title ? ' ' + state.quote(mark.attrs.title) : '') +
+                (mark.attrs.title ? ' ' + quote(mark.attrs.title) : '') +
                 ')';
         },
       },

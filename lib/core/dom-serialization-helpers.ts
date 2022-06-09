@@ -1,4 +1,4 @@
-import { DOMOutputSpec, DOMOutputSpecArray, Node } from '@bangle.dev/pm';
+import { DOMOutputSpec, Node } from '@bangle.dev/pm';
 import { objectFilter } from '@bangle.dev/utils';
 
 /**
@@ -37,7 +37,7 @@ export function domSerializationHelpers(
     );
 
   return {
-    toDOM: (node: Node): DOMOutputSpecArray => {
+    toDOM: (node: Node): DOMOutputSpec => {
       const domSpec: any = [
         tag,
         {

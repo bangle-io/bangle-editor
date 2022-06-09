@@ -2,7 +2,7 @@ import type { RawPlugins } from '../plugin-loader';
 import type { BaseRawNodeSpec, RawSpecs } from '../spec-registry';
 import {
   Command,
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Schema,
@@ -64,7 +64,7 @@ function specFactory(): BaseRawNodeSpec {
           tag: 'p',
         },
       ],
-      toDOM: (): DOMOutputSpecArray => ['p', 0],
+      toDOM: (): DOMOutputSpec => ['p', 0],
     },
     markdown: {
       toMarkdown(state, node) {

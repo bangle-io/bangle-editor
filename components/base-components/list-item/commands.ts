@@ -267,9 +267,9 @@ function toggleListCommand(listType: NodeType, todo: boolean = false): Command {
       });
     }
 
-    const canBeTodo = (node: Node, parentNode: Node) =>
+    const canBeTodo = (node: Node, parentNode: Node | null) =>
       node.type === schema.nodes.listItem &&
-      parentNode.type === schema.nodes.bulletList;
+      parentNode?.type === schema.nodes.bulletList;
 
     for (let i = 0; i < ranges.length; i += 2) {
       let from = ranges[i],

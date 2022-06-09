@@ -1,8 +1,15 @@
 {
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+  ],
+  "exclude": [
+    ".yarn"
+  ],
   "compilerOptions": {
     "module": "ES2020",
     "allowJs": false,
-    "target": "es2019",
+    "target": "es2020",
     "strict": true,
     "declaration": true,
     "moduleResolution": "node",

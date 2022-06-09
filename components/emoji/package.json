@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4",
     "markdown-it-emoji": "^2.0.0"
   },
   "peerDependencies": {

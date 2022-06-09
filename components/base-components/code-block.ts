@@ -1,6 +1,6 @@
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   EditorState,
   keymap,
   Node,
@@ -49,7 +49,7 @@ function specFactory(): RawSpecs {
       defining: true,
       draggable: false,
       parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
-      toDOM: (): DOMOutputSpecArray => ['pre', ['code', 0]],
+      toDOM: (): DOMOutputSpec => ['pre', ['code', 0]],
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {

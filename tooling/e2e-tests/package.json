@@ -37,6 +37,7 @@
     "@bangle.dev/tooltip": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "@testing-library/react": "^11.2.7",
+    "@types/jest": "^27.0.4",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
     "babel-loader": "^8.2.3",

@@ -39,7 +39,7 @@ function pluginsFactory({
 
             const { doc, schema, tr } = view.state;
             const type = schema.nodes[node];
-            const transaction = tr.insert(doc.content.size, type.create(''));
+            const transaction = tr.insert(doc.content.size, type.create());
             map.set(view.state, true);
             view.dispatch(transaction);
           },

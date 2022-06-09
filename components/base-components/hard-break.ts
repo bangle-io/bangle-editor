@@ -1,7 +1,7 @@
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   chainCommands,
-  DOMOutputSpecArray,
+  DOMOutputSpec,
   exitCode,
   keymap,
   Node,
@@ -27,7 +27,7 @@ function specFactory(): RawSpecs {
       group: 'inline',
       selectable: false,
       parseDOM: [{ tag: 'br' }],
-      toDOM: (): DOMOutputSpecArray => ['br'],
+      toDOM: (): DOMOutputSpec => ['br'],
     },
     markdown: {
       toMarkdown(state: any, node: Node, parent: Node, index: number) {

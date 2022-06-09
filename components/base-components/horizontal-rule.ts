@@ -1,5 +1,5 @@
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
-import { DOMOutputSpecArray, InputRule, Schema } from '@bangle.dev/pm';
+import { DOMOutputSpec, InputRule, Schema } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
 
 export const spec = specFactory;
@@ -16,7 +16,7 @@ function specFactory(): RawSpecs {
     schema: {
       group: 'block',
       parseDOM: [{ tag: 'hr' }],
-      toDOM: (): DOMOutputSpecArray => ['hr'],
+      toDOM: (): DOMOutputSpec => ['hr'],
     },
     markdown: {
       toMarkdown(state, node) {

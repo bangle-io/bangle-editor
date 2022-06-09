@@ -21,7 +21,7 @@ import {
   safeInsert,
 } from './pm-utils-reexport';
 
-export class GapCursorSelection extends Selection {}
+export abstract class GapCursorSelection extends Selection {}
 
 type PredicateFunction = (state: EditorState, view?: EditorView) => any;
 
@@ -335,7 +335,7 @@ export const sanitiseSelectionMarksForWrapping = (
     (node, pos, parent) => {
       // If iterate over a node thats out of our defined range
       // We skip here but continue to iterate over its children.
-      if (node.isText || pos < from || pos > to) {
+      if (node.isText || pos < from || pos > to || !parent) {
         return true;
       }
       node.marks.forEach((mark) => {

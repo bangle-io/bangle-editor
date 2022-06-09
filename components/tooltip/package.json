@@ -44,7 +44,8 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
-    "@popperjs/core": "^2.5.4"
+    "@popperjs/core": "^2.5.4",
+    "@types/jest": "^27.0.4"
   },
   "type": "module"
 }

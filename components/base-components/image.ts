@@ -12,6 +12,7 @@ import {
 } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
 import type Token from 'markdown-it/lib/token';
+import { quote } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -57,7 +58,7 @@ function specFactory(): RawSpecs {
         const text = state.esc(node.attrs.alt || '');
         const url =
           state.esc(node.attrs.src) +
-          (node.attrs.title ? ' ' + state.quote(node.attrs.title) : '');
+          (node.attrs.title ? ' ' + quote(node.attrs.title) : '');
 
         state.write(`![${text}](${url})`);
       },
@@ -120,7 +121,9 @@ function pluginsFactory({
           key: new PluginKey(name + '-drop-paste'),
           props: {
             handleDOMEvents: {
-              drop(view, event) {
+              drop(view, _event) {
+                const event = _event as DragEvent;
+
                 if (event.dataTransfer == null) {
                   return false;
                 }

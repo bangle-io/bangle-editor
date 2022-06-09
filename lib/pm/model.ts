@@ -14,7 +14,6 @@ export {
   Slice,
   DOMOutputSpec,
   AttributeSpec,
-  DOMOutputSpecArray,
   MarkSpec,
   NodeSpec,
   ParseOptions,
