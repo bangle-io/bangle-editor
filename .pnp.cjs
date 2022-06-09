@@ -186,6 +186,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-react", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@babel/preset-typescript", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@bangle.dev/jest-utils", "workspace:tooling/jest-utils"],\
+            ["@marijn/buildtool", "npm:0.1.2"],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/node", "npm:17.0.41"],\
             ["@typescript-eslint/eslint-plugin", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.26.1"],\
@@ -4149,6 +4150,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@marijn/buildtool", [\
+        ["npm:0.1.2", {\
+          "packageLocation": "./.yarn/cache/@marijn-buildtool-npm-0.1.2-a57dd69c1a-fe4fcdb851.zip/node_modules/@marijn/buildtool/",\
+          "packageDependencies": [\
+            ["@marijn/buildtool", "npm:0.1.2"],\
+            ["@types/mocha", "npm:9.1.1"],\
+            ["acorn", "npm:8.7.1"],\
+            ["acorn-walk", "npm:8.2.0"],\
+            ["rollup", "npm:2.75.6"],\
+            ["rollup-plugin-dts", "virtual:a57dd69c1a81af5b4d8d4e1394c5108fba7502e4a6be4bcddf700db4abe5da5d5e1053c29d3a498657297e9b3db31595de2c25e10002769315c0a23be69ad344#npm:3.0.2"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@nicolo-ribaudo/chokidar-2", [\
         ["npm:2.1.8-no-fsevents.3", {\
           "packageLocation": "./.yarn/cache/@nicolo-ribaudo-chokidar-2-npm-2.1.8-no-fsevents.3-79ca8bfcef-ee55cc9241.zip/node_modules/@nicolo-ribaudo/chokidar-2/",\
@@ -4626,6 +4642,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-minimatch-npm-3.0.3-c8b0625f84-b80259d55b.zip/node_modules/@types/minimatch/",\
           "packageDependencies": [\
             ["@types/minimatch", "npm:3.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/mocha", [\
+        ["npm:9.1.1", {\
+          "packageLocation": "./.yarn/cache/@types-mocha-npm-9.1.1-9646576ed0-516077c0ac.zip/node_modules/@types/mocha/",\
+          "packageDependencies": [\
+            ["@types/mocha", "npm:9.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -5496,6 +5521,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["acorn", "npm:8.7.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:8.7.1", {\
+          "packageLocation": "./.yarn/cache/acorn-npm-8.7.1-7c7a019990-aca0aabf98.zip/node_modules/acorn/",\
+          "packageDependencies": [\
+            ["acorn", "npm:8.7.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["acorn-globals", [\
@@ -5558,6 +5590,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/acorn-walk-npm-7.2.0-5f8b515308-9252158a79.zip/node_modules/acorn-walk/",\
           "packageDependencies": [\
             ["acorn-walk", "npm:7.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:8.2.0", {\
+          "packageLocation": "./.yarn/cache/acorn-walk-npm-8.2.0-2f2cac3177-1715e76c01.zip/node_modules/acorn-walk/",\
+          "packageDependencies": [\
+            ["acorn-walk", "npm:8.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6329,6 +6368,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-react", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@babel/preset-typescript", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@bangle.dev/jest-utils", "workspace:tooling/jest-utils"],\
+            ["@marijn/buildtool", "npm:0.1.2"],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/node", "npm:17.0.41"],\
             ["@typescript-eslint/eslint-plugin", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.26.1"],\
@@ -11268,6 +11308,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["magic-string", [\
+        ["npm:0.25.9", {\
+          "packageLocation": "./.yarn/cache/magic-string-npm-0.25.9-0b51c0ea50-9a0e55a15c.zip/node_modules/magic-string/",\
+          "packageDependencies": [\
+            ["magic-string", "npm:0.25.9"],\
+            ["sourcemap-codec", "npm:1.4.8"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["make-dir", [\
         ["npm:2.1.0", {\
           "packageLocation": "./.yarn/cache/make-dir-npm-2.1.0-1ddaf205e7-043548886b.zip/node_modules/make-dir/",\
@@ -13464,6 +13514,44 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["rollup", [\
+        ["npm:2.75.6", {\
+          "packageLocation": "./.yarn/cache/rollup-npm-2.75.6-e4ac39d8cc-df83c6d43a.zip/node_modules/rollup/",\
+          "packageDependencies": [\
+            ["rollup", "npm:2.75.6"],\
+            ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["rollup-plugin-dts", [\
+        ["npm:3.0.2", {\
+          "packageLocation": "./.yarn/cache/rollup-plugin-dts-npm-3.0.2-b244a99ce5-c37acf3744.zip/node_modules/rollup-plugin-dts/",\
+          "packageDependencies": [\
+            ["rollup-plugin-dts", "npm:3.0.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a57dd69c1a81af5b4d8d4e1394c5108fba7502e4a6be4bcddf700db4abe5da5d5e1053c29d3a498657297e9b3db31595de2c25e10002769315c0a23be69ad344#npm:3.0.2", {\
+          "packageLocation": "./.yarn/__virtual__/rollup-plugin-dts-virtual-db8d921c49/0/cache/rollup-plugin-dts-npm-3.0.2-b244a99ce5-c37acf3744.zip/node_modules/rollup-plugin-dts/",\
+          "packageDependencies": [\
+            ["rollup-plugin-dts", "virtual:a57dd69c1a81af5b4d8d4e1394c5108fba7502e4a6be4bcddf700db4abe5da5d5e1053c29d3a498657297e9b3db31595de2c25e10002769315c0a23be69ad344#npm:3.0.2"],\
+            ["@babel/code-frame", "npm:7.16.7"],\
+            ["@types/rollup", null],\
+            ["@types/typescript", null],\
+            ["magic-string", "npm:0.25.9"],\
+            ["rollup", "npm:2.75.6"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
+          ],\
+          "packagePeers": [\
+            "@types/rollup",\
+            "@types/typescript",\
+            "rollup",\
+            "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["rope-sequence", [\
         ["npm:1.3.2", {\
           "packageLocation": "./.yarn/cache/rope-sequence-npm-1.3.2-cc341e8423-4169421051.zip/node_modules/rope-sequence/",\
@@ -13868,6 +13956,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["source-map-support", "npm:0.5.21"],\
             ["buffer-from", "npm:1.1.1"],\
             ["source-map", "npm:0.6.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["sourcemap-codec", [\
+        ["npm:1.4.8", {\
+          "packageLocation": "./.yarn/cache/sourcemap-codec-npm-1.4.8-3a1a9e60b1-b57981c056.zip/node_modules/sourcemap-codec/",\
+          "packageDependencies": [\
+            ["sourcemap-codec", "npm:1.4.8"]\
           ],\
           "linkType": "HARD"\
         }]\
