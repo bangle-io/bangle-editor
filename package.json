@@ -26,9 +26,8 @@
   "scripts": {
     "g:babel": "yarn babel $INIT_CWD --out-dir $INIT_CWD/dist --ignore \"$INIT_CWD/**/__tests__,$INIT_CWD/dist\"",
     "update-versions": "yarn constraints --fix",
-    "test": "yarn lint && yarn e2e-tests && yarn unit-tests",
+    "test": "yarn lint && yarn g:e2e && yarn unit-tests",
     "unit-tests": "yarn jest",
-    "e2e-tests": "yarn e2e:test",
     "lint": "yarn node tooling/bangle-scripts/check-dependencies.cjs && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
     "release-packages": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish",
     "release-packages-alpha": "yarn tsc-clean && yarn tsc-check && yarn workspaces foreach -pt --all --no-private npm publish --tag alpha",
@@ -74,6 +73,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@bangle.dev/jest-utils": "workspace:*",
     "@types/jest": "^27.0.4",
+    "@types/node": "^17.0.41",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "@yarnpkg/pnpify": "^2.4.0",
@@ -92,12 +92,9 @@
     "husky": "^4.3.5",
     "jest": "^27.0.4",
     "jest-circus": "^27.0.4",
-    "jest-puppeteer": "^5.0.4",
     "lint-staged": "^10.5.3",
     "prettier": "^2.3.2",
-    "puppeteer": "^10.0.0",
     "typescript": "^4.7.3"
   },
-  "packageManager": "yarn@3.2.1",
-  "type": "module"
+  "packageManager": "yarn@3.2.1"
 }
