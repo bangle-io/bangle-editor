@@ -131,7 +131,7 @@ function pluginsFactory({
   },
   onArrowLeft,
   onArrowRight,
-}: PluginsOptions): RawPlugins {
+}: PluginsOptions) {
   return ({ schema }: { schema: Schema }) => {
     const isActiveCheck = queryIsSuggestTooltipActive(key);
     return [

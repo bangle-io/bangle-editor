@@ -14,6 +14,8 @@ export * from './spec-registry';
 export * from './dom-serialization-helpers';
 export type { RawPlugins } from './plugin-loader';
 
+export { doc, paragraph, text, history, editorStateCounter };
+
 export const criticalComponents = {
   doc,
   paragraph,

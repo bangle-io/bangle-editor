@@ -36,8 +36,6 @@ import { isNodeTodo, setTodoCheckedAttr } from './todo';
 
 const LOG = false;
 
-let log = LOG ? console.log.bind(console, 'list-item') : () => {};
-
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {

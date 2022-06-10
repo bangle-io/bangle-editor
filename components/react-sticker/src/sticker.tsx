@@ -9,11 +9,6 @@ import type { Command, Schema } from '@bangle.dev/pm';
 import { keymap, Node } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
 import React from 'react';
-import brontosaurusImg from './img/brontosaurus.png';
-import pterodactylImg from './img/pterodactyl.png';
-import stegosaurusImg from './img/stegosaurus.png';
-import triceratopsImg from './img/triceratops.png';
-import tyrannosaurusImg from './img/tyrannosaurus.png';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -112,11 +107,11 @@ export function insertSticker(stickerName: string): Command {
 }
 
 const DINO_IMAGES = {
-  brontosaurus: brontosaurusImg,
-  stegosaurus: stegosaurusImg,
-  triceratops: triceratopsImg,
-  tyrannosaurus: tyrannosaurusImg,
-  pterodactyl: pterodactylImg,
+  brontosaurus: 'https://prosemirror.net/img/dino/brontosaurus.png',
+  stegosaurus: 'https://prosemirror.net/img/dino/stegosaurus.png',
+  triceratops: 'https://prosemirror.net/img/dino/triceratops.png',
+  tyrannosaurus: 'https://prosemirror.net/img/dino/tyrannosaurus.png',
+  pterodactyl: 'https://prosemirror.net/img/dino/pterodactyl.png',
 };
 
 // no children for this type

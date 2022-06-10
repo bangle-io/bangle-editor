@@ -8,3 +8,4 @@ export * from './create-tooltip-dom';
 export { tooltipPlacement, selectionTooltip, suggestTooltip };
 export type { TooltipRenderOpts };
 export type { SuggestTooltipRenderOpts };
+export type { SelectionTooltipProps } from './selection-tooltip';

@@ -1,3 +1,1 @@
-import type { MarkdownParser } from 'prosemirror-markdown';
-
-export type ParseSpec = ConstructorParameters<typeof MarkdownParser>[2][''];
+export type InferObjValue<G> = G extends { [key: string]: infer V } ? V : never;

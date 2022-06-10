@@ -1,8 +1,9 @@
 import { SpecRegistry } from '@bangle.dev/core';
-import type { ParseSpec } from './utils';
+// import { MarkdownParser } from 'prosemirror-markdown';
+// import type { InferObjValue } from './utils';
 
 export function markdownLoader(specRegistry = new SpecRegistry()) {
-  const tokens: { [key: string]: ParseSpec } = Object.fromEntries(
+  const tokens: { [key: string]: any } = Object.fromEntries(
     specRegistry.spec
       .filter((e) => e.markdown && e.markdown.parseMarkdown)
       .flatMap((e) => {

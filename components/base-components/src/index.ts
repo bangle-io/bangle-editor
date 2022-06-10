@@ -17,10 +17,13 @@ import * as listItem from './list-item/list-item-component';
 import * as orderedList from './ordered-list';
 import * as image from './image';
 
-import { criticalComponents } from '@bangle.dev/core';
-
-const { doc, paragraph, text, history, editorStateCounter } =
-  criticalComponents;
+export {
+  doc,
+  paragraph,
+  text,
+  history,
+  editorStateCounter,
+} from '@bangle.dev/core';
 
 export {
   bold,
@@ -29,9 +32,6 @@ export {
   link,
   strike,
   underline,
-  doc,
-  paragraph,
-  text,
   blockquote,
   bulletList,
   codeBlock,
@@ -41,6 +41,4 @@ export {
   listItem,
   orderedList,
   image,
-  history,
-  editorStateCounter,
 };

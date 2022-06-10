@@ -8,7 +8,7 @@ import {
   PluginKey,
 } from '@bangle.dev/pm';
 import { selectionTooltip } from '@bangle.dev/tooltip';
-import type { SelectionTooltipProps } from '@bangle.dev/tooltip/selection-tooltip';
+import type { SelectionTooltipProps } from '@bangle.dev/tooltip';
 import { createObject, filter, rafCommandExec } from '@bangle.dev/utils';
 import { hasComponentInSchema } from './helper';
 

@@ -1,12 +1,13 @@
-import { Plugin } from '@bangle.dev/core';
-import type { Command } from '@bangle.dev/pm';
 import {
+  Plugin,
   EditorState,
   EditorView,
   NodeSelection,
   PluginKey,
   Transaction,
 } from '@bangle.dev/pm';
+import type { Command } from '@bangle.dev/pm';
+
 import { createTooltipDOM, TooltipDOM } from './create-tooltip-dom';
 import type { TooltipRenderOpts } from './tooltip-placement';
 import * as tooltipPlacement from './tooltip-placement';

@@ -1,19 +1,20 @@
 import { Node, NodeSelection } from '@bangle.dev/pm';
 import { getDocLabels } from '@bangle.dev/test-helpers';
 import prettier from 'prettier';
+import type { Selection } from '@bangle.dev/pm';
 
-global.DOMRect = class DOMRect {
+globalThis.DOMRect = class DOMRect {
   bottom = 0;
   left = 0;
   right = 0;
   top = 0;
-  constructor(x = 0, y = 0, width = 0, height = 0) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-  static fromRect(other) {
+  constructor(
+    public x = 0,
+    public y = 0,
+    public width = 0,
+    public height = 0,
+  ) {}
+  static fromRect(other: DOMRect) {
     return new DOMRect(other.x, other.y, other.width, other.height);
   }
   toJSON() {
@@ -23,11 +24,12 @@ global.DOMRect = class DOMRect {
 
 export const jestExpect = {
   toEqualDocAndSelection,
-  toEqualDocument(actual, expected) {
+  toEqualDocument(actual: any, expected: any): any {
+    const _this = this as any;
     return toEqualDocument(
-      this.equals,
-      this.utils,
-      this.expand,
+      _this.equals,
+      _this.utils,
+      _this.expand,
     )(actual, expected);
   },
 };
@@ -35,12 +37,15 @@ export const jestExpect = {
 expect.extend(jestExpect);
 stubMissingDOMAPIs();
 
-function toEqualDocAndSelection(actual, expected) {
+function toEqualDocAndSelection(actual: any, expected: any) {
   const { doc: actualDoc, selection: actualSelection } = actual;
+  // @ts-expect-error
+  const _this = this;
+
   const docComparison = toEqualDocument(
-    this.equals,
-    this.utils,
-    this.expand,
+    _this.equals,
+    _this.utils,
+    _this.expand,
   )(actualDoc, expected);
   if (!docComparison.pass) {
     return docComparison;
@@ -62,27 +67,31 @@ function toEqualDocAndSelection(actual, expected) {
   const posLabels = getDocLabels(expected);
   if (posLabels) {
     const refConditions = {
-      '[': (position, selection) => position === selection.$from.pos,
-      ']': (position, selection) => position === selection.$to.pos,
-      '[]': (position, selection) =>
+      '[': (position: number, selection: Selection) =>
+        position === selection.$from.pos,
+      ']': (position: number, selection: Selection) =>
+        position === selection.$to.pos,
+      '[]': (position: number, selection: Selection) =>
         position === selection.$from.pos && position === selection.$to.pos,
-      '<node>': (position, selection) =>
+      '<node>': (position: number, selection: Selection) =>
         selection instanceof NodeSelection && position === selection.$from.pos,
       // The | denotes the gap cursor's side, based on the node on the side of the |.
-      '<|gap>': (position, selection) =>
+      '<|gap>': (position: number, selection: Selection) =>
         // Using literal values from constructor as unable to import type from editor-core
         // Some tests use mock packages which will conflict with jestFrameworkSetup.js
         selection.constructor.name === 'GapCursorSelection' &&
-        selection.side === 'right' &&
+        (selection as any).side === 'right' &&
         position === selection.$from.pos,
-      '<gap|>': (position, selection) =>
+      '<gap|>': (position: number, selection: Selection) =>
         selection.constructor.name === 'GapCursorSelection' &&
-        selection.side === 'left' &&
+        (selection as any).side === 'left' &&
         position === selection.$from.pos,
     };
 
+    const keys = Object.keys(refConditions) as (keyof typeof refConditions)[];
+
     if (
-      !Object.keys(refConditions).every((key) => {
+      !keys.every((key) => {
         if (key in posLabels) {
           return refConditions[key](posLabels[key], actualSelection);
         }
@@ -96,8 +105,8 @@ function toEqualDocAndSelection(actual, expected) {
   return docComparison;
 }
 
-function toEqualDocument(equals, utils, expand) {
-  return (actual, expected) => {
+function toEqualDocument(equals: any, utils: any, expand: any) {
+  return (actual: any, expected: any) => {
     // Because schema is created dynamically, expected value is a function (schema) => PMNode;
     // That's why this magic is necessary. It simplifies writing assertions, so
     // instead of expect(doc).toEqualDocument(doc(p())(schema)) we can just do:
@@ -130,7 +139,7 @@ function toEqualDocument(equals, utils, expand) {
         message: () => 'Expected both values to be using the same schema.',
       };
     }
-    const frmt = (doc) =>
+    const frmt = (doc: Node) =>
       prettier.format(doc.toString(), {
         semi: false,
         parser: 'babel',
@@ -209,31 +218,31 @@ function stubMissingDOMAPIs() {
   });
 
   if (typeof window !== 'undefined') {
-    window.getSelection = () => {
+    (window as any).getSelection = () => {
       return selectionFixture;
     };
   }
 
   if (typeof document !== 'undefined') {
-    document.getSelection = () => {
+    (document as any).getSelection = () => {
       return selectionFixture;
     };
 
-    document.createRange = () => {
+    (document as any).createRange = () => {
       return rangeFixture;
     };
 
     if (!('getClientRects' in document.createElement('div'))) {
-      Element.prototype.getClientRects = () => [];
-      Element.prototype.getBoundingClientRect = () => clientRectFixture;
+      Element.prototype.getClientRects = () => [] as any;
+      Element.prototype.getBoundingClientRect = () => clientRectFixture as any;
     }
   }
 
   if (typeof window !== 'undefined') {
     // Replace the native InputEvent which ships with JSDOM 12+
-    window.InputEvent = class InputEvent {
-      constructor(typeArg, inputEventInit) {
-        const uiEvent = new UIEvent(typeArg, inputEventInit);
+    (window as any).InputEvent = class InputEvent {
+      constructor(typeArg: any, inputEventInit: any) {
+        const uiEvent: any = new UIEvent(typeArg, inputEventInit);
         uiEvent.inputType = (inputEventInit && inputEventInit.inputType) || '';
         uiEvent.isComposing =
           (inputEventInit && inputEventInit.isComposing) || false;
