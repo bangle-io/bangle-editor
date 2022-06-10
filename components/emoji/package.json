@@ -10,9 +10,8 @@
     }
   ],
   "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "exports": {
     "import": "./dist/index.js",
     "require": "./dist/index.cjs"
@@ -51,6 +50,9 @@
     "prosemirror-markdown": "^1.9.1"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
   }
 }

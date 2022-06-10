@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { criticalComponents } from '../index';
-import { RawSpecs, SpecRegistry } from '../spec-registry';
-import { domSerializationHelpers } from '../dom-serialization-helpers';
+import { criticalComponents } from '../src/index';
+import { RawSpecs, SpecRegistry } from '../src/spec-registry';
+import { domSerializationHelpers } from '../src/dom-serialization-helpers';
 
 const { paragraph, doc, text } = criticalComponents;
 

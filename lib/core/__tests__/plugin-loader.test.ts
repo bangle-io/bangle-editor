@@ -1,9 +1,9 @@
-import { criticalComponents } from '../index';
+import { criticalComponents } from '../src/index';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
-import { RawSpecs, SpecRegistry } from '../spec-registry';
-import { NodeView } from '../node-view';
-import { pluginLoader, RawPlugins } from '../plugin-loader';
-import { PluginGroup } from '../plugin';
+import { RawSpecs, SpecRegistry } from '../src/spec-registry';
+import { NodeView } from '../src/node-view';
+import { pluginLoader, RawPlugins } from '../src/plugin-loader';
+import { PluginGroup } from '../src/plugin';
 
 const { paragraph } = criticalComponents;
 

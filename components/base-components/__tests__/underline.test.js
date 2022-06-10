@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { psx, sendKeyToPm, setSelectionNear } from '@bangle.dev/test-helpers';
-import { underline } from '../index';
+import { underline } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 
 const keybindings = underline.defaultKeys;

@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { psx, sendKeyToPm, setSelectionNear } from '@bangle.dev/test-helpers';
-import { bold } from '../index';
+import { bold } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 
 const keybindings = bold.defaultKeys;

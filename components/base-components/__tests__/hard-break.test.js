@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { psx, sendKeyToPm } from '@bangle.dev/test-helpers';
-import { hardBreak } from '../index';
+import { hardBreak } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 
 const keybindings = hardBreak.defaultKeys;

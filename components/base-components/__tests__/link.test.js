@@ -20,8 +20,8 @@ import {
   orderedList,
   paragraph,
   text,
-} from '../index';
-import { queryLinkAttrs, updateLink, URL_REGEX } from '../link';
+} from '../src/index';
+import { queryLinkAttrs, updateLink, URL_REGEX } from '../src/link';
 import { defaultTestEditor } from './test-editor';
 
 const specRegistry = new SpecRegistry([

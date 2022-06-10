@@ -5,13 +5,14 @@
 import { SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx } from '@bangle.dev/test-helpers';
-import { markdownSerializer } from '@bangle.dev/markdown';
 import {
+  markdownSerializer,
   getDefaultMarkdownItTokenizer,
   markdownParser,
-} from '@bangle.dev/markdown/markdown-parser';
-import { markdownFrontMatter } from '../index';
-import { frontMatterPlugin } from '../markdown-it-plugin';
+} from '@bangle.dev/markdown';
+
+import { markdownFrontMatter } from '../src/index';
+import { frontMatterPlugin } from '../src/markdown-it-plugin';
 
 const specRegistry = new SpecRegistry([
   ...defaultSpecs({

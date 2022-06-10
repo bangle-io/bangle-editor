@@ -3,8 +3,8 @@
  */
 /** @jsx psx */
 import { psx, sendKeyToPm, typeText } from '@bangle.dev/test-helpers';
-import { listItem } from '../index';
-import { siblingsAndNodesBetween } from '../list-item/todo';
+import { listItem } from '../src/index';
+import { siblingsAndNodesBetween } from '../src/list-item/todo';
 import { defaultTestEditor } from './test-editor';
 
 const testEditor = defaultTestEditor();

@@ -9,7 +9,7 @@ import {
   sendKeyToPm,
   typeText,
 } from '@bangle.dev/test-helpers';
-import { defaultKeys as bulletListDefaultKeys } from '../bullet-list';
+import { defaultKeys as bulletListDefaultKeys } from '../src/bullet-list';
 import {
   bulletList,
   doc,
@@ -21,13 +21,13 @@ import {
   strike,
   text,
   underline,
-} from '../index';
+} from '../src/index';
 import {
   backspaceKeyCommand,
   enterKeyCommand,
   toggleList,
-} from '../list-item/commands';
-import { defaultKeys as orderedListDefaultKeys } from '../ordered-list';
+} from '../src/list-item/commands';
+import { defaultKeys as orderedListDefaultKeys } from '../src/ordered-list';
 import { defaultTestEditor } from './test-editor';
 
 const specRegistry = new SpecRegistry([

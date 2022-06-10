@@ -5,12 +5,13 @@
 import { SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx } from '@bangle.dev/test-helpers';
-import { markdownSerializer } from '@bangle.dev/markdown';
 import {
+  markdownSerializer,
   getDefaultMarkdownItTokenizer,
   markdownParser,
-} from '@bangle.dev/markdown/markdown-parser';
-import { wikiLink, wikiLinkMarkdownItPlugin } from '../index';
+} from '@bangle.dev/markdown';
+
+import { wikiLink, wikiLinkMarkdownItPlugin } from '../src/index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), wikiLink.spec()]);
 const plugins = [...defaultPlugins()];
