@@ -3037,6 +3037,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bangle.dev__pm", null],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
+            ["@types/markdown-it-emoji", "npm:2.0.2"],\
             ["markdown-it-emoji", "npm:2.0.0"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
@@ -3061,6 +3062,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.0.3"],\
+            ["@types/markdown-it-emoji", "npm:2.0.2"],\
             ["markdown-it-emoji", "npm:2.0.0"],\
             ["prosemirror-markdown", "npm:1.9.1"]\
           ],\
@@ -3179,7 +3181,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.18.0"],\
             ["prosemirror-schema-list", "npm:1.2.0"],\
             ["prosemirror-state", "npm:1.4.0"],\
-            ["prosemirror-tables", "npm:1.1.1"],\
+            ["prosemirror-tables", "https://github.com/zunsthy/prosemirror-tables.git#commit=978998da9cdf0a773dc5c12789d8ebb476120c39"],\
             ["prosemirror-transform", "npm:1.6.0"],\
             ["prosemirror-view", "npm:1.26.0"],\
             ["tslib", "npm:2.4.0"]\
@@ -4624,6 +4626,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/highlight.js", "npm:9.12.4"],\
             ["@types/linkify-it", "npm:3.0.1"],\
             ["@types/mdurl", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:12.2.3", {\
+          "packageLocation": "./.yarn/cache/@types-markdown-it-npm-12.2.3-ef47108ac6-868824a3e4.zip/node_modules/@types/markdown-it/",\
+          "packageDependencies": [\
+            ["@types/markdown-it", "npm:12.2.3"],\
+            ["@types/linkify-it", "npm:3.0.1"],\
+            ["@types/mdurl", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/markdown-it-emoji", [\
+        ["npm:2.0.2", {\
+          "packageLocation": "./.yarn/cache/@types-markdown-it-emoji-npm-2.0.2-c49909cf6b-9f7ae1bfb0.zip/node_modules/@types/markdown-it-emoji/",\
+          "packageDependencies": [\
+            ["@types/markdown-it-emoji", "npm:2.0.2"],\
+            ["@types/markdown-it", "npm:12.2.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11992,13 +12013,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["orderedmap", [\
-        ["npm:1.1.1", {\
-          "packageLocation": "./.yarn/cache/orderedmap-npm-1.1.1-dffd12a1bd-2b60551790.zip/node_modules/orderedmap/",\
-          "packageDependencies": [\
-            ["orderedmap", "npm:1.1.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.1.8", {\
           "packageLocation": "./.yarn/cache/orderedmap-npm-1.1.8-72a1aa0654-fbf110e901.zip/node_modules/orderedmap/",\
           "packageDependencies": [\
@@ -12704,7 +12718,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-collab-npm-1.3.0-d81c6d2934-3a7fcf4246.zip/node_modules/prosemirror-collab/",\
           "packageDependencies": [\
             ["prosemirror-collab", "npm:1.3.0"],\
-            ["prosemirror-state", "npm:1.4.0"]\
+            ["prosemirror-state", "npm:1.4.0"],\
+            ["prosemirror-transform", "npm:1.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12799,7 +12814,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prosemirror-model-npm-1.18.0-0b8d570b53-75ac51737a.zip/node_modules/prosemirror-model/",\
           "packageDependencies": [\
             ["prosemirror-model", "npm:1.18.0"],\
-            ["orderedmap", "npm:1.1.1"]\
+            ["orderedmap", "npm:1.1.8"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12830,10 +12845,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prosemirror-tables", [\
-        ["npm:1.1.1", {\
-          "packageLocation": "./.yarn/cache/prosemirror-tables-npm-1.1.1-4bb1b6fcf3-26033de877.zip/node_modules/prosemirror-tables/",\
+        ["https://github.com/zunsthy/prosemirror-tables.git#commit=978998da9cdf0a773dc5c12789d8ebb476120c39", {\
+          "packageLocation": "./.yarn/cache/prosemirror-tables-https-946d4b1b6f-6aba65e930.zip/node_modules/prosemirror-tables/",\
           "packageDependencies": [\
-            ["prosemirror-tables", "npm:1.1.1"],\
+            ["prosemirror-tables", "https://github.com/zunsthy/prosemirror-tables.git#commit=978998da9cdf0a773dc5c12789d8ebb476120c39"],\
             ["prosemirror-keymap", "npm:1.2.0"],\
             ["prosemirror-model", "npm:1.18.0"],\
             ["prosemirror-state", "npm:1.4.0"],\

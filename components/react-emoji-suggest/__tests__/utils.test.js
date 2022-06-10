@@ -1,4 +1,4 @@
-import { jumpRow, resolveCounter } from '../utils';
+import { jumpRow, resolveCounter } from '../src/utils';
 
 function getItem(namedGroup, coords) {
   return namedGroup[coords[0]].emojis[coords[1]];

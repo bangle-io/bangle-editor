@@ -9,14 +9,6 @@
       "web": "http://github.com/kepta"
     }
   ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bangle-io/bangle.dev.git"
-  },
-  "bugs": {
-    "url": "https://github.com/bangle-io/bangle.dev/issues"
-  },
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -24,6 +16,14 @@
   "exports": {
     "import": "./dist/index.js",
     "require": "./dist/index.cjs"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
   "sideEffects": false,
   "scripts": {

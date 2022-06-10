@@ -6,7 +6,7 @@
 import { PluginKey, SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
-import { search } from '../index';
+import { search } from '../src/index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 

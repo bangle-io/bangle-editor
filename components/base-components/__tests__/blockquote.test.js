@@ -4,7 +4,7 @@
 
 /** @jsx psx */
 import { psx, sendKeyToPm, typeText } from '@bangle.dev/test-helpers';
-import { blockquote } from '../index';
+import { blockquote } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 
 const keybindings = blockquote.defaultKeys;

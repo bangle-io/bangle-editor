@@ -12,7 +12,7 @@ import {
   sendKeyToPm,
   typeText,
 } from '@bangle.dev/test-helpers';
-import { trailingNode } from '../index';
+import { trailingNode } from '../src/index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 const plugins = [...defaultPlugins(), trailingNode.plugins({})];

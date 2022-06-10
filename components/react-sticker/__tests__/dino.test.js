@@ -9,7 +9,7 @@ import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
-import { sticker } from '../index';
+import { sticker } from '../src/index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);
 const plugins = () => [...defaultPlugins(), sticker.plugins()];

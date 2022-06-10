@@ -9,6 +9,15 @@
       "web": "http://github.com/kepta"
     }
   ],
+  "private": true,
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,9 +26,6 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "private": true,
-  "main": "index.js",
-  "module": "index.js",
   "dependencies": {
     "@bangle.dev/collab-client": "workspace:*",
     "@bangle.dev/collab-server": "workspace:*",

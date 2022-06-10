@@ -11,7 +11,7 @@ import {
 } from '@bangle.dev/markdown/markdown-parser';
 import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
 import emojiParser from 'markdown-it-emoji';
-import { emoji } from '../index';
+import { emoji } from '../src/index';
 
 let getEmoji, testEditor, specRegistry;
 

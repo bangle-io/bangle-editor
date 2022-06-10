@@ -1,12 +1,13 @@
 const path = require('path');
 const globby = require('globby');
 const fs = require('fs/promises');
-const rootPath = path.resolve(__dirname, '..');
+const rootPath = path.resolve(__dirname, '..', '..');
 
 module.exports = { getPackages, mapPackages };
 
 async function getPackages({ filter = 'all' } = {}) {
   const globResults = await globby([path.join(rootPath, '**/package.json')]);
+  // console.log({ globResults });
   let results = await Promise.all(
     globResults.map(async (path) => [
       path,
@@ -34,7 +35,6 @@ async function mapPackages(cb, { filter } = {}) {
     return [r[0], cb(r)];
   });
 
-  console.log(result);
   await Promise.all(
     result.map(([packagePath, packageObj]) => {
       return fs.writeFile(
@@ -47,29 +47,30 @@ async function mapPackages(cb, { filter } = {}) {
 }
 
 mapPackages(([filePath, packageObj]) => {
-  delete packageObj.homepage;
-  delete packageObj.license;
-  delete packageObj.repository;
-  delete packageObj.bugs;
-  return {
-    name: packageObj.name,
-    version: packageObj.version,
-    homepage: 'https://bangle.dev',
-    authors: [
-      {
-        name: 'Kushan Joshi',
-        email: '0o3ko0@gmail.com',
-        web: 'http://github.com/kepta',
-      },
-    ],
-    license: 'MIT',
-    repository: {
-      type: 'git',
-      url: 'git+https://github.com/bangle-io/bangle.dev.git',
-    },
-    bugs: {
-      url: 'https://github.com/bangle-io/bangle.dev/issues',
-    },
+  let obj = {
     ...packageObj,
+    type: 'module',
+    main: 'dist/index.cjs',
+    module: 'dist/index.js',
+    types: 'dist/index.d.ts',
+    exports: {
+      import: './dist/index.js',
+      require: './dist/index.cjs',
+    },
   };
+  return Object.fromEntries(
+    Object.entries({
+      name: packageObj.name,
+      version: packageObj.version,
+      homepage: packageObj.homepage,
+      authors: packageObj.authors,
+      private: packageObj.private,
+      type: packageObj.type,
+      main: packageObj.main,
+      module: packageObj.module,
+      types: packageObj.types,
+      exports: packageObj.exports,
+      ...obj,
+    }),
+  );
 });

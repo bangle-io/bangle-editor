@@ -1,15 +1,21 @@
 {
   "name": "@bangle.dev/jest-utils",
-  "main": "index.js",
+  "version": "0.28.11",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
+  },
   "dependencies": {
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/jest": "^27.0.4",
     "prettier": "^2.6.2"
   },
-  "version": "0.28.11",
   "publishConfig": {
     "access": "public"
-  },
-  "type": "module"
+  }
 }

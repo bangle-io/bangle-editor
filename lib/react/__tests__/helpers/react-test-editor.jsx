@@ -5,7 +5,7 @@ import { getDocLabels } from '@bangle.dev/test-helpers';
 import { TextSelection } from '@bangle.dev/pm';
 import { act, render } from '@testing-library/react';
 import React from 'react';
-import { BangleEditor, useEditorState } from '../../index';
+import { BangleEditor, useEditorState } from '../../src/index';
 
 function ReactEditor({
   id,

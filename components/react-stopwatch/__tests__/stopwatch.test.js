@@ -11,8 +11,8 @@ import {
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
 import { act, fireEvent } from '@testing-library/react';
-import { stopwatch } from '../index';
-import { Stopwatch } from '../stopwatch';
+import { stopwatch } from '../src/index';
+import { Stopwatch } from '../src/stopwatch';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), stopwatch.spec({})]);
 const plugins = () => [...defaultPlugins(), stopwatch.plugins({})];

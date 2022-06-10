@@ -15,8 +15,8 @@ import {
 } from '@bangle.dev/test-helpers';
 import { PluginKey, Selection } from '@bangle.dev/pm';
 import { sleep } from '@bangle.dev/utils';
-import { suggestTooltip } from '../index';
-import { replaceSuggestMarkWith } from '../suggest-tooltip';
+import { suggestTooltip } from '../src/index';
+import { replaceSuggestMarkWith } from '../src/suggest-tooltip';
 
 // We are using char code to differentiate between different schema
 // 47 is char code for '/'
