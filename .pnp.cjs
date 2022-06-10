@@ -186,7 +186,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-react", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@babel/preset-typescript", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@bangle.dev/jest-utils", "workspace:tooling/jest-utils"],\
-            ["@marijn/buildtool", "npm:0.1.2"],\
+            ["@marijn/buildtool", "portal:../buildtool::locator=bangle.dev%40workspace%3A."],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/node", "npm:17.0.41"],\
             ["@typescript-eslint/eslint-plugin", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.26.1"],\
@@ -3077,6 +3077,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@types/jest", "npm:27.5.2"],\
+            ["@types/prettier", "npm:2.6.3"],\
             ["prettier", "npm:2.6.2"]\
           ],\
           "linkType": "SOFT"\
@@ -4153,18 +4154,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@marijn/buildtool", [\
-        ["npm:0.1.2", {\
-          "packageLocation": "./.yarn/cache/@marijn-buildtool-npm-0.1.2-a57dd69c1a-fe4fcdb851.zip/node_modules/@marijn/buildtool/",\
+        ["portal:../buildtool::locator=bangle.dev%40workspace%3A.", {\
+          "packageLocation": "../buildtool/",\
           "packageDependencies": [\
-            ["@marijn/buildtool", "npm:0.1.2"],\
+            ["@marijn/buildtool", "portal:../buildtool::locator=bangle.dev%40workspace%3A."],\
             ["@types/mocha", "npm:9.1.1"],\
             ["acorn", "npm:8.7.1"],\
             ["acorn-walk", "npm:8.2.0"],\
             ["rollup", "npm:2.75.6"],\
-            ["rollup-plugin-dts", "virtual:a57dd69c1a81af5b4d8d4e1394c5108fba7502e4a6be4bcddf700db4abe5da5d5e1053c29d3a498657297e9b3db31595de2c25e10002769315c0a23be69ad344#npm:3.0.2"],\
+            ["rollup-plugin-dts", "virtual:ba811220e7d2ae19a6c557510ef5ddc507c0ebe8a5499289a0dab52c9915d239282a97521f2c2cfaaa3171963057a3fe8c6317421b9fd17d28c495e73f004f4c#npm:3.0.2"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
-          "linkType": "HARD"\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["@nicolo-ribaudo/chokidar-2", [\
@@ -6389,7 +6390,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-react", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@babel/preset-typescript", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:7.16.7"],\
             ["@bangle.dev/jest-utils", "workspace:tooling/jest-utils"],\
-            ["@marijn/buildtool", "npm:0.1.2"],\
+            ["@marijn/buildtool", "portal:../buildtool::locator=bangle.dev%40workspace%3A."],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/node", "npm:17.0.41"],\
             ["@typescript-eslint/eslint-plugin", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.26.1"],\
@@ -13547,10 +13548,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:a57dd69c1a81af5b4d8d4e1394c5108fba7502e4a6be4bcddf700db4abe5da5d5e1053c29d3a498657297e9b3db31595de2c25e10002769315c0a23be69ad344#npm:3.0.2", {\
-          "packageLocation": "./.yarn/__virtual__/rollup-plugin-dts-virtual-db8d921c49/0/cache/rollup-plugin-dts-npm-3.0.2-b244a99ce5-c37acf3744.zip/node_modules/rollup-plugin-dts/",\
+        ["virtual:ba811220e7d2ae19a6c557510ef5ddc507c0ebe8a5499289a0dab52c9915d239282a97521f2c2cfaaa3171963057a3fe8c6317421b9fd17d28c495e73f004f4c#npm:3.0.2", {\
+          "packageLocation": "./.yarn/__virtual__/rollup-plugin-dts-virtual-196aa7e64e/0/cache/rollup-plugin-dts-npm-3.0.2-b244a99ce5-c37acf3744.zip/node_modules/rollup-plugin-dts/",\
           "packageDependencies": [\
-            ["rollup-plugin-dts", "virtual:a57dd69c1a81af5b4d8d4e1394c5108fba7502e4a6be4bcddf700db4abe5da5d5e1053c29d3a498657297e9b3db31595de2c25e10002769315c0a23be69ad344#npm:3.0.2"],\
+            ["rollup-plugin-dts", "virtual:ba811220e7d2ae19a6c557510ef5ddc507c0ebe8a5499289a0dab52c9915d239282a97521f2c2cfaaa3171963057a3fe8c6317421b9fd17d28c495e73f004f4c#npm:3.0.2"],\
             ["@babel/code-frame", "npm:7.16.7"],\
             ["@types/rollup", null],\
             ["@types/typescript", null],\

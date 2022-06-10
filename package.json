@@ -107,6 +107,7 @@
   "packageManager": "yarn@3.2.1",
   "resolutions": {
     "orderedmap": "^1.1.8",
-    "prosemirror-tables": "zunsthy/prosemirror-tables#bugfix/use-types"
+    "prosemirror-tables": "zunsthy/prosemirror-tables#bugfix/use-types",
+    "@marijn/buildtool": "portal:../buildtool"
   }
 }
