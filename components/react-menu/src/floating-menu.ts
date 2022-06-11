@@ -1,4 +1,5 @@
 import { link } from '@bangle.dev/base-components';
+import type { Plugin, InputRule } from '@bangle.dev/pm';
 import {
   Command,
   EditorState,
@@ -69,26 +70,29 @@ function floatingMenu({
   keybindings = defaultKeys,
   tooltipRenderOpts = {},
   calculateType = defaultCalculateType,
-}: FloatingMenuPluginArgs = {}) {
+}: FloatingMenuPluginArgs = {}): Array<
+  undefined | Plugin | (() => Plugin) | InputRule
+> {
   return [
     selectionTooltip.plugins({
       key,
       calculateType,
       tooltipRenderOpts,
     }),
-    keybindings &&
-      keymap(
-        createObject([
-          [
-            keybindings.hide,
-            filter(
-              queryIsSelectionTooltipActive(key),
-              hideSelectionTooltip(key),
-            ),
-          ],
-          [keybindings.toggleLink, toggleLinkSubMenu(key)],
-        ]),
-      ),
+    keybindings
+      ? keymap(
+          createObject([
+            [
+              keybindings.hide,
+              filter(
+                queryIsSelectionTooltipActive(key),
+                hideSelectionTooltip(key),
+              ),
+            ],
+            [keybindings.toggleLink, toggleLinkSubMenu(key)],
+          ]),
+        )
+      : undefined,
   ];
 }
 

@@ -1,6 +1,6 @@
 // This exists to allow for our custom psx syntax for creating a
 // prosemirror document.
-namespace JSX {
+declare namespace JSX {
   export interface IntrinsicElements {
     para: any;
     doc: any;
@@ -19,8 +19,8 @@ namespace JSX {
   }
 }
 
-namespace jest {
-  interface Matchers<R> {
+declare namespace jest {
+  export interface Matchers<R> {
     toEqualDocAndSelection(expected: any): R;
     toEqualDocument(expected: any): R;
   }

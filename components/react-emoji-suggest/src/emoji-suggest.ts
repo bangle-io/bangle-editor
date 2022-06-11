@@ -1,5 +1,11 @@
 import { SpecRegistry, BaseRawMarkSpec } from '@bangle.dev/core';
-import type { Command, EditorState, Schema } from '@bangle.dev/pm';
+import type {
+  Command,
+  EditorState,
+  InputRule,
+  Plugin,
+  Schema,
+} from '@bangle.dev/pm';
 import { PluginKey } from '@bangle.dev/pm';
 import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
 import { createTooltipDOM, suggestTooltip } from '@bangle.dev/tooltip';
@@ -74,7 +80,7 @@ function pluginsFactory({
   }: {
     schema: Schema;
     specRegistry: SpecRegistry;
-  }) => {
+  }): Array<InputRule | Plugin> => {
     const { trigger } = specRegistry.options[markName as any] as any;
 
     const suggestTooltipKey = new PluginKey('suggestTooltipKey');

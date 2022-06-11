@@ -2,7 +2,13 @@
  * @jest-environment jsdom
  */
 
-import { EditorView, Node, Schema, TextSelection } from '@bangle.dev/pm';
+import {
+  EditorView,
+  EditorState,
+  Node,
+  Schema,
+  TextSelection,
+} from '@bangle.dev/pm';
 import {
   BangleEditor,
   BangleEditorState,

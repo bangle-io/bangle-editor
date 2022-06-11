@@ -3,9 +3,11 @@ import {
   Command,
   DOMOutputSpec,
   EditorState,
+  InputRule,
   keymap,
   Schema,
   toggleMark,
+  Plugin,
 } from '@bangle.dev/pm';
 import {
   isMarkActiveInSelection,
@@ -58,15 +60,21 @@ function specFactory(): RawSpecs {
   };
 }
 
-function pluginsFactory({ keybindings = defaultKeys } = {}) {
+function pluginsFactory({ keybindings = defaultKeys } = {}):
+  | InputRule
+  | Plugin
+  | undefined {
   return ({ schema }: { schema: Schema }) => {
     const type = getTypeFromSchema(schema);
 
     return [
       markInputRule(/~([^~]+)~$/, type),
       markPasteRule(/~([^~]+)~/g, type),
-      keybindings &&
-        keymap(createObject([[keybindings.toggleUnderline, toggleMark(type)]])),
+      keybindings
+        ? keymap(
+            createObject([[keybindings.toggleUnderline, toggleMark(type)]]),
+          )
+        : undefined,
     ];
   };
 }

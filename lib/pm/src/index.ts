@@ -1,9 +1,6 @@
 export * from './commands';
-
 export * from './dropcursor';
-
 export * from './gapcursor';
-
 export * from './history';
 export * from './inputrules';
 export * from './keymap';

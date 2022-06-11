@@ -31,11 +31,12 @@ For templating we use [handlebars](https://handlebarsjs.com) and a configuration
 
 - Run `yarn update-versions`.
 
-- Due to a bug in yarn there might be redundant items added in the `package.json` `workspaces` field -- Remove them.
+- Export your npm token as an environment variable `NPM_AUTH_TOKEN` in your project.
 
 - Update the changelog.
 
-- Run `yarn release-packages`.
+- Run `release-packages` for a regular release or `release-packages-alpha` for a pre-release.
+
 
 ## Directory Structure
 

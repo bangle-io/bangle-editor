@@ -1,15 +1,12 @@
 {
   "name": "@bangle.dev/all-base-components",
-  "version": "0.28.11",
+  "version": "0.29.0-alpha.10",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./style.css": "./style.css"
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
   },
   "description": "A utility function to get all base components",
   "dependencies": {
