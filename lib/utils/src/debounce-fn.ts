@@ -51,7 +51,7 @@ export function debounceFn<ArgumentsType extends unknown[], RetType>(
 
   const {
     wait = 0,
-    maxWait = Infinity,
+    maxWait = Number.POSITIVE_INFINITY,
     before = false,
     after = true,
   } = options;
@@ -99,7 +99,7 @@ export function debounceFn<ArgumentsType extends unknown[], RetType>(
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
 
-    if (maxWait > 0 && maxWait !== Infinity && !maxTimeout) {
+    if (maxWait > 0 && maxWait !== Number.POSITIVE_INFINITY && !maxTimeout) {
       maxTimeout = setTimeout(maxLater, maxWait);
     }
 

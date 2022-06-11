@@ -5,10 +5,10 @@
     "scripthost"
   ],
   "include": [
-    "**/src/**/*.ts",
-    "**/src/**/*.tsx",
-    // "**/__tests__/*.tsx",
-    // "**/__tests__/*.ts"
+    "**/src/**/*",
+    "**/__tests__/**/*.tsx",
+    "**/__tests__/**/*.ts",
+    "**/e2e-tests/**/*"
   ],
   "exclude": [
     ".yarn"
