@@ -187,6 +187,8 @@ test('copy pasting sticker should work', async ({ page }) => {
     win.manualPaste(str);
   });
 
+  await sleep(1000);
+
   expect(await page.screenshot()).toMatchSnapshot();
 
   expect(await getEditorState(page)).toEqual({

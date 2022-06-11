@@ -3,7 +3,7 @@ import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { RawSpecs, SpecRegistry } from '../src/spec-registry';
 import { NodeView } from '../src/node-view';
 import { pluginLoader, RawPlugins } from '../src/plugin-loader';
-import { PluginGroup } from '../src/plugin';
+import { PluginGroup } from '../src/plugin-group';
 
 const { paragraph } = criticalComponents;
 

@@ -5,8 +5,11 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.cjs"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./style.css"
   },
   "description": "This is bangle.dev specific collection of Prosemirror packages.",
   "license": "MIT",

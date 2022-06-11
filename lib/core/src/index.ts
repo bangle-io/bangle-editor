@@ -1,9 +1,9 @@
 // components
-import * as doc from './critical-components/doc';
-import * as paragraph from './critical-components/paragraph';
-import * as text from './critical-components/text';
-import * as history from './critical-components/history';
-import * as editorStateCounter from './critical-components/editor-state-counter';
+import * as doc from './doc';
+import * as paragraph from './paragraph';
+import * as text from './text';
+import * as history from './history';
+import * as editorStateCounter from './editor-state-counter';
 
 export * from './bangle-editor';
 export * from './bangle-editor-state';

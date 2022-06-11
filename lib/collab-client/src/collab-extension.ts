@@ -13,7 +13,6 @@ import {
   EditorView,
   Plugin,
   PluginKey,
-  Schema,
   Selection,
   Step,
   TextSelection,

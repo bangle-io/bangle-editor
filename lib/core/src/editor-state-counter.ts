@@ -1,5 +1,5 @@
-import type { RawPlugins } from '../plugin-loader';
-import { PluginGroup } from '../plugin';
+import type { RawPlugins } from './plugin-loader';
+import { PluginGroup } from './plugin-group';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
 
 const name = 'editorStateCounter';

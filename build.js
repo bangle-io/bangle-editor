@@ -1,37 +1,40 @@
-let child = require('child_process'),
-  fs = require('fs'),
-  path = require('path');
+let fs = require('fs');
+let path = require('path');
 
 const buildOptions = {
-  tsOptions: { allowSyntheticDefaultImports: true },
+  tsOptions: {
+    types: [],
+    noUnusedLocals: false,
+    lib: ['ES2019', 'dom', 'scripthost'],
+    allowSyntheticDefaultImports: true,
+    jsx: 'react',
+  },
 };
 
-const libs = [
-  './components/base-components',
-  //   'components/emoji',
-  //   'components/markdown-front-matter',
-  //   'components/react-emoji-suggest',
-  //   'components/react-menu',
-  //   'components/react-sticker',
-  //   'components/react-stopwatch',
-  //   'components/search',
-  //   'components/table',
-  //   'components/text-formatting',
-  //   'components/timestamp',
-  //   'components/tooltip',
-  //   'components/trailing-node',
-  //   'components/wiki-link',
-  //   'lib/broader-unit-tests',
-  //   'lib/collab-client',
-  //   'lib/collab-server',
-  //   'lib/core',
-  //   'lib/disk',
-  //   'lib/markdown',
-  //   'lib/pm',
-  //   'lib/pm-commands',
-  //   'lib/react',
-  //   'lib/utils',
-];
+async function readPackages() {
+  const yarnWorkspacesListOutput = require('child_process')
+    .execSync(`yarn workspaces list --json`)
+    .toString()
+    .split('\n')
+    .filter(Boolean);
+  let result = await Promise.all(
+    yarnWorkspacesListOutput
+      .map((r) => JSON.parse(r))
+      .map(async (r) => {
+        const _path = path.join(
+          path.resolve(__dirname, r.location),
+          'package.json',
+        );
+
+        const file = fs.readFileSync(_path, 'utf-8');
+        const packageJSON = JSON.parse(file);
+
+        return { ...r, packageJSON };
+      }),
+  );
+
+  return result;
+}
 
 let projectDir = __dirname;
 
@@ -40,15 +43,10 @@ function joinP(...args) {
 }
 
 function mainFile(pkg) {
-  let index = joinP(pkg, 'src', 'index.ts'),
-    self = joinP(pkg, 'src', pkg + '.ts');
+  let index = joinP(pkg, 'src', 'index.ts');
 
-  console.log({ index, self });
   if (fs.existsSync(index)) {
     return index;
-  }
-  if (fs.existsSync(self)) {
-    return self;
   }
   throw new Error("Couldn't find a main file for " + pkg);
 }
@@ -56,7 +54,23 @@ function mainFile(pkg) {
 async function build() {
   console.info('Building...');
   let t0 = Date.now();
-  await require('@marijn/buildtool').build(libs.map(mainFile), buildOptions);
+
+  const list = (await readPackages()).filter((r) => {
+    return !r.packageJSON.private;
+  });
+  // await require('@marijn/buildtool').watch(
+  //   libs.map(mainFile),
+  //   [],
+  //   buildOptions,
+  // );
+  await require('@marijn/buildtool').build(
+    list.map((obj) => {
+      console.log('Working on ', obj.location);
+      return mainFile(obj.location);
+    }),
+    buildOptions,
+  );
+
   console.info(`Done in ${((Date.now() - t0) / 1000).toFixed(2)}s`);
 }
 

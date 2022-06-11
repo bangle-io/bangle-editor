@@ -11,9 +11,9 @@ import {
   undoInputRule as pmUndoInputRule,
 } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
-import * as editorStateCounter from './critical-components/editor-state-counter';
-import * as history from './critical-components/history';
-import { PluginGroup } from './plugin';
+import * as editorStateCounter from './editor-state-counter';
+import * as history from './history';
+import { PluginGroup } from './plugin-group';
 import type { SpecRegistry } from './spec-registry';
 
 export interface PluginPayload<T = any> {

@@ -1,5 +1,5 @@
-import type { RawPlugins } from '../plugin-loader';
-import type { BaseRawNodeSpec, RawSpecs } from '../spec-registry';
+import type { RawPlugins } from './plugin-loader';
+import type { BaseRawNodeSpec, RawSpecs } from './spec-registry';
 import {
   Command,
   DOMOutputSpec,

@@ -45,32 +45,3 @@ async function mapPackages(cb, { filter } = {}) {
     }),
   );
 }
-
-mapPackages(([filePath, packageObj]) => {
-  let obj = {
-    ...packageObj,
-    type: 'module',
-    main: 'dist/index.cjs',
-    module: 'dist/index.js',
-    types: 'dist/index.d.ts',
-    exports: {
-      import: './dist/index.js',
-      require: './dist/index.cjs',
-    },
-  };
-  return Object.fromEntries(
-    Object.entries({
-      name: packageObj.name,
-      version: packageObj.version,
-      homepage: packageObj.homepage,
-      authors: packageObj.authors,
-      private: packageObj.private,
-      type: packageObj.type,
-      main: packageObj.main,
-      module: packageObj.module,
-      types: packageObj.types,
-      exports: packageObj.exports,
-      ...obj,
-    }),
-  );
-});

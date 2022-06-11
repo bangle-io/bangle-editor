@@ -1,4 +1,4 @@
-import type { BaseRawNodeSpec } from '../spec-registry';
+import type { BaseRawNodeSpec } from './spec-registry';
 
 export const spec = specFactory;
 

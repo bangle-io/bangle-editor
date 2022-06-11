@@ -13,8 +13,10 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.cjs"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
   },
   "license": "MIT",
   "repository": {

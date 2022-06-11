@@ -1,4 +1,4 @@
-import { EditorState, Node, Schema, Selection } from '@bangle.dev/pm';
+import { EditorState, Node, Selection } from '@bangle.dev/pm';
 
 // let log = LOG ? console.log.bind(console, 'collab/helpers') : () => {};
 
