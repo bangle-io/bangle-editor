@@ -79,7 +79,7 @@
     "@yarnpkg/pnpify": "^2.4.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
-    "buildtool-bangle": "kepta/buildtool",
+    "buildtool-bangle": "kepta/buildtool#main",
     "eslint": "^7.28.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-import-resolver-node": "^0.3.4",
