@@ -32,7 +32,6 @@ export class Manager {
   destroyed = false;
   instances: { [key: string]: Instance } = {};
   getDocumentQueue = serialExecuteQueue();
-
   routes;
   disk;
   cleanUpInterval?: ReturnType<typeof setInterval> = undefined;

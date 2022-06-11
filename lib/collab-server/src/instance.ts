@@ -53,7 +53,7 @@ export class Instance {
 
   stop() {
     if (this.collecting != null) {
-      clearInterval(this.collecting);
+      clearTimeout(this.collecting);
       this.collecting = null;
       Instance.sendUpdates(this.waiting);
       this.saveData(true);
