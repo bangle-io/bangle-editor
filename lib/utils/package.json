@@ -35,7 +35,7 @@
     "@types/jest": "^27.0.4",
     "prosemirror-model": "^1.18.0",
     "prosemirror-state": "^1.4.0",
-    "prosemirror-utils": "1.0.0-0"
+    "prosemirror-utils-bangle": "0.0.2"
   },
   "devDependencies": {
     "@bangle.dev/pm": "workspace:*"

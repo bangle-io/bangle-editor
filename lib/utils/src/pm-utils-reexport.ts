@@ -30,7 +30,7 @@ export {
   selectParentNodeOfType,
   setParentNodeMarkup,
   setTextSelection,
-} from 'prosemirror-utils';
+} from 'prosemirror-utils-bangle';
 
 export type {
   CellTransform,
@@ -39,4 +39,4 @@ export type {
   MovementOptions,
   NodeWithPos,
   Predicate,
-} from 'prosemirror-utils';
+} from 'prosemirror-utils-bangle';

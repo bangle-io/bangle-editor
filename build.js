@@ -59,9 +59,14 @@ async function build() {
     return !r.packageJSON.private;
   });
   // await require('buildtool-bangle').watch(
-  //   libs.map(mainFile),
+  //   list.map((obj) => {
+  //     return mainFile(obj.location);
+  //   }),
   //   [],
-  //   buildOptions,
+  //   {
+  //     ...buildOptions,
+  //     include: ['**/src/**/*'],
+  //   },
   // );
   await require('buildtool-bangle').build(
     list.map((obj) => {
