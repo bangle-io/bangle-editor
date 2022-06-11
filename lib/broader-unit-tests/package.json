@@ -1,10 +1,8 @@
 {
   "name": "broader-unit-tests",
+  "version": "0.28.11",
   "private": true,
   "description": "Tests which could not fit anywhere due to dependency cycle issues",
-  "main": "index.ts",
-  "module": "index.ts",
-  "types": "dist/index.d.ts",
   "dependencies": {
     "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/base-components": "workspace:*",
@@ -13,7 +11,5 @@
     "@bangle.dev/test-helpers": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^27.0.4"
-  },
-  "version": "0.28.11",
-  "type": "module"
+  }
 }

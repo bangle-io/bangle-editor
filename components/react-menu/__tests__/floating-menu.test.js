@@ -11,7 +11,7 @@ import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
-import { floatingMenu } from '../index';
+import { floatingMenu } from '../src/index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');
 const specRegistry = new SpecRegistry(defaultSpecs());

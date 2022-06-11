@@ -1,11 +1,11 @@
-/// <reference path="../missing-types.d.ts" />
+/// <reference path="../src/missing-types.d.ts" />
 
 import { SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { Disk } from '@bangle.dev/disk';
 import { Node } from '@bangle.dev/pm';
-import { Manager } from '../manager';
-import { sleep } from '../utils';
+import { Manager } from '../src/manager';
+import { sleep } from '../src/utils';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 

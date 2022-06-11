@@ -1,8 +1,14 @@
 {
+  "lib": [
+    "ES2019",
+    "dom",
+    "scripthost"
+  ],
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "tooling/e2e-tests/basic-editor/entry.cjs",
+    "**/src/**/*",
+    "**/__tests__/**/*.tsx",
+    "**/__tests__/**/*.ts",
+    "**/e2e-tests/**/*"
   ],
   "exclude": [
     ".yarn"
@@ -37,91 +43,91 @@
     "sourceMap": true,
     "paths": {
       "@bangle.dev/base-components": [
-        "./components/base-components/index.ts"
+        "./components/base-components/src/index.ts"
       ],
       "@bangle.dev/emoji": [
-        "./components/emoji/index.ts"
+        "./components/emoji/src/index.ts"
       ],
       "@bangle.dev/markdown-front-matter": [
-        "./components/markdown-front-matter/index.ts"
+        "./components/markdown-front-matter/src/index.ts"
       ],
       "@bangle.dev/react-emoji-suggest": [
-        "./components/react-emoji-suggest/index.ts"
+        "./components/react-emoji-suggest/src/index.ts"
       ],
       "@bangle.dev/react-menu": [
-        "./components/react-menu/index.ts"
+        "./components/react-menu/src/index.ts"
       ],
       "@bangle.dev/react-sticker": [
-        "./components/react-sticker/index.ts"
+        "./components/react-sticker/src/index.ts"
       ],
       "@bangle.dev/react-stopwatch": [
-        "./components/react-stopwatch/index.ts"
+        "./components/react-stopwatch/src/index.ts"
       ],
       "@bangle.dev/search": [
-        "./components/search/index.ts"
+        "./components/search/src/index.ts"
       ],
       "@bangle.dev/table": [
-        "./components/table/index.ts"
+        "./components/table/src/index.ts"
       ],
       "@bangle.dev/text-formatting": [
-        "./components/text-formatting/index.ts"
+        "./components/text-formatting/src/index.ts"
       ],
       "@bangle.dev/timestamp": [
-        "./components/timestamp/index.ts"
+        "./components/timestamp/src/index.ts"
       ],
       "@bangle.dev/tooltip": [
-        "./components/tooltip/index.ts"
+        "./components/tooltip/src/index.ts"
       ],
       "@bangle.dev/trailing-node": [
-        "./components/trailing-node/index.ts"
+        "./components/trailing-node/src/index.ts"
       ],
       "@bangle.dev/wiki-link": [
-        "./components/wiki-link/index.ts"
+        "./components/wiki-link/src/index.ts"
       ],
       "broader-unit-tests": [
-        "./lib/broader-unit-tests/index.ts"
+        "./lib/broader-unit-tests/src/index.ts"
       ],
       "@bangle.dev/collab-client": [
-        "./lib/collab-client/index.ts"
+        "./lib/collab-client/src/index.ts"
       ],
       "@bangle.dev/collab-server": [
-        "./lib/collab-server/index.ts"
+        "./lib/collab-server/src/index.ts"
       ],
       "@bangle.dev/core": [
-        "./lib/core/index.ts"
+        "./lib/core/src/index.ts"
       ],
       "@bangle.dev/disk": [
-        "./lib/disk/index.ts"
+        "./lib/disk/src/index.ts"
       ],
       "@bangle.dev/markdown": [
-        "./lib/markdown/index.ts"
+        "./lib/markdown/src/index.ts"
       ],
       "@bangle.dev/pm": [
-        "./lib/pm/index.ts"
+        "./lib/pm/src/index.ts"
       ],
       "@bangle.dev/pm-commands": [
-        "./lib/pm-commands/index.ts"
+        "./lib/pm-commands/src/index.ts"
       ],
       "@bangle.dev/react": [
-        "./lib/react/index.ts"
+        "./lib/react/src/index.ts"
       ],
       "@bangle.dev/utils": [
-        "./lib/utils/index.ts"
+        "./lib/utils/src/index.ts"
       ],
       "@bangle.dev/all-base-components": [
-        "./tooling/all-base-components/index.ts"
+        "./tooling/all-base-components/src/index.ts"
       ],
       "bangle-scripts": [
-        "./tooling/bangle-scripts/index.ts"
+        "./tooling/bangle-scripts/src/index.ts"
       ],
       "e2e-tests": [
-        "./tooling/e2e-tests/index.ts"
+        "./tooling/e2e-tests/src/index.ts"
       ],
       "@bangle.dev/jest-utils": [
-        "./tooling/jest-utils/index.ts"
+        "./tooling/jest-utils/src/index.ts"
       ],
       "@bangle.dev/test-helpers": [
-        "./tooling/test-helpers/index.ts"
+        "./tooling/test-helpers/src/index.ts"
       ]
     }
   }

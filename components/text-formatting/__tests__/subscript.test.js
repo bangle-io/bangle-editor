@@ -10,7 +10,7 @@ import {
   sendKeyToPm,
   setSelectionNear,
 } from '@bangle.dev/test-helpers';
-import { subscript, superscript } from '../index';
+import { subscript, superscript } from '../src/index';
 
 const toggleKey = 'Ctrl-s';
 const specRegistry = new SpecRegistry([superscript.spec(), subscript.spec()]);

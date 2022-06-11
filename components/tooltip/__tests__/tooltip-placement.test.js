@@ -12,8 +12,8 @@ import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx } from '@bangle.dev/test-helpers';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
-import { createTooltipDOM } from '../create-tooltip-dom';
-import { tooltipPlacement } from '../index';
+import { createTooltipDOM } from '../src/create-tooltip-dom';
+import { tooltipPlacement } from '../src/index';
 
 jest.mock('@popperjs/core/lib/popper-lite', () => {
   return {

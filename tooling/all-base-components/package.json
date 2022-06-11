@@ -1,9 +1,17 @@
 {
   "name": "@bangle.dev/all-base-components",
+  "version": "0.28.11",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./style.css"
+  },
   "description": "A utility function to get all base components",
-  "main": "index.ts",
-  "module": "index.ts",
-  "types": "dist/index.d.ts",
   "dependencies": {
     "@bangle.dev/base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
@@ -12,10 +20,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.js",
+    "main": "dist/index.cjs",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  },
-  "version": "0.28.11",
-  "type": "module"
+  }
 }

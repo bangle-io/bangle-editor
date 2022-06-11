@@ -9,6 +9,16 @@
       "web": "http://github.com/kepta"
     }
   ],
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./style.css"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,10 +27,7 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "main": "index.ts",
-  "module": "index.ts",
-  "types": "dist/index.d.ts",
-  "style": "style.css",
+  "sideEffects": false,
   "scripts": {
     "unit-tests": "yarn jest",
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
@@ -47,9 +54,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.js",
+    "main": "dist/index.cjs",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  },
-  "type": "module"
+  }
 }

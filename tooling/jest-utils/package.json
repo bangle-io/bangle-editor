@@ -1,15 +1,29 @@
 {
   "name": "@bangle.dev/jest-utils",
-  "main": "index.js",
+  "version": "0.28.11",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./style.css"
+  },
   "dependencies": {
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/jest": "^27.0.4",
     "prettier": "^2.6.2"
   },
-  "version": "0.28.11",
-  "publishConfig": {
-    "access": "public"
+  "devDependencies": {
+    "@types/prettier": "^2.6.3"
   },
-  "type": "module"
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts"
+  }
 }

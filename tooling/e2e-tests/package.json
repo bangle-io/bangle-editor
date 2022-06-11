@@ -9,6 +9,7 @@
       "web": "http://github.com/kepta"
     }
   ],
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,10 +18,9 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "private": true,
   "scripts": {
-    "build": "NODE_ENV=integration yarn run webpack --env development",
-    "serve-build": "yarn build && yarn run serve build -l 1234",
+    "build": "yarn g:build && NODE_ENV=integration yarn run webpack --env development",
+    "g:serve-e2e-build": "yarn build && yarn run serve build -l 1234",
     "test": "yarn build && yarn jest",
     "g:e2e": "yarn playwright test",
     "g:playwright-dep": "yarn playwright install && yarn playwright install-deps"
@@ -57,7 +57,7 @@
     "react-dom": "^17.0.2",
     "serve": "^11.3.2",
     "style-loader": "^2.0.0",
-    "webpack": "^5.70.0",
+    "webpack": "^5.73.0",
     "webpack-cli": "^4.9.2"
   },
   "devDependencies": {

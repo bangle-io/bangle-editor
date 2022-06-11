@@ -9,7 +9,7 @@ import {
   psx,
   renderTestEditor,
 } from '@bangle.dev/test-helpers';
-import { toggleHeadingCollapse, uncollapseAllHeadings } from '../heading';
+import { toggleHeadingCollapse, uncollapseAllHeadings } from '../src/heading';
 
 import {
   bulletList,
@@ -23,7 +23,7 @@ import {
   text,
   paragraph,
   heading,
-} from '../index';
+} from '../src/index';
 
 const specRegistry = new SpecRegistry([
   doc.spec(),

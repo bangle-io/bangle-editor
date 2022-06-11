@@ -100,7 +100,7 @@ async function updateRootTsConfig() {
   console.log(workspaces);
 
   let paths = Object.fromEntries(
-    workspaces.map((w) => [w.name, ['./' + w.location + '/index.ts']]),
+    workspaces.map((w) => [w.name, ['./' + w.location + '/src/index.ts']]),
   );
 
   console.log(paths);

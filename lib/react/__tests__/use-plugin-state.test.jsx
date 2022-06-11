@@ -6,7 +6,7 @@ import { Plugin, PluginKey, SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { act, render } from '@testing-library/react';
 import { useEffect, useState } from 'react';
-import { BangleEditor, useEditorState, usePluginState } from '../index';
+import { BangleEditor, useEditorState, usePluginState } from '../src/index';
 import { pjsx, Span } from './helpers/index';
 
 const key = new PluginKey('testPlugins');

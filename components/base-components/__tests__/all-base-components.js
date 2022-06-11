@@ -18,7 +18,7 @@ import {
   strike,
   text,
   underline,
-} from '../index';
+} from '../src/index';
 
 export function defaultSpecs(opts = {}) {
   return [...coreMarkSpec(opts), ...coreNodeSpec(opts)];

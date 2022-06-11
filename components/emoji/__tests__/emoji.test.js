@@ -8,10 +8,11 @@ import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 import {
   getDefaultMarkdownItTokenizer,
   markdownParser,
-} from '@bangle.dev/markdown/markdown-parser';
-import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
+  markdownSerializer,
+} from '@bangle.dev/markdown';
+
 import emojiParser from 'markdown-it-emoji';
-import { emoji } from '../index';
+import { emoji } from '../src/index';
 
 let getEmoji, testEditor, specRegistry;
 

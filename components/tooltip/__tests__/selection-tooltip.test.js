@@ -8,8 +8,8 @@ import { SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { psx, typeText, renderTestEditor } from '@bangle.dev/test-helpers';
 import { EditorState, PluginKey, TextSelection } from '@bangle.dev/pm';
-import { createTooltipDOM, selectionTooltip } from '../index';
-import { _syncTooltipOnUpdate } from '../selection-tooltip';
+import { createTooltipDOM, selectionTooltip } from '../src/index';
+import { _syncTooltipOnUpdate } from '../src/selection-tooltip';
 
 describe('selection-tooltip', () => {
   let testEditor, tooltipDOMSpec, specRegistry;

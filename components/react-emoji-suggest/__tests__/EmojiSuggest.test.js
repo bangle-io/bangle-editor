@@ -4,7 +4,7 @@
 /** @jsx pjsx */
 import { pjsx } from '@bangle.dev/react/__tests__/helpers/index';
 import { render as _render } from '@testing-library/react';
-import { EmojiSuggestContainer } from '../EmojiSuggest';
+import { EmojiSuggestContainer } from '../src/EmojiSuggest';
 
 describe('EmojiSuggestContainer', () => {
   let view,

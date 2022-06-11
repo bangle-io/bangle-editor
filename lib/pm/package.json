@@ -1,10 +1,18 @@
 {
   "name": "@bangle.dev/pm",
   "version": "0.28.11",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./style.css"
+  },
   "description": "This is bangle.dev specific collection of Prosemirror packages.",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
   "access": "public",
   "typings": "dist/index.d.ts",
   "files": [
@@ -50,9 +58,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.js",
+    "main": "dist/index.cjs",
     "module": "dist/index.js",
     "types": "dist/index.d.ts"
-  },
-  "type": "module"
+  }
 }

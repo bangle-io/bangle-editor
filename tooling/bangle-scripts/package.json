@@ -9,6 +9,7 @@
       "web": "http://github.com/kepta"
     }
   ],
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,9 +18,6 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "private": true,
-  "main": "index.js",
-  "module": "index.js",
   "dependencies": {
     "@bangle.dev/collab-client": "workspace:*",
     "@bangle.dev/collab-server": "workspace:*",

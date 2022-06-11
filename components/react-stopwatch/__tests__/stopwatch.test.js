@@ -5,14 +5,14 @@
 import { SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { sendKeyToPm } from '@bangle.dev/test-helpers';
-import { markdownSerializer } from '@bangle.dev/markdown/markdown-serializer';
+import { markdownSerializer } from '@bangle.dev/markdown';
 import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
 import { act, fireEvent } from '@testing-library/react';
-import { stopwatch } from '../index';
-import { Stopwatch } from '../stopwatch';
+import { stopwatch } from '../src/index';
+import { Stopwatch } from '../src/stopwatch';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), stopwatch.spec({})]);
 const plugins = () => [...defaultPlugins(), stopwatch.plugins({})];
