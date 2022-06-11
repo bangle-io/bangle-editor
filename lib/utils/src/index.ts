@@ -8,3 +8,6 @@ export * from './browser';
 export * from './dom-helpers';
 export * from './mark-input-rule';
 export * from './mark-paste-rule';
+export { debounceFn } from './debounce-fn';
+
+export type { DebouncedFunction } from './debounce-fn';

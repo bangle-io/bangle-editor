@@ -193,7 +193,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/pnpify", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:2.4.0"],\
             ["babel-eslint", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:10.1.0"],\
             ["babel-jest", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:27.5.1"],\
-            ["buildtool-bangle", "https://github.com/kepta/buildtool.git#commit=630698781670172dc717523170d8fb2e789cf426"],\
+            ["buildtool-bangle", "npm:0.0.1"],\
             ["eslint", "npm:7.32.0"],\
             ["eslint-config-react-app", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:6.0.0"],\
             ["eslint-import-resolver-node", "npm:0.3.6"],\
@@ -3014,9 +3014,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
             ["@types/bangle.dev__pm", null],\
-            ["@types/jest", "npm:27.5.2"],\
-            ["debounce-fn", "npm:4.0.0"]\
+            ["@types/jest", "npm:27.5.2"]\
           ],\
           "packagePeers": [\
             "@bangle.dev/pm",\
@@ -3029,8 +3029,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@bangle.dev/disk", "workspace:lib/disk"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
-            ["@types/jest", "npm:27.5.2"],\
-            ["debounce-fn", "npm:4.0.0"]\
+            ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
+            ["@types/jest", "npm:27.5.2"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -6507,7 +6507,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/pnpify", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:2.4.0"],\
             ["babel-eslint", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:10.1.0"],\
             ["babel-jest", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:27.5.1"],\
-            ["buildtool-bangle", "https://github.com/kepta/buildtool.git#commit=630698781670172dc717523170d8fb2e789cf426"],\
+            ["buildtool-bangle", "npm:0.0.1"],\
             ["eslint", "npm:7.32.0"],\
             ["eslint-config-react-app", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:6.0.0"],\
             ["eslint-import-resolver-node", "npm:0.3.6"],\
@@ -6720,15 +6720,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["buildtool-bangle", [\
-        ["https://github.com/kepta/buildtool.git#commit=630698781670172dc717523170d8fb2e789cf426", {\
-          "packageLocation": "./.yarn/cache/buildtool-bangle-https-5e7596c374-1b26b6bd89.zip/node_modules/buildtool-bangle/",\
+        ["npm:0.0.1", {\
+          "packageLocation": "./.yarn/cache/buildtool-bangle-npm-0.0.1-9235108f40-b301259fc0.zip/node_modules/buildtool-bangle/",\
           "packageDependencies": [\
-            ["buildtool-bangle", "https://github.com/kepta/buildtool.git#commit=630698781670172dc717523170d8fb2e789cf426"],\
+            ["buildtool-bangle", "npm:0.0.1"],\
             ["@types/mocha", "npm:9.1.1"],\
             ["acorn", "npm:8.7.1"],\
             ["acorn-walk", "npm:8.2.0"],\
             ["rollup", "npm:2.75.6"],\
-            ["rollup-plugin-dts", "virtual:5e7596c37413731e17ecd9f6d257799e0bf9116940ec112bcd902403eabef6911fc7485265d1a1579c678806bb71006703c2ac632762cad81ca79cc1c1bb2f66#npm:3.0.2"],\
+            ["rollup-plugin-dts", "virtual:9235108f4073b4cfe4544465d99cca4142433a6e211ec7bbb7c5d5b79290c58564290c0e5c65e5bc97746bd3b95177fc009b2abd641233a18acf5478568ef9d9#npm:3.0.2"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "HARD"\
@@ -7645,16 +7645,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/date-fns-npm-2.28.0-c19c5add1b-a0516b2e4f.zip/node_modules/date-fns/",\
           "packageDependencies": [\
             ["date-fns", "npm:2.28.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["debounce-fn", [\
-        ["npm:4.0.0", {\
-          "packageLocation": "./.yarn/cache/debounce-fn-npm-4.0.0-fc4e97bcb1-7bf8d142b4.zip/node_modules/debounce-fn/",\
-          "packageDependencies": [\
-            ["debounce-fn", "npm:4.0.0"],\
-            ["mimic-fn", "npm:3.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11803,13 +11793,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mimic-fn", "npm:2.1.0"]\
           ],\
           "linkType": "HARD"\
-        }],\
-        ["npm:3.1.0", {\
-          "packageLocation": "./.yarn/cache/mimic-fn-npm-3.1.0-12d126ec66-f7b167f911.zip/node_modules/mimic-fn/",\
-          "packageDependencies": [\
-            ["mimic-fn", "npm:3.1.0"]\
-          ],\
-          "linkType": "HARD"\
         }]\
       ]],\
       ["mimic-response", [\
@@ -13909,10 +13892,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:5e7596c37413731e17ecd9f6d257799e0bf9116940ec112bcd902403eabef6911fc7485265d1a1579c678806bb71006703c2ac632762cad81ca79cc1c1bb2f66#npm:3.0.2", {\
-          "packageLocation": "./.yarn/__virtual__/rollup-plugin-dts-virtual-f304abd985/0/cache/rollup-plugin-dts-npm-3.0.2-b244a99ce5-c37acf3744.zip/node_modules/rollup-plugin-dts/",\
+        ["virtual:9235108f4073b4cfe4544465d99cca4142433a6e211ec7bbb7c5d5b79290c58564290c0e5c65e5bc97746bd3b95177fc009b2abd641233a18acf5478568ef9d9#npm:3.0.2", {\
+          "packageLocation": "./.yarn/__virtual__/rollup-plugin-dts-virtual-891bedda11/0/cache/rollup-plugin-dts-npm-3.0.2-b244a99ce5-c37acf3744.zip/node_modules/rollup-plugin-dts/",\
           "packageDependencies": [\
-            ["rollup-plugin-dts", "virtual:5e7596c37413731e17ecd9f6d257799e0bf9116940ec112bcd902403eabef6911fc7485265d1a1579c678806bb71006703c2ac632762cad81ca79cc1c1bb2f66#npm:3.0.2"],\
+            ["rollup-plugin-dts", "virtual:9235108f4073b4cfe4544465d99cca4142433a6e211ec7bbb7c5d5b79290c58564290c0e5c65e5bc97746bd3b95177fc009b2abd641233a18acf5478568ef9d9#npm:3.0.2"],\
             ["@babel/code-frame", "npm:7.16.7"],\
             ["@types/rollup", null],\
             ["@types/typescript", null],\

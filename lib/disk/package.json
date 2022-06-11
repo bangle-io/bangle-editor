@@ -42,8 +42,8 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "@types/jest": "^27.0.4",
-    "debounce-fn": "^4.0.0"
+    "@bangle.dev/utils": "workspace:*",
+    "@types/jest": "^27.0.4"
   },
   "devDependencies": {
     "@bangle.dev/pm": "workspace:*"

@@ -1527,8 +1527,8 @@ __metadata:
   resolution: "@bangle.dev/disk@workspace:lib/disk"
   dependencies:
     "@bangle.dev/pm": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
     "@types/jest": ^27.0.4
-    debounce-fn: ^4.0.0
   peerDependencies:
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -4078,7 +4078,7 @@ __metadata:
     "@yarnpkg/pnpify": ^2.4.0
     babel-eslint: ^10.1.0
     babel-jest: ^27.5.1
-    buildtool-bangle: "kepta/buildtool#commit=630698781670172dc717523170d8fb2e789cf426"
+    buildtool-bangle: 0.0.1
     eslint: ^7.28.0
     eslint-config-react-app: ^6.0.0
     eslint-import-resolver-node: ^0.3.4
@@ -4267,9 +4267,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buildtool-bangle@kepta/buildtool#commit=630698781670172dc717523170d8fb2e789cf426":
-  version: 0.1.2
-  resolution: "buildtool-bangle@https://github.com/kepta/buildtool.git#commit=630698781670172dc717523170d8fb2e789cf426"
+"buildtool-bangle@npm:0.0.1":
+  version: 0.0.1
+  resolution: "buildtool-bangle@npm:0.0.1"
   dependencies:
     "@types/mocha": ^9.1.1
     acorn: ^8.1.0
@@ -4277,7 +4277,7 @@ __metadata:
     rollup: ^2.35.1
     rollup-plugin-dts: ^3.0.0
     typescript: ^4.7.3
-  checksum: 1b26b6bd89e7903d3579bc9524122e9963b0b94902e65ac5dd7ab18579a75cf69714dd8ede4bbf725404be194d4cd69f3297663487fbeb2e120e5c95d9d20d7c
+  checksum: b301259fc0ca9238356c7179791ce274c67e1c970c48480406fea57281bfa7b1e219e773622f6cee7d3bdc22d0121b3f7de12c1beafe2853c1973d19c90265f4
   languageName: node
   linkType: hard
 
@@ -5079,15 +5079,6 @@ __metadata:
   version: 2.28.0
   resolution: "date-fns@npm:2.28.0"
   checksum: a0516b2e4f99b8bffc6cc5193349f185f195398385bdcaf07f17c2c4a24473c99d933eb0018be4142a86a6d46cb0b06be6440ad874f15e795acbedd6fd727a1f
-  languageName: node
-  linkType: hard
-
-"debounce-fn@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "debounce-fn@npm:4.0.0"
-  dependencies:
-    mimic-fn: ^3.0.0
-  checksum: 7bf8d142b46a88453bbd6eda083f303049b4c8554af5114bdadfc2da56031030664360e81211ae08b708775e6904db7e6d72a421c4ff473344f4521c2c5e4a22
   languageName: node
   linkType: hard
 
@@ -8629,13 +8620,6 @@ __metadata:
   version: 2.1.0
   resolution: "mimic-fn@npm:2.1.0"
   checksum: d2421a3444848ce7f84bd49115ddacff29c15745db73f54041edc906c14b131a38d05298dae3081667627a59b2eb1ca4b436ff2e1b80f69679522410418b478a
-  languageName: node
-  linkType: hard
-
-"mimic-fn@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "mimic-fn@npm:3.1.0"
-  checksum: f7b167f9115b8bbdf2c3ee55dce9149d14be9e54b237259c4bc1d8d0512ea60f25a1b323f814eb1fe8f5a541662804bcfcfff3202ca58df143edb986849d58db
   languageName: node
   linkType: hard
 
