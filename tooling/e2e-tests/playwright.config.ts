@@ -22,7 +22,7 @@ const config: PlaywrightTestConfig = {
     // },
   },
   webServer: {
-    command: 'yarn workspace e2e-tests serve-build',
+    command: 'yarn g:serve-e2e-build',
     port: 1234,
     // port: 4000,
     timeout: 120 * 1000,
