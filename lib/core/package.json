@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/core",
-  "version": "0.28.11",
+  "version": "0.29.0-alpha.10",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -12,6 +12,7 @@
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
+  "style": "style.css",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -27,12 +28,10 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "style": "style.css",
   "scripts": {
     "unit-tests": "yarn jest",
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
-    "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
-    "prepack": "yarn compile-ts"
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "peerDependencies": {
     "@bangle.dev/pm": "*"

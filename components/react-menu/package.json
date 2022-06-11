@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/react-menu",
-  "version": "0.28.11",
+  "version": "0.29.0-alpha.10",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -12,6 +12,7 @@
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
+  "style": "style.css",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -26,13 +27,6 @@
   },
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
-  },
-  "style": "style.css",
-  "scripts": {
-    "prepack": "yarn compile-ts",
-    "postpack": "rm -r $INIT_CWD/dist",
-    "compile-ts": "yarn g:tsc --build $INIT_CWD",
-    "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "dependencies": {
     "@bangle.dev/base-components": "workspace:*",

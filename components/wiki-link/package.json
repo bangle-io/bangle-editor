@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/wiki-link",
-  "version": "0.28.11",
+  "version": "0.29.0-alpha.10",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -13,11 +13,8 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./style.css": "./style.css"
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs"
   },
   "license": "MIT",
   "repository": {
@@ -29,8 +26,7 @@
   },
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
-    "watch-ts": "yarn g:tsc -p $INIT_CWD -w",
-    "prepack": "yarn compile-ts"
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
