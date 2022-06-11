@@ -9,6 +9,7 @@ export function setupReactEditor({
   plugins = () => defaultPlugins,
   renderNodeViews,
   id = 'pm-root',
+  children,
 } = {}) {
   const element = document.createElement('div');
   window.document.body.appendChild(element);
@@ -18,12 +19,15 @@ export function setupReactEditor({
   }
 
   reactDOM.render(
-    <App opts={{ specRegistry, plugins, renderNodeViews, id }} />,
+    <App opts={{ specRegistry, plugins, renderNodeViews, id }}>{children}</App>,
     element,
   );
 }
 
-function App({ opts: { specRegistry, plugins, renderNodeViews, id } }) {
+function App({
+  children,
+  opts: { specRegistry, plugins, renderNodeViews, id },
+}) {
   const onEditorReady = (_editor) => {
     window.editor = _editor;
   };
@@ -44,6 +48,8 @@ function App({ opts: { specRegistry, plugins, renderNodeViews, id } }) {
       state={editorState}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
-    />
+    >
+      {children}
+    </BangleEditor>
   );
 }

@@ -67,7 +67,7 @@ function pluginsFactory(opts = {}): RawPlugins {
 }
 
 export class Stopwatch extends React.Component<NodeViewProps> {
-  interval: number | null = null;
+  interval: ReturnType<typeof setInterval> | null = null;
   state = {
     counter: 0,
   };

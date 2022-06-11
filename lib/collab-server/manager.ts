@@ -35,7 +35,7 @@ export class Manager {
 
   routes;
   disk;
-  cleanUpInterval?: number = undefined;
+  cleanUpInterval?: ReturnType<typeof setInterval> = undefined;
   collectUsersTimeout;
   interceptRequests?: (path: string, payload: any) => void;
   managerId = uuid();
