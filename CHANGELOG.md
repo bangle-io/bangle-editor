@@ -1,5 +1,11 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+- Breaking: `bangle.dev` now uses typescript version of Prosemirror. This might cause some type errors.
+
+- If you notice errors like `Uncaught Error: Invalid plugin`, please try to make sure you have only 1 version of `prosemirror-view, `prosemirror-state, `prosemirror-transform` in your `node_modules`. You can delete your lock file and re-run `yarn install` to resolve the issue.
+
 ## 0.28.10
 
 
