@@ -25,14 +25,14 @@ async function getPackages({ filter = 'all' } = {}) {
 
     return true;
   });
-  console.log(results);
+
   return results;
 }
 
 // cb - ([packagePath, packageObj]) => packageObj
 async function mapPackages(cb, { filter } = {}) {
-  const result = (await getPackages({ filter })).map((r) => {
-    return [r[0], cb(r)];
+  const result = (await getPackages({ filter })).map(([path, obj]) => {
+    return [path, cb([path, obj])];
   });
 
   await Promise.all(
@@ -45,3 +45,50 @@ async function mapPackages(cb, { filter } = {}) {
     }),
   );
 }
+
+export function filesInPath(path) {
+  const filePaths = globby
+    .sync(`${path}/**`)
+    .filter(
+      (r) =>
+        r.endsWith('.json') ||
+        r.endsWith('.js') ||
+        r.endsWith('.ts') ||
+        r.endsWith('.tsx') ||
+        r.endsWith('.jsx') ||
+        r.endsWith('.snap') ||
+        r.endsWith('.css'),
+    );
+
+  return filePaths;
+}
+
+// mapPackages(
+//   ([packagePath, packageJson]) => {
+//     let path = packagePath.split('/package.json').join('');
+
+//     const files = filesInPath(path);
+
+//     if (files.some((f) => f.endsWith('style.css'))) {
+//       console.log(`${packagePath} has style.css`);
+//       packageJson.style = 'style.css';
+//       packageJson.exports = {
+//         '.': {
+//           import: './dist/index.js',
+//           require: './dist/index.cjs',
+//         },
+//         './style.css': './style.css',
+//       };
+//     } else {
+//       delete packageJson.style;
+//       packageJson.exports = {
+//         import: './dist/index.js',
+//         require: './dist/index.cjs',
+//       };
+//     }
+//     return packageJson;
+//   },
+//   {
+//     filter: 'public',
+//   },
+// );
