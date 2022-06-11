@@ -51,7 +51,7 @@ abstract class BaseNodeView {
   renderHandlers: RenderHandlers;
   opts: { selectionSensitive: boolean };
 
-  getAttrs() {
+  getAttrs(): Node['attrs'] {
     return this._node.attrs;
   }
 

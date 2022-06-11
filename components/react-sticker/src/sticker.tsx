@@ -5,7 +5,7 @@ import {
   NodeView,
   NodeViewProps,
 } from '@bangle.dev/core';
-import type { Command, Schema } from '@bangle.dev/pm';
+import type { Command, InputRule, Plugin, Schema } from '@bangle.dev/pm';
 import { keymap, Node } from '@bangle.dev/pm';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -53,7 +53,7 @@ function specFactory() {
 }
 
 function pluginsFactory() {
-  return ({ schema }: { schema: Schema }) => [
+  return ({ schema }: { schema: Schema }): Array<InputRule | Plugin> => [
     keymap({
       'Ctrl-B': randomSticker(),
     }),
