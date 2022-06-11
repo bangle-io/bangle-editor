@@ -3016,7 +3016,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@types/bangle.dev__pm", null],\
             ["@types/jest", "npm:27.5.2"],\
-            ["debounce-fn", "npm:5.1.0"]\
+            ["debounce-fn", "npm:4.0.0"]\
           ],\
           "packagePeers": [\
             "@bangle.dev/pm",\
@@ -3030,7 +3030,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/disk", "workspace:lib/disk"],\
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@types/jest", "npm:27.5.2"],\
-            ["debounce-fn", "npm:5.1.0"]\
+            ["debounce-fn", "npm:4.0.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -7650,11 +7650,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["debounce-fn", [\
-        ["npm:5.1.0", {\
-          "packageLocation": "./.yarn/cache/debounce-fn-npm-5.1.0-997719b0cc-18987236f3.zip/node_modules/debounce-fn/",\
+        ["npm:4.0.0", {\
+          "packageLocation": "./.yarn/cache/debounce-fn-npm-4.0.0-fc4e97bcb1-7bf8d142b4.zip/node_modules/debounce-fn/",\
           "packageDependencies": [\
-            ["debounce-fn", "npm:5.1.0"],\
-            ["mimic-fn", "npm:4.0.0"]\
+            ["debounce-fn", "npm:4.0.0"],\
+            ["mimic-fn", "npm:3.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11804,10 +11804,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:4.0.0", {\
-          "packageLocation": "./.yarn/cache/mimic-fn-npm-4.0.0-feaeda79f7-995dcece15.zip/node_modules/mimic-fn/",\
+        ["npm:3.1.0", {\
+          "packageLocation": "./.yarn/cache/mimic-fn-npm-3.1.0-12d126ec66-f7b167f911.zip/node_modules/mimic-fn/",\
           "packageDependencies": [\
-            ["mimic-fn", "npm:4.0.0"]\
+            ["mimic-fn", "npm:3.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
