@@ -72,7 +72,6 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@bangle.dev/jest-utils": "workspace:*",
-    "@marijn/buildtool": "^0.1.2",
     "@types/jest": "^27.0.4",
     "@types/node": "^17.0.41",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
@@ -80,6 +79,7 @@
     "@yarnpkg/pnpify": "^2.4.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
+    "buildtool-bangle": "kepta/buildtool",
     "eslint": "^7.28.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-import-resolver-node": "^0.3.4",
@@ -99,8 +99,6 @@
   },
   "packageManager": "yarn@3.2.1",
   "resolutions": {
-    "orderedmap": "^1.1.8",
-    "prosemirror-tables": "zunsthy/prosemirror-tables#bugfix/use-types",
-    "@marijn/buildtool": "portal:../buildtool"
+    "orderedmap": "^1.1.8"
   }
 }

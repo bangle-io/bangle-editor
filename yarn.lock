@@ -2224,19 +2224,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marijn/buildtool@portal:../buildtool::locator=bangle.dev%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@marijn/buildtool@portal:../buildtool::locator=bangle.dev%40workspace%3A."
-  dependencies:
-    "@types/mocha": ^9.1.1
-    acorn: ^8.1.0
-    acorn-walk: ^8.0.2
-    rollup: ^2.35.1
-    rollup-plugin-dts: ^3.0.0
-    typescript: ^4.7.3
-  languageName: node
-  linkType: soft
-
 "@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3":
   version: 2.1.8-no-fsevents.3
   resolution: "@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3"
@@ -3971,7 +3958,6 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@bangle.dev/jest-utils": "workspace:*"
-    "@marijn/buildtool": ^0.1.2
     "@types/jest": ^27.0.4
     "@types/node": ^17.0.41
     "@typescript-eslint/eslint-plugin": ^4.26.1
@@ -3979,6 +3965,7 @@ __metadata:
     "@yarnpkg/pnpify": ^2.4.0
     babel-eslint: ^10.1.0
     babel-jest: ^27.5.1
+    buildtool-bangle: kepta/buildtool
     eslint: ^7.28.0
     eslint-config-react-app: ^6.0.0
     eslint-import-resolver-node: ^0.3.4
@@ -4155,6 +4142,20 @@ __metadata:
     base64-js: ^1.0.2
     ieee754: ^1.1.4
   checksum: d659494c5032dd39d03d2912e64179cc44c6340e7e9d1f68d3840e7ab4559989fbce92b4950174593c38d05268224235ba404f0878775cab2a616b6dcad9c23e
+  languageName: node
+  linkType: hard
+
+buildtool-bangle@kepta/buildtool:
+  version: 0.1.2
+  resolution: "buildtool-bangle@https://github.com/kepta/buildtool.git#commit=630698781670172dc717523170d8fb2e789cf426"
+  dependencies:
+    "@types/mocha": ^9.1.1
+    acorn: ^8.1.0
+    acorn-walk: ^8.0.2
+    rollup: ^2.35.1
+    rollup-plugin-dts: ^3.0.0
+    typescript: ^4.7.3
+  checksum: 1b26b6bd89e7903d3579bc9524122e9963b0b94902e65ac5dd7ab18579a75cf69714dd8ede4bbf725404be194d4cd69f3297663487fbeb2e120e5c95d9d20d7c
   languageName: node
   linkType: hard
 
@@ -9477,7 +9478,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prosemirror-keymap@npm:^1.0.0, prosemirror-keymap@npm:^1.2.0":
+"prosemirror-keymap@npm:^1.0.0, prosemirror-keymap@npm:^1.1.2, prosemirror-keymap@npm:^1.2.0":
   version: 1.2.0
   resolution: "prosemirror-keymap@npm:1.2.0"
   dependencies:
@@ -9497,7 +9498,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prosemirror-model@npm:*, prosemirror-model@npm:^1.0.0, prosemirror-model@npm:^1.16.0, prosemirror-model@npm:^1.17.0, prosemirror-model@npm:^1.18.0":
+"prosemirror-model@npm:*, prosemirror-model@npm:^1.0.0, prosemirror-model@npm:^1.16.0, prosemirror-model@npm:^1.18.0, prosemirror-model@npm:^1.8.1":
   version: 1.18.0
   resolution: "prosemirror-model@npm:1.18.0"
   dependencies:
@@ -9517,7 +9518,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prosemirror-state@npm:^1.0.0, prosemirror-state@npm:^1.2.2, prosemirror-state@npm:^1.4.0":
+"prosemirror-state@npm:^1.0.0, prosemirror-state@npm:^1.2.2, prosemirror-state@npm:^1.3.1, prosemirror-state@npm:^1.4.0":
   version: 1.4.0
   resolution: "prosemirror-state@npm:1.4.0"
   dependencies:
@@ -9527,20 +9528,20 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prosemirror-tables@zunsthy/prosemirror-tables#bugfix/use-types":
+"prosemirror-tables@npm:^1.1.1":
   version: 1.1.1
-  resolution: "prosemirror-tables@https://github.com/zunsthy/prosemirror-tables.git#commit=978998da9cdf0a773dc5c12789d8ebb476120c39"
+  resolution: "prosemirror-tables@npm:1.1.1"
   dependencies:
-    prosemirror-keymap: ^1.2.0
-    prosemirror-model: ^1.17.0
-    prosemirror-state: ^1.4.0
-    prosemirror-transform: ^1.5.0
-    prosemirror-view: ^1.25.0
-  checksum: 6aba65e930762a9a45b1a1662b1fb46abfb260a50d8438e1c653c7ab69cccae5be4898a0a322051baf0d88af2a7caca4898ddcbc5df12a75f6a0a535c78dd986
+    prosemirror-keymap: ^1.1.2
+    prosemirror-model: ^1.8.1
+    prosemirror-state: ^1.3.1
+    prosemirror-transform: ^1.2.1
+    prosemirror-view: ^1.13.3
+  checksum: 26033de8776db5aa6f806ee151344df7a79bdea423bf6a9733be16df15206abcac72899af170529eb884fb4e10ff8248dbb6a2252cf47dd073df673a20a31ece
   languageName: node
   linkType: hard
 
-"prosemirror-transform@npm:*, prosemirror-transform@npm:^1.0.0, prosemirror-transform@npm:^1.1.0, prosemirror-transform@npm:^1.5.0, prosemirror-transform@npm:^1.6.0":
+"prosemirror-transform@npm:*, prosemirror-transform@npm:^1.0.0, prosemirror-transform@npm:^1.1.0, prosemirror-transform@npm:^1.2.1, prosemirror-transform@npm:^1.6.0":
   version: 1.6.0
   resolution: "prosemirror-transform@npm:1.6.0"
   dependencies:
@@ -9559,7 +9560,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prosemirror-view@npm:*, prosemirror-view@npm:^1.0.0, prosemirror-view@npm:^1.1.0, prosemirror-view@npm:^1.25.0, prosemirror-view@npm:^1.26.0":
+"prosemirror-view@npm:*, prosemirror-view@npm:^1.0.0, prosemirror-view@npm:^1.1.0, prosemirror-view@npm:^1.13.3, prosemirror-view@npm:^1.26.0":
   version: 1.26.0
   resolution: "prosemirror-view@npm:1.26.0"
   dependencies:

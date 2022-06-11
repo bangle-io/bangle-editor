@@ -58,12 +58,12 @@ async function build() {
   const list = (await readPackages()).filter((r) => {
     return !r.packageJSON.private;
   });
-  // await require('@marijn/buildtool').watch(
+  // await require('buildtool-bangle').watch(
   //   libs.map(mainFile),
   //   [],
   //   buildOptions,
   // );
-  await require('@marijn/buildtool').build(
+  await require('buildtool-bangle').build(
     list.map((obj) => {
       console.log('Working on ', obj.location);
       return mainFile(obj.location);
