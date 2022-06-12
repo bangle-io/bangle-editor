@@ -28,10 +28,10 @@ type HandleResponseError = {
 };
 
 export class Manager {
-  instanceCount = 0;
-  maxCount = 20;
-  destroyed = false;
-  instances: { [key: string]: Instance } = {};
+  public instanceCount = 0;
+  public destroyed = false;
+  private maxCount = 20;
+  private instances: Record<string, Instance> = {};
   getDocumentQueue = serialExecuteQueue();
   routes;
   disk;
@@ -40,7 +40,7 @@ export class Manager {
   interceptRequests?: (path: string, payload: any) => void;
   managerId = uuid();
   constructor(
-    private schema: Schema,
+    private _schema: Schema,
     {
       disk,
       // time to wait before aborting the users request
@@ -65,7 +65,7 @@ export class Manager {
     this.routes = new CollabRequestHandler(
       this._getInstanceQueued,
       userWaitTimeout,
-      schema,
+      _schema,
       this.managerId,
     );
 
@@ -87,6 +87,11 @@ export class Manager {
 
     clearInterval(this.cleanUpInterval);
     this.cleanUpInterval = undefined;
+  }
+
+  public getDocVersion(docName: string): number | undefined {
+    const instance = this.instances['docName'];
+    return instance?.version;
   }
 
   public async handleRequest(
@@ -180,7 +185,6 @@ export class Manager {
   private async _newInstance(docName: string, doc?: Node, version?: number) {
     log('creating new instance', docName, version);
     const { instances } = this;
-    let created;
     if (!doc) {
       doc = await this.disk.load(docName);
     }
@@ -216,12 +220,10 @@ export class Manager {
 
     return (instances[docName] = new Instance(
       docName,
-      this.schema,
       doc,
-      scheduleSave,
-      created,
-      this.collectUsersTimeout,
       version,
+      scheduleSave,
+      this.collectUsersTimeout,
     ));
   }
 

@@ -16,10 +16,13 @@ const LOG = false;
 const log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
 export class CollabRequestHandler {
   constructor(
-    private getInstance: (docName: string, userId: string) => Promise<Instance>,
-    private userWaitTimeout: number,
-    private schema: Schema,
-    private managerId: string,
+    private _getInstance: (
+      docName: string,
+      userId: string,
+    ) => Promise<Instance>,
+    private _userWaitTimeout: number,
+    private _schema: Schema,
+    private _managerId: string,
   ) {}
 
   async getDocument({
@@ -27,12 +30,12 @@ export class CollabRequestHandler {
     userId,
   }: GetDocumentRequestParam): Promise<GetDocumentResponse> {
     log('get_document', { docName, userId });
-    const inst = await this.getInstance(docName, userId);
+    const inst = await this._getInstance(docName, userId);
     return {
       doc: inst.doc.toJSON(),
       users: inst.userCount,
       version: inst.version,
-      managerId: this.managerId,
+      managerId: this._managerId,
     };
   }
 
@@ -42,14 +45,14 @@ export class CollabRequestHandler {
     userId,
     managerId,
   }: PullEventRequestParam): Promise<PullEventResponse> {
-    log('userWaitTimeout', this.userWaitTimeout);
-    this.validateManagerId(managerId);
+    log('userWaitTimeout', this._userWaitTimeout);
+    this._validateManagerId(managerId);
     // An endpoint for a collaborative document instance which
     // returns all events between a given version and the server's
     // current version of the document.
     version = nonNegInteger(version);
 
-    let instance = await this.getInstance(docName, userId);
+    let instance = await this._getInstance(docName, userId);
 
     if (instance == null) {
       throw new Error('Instance not found');
@@ -111,7 +114,7 @@ export class CollabRequestHandler {
           abort();
         }
         resolve({});
-      }, this.userWaitTimeout);
+      }, this._userWaitTimeout);
 
       (async () => {
         try {
@@ -141,11 +144,11 @@ export class CollabRequestHandler {
     userId,
     managerId,
   }: PushEventsRequestParam): Promise<PushEventsResponse> {
-    this.validateManagerId(managerId);
+    this._validateManagerId(managerId);
 
     version = nonNegInteger(version);
-    const parsedSteps = steps.map((s) => Step.fromJSON(this.schema, s));
-    const instance = await this.getInstance(docName, userId);
+    const parsedSteps = steps.map((s) => Step.fromJSON(this._schema, s));
+    const instance = await this._getInstance(docName, userId);
     if (!instance) {
       throw new Error('Instance not found');
     }
@@ -162,10 +165,10 @@ export class CollabRequestHandler {
     }
   }
 
-  private validateManagerId(managerId: string) {
+  private _validateManagerId(managerId: string) {
     // helpful when a new manager has spawned
     // this is used to signal the client to reset its state
-    if (this.managerId !== managerId) {
+    if (this._managerId !== managerId) {
       throw new CollabError(410, `Incorrect manager id ` + managerId);
     }
   }
