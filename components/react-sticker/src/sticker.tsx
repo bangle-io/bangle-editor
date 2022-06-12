@@ -10,6 +10,7 @@ import {
 } from '@bangle.dev/core';
 import type { Command, InputRule, Plugin, Schema } from '@bangle.dev/pm';
 import { keymap, Node } from '@bangle.dev/pm';
+import { getNodeType } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -82,7 +83,7 @@ export const stickerNames = [
 export function randomSticker(): Command {
   return (state, dispatch) =>
     insertSticker(
-      stickerNames[Math.floor(Math.random() * stickerNames.length)],
+      stickerNames[Math.floor(Math.random() * stickerNames.length)]!,
     )(state, dispatch);
 }
 

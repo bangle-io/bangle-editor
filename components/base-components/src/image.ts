@@ -11,9 +11,9 @@ import {
   Plugin,
   PluginKey,
 } from '@bangle.dev/pm';
-import { safeInsert } from '@bangle.dev/utils';
+import { getNodeType, safeInsert } from '@bangle.dev/utils';
 
-import { getNodeType, quote } from './helpers';
+import { quote } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

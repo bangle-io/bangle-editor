@@ -23,14 +23,14 @@ if (typeof navigator !== 'undefined' && typeof document !== 'undefined') {
     ? // @ts-ignore TS doesn't understand browser quirks
       document.documentMode || 6
     : ie11up
-    ? +ie11up[1]
+    ? +ie11up[1]!
     : ieEdge
-    ? +ieEdge[1]
+    ? +ieEdge[1]!
     : null;
   browser.gecko = !ie && /gecko\/\d/i.test(navigator.userAgent);
   browser.chrome = !ie && /Chrome\//.test(navigator.userAgent);
   browser.chrome_version = parseInt(
-    (navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1],
+    (navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1] || '0',
     10,
   );
   browser.android = /Android \d/.test(navigator.userAgent);

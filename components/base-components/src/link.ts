@@ -274,7 +274,7 @@ function setLink(from: number, to: number, href?: string) {
   return filter(
     (state) => isTextAtPos(from)(state),
     (state, dispatch) => {
-      const linkMark = state.schema.marks.link;
+      const linkMark = getTypeFromSchema(state.schema);
       let tr = state.tr.removeMark(from, to, linkMark);
       if (href) {
         const mark = getTypeFromSchema(state.schema).create({
@@ -381,7 +381,7 @@ export function queryIsLinkAllowedInRange(from: number, to: number) {
   return (state: EditorState) => {
     const $from = state.doc.resolve(from);
     const $to = state.doc.resolve(to);
-    const link = state.schema.marks.link;
+    const link = getTypeFromSchema(state.schema);
     if ($from.parent === $to.parent && $from.parent.isTextblock) {
       return $from.parent.type.allowsMarkType(link);
     }

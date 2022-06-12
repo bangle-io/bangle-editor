@@ -1,15 +1,11 @@
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import { DOMOutputSpec, InputRule, Schema } from '@bangle.dev/pm';
-import { safeInsert } from '@bangle.dev/utils';
-
-import { getParaNodeType } from './helpers';
+import { getNodeType, getParaNodeType, safeInsert } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 
 const name = 'horizontalRule';
-
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 function specFactory(): RawSpecs {
   return {
@@ -32,7 +28,7 @@ function specFactory(): RawSpecs {
 
 function pluginsFactory({ markdownShortcut = true } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     return [
       markdownShortcut &&

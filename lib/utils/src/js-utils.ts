@@ -64,7 +64,7 @@ export function matchAllPlus(regexp: RegExp, str: string): MatchType[] {
   let match: RegExpExecArray | null;
   while ((match = regexp.exec(str))) {
     const curStart = match.index;
-    const curEnd = curStart + match[0].length;
+    const curEnd = curStart + match[0]!.length;
     if (prevElementEnd !== curStart) {
       result.push(new MatchType(prevElementEnd, curStart, false, str));
     }
@@ -76,7 +76,7 @@ export function matchAllPlus(regexp: RegExp, str: string): MatchType[] {
   }
 
   const lastItemEnd =
-    result[result.length - 1] && result[result.length - 1].end;
+    result[result.length - 1] && result[result.length - 1]!.end;
 
   if (lastItemEnd && lastItemEnd !== str.length) {
     result.push(new MatchType(lastItemEnd, str.length, false, str));

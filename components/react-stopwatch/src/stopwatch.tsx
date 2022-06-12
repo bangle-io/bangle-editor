@@ -9,6 +9,7 @@ import {
 } from '@bangle.dev/core';
 import type { Command } from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
+import { getNodeType } from '@bangle.dev/utils';
 
 const LOG = false;
 
@@ -184,7 +185,7 @@ function formatTime(secs: string) {
 
 export function insertStopwatch(): Command {
   return function (state, dispatch) {
-    let stopwatchType = state.schema.nodes[name];
+    let stopwatchType = getNodeType(state, name);
     let { $from } = state.selection,
       index = $from.index();
     if (!$from.parent.canReplaceWith(index, index, stopwatchType)) {
