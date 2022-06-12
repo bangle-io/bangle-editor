@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.29.0
 
 - Breaking: `bangle.dev` now uses typescript version of Prosemirror. This might cause some type errors.
 
