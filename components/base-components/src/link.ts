@@ -13,6 +13,7 @@ import {
   Schema,
 } from '@bangle.dev/pm';
 import {
+  assertNotUndefined,
   filter,
   getMarkAttrs,
   mapSlice,
@@ -38,7 +39,11 @@ let log = LOG ? console.log.bind(console, 'components/link') : () => {};
 
 const name = 'link';
 
-const getTypeFromSchema = (schema: Schema) => schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => {
+  const markType = schema.marks[name];
+  assertNotUndefined(markType, `markType ${name} not found`);
+  return markType;
+};
 
 function specFactory({ openOnClick = false } = {}): RawSpecs {
   return {
@@ -118,7 +123,7 @@ function pluginsFactory(): RawPlugins {
           props: {
             handleClick: (view, _pos, event) => {
               const { schema } = view.state;
-              const attrs = getMarkAttrs(view.state, schema.marks.link);
+              const attrs = getMarkAttrs(view.state, getTypeFromSchema(schema));
 
               if (attrs.href && event.target instanceof HTMLAnchorElement) {
                 event.stopPropagation();
@@ -169,7 +174,7 @@ function autoLinkInputRule(type: MarkType) {
     const tr = state.tr;
     tr.addMark(
       // Ignore the leading space, if any
-      leadingSpace.length > 0 ? start + 1 : start,
+      leadingSpace && leadingSpace.length > 0 ? start + 1 : start,
       end,
       type.create({ href: href }),
     );
@@ -272,7 +277,7 @@ function setLink(from: number, to: number, href?: string) {
       const linkMark = state.schema.marks.link;
       let tr = state.tr.removeMark(from, to, linkMark);
       if (href) {
-        const mark = state.schema.marks.link.create({
+        const mark = getTypeFromSchema(state.schema).create({
           href: href,
         });
         tr.addMark(from, to, mark);
@@ -308,7 +313,7 @@ export function createLink(href: string) {
       let tr = state.tr.removeMark(from, to, linkMark);
 
       if (href.trim()) {
-        const mark = state.schema.marks.link.create({
+        const mark = getTypeFromSchema(state.schema).create({
           href: href,
         });
         tr.addMark(from, to, mark);
@@ -359,7 +364,7 @@ export function queryLinkAttrs() {
       return;
     }
 
-    const type = state.schema.marks.link;
+    const type = getTypeFromSchema(state.schema);
 
     const mark = type.isInSet(nodeAfter.marks || []);
 
@@ -385,7 +390,9 @@ export function queryIsLinkAllowedInRange(from: number, to: number) {
 
 export function queryIsLinkActive() {
   return (state: EditorState) =>
-    !!state.doc.type.schema.marks.link.isInSet(state.selection.$from.marks());
+    Boolean(
+      getTypeFromSchema(state.schema).isInSet(state.selection.$from.marks()),
+    );
 }
 
 export function queryIsSelectionAroundLink() {
@@ -397,7 +404,7 @@ export function queryIsSelectionAroundLink() {
       !!node &&
       $from.textOffset === 0 &&
       $to.pos - $from.pos === node.nodeSize &&
-      !!state.doc.type.schema.marks.link.isInSet(node.marks)
+      Boolean(getTypeFromSchema(state.schema).isInSet(node.marks))
     );
   };
 }

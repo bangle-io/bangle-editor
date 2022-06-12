@@ -23,6 +23,8 @@ import {
   insertEmpty,
 } from '@bangle.dev/utils';
 
+import { getNodeType, getParaNodeType } from './helpers';
+
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {
@@ -40,7 +42,6 @@ export const defaultKeys = {
 };
 
 const name = 'blockquote';
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 function specFactory(): RawSpecs {
   return {
@@ -74,7 +75,7 @@ function pluginsFactory({
   keybindings = defaultKeys,
 } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
     return [
       markdownShortcut && wrappingInputRule(/^\s*>\s$/, type),
       keybindings &&
@@ -97,7 +98,7 @@ function pluginsFactory({
 
 export function queryIsBlockquoteActive() {
   return (state: EditorState) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getNodeType(state, name);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }
@@ -106,7 +107,8 @@ export function wrapInBlockquote() {
   return filter(
     (state) => !queryIsBlockquoteActive()(state),
     (state, dispatch, _view) => {
-      const type = getTypeFromSchema(state.schema);
+      const type = getNodeType(state, name);
+
       return wrapIn(type)(state, dispatch);
     },
   );
@@ -115,19 +117,25 @@ export function wrapInBlockquote() {
 export function insertEmptyParaAbove(): Command {
   const isInBlockquote = queryIsBlockquoteActive();
   return (state, dispatch, view) => {
-    return filter(
-      isInBlockquote,
-      insertEmpty(state.schema.nodes.paragraph, 'above', true),
-    )(state, dispatch, view);
+    const para = getParaNodeType(state);
+
+    return filter(isInBlockquote, insertEmpty(para, 'above', true))(
+      state,
+      dispatch,
+      view,
+    );
   };
 }
 
 export function insertEmptyParaBelow(): Command {
   const isInBlockquote = queryIsBlockquoteActive();
   return (state, dispatch, view) => {
-    return filter(
-      isInBlockquote,
-      insertEmpty(state.schema.nodes.paragraph, 'below', true),
-    )(state, dispatch, view);
+    const para = getParaNodeType(state);
+
+    return filter(isInBlockquote, insertEmpty(para, 'below', true))(
+      state,
+      dispatch,
+      view,
+    );
   };
 }

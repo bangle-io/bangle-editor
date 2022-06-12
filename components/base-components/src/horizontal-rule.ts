@@ -2,6 +2,8 @@ import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import { DOMOutputSpec, InputRule, Schema } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
 
+import { getParaNodeType } from './helpers';
+
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 
@@ -62,7 +64,7 @@ function pluginsFactory({ markdownShortcut = true } = {}): RawPlugins {
             }
             return insertParaAfter
               ? safeInsert(
-                  state.schema.nodes.paragraph.createChecked(),
+                  getParaNodeType(state).createChecked(),
                   tr.mapping.map($para.after()),
                 )(tr)
               : tr;

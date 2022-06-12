@@ -14,11 +14,9 @@ import {
 import {
   assertNotUndefined,
   createObject,
-  createObject,
   filter,
   findFirstMarkPosition,
   isChromeWithSelectionBug,
-  isMarkActiveInSelection,
   safeInsert,
 } from '@bangle.dev/utils';
 

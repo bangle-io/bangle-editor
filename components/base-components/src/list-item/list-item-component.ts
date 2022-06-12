@@ -25,6 +25,7 @@ import {
   insertEmpty,
 } from '@bangle.dev/utils';
 
+import { getNodeType } from '../helpers';
 import {
   backspaceKeyCommand,
   enterKeyCommand,
@@ -59,12 +60,13 @@ export const defaultKeys = {
 };
 
 const name = 'listItem';
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
+
 const isValidList = (state: EditorState) => {
-  const type = getTypeFromSchema(state.schema);
+  const type = getNodeType(state, name);
+
   return parentHasDirectParentOfType(type, [
-    state.schema.nodes['bulletList'],
-    state.schema.nodes['orderedList'],
+    getNodeType(state, 'bulletList'),
+    getNodeType(state, 'orderedList'),
   ]);
 };
 
@@ -129,14 +131,14 @@ function pluginsFactory({
   nodeView = true,
 } = {}): RawPlugins {
   return ({ schema }: { schema: Schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     return [
       keybindings &&
         keymap({
           [keybindings.toggleDone]: filter(
             isValidList,
-            updateNodeAttrs(schema.nodes['listItem'], (attrs) => ({
+            updateNodeAttrs(getNodeType(schema, 'listItem'), (attrs) => ({
               ...attrs,
               todoChecked:
                 attrs.todoChecked == null ? false : !attrs.todoChecked,
@@ -167,14 +169,16 @@ function pluginsFactory({
 
 export function indentListItem(): Command {
   return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getNodeType(state, name);
+
     return indentList(type)(state, dispatch);
   };
 }
 
 export function outdentListItem(): Command {
   return (state, dispatch, view) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getNodeType(state, name);
+
     return outdentList(type)(state, dispatch, view);
   };
 }
@@ -185,12 +189,11 @@ const isSelectionInsideTodo = (state: EditorState) => {
 
 function moveListItem(dir: MoveDirection): Command {
   return (state, dispatch, view) => {
-    const { schema } = state;
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(state, name);
 
     const isBulletList = parentHasDirectParentOfType(type, [
-      schema.nodes['bulletList'],
-      schema.nodes['orderedList'],
+      getNodeType(state, 'bulletList'),
+      getNodeType(state, 'orderedList'),
     ]);
 
     const move = (dir: MoveDirection) =>
@@ -232,7 +235,8 @@ export function moveListItemDown() {
 
 export function insertEmptySiblingList(isAbove = true): Command {
   return (state, dispatch, view) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getNodeType(state, name);
+
     return chainCommands(
       filter(
         isSelectionInsideTodo,

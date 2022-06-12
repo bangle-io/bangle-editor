@@ -1,5 +1,7 @@
 import Token from 'markdown-it/lib/token';
 
+import { assertNotUndefined } from '@bangle.dev/utils';
+
 export function todoListMarkdownItPlugin(
   md: any,
   options: {
@@ -26,7 +28,7 @@ export function todoListMarkdownItPlugin(
   });
 
   function processToken(tokens: Token[], index: number) {
-    if (tokens[index].type !== 'bullet_list_open') {
+    if (tokens[index]?.type !== 'bullet_list_open') {
       return;
     }
     const children = getChildren(tokens, index);
@@ -50,8 +52,8 @@ export function todoListMarkdownItPlugin(
       throw new Error('Must have a closing token');
     }
 
-    tokens[index].type = todoListOpenType;
-    tokens[closingToken].type = todoListCloseType;
+    tokens[index]!.type = todoListOpenType;
+    tokens[closingToken]!.type = todoListCloseType;
 
     children.forEach(([todoItem]) => {
       if (todoItem.type === 'list_item_close') {
@@ -68,11 +70,18 @@ export function todoListMarkdownItPlugin(
         // we add a +2 since the check works on the inline para node
         const inlineToken = tokens[todoItemIndex + 2];
 
+        assertNotUndefined(inlineToken, 'inlineToken cannot be undefined');
+
         if (inlineToken.children == null) {
           inlineToken.children = [new Token('text', '', 0)];
         }
 
         const inlineTokenChild = inlineToken.children[0];
+
+        assertNotUndefined(
+          inlineTokenChild,
+          'inlineTokenChild cannot be undefined',
+        );
 
         let isDone = null;
 
@@ -105,16 +114,16 @@ export function todoListMarkdownItPlugin(
   }
 
   function findMatchingCloseToken(tokens: Token[], position: number) {
-    const type = tokens[position].type;
+    const type = tokens[position]?.type || '';
     if (!type.endsWith('_open')) {
       throw new Error('expect type to be _open');
     }
 
     const endType = type.split('_open').join('') + '_close';
 
-    var targetLevel = tokens[position].level;
+    var targetLevel = tokens[position]?.level;
     for (var i = position + 1; i < tokens.length; i++) {
-      if (tokens[i].level === targetLevel && tokens[i].type === endType) {
+      if (tokens[i]!.level === targetLevel && tokens[i]!.type === endType) {
         return i;
       }
     }
@@ -124,6 +133,8 @@ export function todoListMarkdownItPlugin(
   // returns children of same level
   function getChildren(tokens: Token[], position: number) {
     const parentOpen = tokens[position];
+    assertNotUndefined(parentOpen, 'parentOpen cannot be undefined');
+
     if (!parentOpen.type.endsWith('_open')) {
       throw new Error('Can only work with _open types');
     }
@@ -131,7 +142,7 @@ export function todoListMarkdownItPlugin(
     const result: Array<[Token, number]> = [];
 
     for (let i = position + 1; i < tokens.length; i++) {
-      const current = tokens[i];
+      const current = tokens[i]!;
       if (current.level < parentOpen.level) {
         break;
       }
@@ -150,7 +161,7 @@ export function todoListMarkdownItPlugin(
     return strStartsWithTodoMarkdown(str) ? str.slice(4) : str;
   }
 
-  function strStartsWithTodoMarkdown(str: string) {
+  function strStartsWithTodoMarkdown(str?: string) {
     return str
       ? str.startsWith('[ ] ') ||
           str.startsWith('[x] ') ||
@@ -158,20 +169,20 @@ export function todoListMarkdownItPlugin(
       : false;
   }
 
-  function startsWithTodoMarkdown(token: Token) {
+  function startsWithTodoMarkdown(token?: Token) {
     // leading whitespace in a list item is already trimmed off by markdown-it
-    return strStartsWithTodoMarkdown(token.content);
+    return strStartsWithTodoMarkdown(token?.content);
   }
 
   function isListItemTodoItem(tokens: Token[], index: number) {
-    function isInline(token: Token) {
-      return token.type === 'inline';
+    function isInline(token?: Token) {
+      return token?.type === 'inline';
     }
-    function isParagraph(token: Token) {
-      return token.type === 'paragraph_open';
+    function isParagraph(token?: Token) {
+      return token?.type === 'paragraph_open';
     }
-    function isListItem(token: Token) {
-      return token.type === 'list_item_open';
+    function isListItem(token?: Token) {
+      return token?.type === 'list_item_open';
     }
 
     return (

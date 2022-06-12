@@ -15,8 +15,10 @@ import {
 } from '@bangle.dev/pm';
 import { getListLiftTarget, mapChildren, mapSlice } from '@bangle.dev/utils';
 
+import { getNodeType, getParaNodeType } from '../helpers';
+
 function liftListItem(
-  type: NodeType,
+  type: NodeType | undefined,
   state: EditorState,
   selection: Selection,
   tr: Transaction,
@@ -24,7 +26,7 @@ function liftListItem(
   let { $from, $to } = selection;
   let listItem = type;
   if (!listItem) {
-    ({ listItem } = state.schema.nodes);
+    listItem = getNodeType(state, 'listItem');
   }
 
   let range = $from.blockRange(
@@ -69,7 +71,7 @@ function liftListItem(
 }
 // Function will lift list item following selection to level-1.
 export function liftFollowingList(
-  type: NodeType,
+  type: NodeType | undefined,
   state: EditorState,
   from: number,
   to: number,
@@ -78,7 +80,7 @@ export function liftFollowingList(
 ) {
   let listItem = type;
   if (!listItem) {
-    ({ listItem } = state.schema.nodes);
+    listItem = getNodeType(state, 'listItem');
   }
   let lifted = false;
   tr.doc.nodesBetween(from, to, (node, pos) => {
@@ -112,7 +114,8 @@ export function liftSelectionList(
     }
   });
   for (let i = listCol.length - 1; i >= 0; i--) {
-    const paragraph = listCol[i];
+    const paragraph = listCol[i]!;
+
     const start = tr.doc.resolve(tr.mapping.map(paragraph.pos));
     if (start.depth > 0) {
       let end;
@@ -139,26 +142,29 @@ const getListType = (node: Node, schema: Schema): [NodeType, number] | null => {
   if (!node.text) {
     return null;
   }
-  const { bulletList, orderedList } = schema.nodes;
-  return [
+
+  for (const listType of [
     {
-      node: bulletList,
+      node: getNodeType(schema, 'bulletList'),
       matcher: bullets,
     },
     {
-      node: orderedList,
+      node: getNodeType(schema, 'orderedList'),
       matcher: numbers,
     },
-  ].reduce((lastMatch: [NodeType, number] | null, listType) => {
-    if (lastMatch) {
-      return lastMatch;
-    }
+  ]) {
     const match = node.text!.match(listType.matcher);
-    return match ? [listType.node, match[0].length] : lastMatch;
-  }, null);
+
+    if (match && match[0]) {
+      return [listType.node, match[0].length];
+    }
+  }
+
+  return null;
 };
+
 const extractListFromParagaph = (
-  type: NodeType,
+  type: NodeType | undefined,
   node: Node,
   schema: Schema,
 ) => {
@@ -177,12 +183,12 @@ const extractListFromParagaph = (
       const newText = child.text.substr(length);
       let listItem = type;
       if (!listItem) {
-        ({ listItem } = schema.nodes);
+        listItem = getNodeType(schema, 'listItem');
       }
 
       const listItemNode = listItem.createAndFill(
         undefined,
-        schema.nodes.paragraph.createChecked(
+        getParaNodeType(schema).createChecked(
           undefined,
           newText.length ? schema.text(newText) : undefined,
         ),
@@ -198,11 +204,11 @@ const extractListFromParagaph = (
       if (child.type !== hardBreak) {
         return child;
       }
-      if (idx > 0 && listTypes.indexOf(arr[idx - 1].type) > -1) {
+      if (idx > 0 && listTypes.indexOf(arr[idx - 1]?.type) > -1) {
         // list node on the left
         return null;
       }
-      if (idx < arr.length - 1 && listTypes.indexOf(arr[idx + 1].type) > -1) {
+      if (idx < arr.length - 1 && listTypes.indexOf(arr[idx + 1]?.type) > -1) {
         // list node on the right
         return null;
       }
@@ -228,7 +234,7 @@ const extractListFromParagaph = (
   )(mockState, mockDispatch);
   const fragment = lastTr ? lastTr.doc.content : Fragment.from(listified);
   // try to re-wrap fragment in paragraph (which is the original node we unwrapped)
-  const { paragraph } = schema.nodes;
+  const paragraph = getParaNodeType(schema);
   if (paragraph.validContent(fragment)) {
     return Fragment.from(paragraph.create(node.attrs, fragment, node.marks));
   }
@@ -245,7 +251,10 @@ const splitIntoParagraphs = (fragment: Fragment, schema: Schema) => {
   const paragraphs = [];
   let curChildren: Node[] = [];
   let lastNode: Node | null = null;
-  const { hardBreak, paragraph } = schema.nodes;
+
+  const paragraph = getParaNodeType(schema);
+  const hardBreak = getNodeType(schema, 'hardBreak');
+
   fragment.forEach((node) => {
     if (lastNode && lastNode.type === hardBreak && node.type === hardBreak) {
       // double hardbreak
@@ -277,7 +286,7 @@ export const splitParagraphs = (slice: Slice, schema: Schema) => {
       child.marks.some((mark) => mark.type === schema.marks.code);
   });
   // slice might just be a raw text string
-  if (schema.nodes.paragraph.validContent(slice.content) && !hasCodeMark) {
+  if (getParaNodeType(schema).validContent(slice.content) && !hasCodeMark) {
     const replSlice = splitIntoParagraphs(slice.content, schema);
     return new Slice(replSlice, slice.openStart + 1, slice.openEnd + 1);
   }

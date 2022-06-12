@@ -8,7 +8,6 @@ import {
   Fragment,
   keymap,
   Node,
-  Schema,
   setBlockType,
   textblockTypeInputRule,
   TextSelection,
@@ -30,6 +29,8 @@ import {
   insertEmpty,
   NodeWithPos,
 } from '@bangle.dev/utils';
+
+import { getNodeType, getParaNodeType } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -61,10 +62,9 @@ export const defaultKeys: { [index: string]: string | undefined } = {
 
 const name = 'heading';
 const defaultLevels = [1, 2, 3, 4, 5, 6];
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 const checkIsInHeading = (state: EditorState) => {
-  const type = getTypeFromSchema(state.schema);
+  const type = getNodeType(state, name);
   return findParentNodeOfType(type)(state.selection);
 };
 const parseLevel = (levelStr: string | number) => {
@@ -156,7 +156,7 @@ function pluginsFactory({
 } = {}): RawPlugins {
   return ({ schema, specRegistry }) => {
     const { levels }: OptionsType = specRegistry.options[name];
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     const levelBindings = Object.fromEntries(
       levels.map((level: number) => [
@@ -196,15 +196,17 @@ function pluginsFactory({
 export function toggleHeading(level = 3): Command {
   return (state, dispatch) => {
     if (queryIsHeadingActive(level)(state)) {
-      return setBlockType(state.schema.nodes.paragraph)(state, dispatch);
+      const para = getParaNodeType(state);
+
+      return setBlockType(para)(state, dispatch);
     }
-    return setBlockType(state.schema.nodes[name], { level })(state, dispatch);
+    return setBlockType(getNodeType(state, name), { level })(state, dispatch);
   };
 }
 
 export function queryIsHeadingActive(level: number) {
   return (state: EditorState) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
     if (!match) {
@@ -220,7 +222,7 @@ export function queryIsHeadingActive(level: number) {
 
 export function queryIsCollapseActive() {
   return (state: EditorState) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -234,7 +236,7 @@ export function queryIsCollapseActive() {
 
 export function collapseHeading(): Command {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -259,7 +261,7 @@ export function collapseHeading(): Command {
     let tr = state.tr.replaceWith(
       start,
       end,
-      state.schema.nodes[name].createChecked(
+      getNodeType(state, name).createChecked(
         {
           ...match.node.attrs,
           collapseContent: fragment.toJSON(),
@@ -282,7 +284,7 @@ export function collapseHeading(): Command {
 
 export function uncollapseHeading(): Command {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -305,7 +307,7 @@ export function uncollapseHeading(): Command {
       match.pos,
       match.pos + match.node.nodeSize,
       Fragment.fromArray([
-        state.schema.nodes[name].createChecked(
+        getNodeType(state, name).createChecked(
           {
             ...match.node.attrs,
             collapseContent: null,
@@ -329,27 +331,23 @@ export function uncollapseHeading(): Command {
 
 export function insertEmptyParaAbove() {
   return filter(checkIsInHeading, (state, dispatch, view) => {
-    return insertEmpty(state.schema.nodes.paragraph, 'above', false)(
-      state,
-      dispatch,
-      view,
-    );
+    const para = getParaNodeType(state);
+
+    return insertEmpty(para, 'above', false)(state, dispatch, view);
   });
 }
 
 export function insertEmptyParaBelow() {
   return filter(checkIsInHeading, (state, dispatch, view) => {
-    return insertEmpty(state.schema.nodes.paragraph, 'below', false)(
-      state,
-      dispatch,
-      view,
-    );
+    const para = getParaNodeType(state);
+
+    return insertEmpty(para, 'below', false)(state, dispatch, view);
   });
 }
 
 export function toggleHeadingCollapse(): Command {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -382,7 +380,7 @@ export function uncollapseAllHeadings(): Command {
         offset + pos,
         offset + pos + node.nodeSize,
         Fragment.fromArray([
-          state.schema.nodes[name].createChecked(
+          getNodeType(state, name).createChecked(
             {
               ...node.attrs,
               collapseContent: null,
@@ -411,7 +409,7 @@ export function listCollapsedHeading(state: EditorState): NodeWithPos[] {
   return findChildren(
     state.doc,
     (node) =>
-      node.type === state.schema.nodes[name] &&
+      node.type === getNodeType(state, name) &&
       Boolean(node.attrs.collapseContent),
     false,
   );
@@ -420,7 +418,7 @@ export function listCollapsedHeading(state: EditorState): NodeWithPos[] {
 export function listCollapsibleHeading(state: EditorState): NodeWithPos[] {
   return findChildren(
     state.doc,
-    (node) => node.type === state.schema.nodes[name],
+    (node) => node.type === getNodeType(state, name),
     false,
   );
 }

@@ -10,19 +10,16 @@ import {
   NodeType,
   Plugin,
   PluginKey,
-  Schema,
 } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
 
-import { quote } from './helpers';
+import { getNodeType, quote } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
 
 const name = 'image';
-
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 function specFactory(): RawSpecs {
   return {
@@ -92,7 +89,7 @@ function pluginsFactory({
   ) => Promise<Node[]>;
 } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     return [
       new InputRule(
@@ -148,7 +145,7 @@ function pluginsFactory({
 
                 createImageNodes(
                   files,
-                  getTypeFromSchema(view.state.schema),
+                  getNodeType(view.state, name),
                   view,
                 ).then((imageNodes) => {
                   addImagesToView(
@@ -175,13 +172,11 @@ function pluginsFactory({
               if (!files || files.length === 0) {
                 return false;
               }
-              createImageNodes(
-                files,
-                getTypeFromSchema(view.state.schema),
-                view,
-              ).then((imageNodes) => {
-                addImagesToView(view, view.state.selection.from, imageNodes);
-              });
+              createImageNodes(files, getNodeType(view.state, name), view).then(
+                (imageNodes) => {
+                  addImagesToView(view, view.state.selection.from, imageNodes);
+                },
+              );
 
               return true;
             },
@@ -324,7 +319,7 @@ export const updateImageNodeAttribute =
       return false;
     }
     const { node } = state.selection;
-    if (node.type !== getTypeFromSchema(state.schema)) {
+    if (node.type !== getNodeType(state, name)) {
       return false;
     }
 

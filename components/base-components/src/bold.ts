@@ -27,8 +27,11 @@ export const defaultKeys = {
 
 const name = 'bold';
 
-const getTypeFromSchema = (schema: Schema) => schema.marks[name];
-
+const getTypeFromSchema = (schema: Schema) => {
+  const markType = schema.marks[name];
+  assertNotUndefined(markType, `markType ${name} not found`);
+  return markType;
+};
 function specFactory(): RawSpecs {
   return {
     type: 'mark',

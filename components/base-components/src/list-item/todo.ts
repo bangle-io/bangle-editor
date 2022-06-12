@@ -9,6 +9,8 @@ import {
 } from '@bangle.dev/pm';
 import { filter } from '@bangle.dev/utils';
 
+import { getNodeType } from '../helpers';
+
 export const isNodeTodo = (node: Node, schema: Schema) => {
   return (
     node.type === schema.nodes.listItem &&
@@ -122,7 +124,7 @@ export function wrappingInputRuleForTodo(
   getAttrs: Node['attrs'] | ((match: RegExpMatchArray) => Node['attrs']),
 ) {
   return new InputRule(regexp, function (state, match, start, end) {
-    const nodeType = state.schema.nodes.listItem;
+    const nodeType = getNodeType(state, 'listItem');
     var attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
     var tr = state.tr.delete(start, end);
     var $start = tr.doc.resolve(start),
@@ -135,7 +137,7 @@ export function wrappingInputRuleForTodo(
     var before = tr.doc.resolve(start - 1).nodeBefore;
     if (
       before &&
-      before.type === state.schema.nodes.bulletList &&
+      before.type === getNodeType(state, 'bulletList') &&
       canJoin(tr.doc, start - 1) &&
       before.lastChild &&
       // only join if before is todo
@@ -215,9 +217,9 @@ function isSelectionParentBulletList(state: EditorState) {
 
   return (
     fromNode &&
-    fromNode.type === state.schema.nodes.bulletList &&
+    fromNode.type === getNodeType(state, 'bulletList') &&
     endNode &&
-    endNode.type === state.schema.nodes.bulletList
+    endNode.type === getNodeType(state, 'bulletList')
   );
 }
 
