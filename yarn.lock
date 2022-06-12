@@ -1902,7 +1902,7 @@ __metadata:
     "@types/jest": ^27.0.4
     prosemirror-model: ^1.18.0
     prosemirror-state: ^1.4.0
-    prosemirror-utils-bangle: 0.0.2
+    prosemirror-utils-bangle: 0.0.4
   peerDependencies:
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -9839,13 +9839,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prosemirror-utils-bangle@npm:0.0.2":
-  version: 0.0.2
-  resolution: "prosemirror-utils-bangle@npm:0.0.2"
+"prosemirror-utils-bangle@npm:0.0.4":
+  version: 0.0.4
+  resolution: "prosemirror-utils-bangle@npm:0.0.4"
   peerDependencies:
     prosemirror-model: ^1.0.0
     prosemirror-state: ^1.0.1
-  checksum: 3856320389e52450792f7694996cdcd31d18f857bf476240218b1b6593b95f827a43946e4167fe3741c2f6061835cd1e46602db827bb301d4334f5b53b287d76
+  checksum: cabfda58eb7a38f45979830bc758b6df2d530b6043ddc642de2da732d471a2b0c0f6f274ce6690f2d9ebb1020d83a66fdf7ae86d3be4901ce084c79b23dc2b66
   languageName: node
   linkType: hard
 
