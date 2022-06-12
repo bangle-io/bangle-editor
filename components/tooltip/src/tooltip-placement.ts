@@ -126,6 +126,15 @@ function tooltipPlacement({
       }
     }
 
+    destroy() {
+      if (this.popperInstance) {
+        this.popperInstance.destroy();
+        this.popperInstance = null;
+      }
+
+      this._view.dom.parentNode!.removeChild(this._tooltip);
+    }
+
     update(view: EditorView, prevState: EditorState) {
       const pluginState = stateKey.getState(view.state);
       if (pluginState === stateKey.getState(prevState)) {
@@ -140,36 +149,6 @@ function tooltipPlacement({
         log('calling hide tooltip');
         this._hideTooltip();
       }
-    }
-
-    destroy() {
-      if (this.popperInstance) {
-        this.popperInstance.destroy();
-        this.popperInstance = null;
-      }
-
-      this._view.dom.parentNode!.removeChild(this._tooltip);
-    }
-
-    _hideTooltip() {
-      log('hiding');
-      if (this.popperInstance) {
-        this._tooltip.removeAttribute('data-show');
-        this.popperInstance.destroy();
-        this.popperInstance = null;
-        onHideTooltip.call(
-          this,
-          this._view.state,
-          this._view.dispatch,
-          this._view,
-        );
-      }
-    }
-
-    _showTooltip() {
-      this._tooltip.setAttribute('data-show', '');
-      this._createPopperInstance(this._view);
-      this.popperInstance!.update();
     }
 
     _createPopperInstance(view: EditorView) {
@@ -233,6 +212,27 @@ function tooltipPlacement({
         },
       );
       onUpdateTooltip.call(this, view.state, view.dispatch, view);
+    }
+
+    _hideTooltip() {
+      log('hiding');
+      if (this.popperInstance) {
+        this._tooltip.removeAttribute('data-show');
+        this.popperInstance.destroy();
+        this.popperInstance = null;
+        onHideTooltip.call(
+          this,
+          this._view.state,
+          this._view.dispatch,
+          this._view,
+        );
+      }
+    }
+
+    _showTooltip() {
+      this._tooltip.setAttribute('data-show', '');
+      this._createPopperInstance(this._view);
+      this.popperInstance!.update();
     }
   }
 

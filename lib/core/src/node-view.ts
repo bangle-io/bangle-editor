@@ -42,42 +42,17 @@ export interface RenderHandlers {
 }
 
 abstract class BaseNodeView {
+  contentDOM?: HTMLElement;
+  containerDOM?: HTMLElement;
+  renderHandlers: RenderHandlers;
+  opts: { selectionSensitive: boolean };
   _node: Node;
   _view: EditorView;
   _getPos: () => number;
   _decorations: readonly Decoration[];
   _selected: boolean;
-  contentDOM?: HTMLElement;
-  containerDOM?: HTMLElement;
-  renderHandlers: RenderHandlers;
-  opts: { selectionSensitive: boolean };
-
-  getAttrs(): Node['attrs'] {
-    return this._node.attrs;
-  }
-
-  getNodeViewProps(): NodeViewProps {
-    return {
-      node: this._node,
-      view: this._view,
-      getPos: this._getPos,
-      decorations: this._decorations,
-      selected: this._selected,
-      attrs: this._node.attrs,
-      updateAttrs: (attrs: Node['attrs']) => {
-        this._view.dispatch(
-          updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
-        );
-      },
-    };
-  }
 
   // for pm to get hold of containerDOM
-  // this exists as the name `dom` is too ambiguous
-  get dom(): InstanceType<typeof window.Node> {
-    return this.containerDOM!;
-  }
-
   constructor(
     {
       node,
@@ -148,6 +123,31 @@ abstract class BaseNodeView {
       this.getNodeViewProps(),
     );
   }
+
+  // this exists as the name `dom` is too ambiguous
+  get dom(): InstanceType<typeof window.Node> {
+    return this.containerDOM!;
+  }
+
+  getAttrs(): Node['attrs'] {
+    return this._node.attrs;
+  }
+
+  getNodeViewProps(): NodeViewProps {
+    return {
+      node: this._node,
+      view: this._view,
+      getPos: this._getPos,
+      decorations: this._decorations,
+      selected: this._selected,
+      attrs: this._node.attrs,
+      updateAttrs: (attrs: Node['attrs']) => {
+        this._view.dispatch(
+          updateAttrs(this._getPos(), this._node, attrs, this._view.state.tr),
+        );
+      },
+    };
+  }
 }
 // TODO this is adds unneeded abstraction
 //    maybe we can lessen the amount of things it is doing
@@ -204,34 +204,6 @@ export class NodeView extends BaseNodeView {
     });
   }
 
-  update(node: Node, decorations: readonly Decoration[]) {
-    log('update node');
-    // https://github.com/ProseMirror/prosemirror/issues/648
-    if (this._node.type !== node.type) {
-      return false;
-    }
-
-    if (this._node === node && this._decorations === decorations) {
-      log('update node no change');
-
-      return true;
-    }
-
-    this._node = node;
-    this._decorations = decorations;
-    log('update node execute');
-    this.renderHandlers.update(this, this.getNodeViewProps());
-
-    return true;
-  }
-
-  selectNode() {
-    this.containerDOM!.classList.add('ProseMirror-selectednode');
-    this._selected = true;
-    log('select node');
-    this.renderHandlers.update(this, this.getNodeViewProps());
-  }
-
   deselectNode() {
     this.containerDOM!.classList.remove('ProseMirror-selectednode');
     this._selected = false;
@@ -239,11 +211,12 @@ export class NodeView extends BaseNodeView {
     this.renderHandlers.update(this, this.getNodeViewProps());
   }
 
-  // Donot unset it if you donot have an implementation.
-  // Unsetting this is dangerous as it fucks up elements who have editable content inside them.
-  // setSelection(...args) {
-  //   console.log('hi', ...args);
   // }
+  destroy() {
+    this.renderHandlers.destroy(this, this.getNodeViewProps());
+    this.containerDOM = undefined;
+    this.contentDOM = undefined;
+  }
 
   // PM essentially works by watching mutation and then syncing the two states: its own and the DOM.
   ignoreMutation(
@@ -282,15 +255,42 @@ export class NodeView extends BaseNodeView {
     return true;
   }
 
-  // stopEvent() {
-  //   return true;
+  selectNode() {
+    this.containerDOM!.classList.add('ProseMirror-selectednode');
+    this._selected = true;
+    log('select node');
+    this.renderHandlers.update(this, this.getNodeViewProps());
+  }
+
+  update(node: Node, decorations: readonly Decoration[]) {
+    log('update node');
+    // https://github.com/ProseMirror/prosemirror/issues/648
+    if (this._node.type !== node.type) {
+      return false;
+    }
+
+    if (this._node === node && this._decorations === decorations) {
+      log('update node no change');
+
+      return true;
+    }
+
+    this._node = node;
+    this._decorations = decorations;
+    log('update node execute');
+    this.renderHandlers.update(this, this.getNodeViewProps());
+
+    return true;
+  }
+
+  // Donot unset it if you donot have an implementation.
+  // Unsetting this is dangerous as it fucks up elements who have editable content inside them.
+  // setSelection(...args) {
+  //   console.log('hi', ...args);
   // }
 
-  destroy() {
-    this.renderHandlers.destroy(this, this.getNodeViewProps());
-    this.containerDOM = undefined;
-    this.contentDOM = undefined;
-  }
+  // stopEvent() {
+  //   return true;
 }
 
 export function saveRenderHandlers(

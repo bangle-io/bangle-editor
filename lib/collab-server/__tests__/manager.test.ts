@@ -32,6 +32,7 @@ class SimpleDisk implements Disk {
     this.flush = jest.fn(this.flush.bind(this));
   }
 
+  async flush(_key: string, _doc: Node, version: number) {}
   async load(_key: string): Promise<Node> {
     return specRegistry.schema.nodeFromJSON(rawDoc) as Node;
   }
@@ -40,8 +41,6 @@ class SimpleDisk implements Disk {
     _key: string,
     _getLatestDoc: () => { doc: Node; version: number },
   ) {}
-
-  async flush(_key: string, _doc: Node, version: number) {}
 }
 
 const setup = (arg: any = {}) => {

@@ -18,12 +18,6 @@ export class DebouncedDisk implements Disk {
   debounceMaxWait;
   debounceFuncs = new Map<string, DebouncedFunction<any, any>>();
   pendingWrites: WatchSet<string>;
-  async _doSave(docName: string, doc: Node, version: number) {
-    log(docName, '_doSaveDoc  called');
-    await this.setItem(docName, doc, version);
-    this.pendingWrites.delete(docName);
-  }
-
   constructor(
     // return undefined if document is not found
     private getItem: (key: string) => Promise<Node | undefined>,
@@ -45,11 +39,6 @@ export class DebouncedDisk implements Disk {
     this.pendingWrites = new WatchSet(onPendingWrites);
   }
 
-  async load(docName: string) {
-    let item = await this.getItem(docName);
-    return item;
-  }
-
   async flush(docName: string, doc: Node, version: number) {
     log(docName, 'flush doc called');
     this.pendingWrites.add(docName);
@@ -61,6 +50,15 @@ export class DebouncedDisk implements Disk {
       this.debounceFuncs.delete(docName);
     }
     this._doSave(docName, doc, version);
+  }
+
+  async flushAll() {
+    Array.from(this.debounceFuncs.values()).map((r) => r());
+  }
+
+  async load(docName: string) {
+    let item = await this.getItem(docName);
+    return item;
   }
 
   async update(
@@ -84,8 +82,10 @@ export class DebouncedDisk implements Disk {
     existingFn();
   }
 
-  async flushAll() {
-    Array.from(this.debounceFuncs.values()).map((r) => r());
+  async _doSave(docName: string, doc: Node, version: number) {
+    log(docName, '_doSaveDoc  called');
+    await this.setItem(docName, doc, version);
+    this.pendingWrites.delete(docName);
   }
 }
 
@@ -94,16 +94,19 @@ class WatchSet<T> extends Set<T> {
     super();
     this.onSizeChange(this.size);
   }
+
   add(entry: T) {
     const result = super.add(entry);
     this.onSizeChange(this.size);
     return result;
   }
+
   clear() {
     const result = super.clear();
     this.onSizeChange(this.size);
     return result;
   }
+
   delete(entry: T) {
     const result = super.delete(entry);
     this.onSizeChange(this.size);

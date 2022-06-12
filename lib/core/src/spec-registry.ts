@@ -115,16 +115,16 @@ export class SpecRegistry<N extends string = any, M extends string = any> {
     );
   }
 
-  get spec() {
-    return this._spec;
+  get options() {
+    return this._options;
   }
 
   get schema() {
     return this._schema;
   }
 
-  get options() {
-    return this._options;
+  get spec() {
+    return this._spec;
   }
 }
 

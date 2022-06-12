@@ -6,14 +6,9 @@ type Listener<T = any> = (data: T) => void;
 export class Emitter<T = any> {
   _callbacks: Listeners<T> = {};
 
-  // Add an event listener for given event
-  on(event: any, fn: any) {
-    // Create namespace for this event
-    if (!this._callbacks[event]) {
-      this._callbacks[event] = [];
-    }
-    this._callbacks[event]!.push(fn);
-    return this;
+  // If fn is not provided, all event listeners for that event will be removed.
+  destroy() {
+    this._callbacks = {};
   }
 
   emit(event: any, data: any) {
@@ -26,8 +21,6 @@ export class Emitter<T = any> {
     return this;
   }
 
-  // Remove event listener for given event.
-  // If fn is not provided, all event listeners for that event will be removed.
   // If neither is provided, all event listeners will be removed.
   off(event: string, fn: Listener<T>) {
     if (!arguments.length) {
@@ -47,7 +40,15 @@ export class Emitter<T = any> {
     return this;
   }
 
-  destroy() {
-    this._callbacks = {};
+  // Add an event listener for given event
+  on(event: any, fn: any) {
+    // Create namespace for this event
+    if (!this._callbacks[event]) {
+      this._callbacks[event] = [];
+    }
+    this._callbacks[event]!.push(fn);
+    return this;
   }
+
+  // Remove event listener for given event.
 }

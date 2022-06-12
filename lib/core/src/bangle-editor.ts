@@ -48,13 +48,6 @@ export class BangleEditor<PluginMetadata = any> {
     }
   }
 
-  focusView() {
-    if (isTestEnv || this.view.hasFocus()) {
-      return;
-    }
-    this.view.focus();
-  }
-
   destroy() {
     if (this.destroyed) {
       return;
@@ -67,6 +60,13 @@ export class BangleEditor<PluginMetadata = any> {
 
     this.destroyed = true;
     this.view.destroy();
+  }
+
+  focusView() {
+    if (isTestEnv || this.view.hasFocus()) {
+      return;
+    }
+    this.view.focus();
   }
 
   toHTMLString() {

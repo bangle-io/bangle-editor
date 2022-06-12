@@ -21,6 +21,14 @@ export interface StepBigger extends Step {
 }
 
 export class Instance {
+  static sendUpdates(waiting: Waiter[]) {
+    while (waiting.length) {
+      const popped = waiting.pop();
+      popped && log('sending up to user:', popped?.userId);
+      popped?.onFinish();
+    }
+  }
+
   steps: StepBigger[] = [];
   lastActive = Date.now();
   users = Object.create(null);
@@ -43,22 +51,6 @@ export class Instance {
   ) {
     this.lastSavedVersion = version;
     log('new instance', docName, version);
-  }
-
-  private saveData(final?: boolean) {
-    if (this.lastSavedVersion !== this.version) {
-      this.lastSavedVersion = this.version;
-      this.scheduleSave(final);
-    }
-  }
-
-  stop() {
-    if (this.collecting != null) {
-      clearTimeout(this.collecting);
-      this.collecting = null;
-      Instance.sendUpdates(this.waiting);
-      this.saveData(true);
-    }
   }
 
   addEvents(version: number, steps: Step[], clientID: string) {
@@ -102,15 +94,6 @@ export class Instance {
     return { version: this.version };
   }
 
-  static sendUpdates(waiting: Waiter[]) {
-    while (waiting.length) {
-      const popped = waiting.pop();
-      popped && log('sending up to user:', popped?.userId);
-      popped?.onFinish();
-    }
-  }
-  // : (Number)
-  // Check if a document version number relates to an existing
   // document version.
   checkVersion(version: any) {
     if (typeof version !== 'number') {
@@ -121,22 +104,7 @@ export class Instance {
     }
   }
 
-  // : (Number, Number)
   // Get events between a given document version and
-  // the current document version.
-  getEvents(version: number) {
-    this.checkVersion(version);
-    let startIndex = this.steps.length - (this.version - version);
-    if (startIndex < 0) {
-      return false;
-    }
-
-    return {
-      steps: this.steps.slice(startIndex),
-      users: this.userCount,
-    };
-  }
-
   collectUsers() {
     const oldUserCount = this.userCount;
     this.users = Object.create(null);
@@ -153,6 +121,21 @@ export class Instance {
     }
   }
 
+  // the current document version.
+  getEvents(version: number) {
+    this.checkVersion(version);
+    let startIndex = this.steps.length - (this.version - version);
+    if (startIndex < 0) {
+      return false;
+    }
+
+    return {
+      steps: this.steps.slice(startIndex),
+      users: this.userCount,
+    };
+  }
+
+  // : (Number, Number)
   registerUser(userId: string) {
     log('registerUser', [...Object.entries(this.users || {})]);
     if (!(userId in this.users)) {
@@ -160,6 +143,26 @@ export class Instance {
       Instance.sendUpdates(this.waiting);
     }
   }
+
+  private saveData(final?: boolean) {
+    if (this.lastSavedVersion !== this.version) {
+      this.lastSavedVersion = this.version;
+      this.scheduleSave(final);
+    }
+  }
+
+  stop() {
+    if (this.collecting != null) {
+      clearTimeout(this.collecting);
+      this.collecting = null;
+      Instance.sendUpdates(this.waiting);
+      this.saveData(true);
+    }
+  }
+
+  // : (Number)
+  // Check if a document version number relates to an existing
+
   // TODO when switching docs its a good idea to kill users
   _registerUser(userId: string) {
     if (!(userId in this.users)) {

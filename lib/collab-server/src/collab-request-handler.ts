@@ -22,14 +22,6 @@ export class CollabRequestHandler {
     private managerId: string,
   ) {}
 
-  private validateManagerId(managerId: string) {
-    // helpful when a new manager has spawned
-    // this is used to signal the client to reset its state
-    if (this.managerId !== managerId) {
-      throw new CollabError(410, `Incorrect manager id ` + managerId);
-    }
-  }
-
   async getDocument({
     docName,
     userId,
@@ -167,6 +159,14 @@ export class CollabRequestHandler {
       );
     } else {
       return {};
+    }
+  }
+
+  private validateManagerId(managerId: string) {
+    // helpful when a new manager has spawned
+    // this is used to signal the client to reset its state
+    if (this.managerId !== managerId) {
+      throw new CollabError(410, `Incorrect manager id ` + managerId);
     }
   }
 }

@@ -78,6 +78,13 @@ export class Stopwatch extends React.Component<NodeViewProps> {
 
     return stopTime === 0 || stopTime > 0;
   };
+
+  incrementCounter = () => {
+    this.setState({
+      counter: this.state.counter + 1,
+    });
+  };
+
   componentDidMount() {
     this.interval = setInterval(() => {
       log('setting interval');
@@ -94,19 +101,6 @@ export class Stopwatch extends React.Component<NodeViewProps> {
     }
   }
 
-  updateAttrs({
-    stopTime,
-    startTime,
-  }: {
-    stopTime: number | null;
-    startTime: number | null;
-  }) {
-    this.props.updateAttrs({
-      stopTime,
-      startTime,
-    });
-  }
-
   getAttrs() {
     const { stopTime, startTime } = this.props.node.attrs;
 
@@ -115,12 +109,6 @@ export class Stopwatch extends React.Component<NodeViewProps> {
       startTime,
     };
   }
-
-  incrementCounter = () => {
-    this.setState({
-      counter: this.state.counter + 1,
-    });
-  };
 
   render() {
     const { selected } = this.props;
@@ -165,6 +153,19 @@ export class Stopwatch extends React.Component<NodeViewProps> {
         ⏲{formatTime(((endTime - startTime) / 1000).toFixed(0))}
       </span>
     );
+  }
+
+  updateAttrs({
+    stopTime,
+    startTime,
+  }: {
+    stopTime: number | null;
+    startTime: number | null;
+  }) {
+    this.props.updateAttrs({
+      stopTime,
+      startTime,
+    });
   }
 }
 

@@ -77,6 +77,18 @@ export class Manager {
     }
   }
 
+  public destroy() {
+    log('destroy called');
+    this.destroyed = true;
+    // todo need to abort `pull_events` pending requests
+    for (const i of Object.values(this.instances)) {
+      this._stopInstance(i.docName);
+    }
+
+    clearInterval(this.cleanUpInterval);
+    this.cleanUpInterval = undefined;
+  }
+
   public async handleRequest(
     path: CollabRequestType,
     payload: any,
@@ -133,16 +145,6 @@ export class Manager {
     }
   }
 
-  private _stopInstance(docName: string) {
-    const instance = this.instances[docName];
-    if (instance) {
-      log('stopping instances', instance.docName);
-      instance.stop();
-      delete this.instances[docName];
-      --this.instanceCount;
-    }
-  }
-
   private _cleanup() {
     log('Cleaning up');
     const instances = Object.values(this.instances);
@@ -153,16 +155,26 @@ export class Manager {
     }
   }
 
-  public destroy() {
-    log('destroy called');
-    this.destroyed = true;
-    // todo need to abort `pull_events` pending requests
-    for (const i of Object.values(this.instances)) {
-      this._stopInstance(i.docName);
+  private async _getInstanceQueued(docName: string, userId: string) {
+    if (this.destroyed) {
+      throw new CollabError(410, 'Server is no longer available');
     }
 
-    clearInterval(this.cleanUpInterval);
-    this.cleanUpInterval = undefined;
+    if (!userId) {
+      throw new Error('userId is required');
+    }
+    return this.getDocumentQueue.add(async () => {
+      if (this.destroyed) {
+        throw new CollabError(410, 'Server is no longer available');
+      }
+
+      let inst = this.instances[docName] || (await this._newInstance(docName));
+      if (userId) {
+        inst.registerUser(userId);
+      }
+      inst.lastActive = Date.now();
+      return inst;
+    });
   }
 
   private async _newInstance(docName: string, doc?: Node, version?: number) {
@@ -213,25 +225,13 @@ export class Manager {
     ));
   }
 
-  private async _getInstanceQueued(docName: string, userId: string) {
-    if (this.destroyed) {
-      throw new CollabError(410, 'Server is no longer available');
+  private _stopInstance(docName: string) {
+    const instance = this.instances[docName];
+    if (instance) {
+      log('stopping instances', instance.docName);
+      instance.stop();
+      delete this.instances[docName];
+      --this.instanceCount;
     }
-
-    if (!userId) {
-      throw new Error('userId is required');
-    }
-    return this.getDocumentQueue.add(async () => {
-      if (this.destroyed) {
-        throw new CollabError(410, 'Server is no longer available');
-      }
-
-      let inst = this.instances[docName] || (await this._newInstance(docName));
-      if (userId) {
-        inst.registerUser(userId);
-      }
-      inst.lastActive = Date.now();
-      return inst;
-    });
   }
 }
