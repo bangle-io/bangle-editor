@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/utils",
-  "version": "0.29.0-alpha.10",
+  "version": "0.29.0-alpha.11",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -35,7 +35,7 @@
     "@types/jest": "^27.0.4",
     "prosemirror-model": "^1.18.0",
     "prosemirror-state": "^1.4.0",
-    "prosemirror-utils": "1.0.0-0"
+    "prosemirror-utils-bangle": "0.0.4"
   },
   "devDependencies": {
     "@bangle.dev/pm": "workspace:*"
