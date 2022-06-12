@@ -46,11 +46,11 @@ abstract class BaseNodeView {
   containerDOM?: HTMLElement;
   renderHandlers: RenderHandlers;
   opts: { selectionSensitive: boolean };
-  _node: Node;
-  _view: EditorView;
-  _getPos: () => number;
   _decorations: readonly Decoration[];
+  _getPos: () => number;
+  _node: Node;
   _selected: boolean;
+  _view: EditorView;
 
   // for pm to get hold of containerDOM
   constructor(

@@ -73,9 +73,9 @@ export type RawSpecs =
   | RawSpecs[];
 
 export class SpecRegistry<N extends string = any, M extends string = any> {
-  _spec: PMSpec[];
-  _schema: Schema<N, M>;
   _options: { [key: string]: any };
+  _schema: Schema<N, M>;
+  _spec: PMSpec[];
 
   constructor(rawSpecs: RawSpecs = [], { defaultSpecs = true } = {}) {
     let flattenedSpecs = flatten(rawSpecs);

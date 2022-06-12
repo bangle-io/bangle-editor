@@ -33,10 +33,11 @@ export class Instance {
   public userCount = 0;
   public waiting: Array<Waiter> = [];
 
-  private _lastSavedVersion: number;
   private _collecting: ReturnType<typeof setTimeout> | null = null;
-  private _users = Object.create(null);
+  private _lastSavedVersion: number;
+
   private _steps: StepBigger[] = [];
+  private _users = Object.create(null);
 
   constructor(
     public docName: string,
