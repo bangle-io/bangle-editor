@@ -1,3 +1,6 @@
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   DOMOutputSpec,
@@ -15,8 +18,6 @@ import {
   findParentNodeOfType,
   insertEmpty,
 } from '@bangle.dev/utils';
-import type Token from 'markdown-it/lib/token';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

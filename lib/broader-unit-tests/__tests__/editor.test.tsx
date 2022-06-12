@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { blockquote, heading } from '@bangle.dev/base-components';
 import {
   BangleEditor,
   BangleEditorState,
   SpecRegistry,
 } from '@bangle.dev/core';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
-import { defaultSpecs, defaultPlugins } from '@bangle.dev/all-base-components';
-import { blockquote, heading } from '@bangle.dev/base-components';
 
 const testEditor = renderTestEditor({
   specRegistry: new SpecRegistry(defaultSpecs()),

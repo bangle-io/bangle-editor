@@ -3,14 +3,15 @@ import {
   baseKeymap as pmBaseKeymap,
   dropCursor as pmDropCursor,
   gapCursor as pmGapCursor,
+  InputRule,
   inputRules as pmInputRules,
   keymap,
   Plugin,
   Schema,
-  InputRule,
   undoInputRule as pmUndoInputRule,
 } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
+
 import * as editorStateCounter from './editor-state-counter';
 import * as history from './history';
 import { PluginGroup } from './plugin-group';

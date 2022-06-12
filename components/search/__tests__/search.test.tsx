@@ -3,9 +3,10 @@
  */
 /** @jsx psx */
 
-import { PluginKey, SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/all-base-components';
+import { PluginKey, SpecRegistry } from '@bangle.dev/core';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
+
 import { search } from '../src/index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);

@@ -1,7 +1,9 @@
+import { useContext, useEffect, useState } from 'react';
+
 import { BangleEditorState, BangleEditorStateProps } from '@bangle.dev/core';
 import { EditorView, Plugin, PluginKey } from '@bangle.dev/pm';
 import { rafSchedule } from '@bangle.dev/utils';
-import { useContext, useEffect, useState } from 'react';
+
 import { EditorViewContext } from './ReactEditor';
 
 const LOG = false;

@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 /** @jsx psx */
-import { psx, renderTestEditor, typeText } from '@bangle.dev/test-helpers';
-import { defaultSpecs, defaultPlugins } from '@bangle.dev/all-base-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
+import { psx, renderTestEditor, typeText } from '@bangle.dev/test-helpers';
 
 const testEditor = renderTestEditor({
   specRegistry: new SpecRegistry(defaultSpecs()),

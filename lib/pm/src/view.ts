@@ -7,14 +7,13 @@ import {
   __serializeForClipboard,
 } from 'prosemirror-view';
 
-export { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-
 export type {
   DecorationAttrs,
   DirectEditorProps,
   EditorProps,
   NodeView,
 } from 'prosemirror-view';
+export { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 
 export function parseFromClipboard(
   view: EditorView,

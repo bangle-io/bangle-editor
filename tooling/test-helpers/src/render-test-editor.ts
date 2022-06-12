@@ -3,18 +3,19 @@
  */
 
 import {
-  EditorView,
+  BangleEditor,
+  BangleEditorState,
+  RawPlugins,
+  SpecRegistry,
+} from '@bangle.dev/core';
+import {
   EditorState,
+  EditorView,
   Node,
   Schema,
   TextSelection,
 } from '@bangle.dev/pm';
-import {
-  BangleEditor,
-  BangleEditorState,
-  SpecRegistry,
-  RawPlugins,
-} from '@bangle.dev/core';
+
 import { getDocLabels } from './schema-builders';
 
 const mountedEditors = new Set<BangleEditor>();

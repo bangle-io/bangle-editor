@@ -1,5 +1,5 @@
 import { link } from '@bangle.dev/base-components';
-import type { Plugin, InputRule } from '@bangle.dev/pm';
+import type { InputRule, Plugin } from '@bangle.dev/pm';
 import {
   Command,
   EditorState,
@@ -8,9 +8,10 @@ import {
   NodeSelection,
   PluginKey,
 } from '@bangle.dev/pm';
-import { selectionTooltip } from '@bangle.dev/tooltip';
 import type { SelectionTooltipProps } from '@bangle.dev/tooltip';
+import { selectionTooltip } from '@bangle.dev/tooltip';
 import { createObject, filter, rafCommandExec } from '@bangle.dev/utils';
+
 import { hasComponentInSchema } from './helper';
 
 const {

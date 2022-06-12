@@ -1,7 +1,8 @@
+import { expect, test } from '@playwright/test';
 import path from 'path';
 
-import { expect, test } from '@playwright/test';
-import { pmRoot, getEditorState, ctrlKey, mountEditor } from '../setup/helpers';
+import { ctrlKey, getEditorState, mountEditor, pmRoot } from '../setup/helpers';
+
 test.beforeEach(async ({ page, baseURL }, testInfo) => {
   const url = `${baseURL}/${path.basename(__dirname)}`;
   await page.goto(url, { waitUntil: 'networkidle' });

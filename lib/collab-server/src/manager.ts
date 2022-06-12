@@ -1,6 +1,7 @@
 import { Disk } from '@bangle.dev/disk';
 import { Node, Schema } from '@bangle.dev/pm';
 import { serialExecuteQueue } from '@bangle.dev/utils';
+
 import {
   CollabError,
   ValidErrorCodes as ValidCollabErrorCodes,

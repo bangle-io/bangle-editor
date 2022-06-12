@@ -1,3 +1,6 @@
+import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
+
 import {
   blockquote,
   bold,
@@ -13,8 +16,7 @@ import {
 import { EditorState, PluginKey } from '@bangle.dev/pm';
 import { useEditorViewContext } from '@bangle.dev/react';
 import { filter, rafCommandExec } from '@bangle.dev/utils';
-import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+
 import {
   defaultKeys as floatingMenuKeys,
   focusFloatingMenuInput,

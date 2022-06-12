@@ -1,5 +1,6 @@
-import type { BaseRawNodeSpec } from './spec-registry';
 import { Node } from '@bangle.dev/pm';
+
+import type { BaseRawNodeSpec } from './spec-registry';
 
 export const spec = specFactory;
 

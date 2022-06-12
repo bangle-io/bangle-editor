@@ -1,8 +1,9 @@
 /// <reference path="./missing-test-types.d.ts" />
+import prettier from 'prettier';
+
+import type { Selection } from '@bangle.dev/pm';
 import { Node, NodeSelection } from '@bangle.dev/pm';
 import { getDocLabels } from '@bangle.dev/test-helpers';
-import prettier from 'prettier';
-import type { Selection } from '@bangle.dev/pm';
 
 globalThis.DOMRect = class DOMRect {
   bottom = 0;

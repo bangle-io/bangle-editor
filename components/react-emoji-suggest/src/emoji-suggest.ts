@@ -1,4 +1,4 @@
-import { SpecRegistry, BaseRawMarkSpec } from '@bangle.dev/core';
+import { BaseRawMarkSpec, SpecRegistry } from '@bangle.dev/core';
 import type {
   Command,
   EditorState,
@@ -15,6 +15,7 @@ import {
   uuid,
   valuePlugin,
 } from '@bangle.dev/utils';
+
 import { EmojiGroupType } from './types';
 import { getSquareDimensions, resolveCounter, resolveRowJump } from './utils';
 

@@ -1,5 +1,6 @@
 import { DirectEditorProps, EditorView } from '@bangle.dev/pm';
 import { isTestEnv, toHTMLString } from '@bangle.dev/utils';
+
 import { BangleEditorState } from './bangle-editor-state';
 
 type PMViewOpts = Omit<

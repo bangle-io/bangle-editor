@@ -1,4 +1,4 @@
-import { domSerializationHelpers, BaseRawNodeSpec } from '@bangle.dev/core';
+import { BaseRawNodeSpec, domSerializationHelpers } from '@bangle.dev/core';
 import type { MarkdownSerializerState } from '@bangle.dev/markdown';
 import type { Node } from '@bangle.dev/pm';
 

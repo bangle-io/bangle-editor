@@ -8,6 +8,7 @@ import {
   Transaction,
 } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
+
 import { createElement } from './create-element';
 
 const LOG = false;

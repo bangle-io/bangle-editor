@@ -1,13 +1,14 @@
+import React from 'react';
+
 import {
+  BaseRawNodeSpec,
   domSerializationHelpers,
   NodeView,
   NodeViewProps,
-  BaseRawNodeSpec,
   RawPlugins,
 } from '@bangle.dev/core';
 import type { Command } from '@bangle.dev/pm';
 import { keymap } from '@bangle.dev/pm';
-import React from 'react';
 
 const LOG = false;
 

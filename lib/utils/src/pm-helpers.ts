@@ -15,6 +15,7 @@ import {
   Slice,
   Transaction,
 } from '@bangle.dev/pm';
+
 import {
   findParentNode,
   findSelectedNodeOfType,

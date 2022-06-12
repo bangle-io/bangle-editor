@@ -1,5 +1,6 @@
 import {
   DOMParser,
+  dropCursor as pmDropCursor,
   EditorProps,
   EditorState,
   Mark,
@@ -7,10 +8,10 @@ import {
   ParseOptions,
   Schema,
   Selection,
-  dropCursor as pmDropCursor,
 } from '@bangle.dev/pm';
-import { RawSpecs, SpecRegistry } from './spec-registry';
+
 import { pluginLoader, RawPlugins } from './plugin-loader';
+import { RawSpecs, SpecRegistry } from './spec-registry';
 
 type InitialContent = string | Node | object;
 

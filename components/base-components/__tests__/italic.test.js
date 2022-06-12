@@ -9,6 +9,7 @@ import {
   setSelectionNear,
   typeText,
 } from '@bangle.dev/test-helpers';
+
 import { italic } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 

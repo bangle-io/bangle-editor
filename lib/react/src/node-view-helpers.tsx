@@ -1,6 +1,7 @@
+import { RefObject, useEffect, useState } from 'react';
+
 import { NodeView, RenderHandlers, saveRenderHandlers } from '@bangle.dev/core';
 import { objectUid } from '@bangle.dev/utils';
-import { RefObject, useEffect, useState } from 'react';
 
 const LOG = false;
 

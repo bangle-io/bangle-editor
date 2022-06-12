@@ -1,7 +1,9 @@
+import React, { useRef, useState } from 'react';
+
 import { link } from '@bangle.dev/base-components';
 import { EditorView } from '@bangle.dev/pm';
 import { useEditorViewContext } from '@bangle.dev/react';
-import React, { useRef, useState } from 'react';
+
 import { MenuButton } from './Icon';
 import * as Icons from './Icons';
 import { MenuGroup } from './MenuGroup';

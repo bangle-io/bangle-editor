@@ -1,13 +1,13 @@
+import { expect, Page, test } from '@playwright/test';
 import path from 'path';
 
-import { expect, Page, test } from '@playwright/test';
 import {
-  pmRoot as PM_ID,
   ctrlKey,
-  mountEditor,
-  sleep,
-  getEditorState,
   getDoc,
+  getEditorState,
+  mountEditor,
+  pmRoot as PM_ID,
+  sleep,
 } from '../setup/helpers';
 
 test.beforeEach(async ({ page, baseURL }, testInfo) => {

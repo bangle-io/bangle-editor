@@ -1,4 +1,5 @@
 import StateCore from 'markdown-it/lib/rules_core/state_core';
+
 type GetTokenDetails = (match: string) => { payload: string; markup: string };
 
 /**

@@ -1,5 +1,7 @@
-import { SpecRegistry } from '@bangle.dev/core';
 import { MarkdownSerializer } from 'prosemirror-markdown';
+
+import { SpecRegistry } from '@bangle.dev/core';
+
 import { markdownLoader } from './markdown-loader';
 // A markdown serializer which uses a node/mark schema's
 // toMarkdown property to generate a markdown string

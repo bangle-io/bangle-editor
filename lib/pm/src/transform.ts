@@ -1,14 +1,6 @@
+export type { Mappable } from 'prosemirror-transform';
 export {
   AddMarkStep,
-  MapResult,
-  Mapping,
-  RemoveMarkStep,
-  ReplaceAroundStep,
-  ReplaceStep,
-  Step,
-  StepMap,
-  StepResult,
-  Transform,
   // TODO fix typing as it exists
   // TransformError,
   canJoin,
@@ -18,7 +10,14 @@ export {
   insertPoint,
   joinPoint,
   liftTarget,
+  Mapping,
+  MapResult,
+  RemoveMarkStep,
+  ReplaceAroundStep,
+  ReplaceStep,
   replaceStep,
+  Step,
+  StepMap,
+  StepResult,
+  Transform,
 } from 'prosemirror-transform';
-
-export type { Mappable } from 'prosemirror-transform';

@@ -4,6 +4,7 @@
 
 /** @jsx psx */
 import { psx, sendKeyToPm, setSelectionNear } from '@bangle.dev/test-helpers';
+
 import { strike } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 

@@ -3,15 +3,17 @@
  */
 
 /** @jsx psx */
+import { createPopper } from '@popperjs/core/lib/popper-lite';
+
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import {
   BangleEditor,
   BangleEditorState,
   SpecRegistry,
 } from '@bangle.dev/core';
-import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
-import { psx } from '@bangle.dev/test-helpers';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
-import { createPopper } from '@popperjs/core/lib/popper-lite';
+import { psx } from '@bangle.dev/test-helpers';
+
 import { createTooltipDOM } from '../src/create-tooltip-dom';
 import { tooltipPlacement } from '../src/index';
 

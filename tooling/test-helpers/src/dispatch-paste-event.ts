@@ -1,5 +1,6 @@
 import { EditorView } from '@bangle.dev/pm';
 import { browser } from '@bangle.dev/utils';
+
 import { createEvent } from './create-event';
 
 /**

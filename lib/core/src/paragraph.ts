@@ -1,5 +1,3 @@
-import type { RawPlugins } from './plugin-loader';
-import type { BaseRawNodeSpec, RawSpecs } from './spec-registry';
 import {
   Command,
   DOMOutputSpec,
@@ -9,13 +7,6 @@ import {
   setBlockType,
 } from '@bangle.dev/pm';
 import {
-  browser,
-  createObject,
-  filter,
-  findParentNodeOfType,
-  insertEmpty,
-} from '@bangle.dev/utils';
-import {
   copyEmptyCommand,
   cutEmptyCommand,
   jumpToEndOfNode,
@@ -23,6 +14,16 @@ import {
   moveNode,
   parentHasDirectParentOfType,
 } from '@bangle.dev/pm-commands';
+import {
+  browser,
+  createObject,
+  filter,
+  findParentNodeOfType,
+  insertEmpty,
+} from '@bangle.dev/utils';
+
+import type { RawPlugins } from './plugin-loader';
+import type { BaseRawNodeSpec, RawSpecs } from './spec-registry';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

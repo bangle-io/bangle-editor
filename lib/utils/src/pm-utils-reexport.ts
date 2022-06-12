@@ -1,3 +1,11 @@
+export type {
+  CellTransform,
+  ContentNodeWithPos,
+  DomAtPos,
+  MovementOptions,
+  NodeWithPos,
+  Predicate,
+} from 'prosemirror-utils-bangle';
 export {
   canInsert,
   contains,
@@ -30,13 +38,4 @@ export {
   selectParentNodeOfType,
   setParentNodeMarkup,
   setTextSelection,
-} from 'prosemirror-utils-bangle';
-
-export type {
-  CellTransform,
-  ContentNodeWithPos,
-  DomAtPos,
-  MovementOptions,
-  NodeWithPos,
-  Predicate,
 } from 'prosemirror-utils-bangle';

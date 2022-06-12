@@ -11,6 +11,7 @@ import {
   selectNodeAt,
   typeText,
 } from '@bangle.dev/test-helpers';
+
 import {
   bold,
   bulletList,

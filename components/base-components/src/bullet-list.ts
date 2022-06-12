@@ -1,3 +1,6 @@
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   chainCommands,
@@ -9,9 +12,9 @@ import {
   Schema,
   wrappingInputRule,
 } from '@bangle.dev/pm';
-import type Token from 'markdown-it/lib/token';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
 import { parentHasDirectParentOfType } from '@bangle.dev/pm-commands';
+import { createObject } from '@bangle.dev/utils';
+
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
 import {
@@ -20,7 +23,7 @@ import {
   setTodo,
   wrappingInputRuleForTodo,
 } from './list-item/todo';
-import { createObject } from '@bangle.dev/utils';
+
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {

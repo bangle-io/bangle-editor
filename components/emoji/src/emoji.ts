@@ -1,6 +1,7 @@
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+
 import { domSerializationHelpers, RawSpecs } from '@bangle.dev/core';
 import type { Command, Node } from '@bangle.dev/pm';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

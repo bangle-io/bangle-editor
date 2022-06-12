@@ -4,6 +4,7 @@
 
 /** @jsx psx */
 import { psx, typeText } from '@bangle.dev/test-helpers';
+
 import { defaultTestEditor } from './test-editor';
 
 describe('Markdown shorthand works', () => {

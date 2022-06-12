@@ -1,4 +1,5 @@
 import { Schema, Step } from '@bangle.dev/pm';
+
 import { CollabError } from './collab-error';
 import { Instance, StepBigger } from './instance';
 import {

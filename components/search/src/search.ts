@@ -1,3 +1,4 @@
+import type { RawPlugins } from '@bangle.dev/core';
 import type { Command, Node } from '@bangle.dev/pm';
 import {
   Decoration,
@@ -7,7 +8,6 @@ import {
   PluginKey,
 } from '@bangle.dev/pm';
 import { matchAllPlus } from '@bangle.dev/utils';
-import type { RawPlugins } from '@bangle.dev/core';
 
 const name = 'search';
 export const plugins = pluginsFactory;

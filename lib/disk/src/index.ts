@@ -1,5 +1,6 @@
 import type { Node } from '@bangle.dev/pm';
-import { debounceFn, DebouncedFunction } from '@bangle.dev/utils';
+import { DebouncedFunction, debounceFn } from '@bangle.dev/utils';
+
 import { Disk } from './Disk';
 
 const LOG = false;

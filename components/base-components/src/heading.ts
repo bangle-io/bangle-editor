@@ -1,3 +1,6 @@
+import type Token from 'markdown-it/lib/token';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
@@ -11,24 +14,22 @@ import {
   TextSelection,
 } from '@bangle.dev/pm';
 import {
-  browser,
-  ContentNodeWithPos,
-  filter,
-  findChildren,
-  findParentNodeOfType,
-  insertEmpty,
-  createObject,
-  NodeWithPos,
-} from '@bangle.dev/utils';
-import type Token from 'markdown-it/lib/token';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import {
   copyEmptyCommand,
   cutEmptyCommand,
   jumpToEndOfNode,
   jumpToStartOfNode,
   moveNode,
 } from '@bangle.dev/pm-commands';
+import {
+  browser,
+  ContentNodeWithPos,
+  createObject,
+  filter,
+  findChildren,
+  findParentNodeOfType,
+  insertEmpty,
+  NodeWithPos,
+} from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

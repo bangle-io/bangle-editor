@@ -9,20 +9,20 @@ import {
   psx,
   renderTestEditor,
 } from '@bangle.dev/test-helpers';
-import { toggleHeadingCollapse, uncollapseAllHeadings } from '../src/heading';
 
+import { toggleHeadingCollapse, uncollapseAllHeadings } from '../src/heading';
 import {
   bulletList,
-  listItem,
-  orderedList,
-  hardBreak,
-  underline,
   codeBlock,
   doc,
+  hardBreak,
+  heading,
+  listItem,
+  orderedList,
+  paragraph,
   strike,
   text,
-  paragraph,
-  heading,
+  underline,
 } from '../src/index';
 
 const specRegistry = new SpecRegistry([

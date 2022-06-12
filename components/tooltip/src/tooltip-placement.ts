@@ -1,3 +1,11 @@
+import {
+  Instance as PopperInstance,
+  Modifier,
+  Placement,
+  State as PopperState,
+  VirtualElement,
+} from '@popperjs/core';
+
 import { Plugin } from '@bangle.dev/core';
 import {
   DOMOutputSpec,
@@ -6,13 +14,7 @@ import {
   PluginKey,
 } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
-import {
-  Instance as PopperInstance,
-  Modifier,
-  Placement,
-  State as PopperState,
-  VirtualElement,
-} from '@popperjs/core';
+
 import { createTooltipDOM } from './create-tooltip-dom';
 import {
   arrow,

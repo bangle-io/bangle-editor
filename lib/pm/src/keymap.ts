@@ -1,1 +1,1 @@
-export { keymap, keydownHandler } from 'prosemirror-keymap';
+export { keydownHandler, keymap } from 'prosemirror-keymap';

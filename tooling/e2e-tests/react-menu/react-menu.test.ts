@@ -1,10 +1,10 @@
+import { expect, Page, test } from '@playwright/test';
 import path from 'path';
 
-import { expect, Page, test } from '@playwright/test';
 import {
-  pmRoot,
   ctrlKey,
   mountEditor,
+  pmRoot,
   pressLeft,
   sleep,
 } from '../setup/helpers';

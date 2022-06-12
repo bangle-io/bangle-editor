@@ -3,7 +3,7 @@
  */
 
 /** @jsx psx */
-import { defaultSpecs, defaultPlugins } from '@bangle.dev/all-base-components';
+import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { psx, renderTestEditor } from '@bangle.dev/test-helpers';
 

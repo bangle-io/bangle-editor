@@ -3,6 +3,7 @@ export {
   closeSingleQuote,
   ellipsis,
   emDash,
+  InputRule,
   inputRules,
   openDoubleQuote,
   openSingleQuote,
@@ -10,5 +11,4 @@ export {
   textblockTypeInputRule,
   undoInputRule,
   wrappingInputRule,
-  InputRule,
 } from 'prosemirror-inputrules';

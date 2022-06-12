@@ -1,4 +1,3 @@
-import { MarkType, NodeType } from '@bangle.dev/pm';
 import {
   bold,
   doc,
@@ -7,6 +6,7 @@ import {
   text,
 } from '@bangle.dev/base-components';
 import { SpecRegistry } from '@bangle.dev/core';
+import { MarkType, NodeType } from '@bangle.dev/pm';
 
 test('Loads node and marks schema correctly', () => {
   const schema = new SpecRegistry([

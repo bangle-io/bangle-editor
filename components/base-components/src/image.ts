@@ -1,3 +1,5 @@
+import type Token from 'markdown-it/lib/token';
+
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
@@ -11,7 +13,7 @@ import {
   Schema,
 } from '@bangle.dev/pm';
 import { safeInsert } from '@bangle.dev/utils';
-import type Token from 'markdown-it/lib/token';
+
 import { quote } from './helpers';
 
 export const spec = specFactory;

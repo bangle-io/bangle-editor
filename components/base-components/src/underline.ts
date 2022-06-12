@@ -5,14 +5,14 @@ import {
   EditorState,
   InputRule,
   keymap,
+  Plugin,
   Schema,
   toggleMark,
-  Plugin,
 } from '@bangle.dev/pm';
 import {
+  createObject,
   isMarkActiveInSelection,
   markInputRule,
-  createObject,
   markPasteRule,
 } from '@bangle.dev/utils';
 

@@ -1,10 +1,11 @@
-import { Mark, MarkSpec, NodeSpec, Schema, Node } from '@bangle.dev/pm';
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+
+import { Mark, MarkSpec, Node, NodeSpec, Schema } from '@bangle.dev/pm';
 import { bangleWarn } from '@bangle.dev/utils';
+
 import * as doc from './doc';
 import * as paragraph from './paragraph';
 import * as text from './text';
-
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};

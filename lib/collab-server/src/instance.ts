@@ -1,4 +1,5 @@
 import { Node, Schema, Step, StepMap } from '@bangle.dev/pm';
+
 import { CollabError } from './collab-error';
 
 const MAX_STEP_HISTORY = 1000;

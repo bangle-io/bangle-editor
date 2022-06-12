@@ -4,6 +4,7 @@
 
 /** @jsx psx */
 import { psx, sendKeyToPm } from '@bangle.dev/test-helpers';
+
 import { codeBlock } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 

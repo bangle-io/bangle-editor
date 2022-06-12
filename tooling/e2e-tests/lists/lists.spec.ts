@@ -1,7 +1,7 @@
+import { expect, test } from '@playwright/test';
 import path from 'path';
 
-import { expect, test } from '@playwright/test';
-import { pmRoot, getDoc, ctrlKey, mountEditor } from '../setup/helpers';
+import { ctrlKey, getDoc, mountEditor, pmRoot } from '../setup/helpers';
 
 test.beforeEach(async ({ page, baseURL }, testInfo) => {
   const url = `${baseURL}/${path.basename(__dirname)}`;

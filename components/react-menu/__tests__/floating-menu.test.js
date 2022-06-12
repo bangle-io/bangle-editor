@@ -3,14 +3,15 @@
  */
 
 /** @jsx pjsx */
-import { SpecRegistry } from '@bangle.dev/core';
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { link } from '@bangle.dev/base-components';
+import { SpecRegistry } from '@bangle.dev/core';
 import { NodeSelection, PluginKey, TextSelection } from '@bangle.dev/pm';
 import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
+
 import { floatingMenu } from '../src/index';
 
 const menuKey = new PluginKey('floatingMenuTestKey');

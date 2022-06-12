@@ -1,6 +1,6 @@
-import prettier from 'prettier';
-import os from 'os';
 import { Page } from '@playwright/test';
+import os from 'os';
+import prettier from 'prettier';
 
 export const pmRoot = '#pm-root';
 export const ctrlKey = os.platform() === 'darwin' ? 'Meta' : 'Control';

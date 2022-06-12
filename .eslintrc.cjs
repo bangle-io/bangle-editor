@@ -8,6 +8,8 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
   ],
+  plugins: ['simple-import-sort'],
+
   env: {
     jest: true,
   },
@@ -22,6 +24,19 @@ module.exports = {
     Image: 'off',
   },
   rules: {
+    'import/newline-after-import': ['error', { count: 1 }],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          ['^\\u0000'],
+          ['^@?(?!bangle)\\w', '^'],
+          ['^@bangle\\.dev?\\w'],
+          ['^\\.'],
+        ],
+      },
+    ],
+    'simple-import-sort/exports': 'error',
     'curly': 'error',
     'no-process-env': 'error',
     'no-debugger': 'error',

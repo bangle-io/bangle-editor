@@ -3,6 +3,7 @@
  */
 /** @jsx psx */
 import { psx, sendKeyToPm, typeChar, typeText } from '@bangle.dev/test-helpers';
+
 import { heading } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 

@@ -1,3 +1,7 @@
+import PropTypes from 'prop-types';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import reactDOM from 'react-dom';
+
 import {
   BangleEditor as CoreBangleEditor,
   BangleEditorProps as CoreBangleEditorProps,
@@ -5,9 +9,7 @@ import {
 } from '@bangle.dev/core';
 import { EditorView, Plugin } from '@bangle.dev/pm';
 import { objectUid } from '@bangle.dev/utils';
-import PropTypes from 'prop-types';
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
-import reactDOM from 'react-dom';
+
 import { nodeViewUpdateStore, useNodeViews } from './node-view-helpers';
 import { NodeViewWrapper, RenderNodeViewsFunction } from './NodeViewWrapper';
 

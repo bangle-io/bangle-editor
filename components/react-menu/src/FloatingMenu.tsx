@@ -1,8 +1,10 @@
-import { EditorState, PluginKey } from '@bangle.dev/pm';
-import { usePluginState, useEditorViewContext } from '@bangle.dev/react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import reactDOM from 'react-dom';
+
+import { EditorState, PluginKey } from '@bangle.dev/pm';
+import { useEditorViewContext, usePluginState } from '@bangle.dev/react';
+
 import { hasComponentInSchema } from './helper';
 import { LinkSubMenu } from './LinkSubMenu';
 import { Menu } from './Menu';

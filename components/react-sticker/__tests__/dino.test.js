@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 /** @jsx pjsx */
-import { SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { SpecRegistry } from '@bangle.dev/core';
 import { markdownSerializer } from '@bangle.dev/markdown';
 import {
   pjsx,
   reactTestEditor,
 } from '@bangle.dev/react/__tests__/helpers/index';
+
 import { sticker } from '../src/index';
 
 const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);

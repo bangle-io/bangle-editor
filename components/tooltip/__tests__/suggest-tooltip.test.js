@@ -4,8 +4,9 @@
 
 /** @jsx psx */
 
-import { SpecRegistry } from '@bangle.dev/core';
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { SpecRegistry } from '@bangle.dev/core';
+import { PluginKey, Selection } from '@bangle.dev/pm';
 import {
   psx,
   renderTestEditor,
@@ -13,8 +14,8 @@ import {
   typeChar,
   typeText,
 } from '@bangle.dev/test-helpers';
-import { PluginKey, Selection } from '@bangle.dev/pm';
 import { sleep } from '@bangle.dev/utils';
+
 import { suggestTooltip } from '../src/index';
 import { replaceSuggestMarkWith } from '../src/suggest-tooltip';
 

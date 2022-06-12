@@ -1,3 +1,5 @@
+import type Token from 'markdown-it/lib/token';
+
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
@@ -6,11 +8,11 @@ import {
   Schema,
   wrappingInputRule,
 } from '@bangle.dev/pm';
-import type Token from 'markdown-it/lib/token';
 import { parentHasDirectParentOfType } from '@bangle.dev/pm-commands';
+import { createObject } from '@bangle.dev/utils';
+
 import { toggleList } from './list-item/commands';
 import { listIsTight } from './list-item/list-is-tight';
-import { createObject } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

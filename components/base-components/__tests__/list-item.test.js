@@ -9,6 +9,7 @@ import {
   sendKeyToPm,
   typeText,
 } from '@bangle.dev/test-helpers';
+
 import { defaultKeys as bulletListDefaultKeys } from '../src/bullet-list';
 import {
   bulletList,

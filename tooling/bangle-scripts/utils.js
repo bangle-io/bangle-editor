@@ -1,6 +1,7 @@
 const path = require('path');
 const globby = require('globby');
 const fs = require('fs/promises');
+
 const rootPath = path.resolve(__dirname, '..', '..');
 
 module.exports = { getPackages, mapPackages };

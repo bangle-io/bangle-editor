@@ -5,8 +5,8 @@
 /** @jsx psx */
 import { SpecRegistry } from '@bangle.dev/core';
 import { psx, sendKeyToPm, typeText } from '@bangle.dev/test-helpers';
-import { doc, heading, paragraph, text } from '../src/index';
 
+import { doc, heading, paragraph, text } from '../src/index';
 import { defaultTestEditor } from './test-editor';
 
 const { convertToParagraph, jumpToEndOfParagraph, jumpToStartOfParagraph } =

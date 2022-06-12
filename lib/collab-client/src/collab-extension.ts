@@ -1,4 +1,12 @@
 import {
+  collab,
+  getVersion,
+  receiveTransaction,
+  sendableSteps,
+} from 'prosemirror-collab';
+import StrictEventEmitter from 'strict-event-emitter-types';
+
+import {
   cancelablePromise,
   CollabError,
   GetDocument,
@@ -18,13 +26,7 @@ import {
   TextSelection,
 } from '@bangle.dev/pm';
 import { Emitter, serialExecuteQueue } from '@bangle.dev/utils';
-import {
-  collab,
-  getVersion,
-  receiveTransaction,
-  sendableSteps,
-} from 'prosemirror-collab';
-import StrictEventEmitter from 'strict-event-emitter-types';
+
 import { replaceDocument } from './helpers';
 
 type UnPromisify<T> = T extends Promise<infer U> ? U : T;

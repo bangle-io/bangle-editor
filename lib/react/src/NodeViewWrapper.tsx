@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
+import React from 'react';
+
 import { NodeView, NodeViewProps } from '@bangle.dev/core';
 import { EditorView, Node } from '@bangle.dev/pm';
 import { bangleWarn, objectUid } from '@bangle.dev/utils';
-import PropTypes from 'prop-types';
-import React from 'react';
 
 const LOG = false;
 

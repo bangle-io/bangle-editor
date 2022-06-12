@@ -1,3 +1,5 @@
+import type { MarkdownSerializerState } from 'prosemirror-markdown';
+
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
@@ -10,17 +12,16 @@ import {
   wrappingInputRule,
 } from '@bangle.dev/pm';
 import {
+  copyEmptyCommand,
+  cutEmptyCommand,
+  moveNode,
+} from '@bangle.dev/pm-commands';
+import {
   createObject,
   filter,
   findParentNodeOfType,
   insertEmpty,
 } from '@bangle.dev/utils';
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-import {
-  copyEmptyCommand,
-  cutEmptyCommand,
-  moveNode,
-} from '@bangle.dev/pm-commands';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

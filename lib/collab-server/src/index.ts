@@ -1,9 +1,9 @@
 import type {
+  CollabRequestType,
   GetDocument,
   PullEventResponse,
   PullEvents,
   PushEvents,
-  CollabRequestType,
 } from './types';
 
 export * from './collab-error';
@@ -13,8 +13,8 @@ export * from './parse-collab-response';
 export * from './utils';
 export type {
   CollabRequestType,
+  GetDocument,
   PullEventResponse,
   PullEvents,
-  GetDocument,
   PushEvents,
 };

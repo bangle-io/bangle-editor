@@ -1,3 +1,4 @@
+import type { BaseRawMarkSpec, RawPlugins } from '@bangle.dev/core';
 import {
   Command,
   EditorState,
@@ -11,19 +12,19 @@ import {
   Selection,
 } from '@bangle.dev/pm';
 import {
-  isChromeWithSelectionBug,
+  createObject,
   filter,
   findFirstMarkPosition,
+  isChromeWithSelectionBug,
   safeInsert,
-  createObject,
 } from '@bangle.dev/utils';
+
 import type {
   GetReferenceElementFunction,
   TooltipRenderOpts,
 } from './tooltip-placement';
 import * as tooltipPlacement from './tooltip-placement';
 import { triggerInputRule } from './trigger-input-rule';
-import type { BaseRawMarkSpec, RawPlugins } from '@bangle.dev/core';
 
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'plugins/suggest-tooltip') : () => {};

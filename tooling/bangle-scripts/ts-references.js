@@ -3,6 +3,7 @@ const path = require('path');
 const { rootDir, walkWorkspace } = require('./workspace-tools.cjs');
 const JSON5 = require('json5');
 const mkdirp = require('mkdirp');
+
 updateRootTsConfig();
 // updateWorkspaceTsReference();
 
