@@ -26,11 +26,11 @@ import {
   filter,
   findChildren,
   findParentNodeOfType,
+  getNodeType,
+  getParaNodeType,
   insertEmpty,
   NodeWithPos,
 } from '@bangle.dev/utils';
-
-import { getNodeType, getParaNodeType } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

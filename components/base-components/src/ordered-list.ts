@@ -8,11 +8,10 @@ import {
   wrappingInputRule,
 } from '@bangle.dev/pm';
 import { parentHasDirectParentOfType } from '@bangle.dev/pm-commands';
-import { createObject } from '@bangle.dev/utils';
+import { createObject, getNodeType } from '@bangle.dev/utils';
 
-import { getNodeType } from './helpers';
-import { toggleList } from './list-item/commands';
-import { listIsTight } from './list-item/list-is-tight';
+import { toggleList } from './list-commands';
+import { listIsTight } from './list-is-tight';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

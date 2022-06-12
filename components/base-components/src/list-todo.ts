@@ -7,9 +7,7 @@ import {
   Schema,
   Transaction,
 } from '@bangle.dev/pm';
-import { filter } from '@bangle.dev/utils';
-
-import { getNodeType } from '../helpers';
+import { filter, getNodeType } from '@bangle.dev/utils';
 
 export const isNodeTodo = (node: Node, schema: Schema) => {
   return (

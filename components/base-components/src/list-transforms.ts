@@ -13,9 +13,13 @@ import {
   TextSelection,
   Transaction,
 } from '@bangle.dev/pm';
-import { getListLiftTarget, mapChildren, mapSlice } from '@bangle.dev/utils';
-
-import { getNodeType, getParaNodeType } from '../helpers';
+import {
+  getListLiftTarget,
+  getNodeType,
+  getParaNodeType,
+  mapChildren,
+  mapSlice,
+} from '@bangle.dev/utils';
 
 function liftListItem(
   type: NodeType | undefined,

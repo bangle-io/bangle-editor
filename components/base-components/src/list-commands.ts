@@ -31,6 +31,7 @@ import {
   findPositionOfNodeBefore,
   flatten,
   GapCursorSelection,
+  getNodeType,
   hasParentNodeOfType,
   hasVisibleContent,
   isEmptySelectionAtStart,
@@ -43,9 +44,12 @@ import {
   validPos,
 } from '@bangle.dev/utils';
 
-import { getNodeType } from '../helpers';
-import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
-import { liftFollowingList, liftSelectionList } from './transforms';
+import {
+  isNodeTodo,
+  removeTodoCheckedAttr,
+  setTodoCheckedAttr,
+} from './list-todo';
+import { liftFollowingList, liftSelectionList } from './list-transforms';
 
 const maxIndentation = 4;
 

@@ -6,9 +6,7 @@ import {
   keymap,
   Node,
 } from '@bangle.dev/pm';
-import { createObject } from '@bangle.dev/utils';
-
-import { getNodeType } from './helpers';
+import { createObject, getNodeType } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;

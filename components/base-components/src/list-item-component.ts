@@ -22,10 +22,10 @@ import {
   createObject,
   domSerializationHelpers,
   filter,
+  getNodeType,
   insertEmpty,
 } from '@bangle.dev/utils';
 
-import { getNodeType } from '../helpers';
 import {
   backspaceKeyCommand,
   enterKeyCommand,
@@ -33,9 +33,9 @@ import {
   moveEdgeListItem,
   outdentList,
   updateNodeAttrs,
-} from './commands';
+} from './list-commands';
 import { listItemNodeViewPlugin } from './list-item-node-view-plugin';
-import { isNodeTodo, setTodoCheckedAttr } from './todo';
+import { isNodeTodo, setTodoCheckedAttr } from './list-todo';
 
 const LOG = false;
 

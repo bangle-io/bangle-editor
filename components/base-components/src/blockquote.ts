@@ -7,7 +7,6 @@ import {
   EditorState,
   keymap,
   Node,
-  Schema,
   wrapIn,
   wrappingInputRule,
 } from '@bangle.dev/pm';
@@ -20,10 +19,10 @@ import {
   createObject,
   filter,
   findParentNodeOfType,
+  getNodeType,
+  getParaNodeType,
   insertEmpty,
 } from '@bangle.dev/utils';
-
-import { getNodeType, getParaNodeType } from './helpers';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
