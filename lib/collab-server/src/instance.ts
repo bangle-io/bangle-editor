@@ -1,4 +1,4 @@
-import { Node, Schema, Step, StepMap } from '@bangle.dev/pm';
+import { Node, Step, StepMap } from '@bangle.dev/pm';
 
 import { CollabError } from './collab-error';
 
@@ -32,6 +32,7 @@ export class Instance {
   public lastActive = Date.now();
   public userCount = 0;
   public waiting: Array<Waiter> = [];
+  public abortController = new AbortController();
 
   private _collecting: ReturnType<typeof setTimeout> | null = null;
   private _lastSavedVersion: number;
@@ -48,6 +49,23 @@ export class Instance {
   ) {
     this._lastSavedVersion = version;
     log('new instance', docName, version);
+
+    this.abortController.signal.addEventListener(
+      'abort',
+      () => {
+        if (this._collecting != null) {
+          clearTimeout(this._collecting);
+          this._collecting = null;
+          Instance.sendUpdates(this.waiting);
+          this._saveData(true);
+        }
+      },
+      { once: true },
+    );
+  }
+
+  public abort() {
+    this.abortController.abort();
   }
 
   public addEvents(version: number, steps: Step[], clientID: string) {
@@ -111,15 +129,6 @@ export class Instance {
     if (!(userId in this._users)) {
       this._registerUser(userId);
       Instance.sendUpdates(this.waiting);
-    }
-  }
-
-  public stop() {
-    if (this._collecting != null) {
-      clearTimeout(this._collecting);
-      this._collecting = null;
-      Instance.sendUpdates(this.waiting);
-      this._saveData(true);
     }
   }
 

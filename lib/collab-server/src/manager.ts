@@ -35,12 +35,12 @@ export class Manager {
   public readonly managerId = uuid();
 
   private _cleanUpInterval?: ReturnType<typeof setInterval> = undefined;
-  private _collectUsersTimeout;
-  private _disk;
+  private _collectUsersTimeout: number;
+  private _disk: Disk;
   private _getDocumentQueue = serialExecuteQueue();
   private _instances: Record<string, Instance> = {};
   private _interceptRequests?: (path: string, payload: any) => void;
-  private _routes;
+  private _routes: CollabRequestHandler;
 
   constructor(
     schema: Schema,
@@ -221,22 +221,33 @@ export class Manager {
           }));
     };
 
-    return (instances[docName] = new Instance(
+    const instance = new Instance(
       docName,
       doc,
       version,
       scheduleSave,
       this._collectUsersTimeout,
-    ));
+    );
+
+    this._instances[docName] = instance;
+
+    instance.abortController.signal.addEventListener(
+      'abort',
+      () => {
+        delete this._instances[docName];
+        --this.instanceCount;
+      },
+      { once: true },
+    );
+
+    return instance;
   }
 
   private _stopInstance(docName: string) {
     const instance = this._instances[docName];
     if (instance) {
       log('stopping instances', instance.docName);
-      instance.stop();
-      delete this._instances[docName];
-      --this.instanceCount;
+      instance.abort();
     }
   }
 }
