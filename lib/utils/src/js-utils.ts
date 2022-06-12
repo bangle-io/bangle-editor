@@ -1,5 +1,15 @@
 import { isProdEnv, isTestEnv } from './environment';
 
+// Throws an abort error if a signal is already aborted.
+export function assertNotUndefined(
+  value: unknown,
+  message: string,
+): asserts value {
+  if (value === undefined) {
+    throw new Error(`assertion failed: ${message}`);
+  }
+}
+
 /**
  * @param {Function} fn - A unary function whose paramater is non-primitive,
  *                        so that it can be cached using WeakMap

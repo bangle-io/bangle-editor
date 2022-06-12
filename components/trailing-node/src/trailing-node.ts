@@ -1,6 +1,7 @@
 import type { RawPlugins } from '@bangle.dev/core';
 import type { Schema } from '@bangle.dev/pm';
 import { Plugin, PluginKey } from '@bangle.dev/pm';
+import { assertNotUndefined } from '@bangle.dev/utils';
 
 export const plugins = pluginsFactory;
 
@@ -39,6 +40,7 @@ function pluginsFactory({
 
             const { doc, schema, tr } = view.state;
             const type = schema.nodes[node];
+            assertNotUndefined(type, `Node ${node} not found in schema`);
             const transaction = tr.insert(doc.content.size, type.create());
             map.set(view.state, true);
             view.dispatch(transaction);

@@ -25,22 +25,28 @@ export function inlineNodeParser(
   const arrayReplaceAt = md.utils.arrayReplaceAt;
 
   md.core.ruler.push(tokenName, (state: StateCore) => {
-    var i,
-      j,
-      l,
-      tokens,
-      token,
+    var i: number,
+      j: number,
+      l: number,
+      tokens: typeof blockTokens[0]['children'],
+      token: NonNullable<typeof blockTokens[0]['children']>[0] | undefined,
       blockTokens = state.tokens,
       autolinkLevel = 0;
 
     for (j = 0, l = blockTokens.length; j < l; j++) {
-      if (blockTokens[j].type !== 'inline') {
+      let blockToken = blockTokens[j];
+
+      if (!blockToken || blockToken.type !== 'inline') {
         continue;
       }
-      tokens = blockTokens[j].children;
+      tokens = blockToken.children;
 
       for (i = tokens!.length - 1; i >= 0; i--) {
         token = tokens![i];
+
+        if (!token) {
+          continue;
+        }
 
         // if (token.type === 'link_open' || token.type === 'link_close') {
         //   if (token.info === 'auto') {
@@ -54,7 +60,7 @@ export function inlineNodeParser(
           regex.test(token.content)
         ) {
           // replace current node
-          blockTokens[j].children = tokens = arrayReplaceAt(
+          blockToken.children = tokens = arrayReplaceAt(
             tokens,
             i,
             splitTextToken(regex, getTokenDetails, tokenName)(

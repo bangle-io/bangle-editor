@@ -36,7 +36,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": false,
+    "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": false,
     "useDefineForClassFields": true,
     "skipLibCheck": true,

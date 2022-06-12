@@ -10,6 +10,7 @@ import {
   toggleMark,
 } from '@bangle.dev/pm';
 import {
+  assertNotUndefined,
   createObject,
   isMarkActiveInSelection,
   markInputRule,
@@ -28,7 +29,11 @@ export const defaultKeys = {
 
 const name = 'underline';
 
-const getTypeFromSchema = (schema: Schema) => schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => {
+  const markType = schema.marks[name];
+  assertNotUndefined(markType, `markType ${name} not found`);
+  return markType;
+};
 
 function specFactory(): RawSpecs {
   return {
@@ -81,12 +86,18 @@ function pluginsFactory({ keybindings = defaultKeys } = {}):
 
 export function toggleUnderline(): Command {
   return (state, dispatch, _view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch);
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return toggleMark(markType)(state, dispatch);
   };
 }
 
 export function queryIsUnderlineActive() {
   return (state: EditorState) => {
-    return isMarkActiveInSelection(state.schema.marks[name])(state);
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return isMarkActiveInSelection(markType)(state);
   };
 }
