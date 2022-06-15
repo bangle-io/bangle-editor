@@ -13,7 +13,7 @@
     "@bangle.dev/base-components": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
-    "@types/jest": "^27.0.4"
+    "@types/jest": "^27.5.2"
   },
   "publishConfig": {
     "access": "public",

@@ -10,6 +10,6 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^27.0.4"
+    "@types/jest": "^27.5.2"
   }
 }

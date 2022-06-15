@@ -32,7 +32,7 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
-    "@types/jest": "^27.0.4",
+    "@types/jest": "^27.5.2",
     "prosemirror-model": "^1.18.0",
     "prosemirror-state": "^1.4.0",
     "prosemirror-utils-bangle": "0.0.4"

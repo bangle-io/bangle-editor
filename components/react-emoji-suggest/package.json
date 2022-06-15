@@ -35,7 +35,7 @@
   "dependencies": {
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^27.0.4"
+    "@types/jest": "^27.5.2"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
@@ -52,8 +52,8 @@
     "@bangle.dev/react": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
     "@testing-library/react": "^11.2.7",
-    "@types/react": "^17.0.14",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^17.0.45",
+    "@types/react-dom": "^17.0.17",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

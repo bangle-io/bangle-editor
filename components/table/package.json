@@ -38,7 +38,7 @@
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
-    "@types/markdown-it": "^12.0.3",
+    "@types/markdown-it": "^12.2.3",
     "markdown-it": "^10.0.0",
     "prosemirror-markdown": "^1.9.1"
   },
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^27.0.4"
+    "@types/jest": "^27.5.2"
   },
   "style": "style.css"
 }
