@@ -5,17 +5,14 @@ import {
   exitCode,
   keymap,
   Node,
-  Schema,
 } from '@bangle.dev/pm';
-import { createObject } from '@bangle.dev/utils';
+import { createObject, getNodeType } from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const defaultKeys = {
   insert: 'Shift-Enter',
 };
-
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 const name = 'hardBreak';
 
@@ -48,7 +45,7 @@ function specFactory(): RawSpecs {
 
 function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
     const command = chainCommands(exitCode, (state, dispatch) => {
       if (dispatch) {
         dispatch(state.tr.replaceSelectionWith(type.create()).scrollIntoView());

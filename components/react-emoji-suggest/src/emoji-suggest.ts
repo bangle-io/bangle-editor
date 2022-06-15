@@ -11,6 +11,7 @@ import type { SuggestTooltipRenderOpts } from '@bangle.dev/tooltip';
 import { createTooltipDOM, suggestTooltip } from '@bangle.dev/tooltip';
 import {
   bangleWarn,
+  getNodeType,
   rafCommandExec,
   uuid,
   valuePlugin,
@@ -233,7 +234,7 @@ export function queryTriggerText(key: PluginKey) {
 
 export function selectEmoji(key: PluginKey, emojiAlias: string): Command {
   return (state, dispatch, view) => {
-    const emojiNode = state.schema.nodes.emoji.create({
+    const emojiNode = getNodeType(state, 'emoji').create({
       emojiAlias: emojiAlias,
     });
     const suggestKey = getSuggestTooltipKey(key)(state);

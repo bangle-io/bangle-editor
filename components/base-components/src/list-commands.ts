@@ -31,6 +31,7 @@ import {
   findPositionOfNodeBefore,
   flatten,
   GapCursorSelection,
+  getNodeType,
   hasParentNodeOfType,
   hasVisibleContent,
   isEmptySelectionAtStart,
@@ -43,8 +44,12 @@ import {
   validPos,
 } from '@bangle.dev/utils';
 
-import { isNodeTodo, removeTodoCheckedAttr, setTodoCheckedAttr } from './todo';
-import { liftFollowingList, liftSelectionList } from './transforms';
+import {
+  isNodeTodo,
+  removeTodoCheckedAttr,
+  setTodoCheckedAttr,
+} from './list-todo';
+import { liftFollowingList, liftSelectionList } from './list-transforms';
 
 const maxIndentation = 4;
 
@@ -121,22 +126,23 @@ function canSink(initialIndentationLevel: number, state: EditorState) {
   return true;
 }
 
-export const isInsideListItem = (type: NodeType) => (state: EditorState) => {
-  const { $from } = state.selection;
+export const isInsideListItem =
+  (type: NodeType | undefined) => (state: EditorState) => {
+    const { $from } = state.selection;
 
-  let listItem = type;
-  if (!listItem) {
-    ({ listItem } = state.schema.nodes);
-  }
-  const { paragraph } = state.schema.nodes;
-  if (state.selection instanceof GapCursorSelection) {
-    return $from.parent.type === listItem;
-  }
-  return (
-    hasParentNodeOfType(listItem)(state.selection) &&
-    $from.parent.type === paragraph
-  );
-};
+    let listItem = type;
+    if (!listItem) {
+      listItem = getNodeType(state, 'listItem');
+    }
+    const { paragraph } = state.schema.nodes;
+    if (state.selection instanceof GapCursorSelection) {
+      return $from.parent.type === listItem;
+    }
+    return (
+      hasParentNodeOfType(listItem)(state.selection) &&
+      $from.parent.type === paragraph
+    );
+  };
 
 // Get the depth of the nearest ancestor list
 const rootListDepth = (
@@ -209,7 +215,7 @@ export function toggleList(
     } else {
       // If current ListType is the same as `listType` in arg,
       // toggle the list to `p`.
-      const listItem = itemType ? itemType : state.schema.nodes.listItem;
+      const listItem = itemType ? itemType : getNodeType(state, 'listItem');
 
       const depth = rootListDepth(listItem, selection.$to, state.schema.nodes);
 
@@ -259,9 +265,10 @@ function toggleListCommand(listType: NodeType, todo: boolean = false): Command {
     // and https://discuss.prosemirror.net/t/finding-out-what-changed-in-a-transaction/2372
     let ranges: number[] = [];
     for (let i = 0; i < tr.mapping.maps.length; i++) {
-      let map = tr.mapping.maps[i];
+      let map = tr.mapping.maps[i]!;
+
       for (let j = 0; j < ranges.length; j++) {
-        ranges[j] = map.map(ranges[j]);
+        ranges[j] = map.map(ranges[j]!);
       }
       map.forEach((_s, _e, from, to) => {
         ranges.push(from, to);
@@ -269,12 +276,12 @@ function toggleListCommand(listType: NodeType, todo: boolean = false): Command {
     }
 
     const canBeTodo = (node: Node, parentNode: Node | null) =>
-      node.type === schema.nodes.listItem &&
-      parentNode?.type === schema.nodes.bulletList;
+      node.type === getNodeType(schema, 'listItem') &&
+      parentNode?.type === getNodeType(schema, 'bulletList');
 
     for (let i = 0; i < ranges.length; i += 2) {
-      let from = ranges[i],
-        to = ranges[i + 1];
+      let from = ranges[i]!;
+      let to = ranges[i + 1]!;
 
       tr.doc.nodesBetween(from, to, (node, pos, parentNode) => {
         if (pos >= from && pos < to && canBeTodo(node, parentNode)) {
@@ -350,7 +357,7 @@ function liftListItems(): Command {
 
         if (
           !range ||
-          ![state.schema.nodes.listItem].includes(sel.$from.parent.type)
+          ![getNodeType(state, 'listItem')].includes(sel.$from.parent.type)
         ) {
           return false;
         }
@@ -419,7 +426,8 @@ export function indentList(type: NodeType) {
     const range = tr.selection.$from.blockRange(
       tr.selection.$to,
       (node) =>
-        node.childCount > 0 && node.firstChild!.type === schema.nodes.listItem,
+        node.childCount > 0 &&
+        node.firstChild!.type === getNodeType(schema, 'listItem'),
     );
 
     if (
@@ -458,7 +466,7 @@ export function indentList(type: NodeType) {
   ) {
     let listItem = type;
     if (!listItem) {
-      ({ listItem } = state.schema.nodes);
+      listItem = getNodeType(state, 'listItem');
     }
 
     if (isInsideListItem(listItem)(state)) {
@@ -483,7 +491,7 @@ export function outdentList(type: NodeType): Command {
   return function (state, dispatch, view) {
     let listItem = type;
     if (!listItem) {
-      ({ listItem } = state.schema.nodes);
+      listItem = getNodeType(state, 'listItem');
     }
     const { $from, $to } = state.selection;
     if (!isInsideListItem(listItem)(state)) {
@@ -643,7 +651,7 @@ export function enterKeyCommand(type: NodeType): Command {
       const { $from } = selection;
       let listItem = type;
       if (!listItem) {
-        ({ listItem } = state.schema.nodes);
+        listItem = getNodeType(state, 'listItem');
       }
       const { codeBlock } = state.schema.nodes;
 
@@ -660,7 +668,7 @@ export function enterKeyCommand(type: NodeType): Command {
             isNodeTodo(grandParent, state.schema) &&
             !isNodeTodo(wrapper, state.schema)
           ) {
-            return outdentList(state.schema.nodes.listItem)(
+            return outdentList(getNodeType(state, 'listItem'))(
               state,
               dispatch,
               view,
@@ -668,7 +676,7 @@ export function enterKeyCommand(type: NodeType): Command {
           } else {
             return outdentList(listItem)(state, dispatch, view);
           }
-        } else if (!hasParentNodeOfType(codeBlock)(selection)) {
+        } else if (!codeBlock || !hasParentNodeOfType(codeBlock)(selection)) {
           return splitListItem(listItem, (node) => {
             if (!isNodeTodo(node, state.schema)) {
               return node.attrs;
@@ -865,7 +873,7 @@ function deletePreviousEmptyListItem(type: NodeType): Command {
     const { $from } = state.selection;
     let listItem = type;
     if (!listItem) {
-      ({ listItem } = state.schema.nodes);
+      listItem = getNodeType(state, 'listItem');
     }
     const $cut = findCutBefore($from);
     if (!$cut || !$cut.nodeBefore || !($cut.nodeBefore.type === listItem)) {
@@ -916,9 +924,8 @@ export function moveEdgeListItem(
     let listItem = type;
 
     if (!listItem) {
-      ({ listItem } = state.schema.nodes);
+      listItem = getNodeType(state, 'listItem');
     }
-
     if (!state.selection.empty) {
       return false;
     }

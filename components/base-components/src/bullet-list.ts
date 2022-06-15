@@ -9,20 +9,19 @@ import {
   EditorState,
   keymap,
   Node,
-  Schema,
   wrappingInputRule,
 } from '@bangle.dev/pm';
 import { parentHasDirectParentOfType } from '@bangle.dev/pm-commands';
-import { createObject } from '@bangle.dev/utils';
+import { createObject, getNodeType } from '@bangle.dev/utils';
 
-import { toggleList } from './list-item/commands';
-import { listIsTight } from './list-item/list-is-tight';
+import { toggleList } from './list-commands';
+import { listIsTight } from './list-is-tight';
 import {
   isNodeTodo,
   removeTodo,
   setTodo,
   wrappingInputRuleForTodo,
-} from './list-item/todo';
+} from './list-todo';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -36,8 +35,6 @@ export const defaultKeys = {
 };
 
 const name = 'bulletList';
-
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 function specFactory(): RawSpecs {
   return {
@@ -80,7 +77,7 @@ function pluginsFactory({
   keybindings = defaultKeys,
 } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     return [
       keybindings &&
@@ -107,11 +104,10 @@ function pluginsFactory({
 
 export function toggleBulletList(): Command {
   const handleBulletLists: Command = (state, dispatch, view) =>
-    toggleList(state.schema.nodes.bulletList, state.schema.nodes.listItem)(
-      state,
-      dispatch,
-      view,
-    );
+    toggleList(
+      getNodeType(state, 'bulletList'),
+      getNodeType(state, 'listItem'),
+    )(state, dispatch, view);
 
   return chainCommands(removeTodo, handleBulletLists);
 }
@@ -119,8 +115,8 @@ export function toggleBulletList(): Command {
 export function toggleTodoList(): Command {
   const fallback: Command = (state, dispatch, view) =>
     toggleList(
-      state.schema.nodes.bulletList,
-      state.schema.nodes.listItem,
+      getNodeType(state, 'bulletList'),
+      getNodeType(state, 'listItem'),
       true,
     )(state, dispatch, view);
 
@@ -129,9 +125,8 @@ export function toggleTodoList(): Command {
 
 export function queryIsBulletListActive() {
   return (state: EditorState) => {
-    const { schema } = state;
-    return parentHasDirectParentOfType(schema.nodes['listItem'], [
-      schema.nodes['bulletList'],
+    return parentHasDirectParentOfType(getNodeType(state, 'listItem'), [
+      getNodeType(state, 'bulletList'),
     ])(state);
   };
 }
@@ -141,8 +136,8 @@ export function queryIsTodoListActive() {
     const { schema } = state;
 
     return (
-      parentHasDirectParentOfType(schema.nodes['listItem'], [
-        schema.nodes['bulletList'],
+      parentHasDirectParentOfType(getNodeType(state, 'listItem'), [
+        getNodeType(state, 'bulletList'),
       ])(state) && isNodeTodo(state.selection.$from.node(-1), schema)
     );
   };

@@ -1,5 +1,5 @@
 {
-  "name": "@bangle.dev/test-helpers",
+  "name": "@bangle.dev/shared-types",
   "version": "0.29.1-alpha.0",
   "homepage": "https://bangle.dev",
   "authors": [
@@ -9,13 +9,7 @@
       "web": "http://github.com/kepta"
     }
   ],
-  "type": "module",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/index.cjs"
-  },
+  "types": "./src/index.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,26 +18,14 @@
   "bugs": {
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
-  "scripts": {
-    "unit-tests": "yarn jest",
-    "compile-ts": "yarn g:tsc --build $INIT_CWD",
-    "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
-  },
   "dependencies": {
-    "@bangle.dev/core": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^27.0.4",
-    "@types/markdown-it": "^12.0.3",
-    "@types/prettier": "^2.6.3",
-    "markdown-it": "^10.0.0",
-    "prettier": "^2.6.2",
     "prosemirror-markdown": "^1.9.1"
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.cjs",
-    "module": "dist/index.js",
     "types": "dist/index.d.ts"
   }
 }

@@ -31,7 +31,7 @@ export function listItemNodeViewPlugin(name: string) {
     }
 
     const checkbox = createCheckbox(
-      attrs.todoChecked,
+      attrs['todoChecked'],
       (newValue: boolean | null) => {
         updateAttrs({
           // Fetch latest attrs as the one in outer
@@ -89,7 +89,7 @@ export function listItemNodeViewPlugin(name: string) {
     contentDOM: ['span', {}],
     renderHandlers: {
       create: (instance, { attrs, updateAttrs, getPos, view }) => {
-        const todoChecked = attrs.todoChecked;
+        const todoChecked = attrs['todoChecked'];
 
         // branch if todo needs to be created
         if (todoChecked != null) {

@@ -33,8 +33,10 @@ function insertParagraph(tokens: Token[]) {
   return tokens.flatMap((token) => {
     if (['th_open', 'td_open'].includes(token.type)) {
       if (token.attrs) {
-        const [, style] = token.attrs[0];
-        (token as any).align = style.split(':')[1];
+        const [, style] = token.attrs[0] || [];
+        if (style) {
+          (token as any).align = style.split(':')[1];
+        }
       }
       return [token, new Token('paragraph_open', 'p', 1)];
     }

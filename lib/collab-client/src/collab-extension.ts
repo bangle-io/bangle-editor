@@ -39,7 +39,6 @@ type CollabConnectionObj = {
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
 
-export const spec = specFactory;
 export const plugins = pluginsFactory;
 export const commands = {};
 
@@ -50,15 +49,6 @@ export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
 export const getCollabSettings = (state: EditorState) => {
   return collabSettingsKey.getState(state);
 };
-
-const name = 'collab_extension';
-
-function specFactory(_opts = {}) {
-  return {
-    name,
-    type: 'component',
-  };
-}
 
 type OnFatalError = (error: CollabError) => boolean;
 

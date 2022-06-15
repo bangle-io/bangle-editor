@@ -1,5 +1,5 @@
 import { EditorView } from '@bangle.dev/pm';
-import { browser } from '@bangle.dev/utils';
+import { assertNotUndefined, browser } from '@bangle.dev/utils';
 // So the basic editing operations are not handled
 // by PM actively and instead it waits for the browser
 // to do its thing and then sync it with its view.
@@ -76,6 +76,7 @@ export function sendKeyToPm(editorView: EditorView, keys: string) {
   const altKey = parts.indexOf('Alt') !== -1;
   const key = parts[parts.length - 1];
 
+  assertNotUndefined(key, 'key should not be undefined');
   // all of the browsers are using the same keyCode for alphabetical keys
   // and it's the uppercased character code in real world
   const code = keyCodes[key] ? keyCodes[key] : key.toUpperCase().charCodeAt(0);

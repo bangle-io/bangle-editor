@@ -11,6 +11,7 @@ import {
   toggleMark,
 } from '@bangle.dev/pm';
 import {
+  assertNotUndefined,
   createObject,
   filter,
   isMarkActiveInSelection,
@@ -30,8 +31,17 @@ export const defaultKeys = {
 
 const name = 'code';
 
-const getTypeFromSchema = (schema: Schema) => schema.marks[name];
-const getTypeFromState = (state: EditorState) => state.schema.marks[name];
+const getTypeFromSchema = (schema: Schema) => {
+  const markType = schema.marks[name];
+  assertNotUndefined(markType, `markType ${name} not found`);
+  return markType;
+};
+
+const getTypeFromState = (state: EditorState) => {
+  const markType = state.schema.marks[name];
+  assertNotUndefined(markType, `markType ${name} not found`);
+  return markType;
+};
 
 function specFactory(): RawSpecs {
   return {
@@ -115,7 +125,7 @@ const posHasCode = (state: EditorState, pos: number) => {
 };
 
 var moveRight: Command = (state, dispatch) => {
-  const { code } = state.schema.marks;
+  const code = getTypeFromState(state);
   const $cursor = (state.selection as TextSelection).$cursor!;
 
   let storedMarks = state.tr.storedMarks;
@@ -232,12 +242,15 @@ var moveLeft: Command = (state, dispatch) => {
 };
 
 function backticksFor(node: Node, side: number) {
-  let ticks = /`+/g,
-    m,
-    len = 0;
+  let ticks = /`+/g;
+  let m: RegExpExecArray | null;
+  let len = 0;
   if (node.isText) {
     while ((m = ticks.exec(node.text!))) {
-      len = Math.max(len, m[0].length);
+      let res = m[0];
+      if (typeof res === 'string') {
+        len = Math.max(len, res.length);
+      }
     }
   }
   let result = len > 0 && side > 0 ? ' `' : '`';
@@ -267,11 +280,19 @@ function markActive(state: EditorState, mark: MarkType) {
 }
 
 export function toggleCode(): Command {
-  return (state, dispatch) =>
-    toggleMark(state.schema.marks[name])(state, dispatch);
+  return (state, dispatch) => {
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return toggleMark(markType)(state, dispatch);
+  };
 }
 
 export function queryIsCodeActive() {
-  return (state: EditorState) =>
-    isMarkActiveInSelection(state.schema.marks[name])(state);
+  return (state: EditorState) => {
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return isMarkActiveInSelection(markType)(state);
+  };
 }

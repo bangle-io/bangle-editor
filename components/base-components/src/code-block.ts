@@ -7,7 +7,6 @@ import {
   EditorState,
   keymap,
   Node,
-  Schema,
   setBlockType,
   textblockTypeInputRule,
 } from '@bangle.dev/pm';
@@ -16,6 +15,8 @@ import {
   createObject,
   filter,
   findParentNodeOfType,
+  getNodeType,
+  getParaNodeType,
   insertEmpty,
 } from '@bangle.dev/utils';
 
@@ -33,7 +34,6 @@ export const defaultKeys = {
 };
 
 const name = 'codeBlock';
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 function specFactory(): RawSpecs {
   return {
@@ -54,7 +54,7 @@ function specFactory(): RawSpecs {
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {
-        state.write('```' + (node.attrs.language || '') + '\n');
+        state.write('```' + (node.attrs['language'] || '') + '\n');
         state.text(node.textContent, false);
         state.ensureNewLine();
         state.write('```');
@@ -77,7 +77,7 @@ function pluginsFactory({
   keybindings = defaultKeys,
 } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     return [
       markdownShortcut && textblockTypeInputRule(/^```$/, type),
@@ -93,14 +93,14 @@ function pluginsFactory({
               keybindings.insertEmptyParaAbove,
               filter(
                 queryIsCodeActiveBlock(),
-                insertEmpty(schema.nodes.paragraph, 'above', false),
+                insertEmpty(getParaNodeType(schema), 'above', false),
               ),
             ],
             [
               keybindings.insertEmptyParaBelow,
               filter(
                 queryIsCodeActiveBlock(),
-                insertEmpty(schema.nodes.paragraph, 'below', false),
+                insertEmpty(getParaNodeType(schema), 'below', false),
               ),
             ],
           ]),
@@ -111,7 +111,7 @@ function pluginsFactory({
 
 export function queryIsCodeActiveBlock() {
   return (state: EditorState) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getNodeType(state, name);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }

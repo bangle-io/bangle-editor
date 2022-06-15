@@ -8,6 +8,7 @@ import {
   toggleMark,
 } from '@bangle.dev/pm';
 import {
+  assertNotUndefined,
   createObject,
   isMarkActiveInSelection,
   markInputRule,
@@ -26,8 +27,11 @@ export const defaultKeys = {
 
 const name = 'bold';
 
-const getTypeFromSchema = (schema: Schema) => schema.marks[name];
-
+const getTypeFromSchema = (schema: Schema) => {
+  const markType = schema.marks[name];
+  assertNotUndefined(markType, `markType ${name} not found`);
+  return markType;
+};
 function specFactory(): RawSpecs {
   return {
     type: 'mark',
@@ -88,11 +92,17 @@ function pluginsFactory({
 
 export function toggleBold(): Command {
   return (state, dispatch, _view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch);
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return toggleMark(markType)(state, dispatch);
   };
 }
 
 export function queryIsBoldActive() {
-  return (state: EditorState) =>
-    isMarkActiveInSelection(state.schema.marks[name])(state);
+  return (state: EditorState) => {
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+    return isMarkActiveInSelection(markType)(state);
+  };
 }

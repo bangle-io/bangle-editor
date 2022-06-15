@@ -1,6 +1,9 @@
-import type { MarkdownSerializerState } from 'prosemirror-markdown';
-
-import { Mark, MarkSpec, Node, NodeSpec, Schema } from '@bangle.dev/pm';
+import { MarkSpec, NodeSpec, Schema } from '@bangle.dev/pm';
+import type {
+  MarkdownParser,
+  MarkdownSerializer,
+  UnnestObjValue,
+} from '@bangle.dev/shared-types';
 import { bangleWarn } from '@bangle.dev/utils';
 
 import * as doc from './doc';
@@ -10,7 +13,7 @@ import * as text from './text';
 const LOG = false;
 let log = LOG ? console.log.bind(console, 'SpecRegistry') : () => {};
 
-type PMSpec = NodeSpec | MarkSpec;
+export type BaseSpec = BaseRawNodeSpec | BaseRawMarkSpec;
 
 export interface BaseRawNodeSpec {
   name: string;
@@ -18,15 +21,8 @@ export interface BaseRawNodeSpec {
   topNode?: boolean;
   schema: NodeSpec;
   markdown?: {
-    toMarkdown: (
-      state: MarkdownSerializerState,
-      node: Node,
-      parent: Node,
-      index: number,
-    ) => void;
-    parseMarkdown?: {
-      [key: string]: any;
-    };
+    toMarkdown: UnnestObjValue<MarkdownSerializer['nodes']>;
+    parseMarkdown?: MarkdownParser['tokens'];
   };
   options?: { [k: string]: any };
 }
@@ -36,30 +32,8 @@ export interface BaseRawMarkSpec {
   type: 'mark';
   schema: MarkSpec;
   markdown?: {
-    toMarkdown: {
-      open:
-        | string
-        | ((
-            _state: MarkdownSerializerState,
-            mark: Mark,
-            parent: Node,
-            index: number,
-          ) => void);
-      close:
-        | string
-        | ((
-            _state: MarkdownSerializerState,
-            mark: Mark,
-            parent: Node,
-            index: number,
-          ) => void);
-      mixable?: boolean;
-      escape?: boolean;
-      expelEnclosingWhitespace?: boolean;
-    };
-    parseMarkdown?: {
-      [k: string]: any;
-    };
+    toMarkdown: UnnestObjValue<MarkdownSerializer['marks']>;
+    parseMarkdown?: MarkdownParser['tokens'];
   };
   options?: { [k: string]: any };
 }
@@ -73,16 +47,16 @@ export type RawSpecs =
   | RawSpecs[];
 
 export class SpecRegistry<N extends string = any, M extends string = any> {
-  _spec: PMSpec[];
-  _schema: Schema<N, M>;
   _options: { [key: string]: any };
+  _schema: Schema<N, M>;
+  _spec: BaseSpec[];
 
   constructor(rawSpecs: RawSpecs = [], { defaultSpecs = true } = {}) {
     let flattenedSpecs = flatten(rawSpecs);
 
     flattenedSpecs.forEach(validateSpec);
 
-    const names = new Set(flattenedSpecs.map((r: PMSpec) => r.name));
+    const names = new Set(flattenedSpecs.map((r) => r.name));
 
     if (flattenedSpecs.length !== names.size) {
       bangleWarn(
@@ -93,7 +67,7 @@ export class SpecRegistry<N extends string = any, M extends string = any> {
     }
 
     if (defaultSpecs) {
-      const defaultSpecsArray: RawSpecs[] = [];
+      const defaultSpecsArray: BaseSpec[] = [];
       if (!names.has('paragraph')) {
         defaultSpecsArray.unshift(paragraph.spec());
       }
@@ -103,7 +77,7 @@ export class SpecRegistry<N extends string = any, M extends string = any> {
       if (!names.has('doc')) {
         defaultSpecsArray.unshift(doc.spec());
       }
-      flattenedSpecs = [...flatten(defaultSpecsArray), ...flattenedSpecs];
+      flattenedSpecs = [...defaultSpecsArray, ...flattenedSpecs];
     }
 
     this._spec = flattenedSpecs;
@@ -129,20 +103,20 @@ export class SpecRegistry<N extends string = any, M extends string = any> {
 }
 
 function createSchema(specRegistry: SpecRegistry['_spec']) {
-  let nodes = [];
-  let marks = [];
+  let nodes: Array<[string, NodeSpec]> = [];
+  let marks: Array<[string, MarkSpec]> = [];
   let topNode;
   for (const spec of specRegistry) {
     if (spec.type === 'node') {
       nodes.push([spec.name, spec.schema]);
+      if (spec.topNode === true) {
+        topNode = spec.name;
+      }
     } else if (spec.type === 'mark') {
       marks.push([spec.name, spec.schema]);
-    } else if (spec.type === 'component') {
     } else {
-      throw new Error(spec.name + ' unknown type: ' + spec.type);
-    }
-    if (spec.topNode === true) {
-      topNode = spec.name;
+      let r: any = spec;
+      throw new Error('Unknown type: ' + r.type);
     }
   }
 
@@ -153,12 +127,12 @@ function createSchema(specRegistry: SpecRegistry['_spec']) {
   });
 }
 
-function validateSpec(spec: any) {
+function validateSpec(spec: BaseSpec) {
   if (!spec.name) {
     bangleWarn("The spec didn't have a name field", spec);
     throw new Error('Invalid spec. Spec must have a name');
   }
-  if (!['node', 'mark', 'component'].includes(spec.type)) {
+  if (!['node', 'mark'].includes(spec.type)) {
     bangleWarn('The spec must be of type node, mark or component ', spec);
     throw new Error('Invalid spec type');
   }
@@ -171,13 +145,19 @@ function validateSpec(spec: any) {
   }
 }
 
-function flatten(data: RawSpecs): PMSpec[] {
-  const recurse = (d: RawSpecs): PMSpec[] => {
+function flatten(data: RawSpecs): BaseSpec[] {
+  const recurse = (d: RawSpecs): BaseSpec[] => {
     if (Array.isArray(d)) {
-      return d.flatMap((i) => recurse(i)).filter(Boolean);
+      return d
+        .flatMap((i) => recurse(i))
+        .filter((r): r is BaseSpec => Boolean(r));
     }
-    // @ts-ignore really hard to annotate recursive functions
-    return d;
+
+    if (d == null || d === false) {
+      return [];
+    }
+
+    return [d];
   };
 
   return recurse(data);

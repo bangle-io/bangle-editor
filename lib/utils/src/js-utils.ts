@@ -1,5 +1,15 @@
 import { isProdEnv, isTestEnv } from './environment';
 
+// Throws an abort error if a signal is already aborted.
+export function assertNotUndefined(
+  value: unknown,
+  message: string,
+): asserts value {
+  if (value === undefined) {
+    throw new Error(`assertion failed: ${message}`);
+  }
+}
+
 /**
  * @param {Function} fn - A unary function whose paramater is non-primitive,
  *                        so that it can be cached using WeakMap
@@ -54,7 +64,7 @@ export function matchAllPlus(regexp: RegExp, str: string): MatchType[] {
   let match: RegExpExecArray | null;
   while ((match = regexp.exec(str))) {
     const curStart = match.index;
-    const curEnd = curStart + match[0].length;
+    const curEnd = curStart + match[0]!.length;
     if (prevElementEnd !== curStart) {
       result.push(new MatchType(prevElementEnd, curStart, false, str));
     }
@@ -66,7 +76,7 @@ export function matchAllPlus(regexp: RegExp, str: string): MatchType[] {
   }
 
   const lastItemEnd =
-    result[result.length - 1] && result[result.length - 1].end;
+    result[result.length - 1] && result[result.length - 1]!.end;
 
   if (lastItemEnd && lastItemEnd !== str.length) {
     result.push(new MatchType(lastItemEnd, str.length, false, str));
@@ -219,7 +229,9 @@ export function simpleLRU<K = any, V = any>(size: number) {
         this.set(key, result.value); // put the item in the front
         return result.value;
       }
+      return undefined;
     },
+
     set(key: K, value: V) {
       this.remove(key);
       array.push({ key, value });

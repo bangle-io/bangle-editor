@@ -5,7 +5,7 @@
 import { psx, sendKeyToPm, typeText } from '@bangle.dev/test-helpers';
 
 import { listItem } from '../src/index';
-import { siblingsAndNodesBetween } from '../src/list-item/todo';
+import { siblingsAndNodesBetween } from '../src/list-todo';
 import { defaultTestEditor } from './test-editor';
 
 const testEditor = defaultTestEditor();

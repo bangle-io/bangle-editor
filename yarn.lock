@@ -1511,12 +1511,12 @@ __metadata:
   dependencies:
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/pm-commands": "workspace:*"
+    "@bangle.dev/shared-types": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
     "@types/jest": ^27.0.4
     "@types/markdown-it": ^12.0.3
     markdown-it: ^10.0.0
     prettier: ^2.6.2
-    prosemirror-markdown: ^1.9.1
   peerDependencies:
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -1795,6 +1795,17 @@ __metadata:
   peerDependencies:
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
+  languageName: unknown
+  linkType: soft
+
+"@bangle.dev/shared-types@workspace:*, @bangle.dev/shared-types@workspace:lib/shared-types":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/shared-types@workspace:lib/shared-types"
+  dependencies:
+    "@bangle.dev/pm": "workspace:*"
+    "@bangle.dev/pm-commands": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
+    prosemirror-markdown: ^1.9.1
   languageName: unknown
   linkType: soft
 

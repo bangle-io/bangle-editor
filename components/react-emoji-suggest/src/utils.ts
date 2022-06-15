@@ -12,7 +12,7 @@ export function coordsToCounter(
   const groups = flattenEmojiGroups(namedGroups);
   let counter = 0;
   for (let i = 0; i < coords[0]; i++) {
-    counter += groups[i].length;
+    counter += groups[i]!.length;
   }
   counter += coords[1];
 
@@ -27,12 +27,14 @@ function counterToCoords(counter: number, namedGroups: EmojiGroupType) {
   }
 
   for (let i = 0; i < groups.length; i++) {
-    const size = groups[i].length;
+    const size = groups[i]!.length;
     if (normalizedCounter < size) {
       return [i, normalizedCounter];
     }
     normalizedCounter = normalizedCounter - size;
   }
+
+  return;
 }
 
 export function resolveCounter(counter: number, namedGroups: EmojiGroupType) {
@@ -41,7 +43,7 @@ export function resolveCounter(counter: number, namedGroups: EmojiGroupType) {
     return emptyValue;
   }
   const groups = flattenEmojiGroups(namedGroups);
-  return { item: groups[coords[0]][coords[1]], coords: coords };
+  return { item: groups[coords[0]!]![coords[1]!], coords: coords };
 }
 
 /**
@@ -112,14 +114,14 @@ export function jumpRow(
   }
 
   const groups = flattenEmojiGroups(namedGroups);
-  const groupIndex = coords[0];
-  const itemIndex = coords[1];
-  const groupSize = groups[groupIndex].length;
+  const groupIndex = coords[0]!;
+  const itemIndex = coords[1]!;
+  const groupSize = groups[groupIndex]!.length;
   const newIndex = direction === 1 ? itemIndex + jump : itemIndex - jump;
 
   if (newIndex < groupSize && newIndex >= 0) {
     return {
-      item: groups[groupIndex][newIndex],
+      item: groups[groupIndex]![newIndex],
       coords: [groupIndex, newIndex],
     };
   }
@@ -134,7 +136,7 @@ export function jumpRow(
     return emptyValue;
   }
 
-  const nextGroup = groups[nextGroupIndex];
+  const nextGroup = groups[nextGroupIndex]!;
   const nextItemIndex = direction === 1 ? 0 : nextGroup.length - 1;
 
   const item = nextGroup[nextItemIndex];

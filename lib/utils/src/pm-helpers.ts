@@ -16,6 +16,7 @@ import {
   Transaction,
 } from '@bangle.dev/pm';
 
+import { assertNotUndefined } from './js-utils';
 import {
   findParentNode,
   findSelectedNodeOfType,
@@ -361,6 +362,7 @@ export const sanitiseSelectionMarksForWrapping = (
           );
         }
       });
+      return;
     },
     from,
   );
@@ -532,6 +534,8 @@ export function findFirstMarkPosition(
         end: pos + Math.max(node.textContent.length, 1),
       };
     }
+
+    return;
   });
 
   return markPos;
@@ -582,4 +586,33 @@ export function extendDispatch(
       dispatch(tr);
     })
   );
+}
+
+/**
+ * Gets the node type from the schema
+ * Warning: This will throw if the node type is not found
+ * @param arg
+ * @param name
+ * @returns
+ */
+export function getNodeType(arg: Schema | EditorState, name: string): NodeType {
+  const nodeType =
+    arg instanceof EditorState ? arg.schema.nodes[name] : arg.nodes[name];
+  assertNotUndefined(nodeType, `nodeType ${name} not found`);
+  return nodeType;
+}
+/**
+ * Gets the paragraph node type from the schema
+ * Warning: This will throw if the node type is not found
+ * @param arg
+ * @param name
+ * @returns
+ */
+export function getParaNodeType(arg: Schema | EditorState): NodeType {
+  const nodeType =
+    arg instanceof EditorState
+      ? arg.schema.nodes['paragraph']
+      : arg.nodes['paragraph'];
+  assertNotUndefined(nodeType, `nodeType paragraph not found`);
+  return nodeType;
 }

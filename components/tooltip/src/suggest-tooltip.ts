@@ -12,6 +12,7 @@ import {
   Selection,
 } from '@bangle.dev/pm';
 import {
+  assertNotUndefined,
   createObject,
   filter,
   findFirstMarkPosition,
@@ -71,7 +72,7 @@ function specFactory({
           'span',
           {
             'data-bangle-name': markName,
-            'data-suggest-trigger': mark.attrs.trigger,
+            'data-suggest-trigger': mark.attrs['trigger'],
             'style': `color: ${markColor}`,
           },
         ];
@@ -196,6 +197,8 @@ function pluginsFactory({
           ...tooltipRenderOpts,
           getReferenceElement: referenceElement((state: EditorState) => {
             const markType = schema.marks[markName];
+            assertNotUndefined(markType, `markType ${markName} not found`);
+
             const { selection } = state;
             return findFirstMarkPosition(
               markType,
@@ -272,6 +275,8 @@ function tooltipController({
             return;
           }
           const markType = state.schema.marks[markName];
+          assertNotUndefined(markType, `markType ${markName} not found`);
+
           if (
             lastState.doc.eq(state.doc) &&
             state.selection.eq(lastState && lastState.selection) &&
@@ -318,6 +323,8 @@ function isSuggestMarkActive(markName: string) {
     const { from, to } = state.selection;
 
     const markType = state.schema.marks[markName];
+    assertNotUndefined(markType, `markType ${markName} not found`);
+
     return state.doc.rangeHasMark(from - 1, to, markType);
   };
 }
@@ -374,6 +381,7 @@ function hideSuggestionsTooltip(key: PluginKey): Command {
 
 function getTriggerText(state: EditorState, markName: string, trigger: string) {
   const markType = state.schema.marks[markName];
+  assertNotUndefined(markType, `markType ${markName} not found`);
 
   const { nodeBefore } = state.selection.$from;
 
@@ -421,6 +429,8 @@ export function replaceSuggestMarkWith(
     const { markName } = key.getState(state);
     const { schema } = state;
     const markType = schema.marks[markName];
+    assertNotUndefined(markType, `markType ${markName} not found`);
+
     const { selection } = state;
     const queryMark = findFirstMarkPosition(
       markType,
@@ -503,6 +513,7 @@ export function removeSuggestMark(key: PluginKey): Command {
     const { markName } = key.getState(state);
     const { schema, selection } = state;
     const markType = schema.marks[markName];
+    assertNotUndefined(markType, `markType ${markName} not found`);
 
     const queryMark = findFirstMarkPosition(
       markType,

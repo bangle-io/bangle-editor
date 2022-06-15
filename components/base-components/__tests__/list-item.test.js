@@ -27,7 +27,7 @@ import {
   backspaceKeyCommand,
   enterKeyCommand,
   toggleList,
-} from '../src/list-item/commands';
+} from '../src/list-commands';
 import { defaultKeys as orderedListDefaultKeys } from '../src/ordered-list';
 import { defaultTestEditor } from './test-editor';
 

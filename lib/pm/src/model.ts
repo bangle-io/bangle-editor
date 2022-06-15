@@ -1,22 +1,24 @@
-export {
+export type {
   AttributeSpec,
-  ContentMatch,
   DOMOutputSpec,
+  MarkSpec,
+  NodeSpec,
+  ParseOptions,
+  ParseRule,
+  SchemaSpec,
+} from 'prosemirror-model';
+export {
+  ContentMatch,
   DOMParser,
   DOMSerializer,
   Fragment,
   Mark,
-  MarkSpec,
   MarkType,
   Node,
   NodeRange,
-  NodeSpec,
   NodeType,
-  ParseOptions,
-  ParseRule,
   ReplaceError,
   ResolvedPos,
   Schema,
-  SchemaSpec,
   Slice,
 } from 'prosemirror-model';

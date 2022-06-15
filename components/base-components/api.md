@@ -366,7 +366,7 @@ On top of the collapse commands, the component also exports the following helper
   Lists all the headings that are currently collapsed.
 
 - **flattenFragmentJSON**(fragmentJSON: Object): Object\
-  Deep flattens any nested collapsed heading in the object. Bangle internally uses this to implement `uncollapseAllHeadings` command. Example `flattenFragmentJSON(node.attrs.collapseContent)`.
+  Deep flattens any nested collapsed heading in the object. Bangle internally uses this to implement `uncollapseAllHeadings` command. Example `flattenFragmentJSON(node.attrs['collapseContent'])`.
 
 **Usage**
 

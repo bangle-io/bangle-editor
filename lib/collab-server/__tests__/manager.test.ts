@@ -135,7 +135,7 @@ test('handles push events', async () => {
   const managerId = body.managerId;
   expect(managerId).toBe(manager.managerId);
 
-  const version = manager.instances[docName]?.version;
+  const version = manager.getDocVersion(docName);
   const resp = await manager.handleRequest('push_events', {
     clientID: 'client-test-1',
     version: version,
@@ -180,7 +180,7 @@ test('correct error when push events have older version', async () => {
   });
   const managerId = manager.managerId;
 
-  const version = manager.instances[docName]!.version;
+  const version = manager.getDocVersion(docName);
 
   await manager.handleRequest('push_events', {
     clientID: 'client-test-1',
@@ -256,11 +256,11 @@ test('correct error when push events are newer version', async () => {
   });
   const managerId = manager.managerId;
 
-  const version = manager.instances[docName]!.version;
+  const version = manager.getDocVersion(docName);
 
   const resp = await manager.handleRequest('push_events', {
     clientID: 'client-test-1',
-    version: version + 1,
+    version: version! + 1,
     managerId,
     steps: [
       {
@@ -299,11 +299,11 @@ test('push_events : correct error when managerId are different version', async (
     userId: 'test-user-1',
   });
 
-  const version = manager.instances[docName]!.version;
+  const version = manager.getDocVersion(docName);
 
   const resp = await manager.handleRequest('push_events', {
     clientID: 'client-test-1',
-    version: version + 1,
+    version: version! + 1,
     managerId: 'something-else-1',
     steps: [
       {
@@ -345,10 +345,10 @@ test('pull_events: correct error when managerId are different version', async ()
     userId: 'test-user-1',
   });
 
-  const version = manager.instances[docName]!.version;
+  const version = manager.getDocVersion(docName);
 
   const resp = await manager.handleRequest('pull_events', {
-    version: version + 1,
+    version: version! + 1,
     managerId: 'something-else-1',
     docName: 'test-doc-1',
     userId: 'test-user-1',

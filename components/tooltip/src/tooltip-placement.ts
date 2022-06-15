@@ -103,9 +103,9 @@ function tooltipPlacement({
 
   class TooltipPlacementView {
     popperInstance: PopperInstance | null = null;
-    _view: EditorView;
-    _tooltip: HTMLElement;
     _scrollContainerDOM: HTMLElement;
+    _tooltip: HTMLElement;
+    _view: EditorView;
 
     constructor(view: EditorView) {
       this._view = view;

@@ -1,4 +1,4 @@
-import { Node, Schema, Step, StepMap } from '@bangle.dev/pm';
+import { Node, Step, StepMap } from '@bangle.dev/pm';
 
 import { CollabError } from './collab-error';
 
@@ -29,33 +29,48 @@ export class Instance {
     }
   }
 
-  steps: StepBigger[] = [];
-  lastActive = Date.now();
-  users = Object.create(null);
-  userCount = 0;
-  waiting: Array<Waiter> = [];
-  collecting: ReturnType<typeof setTimeout> | null = null;
-  lastModified = this.lastActive;
-  lastSavedVersion: number;
+  public lastActive = Date.now();
+  public userCount = 0;
+  public waiting: Array<Waiter> = [];
+  public abortController = new AbortController();
+
+  private _collecting: ReturnType<typeof setTimeout> | null = null;
+  private _lastSavedVersion: number;
+
+  private _steps: StepBigger[] = [];
+  private _users = Object.create(null);
 
   constructor(
     public docName: string,
-    public schema: Schema,
-    public doc: Node = schema.node('doc', {}, [
-      schema.node('paragraph', {}, [schema.text('Namaste!')]),
-    ]),
-    public scheduleSave: (final?: boolean) => void,
-    public created: number = Date.now(),
-    public collectUsersTimeout: number,
+    public doc: Node,
     public version: number = 0,
+    private _scheduleSave: (final?: boolean) => void,
+    private _collectUsersTimeout: number,
   ) {
-    this.lastSavedVersion = version;
+    this._lastSavedVersion = version;
     log('new instance', docName, version);
+
+    this.abortController.signal.addEventListener(
+      'abort',
+      () => {
+        if (this._collecting != null) {
+          clearTimeout(this._collecting);
+          this._collecting = null;
+          Instance.sendUpdates(this.waiting);
+          this._saveData(true);
+        }
+      },
+      { once: true },
+    );
   }
 
-  addEvents(version: number, steps: Step[], clientID: string) {
+  public abort() {
+    this.abortController.abort();
+  }
+
+  public addEvents(version: number, steps: Step[], clientID: string) {
     // TODO this checkversion is not covered
-    this.checkVersion(version);
+    this._checkVersion(version);
 
     const biggerSteps: StepBigger[] = steps.map((s) =>
       Object.assign(s, { clientID }),
@@ -82,20 +97,43 @@ export class Instance {
     }
     this.doc = doc;
     this.version += biggerSteps.length;
-    this.steps = this.steps.concat(biggerSteps);
-    if (this.steps.length > MAX_STEP_HISTORY) {
-      this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
+    this._steps = this._steps.concat(biggerSteps);
+    if (this._steps.length > MAX_STEP_HISTORY) {
+      this._steps = this._steps.slice(this._steps.length - MAX_STEP_HISTORY);
     }
     log(this.version, version, clientID);
     Instance.sendUpdates(this.waiting);
     if (!previousDoc.eq(this.doc)) {
-      this.saveData();
+      this._saveData();
     }
     return { version: this.version };
   }
 
+  // the current document version.
+  public getEvents(version: number) {
+    this._checkVersion(version);
+    let startIndex = this._steps.length - (this.version - version);
+    if (startIndex < 0) {
+      return false;
+    }
+
+    return {
+      steps: this._steps.slice(startIndex),
+      users: this.userCount,
+    };
+  }
+
+  // : (Number, Number)
+  public registerUser(userId: string) {
+    log('registerUser', [...Object.entries(this._users || {})]);
+    if (!(userId in this._users)) {
+      this._registerUser(userId);
+      Instance.sendUpdates(this.waiting);
+    }
+  }
+
   // document version.
-  checkVersion(version: any) {
+  private _checkVersion(version: any) {
     if (typeof version !== 'number') {
       throw new Error('version is not a number');
     }
@@ -105,12 +143,12 @@ export class Instance {
   }
 
   // Get events between a given document version and
-  collectUsers() {
+  private _collectUsers() {
     const oldUserCount = this.userCount;
-    this.users = Object.create(null);
+    this._users = Object.create(null);
     this.userCount = 0;
-    this.collecting = null;
-    log('collectUsers', [...Object.entries(this.users || {})]);
+    this._collecting = null;
+    log('collectUsers', [...Object.entries(this._users || {})]);
     log('waiting', [...this.waiting.map((r) => r.userId)]);
     for (const waiter of this.waiting) {
       this._registerUser(waiter.userId);
@@ -121,60 +159,28 @@ export class Instance {
     }
   }
 
-  // the current document version.
-  getEvents(version: number) {
-    this.checkVersion(version);
-    let startIndex = this.steps.length - (this.version - version);
-    if (startIndex < 0) {
-      return false;
+  // TODO when switching docs its a good idea to kill users
+  private _registerUser(userId: string) {
+    if (!(userId in this._users)) {
+      this._users[userId] = true;
+      this.userCount++;
+      if (this._collecting == null) {
+        this._collecting = setTimeout(
+          () => this._collectUsers(),
+          this._collectUsersTimeout,
+        );
+      }
     }
-
-    return {
-      steps: this.steps.slice(startIndex),
-      users: this.userCount,
-    };
+    log('_registerUser', [...Object.entries(this._users || {})]);
   }
 
-  // : (Number, Number)
-  registerUser(userId: string) {
-    log('registerUser', [...Object.entries(this.users || {})]);
-    if (!(userId in this.users)) {
-      this._registerUser(userId);
-      Instance.sendUpdates(this.waiting);
-    }
-  }
-
-  private saveData(final?: boolean) {
-    if (this.lastSavedVersion !== this.version) {
-      this.lastSavedVersion = this.version;
-      this.scheduleSave(final);
-    }
-  }
-
-  stop() {
-    if (this.collecting != null) {
-      clearTimeout(this.collecting);
-      this.collecting = null;
-      Instance.sendUpdates(this.waiting);
-      this.saveData(true);
+  private _saveData(final?: boolean) {
+    if (this._lastSavedVersion !== this.version) {
+      this._lastSavedVersion = this.version;
+      this._scheduleSave(final);
     }
   }
 
   // : (Number)
   // Check if a document version number relates to an existing
-
-  // TODO when switching docs its a good idea to kill users
-  _registerUser(userId: string) {
-    if (!(userId in this.users)) {
-      this.users[userId] = true;
-      this.userCount++;
-      if (this.collecting == null) {
-        this.collecting = setTimeout(
-          () => this.collectUsers(),
-          this.collectUsersTimeout,
-        );
-      }
-    }
-    log('_registerUser', [...Object.entries(this.users || {})]);
-  }
 }

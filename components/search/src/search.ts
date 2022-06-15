@@ -122,6 +122,7 @@ function findMatches(doc: Node, regex: RegExp | string, maxHighlights: number) {
         });
       }
     }
+    return;
   });
 
   return results;

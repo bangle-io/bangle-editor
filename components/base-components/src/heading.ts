@@ -8,7 +8,6 @@ import {
   Fragment,
   keymap,
   Node,
-  Schema,
   setBlockType,
   textblockTypeInputRule,
   TextSelection,
@@ -27,6 +26,8 @@ import {
   filter,
   findChildren,
   findParentNodeOfType,
+  getNodeType,
+  getParaNodeType,
   insertEmpty,
   NodeWithPos,
 } from '@bangle.dev/utils';
@@ -61,10 +62,9 @@ export const defaultKeys: { [index: string]: string | undefined } = {
 
 const name = 'heading';
 const defaultLevels = [1, 2, 3, 4, 5, 6];
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 const checkIsInHeading = (state: EditorState) => {
-  const type = getTypeFromSchema(state.schema);
+  const type = getNodeType(state, name);
   return findParentNodeOfType(type)(state.selection);
 };
 const parseLevel = (levelStr: string | number) => {
@@ -114,11 +114,11 @@ function specFactory({ levels = defaultLevels } = {}): RawSpecs {
         };
       }),
       toDOM: (node: Node) => {
-        const result: any = [`h${node.attrs.level}`, {}, 0];
+        const result: any = [`h${node.attrs['level']}`, {}, 0];
 
-        if (node.attrs.collapseContent) {
+        if (node.attrs['collapseContent']) {
           result[1]['data-bangle-attrs'] = JSON.stringify({
-            collapseContent: node.attrs.collapseContent,
+            collapseContent: node.attrs['collapseContent'],
           });
           result[1]['class'] = 'bangle-heading-collapsed';
         }
@@ -128,7 +128,7 @@ function specFactory({ levels = defaultLevels } = {}): RawSpecs {
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {
-        state.write(state.repeat('#', node.attrs.level) + ' ');
+        state.write(state.repeat('#', node.attrs['level']) + ' ');
         state.renderInline(node);
         state.closeBlock(node);
       },
@@ -156,7 +156,7 @@ function pluginsFactory({
 } = {}): RawPlugins {
   return ({ schema, specRegistry }) => {
     const { levels }: OptionsType = specRegistry.options[name];
-    const type = getTypeFromSchema(schema);
+    const type = getNodeType(schema, name);
 
     const levelBindings = Object.fromEntries(
       levels.map((level: number) => [
@@ -169,15 +169,15 @@ function pluginsFactory({
         keymap({
           ...levelBindings,
           ...createObject([
-            [keybindings.moveUp, moveNode(type, 'UP')],
-            [keybindings.moveDown, moveNode(type, 'DOWN')],
-            [keybindings.jumpToStartOfHeading, jumpToStartOfNode(type)],
-            [keybindings.jumpToEndOfHeading, jumpToEndOfNode(type)],
-            [keybindings.emptyCopy, copyEmptyCommand(type)],
-            [keybindings.emptyCut, cutEmptyCommand(type)],
-            [keybindings.insertEmptyParaAbove, insertEmptyParaAbove()],
-            [keybindings.insertEmptyParaBelow, insertEmptyParaBelow()],
-            [keybindings.toggleCollapse, toggleHeadingCollapse()],
+            [keybindings['moveUp'], moveNode(type, 'UP')],
+            [keybindings['moveDown'], moveNode(type, 'DOWN')],
+            [keybindings['jumpToStartOfHeading'], jumpToStartOfNode(type)],
+            [keybindings['jumpToEndOfHeading'], jumpToEndOfNode(type)],
+            [keybindings['emptyCopy'], copyEmptyCommand(type)],
+            [keybindings['emptyCut'], cutEmptyCommand(type)],
+            [keybindings['insertEmptyParaAbove'], insertEmptyParaAbove()],
+            [keybindings['insertEmptyParaBelow'], insertEmptyParaBelow()],
+            [keybindings['toggleCollapse'], toggleHeadingCollapse()],
           ]),
         }),
       ...(markdownShortcut ? levels : []).map((level: number) =>
@@ -196,15 +196,17 @@ function pluginsFactory({
 export function toggleHeading(level = 3): Command {
   return (state, dispatch) => {
     if (queryIsHeadingActive(level)(state)) {
-      return setBlockType(state.schema.nodes.paragraph)(state, dispatch);
+      const para = getParaNodeType(state);
+
+      return setBlockType(para)(state, dispatch);
     }
-    return setBlockType(state.schema.nodes[name], { level })(state, dispatch);
+    return setBlockType(getNodeType(state, name), { level })(state, dispatch);
   };
 }
 
 export function queryIsHeadingActive(level: number) {
   return (state: EditorState) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
     if (!match) {
@@ -214,13 +216,13 @@ export function queryIsHeadingActive(level: number) {
     if (level == null) {
       return true;
     }
-    return node.attrs.level === level;
+    return node.attrs['level'] === level;
   };
 }
 
 export function queryIsCollapseActive() {
   return (state: EditorState) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -228,13 +230,13 @@ export function queryIsCollapseActive() {
       return false;
     }
 
-    return Boolean(match.node.attrs.collapseContent);
+    return Boolean(match.node.attrs['collapseContent']);
   };
 }
 
 export function collapseHeading(): Command {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -259,7 +261,7 @@ export function collapseHeading(): Command {
     let tr = state.tr.replaceWith(
       start,
       end,
-      state.schema.nodes[name].createChecked(
+      getNodeType(state, name).createChecked(
         {
           ...match.node.attrs,
           collapseContent: fragment.toJSON(),
@@ -282,7 +284,7 @@ export function collapseHeading(): Command {
 
 export function uncollapseHeading(): Command {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -298,14 +300,14 @@ export function uncollapseHeading(): Command {
 
     const frag = Fragment.fromJSON(
       state.schema,
-      match.node.attrs.collapseContent,
+      match.node.attrs['collapseContent'],
     );
 
     let tr = state.tr.replaceWith(
       match.pos,
       match.pos + match.node.nodeSize,
       Fragment.fromArray([
-        state.schema.nodes[name].createChecked(
+        getNodeType(state, name).createChecked(
           {
             ...match.node.attrs,
             collapseContent: null,
@@ -329,27 +331,23 @@ export function uncollapseHeading(): Command {
 
 export function insertEmptyParaAbove() {
   return filter(checkIsInHeading, (state, dispatch, view) => {
-    return insertEmpty(state.schema.nodes.paragraph, 'above', false)(
-      state,
-      dispatch,
-      view,
-    );
+    const para = getParaNodeType(state);
+
+    return insertEmpty(para, 'above', false)(state, dispatch, view);
   });
 }
 
 export function insertEmptyParaBelow() {
   return filter(checkIsInHeading, (state, dispatch, view) => {
-    return insertEmpty(state.schema.nodes.paragraph, 'below', false)(
-      state,
-      dispatch,
-      view,
-    );
+    const para = getParaNodeType(state);
+
+    return insertEmpty(para, 'below', false)(state, dispatch, view);
   });
 }
 
 export function toggleHeadingCollapse(): Command {
   return (state, dispatch) => {
-    const match = findParentNodeOfType(state.schema.nodes[name])(
+    const match = findParentNodeOfType(getNodeType(state, name))(
       state.selection,
     );
 
@@ -375,14 +373,14 @@ export function uncollapseAllHeadings(): Command {
     for (const { node, pos } of collapsibleNodes) {
       let baseFrag = Fragment.fromJSON(
         state.schema,
-        flattenFragmentJSON(node.attrs.collapseContent),
+        flattenFragmentJSON(node.attrs['collapseContent']),
       );
 
       tr = tr.replaceWith(
         offset + pos,
         offset + pos + node.nodeSize,
         Fragment.fromArray([
-          state.schema.nodes[name].createChecked(
+          getNodeType(state, name).createChecked(
             {
               ...node.attrs,
               collapseContent: null,
@@ -411,8 +409,8 @@ export function listCollapsedHeading(state: EditorState): NodeWithPos[] {
   return findChildren(
     state.doc,
     (node) =>
-      node.type === state.schema.nodes[name] &&
-      Boolean(node.attrs.collapseContent),
+      node.type === getNodeType(state, name) &&
+      Boolean(node.attrs['collapseContent']),
     false,
   );
 }
@@ -420,7 +418,7 @@ export function listCollapsedHeading(state: EditorState): NodeWithPos[] {
 export function listCollapsibleHeading(state: EditorState): NodeWithPos[] {
   return findChildren(
     state.doc,
-    (node) => node.type === state.schema.nodes[name],
+    (node) => node.type === getNodeType(state, name),
     false,
   );
 }
@@ -432,12 +430,12 @@ interface JSONObject {
 export const flattenFragmentJSON = (fragJSON: JSONObject[]) => {
   let result: JSONObject[] = [];
   fragJSON.forEach((nodeJSON: JSONObject) => {
-    if (nodeJSON.type === 'heading' && nodeJSON.attrs.collapseContent) {
-      const collapseContent = nodeJSON.attrs.collapseContent;
+    if (nodeJSON['type'] === 'heading' && nodeJSON['attrs'].collapseContent) {
+      const collapseContent = nodeJSON['attrs'].collapseContent;
       result.push({
         ...nodeJSON,
         attrs: {
-          ...nodeJSON.attrs,
+          ...nodeJSON['attrs'],
           collapseContent: null,
         },
       });
@@ -480,7 +478,7 @@ function findCollapseFragment(matchNode: Node, doc: Node) {
       return false;
     }
 
-    if (node.attrs.level <= matchNode.attrs.level) {
+    if (node.attrs['level'] <= matchNode.attrs['level']) {
       return true;
     }
 

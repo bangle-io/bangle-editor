@@ -22,17 +22,18 @@ function specFactory(): BaseRawNodeSpec {
     markdown: {
       toMarkdown(state, node) {
         state.write('---\n');
-        state.text(node.attrs.data, false);
+        state.text(node.attrs['data'], false);
         state.write('\n---');
         state.closeBlock(node);
       },
       parseMarkdown: {
         front_matter: {
           block: name,
-          getAttrs: (tok: any) => {
+          getAttrs: (tok) => {
             if (typeof tok.meta === 'string') {
               return { data: tok.meta };
             }
+            return null;
           },
           noCloseToken: true,
         },
@@ -44,7 +45,7 @@ function specFactory(): BaseRawNodeSpec {
     ...spec.schema,
     ...domSerializationHelpers(name, {
       tag: 'div',
-      content: (node) => node.attrs.data,
+      content: (node) => node.attrs['data'],
       parsingPriority: 52,
     }),
   };

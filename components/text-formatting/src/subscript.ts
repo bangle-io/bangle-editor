@@ -1,7 +1,11 @@
 import type { BaseRawMarkSpec, RawPlugins } from '@bangle.dev/core';
 import type { Command, Schema } from '@bangle.dev/pm';
 import { keymap, toggleMark } from '@bangle.dev/pm';
-import { createObject, isMarkActiveInSelection } from '@bangle.dev/utils';
+import {
+  assertNotUndefined,
+  createObject,
+  isMarkActiveInSelection,
+} from '@bangle.dev/utils';
 
 export const spec = specFactory;
 export const plugins = pluginsFactory;
@@ -40,10 +44,18 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
 
 export function toggleSubscript(): Command {
   return (state, dispatch, view) => {
-    return toggleMark(state.schema.marks[name])(state, dispatch);
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return toggleMark(markType)(state, dispatch);
   };
 }
 
 export function queryIsSubscriptActive(): Command {
-  return (state) => isMarkActiveInSelection(state.schema.marks[name])(state);
+  return (state) => {
+    const markType = state.schema.marks[name];
+    assertNotUndefined(markType, `markType ${name} not found`);
+
+    return isMarkActiveInSelection(markType)(state);
+  };
 }

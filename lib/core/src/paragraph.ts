@@ -19,6 +19,8 @@ import {
   createObject,
   filter,
   findParentNodeOfType,
+  getNodeType,
+  getParaNodeType,
   insertEmpty,
 } from '@bangle.dev/utils';
 
@@ -50,7 +52,6 @@ export const defaultKeys = {
 };
 
 const name = 'paragraph';
-const getTypeFromSchema = (schema: Schema) => schema.nodes[name];
 
 function specFactory(): BaseRawNodeSpec {
   return {
@@ -83,9 +84,12 @@ function specFactory(): BaseRawNodeSpec {
 
 function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
   return ({ schema }) => {
-    const type = getTypeFromSchema(schema);
+    const type = getParaNodeType(schema);
     // Enables certain command to only work if paragraph is direct child of the `doc` node
-    const isTopLevel = parentHasDirectParentOfType(type, schema.nodes.doc);
+    const isTopLevel = parentHasDirectParentOfType(
+      type,
+      getNodeType(schema, 'doc'),
+    );
     return [
       keybindings &&
         keymap(
@@ -118,28 +122,28 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
 // Commands
 export function convertToParagraph(): Command {
   return (state, dispatch) =>
-    setBlockType(getTypeFromSchema(state.schema))(state, dispatch);
+    setBlockType(getParaNodeType(state))(state, dispatch);
 }
 
 export function queryIsTopLevelParagraph() {
   return (state: EditorState) => {
-    const type = getTypeFromSchema(state.schema);
-    return parentHasDirectParentOfType(type, state.schema.nodes.doc)(state);
+    const type = getParaNodeType(state);
+    return parentHasDirectParentOfType(type, getNodeType(state, 'doc'))(state);
   };
 }
 
 export function queryIsParagraph() {
   return (state: EditorState) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getParaNodeType(state);
     return Boolean(findParentNodeOfType(type)(state.selection));
   };
 }
 
 export function insertEmptyParagraphAbove(): Command {
   return (state, dispatch, view) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getParaNodeType(state);
     return filter(
-      parentHasDirectParentOfType(type, state.schema.nodes.doc),
+      parentHasDirectParentOfType(type, getNodeType(state, 'doc')),
       insertEmpty(type, 'above'),
     )(state, dispatch, view);
   };
@@ -147,9 +151,9 @@ export function insertEmptyParagraphAbove(): Command {
 
 export function insertEmptyParagraphBelow(): Command {
   return (state, dispatch, view) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getParaNodeType(state);
     return filter(
-      parentHasDirectParentOfType(type, state.schema.nodes.doc),
+      parentHasDirectParentOfType(type, getNodeType(state, 'doc')),
       insertEmpty(type, 'below'),
     )(state, dispatch, view);
   };
@@ -157,14 +161,14 @@ export function insertEmptyParagraphBelow(): Command {
 
 export function jumpToStartOfParagraph(): Command {
   return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getParaNodeType(state);
     return jumpToStartOfNode(type)(state, dispatch);
   };
 }
 
 export function jumpToEndOfParagraph(): Command {
   return (state, dispatch) => {
-    const type = getTypeFromSchema(state.schema);
+    const type = getParaNodeType(state);
     return jumpToEndOfNode(type)(state, dispatch);
   };
 }

@@ -84,13 +84,13 @@ function floatingMenu({
       ? keymap(
           createObject([
             [
-              keybindings.hide,
+              keybindings['hide'],
               filter(
                 queryIsSelectionTooltipActive(key),
                 hideSelectionTooltip(key),
               ),
             ],
-            [keybindings.toggleLink, toggleLinkSubMenu(key)],
+            [keybindings['toggleLink'], toggleLinkSubMenu(key)],
           ]),
         )
       : undefined,
@@ -155,6 +155,7 @@ function hasTextBetween(doc: Node, from: number, to: number) {
         return false;
       }
     }
+    return;
   });
   return found;
 }

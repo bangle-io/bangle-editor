@@ -7,12 +7,12 @@ import {
   Schema,
   Transaction,
 } from '@bangle.dev/pm';
-import { filter } from '@bangle.dev/utils';
+import { filter, getNodeType } from '@bangle.dev/utils';
 
 export const isNodeTodo = (node: Node, schema: Schema) => {
   return (
-    node.type === schema.nodes.listItem &&
-    typeof node.attrs.todoChecked === 'boolean'
+    node.type === getNodeType(schema, 'listItem') &&
+    typeof node.attrs['todoChecked'] === 'boolean'
   );
 };
 
@@ -54,7 +54,10 @@ export const setTodoCheckedAttr = (
   node: Node,
   pos: number,
 ) => {
-  if (node.type === schema.nodes.listItem && !isNodeTodo(node, schema)) {
+  if (
+    node.type === getNodeType(schema, 'listItem') &&
+    !isNodeTodo(node, schema)
+  ) {
     tr = tr.setNodeMarkup(
       pos,
       undefined,
@@ -122,7 +125,7 @@ export function wrappingInputRuleForTodo(
   getAttrs: Node['attrs'] | ((match: RegExpMatchArray) => Node['attrs']),
 ) {
   return new InputRule(regexp, function (state, match, start, end) {
-    const nodeType = state.schema.nodes.listItem;
+    const nodeType = getNodeType(state, 'listItem');
     var attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
     var tr = state.tr.delete(start, end);
     var $start = tr.doc.resolve(start),
@@ -135,7 +138,7 @@ export function wrappingInputRuleForTodo(
     var before = tr.doc.resolve(start - 1).nodeBefore;
     if (
       before &&
-      before.type === state.schema.nodes.bulletList &&
+      before.type === getNodeType(state, 'bulletList') &&
       canJoin(tr.doc, start - 1) &&
       before.lastChild &&
       // only join if before is todo
@@ -178,7 +181,8 @@ export function siblingsAndNodesBetween(
   const range = $from.blockRange(
     $to,
     (node) =>
-      node.childCount > 0 && node.firstChild!.type === schema.nodes.listItem,
+      node.childCount > 0 &&
+      node.firstChild!.type === getNodeType(schema, 'listItem'),
   );
 
   if (!range) {
@@ -215,9 +219,9 @@ function isSelectionParentBulletList(state: EditorState) {
 
   return (
     fromNode &&
-    fromNode.type === state.schema.nodes.bulletList &&
+    fromNode.type === getNodeType(state, 'bulletList') &&
     endNode &&
-    endNode.type === state.schema.nodes.bulletList
+    endNode.type === getNodeType(state, 'bulletList')
   );
 }
 
@@ -228,7 +232,7 @@ function todoCount(state: EditorState) {
   const { schema } = state;
   siblingsAndNodesBetween(state, (node, _pos) => {
     // TODO it might create problem by counting ol 's listItem?
-    if (node.type === schema.nodes.listItem) {
+    if (node.type === getNodeType(schema, 'listItem')) {
       lists++;
     }
 

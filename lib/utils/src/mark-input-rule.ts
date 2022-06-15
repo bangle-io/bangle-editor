@@ -24,11 +24,15 @@ export function markInputRule(regexp: RegExp, markType: MarkType): InputRule {
     let markEnd = end;
     let markStart = start;
 
-    if (match[m]) {
-      const matchStart = start + match[0].indexOf(match[m - 1]);
-      const matchEnd = matchStart + match[m - 1].length - 1;
-      const textStart = matchStart + match[m - 1].lastIndexOf(match[m]);
-      const textEnd = textStart + match[m].length;
+    const matchMths = match[m];
+    const firstMatch = match[0];
+    const mathOneBeforeM = match[m - 1];
+
+    if (matchMths != null && firstMatch != null && mathOneBeforeM != null) {
+      const matchStart = start + firstMatch.indexOf(mathOneBeforeM);
+      const matchEnd = matchStart + mathOneBeforeM.length - 1;
+      const textStart = matchStart + mathOneBeforeM.lastIndexOf(matchMths);
+      const textEnd = textStart + matchMths.length;
 
       const excludedMarks = getMarksBetween(start, end, state)
         .filter((item) => {
@@ -47,7 +51,7 @@ export function markInputRule(regexp: RegExp, markType: MarkType): InputRule {
         tr.delete(matchStart, textStart);
       }
       markStart = matchStart;
-      markEnd = markStart + match[m].length;
+      markEnd = markStart + matchMths.length;
     }
 
     tr.addMark(markStart, markEnd, markType.create());

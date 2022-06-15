@@ -11,7 +11,7 @@ import * as horizontalRule from './horizontal-rule';
 import * as image from './image';
 import * as italic from './italic';
 import * as link from './link';
-import * as listItem from './list-item/list-item-component';
+import * as listItem from './list-item-component';
 import * as orderedList from './ordered-list';
 import * as strike from './strike';
 import * as underline from './underline';

@@ -27,20 +27,23 @@ type HandleResponseError = {
   };
 };
 
+const MAX_INSTANCES = 10;
+
 export class Manager {
-  instanceCount = 0;
-  maxCount = 20;
-  destroyed = false;
-  instances: { [key: string]: Instance } = {};
-  getDocumentQueue = serialExecuteQueue();
-  routes;
-  disk;
-  cleanUpInterval?: ReturnType<typeof setInterval> = undefined;
-  collectUsersTimeout;
-  interceptRequests?: (path: string, payload: any) => void;
-  managerId = uuid();
+  public instanceCount = 0;
+  public destroyed = false;
+  public readonly managerId = uuid();
+
+  private _cleanUpInterval?: ReturnType<typeof setInterval> = undefined;
+  private _collectUsersTimeout: number;
+  private _disk: Disk;
+  private _getDocumentQueue = serialExecuteQueue();
+  private _instances: Record<string, Instance> = {};
+  private _interceptRequests?: (path: string, payload: any) => void;
+  private _routes: CollabRequestHandler;
+
   constructor(
-    private schema: Schema,
+    schema: Schema,
     {
       disk,
       // time to wait before aborting the users request
@@ -57,12 +60,12 @@ export class Manager {
     },
   ) {
     this._getInstanceQueued = this._getInstanceQueued.bind(this);
-    this.disk = disk;
-    this.collectUsersTimeout = collectUsersTimeout;
-    this.interceptRequests = interceptRequests;
+    this._disk = disk;
+    this._collectUsersTimeout = collectUsersTimeout;
+    this._interceptRequests = interceptRequests;
     // to prevent parallel requests from creating deadlock
     // for example two requests parallely comming and creating two new instances of the same doc
-    this.routes = new CollabRequestHandler(
+    this._routes = new CollabRequestHandler(
       this._getInstanceQueued,
       userWaitTimeout,
       schema,
@@ -70,7 +73,7 @@ export class Manager {
     );
 
     if (instanceCleanupTimeout > 0) {
-      this.cleanUpInterval = setInterval(
+      this._cleanUpInterval = setInterval(
         () => this._cleanup(),
         instanceCleanupTimeout,
       );
@@ -81,12 +84,17 @@ export class Manager {
     log('destroy called');
     this.destroyed = true;
     // todo need to abort `pull_events` pending requests
-    for (const i of Object.values(this.instances)) {
+    for (const i of Object.values(this._instances)) {
       this._stopInstance(i.docName);
     }
 
-    clearInterval(this.cleanUpInterval);
-    this.cleanUpInterval = undefined;
+    clearInterval(this._cleanUpInterval);
+    this._cleanUpInterval = undefined;
+  }
+
+  public getDocVersion(docName: string): number | undefined {
+    const instance = this._instances[docName];
+    return instance?.version;
   }
 
   public async handleRequest(
@@ -101,20 +109,20 @@ export class Manager {
     let data;
 
     try {
-      if (this.interceptRequests) {
-        await this.interceptRequests(path, payload);
+      if (this._interceptRequests) {
+        await this._interceptRequests(path, payload);
       }
       switch (path) {
         case 'pull_events': {
-          data = await this.routes.pullEvents(payload);
+          data = await this._routes.pullEvents(payload);
           break;
         }
         case 'push_events': {
-          data = await this.routes.pushEvents(payload);
+          data = await this._routes.pushEvents(payload);
           break;
         }
         case 'get_document': {
-          data = await this.routes.getDocument(payload);
+          data = await this._routes.getDocument(payload);
           break;
         }
       }
@@ -147,7 +155,7 @@ export class Manager {
 
   private _cleanup() {
     log('Cleaning up');
-    const instances = Object.values(this.instances);
+    const instances = Object.values(this._instances);
     for (const i of instances) {
       if (i.userCount === 0) {
         this._stopInstance(i.docName);
@@ -163,12 +171,12 @@ export class Manager {
     if (!userId) {
       throw new Error('userId is required');
     }
-    return this.getDocumentQueue.add(async () => {
+    return this._getDocumentQueue.add(async () => {
       if (this.destroyed) {
         throw new CollabError(410, 'Server is no longer available');
       }
 
-      let inst = this.instances[docName] || (await this._newInstance(docName));
+      let inst = this._instances[docName] || (await this._newInstance(docName));
       if (userId) {
         inst.registerUser(userId);
       }
@@ -179,10 +187,9 @@ export class Manager {
 
   private async _newInstance(docName: string, doc?: Node, version?: number) {
     log('creating new instance', docName, version);
-    const { instances } = this;
-    let created;
+    const { _instances: instances } = this;
     if (!doc) {
-      doc = await this.disk.load(docName);
+      doc = await this._disk.load(docName);
     }
 
     if (!doc) {
@@ -190,7 +197,7 @@ export class Manager {
       throw new CollabError(404, `Document ${docName} not found`);
     }
 
-    if (++this.instanceCount > this.maxCount) {
+    if (++this.instanceCount > MAX_INSTANCES) {
       let oldest = null;
       for (let inst of Object.values(instances)) {
         if (!oldest || inst.lastActive < oldest.lastActive) {
@@ -207,31 +214,40 @@ export class Manager {
         return;
       }
       final
-        ? this.disk.flush(docName, instance.doc, instance.version)
-        : this.disk.update(docName, () => ({
+        ? this._disk.flush(docName, instance.doc, instance.version)
+        : this._disk.update(docName, () => ({
             doc: instance.doc,
             version: instance.version,
           }));
     };
 
-    return (instances[docName] = new Instance(
+    const instance = new Instance(
       docName,
-      this.schema,
       doc,
-      scheduleSave,
-      created,
-      this.collectUsersTimeout,
       version,
-    ));
+      scheduleSave,
+      this._collectUsersTimeout,
+    );
+
+    this._instances[docName] = instance;
+
+    instance.abortController.signal.addEventListener(
+      'abort',
+      () => {
+        delete this._instances[docName];
+        --this.instanceCount;
+      },
+      { once: true },
+    );
+
+    return instance;
   }
 
   private _stopInstance(docName: string) {
-    const instance = this.instances[docName];
+    const instance = this._instances[docName];
     if (instance) {
       log('stopping instances', instance.docName);
-      instance.stop();
-      delete this.instances[docName];
-      --this.instanceCount;
+      instance.abort();
     }
   }
 }

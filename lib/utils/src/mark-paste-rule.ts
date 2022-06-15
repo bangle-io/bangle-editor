@@ -19,8 +19,8 @@ export function markPasteRule(
         while (!isLink && (match = regexp.exec(text!)) !== null) {
           if (parent && parent.type.allowsMarkType(type) && match[1]) {
             const start = match.index;
-            const end = start + match[0].length;
-            const textStart = start + match[0].indexOf(match[1]);
+            const end = start + match[0]!.length;
+            const textStart = start + match[0]!.indexOf(match[1]);
             const textEnd = textStart + match[1].length;
             const attrs =
               getAttrs instanceof Function ? getAttrs(match) : getAttrs;
