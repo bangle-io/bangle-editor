@@ -229,7 +229,9 @@ export function simpleLRU<K = any, V = any>(size: number) {
         this.set(key, result.value); // put the item in the front
         return result.value;
       }
+      return undefined;
     },
+
     set(key: K, value: V) {
       this.remove(key);
       array.push({ key, value });

@@ -22,7 +22,7 @@ function specFactory(): BaseRawNodeSpec {
     markdown: {
       toMarkdown(state, node) {
         state.write('---\n');
-        state.text(node.attrs.data, false);
+        state.text(node.attrs['data'], false);
         state.write('\n---');
         state.closeBlock(node);
       },
@@ -45,7 +45,7 @@ function specFactory(): BaseRawNodeSpec {
     ...spec.schema,
     ...domSerializationHelpers(name, {
       tag: 'div',
-      content: (node) => node.attrs.data,
+      content: (node) => node.attrs['data'],
       parsingPriority: 52,
     }),
   };

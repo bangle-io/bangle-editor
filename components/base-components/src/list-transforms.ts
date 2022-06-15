@@ -287,7 +287,7 @@ export const splitParagraphs = (slice: Slice, schema: Schema) => {
   slice.content.forEach((child) => {
     hasCodeMark =
       hasCodeMark ||
-      child.marks.some((mark) => mark.type === schema.marks.code);
+      child.marks.some((mark) => mark.type === schema.marks['code']);
   });
   // slice might just be a raw text string
   if (getParaNodeType(schema).validContent(slice.content) && !hasCodeMark) {
@@ -295,7 +295,7 @@ export const splitParagraphs = (slice: Slice, schema: Schema) => {
     return new Slice(replSlice, slice.openStart + 1, slice.openEnd + 1);
   }
   return mapSlice(slice, (node, _parent) => {
-    if (node.type === schema.nodes.paragraph) {
+    if (node.type === getParaNodeType(schema)) {
       return splitIntoParagraphs(node.content, schema);
     }
     return node;
@@ -308,7 +308,7 @@ export const upgradeTextToLists = (
   schema: Schema,
 ) => {
   return mapSlice(slice, (node, _parent) => {
-    if (node.type === schema.nodes.paragraph) {
+    if (node.type === getParaNodeType(schema)) {
       return extractListFromParagaph(type, node, schema);
     }
     return node;

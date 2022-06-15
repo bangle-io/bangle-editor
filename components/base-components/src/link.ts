@@ -82,8 +82,8 @@ function specFactory({ openOnClick = false } = {}): RawSpecs {
           return isPlainURL(mark, parent, index, -1)
             ? '>'
             : '](' +
-                state.esc(mark.attrs.href) +
-                (mark.attrs.title ? ' ' + quote(mark.attrs.title) : '') +
+                state.esc(mark.attrs['href']) +
+                (mark.attrs['title'] ? ' ' + quote(mark.attrs['title']) : '') +
                 ')';
         },
       },
@@ -125,9 +125,9 @@ function pluginsFactory(): RawPlugins {
               const { schema } = view.state;
               const attrs = getMarkAttrs(view.state, getTypeFromSchema(schema));
 
-              if (attrs.href && event.target instanceof HTMLAnchorElement) {
+              if (attrs['href'] && event.target instanceof HTMLAnchorElement) {
                 event.stopPropagation();
-                window.open(attrs.href);
+                window.open(attrs['href']);
               }
               return false;
             },
@@ -244,13 +244,13 @@ function markPasteRule(
 }
 
 function isPlainURL(link: Mark, parent: Node, index: number, side: number) {
-  if (link.attrs.title || !/^\w+:/.test(link.attrs.href)) {
+  if (link.attrs['title'] || !/^\w+:/.test(link.attrs['href'])) {
     return false;
   }
   let content = parent.child(index + (side < 0 ? -1 : 0));
   if (
     !content.isText ||
-    content.text !== link.attrs.href ||
+    content.text !== link.attrs['href'] ||
     content.marks[content.marks.length - 1] !== link
   ) {
     return false;
@@ -309,7 +309,7 @@ export function createLink(href: string) {
       )(state),
     (state, dispatch) => {
       const [from, to] = [state.selection.$from.pos, state.selection.$to.pos];
-      const linkMark = state.schema.marks.link;
+      const linkMark = getTypeFromSchema(state.schema);
       let tr = state.tr.removeMark(from, to, linkMark);
 
       if (href.trim()) {
@@ -361,7 +361,7 @@ export function queryLinkAttrs() {
     const { nodeAfter } = $pos;
 
     if (!nodeAfter) {
-      return;
+      return undefined;
     }
 
     const type = getTypeFromSchema(state.schema);
@@ -370,21 +370,25 @@ export function queryLinkAttrs() {
 
     if (mark) {
       return {
-        href: mark.attrs.href,
+        href: mark.attrs['href'],
         text: node!.textContent,
       };
     }
+
+    return undefined;
   };
 }
 
 export function queryIsLinkAllowedInRange(from: number, to: number) {
-  return (state: EditorState) => {
+  return (state: EditorState): boolean | undefined => {
     const $from = state.doc.resolve(from);
     const $to = state.doc.resolve(to);
     const link = getTypeFromSchema(state.schema);
     if ($from.parent === $to.parent && $from.parent.isTextblock) {
       return $from.parent.type.allowsMarkType(link);
     }
+
+    return undefined;
   };
 }
 

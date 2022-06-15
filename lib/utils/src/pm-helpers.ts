@@ -362,6 +362,7 @@ export const sanitiseSelectionMarksForWrapping = (
           );
         }
       });
+      return;
     },
     from,
   );
@@ -533,6 +534,8 @@ export function findFirstMarkPosition(
         end: pos + Math.max(node.textContent.length, 1),
       };
     }
+
+    return;
   });
 
   return markPos;

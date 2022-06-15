@@ -24,7 +24,7 @@ function specFactory({
     tag: 'span',
     parsingPriority: 51,
     content: (node) => {
-      let result = getEmoji(node.attrs.emojiAlias, node);
+      let result = getEmoji(node.attrs['emojiAlias'], node);
       return result;
     },
   });
@@ -48,7 +48,7 @@ function specFactory({
 
     markdown: {
       toMarkdown: (state: MarkdownSerializerState, node: Node) => {
-        state.write(`:${node.attrs.emojiAlias}:`);
+        state.write(`:${node.attrs['emojiAlias']}:`);
       },
       parseMarkdown: {
         emoji: {

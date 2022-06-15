@@ -54,7 +54,7 @@ function specFactory(): RawSpecs {
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {
-        state.write('```' + (node.attrs.language || '') + '\n');
+        state.write('```' + (node.attrs['language'] || '') + '\n');
         state.text(node.textContent, false);
         state.ensureNewLine();
         state.write('```');

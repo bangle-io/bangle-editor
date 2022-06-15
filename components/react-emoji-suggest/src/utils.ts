@@ -33,6 +33,8 @@ function counterToCoords(counter: number, namedGroups: EmojiGroupType) {
     }
     normalizedCounter = normalizedCounter - size;
   }
+
+  return;
 }
 
 export function resolveCounter(counter: number, namedGroups: EmojiGroupType) {

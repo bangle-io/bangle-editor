@@ -276,8 +276,8 @@ function toggleListCommand(listType: NodeType, todo: boolean = false): Command {
     }
 
     const canBeTodo = (node: Node, parentNode: Node | null) =>
-      node.type === schema.nodes.listItem &&
-      parentNode?.type === schema.nodes.bulletList;
+      node.type === getNodeType(schema, 'listItem') &&
+      parentNode?.type === getNodeType(schema, 'bulletList');
 
     for (let i = 0; i < ranges.length; i += 2) {
       let from = ranges[i]!;
@@ -357,7 +357,7 @@ function liftListItems(): Command {
 
         if (
           !range ||
-          ![state.schema.nodes.listItem].includes(sel.$from.parent.type)
+          ![getNodeType(state, 'listItem')].includes(sel.$from.parent.type)
         ) {
           return false;
         }
@@ -426,7 +426,8 @@ export function indentList(type: NodeType) {
     const range = tr.selection.$from.blockRange(
       tr.selection.$to,
       (node) =>
-        node.childCount > 0 && node.firstChild!.type === schema.nodes.listItem,
+        node.childCount > 0 &&
+        node.firstChild!.type === getNodeType(schema, 'listItem'),
     );
 
     if (

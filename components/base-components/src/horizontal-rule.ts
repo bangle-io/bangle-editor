@@ -18,7 +18,7 @@ function specFactory(): RawSpecs {
     },
     markdown: {
       toMarkdown(state, node) {
-        state.write(node.attrs.markup || '---');
+        state.write(node.attrs['markup'] || '---');
         state.closeBlock(node);
       },
       parseMarkdown: { hr: { node: name } },

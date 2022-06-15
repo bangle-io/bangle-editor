@@ -11,8 +11,8 @@ import { filter, getNodeType } from '@bangle.dev/utils';
 
 export const isNodeTodo = (node: Node, schema: Schema) => {
   return (
-    node.type === schema.nodes.listItem &&
-    typeof node.attrs.todoChecked === 'boolean'
+    node.type === getNodeType(schema, 'listItem') &&
+    typeof node.attrs['todoChecked'] === 'boolean'
   );
 };
 
@@ -54,7 +54,10 @@ export const setTodoCheckedAttr = (
   node: Node,
   pos: number,
 ) => {
-  if (node.type === schema.nodes.listItem && !isNodeTodo(node, schema)) {
+  if (
+    node.type === getNodeType(schema, 'listItem') &&
+    !isNodeTodo(node, schema)
+  ) {
     tr = tr.setNodeMarkup(
       pos,
       undefined,
@@ -178,7 +181,8 @@ export function siblingsAndNodesBetween(
   const range = $from.blockRange(
     $to,
     (node) =>
-      node.childCount > 0 && node.firstChild!.type === schema.nodes.listItem,
+      node.childCount > 0 &&
+      node.firstChild!.type === getNodeType(schema, 'listItem'),
   );
 
   if (!range) {
@@ -228,7 +232,7 @@ function todoCount(state: EditorState) {
   const { schema } = state;
   siblingsAndNodesBetween(state, (node, _pos) => {
     // TODO it might create problem by counting ol 's listItem?
-    if (node.type === schema.nodes.listItem) {
+    if (node.type === getNodeType(schema, 'listItem')) {
       lists++;
     }
 

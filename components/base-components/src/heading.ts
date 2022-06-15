@@ -114,11 +114,11 @@ function specFactory({ levels = defaultLevels } = {}): RawSpecs {
         };
       }),
       toDOM: (node: Node) => {
-        const result: any = [`h${node.attrs.level}`, {}, 0];
+        const result: any = [`h${node.attrs['level']}`, {}, 0];
 
-        if (node.attrs.collapseContent) {
+        if (node.attrs['collapseContent']) {
           result[1]['data-bangle-attrs'] = JSON.stringify({
-            collapseContent: node.attrs.collapseContent,
+            collapseContent: node.attrs['collapseContent'],
           });
           result[1]['class'] = 'bangle-heading-collapsed';
         }
@@ -128,7 +128,7 @@ function specFactory({ levels = defaultLevels } = {}): RawSpecs {
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {
-        state.write(state.repeat('#', node.attrs.level) + ' ');
+        state.write(state.repeat('#', node.attrs['level']) + ' ');
         state.renderInline(node);
         state.closeBlock(node);
       },
@@ -169,15 +169,15 @@ function pluginsFactory({
         keymap({
           ...levelBindings,
           ...createObject([
-            [keybindings.moveUp, moveNode(type, 'UP')],
-            [keybindings.moveDown, moveNode(type, 'DOWN')],
-            [keybindings.jumpToStartOfHeading, jumpToStartOfNode(type)],
-            [keybindings.jumpToEndOfHeading, jumpToEndOfNode(type)],
-            [keybindings.emptyCopy, copyEmptyCommand(type)],
-            [keybindings.emptyCut, cutEmptyCommand(type)],
-            [keybindings.insertEmptyParaAbove, insertEmptyParaAbove()],
-            [keybindings.insertEmptyParaBelow, insertEmptyParaBelow()],
-            [keybindings.toggleCollapse, toggleHeadingCollapse()],
+            [keybindings['moveUp'], moveNode(type, 'UP')],
+            [keybindings['moveDown'], moveNode(type, 'DOWN')],
+            [keybindings['jumpToStartOfHeading'], jumpToStartOfNode(type)],
+            [keybindings['jumpToEndOfHeading'], jumpToEndOfNode(type)],
+            [keybindings['emptyCopy'], copyEmptyCommand(type)],
+            [keybindings['emptyCut'], cutEmptyCommand(type)],
+            [keybindings['insertEmptyParaAbove'], insertEmptyParaAbove()],
+            [keybindings['insertEmptyParaBelow'], insertEmptyParaBelow()],
+            [keybindings['toggleCollapse'], toggleHeadingCollapse()],
           ]),
         }),
       ...(markdownShortcut ? levels : []).map((level: number) =>
@@ -216,7 +216,7 @@ export function queryIsHeadingActive(level: number) {
     if (level == null) {
       return true;
     }
-    return node.attrs.level === level;
+    return node.attrs['level'] === level;
   };
 }
 
@@ -230,7 +230,7 @@ export function queryIsCollapseActive() {
       return false;
     }
 
-    return Boolean(match.node.attrs.collapseContent);
+    return Boolean(match.node.attrs['collapseContent']);
   };
 }
 
@@ -300,7 +300,7 @@ export function uncollapseHeading(): Command {
 
     const frag = Fragment.fromJSON(
       state.schema,
-      match.node.attrs.collapseContent,
+      match.node.attrs['collapseContent'],
     );
 
     let tr = state.tr.replaceWith(
@@ -373,7 +373,7 @@ export function uncollapseAllHeadings(): Command {
     for (const { node, pos } of collapsibleNodes) {
       let baseFrag = Fragment.fromJSON(
         state.schema,
-        flattenFragmentJSON(node.attrs.collapseContent),
+        flattenFragmentJSON(node.attrs['collapseContent']),
       );
 
       tr = tr.replaceWith(
@@ -410,7 +410,7 @@ export function listCollapsedHeading(state: EditorState): NodeWithPos[] {
     state.doc,
     (node) =>
       node.type === getNodeType(state, name) &&
-      Boolean(node.attrs.collapseContent),
+      Boolean(node.attrs['collapseContent']),
     false,
   );
 }
@@ -430,12 +430,12 @@ interface JSONObject {
 export const flattenFragmentJSON = (fragJSON: JSONObject[]) => {
   let result: JSONObject[] = [];
   fragJSON.forEach((nodeJSON: JSONObject) => {
-    if (nodeJSON.type === 'heading' && nodeJSON.attrs.collapseContent) {
-      const collapseContent = nodeJSON.attrs.collapseContent;
+    if (nodeJSON['type'] === 'heading' && nodeJSON['attrs'].collapseContent) {
+      const collapseContent = nodeJSON['attrs'].collapseContent;
       result.push({
         ...nodeJSON,
         attrs: {
-          ...nodeJSON.attrs,
+          ...nodeJSON['attrs'],
           collapseContent: null,
         },
       });
@@ -478,7 +478,7 @@ function findCollapseFragment(matchNode: Node, doc: Node) {
       return false;
     }
 
-    if (node.attrs.level <= matchNode.attrs.level) {
+    if (node.attrs['level'] <= matchNode.attrs['level']) {
       return true;
     }
 

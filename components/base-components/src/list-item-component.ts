@@ -100,8 +100,8 @@ function specFactory(): RawSpecs {
     },
     markdown: {
       toMarkdown(state: MarkdownSerializerState, node: Node) {
-        if (node.attrs.todoChecked != null) {
-          state.write(node.attrs.todoChecked ? '[x] ' : '[ ] ');
+        if (node.attrs['todoChecked'] != null) {
+          state.write(node.attrs['todoChecked'] ? '[x] ' : '[ ] ');
         }
         state.renderContent(node);
       },
@@ -141,7 +141,7 @@ function pluginsFactory({
             updateNodeAttrs(getNodeType(schema, 'listItem'), (attrs) => ({
               ...attrs,
               todoChecked:
-                attrs.todoChecked == null ? false : !attrs.todoChecked,
+                attrs['todoChecked'] == null ? false : !attrs['todoChecked'],
             })),
           ),
 

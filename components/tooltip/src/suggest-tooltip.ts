@@ -72,7 +72,7 @@ function specFactory({
           'span',
           {
             'data-bangle-name': markName,
-            'data-suggest-trigger': mark.attrs.trigger,
+            'data-suggest-trigger': mark.attrs['trigger'],
             'style': `color: ${markColor}`,
           },
         ];

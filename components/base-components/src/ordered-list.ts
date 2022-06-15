@@ -53,13 +53,13 @@ function specFactory(): RawSpecs {
         },
       ],
       toDOM: (node) =>
-        node.attrs.order === 1
+        node.attrs['order'] === 1
           ? ['ol', 0]
-          : ['ol', { start: node.attrs.order }, 0],
+          : ['ol', { start: node.attrs['order'] }, 0],
     },
     markdown: {
       toMarkdown(state, node) {
-        let start = node.attrs.order || 1;
+        let start = node.attrs['order'] || 1;
         let maxW = String(start + node.childCount - 1).length;
         let space = state.repeat(' ', maxW + 2);
         state.renderList(node, space, (i) => {
@@ -91,7 +91,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
         /^(1)[.)]\s$/,
         type,
         (match) => ({ order: +match[1]! }),
-        (match, node) => node.childCount + node.attrs.order === +match[1]!,
+        (match, node) => node.childCount + node.attrs['order'] === +match[1]!,
       ),
       keybindings &&
         keymap(createObject([[keybindings.toggle, toggleList(type)]])),
@@ -101,7 +101,7 @@ function pluginsFactory({ keybindings = defaultKeys } = {}): RawPlugins {
 
 export function toggleOrderedList(): Command {
   return (state, dispatch, view) => {
-    return toggleList(getNodeType(state, name), state.schema.nodes.listItem)(
+    return toggleList(getNodeType(state, name), getNodeType(state, 'listItem'))(
       state,
       dispatch,
       view,

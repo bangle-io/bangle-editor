@@ -104,11 +104,10 @@ function pluginsFactory({
 
 export function toggleBulletList(): Command {
   const handleBulletLists: Command = (state, dispatch, view) =>
-    toggleList(getNodeType(state, 'bulletList'), state.schema.nodes.listItem)(
-      state,
-      dispatch,
-      view,
-    );
+    toggleList(
+      getNodeType(state, 'bulletList'),
+      getNodeType(state, 'listItem'),
+    )(state, dispatch, view);
 
   return chainCommands(removeTodo, handleBulletLists);
 }
@@ -117,7 +116,7 @@ export function toggleTodoList(): Command {
   const fallback: Command = (state, dispatch, view) =>
     toggleList(
       getNodeType(state, 'bulletList'),
-      state.schema.nodes.listItem,
+      getNodeType(state, 'listItem'),
       true,
     )(state, dispatch, view);
 
