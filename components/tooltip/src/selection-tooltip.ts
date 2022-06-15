@@ -1,4 +1,4 @@
-import type { Command } from '@bangle.dev/pm';
+import type { Command, DirectEditorProps } from '@bangle.dev/pm';
 import {
   EditorState,
   EditorView,
@@ -129,16 +129,16 @@ function selectionTooltipController({ stateKey }: { stateKey: PluginKey }) {
   return new Plugin({
     props: {
       handleDOMEvents: {
-        mousedown(_view, _event) {
+        mousedown: (_view, _event) => {
           mouseDown = true;
           return false;
         },
-        mouseup(view, _event) {
+        mouseup: (view, _event) => {
           mouseDown = false;
           _syncTooltipOnUpdate(stateKey)(view.state, view.dispatch, view);
           return false;
         },
-      },
+      } as DirectEditorProps['handleDOMEvents'],
     },
     view() {
       return {

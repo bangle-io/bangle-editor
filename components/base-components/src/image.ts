@@ -3,6 +3,7 @@ import type Token from 'markdown-it/lib/token';
 import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
+  DirectEditorProps,
   EditorView,
   InputRule,
   Node,
@@ -157,7 +158,7 @@ function pluginsFactory({
 
                 return true;
               },
-            },
+            } as DirectEditorProps['handleDOMEvents'],
 
             handlePaste: (view, rawEvent) => {
               const event = rawEvent;

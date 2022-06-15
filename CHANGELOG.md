@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.30.0
 
 - Breaking: `@bangle.dev/collab` no longer exports `spec`. 
 
