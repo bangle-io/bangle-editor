@@ -2991,8 +2991,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.2.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.6.2"],\
-            ["prosemirror-markdown", "npm:1.9.1"]\
+            ["prettier", "npm:2.6.2"]\
           ],\
           "packagePeers": [\
             "@bangle.dev/pm",\
@@ -3011,8 +3010,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:27.5.2"],\
             ["@types/markdown-it", "npm:12.2.3"],\
             ["markdown-it", "npm:10.0.0"],\
-            ["prettier", "npm:2.6.2"],\
-            ["prosemirror-markdown", "npm:1.9.1"]\
+            ["prettier", "npm:2.6.2"]\
           ],\
           "linkType": "SOFT"\
         }]\

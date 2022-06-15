@@ -1517,7 +1517,6 @@ __metadata:
     "@types/markdown-it": ^12.0.3
     markdown-it: ^10.0.0
     prettier: ^2.6.2
-    prosemirror-markdown: ^1.9.1
   peerDependencies:
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -1619,7 +1618,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/pm@*, @bangle.dev/pm@workspace:*, @bangle.dev/pm@workspace:lib/pm":
+"@bangle.dev/pm@workspace:*, @bangle.dev/pm@workspace:lib/pm":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/pm@workspace:lib/pm"
   dependencies:
@@ -1803,7 +1802,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bangle.dev/shared-types@workspace:lib/shared-types"
   dependencies:
-    "@bangle.dev/pm": "*"
+    "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/pm-commands": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
     prosemirror-markdown: ^1.9.1

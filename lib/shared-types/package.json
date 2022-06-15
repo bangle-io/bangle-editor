@@ -19,7 +19,7 @@
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
   "dependencies": {
-    "@bangle.dev/pm": "*",
+    "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "prosemirror-markdown": "^1.9.1"
