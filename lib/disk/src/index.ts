@@ -20,8 +20,12 @@ export class DebouncedDisk implements Disk {
   pendingWrites: WatchSet<string>;
   constructor(
     // return undefined if document is not found
-    private getItem: (key: string) => Promise<Node | undefined>,
-    private setItem: (key: string, doc: Node, version: number) => Promise<void>,
+    private _getItem: (key: string) => Promise<Node | undefined>,
+    private _setItem: (
+      key: string,
+      doc: Node,
+      version: number,
+    ) => Promise<void>,
     {
       debounceWait = 300,
       debounceMaxWait = 1000,
@@ -57,7 +61,7 @@ export class DebouncedDisk implements Disk {
   }
 
   async load(docName: string) {
-    let item = await this.getItem(docName);
+    let item = await this._getItem(docName);
     return item;
   }
 
@@ -84,32 +88,32 @@ export class DebouncedDisk implements Disk {
 
   async _doSave(docName: string, doc: Node, version: number) {
     log(docName, '_doSaveDoc  called');
-    await this.setItem(docName, doc, version);
+    await this._setItem(docName, doc, version);
     this.pendingWrites.delete(docName);
   }
 }
 
 class WatchSet<T> extends Set<T> {
-  constructor(private onSizeChange = (size: number) => {}) {
+  constructor(private _onSizeChange = (size: number) => {}) {
     super();
-    this.onSizeChange(this.size);
+    this._onSizeChange(this.size);
   }
 
   add(entry: T) {
     const result = super.add(entry);
-    this.onSizeChange(this.size);
+    this._onSizeChange(this.size);
     return result;
   }
 
   clear() {
     const result = super.clear();
-    this.onSizeChange(this.size);
+    this._onSizeChange(this.size);
     return result;
   }
 
   delete(entry: T) {
     const result = super.delete(entry);
-    this.onSizeChange(this.size);
+    this._onSizeChange(this.size);
     return result;
   }
 }

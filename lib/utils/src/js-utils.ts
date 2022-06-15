@@ -40,11 +40,11 @@ class MatchType {
     public start: number,
     public end: number,
     public match: boolean,
-    private sourceString: string,
+    private _sourceString: string,
   ) {}
 
   get subString() {
-    return this.sourceString.slice(this.start, this.end);
+    return this._sourceString.slice(this.start, this.end);
   }
 }
 /**
