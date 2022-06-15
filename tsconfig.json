@@ -7,7 +7,7 @@
   "include": [
     "**/src/**/*",
     "**/__tests__/**/*.tsx",
-    "**/__tests__/**/*.ts",
+    "**/__tests_ts",
     "**/e2e-tests/**/*"
   ],
   "exclude": [
@@ -36,98 +36,101 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": false,
+    "noPropertyAccessFromIndexSignature": false,
     "useDefineForClassFields": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "paths": {
       "@bangle.dev/base-components": [
-        "./components/base-components/src/index.ts"
+        "./components/base-components/src/index"
       ],
       "@bangle.dev/emoji": [
-        "./components/emoji/src/index.ts"
+        "./components/emoji/src/index"
       ],
       "@bangle.dev/markdown-front-matter": [
-        "./components/markdown-front-matter/src/index.ts"
+        "./components/markdown-front-matter/src/index"
       ],
       "@bangle.dev/react-emoji-suggest": [
-        "./components/react-emoji-suggest/src/index.ts"
+        "./components/react-emoji-suggest/src/index"
       ],
       "@bangle.dev/react-menu": [
-        "./components/react-menu/src/index.ts"
+        "./components/react-menu/src/index"
       ],
       "@bangle.dev/react-sticker": [
-        "./components/react-sticker/src/index.ts"
+        "./components/react-sticker/src/index"
       ],
       "@bangle.dev/react-stopwatch": [
-        "./components/react-stopwatch/src/index.ts"
+        "./components/react-stopwatch/src/index"
       ],
       "@bangle.dev/search": [
-        "./components/search/src/index.ts"
+        "./components/search/src/index"
       ],
       "@bangle.dev/table": [
-        "./components/table/src/index.ts"
+        "./components/table/src/index"
       ],
       "@bangle.dev/text-formatting": [
-        "./components/text-formatting/src/index.ts"
+        "./components/text-formatting/src/index"
       ],
       "@bangle.dev/timestamp": [
-        "./components/timestamp/src/index.ts"
+        "./components/timestamp/src/index"
       ],
       "@bangle.dev/tooltip": [
-        "./components/tooltip/src/index.ts"
+        "./components/tooltip/src/index"
       ],
       "@bangle.dev/trailing-node": [
-        "./components/trailing-node/src/index.ts"
+        "./components/trailing-node/src/index"
       ],
       "@bangle.dev/wiki-link": [
-        "./components/wiki-link/src/index.ts"
+        "./components/wiki-link/src/index"
       ],
       "broader-unit-tests": [
-        "./lib/broader-unit-tests/src/index.ts"
+        "./lib/broader-unit-tests/src/index"
       ],
       "@bangle.dev/collab-client": [
-        "./lib/collab-client/src/index.ts"
+        "./lib/collab-client/src/index"
       ],
       "@bangle.dev/collab-server": [
-        "./lib/collab-server/src/index.ts"
+        "./lib/collab-server/src/index"
       ],
       "@bangle.dev/core": [
-        "./lib/core/src/index.ts"
+        "./lib/core/src/index"
       ],
       "@bangle.dev/disk": [
-        "./lib/disk/src/index.ts"
+        "./lib/disk/src/index"
       ],
       "@bangle.dev/markdown": [
-        "./lib/markdown/src/index.ts"
+        "./lib/markdown/src/index"
       ],
       "@bangle.dev/pm": [
-        "./lib/pm/src/index.ts"
+        "./lib/pm/src/index"
       ],
       "@bangle.dev/pm-commands": [
-        "./lib/pm-commands/src/index.ts"
+        "./lib/pm-commands/src/index"
+      ],
+      "@bangle.dev/shared-types": [
+        "./lib/shared-types/src/index"
       ],
       "@bangle.dev/react": [
-        "./lib/react/src/index.ts"
+        "./lib/react/src/index"
       ],
       "@bangle.dev/utils": [
-        "./lib/utils/src/index.ts"
+        "./lib/utils/src/index"
       ],
       "@bangle.dev/all-base-components": [
-        "./tooling/all-base-components/src/index.ts"
+        "./tooling/all-base-components/src/index"
       ],
       "bangle-scripts": [
-        "./tooling/bangle-scripts/src/index.ts"
+        "./tooling/bangle-scripts/src/index"
       ],
       "e2e-tests": [
-        "./tooling/e2e-tests/src/index.ts"
+        "./tooling/e2e-tests/src/index"
       ],
       "@bangle.dev/jest-utils": [
-        "./tooling/jest-utils/src/index.ts"
+        "./tooling/jest-utils/src/index"
       ],
       "@bangle.dev/test-helpers": [
-        "./tooling/test-helpers/src/index.ts"
+        "./tooling/test-helpers/src/index"
       ]
     }
   }

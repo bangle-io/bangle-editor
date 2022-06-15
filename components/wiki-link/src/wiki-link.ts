@@ -31,7 +31,7 @@ function specFactory(): BaseRawNodeSpec {
       parseDOM,
     },
     markdown: {
-      toMarkdown: (state: MarkdownSerializerState, node: Node) => {
+      toMarkdown: (state, node) => {
         state.text('[[', false);
         const { path, title } = node.attrs;
         let content = path;
@@ -45,11 +45,12 @@ function specFactory(): BaseRawNodeSpec {
       parseMarkdown: {
         wiki_link: {
           block: name,
-          getAttrs: (tok: any) => {
+          getAttrs: (tok) => {
             if (typeof tok.payload === 'string') {
               let [path, title] = tok.payload.split('|');
               return { path, title };
             }
+            return null;
           },
           noCloseToken: true,
         },

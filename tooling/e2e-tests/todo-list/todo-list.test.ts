@@ -77,6 +77,7 @@ doc(
         if (el instanceof HTMLInputElement) {
           return el.checked === true;
         }
+        return undefined;
       }),
     ).toBe(true);
   });
@@ -101,6 +102,7 @@ doc(
         if (el instanceof HTMLInputElement) {
           return el.checked === false;
         }
+        return undefined;
       }),
     ).toBe(true);
   });

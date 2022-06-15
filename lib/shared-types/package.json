@@ -1,0 +1,31 @@
+{
+  "name": "@bangle.dev/shared-types",
+  "version": "0.29.0",
+  "homepage": "https://bangle.dev",
+  "authors": [
+    {
+      "name": "Kushan Joshi",
+      "email": "0o3ko0@gmail.com",
+      "web": "http://github.com/kepta"
+    }
+  ],
+  "types": "./src/index.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
+  },
+  "dependencies": {
+    "@bangle.dev/pm": "*",
+    "@bangle.dev/pm-commands": "workspace:*",
+    "@bangle.dev/utils": "workspace:*",
+    "prosemirror-markdown": "^1.9.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "types": "dist/index.d.ts"
+  }
+}

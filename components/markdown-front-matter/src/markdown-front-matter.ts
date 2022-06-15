@@ -29,10 +29,11 @@ function specFactory(): BaseRawNodeSpec {
       parseMarkdown: {
         front_matter: {
           block: name,
-          getAttrs: (tok: any) => {
+          getAttrs: (tok) => {
             if (typeof tok.meta === 'string') {
               return { data: tok.meta };
             }
+            return null;
           },
           noCloseToken: true,
         },
