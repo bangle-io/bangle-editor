@@ -3,9 +3,9 @@
 exports[`matchAllPlus works when direct match 2`] = `
 Array [
   Object {
+    "_sourceString": "foozball",
     "end": 8,
     "match": true,
-    "sourceString": "foozball",
     "start": 0,
   },
 ]
@@ -14,15 +14,15 @@ Array [
 exports[`matchAllPlus works when match 2`] = `
 Array [
   Object {
+    "_sourceString": "baseball  foozball",
     "end": 10,
     "match": false,
-    "sourceString": "baseball  foozball",
     "start": 0,
   },
   Object {
+    "_sourceString": "baseball  foozball",
     "end": 18,
     "match": true,
-    "sourceString": "baseball  foozball",
     "start": 10,
   },
 ]
@@ -31,9 +31,9 @@ Array [
 exports[`matchAllPlus works when no match 2`] = `
 Array [
   Object {
+    "_sourceString": "baseball  boozball",
     "end": 18,
     "match": false,
-    "sourceString": "baseball  boozball",
     "start": 0,
   },
 ]
