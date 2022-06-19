@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/core",
-  "version": "0.30.0-alpha.0",
+  "version": "0.30.0-alpha.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -45,13 +45,6 @@
     "access": "public",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
-    "exports": {
-      ".": {
-        "import": "./dist/index.js",
-        "require": "./dist/index.cjs"
-      },
-      "./style.css": "./style.css"
-    },
     "types": "dist/index.d.ts"
   }
 }

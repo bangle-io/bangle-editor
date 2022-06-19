@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/search",
-  "version": "0.30.0-alpha.0",
+  "version": "0.30.0-alpha.1",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -13,13 +13,6 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "style": "style.css",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./style.css": "./style.css"
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -32,7 +25,14 @@
     "access": "public",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
-    "types": "dist/index.d.ts"
+    "types": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./style.css": "./style.css"
+    }
   },
   "scripts": {
     "compile-ts": "yarn g:tsc --build $INIT_CWD",
