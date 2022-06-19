@@ -64,16 +64,16 @@ function filesInPath(path) {
   return filePaths;
 }
 
-mapPackages(
-  ([packagePath, packageJson]) => {
-    const exp = packageJson.exports;
-    delete packageJson['exports'];
+// mapPackages(
+//   ([packagePath, packageJson]) => {
+//     const exp = packageJson.exports;
+//     delete packageJson['exports'];
 
-    packageJson.publishConfig.exports = exp;
+//     packageJson.publishConfig.exports = exp;
 
-    return packageJson;
-  },
-  {
-    filter: 'public',
-  },
-);
+//     return packageJson;
+//   },
+//   {
+//     filter: 'public',
+//   },
+// );
