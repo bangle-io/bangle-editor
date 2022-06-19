@@ -8,7 +8,7 @@ import {
   mountEditor,
   pmRoot as PM_ID,
   sleep,
-} from '../setup/helpers';
+} from '../../setup/helpers';
 
 test.beforeEach(async ({ page, baseURL }, testInfo) => {
   const url = `${baseURL}/${path.basename(__dirname)}`;

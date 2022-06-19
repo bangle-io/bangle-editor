@@ -1,26 +1,25 @@
-import '../setup/entry.css';
 import React from 'react';
+
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
-import { SpecRegistry, PluginKey } from '@bangle.dev/core';
+import { NodeViewProps, PluginKey, SpecRegistry } from '@bangle.dev/core';
+import { FloatingMenu, floatingMenu } from '@bangle.dev/react-menu';
 import { sticker } from '@bangle.dev/react-sticker';
-import { floatingMenu, FloatingMenu } from '@bangle.dev/react-menu';
 
-import { setupReactEditor } from '../setup/entry-helpers';
+import { setupReactEditor, win } from '../../setup/entry-helpers';
 
-setup();
-
-function setup() {
-  window.commands = {
+export default function setup() {
+  win.commands = {
     floatingMenu: floatingMenu.commands,
     sticker: sticker.commands,
   };
 
-  window.floatMenuKey = new PluginKey('floatingmenukey');
+  win.floatMenuKey = new PluginKey('floatingmenukey');
 
-  const renderNodeViews = ({ node, ...args }) => {
+  const renderNodeViews = ({ node, ...args }: NodeViewProps) => {
     if (node.type.name === 'sticker') {
       return <sticker.Sticker node={node} {...args} />;
     }
+    return undefined;
   };
 
   const specRegistry = new SpecRegistry([...defaultSpecs(), sticker.spec()]);
@@ -28,13 +27,13 @@ function setup() {
     ...defaultPlugins(),
     sticker.plugins(),
     floatingMenu.plugins({
-      key: window.floatMenuKey,
+      key: win.floatMenuKey,
     }),
   ];
 
   setupReactEditor({
     children: React.createElement(FloatingMenu, {
-      menuKey: window.floatMenuKey,
+      menuKey: win.floatMenuKey,
     }),
     specRegistry,
     plugins,

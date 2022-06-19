@@ -1,7 +1,12 @@
 import { expect, test } from '@playwright/test';
 import path from 'path';
 
-import { ctrlKey, getEditorState, mountEditor, pmRoot } from '../setup/helpers';
+import {
+  ctrlKey,
+  getEditorState,
+  mountEditor,
+  pmRoot,
+} from '../../setup/helpers';
 
 test.beforeEach(async ({ page, baseURL }, testInfo) => {
   const url = `${baseURL}/${path.basename(__dirname)}`;
@@ -10,7 +15,7 @@ test.beforeEach(async ({ page, baseURL }, testInfo) => {
 
 test.describe('Title load test', () => {
   test('should be titled correctly', async ({ page }) => {
-    await expect(page.title()).resolves.toMatch('Bangle App');
+    await expect(page.title()).resolves.toMatch('Bangle testing');
   });
 });
 

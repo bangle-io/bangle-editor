@@ -126,7 +126,7 @@
         "./tooling/bangle-scripts/src/index"
       ],
       "e2e-tests": [
-        "./tooling/e2e-tests/src/index"
+        "./tooling/e2e-tests/tests/index"
       ],
       "@bangle.dev/jest-utils": [
         "./tooling/jest-utils/src/index"

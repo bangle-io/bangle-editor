@@ -1,8 +1,13 @@
 import React from 'react';
 import reactDOM from 'react-dom';
-import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { SpecRegistry } from '@bangle.dev/core';
+
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
+import { RawPlugins, SpecRegistry } from '@bangle.dev/core';
+import {
+  BangleEditor,
+  RenderNodeViewsFunction,
+  useEditorState,
+} from '@bangle.dev/react';
 
 export function setupReactEditor({
   specRegistry,
@@ -10,7 +15,13 @@ export function setupReactEditor({
   renderNodeViews,
   id = 'pm-root',
   children,
-} = {}) {
+}: {
+  specRegistry?: SpecRegistry;
+  plugins?: RawPlugins;
+  renderNodeViews?: RenderNodeViewsFunction;
+  id: string;
+  children?: React.ReactNode;
+}) {
   const element = document.createElement('div');
   window.document.body.appendChild(element);
   element.setAttribute('id', 'root');
@@ -24,19 +35,30 @@ export function setupReactEditor({
   );
 }
 
+export const win: any = window;
+
 function App({
   children,
   opts: { specRegistry, plugins, renderNodeViews, id },
+}: {
+  children: React.ReactNode;
+  opts: {
+    specRegistry: SpecRegistry;
+    plugins: RawPlugins;
+    renderNodeViews?: RenderNodeViewsFunction;
+    id: string;
+  };
 }) {
-  const onEditorReady = (_editor) => {
-    window.editor = _editor;
+  const win: any = window;
+  const onEditorReady = (_editor: any) => {
+    win.editor = _editor;
   };
 
-  window.dispatcher = (command) => {
+  win.dispatcher = (command: any) => {
     return command(
-      window.editor.view.state,
-      window.editor.view.dispatch,
-      window.editor.view,
+      win.editor.view.state,
+      win.editor.view.dispatch,
+      win.editor.view,
     );
   };
 
