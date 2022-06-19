@@ -47,7 +47,7 @@ async function mapPackages(cb, { filter } = {}) {
   );
 }
 
-export function filesInPath(path) {
+function filesInPath(path) {
   const filePaths = globby
     .sync(`${path}/**`)
     .filter(
@@ -64,32 +64,16 @@ export function filesInPath(path) {
   return filePaths;
 }
 
-// mapPackages(
-//   ([packagePath, packageJson]) => {
-//     let path = packagePath.split('/package.json').join('');
+mapPackages(
+  ([packagePath, packageJson]) => {
+    const exp = packageJson.exports;
+    delete packageJson['exports'];
 
-//     const files = filesInPath(path);
+    packageJson.publishConfig.exports = exp;
 
-//     if (files.some((f) => f.endsWith('style.css'))) {
-//       console.log(`${packagePath} has style.css`);
-//       packageJson.style = 'style.css';
-//       packageJson.exports = {
-//         '.': {
-//           import: './dist/index.js',
-//           require: './dist/index.cjs',
-//         },
-//         './style.css': './style.css',
-//       };
-//     } else {
-//       delete packageJson.style;
-//       packageJson.exports = {
-//         import: './dist/index.js',
-//         require: './dist/index.cjs',
-//       };
-//     }
-//     return packageJson;
-//   },
-//   {
-//     filter: 'public',
-//   },
-// );
+    return packageJson;
+  },
+  {
+    filter: 'public',
+  },
+);

@@ -1,4 +1,3 @@
-// playwright.config.ts
 import { devices, PlaywrightTestConfig } from '@playwright/test';
 
 // eslint-disable-next-line

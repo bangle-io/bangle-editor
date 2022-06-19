@@ -5386,7 +5386,7 @@ __metadata:
     babel-loader: ^8.2.5
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.2.7
-    esbuild-linux-64: 0.14.27
+    esbuild-linux-64: 0.14.45
     file-loader: ^6.2.0
     html-webpack-plugin: ^4.5.2
     prettier: ^2.6.2
@@ -5665,17 +5665,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-64@npm:0.14.27":
-  version: 0.14.27
-  resolution: "esbuild-linux-64@npm:0.14.27"
-  checksum: 872cc51644fc5b5836d0dfd662f5c874c6b90bc766944df24e8d1ad4c7382ed78a1df64dc189f2040216406844f820019b0a13488215dbe6e2ec169ac4ec5ea0
-  conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
 "esbuild-linux-64@npm:0.14.45":
   version: 0.14.45
   resolution: "esbuild-linux-64@npm:0.14.45"
+  checksum: 545d2cf3dd754a13c159df085b96274c0e53ca9dd0086d132be8db62799218e26f63b5048146ff23fc50478eb88c5bf8383ef8d77376847e6dc7c23b3f8ef58c
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
