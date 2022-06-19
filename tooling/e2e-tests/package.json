@@ -19,15 +19,18 @@
     "url": "https://github.com/bangle-io/bangle.dev/issues"
   },
   "scripts": {
-    "build": "yarn g:build && NODE_ENV=integration yarn run webpack --env development",
-    "g:serve-e2e-build": "yarn build && yarn run serve build -l 1234",
+    "build": "yarn vite build",
+    "g:serve-e2e-build": "yarn vite --port 1234",
     "test": "yarn build && yarn jest",
     "g:e2e": "yarn playwright test",
     "g:playwright-dep": "yarn playwright install && yarn playwright install-deps"
   },
   "dependencies": {
     "@bangle.dev/all-base-components": "workspace:*",
+    "@bangle.dev/collab-client": "workspace:*",
+    "@bangle.dev/collab-server": "workspace:*",
     "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/react": "workspace:*",
@@ -63,6 +66,7 @@
   "devDependencies": {
     "@types/prettier": "^2.6.3",
     "ts-loader": "^9.3.0",
-    "typescript": "^4.7.3"
+    "typescript": "^4.7.3",
+    "vite": "^2.9.9"
   }
 }

@@ -13,13 +13,6 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "style": "style.css",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./style.css": "./style.css"
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -52,6 +45,13 @@
     "access": "public",
     "main": "dist/index.cjs",
     "module": "dist/index.js",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./style.css": "./style.css"
+    },
     "types": "dist/index.d.ts"
   }
 }
