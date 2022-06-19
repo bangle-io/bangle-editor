@@ -1,0 +1,27 @@
+.collab-editor-body {
+  height: 100vh;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.collab-editor-body > .wrapper {
+  height: 100vh;
+  background-color: darkblue;
+  gap: 1em;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'editor-left editor-right'
+    'editor-bottom editor-bottom';
+}
+
+.collab-editor-body .bangle-editor {
+  height: 100%;
+  padding: 0.25rem;
+  background-color: white;
+}
+.collab-editor-body .collab-editor-wrapper {
+  /* height: 100%; */
+}

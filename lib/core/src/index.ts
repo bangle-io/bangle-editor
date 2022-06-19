@@ -15,7 +15,6 @@ export type { RawPlugins } from './plugin-loader';
 export * from './spec-registry';
 
 export { doc, editorStateCounter, history, paragraph, text };
-
 export const criticalComponents = {
   doc,
   paragraph,

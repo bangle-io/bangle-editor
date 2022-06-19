@@ -9,6 +9,7 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 2000,
   },
+  // globalTimeout: 5000,
   workers: isCI ? 2 : undefined,
 
   use: {

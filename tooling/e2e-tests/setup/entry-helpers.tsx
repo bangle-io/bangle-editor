@@ -14,35 +14,46 @@ export function setupReactEditor({
   plugins = () => defaultPlugins,
   renderNodeViews,
   id = 'pm-root',
+  className,
+  mountElement,
   children,
 }: {
+  className?: string;
   specRegistry?: SpecRegistry;
   plugins?: RawPlugins;
   renderNodeViews?: RenderNodeViewsFunction;
   id: string;
+  mountElement?: HTMLElement;
   children?: React.ReactNode;
 }) {
-  const element = document.createElement('div');
-  window.document.body.appendChild(element);
-  element.setAttribute('id', 'root');
+  if (!mountElement) {
+    mountElement = document.createElement('div');
+    window.document.body.appendChild(mountElement);
+    mountElement.setAttribute('id', 'root');
+  }
   if (!(specRegistry instanceof SpecRegistry)) {
     specRegistry = new SpecRegistry(defaultSpecs(specRegistry));
   }
 
   reactDOM.render(
-    <App opts={{ specRegistry, plugins, renderNodeViews, id }}>{children}</App>,
-    element,
+    <EditorWrapper
+      opts={{ specRegistry, plugins, renderNodeViews, id, className }}
+    >
+      {children}
+    </EditorWrapper>,
+    mountElement,
   );
 }
 
 export const win: any = window;
 
-function App({
+export function EditorWrapper({
   children,
-  opts: { specRegistry, plugins, renderNodeViews, id },
+  opts: { className, specRegistry, plugins, renderNodeViews, id },
 }: {
   children: React.ReactNode;
   opts: {
+    className?: string;
     specRegistry: SpecRegistry;
     plugins: RawPlugins;
     renderNodeViews?: RenderNodeViewsFunction;
@@ -67,6 +78,7 @@ function App({
   return (
     <BangleEditor
       id={id}
+      className={className}
       state={editorState}
       onReady={onEditorReady}
       renderNodeViews={renderNodeViews}
