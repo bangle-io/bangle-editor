@@ -4141,29 +4141,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bite-e2e@workspace:tooling/bite-e2e":
-  version: 0.0.0-use.local
-  resolution: "bite-e2e@workspace:tooling/bite-e2e"
-  dependencies:
-    "@bangle.dev/all-base-components": "workspace:*"
-    "@bangle.dev/collab-client": "workspace:*"
-    "@bangle.dev/collab-server": "workspace:*"
-    "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/markdown": "workspace:*"
-    "@bangle.dev/pm": "workspace:*"
-    "@bangle.dev/react": "workspace:*"
-    "@bangle.dev/react-menu": "workspace:*"
-    "@bangle.dev/react-sticker": "workspace:*"
-    "@bangle.dev/react-stopwatch": "workspace:*"
-    "@bangle.dev/table": "workspace:*"
-    "@bangle.dev/tooltip": "workspace:*"
-    "@bangle.dev/utils": "workspace:*"
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    vite: ^2.9.9
-  languageName: unknown
-  linkType: soft
-
 "bl@npm:^4.0.3":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -5409,6 +5386,7 @@ __metadata:
     babel-loader: ^8.2.5
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.2.7
+    esbuild-linux-64: 0.14.27
     file-loader: ^6.2.0
     html-webpack-plugin: ^4.5.2
     prettier: ^2.6.2
@@ -5684,6 +5662,14 @@ __metadata:
   version: 0.14.45
   resolution: "esbuild-linux-32@npm:0.14.45"
   conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-64@npm:0.14.27":
+  version: 0.14.27
+  resolution: "esbuild-linux-64@npm:0.14.27"
+  checksum: 872cc51644fc5b5836d0dfd662f5c874c6b90bc766944df24e8d1ad4c7382ed78a1df64dc189f2040216406844f820019b0a13488215dbe6e2ec169ac4ec5ea0
+  conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
