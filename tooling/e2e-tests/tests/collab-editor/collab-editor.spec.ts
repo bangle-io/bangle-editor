@@ -7,6 +7,7 @@ import {
   baseTestConfig,
   EDITOR_1,
   EDITOR_2,
+  EDITOR_3,
   EditorId,
   TestConfig,
 } from './common';
@@ -225,5 +226,131 @@ test.describe('Editors should sync', () => {
       ['EDITOR_1', '<p>AoZ</p>'],
       ['EDITOR_2', '<p>AoZ</p>'],
     ]);
+  });
+
+  test.describe('Erroring', () => {
+    test('one editor errors 500', async ({ page }) => {
+      await loadPage(page, { collabErrorCode: 500 });
+      await clearEditorText(page, EDITOR_1);
+      await clickEditor(page, EDITOR_1);
+
+      await page.keyboard.type('test');
+      await sleep();
+
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test'],
+        ['EDITOR_2', 'test'],
+        ['EDITOR_3', 'test'],
+        ['EDITOR_4', 'test'],
+      ]);
+
+      // start failing editor 2 requests
+      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+
+      await clickEditor(page, EDITOR_2);
+
+      await page.keyboard.type('(broken)');
+
+      // wait enough that the get request from editor 2 is resent
+      // and meets an error
+      await sleep(1000);
+
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test'],
+        ['EDITOR_2', 'test(broken)'],
+        ['EDITOR_3', 'test'],
+        ['EDITOR_4', 'test'],
+      ]);
+
+      await clickEditor(page, EDITOR_3);
+
+      await page.keyboard.type('123');
+      await sleep();
+
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test123'],
+        ['EDITOR_2', 'test(broken)'],
+        ['EDITOR_3', 'test123'],
+        ['EDITOR_4', 'test123'],
+      ]);
+
+      // resolve the error
+      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+      await clickEditor(page, EDITOR_2);
+      // typing on the editor should sync all editors
+      await page.keyboard.type('4');
+      await sleep();
+
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test123(broken)4'],
+        ['EDITOR_2', 'test123(broken)4'],
+        ['EDITOR_3', 'test123(broken)4'],
+        ['EDITOR_4', 'test123(broken)4'],
+      ]);
+    });
+
+    test.only('editor errors 410', async ({ page }) => {
+      await loadPage(page, { collabErrorCode: 410 });
+      await clearEditorText(page, EDITOR_1);
+      await clickEditor(page, EDITOR_1);
+
+      await page.keyboard.type('test');
+      await sleep();
+
+      await page.pause();
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test'],
+        ['EDITOR_2', 'test'],
+        ['EDITOR_3', 'test'],
+        ['EDITOR_4', 'test'],
+      ]);
+
+      // start failing editor 2 requests
+      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+
+      await clickEditor(page, EDITOR_2);
+      await sleep(1000);
+      await page.keyboard.type('(broken)');
+
+      // wait enough that the get request from editor 2 is resent
+      // and meets an error
+      await sleep(1000);
+
+      // for 410 error typing should not work
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test'],
+        ['EDITOR_2', 'test'],
+        ['EDITOR_3', 'test'],
+        ['EDITOR_4', 'test'],
+      ]);
+
+      await clickEditor(page, EDITOR_3);
+
+      await page.keyboard.type('123');
+      await sleep();
+
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test123'],
+        ['EDITOR_2', 'test'],
+        ['EDITOR_3', 'test123'],
+        ['EDITOR_4', 'test123'],
+      ]);
+
+      // resolve the error
+      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+      await clickEditor(page, EDITOR_2);
+      await sleep();
+
+      // typing on the editor should sync all editors
+      await page.keyboard.type('4');
+      await sleep();
+
+      expect(await getEditorsInnerText(page)).toEqual([
+        ['EDITOR_1', 'test1234'],
+        ['EDITOR_2', 'test1234'],
+        ['EDITOR_3', 'test1234'],
+        ['EDITOR_4', 'test1234'],
+      ]);
+    });
   });
 });
