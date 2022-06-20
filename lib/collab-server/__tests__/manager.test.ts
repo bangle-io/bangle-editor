@@ -235,7 +235,7 @@ test('correct error when push events have older version', async () => {
   expect(resp).toEqual({
     body: {
       errorCode: 409,
-      message: `Version 0 not current. Currently on 1`,
+      message: 'Outdated version',
     },
     status: 'error',
   });
@@ -284,7 +284,7 @@ test('correct error when push events are newer version', async () => {
   expect(resp).toEqual({
     body: {
       errorCode: 400,
-      message: `Invalid version 1`,
+      message: `Invalid version`,
     },
     status: 'error',
   });

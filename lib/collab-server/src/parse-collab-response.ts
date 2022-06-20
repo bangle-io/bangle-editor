@@ -1,10 +1,8 @@
 import { CollabError, ValidErrorCodes } from './collab-error';
 import { Manager } from './manager';
 
-type UnPromisify<T> = T extends Promise<infer U> ? U : T;
-
 export function parseCollabResponse(
-  payload: UnPromisify<ReturnType<Manager['handleRequest']>>,
+  payload: Awaited<ReturnType<Manager['handleRequest']>>,
 ) {
   if (payload.status === 'ok') {
     return payload.body;

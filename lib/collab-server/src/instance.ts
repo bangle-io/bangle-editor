@@ -1,11 +1,9 @@
-import { Node, Step, StepMap } from '@bangle.dev/pm';
+import { Node, Step } from '@bangle.dev/pm';
 
-import { CollabError } from './collab-error';
-
-const MAX_STEP_HISTORY = 1000;
+import { COLLAB_STATUS_FAIL, throwCollabError } from './collab-error';
+import { CollabState } from './collab-state';
 
 const LOG = false;
-
 function log(...args: any[]) {
   if (LOG) {
     console.log('collab/server/instance', ...args);
@@ -14,10 +12,6 @@ function log(...args: any[]) {
 interface Waiter {
   userId: string;
   onFinish: () => void;
-}
-
-export interface StepBigger extends Step {
-  clientID: string;
 }
 
 export class Instance {
@@ -29,6 +23,7 @@ export class Instance {
     }
   }
 
+  public collabState: CollabState;
   public lastActive = Date.now();
   public userCount = 0;
   public waiting: Array<Waiter> = [];
@@ -36,20 +31,18 @@ export class Instance {
 
   private _collecting: ReturnType<typeof setTimeout> | null = null;
   private _lastSavedVersion: number;
-
-  private _steps: StepBigger[] = [];
   private _users = Object.create(null);
 
   constructor(
-    public docName: string,
-    public doc: Node,
-    public version: number = 0,
+    public readonly docName: string,
+    doc: Node,
+    version: number = 0,
     private _scheduleSave: (final?: boolean) => void,
     private _collectUsersTimeout: number,
   ) {
     this._lastSavedVersion = version;
     log('new instance', docName, version);
-
+    this.collabState = new CollabState(doc, [], version);
     this.abortController.signal.addEventListener(
       'abort',
       () => {
@@ -69,56 +62,41 @@ export class Instance {
   }
 
   public addEvents(version: number, steps: Step[], clientID: string) {
-    // TODO this checkversion is not covered
-    this._checkVersion(version);
-
-    const biggerSteps: StepBigger[] = steps.map((s) =>
-      Object.assign(s, { clientID }),
+    const result = CollabState.addEvents(
+      this.collabState,
+      version,
+      steps,
+      clientID,
     );
 
-    if (this.version !== version) {
-      // TODO returning false gives 409 but if we donot give 409 error
-      // tests donot fail
-      return false;
+    if (result.status === COLLAB_STATUS_FAIL) {
+      throwCollabError(result.reason);
     }
-    let previousDoc = this.doc;
-    let doc = this.doc,
-      maps: StepMap[] = [];
 
-    for (const step of biggerSteps) {
-      let result = step.apply(doc);
-      if (result.doc == null) {
-        // TODO if the apply gives error what to do?
-        throw new Error('Applying failed');
-      }
+    let prevCollabState = this.collabState;
+    this.collabState = result.collabState;
 
-      doc = result.doc;
-      maps.push(step.getMap());
-    }
-    this.doc = doc;
-    this.version += biggerSteps.length;
-    this._steps = this._steps.concat(biggerSteps);
-    if (this._steps.length > MAX_STEP_HISTORY) {
-      this._steps = this._steps.slice(this._steps.length - MAX_STEP_HISTORY);
-    }
-    log(this.version, version, clientID);
     Instance.sendUpdates(this.waiting);
-    if (!previousDoc.eq(this.doc)) {
+
+    if (!prevCollabState.doc.eq(this.collabState.doc)) {
       this._saveData();
     }
-    return { version: this.version };
+
+    return {
+      version: this.collabState.version,
+    };
   }
 
   // the current document version.
   public getEvents(version: number) {
-    this._checkVersion(version);
-    let startIndex = this._steps.length - (this.version - version);
-    if (startIndex < 0) {
-      return false;
+    const result = CollabState.getEvents(this.collabState, version);
+
+    if (result.status === COLLAB_STATUS_FAIL) {
+      throwCollabError(result.reason);
     }
 
     return {
-      steps: this._steps.slice(startIndex),
+      steps: result.steps,
       users: this.userCount,
     };
   }
@@ -132,23 +110,12 @@ export class Instance {
     }
   }
 
-  // document version.
-  private _checkVersion(version: any) {
-    if (typeof version !== 'number') {
-      throw new Error('version is not a number');
-    }
-    if (version < 0 || version > this.version) {
-      throw new CollabError(400, 'Invalid version ' + version);
-    }
-  }
-
   // Get events between a given document version and
   private _collectUsers() {
     const oldUserCount = this.userCount;
     this._users = Object.create(null);
     this.userCount = 0;
     this._collecting = null;
-    log('collectUsers', [...Object.entries(this._users || {})]);
     log('waiting', [...this.waiting.map((r) => r.userId)]);
     for (const waiter of this.waiting) {
       this._registerUser(waiter.userId);
@@ -175,12 +142,9 @@ export class Instance {
   }
 
   private _saveData(final?: boolean) {
-    if (this._lastSavedVersion !== this.version) {
-      this._lastSavedVersion = this.version;
+    if (this._lastSavedVersion !== this.collabState.version) {
+      this._lastSavedVersion = this.collabState.version;
       this._scheduleSave(final);
     }
   }
-
-  // : (Number)
-  // Check if a document version number relates to an existing
 }

@@ -29,7 +29,6 @@ import { Emitter, serialExecuteQueue } from '@bangle.dev/utils';
 
 import { replaceDocument } from './helpers';
 
-type UnPromisify<T> = T extends Promise<infer U> ? U : T;
 type CollabConnectionObj = {
   init: (oldSelection?: Selection) => void;
   pushNewEvents: () => void;
@@ -218,7 +217,7 @@ function connectionManager({
     return managerId;
   };
 
-  const onReceiveSteps = (payload: UnPromisify<ReturnType<PullEvents>>) => {
+  const onReceiveSteps = (payload: Awaited<ReturnType<PullEvents>>) => {
     // TODO name these steps as rawSteps
     // TODO make sure the data is always []
     const steps = (payload.steps ? payload.steps : []).map((j) =>
@@ -361,7 +360,7 @@ function pullEventsEmitter(
 ) {
   interface Events {
     error: (error: CollabError) => void;
-    steps: (obj: UnPromisify<ReturnType<PullEvents>>) => void;
+    steps: (obj: Awaited<ReturnType<PullEvents>>) => void;
     pull: () => void;
   }
   const emitter: StrictEventEmitter<Emitter, Events> = new Emitter();
@@ -446,7 +445,7 @@ function collabInitEmitter(view: EditorView, getDocument: GetDocument) {
   interface Events {
     init: (oldSelection?: Selection) => void;
     initCollabState: (obj: {
-      getDocumentResponse: UnPromisify<ReturnType<GetDocument>>;
+      getDocumentResponse: Awaited<ReturnType<GetDocument>>;
       oldSelection?: Selection;
     }) => void;
     error: (error: CollabError) => void;

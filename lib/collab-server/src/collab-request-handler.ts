@@ -1,7 +1,8 @@
 import { Schema, Step } from '@bangle.dev/pm';
 
 import { CollabError } from './collab-error';
-import { Instance, StepBigger } from './instance';
+import { StepBigger } from './collab-state';
+import { Instance } from './instance';
 import {
   GetDocumentRequestParam,
   GetDocumentResponse,
@@ -14,6 +15,7 @@ import {
 const LOG = false;
 
 const log = LOG ? console.log.bind(console, 'collab/server/manager') : () => {};
+
 export class CollabRequestHandler {
   constructor(
     private _getInstance: (
@@ -31,10 +33,11 @@ export class CollabRequestHandler {
   }: GetDocumentRequestParam): Promise<GetDocumentResponse> {
     log('get_document', { docName, userId });
     const inst = await this._getInstance(docName, userId);
+
     return {
-      doc: inst.doc.toJSON(),
+      doc: inst.collabState.doc.toJSON(),
       users: inst.userCount,
-      version: inst.version,
+      version: inst.collabState.version,
       managerId: this._managerId,
     };
   }
@@ -59,14 +62,13 @@ export class CollabRequestHandler {
     }
 
     let data = instance.getEvents(version);
-    if (data === false) {
-      throw new CollabError(410, 'History no longer available');
-    }
+
     // If the server version is greater than the given version,
     // return the data immediately.
     if (data.steps.length) {
       return outputEvents(instance, data);
     }
+
     // If the server version matches the given version,
     // wait until a new version is published to return the event data.
 
@@ -123,11 +125,7 @@ export class CollabRequestHandler {
             clearTimeout(timerId);
             log('finished');
             let data = instance.getEvents(version);
-            if (data === false) {
-              throw new CollabError(410, 'History no longer available');
-            } else {
-              resolve(outputEvents(instance, data));
-            }
+            resolve(outputEvents(instance, data));
           }
         } catch (error) {
           reject(error);
@@ -152,17 +150,15 @@ export class CollabRequestHandler {
     if (!instance) {
       throw new Error('Instance not found');
     }
-    log('received version =', version, 'server version', instance.version);
+    log(
+      'received version =',
+      version,
+      'server version',
+      instance.collabState.version,
+    );
     let result = instance.addEvents(version, parsedSteps, clientID);
 
-    if (!result) {
-      throw new CollabError(
-        409,
-        `Version ${version} not current. Currently on ${instance.version}`,
-      );
-    } else {
-      return {};
-    }
+    return {};
   }
 
   private _validateManagerId(managerId: string) {
@@ -183,12 +179,9 @@ function nonNegInteger(str: any) {
   throw new CollabError(400, 'Not a non-negative integer: ' + str);
 }
 
-function outputEvents(
-  inst: Instance,
-  data: Exclude<ReturnType<Instance['getEvents']>, false>,
-) {
+function outputEvents(inst: Instance, data: ReturnType<Instance['getEvents']>) {
   return {
-    version: inst.version,
+    version: inst.collabState.version,
     steps: data.steps.map((step: StepBigger) => step.toJSON()),
     clientIDs: data.steps.map((step: StepBigger) => step.clientID),
     users: data.users,

@@ -94,7 +94,7 @@ export class Manager {
 
   public getDocVersion(docName: string): number | undefined {
     const instance = this._instances[docName];
-    return instance?.version;
+    return instance?.collabState.version;
   }
 
   public async handleRequest(
@@ -214,10 +214,14 @@ export class Manager {
         return;
       }
       final
-        ? this._disk.flush(docName, instance.doc, instance.version)
+        ? this._disk.flush(
+            docName,
+            instance.collabState.doc,
+            instance.collabState.version,
+          )
         : this._disk.update(docName, () => ({
-            doc: instance.doc,
-            version: instance.version,
+            doc: instance.collabState.doc,
+            version: instance.collabState.version,
           }));
     };
 
