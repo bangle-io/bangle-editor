@@ -1,0 +1,30 @@
+{
+  "name": "bite-e2e",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite --port 1234",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@bangle.dev/all-base-components": "workspace:*",
+    "@bangle.dev/collab-client": "workspace:*",
+    "@bangle.dev/collab-server": "workspace:*",
+    "@bangle.dev/core": "workspace:*",
+    "@bangle.dev/markdown": "workspace:*",
+    "@bangle.dev/pm": "workspace:*",
+    "@bangle.dev/react": "workspace:*",
+    "@bangle.dev/react-menu": "workspace:*",
+    "@bangle.dev/react-sticker": "workspace:*",
+    "@bangle.dev/react-stopwatch": "workspace:*",
+    "@bangle.dev/table": "workspace:*",
+    "@bangle.dev/tooltip": "workspace:*",
+    "@bangle.dev/utils": "workspace:*",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "vite": "^2.9.9"
+  }
+}
