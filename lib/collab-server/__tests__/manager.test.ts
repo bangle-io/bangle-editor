@@ -1,5 +1,3 @@
-/// <reference path="../src/missing-types.d.ts" />
-
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Disk } from '@bangle.dev/disk';

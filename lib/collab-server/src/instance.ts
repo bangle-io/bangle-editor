@@ -9,6 +9,7 @@ function log(...args: any[]) {
     console.log('collab/server/instance', ...args);
   }
 }
+
 interface Waiter {
   userId: string;
   onFinish: () => void;

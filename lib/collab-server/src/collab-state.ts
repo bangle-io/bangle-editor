@@ -10,7 +10,7 @@ export interface StepBigger extends Step {
   clientID: string;
 }
 
-const MAX_STEP_HISTORY = 1000;
+export const MAX_STEP_HISTORY = 1000;
 
 export class CollabState {
   static addEvents(
