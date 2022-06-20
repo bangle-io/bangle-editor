@@ -4,6 +4,7 @@ import prettier from 'prettier';
 
 export const pmRoot = '#pm-root';
 export const ctrlKey = os.platform() === 'darwin' ? 'Meta' : 'Control';
+export const isDarwin = os.platform() === 'darwin';
 
 function frmt(doc: any) {
   return prettier.format(doc.toString(), {
@@ -60,4 +61,12 @@ export async function getDoc(page: Page) {
     })
     .then(frmt)
     .then((doc) => doc.trim());
+}
+
+export function repeat(str: string, times: number) {
+  var result = '';
+  while (times--) {
+    result += str;
+  }
+  return result;
 }
