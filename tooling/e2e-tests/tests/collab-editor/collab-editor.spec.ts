@@ -289,7 +289,7 @@ test.describe('Editors should sync', () => {
       ]);
     });
 
-    test.only('editor errors 410', async ({ page }) => {
+    test('editor errors 410', async ({ page }) => {
       await loadPage(page, { collabErrorCode: 410 });
       await clearEditorText(page, EDITOR_1);
       await clickEditor(page, EDITOR_1);
@@ -312,7 +312,7 @@ test.describe('Editors should sync', () => {
       await sleep(1000);
       await page.keyboard.type('(broken)');
 
-      // wait enough that the get request from editor 2 is resent
+      // wait enough that the get request from editor 2 is re-sent
       // and meets an error
       await sleep(1000);
 
