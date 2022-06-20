@@ -8,6 +8,7 @@ const buildOptions = {
     lib: ['ES2019', 'dom', 'scripthost'],
     allowSyntheticDefaultImports: true,
     jsx: 'react',
+    target: 'es2018',
   },
 };
 
