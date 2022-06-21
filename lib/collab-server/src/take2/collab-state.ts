@@ -1,10 +1,7 @@
 import type { Node, Step, StepMap } from '@bangle.dev/pm';
+import { Either, Left, Right } from '@bangle.dev/utils';
 
-import {
-  COLLAB_STATUS_FAIL,
-  COLLAB_STATUS_OK,
-  CollabFail,
-} from './collab-error';
+import { CollabFail } from '../collab-error';
 
 export interface StepBigger extends Step {
   clientID: string;
@@ -18,12 +15,9 @@ export class CollabState {
     version: number,
     steps: Step[],
     clientID: string,
-  ) {
+  ): Either<CollabFail, CollabState> {
     if (CollabState.isInvalidVersion(collabState, version)) {
-      return {
-        status: COLLAB_STATUS_FAIL,
-        reason: CollabFail.InvalidVersion,
-      };
+      return Left(CollabFail.InvalidVersion);
     }
 
     const biggerSteps: StepBigger[] = steps.map((s) =>
@@ -31,10 +25,7 @@ export class CollabState {
     );
 
     if (collabState.version !== version) {
-      return {
-        status: COLLAB_STATUS_FAIL,
-        reason: CollabFail.OutdatedVersion,
-      };
+      return Left(CollabFail.OutdatedVersion);
     }
 
     let newDoc = collabState.doc;
@@ -43,10 +34,7 @@ export class CollabState {
     for (const step of biggerSteps) {
       let result = step.apply(newDoc);
       if (result.doc == null) {
-        return {
-          status: COLLAB_STATUS_FAIL,
-          reason: CollabFail.ApplyFailed,
-        };
+        return Left(CollabFail.ApplyFailed);
       }
 
       newDoc = result.doc;
@@ -56,33 +44,24 @@ export class CollabState {
     const newVersion = collabState.version + biggerSteps.length;
     const newSteps = collabState.steps.concat(biggerSteps);
 
-    return {
-      status: COLLAB_STATUS_OK,
-      collabState: new CollabState(newDoc, newSteps, newVersion),
-    };
+    return Right(new CollabState(newDoc, newSteps, newVersion));
   }
 
-  static getEvents(collabState: CollabState, version: number) {
+  static getEvents(
+    collabState: CollabState,
+    version: number,
+  ): Either<CollabFail, { steps: CollabState['steps'] }> {
     if (CollabState.isInvalidVersion(collabState, version)) {
-      return {
-        status: COLLAB_STATUS_FAIL,
-        reason: CollabFail.InvalidVersion,
-      };
+      return Left(CollabFail.InvalidVersion);
     }
 
     let startIndex = collabState.steps.length - (collabState.version - version);
 
     if (startIndex < 0) {
-      return {
-        status: COLLAB_STATUS_FAIL,
-        reason: CollabFail.HistoryNotAvailable,
-      };
+      return Left(CollabFail.HistoryNotAvailable);
     }
 
-    return {
-      status: COLLAB_STATUS_OK,
-      steps: collabState.steps.slice(startIndex),
-    };
+    return Right({ steps: collabState.steps.slice(startIndex) });
   }
 
   static isInvalidVersion(collabState: CollabState, version: number) {

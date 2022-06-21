@@ -28,6 +28,7 @@ export enum CollabFail {
   OutdatedVersion = 'OutdatedVersion', // 409
   ApplyFailed = 'ApplyFailed', // ??
   HistoryNotAvailable = 'HistoryNotAvailable', // 410
+  IncorrectManager = 'IncorrectManager', // 410
 
   DocumentNotFound = 'DocumentNotFound', // 404
 }
@@ -47,6 +48,8 @@ export function throwCollabError(reason: CollabFail): never {
       throw new CollabError(410, 'Server or History no longer available');
     case CollabFail.DocumentNotFound:
       throw new CollabError(404, `Document not found`);
+    case CollabFail.IncorrectManager:
+      throw new CollabError(410, `Incorrect manager`);
 
     default: {
       let val: never = reason;
