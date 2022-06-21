@@ -34,7 +34,8 @@
     "prosemirror-utils-bangle": "0.0.4"
   },
   "devDependencies": {
-    "@bangle.dev/pm": "workspace:*"
+    "@bangle.dev/pm": "workspace:*",
+    "tsd": "^0.21.0"
   },
   "publishConfig": {
     "access": "public",
