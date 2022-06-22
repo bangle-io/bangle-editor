@@ -28,57 +28,39 @@ export interface Right<T> {
 
 export type EitherType<L, R> = Left<L> | Right<R>;
 
+type InferLeft<T> = T extends Left<infer L> ? L : never;
+type InferRight<T> = T extends Right<infer R> ? R : never;
+
 export type NotEither<T> = T extends Left<any>
   ? never
   : T extends Right<any>
   ? never
   : T;
 
-export const Either = {
-  value<L, R>(either: Left<L> | Right<R>): L | R {
+// Note type of left cannot change to keep things simple.
+export class Either {
+  static flatMap<L, R, V>(
+    either: Left<L> | Right<R>,
+    rightFn: (
+      rightVal: R,
+      // create left value without losing info about right
+      opts: { left: (l: L) => Left<L> | Right<R> },
+    ) => Left<L> | Right<V>,
+  ): Left<L> | Right<V> {
     if (Either.isLeft(either)) {
-      return either.left;
+      return Either.left(either.left);
     } else if (Either.isRight(either)) {
-      return either.right;
+      return rightFn(either.right, { left: Either.left });
     }
 
-    throw new Error('Either.value: unknown type');
-  },
+    throw new Error('Either.flatMap: unknown type');
+  }
 
-  unwrap: <L, R>(
+  static fold<L, R, V>(
     either: Left<L> | Right<R>,
-  ): [L, undefined] | [undefined, R] => {
-    if (Either.isLeft(either)) {
-      return [either.left, undefined];
-    } else if (Either.isRight(either)) {
-      return [undefined, either.right];
-    }
-
-    throw new Error('Either.unwrap: unknown type');
-  },
-  left: <T>(value: T): Left<T> => {
-    return { left: value, right: undefined, type: 'left' as const };
-  },
-
-  right: <T>(value: T): Right<T> => ({
-    left: undefined,
-    right: value,
-    type: 'right' as const,
-  }),
-
-  isLeft: <T>(either: Left<T> | Right<unknown>): either is Left<T> => {
-    return either.type === 'left';
-  },
-
-  isRight: <T>(either: Left<unknown> | Right<T>): either is Right<T> => {
-    return either.type === 'right';
-  },
-
-  fold: <L, R, U, V>(
-    either: Left<L> | Right<R>,
-    leftFn: (left: L) => U,
+    leftFn: (left: L) => L,
     rightFn: (right: R) => V,
-  ): Left<U> | Right<V> => {
+  ): Left<L> | Right<V> {
     if (Either.isLeft(either)) {
       return Either.left(leftFn(either.left));
     } else if (Either.isRight(either)) {
@@ -86,35 +68,64 @@ export const Either = {
     }
 
     throw new Error('Either.fold: unknown type');
-  },
+  }
 
-  map: <L, R, V>(
+  static isLeft<T>(either: Left<T> | Right<unknown>): either is Left<T> {
+    return either.type === 'left';
+  }
+
+  static isRight<T>(either: Left<unknown> | Right<T>): either is Right<T> {
+    return either.type === 'right';
+  }
+
+  static left<T>(value: T): Left<T> {
+    return { left: value, right: undefined, type: 'left' as const };
+  }
+
+  static map<L, R, V>(
     either: Left<L> | Right<R>,
     rightFn: (right: R) => V,
-  ): Left<L> | Right<V> => {
+  ): Left<L> | Right<V> {
     return Either.fold(either, (left) => left, rightFn);
-  },
+  }
 
-  flatMap: <L, R, V>(
+  static mapLeft<L, R>(
     either: Left<L> | Right<R>,
-    rightFn: (right: R) => Left<L> | Right<V>,
-  ): Left<L> | Right<V> => {
+    leftFn: (left: L) => L,
+  ): Left<L> | Right<R> {
+    return Either.fold(either, leftFn, (right) => right);
+  }
+
+  static right<T>(value: T): Right<T> {
+    return {
+      left: undefined,
+      right: value,
+      type: 'right' as const,
+    };
+  }
+
+  static unwrap<L, R>(
+    either: Left<L> | Right<R>,
+  ): [L, undefined] | [undefined, R] {
     if (Either.isLeft(either)) {
-      return Either.left(either.left);
+      return [either.left, undefined];
     } else if (Either.isRight(either)) {
-      return rightFn(either.right);
+      return [undefined, either.right];
     }
 
-    throw new Error('Either.flatMap: unknown type');
-  },
+    throw new Error('Either.unwrap: unknown type');
+  }
 
-  mapLeft: <L, R, U>(
-    either: Left<L> | Right<R>,
-    leftFn: (left: L) => U,
-  ): Left<U> | Right<R> => {
-    return Either.fold(either, leftFn, (right) => right);
-  },
-};
+  static value<L, R>(either: Left<L> | Right<R>): L | R {
+    if (Either.isLeft(either)) {
+      return either.left;
+    } else if (Either.isRight(either)) {
+      return either.right;
+    }
+
+    throw new Error('Either.value: unknown type');
+  }
+}
 
 // declare interface Either<L, R> {
 //   map<R2>(f: (r: R) => R2): Either<L, R2>

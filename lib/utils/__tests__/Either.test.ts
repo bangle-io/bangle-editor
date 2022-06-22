@@ -114,6 +114,38 @@ describe('right', () => {
 
     expect(result).toEqual([undefined, 7]);
   });
+
+  test('flatMap works', () => {
+    let either = getMeValue(false, 'hello', 7);
+
+    let newEither = Either.flatMap(either, (num) => Either.right(num + 1));
+
+    expectType<Left<string> | Right<number>>(newEither);
+
+    expect(Either.value(newEither)).toEqual(8);
+  });
+
+  test('flatMap type change', () => {
+    let either = getMeValue(false, 'hello', 7);
+
+    let newEither = Either.flatMap(either, (num) => Either.right(false));
+
+    expectType<Left<string> | Right<boolean>>(newEither);
+
+    expect(Either.value(newEither)).toEqual(false);
+  });
+
+  test('flatMap to left works', () => {
+    let either = getMeValue(false, 'hello', 7);
+
+    const errorEither = Either.flatMap(either, (num, { left }) =>
+      left('error'),
+    );
+
+    expectType<Left<string> | Right<number>>(errorEither);
+
+    expect(Either.value(errorEither)).toEqual('error');
+  });
 });
 
 test('Works', () => {
@@ -207,7 +239,9 @@ test('fold works', () => {
     either,
     (left) => {
       expectType<{ error: string }>(left);
-      return left.error;
+      return {
+        error: 'world',
+      };
     },
     (right) => {
       expectType<{ type: string; value: number }>(right);
@@ -215,7 +249,7 @@ test('fold works', () => {
     },
   );
 
-  expect(Either.unwrap(newEither)).toEqual(['hi', undefined]);
+  expect(Either.unwrap(newEither)).toEqual([{ error: 'world' }, undefined]);
 });
 
 function getMeValue<L, R>(isLeft: boolean, left: L, right: R) {
