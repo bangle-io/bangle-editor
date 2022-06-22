@@ -1,7 +1,7 @@
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node, ReplaceStep, Slice } from '@bangle.dev/pm';
-import { assertNotUndefined } from '@bangle.dev/utils';
+import { assertNotUndefined, Either } from '@bangle.dev/utils';
 
 import {
   CollabState,
@@ -45,12 +45,9 @@ test('works', () => {
     }),
   );
 
-  const [fail, newCollab] = CollabState.addEvents(
-    state,
-    0,
-    [step],
-    'clientID',
-  ).resolve();
+  const [fail, newCollab] = Either.unwrap(
+    CollabState.addEvents(state, 0, [step], 'clientID'),
+  );
 
   expect(fail).toBeUndefined();
 
@@ -60,7 +57,9 @@ test('works', () => {
   expect(newCollab?.version).toBe(1);
   expect(newCollab?.steps).toEqual([step]);
 
-  const [getEventFail, events] = CollabState.getEvents(newCollab!, 0).resolve();
+  const [getEventFail, events] = Either.unwrap(
+    CollabState.getEvents(newCollab!, 0),
+  );
 
   expect(getEventFail).toBeUndefined();
 
@@ -75,9 +74,9 @@ test('throws on invalid version', () => {
 
   const step = new ReplaceStep(0, 0, Slice.empty);
 
-  const newCollab = CollabState.addEvents(state, 1, [step], 'clientID').value;
+  const error = CollabState.addEvents(state, 1, [step], 'clientID').left;
 
-  expect(newCollab).toMatchInlineSnapshot(`"InvalidVersion"`);
+  expect(error).toMatchInlineSnapshot(`"InvalidVersion"`);
 });
 
 test('throws outdated version', () => {
@@ -86,9 +85,9 @@ test('throws outdated version', () => {
 
   const step = new ReplaceStep(0, 0, Slice.empty);
 
-  const newCollab = CollabState.addEvents(state, 3, [step], 'clientID').value;
+  const error = CollabState.addEvents(state, 3, [step], 'clientID').left;
 
-  expect(newCollab).toMatchInlineSnapshot(`"OutdatedVersion"`);
+  expect(error).toMatchInlineSnapshot(`"OutdatedVersion"`);
 });
 
 test('throws on unable to apply', () => {
@@ -108,7 +107,9 @@ test('throws on unable to apply', () => {
     }),
   );
 
-  const newCollab = CollabState.addEvents(state, 0, [step], 'clientID').value;
+  const newCollab = Either.value(
+    CollabState.addEvents(state, 0, [step], 'clientID'),
+  );
 
   expect(newCollab).toEqual('ApplyFailed');
 });
@@ -118,7 +119,7 @@ describe('getEvents', () => {
     const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
     const state = new CollabState(doc, [], 50000);
 
-    const events = CollabState.getEvents(state, 0).value;
+    const events = Either.value(CollabState.getEvents(state, 0));
     expect(events).toBe('HistoryNotAvailable');
   });
 
@@ -126,7 +127,7 @@ describe('getEvents', () => {
     const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
     const state = new CollabState(doc, [], 1);
 
-    const events = CollabState.getEvents(state, 10).value;
+    const events = Either.value(CollabState.getEvents(state, 10));
     expect(events).toBe('InvalidVersion');
   });
 });

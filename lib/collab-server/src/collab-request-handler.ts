@@ -1,13 +1,13 @@
 import { Schema, Step } from '@bangle.dev/pm';
 
 import { CollabError } from './collab-error';
-import { StepBigger } from './collab-state';
 import { Instance } from './instance';
+import { StepBigger } from './take2/collab-state';
 import {
   GetDocumentRequestParam,
   GetDocumentResponse,
-  PullEventRequestParam,
   PullEventResponse,
+  PullEventsRequestParam,
   PushEventsRequestParam,
   PushEventsResponse,
 } from './types';
@@ -47,7 +47,7 @@ export class CollabRequestHandler {
     version,
     userId,
     managerId,
-  }: PullEventRequestParam): Promise<PullEventResponse> {
+  }: PullEventsRequestParam): Promise<PullEventResponse> {
     log('userWaitTimeout', this._userWaitTimeout);
     this._validateManagerId(managerId);
     // An endpoint for a collaborative document instance which
@@ -158,7 +158,9 @@ export class CollabRequestHandler {
     );
     let result = instance.addEvents(version, parsedSteps, clientID);
 
-    return {};
+    return {
+      empty: null,
+    };
   }
 
   private _validateManagerId(managerId: string) {

@@ -1,7 +1,8 @@
 import { Node, Step } from '@bangle.dev/pm';
+import { Either } from '@bangle.dev/utils';
 
-import { COLLAB_STATUS_FAIL, throwCollabError } from './collab-error';
-import { CollabState } from './collab-state';
+import { throwCollabError } from './collab-error';
+import { CollabState } from './take2/collab-state';
 
 const LOG = false;
 function log(...args: any[]) {
@@ -63,19 +64,16 @@ export class Instance {
   }
 
   public addEvents(version: number, steps: Step[], clientID: string) {
-    const result = CollabState.addEvents(
-      this.collabState,
-      version,
-      steps,
-      clientID,
+    const [fail, collabState] = Either.unwrap(
+      CollabState.addEvents(this.collabState, version, steps, clientID),
     );
 
-    if (result.status === COLLAB_STATUS_FAIL) {
-      throwCollabError(result.reason);
+    if (fail != null) {
+      throwCollabError(fail);
     }
 
     let prevCollabState = this.collabState;
-    this.collabState = result.collabState;
+    this.collabState = collabState;
 
     Instance.sendUpdates(this.waiting);
 
@@ -90,10 +88,12 @@ export class Instance {
 
   // the current document version.
   public getEvents(version: number) {
-    const result = CollabState.getEvents(this.collabState, version);
+    const [fail, result] = Either.unwrap(
+      CollabState.getEvents(this.collabState, version),
+    );
 
-    if (result.status === COLLAB_STATUS_FAIL) {
-      throwCollabError(result.reason);
+    if (fail) {
+      throwCollabError(fail);
     }
 
     return {

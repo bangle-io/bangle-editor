@@ -159,7 +159,9 @@ test('handles push events', async () => {
 
   expect(resp).toMatchInlineSnapshot(`
     Object {
-      "body": Object {},
+      "body": Object {
+        "empty": null,
+      },
       "status": "ok",
     }
   `);

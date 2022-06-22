@@ -3,7 +3,7 @@ export type PullEventResponse = {
   steps?: Array<{ [key: string]: any }>;
   clientIDs?: string[];
 };
-export type PullEventRequestParam = {
+export type PullEventsRequestParam = {
   docName: string;
   version: number;
   userId: string;
@@ -23,7 +23,9 @@ export type GetDocumentResponse = {
 };
 
 export type PushEventsType = 'push_events';
-export type PushEventsResponse = {};
+export type PushEventsResponse = {
+  empty: null;
+};
 export type PushEventsRequestParam = {
   version: number;
   steps: Array<{ [key: string]: any }>;
@@ -34,7 +36,7 @@ export type PushEventsRequestParam = {
 };
 
 export type PullEvents = (
-  obj: PullEventRequestParam,
+  obj: PullEventsRequestParam,
 ) => Promise<PullEventResponse>;
 export type GetDocument = (
   obj: GetDocumentRequestParam,
@@ -49,7 +51,7 @@ export type CollabRequestType =
   | PushEventsType;
 
 export type CollabRequestParam =
-  | PullEventRequestParam
+  | PullEventsRequestParam
   | GetDocumentRequestParam
   | PushEventsRequestParam;
 
@@ -57,3 +59,17 @@ export type CollabResponse =
   | PullEventResponse
   | GetDocumentResponse
   | PushEventsResponse;
+
+export type ServerRequest =
+  | {
+      type: GetDocumentType;
+      payload: GetDocumentRequestParam;
+    }
+  | {
+      type: PullEventsType;
+      payload: PullEventsRequestParam;
+    }
+  | {
+      type: PushEventsType;
+      payload: PushEventsRequestParam;
+    };

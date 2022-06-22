@@ -1,10 +1,9 @@
 import { isProdEnv, isTestEnv } from './environment';
 
-// Throws an abort error if a signal is already aborted.
-export function assertNotUndefined(
-  value: unknown,
+export function assertNotUndefined<T>(
+  value: T | undefined,
   message: string,
-): asserts value {
+): asserts value is T {
   if (value === undefined) {
     throw new Error(`assertion failed: ${message}`);
   }

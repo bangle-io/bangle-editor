@@ -1,5 +1,5 @@
 import type { Node, Step, StepMap } from '@bangle.dev/pm';
-import { Either, Left, Right } from '@bangle.dev/utils';
+import { Either } from '@bangle.dev/utils';
 
 import { CollabFail } from '../collab-error';
 
@@ -15,9 +15,9 @@ export class CollabState {
     version: number,
     steps: Step[],
     clientID: string,
-  ): Either<CollabFail, CollabState> {
+  ) {
     if (CollabState.isInvalidVersion(collabState, version)) {
-      return Left(CollabFail.InvalidVersion);
+      return Either.left(CollabFail.InvalidVersion);
     }
 
     const biggerSteps: StepBigger[] = steps.map((s) =>
@@ -25,7 +25,7 @@ export class CollabState {
     );
 
     if (collabState.version !== version) {
-      return Left(CollabFail.OutdatedVersion);
+      return Either.left(CollabFail.OutdatedVersion);
     }
 
     let newDoc = collabState.doc;
@@ -34,7 +34,7 @@ export class CollabState {
     for (const step of biggerSteps) {
       let result = step.apply(newDoc);
       if (result.doc == null) {
-        return Left(CollabFail.ApplyFailed);
+        return Either.left(CollabFail.ApplyFailed);
       }
 
       newDoc = result.doc;
@@ -44,24 +44,24 @@ export class CollabState {
     const newVersion = collabState.version + biggerSteps.length;
     const newSteps = collabState.steps.concat(biggerSteps);
 
-    return Right(new CollabState(newDoc, newSteps, newVersion));
+    return Either.right(new CollabState(newDoc, newSteps, newVersion));
   }
 
-  static getEvents(
-    collabState: CollabState,
-    version: number,
-  ): Either<CollabFail, { steps: CollabState['steps'] }> {
+  static getEvents(collabState: CollabState, version: number) {
     if (CollabState.isInvalidVersion(collabState, version)) {
-      return Left(CollabFail.InvalidVersion);
+      return Either.left(CollabFail.InvalidVersion);
     }
 
     let startIndex = collabState.steps.length - (collabState.version - version);
 
     if (startIndex < 0) {
-      return Left(CollabFail.HistoryNotAvailable);
+      return Either.left(CollabFail.HistoryNotAvailable);
     }
 
-    return Right({ steps: collabState.steps.slice(startIndex) });
+    return Either.right({
+      version: collabState.version,
+      steps: collabState.steps.slice(startIndex),
+    });
   }
 
   static isInvalidVersion(collabState: CollabState, version: number) {
