@@ -1,29 +1,31 @@
 import { expectType } from 'tsd';
 
-import { Either, EitherBase, Left, Right } from '../src/Either';
+import { Either, Left, Right } from '../src/Either';
 
 describe('left', () => {
-  let either = Left<string, number>('hello');
+  let either = getMeValue(true, 'hello', 7);
 
   test('resolve works', () => {
-    expectType<[string, undefined] | [undefined, number]>(either.resolve());
-    expect(either.resolve()).toEqual(['hello', undefined]);
+    expectType<[string, undefined] | [undefined, number]>(
+      Either.unwrap(either),
+    );
+    expect(Either.unwrap(either)).toEqual(['hello', undefined]);
   });
 
   test('map works', () => {
-    let e = either.map((num) => num + 1);
+    let e = Either.map(either, (num) => num + 1);
 
-    expectType<EitherBase<string, number>>(e);
-    expect(e.resolve()).toEqual(['hello', undefined]);
+    expectType<Left<string> | Right<number>>(e);
+    expect(Either.unwrap(e)).toEqual(['hello', undefined]);
 
     let result = [];
-    if (e.isLeft()) {
+    if (Either.isLeft(e)) {
       expectType<string>(e.left);
       expectType<undefined>(e.right);
       result.push(e.left);
       result.push(e.right);
     }
-    if (e.isRight()) {
+    if (Either.isRight(e)) {
       expectType<undefined>(e.left);
       expectType<number>(e.right);
       result.push(e.left);
@@ -34,19 +36,19 @@ describe('left', () => {
   });
 
   test('mapLeft works', () => {
-    let e = either.mapLeft((word) => word + 'world');
+    let e = Either.mapLeft(either, (word) => word + 'world');
 
-    expectType<EitherBase<string, number>>(e);
-    expect(e.resolve()).toEqual(['helloworld', undefined]);
+    expectType<Left<string> | Right<number>>(e);
+    expect(Either.unwrap(e)).toEqual(['helloworld', undefined]);
 
     let result = [];
-    if (e.isLeft()) {
+    if (Either.isLeft(e)) {
       expectType<string>(e.left);
       expectType<undefined>(e.right);
       result.push(e.left);
       result.push(e.right);
     }
-    if (e.isRight()) {
+    if (Either.isRight(e)) {
       expectType<undefined>(e.left);
       expectType<number>(e.right);
       result.push(e.left);
@@ -58,27 +60,29 @@ describe('left', () => {
 });
 
 describe('right', () => {
-  let either = Right<string, number>(7);
+  let either = getMeValue(false, 'hello', 7);
 
   test('resolve works', () => {
-    expectType<[string, undefined] | [undefined, number]>(either.resolve());
-    expect(either.resolve()).toEqual([undefined, 7]);
+    expectType<[string, undefined] | [undefined, number]>(
+      Either.unwrap(either),
+    );
+    expect(Either.unwrap(either)).toEqual([undefined, 7]);
   });
 
   test('map works', () => {
-    let e = either.map((num) => num + 1);
+    let e = Either.map(either, (num) => num + 1);
 
-    expectType<EitherBase<string, number>>(e);
-    expect(e.resolve()).toEqual([undefined, 8]);
+    expectType<Left<string> | Right<number>>(e);
+    expect(Either.unwrap(e)).toEqual([undefined, 8]);
 
     let result = [];
-    if (e.isLeft()) {
+    if (Either.isLeft(e)) {
       expectType<string>(e.left);
       expectType<undefined>(e.right);
       result.push(e.left);
       result.push(e.right);
     }
-    if (e.isRight()) {
+    if (Either.isRight(e)) {
       expectType<undefined>(e.left);
       expectType<number>(e.right);
       result.push(e.left);
@@ -89,19 +93,19 @@ describe('right', () => {
   });
 
   test('mapLeft works', () => {
-    let e = either.mapLeft((word) => word + 'world');
+    let e = Either.mapLeft(either, (word) => word + 'world');
 
-    expectType<EitherBase<string, number>>(e);
-    expect(e.resolve()).toEqual([undefined, 7]);
+    expectType<Left<string> | Right<number>>(e);
+    expect(Either.unwrap(e)).toEqual([undefined, 7]);
 
     let result = [];
-    if (e.isLeft()) {
+    if (Either.isLeft(e)) {
       expectType<string>(e.left);
       expectType<undefined>(e.right);
       result.push(e.left);
       result.push(e.right);
     }
-    if (e.isRight()) {
+    if (Either.isRight(e)) {
       expectType<undefined>(e.left);
       expectType<number>(e.right);
       result.push(e.left);
@@ -113,48 +117,52 @@ describe('right', () => {
 });
 
 test('Works', () => {
-  let result = Left('hello');
+  let result = getMeValue(true, 'hello', 8);
 
-  expect(result.resolve()).toEqual(['hello', undefined]);
+  expect(Either.unwrap(result)).toEqual(['hello', undefined]);
 });
 
 test('Map works', () => {
-  let result = Left<string, never>('hello');
+  let result = getMeValue(true, 'hello', 8);
 
-  expect(result.map((value) => value + 1).resolve()).toEqual([
+  expect(Either.unwrap(Either.map(result, (value) => value + 1))).toEqual([
     'hello',
     undefined,
   ]);
 
   expect(
-    result
-      .mapLeft((left) => left.toLocaleUpperCase())
-      .map((right) => right + 5)
-      .mapLeft((left) => left + 'test')
-      .resolve(),
+    Either.unwrap(
+      Either.mapLeft(
+        Either.map(
+          Either.mapLeft(result, (left) => left.toLocaleUpperCase()),
+          (right) => right + 5,
+        ),
+        (left) => left + 'test',
+      ),
+    ),
   ).toEqual(['HELLOtest', undefined]);
 });
 
 test('getLeft works', () => {
-  let either = getMeValue(true);
+  let either = getMeValue(true, 5, 'world');
 
-  either.map((value) => {
+  Either.map(either, (value) => {
     expectType<string>(value);
-    return value + 1;
+    return value + 'world';
   });
 
-  either.mapLeft((value) => {
+  Either.mapLeft(either, (value) => {
     expectType<number>(value);
     return value + 1;
   });
 
   let values = [];
-  if (either.isLeft()) {
+  if (Either.isLeft(either)) {
     let target = either.left;
     expectType<number>(target);
     expectType<undefined>(either.right);
     values.push(target);
-  } else if (either.isRight()) {
+  } else if (Either.isRight(either)) {
     let target = either.right;
     expectType<string>(target);
     expectType<undefined>(either.left);
@@ -165,19 +173,18 @@ test('getLeft works', () => {
 });
 
 test('getRight works', () => {
-  let either = getMeValue(false);
-  expectType<string | number>(either.value);
+  let either = getMeValue(false, 5, 'world');
+
+  expectType<string | number>(Either.value(either));
 
   let values = [];
-  if (either.isLeft()) {
+  if (Either.isLeft(either)) {
     let target = either.left;
     expectType<number>(target);
-    expectType<number>(either.value);
 
     values.push(target);
-  } else if (either.isRight()) {
+  } else if (Either.isRight(either)) {
     let target = either.right;
-    expectType<string>(either.value);
     expectType<string>(target);
     values.push(target);
   }
@@ -188,13 +195,16 @@ test('getRight works', () => {
 test('fold works', () => {
   function makeEither(
     isLeft: boolean,
-  ): Either<{ error: string }, { type: string; value: number }> {
-    return isLeft ? Left({ error: 'hi' }) : Right({ type: 'hi', value: 5 });
+  ): Left<{ error: string }> | Right<{ type: string; value: number }> {
+    return isLeft
+      ? Either.left({ error: 'hi' })
+      : Either.right({ type: 'hi', value: 5 });
   }
 
   let either = makeEither(true);
 
-  let newEither = either.fold(
+  let newEither = Either.fold(
+    either,
     (left) => {
       expectType<{ error: string }>(left);
       return left.error;
@@ -205,31 +215,9 @@ test('fold works', () => {
     },
   );
 
-  expect(newEither.resolve()).toEqual(['hi', undefined]);
+  expect(Either.unwrap(newEither)).toEqual(['hi', undefined]);
 });
 
-test('resolve works', () => {
-  let either = getMeValue(true);
-
-  let resolve = either.resolve();
-
-  expectType<[number, undefined] | [undefined, string]>(resolve);
-
-  let result = [];
-  if (either.isLeft()) {
-    result.push(either.resolve());
-
-    expectType<[number, undefined]>(either.resolve());
-  }
-
-  if (either.isRight()) {
-    result.push(either.resolve());
-    expectType<[undefined, string]>(either.resolve());
-  }
-
-  expect(result).toEqual([[5, undefined]]);
-});
-
-function getMeValue(isLeft: boolean): Either<number, string> {
-  return isLeft ? Left(5) : Right('world');
+function getMeValue<L, R>(isLeft: boolean, left: L, right: R) {
+  return isLeft ? Either.left(left) : Either.right(right);
 }

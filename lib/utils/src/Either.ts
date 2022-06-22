@@ -14,109 +14,123 @@
 
 // export type Maybe<T> = Just<T> | Nothing;
 
-export type Either<L, R> = LeftBase<L> | RightBase<R>;
-
-export function Left<L, R>(left: L): Either<L, R> {
-  return new LeftBase(left);
+export interface Left<T> {
+  left: T;
+  right: undefined;
+  type: 'left';
 }
 
-export function Right<L, R>(right: R): Either<L, R> {
-  return new RightBase(right);
+export interface Right<T> {
+  left: undefined;
+  right: T;
+  type: 'right';
 }
 
-export abstract class EitherBase<L, R> {
-  constructor(protected readonly _left: L, protected readonly _right: R) {}
+export type EitherType<L, R> = Left<L> | Right<R>;
 
-  get left(): L | undefined {
-    return this._left;
-  }
+export type NotEither<T> = T extends Left<any>
+  ? never
+  : T extends Right<any>
+  ? never
+  : T;
 
-  get right(): R | undefined {
-    return this._right;
-  }
-
-  get value(): L | R {
-    if (this.isLeft()) {
-      return this._left;
-    } else if (this.isRight()) {
-      return this._right;
+export const Either = {
+  value<L, R>(either: Left<L> | Right<R>): L | R {
+    if (Either.isLeft(either)) {
+      return either.left;
+    } else if (Either.isRight(either)) {
+      return either.right;
     }
-    throw new Error('EitherBase.value: unknown type');
-  }
 
-  fold<U, V>(fn: (left: L) => U, fn2: (right: R) => V): EitherBase<U, V> {
-    if (this.isLeft()) {
-      return new LeftBase(fn(this._left));
-    } else if (this.isRight()) {
-      return new RightBase(fn2(this._right));
+    throw new Error('Either.value: unknown type');
+  },
+
+  unwrap: <L, R>(
+    either: Left<L> | Right<R>,
+  ): [L, undefined] | [undefined, R] => {
+    if (Either.isLeft(either)) {
+      return [either.left, undefined];
+    } else if (Either.isRight(either)) {
+      return [undefined, either.right];
     }
-    throw new Error('EitherBase.fold: unknown type');
-  }
 
-  isLeft(): this is LeftBase<L> {
-    return this instanceof LeftBase;
-  }
+    throw new Error('Either.unwrap: unknown type');
+  },
+  left: <T>(value: T): Left<T> => {
+    return { left: value, right: undefined, type: 'left' as const };
+  },
 
-  isRight(): this is RightBase<R> {
-    return this instanceof RightBase;
-  }
+  right: <T>(value: T): Right<T> => ({
+    left: undefined,
+    right: value,
+    type: 'right' as const,
+  }),
 
-  map<U>(fn: (value: R) => U): EitherBase<L, U> {
-    return this.fold((l) => l, fn);
-  }
+  isLeft: <T>(either: Left<T> | Right<unknown>): either is Left<T> => {
+    return either.type === 'left';
+  },
 
-  mapLeft<U>(fn: (value: L) => U): EitherBase<U, R> {
-    return this.fold(fn, (r) => r);
-  }
+  isRight: <T>(either: Left<unknown> | Right<T>): either is Right<T> => {
+    return either.type === 'right';
+  },
 
-  resolve(): [L, undefined] | [undefined, R] {
-    if (this.isLeft()) {
-      return [this._left, undefined];
-    } else if (this.isRight()) {
-      return [undefined, this._right];
+  fold: <L, R, U, V>(
+    either: Left<L> | Right<R>,
+    leftFn: (left: L) => U,
+    rightFn: (right: R) => V,
+  ): Left<U> | Right<V> => {
+    if (Either.isLeft(either)) {
+      return Either.left(leftFn(either.left));
+    } else if (Either.isRight(either)) {
+      return Either.right(rightFn(either.right));
     }
-    throw new Error('EitherBase.resolve: unknown type');
-  }
 
-  abstract tag: 'left' | 'right';
-}
+    throw new Error('Either.fold: unknown type');
+  },
 
-class LeftBase<T> extends EitherBase<T, never> {
-  tag = 'left' as const;
+  map: <L, R, V>(
+    either: Left<L> | Right<R>,
+    rightFn: (right: R) => V,
+  ): Left<L> | Right<V> => {
+    return Either.fold(either, (left) => left, rightFn);
+  },
 
-  constructor(public readonly _left: T) {
-    super(_left, undefined as never);
-  }
+  flatMap: <L, R, V>(
+    either: Left<L> | Right<R>,
+    rightFn: (right: R) => Left<L> | Right<V>,
+  ): Left<L> | Right<V> => {
+    if (Either.isLeft(either)) {
+      return Either.left(either.left);
+    } else if (Either.isRight(either)) {
+      return rightFn(either.right);
+    }
 
-  get left(): T {
-    return this._left;
-  }
+    throw new Error('Either.flatMap: unknown type');
+  },
 
-  get right(): undefined {
-    return undefined;
-  }
+  mapLeft: <L, R, U>(
+    either: Left<L> | Right<R>,
+    leftFn: (left: L) => U,
+  ): Left<U> | Right<R> => {
+    return Either.fold(either, leftFn, (right) => right);
+  },
+};
 
-  resolve(): [T, undefined] {
-    return [this._left, undefined];
-  }
-}
+// declare interface Either<L, R> {
+//   map<R2>(f: (r: R) => R2): Either<L, R2>
+//   leftMap<L2>(f: (l: L) => L2): Either<L2, R>
 
-class RightBase<T> extends EitherBase<never, T> {
-  tag = 'right' as const;
+//   mapThen<R2>(f: (r: R) => Promise<R2>): Promise<Either<L, R2>>
+//   leftMapThen<L2>(f: (l: L) => Promise<L2>): Promise<Either<L2, R>>
 
-  constructor(public readonly _right: T) {
-    super(undefined as never, _right);
-  }
+//   flatMap<R2>(f: (r: R) => Either<L, R2>): Either<L, R2>
+//   leftFlatMap<L2>(f: (l: L) => Either<L2, R>): Either<L2, R>
 
-  get left(): undefined {
-    return undefined;
-  }
+//   flatMapThen<R2>(f: (r: R) => Promise<Either<L, R2>>): Promise<Either<L, R2>>
+//   leftFlatMapThen<L2>(
+//   	f: (l: L) => Promise<Either<L2, R>>): Promise<Either<L2, R>>
 
-  get right(): T {
-    return this._right;
-  }
-
-  resolve(): [undefined, T] {
-    return [undefined, this._right];
-  }
-}
+//   rightOrElse(f: (l: L) => R): R
+//   value: L | R
+//   isOk: boolean
+// }
