@@ -1,5 +1,5 @@
 import { Node, Schema, Step } from '@bangle.dev/pm';
-import { Either, Left, Right, uuid } from '@bangle.dev/utils';
+import { Either, EitherType, uuid } from '@bangle.dev/utils';
 
 import {
   CollabError,
@@ -31,6 +31,11 @@ type HandleResponseError = {
   };
 };
 
+type ApplyEvents = (
+  newCollabState: CollabState,
+  oldCollabState: CollabState,
+) => boolean;
+
 export class Manager2 {
   public readonly managerId = uuid();
   private _instances: Map<string, Instance> = new Map();
@@ -44,6 +49,7 @@ export class Manager2 {
         prevCollabState: CollabState,
       ) => void;
       getDoc: (docName: string) => Promise<Node | undefined>;
+      applyNewEvents?: ApplyEvents;
     },
   ) {}
 
@@ -62,7 +68,7 @@ export class Manager2 {
     const handleReq = (
       request: ServerRequest,
       instance: Instance,
-    ): Left<CollabFail> | Right<CollabResponse> => {
+    ): EitherType<CollabFail, CollabResponse> => {
       const { type, payload } = request;
       switch (type) {
         case 'get_document': {
@@ -98,45 +104,39 @@ export class Manager2 {
       }
     };
 
-    const instance = await this._getInstance(payload.docName);
-
-    const requestEither = Either.flatMap(instance, (instance) => {
-      // TODO fix any
-      return handleReq({ type: path, payload } as any, instance);
-    });
-
-    return Either.value(
-      Either.fold(
-        requestEither,
-        (failure) => {
-          try {
-            throwCollabError(failure);
-          } catch (error) {
-            if (error instanceof CollabError) {
-              return {
-                status: 'error' as const,
-                body: {
-                  errorCode: error.errorCode,
-                  message: error.message,
-                },
-              };
-            }
-            throw error;
-          }
-        },
-        (collabResponse) => {
-          return {
-            status: 'ok' as const,
-            body: collabResponse,
-          };
-        },
-      ),
+    const [failure, collabResponse] = Either.unwrap(
+      Either.flatMap(await this._getInstance(payload.docName), (instance) => {
+        // TODO fix any
+        return handleReq({ type: path, payload } as any, instance);
+      }),
     );
+
+    if (failure) {
+      try {
+        throwCollabError(failure);
+      } catch (error) {
+        if (error instanceof CollabError) {
+          return {
+            status: 'error' as const,
+            body: {
+              errorCode: error.errorCode,
+              message: error.message,
+            },
+          };
+        }
+        throw error;
+      }
+    } else {
+      return {
+        status: 'ok' as const,
+        body: collabResponse,
+      };
+    }
   }
 
   private async _createInstance(
     docName: string,
-  ): Promise<Left<CollabFail> | Right<Instance>> {
+  ): Promise<EitherType<CollabFail, Instance>> {
     const doc = await this._options.getDoc(docName);
 
     // this takes care of edge case where another instance is created
@@ -151,14 +151,25 @@ export class Manager2 {
       return Either.left(CollabFail.DocumentNotFound);
     }
 
-    const collabState = new CollabState(doc, [], 0);
+    const initialCollabState = new CollabState(doc, [], 0);
 
-    instance = new Instance(docName, this._options.schema, collabState);
+    instance = new Instance(
+      docName,
+      this._options.schema,
+      initialCollabState,
+      this._options.applyNewEvents,
+    );
     this._instances.set(docName, instance);
 
     return Either.right(instance);
   }
 
+  /**
+   * Get an instance of a document or creates a new one
+   * if none exists.
+   * @param docName
+   * @returns
+   */
   private async _getInstance(docName: string) {
     const instance = this._instances.get(docName);
 
@@ -177,8 +188,14 @@ class Instance {
   constructor(
     public readonly docName: string,
     private readonly schema: Schema,
-    public collabState: CollabState,
+    private _collabState: CollabState,
+    private _applyNewEvents: ApplyEvents = (newCollabState, oldCollabState) =>
+      true,
   ) {}
+
+  get collabState() {
+    return this._collabState;
+  }
 
   // TODO add userCount
   get userCount(): number {
@@ -189,7 +206,7 @@ class Instance {
     clientID,
     version: rawVersion,
     steps,
-  }: PushEventsRequestParam): Left<CollabFail> | Right<PushEventsResponse> {
+  }: PushEventsRequestParam): EitherType<CollabFail, PushEventsResponse> {
     let version = nonNegInteger(rawVersion);
 
     if (version === undefined) {
@@ -199,9 +216,14 @@ class Instance {
     const parsedSteps = steps.map((s) => Step.fromJSON(this.schema, s));
 
     return Either.map(
-      CollabState.addEvents(this.collabState, version, parsedSteps, clientID),
+      CollabState.addEvents(this._collabState, version, parsedSteps, clientID),
       (collabState) => {
-        this.collabState = collabState;
+        if (this._applyNewEvents(collabState, this._collabState)) {
+          this._collabState = collabState;
+        } else {
+          // TODO should we throw an error?
+        }
+
         // Instance.sendUpdates(this.waiting);
         // this._saveData();
 
@@ -217,9 +239,9 @@ class Instance {
     version,
     userId,
     managerId,
-  }: PullEventsRequestParam): Left<CollabFail> | Right<PullEventResponse> {
+  }: PullEventsRequestParam): EitherType<CollabFail, PullEventResponse> {
     return Either.map(
-      CollabState.getEvents(this.collabState, version),
+      CollabState.getEvents(this._collabState, version),
       (events) => {
         return {
           version: events.version,

@@ -1,5 +1,5 @@
 import type { Node, Step, StepMap } from '@bangle.dev/pm';
-import { Either } from '@bangle.dev/utils';
+import { Either, EitherType } from '@bangle.dev/utils';
 
 import { CollabFail } from '../collab-error';
 
@@ -15,7 +15,7 @@ export class CollabState {
     version: number,
     steps: Step[],
     clientID: string,
-  ) {
+  ): EitherType<CollabFail, CollabState> {
     if (CollabState.isInvalidVersion(collabState, version)) {
       return Either.left(CollabFail.InvalidVersion);
     }
@@ -47,7 +47,10 @@ export class CollabState {
     return Either.right(new CollabState(newDoc, newSteps, newVersion));
   }
 
-  static getEvents(collabState: CollabState, version: number) {
+  static getEvents(
+    collabState: CollabState,
+    version: number,
+  ): EitherType<CollabFail, { version: number; steps: StepBigger[] }> {
     if (CollabState.isInvalidVersion(collabState, version)) {
       return Either.left(CollabFail.InvalidVersion);
     }
