@@ -6,7 +6,7 @@ import reactDOM from 'react-dom';
 
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
-import { CollabManager, PUSH_EVENTS } from '@bangle.dev/collab-server';
+import { CollabManager, CollabRequestType } from '@bangle.dev/collab-server';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
@@ -297,7 +297,10 @@ function collabPlugin(
     docName: 'test-doc',
     clientID,
     sendManagerRequest: async (obj) => {
-      if (obj.type === PUSH_EVENTS && testConfig.pushWaitTime > 0) {
+      if (
+        obj.type === CollabRequestType.PushEvents &&
+        testConfig.pushWaitTime > 0
+      ) {
         console.log(clientID, 'waiting to push');
         await sleep(testConfig.pushWaitTime);
       }

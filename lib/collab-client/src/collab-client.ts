@@ -1,6 +1,6 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
-import { CollabFail } from '@bangle.dev/collab-server';
+import { CollabFail, CollabRequestType } from '@bangle.dev/collab-server';
 import { abortableSetTimeout, isTestEnv } from '@bangle.dev/utils';
 
 import {
@@ -331,7 +331,7 @@ async function initStateAction(
   const debugSource = `initStateAction:`;
 
   const result = await sendManagerRequest({
-    type: 'get_document',
+    type: CollabRequestType.GetDocument,
     payload: {
       docName: docName,
       userId: userId,
@@ -379,7 +379,7 @@ async function pullStateAction(
   const { docName, userId, view, sendManagerRequest } = context;
   const { managerId } = state.state;
   const response = await sendManagerRequest({
-    type: 'pull_events',
+    type: CollabRequestType.PullEvents,
     payload: {
       version: getVersion(view.state),
       docName: docName,
@@ -537,7 +537,7 @@ async function pushStateAction(
   const { managerId } = state.state;
 
   const response = await sendManagerRequest({
-    type: 'push_events',
+    type: CollabRequestType.PushEvents,
     payload: {
       version: getVersion(view.state),
       steps: steps ? steps.steps.map((s) => s.toJSON()) : [],

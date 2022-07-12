@@ -2,7 +2,7 @@ import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 
-import { CollabFail } from '../src';
+import { CollabFail, CollabRequestType } from '../src';
 import { CollabManager } from '../src/collab-manager';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -38,7 +38,7 @@ describe('get_document', () => {
     const { manager } = setup();
 
     const resp = await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -65,7 +65,7 @@ describe('get_document', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -83,7 +83,7 @@ test('getCollabState', async () => {
   const { manager } = setup();
 
   await manager.handleRequest({
-    type: 'get_document',
+    type: CollabRequestType.GetDocument,
     payload: {
       docName: 'test-doc-1',
       userId: 'test-user-1',
@@ -103,7 +103,7 @@ describe('push events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -111,7 +111,7 @@ describe('push events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'push_events',
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: 'client-test-1',
         version: manager.getCollabState('test-doc-1')?.version!,
@@ -169,7 +169,7 @@ describe('push events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -177,7 +177,7 @@ describe('push events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'push_events',
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: 'client-test-1',
         version: manager.getCollabState('test-doc-1')?.version!,
@@ -198,7 +198,7 @@ describe('push events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -206,7 +206,7 @@ describe('push events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'push_events',
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: 'client-test-1',
         version: -1,
@@ -227,7 +227,7 @@ describe('push events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -235,7 +235,7 @@ describe('push events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'push_events',
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: 'client-test-1',
         docName: 'test-doc-1',
@@ -258,7 +258,7 @@ describe('pull events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -266,7 +266,7 @@ describe('pull events', () => {
     });
 
     await manager.handleRequest({
-      type: 'push_events',
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: 'client-test-1',
         version: manager.getCollabState('test-doc-1')?.version!,
@@ -292,7 +292,7 @@ describe('pull events', () => {
     });
 
     await manager.handleRequest({
-      type: 'push_events',
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: 'client-test-2',
         version: manager.getCollabState('test-doc-1')?.version!,
@@ -318,7 +318,7 @@ describe('pull events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'pull_events',
+      type: CollabRequestType.PullEvents,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-3',
@@ -368,7 +368,7 @@ describe('pull events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -376,7 +376,7 @@ describe('pull events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'pull_events',
+      type: CollabRequestType.PullEvents,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-3',
@@ -395,7 +395,7 @@ describe('pull events', () => {
     const { manager } = setup();
 
     await manager.handleRequest({
-      type: 'get_document',
+      type: CollabRequestType.GetDocument,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-1',
@@ -403,7 +403,7 @@ describe('pull events', () => {
     });
 
     const resp = await manager.handleRequest({
-      type: 'pull_events',
+      type: CollabRequestType.PullEvents,
       payload: {
         docName: 'test-doc-1',
         userId: 'test-user-3',

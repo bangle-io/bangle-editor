@@ -4,10 +4,10 @@ import { Either, EitherType, isTestEnv, uuid } from '@bangle.dev/utils';
 import { CollabState, StepBigger } from './collab-state';
 import {
   CollabFail,
+  CollabRequest,
   CollabRequestType,
+  CollabResponse,
   GetDocumentResponse,
-  ManagerRequest,
-  ManagerResponse,
   PullEventResponse,
   PullEventsRequestParam,
   PushEventsRequestParam,
@@ -44,10 +44,10 @@ export class CollabManager {
   }
 
   async handleRequest<T extends CollabRequestType>(
-    request: Extract<ManagerRequest, { type: T }>,
+    request: Extract<CollabRequest, { type: T }>,
   ): Promise<
     | { ok: false; body: CollabFail }
-    | { ok: true; body: Extract<ManagerResponse, { type: T }>['payload'] }
+    | { ok: true; body: Extract<CollabResponse, { type: T }>['payload'] }
   > {
     if (!request.payload.docName) {
       throw new Error('docName is required');
@@ -60,7 +60,7 @@ export class CollabManager {
     );
 
     const handleReq = (
-      request: ManagerRequest,
+      request: CollabRequest,
       instance: Instance,
     ): EitherType<
       CollabFail,
@@ -68,7 +68,7 @@ export class CollabManager {
     > => {
       const { type, payload } = request;
       switch (type) {
-        case 'get_document': {
+        case CollabRequestType.GetDocument: {
           return Either.right({
             doc: instance.collabState.doc.toJSON(),
             users: instance.userCount,
@@ -77,11 +77,11 @@ export class CollabManager {
           });
         }
 
-        case 'push_events': {
+        case CollabRequestType.PushEvents: {
           log(
             `uid=${uid} userId=${
               request.payload.userId
-            } push_events payload-steps=${JSON.stringify(payload.steps)}`,
+            } ${type} payload-steps=${JSON.stringify(payload.steps)}`,
           );
 
           if (this.managerId !== payload.managerId) {
@@ -91,7 +91,7 @@ export class CollabManager {
           return instance.addEvents(payload);
         }
 
-        case 'pull_events': {
+        case CollabRequestType.PullEvents: {
           if (this.managerId !== payload.managerId) {
             return Either.left(CollabFail.IncorrectManager);
           }

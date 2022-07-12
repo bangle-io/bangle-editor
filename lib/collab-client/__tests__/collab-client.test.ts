@@ -8,10 +8,9 @@ import { defaultSpecs } from '@bangle.dev/all-base-components';
 import {
   CollabFail,
   CollabManager,
-  GET_DOCUMENT,
+  CollabRequestType,
   ManagerRequest,
   MAX_STEP_HISTORY,
-  PUSH_EVENTS,
 } from '@bangle.dev/collab-server';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
@@ -184,7 +183,7 @@ const setupServer = ({
 
     async getPushRequests() {
       const requests = await getCalls();
-      return requests.filter((r) => r.type === PUSH_EVENTS);
+      return requests.filter((r) => r.type === CollabRequestType.PushEvents);
     },
     alterRequest(cb: typeof requestProxy) {
       requestProxy = cb;
@@ -405,7 +404,7 @@ describe('failures', () => {
 
     let done = false;
     server.alterRequest((req) => {
-      if (req.type === PUSH_EVENTS && !done) {
+      if (req.type === CollabRequestType.PushEvents && !done) {
         done = true;
         return {
           ...req,
@@ -488,7 +487,7 @@ describe('failures', () => {
     const { manager } = server;
     const fakeClientId = 'fakeClientId';
     await manager.handleRequest({
-      type: PUSH_EVENTS,
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: fakeClientId,
         version: manager.getCollabState(docName)?.version!,
@@ -556,7 +555,7 @@ describe('failures', () => {
     const server = setupServer();
 
     server.alterResponse((req, resp) => {
-      if (req.type === GET_DOCUMENT && resp.ok) {
+      if (req.type === CollabRequestType.GetDocument && resp.ok) {
         return {
           ...resp,
           body: {
@@ -603,7 +602,7 @@ describe('failures', () => {
     });
 
     server.alterRequest((req) => {
-      if (req.type === PUSH_EVENTS) {
+      if (req.type === CollabRequestType.PushEvents) {
         return {
           ...req,
           payload: {
@@ -648,7 +647,7 @@ describe('failures', () => {
 
     const fakeClientId = 'fakeClientId';
     await manager.handleRequest({
-      type: PUSH_EVENTS,
+      type: CollabRequestType.PushEvents,
       payload: {
         clientID: fakeClientId,
         version: manager.getCollabState(docName)?.version!,

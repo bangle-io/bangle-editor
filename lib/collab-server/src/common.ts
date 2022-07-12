@@ -1,5 +1,18 @@
-export const PULL_EVENTS = 'pull_events';
-export type PullEventsType = typeof PULL_EVENTS;
+export enum CollabRequestType {
+  GetDocument = 'CollabRequestType.GetDocument',
+  PullEvents = 'CollabRequestType.PullEvents',
+  PushEvents = 'CollabRequestType.PushEvents',
+}
+
+export enum CollabFail {
+  ApplyFailed = 'CollabFail.ApplyFailed',
+  DocumentNotFound = 'CollabFail.DocumentNotFound',
+  HistoryNotAvailable = 'CollabFail.HistoryNotAvailable',
+  IncorrectManager = 'CollabFail.IncorrectManager',
+  InvalidVersion = 'CollabFail.InvalidVersion',
+  OutdatedVersion = 'CollabFail.OutdatedVersion',
+}
+
 export type PullEventResponse = {
   steps?: Array<{ [key: string]: any }>;
   clientIDs?: string[];
@@ -11,8 +24,6 @@ export type PullEventsRequestParam = {
   managerId: string;
 };
 
-export const GET_DOCUMENT = 'get_document';
-export type GetDocumentType = typeof GET_DOCUMENT;
 export type GetDocumentRequestParam = {
   docName: string;
   userId: string;
@@ -24,11 +35,10 @@ export type GetDocumentResponse = {
   managerId: string;
 };
 
-export const PUSH_EVENTS = 'push_events';
-export type PushEventsType = typeof PUSH_EVENTS;
 export type PushEventsResponse = {
   empty: null;
 };
+
 export type PushEventsRequestParam = {
   version: number;
   steps: Array<{ [key: string]: any }>;
@@ -38,54 +48,30 @@ export type PushEventsRequestParam = {
   managerId: string;
 };
 
-export type PullEvents = (
-  obj: PullEventsRequestParam,
-) => Promise<PullEventResponse>;
-export type GetDocument = (
-  obj: GetDocumentRequestParam,
-) => Promise<GetDocumentResponse>;
-export type PushEvents = (
-  obj: PushEventsRequestParam,
-) => Promise<PushEventsResponse>;
-
-export type CollabRequestType =
-  | GetDocumentType
-  | PullEventsType
-  | PushEventsType;
-
-export type ManagerRequest =
+export type CollabRequest =
   | {
-      type: GetDocumentType;
+      type: CollabRequestType.GetDocument;
       payload: GetDocumentRequestParam;
     }
   | {
-      type: PullEventsType;
+      type: CollabRequestType.PullEvents;
       payload: PullEventsRequestParam;
     }
   | {
-      type: PushEventsType;
+      type: CollabRequestType.PushEvents;
       payload: PushEventsRequestParam;
     };
 
-export type ManagerResponse =
+export type CollabResponse =
   | {
-      type: GetDocumentType;
+      type: CollabRequestType.GetDocument;
       payload: GetDocumentResponse;
     }
   | {
-      type: PullEventsType;
+      type: CollabRequestType.PullEvents;
       payload: PullEventResponse;
     }
   | {
-      type: PushEventsType;
+      type: CollabRequestType.PushEvents;
       payload: PushEventsResponse;
     };
-
-export enum CollabFail {
-  ApplyFailed = 'ApplyFailed', // ??
-  DocumentNotFound = 'DocumentNotFound', // 404
-  HistoryNotAvailable = 'HistoryNotAvailable', // 410
-  IncorrectManager = 'IncorrectManager', // 410
-  InvalidVersion = 'InvalidVersion', // 400
-  OutdatedVersion = 'OutdatedVersion', // 409
-}

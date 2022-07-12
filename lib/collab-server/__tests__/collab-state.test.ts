@@ -72,7 +72,7 @@ test('throws on invalid version', () => {
 
   const error = CollabState.addEvents(state, 1, [step], 'clientID').left;
 
-  expect(error).toMatchInlineSnapshot(`"InvalidVersion"`);
+  expect(error).toMatchInlineSnapshot(`"CollabFail.InvalidVersion"`);
 });
 
 test('throws outdated version', () => {
@@ -83,7 +83,7 @@ test('throws outdated version', () => {
 
   const error = CollabState.addEvents(state, 3, [step], 'clientID').left;
 
-  expect(error).toMatchInlineSnapshot(`"OutdatedVersion"`);
+  expect(error).toMatchInlineSnapshot(`"CollabFail.OutdatedVersion"`);
 });
 
 test('throws on unable to apply', () => {
@@ -107,7 +107,7 @@ test('throws on unable to apply', () => {
     CollabState.addEvents(state, 0, [step], 'clientID'),
   );
 
-  expect(newCollab).toEqual('ApplyFailed');
+  expect(newCollab).toEqual('CollabFail.ApplyFailed');
 });
 
 describe('getEvents', () => {
@@ -116,7 +116,7 @@ describe('getEvents', () => {
     const state = new CollabState(doc, [], 50000);
 
     const events = Either.value(CollabState.getEvents(state, 0));
-    expect(events).toBe('HistoryNotAvailable');
+    expect(events).toBe('CollabFail.HistoryNotAvailable');
   });
 
   test('throws error if invalid version', () => {
@@ -124,7 +124,7 @@ describe('getEvents', () => {
     const state = new CollabState(doc, [], 1);
 
     const events = Either.value(CollabState.getEvents(state, 10));
-    expect(events).toBe('InvalidVersion');
+    expect(events).toBe('CollabFail.InvalidVersion');
   });
 });
 
