@@ -7,8 +7,8 @@ import waitForExpect from 'wait-for-expect';
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import {
   CollabFail,
+  CollabManager,
   GET_DOCUMENT,
-  Manager2,
   ManagerRequest,
   MAX_STEP_HISTORY,
   PUSH_EVENTS,
@@ -91,7 +91,7 @@ const setupServer = ({
 
   const docChangeEmitter = new Emitter();
 
-  const manager = new Manager2({
+  const manager = new CollabManager({
     schema: specRegistry.schema,
     getDoc: async (dName) => {
       if (dName === docName) {
@@ -115,15 +115,15 @@ const setupServer = ({
   let requestProxy:
     | undefined
     | ((
-        request: Parameters<Manager2['handleRequest2']>[0],
-      ) => Parameters<Manager2['handleRequest2']>[0]);
+        request: Parameters<CollabManager['handleRequest2']>[0],
+      ) => Parameters<CollabManager['handleRequest2']>[0]);
 
   let responseProxy:
     | undefined
     | ((
-        request: Parameters<Manager2['handleRequest2']>[0],
-        response: Awaited<ReturnType<Manager2['handleRequest2']>>,
-      ) => Awaited<ReturnType<Manager2['handleRequest2']>>);
+        request: Parameters<CollabManager['handleRequest2']>[0],
+        response: Awaited<ReturnType<CollabManager['handleRequest2']>>,
+      ) => Awaited<ReturnType<CollabManager['handleRequest2']>>);
 
   const originalHandleRequest = async (payload: any) => {
     if (requestProxy) {
@@ -144,7 +144,7 @@ const setupServer = ({
     return mockedHandleRequest.mock.calls.map((r) => r[0]);
   };
   const getReturns = async (): Promise<
-    Awaited<ReturnType<Manager2['handleRequest2']>>[]
+    Awaited<ReturnType<CollabManager['handleRequest2']>>[]
   > => {
     const results = mockedHandleRequest.mock.results;
 
@@ -186,6 +186,12 @@ const setupServer = ({
     },
   };
 };
+
+const consoleError = console.error;
+
+beforeEach(() => {
+  console.error = consoleError;
+});
 
 test('loads the document', async () => {
   const server = setupServer();
@@ -349,6 +355,7 @@ describe('multiplayer collab', () => {
 
 describe('failures', () => {
   test('handles ApplyFailed', async () => {
+    console.error = jest.fn();
     const server = setupServer();
 
     const client1 = setupClient(server, 'client1');

@@ -1,6 +1,6 @@
 import { getVersion, receiveTransaction } from 'prosemirror-collab';
 
-import { PullEvents } from '@bangle.dev/collab-server';
+import { PullEventResponse } from '@bangle.dev/collab-server';
 import {
   EditorState,
   EditorView,
@@ -50,7 +50,7 @@ export function replaceDocument(
 
 export function applySteps(
   view: EditorView,
-  payload: Awaited<ReturnType<PullEvents>>,
+  payload: PullEventResponse,
   logger: (...args: any[]) => void,
 ) {
   if (view.isDestroyed) {

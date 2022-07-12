@@ -1,4 +1,4 @@
-import { CollabFail, Manager2 } from '@bangle.dev/collab-server';
+import { CollabFail, CollabManager } from '@bangle.dev/collab-server';
 import { EditorView, Node, Schema, TextSelection } from '@bangle.dev/pm';
 
 // Events
@@ -145,7 +145,7 @@ export interface Context {
   readonly docName: string;
   readonly retryWaitTime: number;
   readonly schema: Schema;
-  readonly sendManagerRequest: Manager2['handleRequest2'];
+  readonly sendManagerRequest: CollabManager['handleRequest2'];
   readonly userId: string;
   readonly view: EditorView;
   pendingUpstreamChange: boolean;

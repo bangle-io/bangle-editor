@@ -1,5 +1,3 @@
-import type { ValidErrorCodes } from './collab-error';
-
 export const PULL_EVENTS = 'pull_events';
 export type PullEventsType = typeof PULL_EVENTS;
 export type PullEventResponse = {
@@ -55,16 +53,6 @@ export type CollabRequestType =
   | PullEventsType
   | PushEventsType;
 
-export type CollabRequestParam =
-  | PullEventsRequestParam
-  | GetDocumentRequestParam
-  | PushEventsRequestParam;
-
-export type CollabResponse =
-  | PullEventResponse
-  | GetDocumentResponse
-  | PushEventsResponse;
-
 export type ManagerRequest =
   | {
       type: GetDocumentType;
@@ -93,15 +81,11 @@ export type ManagerResponse =
       payload: PushEventsResponse;
     };
 
-export type HandleResponseOk = {
-  status: 'ok';
-  body: CollabResponse;
-};
-
-export type HandleResponseError = {
-  status: 'error';
-  body: {
-    message: string;
-    errorCode: ValidErrorCodes;
-  };
-};
+export enum CollabFail {
+  ApplyFailed = 'ApplyFailed', // ??
+  DocumentNotFound = 'DocumentNotFound', // 404
+  HistoryNotAvailable = 'HistoryNotAvailable', // 410
+  IncorrectManager = 'IncorrectManager', // 410
+  InvalidVersion = 'InvalidVersion', // 400
+  OutdatedVersion = 'OutdatedVersion', // 409
+}

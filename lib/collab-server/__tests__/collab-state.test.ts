@@ -3,11 +3,7 @@ import { SpecRegistry } from '@bangle.dev/core';
 import { Node, ReplaceStep, Slice } from '@bangle.dev/pm';
 import { assertNotUndefined, Either } from '@bangle.dev/utils';
 
-import {
-  CollabState,
-  MAX_STEP_HISTORY,
-  StepBigger,
-} from '../src/take2/collab-state';
+import { CollabState, MAX_STEP_HISTORY, StepBigger } from '../src/collab-state';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 

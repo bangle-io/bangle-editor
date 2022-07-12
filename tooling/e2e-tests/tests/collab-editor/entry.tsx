@@ -6,7 +6,7 @@ import reactDOM from 'react-dom';
 
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
-import { CollabError, Manager2 } from '@bangle.dev/collab-server';
+import { CollabManager } from '@bangle.dev/collab-server';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
@@ -77,7 +77,7 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     const specRegistry = new SpecRegistry(defaultSpecs());
     const docChangeEmitter = new Emitter();
 
-    const editorManager = new Manager2({
+    const editorManager = new CollabManager({
       schema: specRegistry.schema,
       async getDoc() {
         return specRegistry.schema.nodeFromJSON(rawDoc) as Node;
@@ -286,7 +286,7 @@ function EditorWrapper({
 }
 
 function collabPlugin(
-  editorManager: Manager2,
+  editorManager: CollabManager,
   clientID: keyof EditorInfos,
   editorInfo: EditorInfo,
   testConfig: TestConfig,

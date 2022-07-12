@@ -1,31 +1,31 @@
 import { Node, Schema, Step } from '@bangle.dev/pm';
-import { Either, EitherType, uuid } from '@bangle.dev/utils';
+import { Either, EitherType, isTestEnv, uuid } from '@bangle.dev/utils';
 
-import { CollabError, CollabFail, throwCollabError } from '../collab-error';
-import { CollabState, StepBigger } from '../take2/collab-state';
+import { CollabState, StepBigger } from './collab-state';
 import {
-  CollabRequestParam,
+  CollabFail,
   CollabRequestType,
-  CollabResponse,
-  HandleResponseError,
-  HandleResponseOk,
+  GetDocumentResponse,
   ManagerRequest,
   ManagerResponse,
   PullEventResponse,
   PullEventsRequestParam,
   PushEventsRequestParam,
   PushEventsResponse,
-} from '../types';
+} from './common';
 
 type ApplyEvents = (
   newCollabState: CollabState,
   oldCollabState: CollabState,
 ) => boolean;
+
 const LOG = true;
 
-let log = LOG ? console.debug.bind(console, 'collab-server2') : () => {};
+let log = (isTestEnv ? false : LOG)
+  ? console.debug.bind(console, 'collab-server:')
+  : () => {};
 
-export class Manager2 {
+export class CollabManager {
   public readonly managerId = uuid();
   counter = 0;
   private _instances: Map<string, Instance> = new Map();
@@ -42,34 +42,6 @@ export class Manager2 {
     return this._instances.get(docName)?.collabState;
   }
 
-  public async handleRequest(
-    path: CollabRequestType,
-    payload: CollabRequestParam,
-  ): Promise<HandleResponseError | HandleResponseOk> {
-    try {
-      const result = await this.handleRequest2({
-        type: path,
-        payload,
-      } as any);
-
-      if (result.ok) {
-        return { status: 'ok', body: result.body };
-      }
-      throwCollabError(result.body);
-    } catch (error) {
-      if (error instanceof CollabError) {
-        return {
-          status: 'error' as const,
-          body: {
-            errorCode: error.errorCode,
-            message: error.message,
-          },
-        };
-      }
-      throw error;
-    }
-  }
-
   async handleRequest2<T extends CollabRequestType>(
     request: Extract<ManagerRequest, { type: T }>,
   ): Promise<
@@ -84,7 +56,10 @@ export class Manager2 {
     const handleReq = (
       request: ManagerRequest,
       instance: Instance,
-    ): EitherType<CollabFail, CollabResponse> => {
+    ): EitherType<
+      CollabFail,
+      PullEventResponse | GetDocumentResponse | PushEventsResponse
+    > => {
       const { type, payload } = request;
       switch (type) {
         case 'get_document': {
@@ -123,7 +98,7 @@ export class Manager2 {
     const [failure, collabResponse] = Either.unwrap(
       Either.flatMap(
         await this._getInstance(request.payload.docName),
-        (instance): EitherType<CollabFail, CollabResponse> => {
+        (instance) => {
           return handleReq(request, instance);
         },
       ),
@@ -229,21 +204,21 @@ class Instance {
 
     const parsedSteps = steps.map((s) => Step.fromJSON(this.schema, s));
 
-    return Either.map(
+    return Either.flatMap(
       CollabState.addEvents(this._collabState, version, parsedSteps, clientID),
       (collabState) => {
         if (this._applyCollabState(collabState, this._collabState)) {
           this._collabState = collabState;
         } else {
-          // TODO should we throw an error?
+          return Either.left(CollabFail.ApplyFailed);
         }
 
         // Instance.sendUpdates(this.waiting);
         // this._saveData();
 
-        return {
+        return Either.right({
           empty: null,
-        };
+        });
       },
     );
   }

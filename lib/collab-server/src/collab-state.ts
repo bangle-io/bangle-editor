@@ -1,16 +1,18 @@
 import type { Node, Step, StepMap, StepResult } from '@bangle.dev/pm';
-import { Either, EitherType } from '@bangle.dev/utils';
+import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
 
-import { CollabFail } from '../collab-error';
+import { CollabFail } from './common';
 
 export interface StepBigger extends Step {
   clientID: string;
 }
 
 export const MAX_STEP_HISTORY = 1000;
+
 const LOG = true;
-let log = LOG
-  ? console.debug.bind(console, 'collab-server2:collab-state:')
+
+let log = (isTestEnv ? false : LOG)
+  ? console.debug.bind(console, 'collab-server/state:')
   : () => {};
 
 export class CollabState {

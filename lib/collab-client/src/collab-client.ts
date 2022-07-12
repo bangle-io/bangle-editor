@@ -1,7 +1,7 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
 import { CollabFail } from '@bangle.dev/collab-server';
-import { abortableSetTimeout } from '@bangle.dev/utils';
+import { abortableSetTimeout, isTestEnv } from '@bangle.dev/utils';
 
 import {
   Context,
@@ -18,7 +18,9 @@ import {
 import { applyDoc, applySteps, freezeDoc } from './helpers';
 
 const LOG = true;
-let log = LOG ? console.debug.bind(console, `collab-client:`) : () => {};
+let log = (isTestEnv ? false : LOG)
+  ? console.debug.bind(console, `collab-client:`)
+  : () => {};
 
 const MAX_RESTARTS = 100;
 

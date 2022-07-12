@@ -1,4 +1,3 @@
-import type { ValidErrorCodes } from '@bangle.dev/collab-server';
 import type { BangleEditor } from '@bangle.dev/core';
 
 export interface EditorInfo {
@@ -35,11 +34,8 @@ export interface EditorInfos {
 
 export interface TestConfig {
   initialEditors: EditorId[];
-  // what error to throw in case of a rejected request
-  collabErrorCode: ValidErrorCodes;
 }
 
 export const baseTestConfig: TestConfig = {
   initialEditors: [EDITOR_1, EDITOR_2, EDITOR_3, EDITOR_4],
-  collabErrorCode: 500,
 };
