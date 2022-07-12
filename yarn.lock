@@ -1480,6 +1480,8 @@ __metadata:
     localforage: ^1.9.0
     prosemirror-collab: ^1.3.0
     strict-event-emitter-types: ^2.0.0
+    wait-for-expect: ^3.0.2
+    xstate: ^4.32.1
   peerDependencies:
     "@bangle.dev/collab-server": "*"
     "@bangle.dev/core": "*"
@@ -3250,6 +3252,22 @@ __metadata:
     webpack-dev-server:
       optional: true
   checksum: 8b273f906aeffa60c7d5700ae25f98d4b66b7e922cad38acb9575d55ff83872cd20b9894aacfa81c4d54e5b51b16253ae0e70c5e9e0608dc8768276e15c74536
+  languageName: node
+  linkType: hard
+
+"@xstate/inspect@npm:0.7.0":
+  version: 0.7.0
+  resolution: "@xstate/inspect@npm:0.7.0"
+  dependencies:
+    fast-safe-stringify: ^2.1.1
+  peerDependencies:
+    "@types/ws": ^8.0.0
+    ws: ^8.0.0
+    xstate: ^4.32.0
+  peerDependenciesMeta:
+    "@types/ws":
+      optional: true
+  checksum: dd6b68eaae227968384442889c288cdb0e0d8bf947cb6b19d581ff7f727e1c5f82d42c31a3cbe6d80a18906dc907154ae20a897af834458fba6559ae05573360
   languageName: node
   linkType: hard
 
@@ -5354,6 +5372,7 @@ __metadata:
     "@types/prettier": ^2.6.3
     "@types/react": ^17.0.45
     "@types/react-dom": ^17.0.17
+    "@xstate/inspect": 0.7.0
     babel-loader: ^8.2.5
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.2.7
@@ -5375,6 +5394,7 @@ __metadata:
     vite: ^2.9.9
     webpack: ^5.73.0
     webpack-cli: ^4.9.2
+    xstate: ^4.32.1
   languageName: unknown
   linkType: soft
 
@@ -6363,6 +6383,13 @@ __metadata:
   version: 2.0.6
   resolution: "fast-levenshtein@npm:2.0.6"
   checksum: 92cfec0a8dfafd9c7a15fba8f2cc29cd0b62b85f056d99ce448bbcd9f708e18ab2764bda4dd5158364f4145a7c72788538994f0d1787b956ef0d1062b0f7c24c
+  languageName: node
+  linkType: hard
+
+"fast-safe-stringify@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "fast-safe-stringify@npm:2.1.1"
+  checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
   languageName: node
   linkType: hard
 
@@ -12199,6 +12226,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"wait-for-expect@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "wait-for-expect@npm:3.0.2"
+  checksum: 2ec1ebd78023fa10bdcf53d78bbd65feea68fdfa0de0b00f3a72f3df089118b91517839ff3926e5ef6cfd1ede65085326d85b0378d4db62c266cc9c859c2de56
+  languageName: node
+  linkType: hard
+
 "walker@npm:^1.0.7":
   version: 1.0.8
   resolution: "walker@npm:1.0.8"
@@ -12494,6 +12528,13 @@ __metadata:
   version: 2.2.0
   resolution: "xmlchars@npm:2.2.0"
   checksum: 8c70ac94070ccca03f47a81fcce3b271bd1f37a591bf5424e787ae313fcb9c212f5f6786e1fa82076a2c632c0141552babcd85698c437506dfa6ae2d58723062
+  languageName: node
+  linkType: hard
+
+"xstate@npm:^4.32.1":
+  version: 4.32.1
+  resolution: "xstate@npm:4.32.1"
+  checksum: c16298b2b3dab7689da99d5b1e5128d2ca3bf381f37c8cb95e4af83bb1044b9251629fc00758f7f31785a72c2ddddd26f602b2801e6068cd78373b7f6dd6c28b
   languageName: node
   linkType: hard
 

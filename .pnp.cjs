@@ -2906,7 +2906,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.43"],\
             ["localforage", "npm:1.10.0"],\
             ["prosemirror-collab", "npm:1.3.0"],\
-            ["strict-event-emitter-types", "npm:2.0.0"]\
+            ["strict-event-emitter-types", "npm:2.0.0"],\
+            ["wait-for-expect", "npm:3.0.2"],\
+            ["xstate", "npm:4.32.1"]\
           ],\
           "packagePeers": [\
             "@bangle.dev/collab-server",\
@@ -2933,7 +2935,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.43"],\
             ["localforage", "npm:1.10.0"],\
             ["prosemirror-collab", "npm:1.3.0"],\
-            ["strict-event-emitter-types", "npm:2.0.0"]\
+            ["strict-event-emitter-types", "npm:2.0.0"],\
+            ["wait-for-expect", "npm:3.0.2"],\
+            ["xstate", "npm:4.32.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -5450,6 +5454,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/webpack-dev-server",\
             "webpack-cli",\
             "webpack-dev-server"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@xstate/inspect", [\
+        ["npm:0.7.0", {\
+          "packageLocation": "./.yarn/cache/@xstate-inspect-npm-0.7.0-b97e5def3d-dd6b68eaae.zip/node_modules/@xstate/inspect/",\
+          "packageDependencies": [\
+            ["@xstate/inspect", "npm:0.7.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:0.7.0", {\
+          "packageLocation": "./.yarn/__virtual__/@xstate-inspect-virtual-a4cc07245d/0/cache/@xstate-inspect-npm-0.7.0-b97e5def3d-dd6b68eaae.zip/node_modules/@xstate/inspect/",\
+          "packageDependencies": [\
+            ["@xstate/inspect", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:0.7.0"],\
+            ["@types/ws", null],\
+            ["@types/xstate", null],\
+            ["fast-safe-stringify", "npm:2.1.1"],\
+            ["ws", null],\
+            ["xstate", "npm:4.32.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/ws",\
+            "@types/xstate",\
+            "ws",\
+            "xstate"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8001,6 +8032,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prettier", "npm:2.6.3"],\
             ["@types/react", "npm:17.0.45"],\
             ["@types/react-dom", "npm:17.0.17"],\
+            ["@xstate/inspect", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:0.7.0"],\
             ["babel-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:8.2.5"],\
             ["clean-webpack-plugin", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:3.0.0"],\
             ["css-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:5.2.7"],\
@@ -8021,7 +8053,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
             ["vite", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:2.9.12"],\
             ["webpack", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:5.73.0"],\
-            ["webpack-cli", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:4.9.2"]\
+            ["webpack-cli", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:4.9.2"],\
+            ["xstate", "npm:4.32.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -9254,6 +9287,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/fast-levenshtein-npm-2.0.6-fcd74b8df5-92cfec0a8d.zip/node_modules/fast-levenshtein/",\
           "packageDependencies": [\
             ["fast-levenshtein", "npm:2.0.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["fast-safe-stringify", [\
+        ["npm:2.1.1", {\
+          "packageLocation": "./.yarn/cache/fast-safe-stringify-npm-2.1.1-7ce89033ca-a851cbddc4.zip/node_modules/fast-safe-stringify/",\
+          "packageDependencies": [\
+            ["fast-safe-stringify", "npm:2.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -15909,6 +15951,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["wait-for-expect", [\
+        ["npm:3.0.2", {\
+          "packageLocation": "./.yarn/cache/wait-for-expect-npm-3.0.2-40c9e7eb3e-2ec1ebd780.zip/node_modules/wait-for-expect/",\
+          "packageDependencies": [\
+            ["wait-for-expect", "npm:3.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["walker", [\
         ["npm:1.0.8", {\
           "packageLocation": "./.yarn/cache/walker-npm-1.0.8-b0a05b9478-ad7a257ea1.zip/node_modules/walker/",\
@@ -16265,6 +16316,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/xmlchars-npm-2.2.0-8b78f0f5e4-8c70ac9407.zip/node_modules/xmlchars/",\
           "packageDependencies": [\
             ["xmlchars", "npm:2.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["xstate", [\
+        ["npm:4.32.1", {\
+          "packageLocation": "./.yarn/cache/xstate-npm-4.32.1-7453b74d1d-c16298b2b3.zip/node_modules/xstate/",\
+          "packageDependencies": [\
+            ["xstate", "npm:4.32.1"]\
           ],\
           "linkType": "HARD"\
         }]\
