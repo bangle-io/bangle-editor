@@ -6,7 +6,7 @@ import reactDOM from 'react-dom';
 
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
-import { CollabManager } from '@bangle.dev/collab-server';
+import { CollabManager, PUSH_EVENTS } from '@bangle.dev/collab-server';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
@@ -14,7 +14,7 @@ import {
 } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { Emitter } from '@bangle.dev/utils';
+import { Emitter, sleep } from '@bangle.dev/utils';
 
 import { win } from '../../setup/entry-helpers';
 import {
@@ -143,8 +143,17 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
         newEditors[id].bangleEditor = editor;
         return newEditors;
       });
+      data.docChangeEmitter.on('doc_changed', async () => {
+        const view = editor.view;
+        if (view) {
+          if (testConfig.broadcastChangeWaitTime !== 0) {
+            await sleep(testConfig.broadcastChangeWaitTime);
+          }
+          collabClient.pullChanges()(view.state, view.dispatch);
+        }
+      });
     },
-    [],
+    [data, testConfig],
   );
 
   return (
@@ -174,13 +183,7 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
             editorInfo={obj}
             plugins={() => [
               ...defaultPlugins(),
-              collabPlugin(
-                data.editorManager,
-                obj.id,
-                obj,
-                testConfig,
-                data.docChangeEmitter,
-              ),
+              collabPlugin(data.editorManager, obj.id, testConfig),
             ]}
           />
         ) : (
@@ -288,14 +291,17 @@ function EditorWrapper({
 function collabPlugin(
   editorManager: CollabManager,
   clientID: keyof EditorInfos,
-  editorInfo: EditorInfo,
   testConfig: TestConfig,
-  docChangeEmitter: Emitter,
 ) {
   return collabClient.plugins({
     docName: 'test-doc',
     clientID,
-    docChangeEmitter,
-    sendManagerRequest: editorManager.handleRequest2.bind(editorManager),
+    sendManagerRequest: async (obj) => {
+      if (obj.type === PUSH_EVENTS && testConfig.pushWaitTime > 0) {
+        console.log(clientID, 'waiting to push');
+        await sleep(testConfig.pushWaitTime);
+      }
+      return editorManager.handleRequest2(obj);
+    },
   });
 }

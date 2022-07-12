@@ -30,7 +30,11 @@ export function collabClient(
     'pendingPush' | 'pendingUpstreamChange' | 'restartCount'
   >,
 ) {
-  const logger = (...args: any[]) => log(`${param.clientID}:`, ...args);
+  const logger = (...args: any[]) =>
+    log(
+      `${param.clientID}:version=${getVersion(context.view.state)}:`,
+      ...args,
+    );
 
   const context: Context = {
     ...param,
@@ -198,6 +202,8 @@ export function applyState(
     case StateName.Push: {
       if (event.type === EventType.Ready) {
         return { name: StateName.Ready, state: state.state };
+      } else if (event.type === EventType.Pull) {
+        return { name: StateName.Pull, state: state.state };
       } else if (event.type === EventType.PushPullError) {
         return {
           name: StateName.PushPullError,
@@ -517,12 +523,13 @@ async function pushStateAction(
   const debugSource = `pushStateAction:`;
 
   const steps = sendableSteps(view.state);
+
   if (!steps) {
     dispatch(
       {
         type: EventType.Ready,
       },
-      debugSource,
+      debugSource + '(no steps):',
     );
     return;
   }
@@ -547,9 +554,11 @@ async function pushStateAction(
   }
 
   if (response.ok) {
+    // Pull changes to confirm our steps and also
+    // get any new steps from other clients
     dispatch(
       {
-        type: EventType.Ready,
+        type: EventType.Pull,
       },
       debugSource,
     );

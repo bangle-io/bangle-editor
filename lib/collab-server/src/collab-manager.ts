@@ -52,7 +52,12 @@ export class CollabManager {
     if (!request.payload.docName) {
       throw new Error('docName is required');
     }
+
     let uid = this.counter++;
+
+    log(
+      `uid=${uid} userId=${request.payload.userId} received request=${request.type}, `,
+    );
 
     const handleReq = (
       request: ManagerRequest,
@@ -73,6 +78,12 @@ export class CollabManager {
         }
 
         case 'push_events': {
+          log(
+            `uid=${uid} userId=${
+              request.payload.userId
+            } push_events payload-steps=${JSON.stringify(payload.steps)}`,
+          );
+
           if (this.managerId !== payload.managerId) {
             return Either.left(CollabFail.IncorrectManager);
           }
@@ -106,9 +117,14 @@ export class CollabManager {
     );
 
     if (failure) {
+      log(`uid=${uid} userId=${request.payload.userId} response=${failure}`);
       return { ok: false, body: failure };
     } else {
-      log({ uid, request, userId: request.payload.userId }, collabResponse);
+      log(
+        `uid=${uid} userId=${request.payload.userId} response=${JSON.stringify(
+          collabResponse,
+        )}`,
+      );
       return {
         ok: true,
         // TODO fix any

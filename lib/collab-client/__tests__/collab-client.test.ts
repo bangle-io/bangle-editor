@@ -17,7 +17,7 @@ import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
 import { Emitter, uuid } from '@bangle.dev/utils';
 
-import { plugins } from '../src/collab-extension';
+import { plugins, pullChanges } from '../src/collab-extension';
 
 waitForExpect.defaults.timeout = 500;
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -29,6 +29,7 @@ const setupClient = (
   _docName = docName,
 ) => {
   const { manager, docChangeEmitter } = server;
+
   const { editor, debugString } = renderTestEditor({
     specRegistry: specRegistry,
     plugins: [
@@ -36,7 +37,6 @@ const setupClient = (
       plugins({
         docName: _docName,
         clientID: clientID,
-        docChangeEmitter,
         retryWaitTime: 0,
         sendManagerRequest: manager.handleRequest2.bind(manager),
       }),
@@ -52,6 +52,10 @@ const setupClient = (
     );
     editor.view.dispatch(tr);
   };
+
+  docChangeEmitter.on('doc_changed', () => {
+    pullChanges()(editor.view.state, editor.view.dispatch);
+  });
 
   return {
     docName: _docName,
@@ -144,16 +148,26 @@ const setupServer = ({
     return mockedHandleRequest.mock.calls.map((r) => r[0]);
   };
   const getReturns = async (): Promise<
-    Awaited<ReturnType<CollabManager['handleRequest2']>>[]
+    Array<{
+      userId: string;
+      result: Awaited<ReturnType<CollabManager['handleRequest2']>>;
+    }>
   > => {
     const results = mockedHandleRequest.mock.results;
+
+    const calls = mockedHandleRequest.mock.calls.map((r) => r[0]);
 
     if (results.some((r) => r.type !== 'return')) {
       throw new Error('Expected all calls to be returns');
     }
-
-    return Promise.all(
-      results.filter((r) => r.type === 'return').map((r) => r.value) as any,
+    return (await Promise.all(results.map((r) => r.value) as any)).map(
+      (val, i) => {
+        return {
+          userId: calls[i].payload.userId,
+          // call: calls[i],
+          result: val,
+        };
+      },
     );
   };
 
@@ -165,7 +179,7 @@ const setupServer = ({
     async getNotOkayRequests() {
       const returns = await getReturns();
 
-      return returns.filter((r) => r.ok === false);
+      return returns.filter((r) => r.result.ok === false);
     },
 
     async getPushRequests() {
@@ -324,7 +338,17 @@ describe('multiplayer collab', () => {
     const server = setupServer({
       rawDoc: {
         type: 'doc',
-        content: [],
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'A',
+              },
+            ],
+          },
+        ],
       },
     });
 
@@ -332,24 +356,39 @@ describe('multiplayer collab', () => {
     const client2 = setupClient(server, 'client2');
 
     await waitForExpect(async () => {
-      expect(client1.debugString()).toEqual(`doc(paragraph)`);
-      expect(client2.debugString()).toEqual(`doc(paragraph)`);
+      expect(client1.debugString()).toEqual(`doc(paragraph("A"))`);
+      expect(client2.debugString()).toEqual(`doc(paragraph("A"))`);
     });
 
-    client1.typeText('hi', 0);
-    await sleep(0);
-    client2.typeText('bye', 3);
-    await sleep(0);
+    client1.typeText('hi', 1);
+    client2.typeText('bye', 1);
+    await sleep();
 
-    expect(await server.getNotOkayRequests()).toEqual([]);
+    expect(await server.getNotOkayRequests()).toEqual([
+      {
+        userId: 'user-client2',
+        result: {
+          body: CollabFail.OutdatedVersion,
+          ok: false,
+        },
+      },
+    ]);
     await waitForExpect(async () => {
-      expect(client1.debugString()).toEqual(
-        `doc(paragraph("hibye"), paragraph)`,
-      );
-      expect(client2.debugString()).toEqual(
-        `doc(paragraph("hibye"), paragraph)`,
-      );
+      expect(client1.debugString()).toEqual(`doc(paragraph("hibyeA"))`);
+      expect(client2.debugString()).toEqual(`doc(paragraph("hibyeA"))`);
     });
+
+    console.log('TYPING HELLO');
+    client2.typeText('hello', 6);
+    await sleep();
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hibyehelloA"))`);
+      expect(client2.debugString()).toEqual(`doc(paragraph("hibyehelloA"))`);
+    });
+
+    // should not produce any new not-ok requests
+    expect(await server.getNotOkayRequests()).toHaveLength(1);
   });
 });
 
@@ -399,8 +438,11 @@ describe('failures', () => {
 
     expect(await server.getNotOkayRequests()).toEqual([
       {
-        body: CollabFail.ApplyFailed,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.ApplyFailed,
+          ok: false,
+        },
       },
     ]);
 
@@ -425,8 +467,11 @@ describe('failures', () => {
 
     expect(await server.getNotOkayRequests()).toEqual([
       {
-        body: CollabFail.DocumentNotFound,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.DocumentNotFound,
+          ok: false,
+        },
       },
     ]);
   });
@@ -485,13 +530,24 @@ describe('failures', () => {
     await sleep(10);
 
     expect(await server.getNotOkayRequests()).toEqual([
+      // we first get CollabFail.OutdatedVersion because the client
+      // first tries to push changes ('A') which will fail because
+      // the version is outdated. On seeing this, the client will
+      // try to pull the latest version and get a failure because the history
+      // is not available.
       {
-        body: CollabFail.OutdatedVersion,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.OutdatedVersion,
+          ok: false,
+        },
       },
       {
-        body: CollabFail.HistoryNotAvailable,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.HistoryNotAvailable,
+          ok: false,
+        },
       },
     ]);
   });
@@ -525,8 +581,11 @@ describe('failures', () => {
 
     expect(await server.getNotOkayRequests()).toEqual([
       {
-        body: CollabFail.IncorrectManager,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.IncorrectManager,
+          ok: false,
+        },
       },
     ]);
 
@@ -563,8 +622,11 @@ describe('failures', () => {
 
     expect(await server.getNotOkayRequests()).toEqual([
       {
-        body: CollabFail.InvalidVersion,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.InvalidVersion,
+          ok: false,
+        },
       },
     ]);
 
@@ -632,8 +694,11 @@ describe('failures', () => {
 
     expect(await server.getNotOkayRequests()).toEqual([
       {
-        body: CollabFail.OutdatedVersion,
-        ok: false,
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.OutdatedVersion,
+          ok: false,
+        },
       },
     ]);
   });

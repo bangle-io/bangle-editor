@@ -1,21 +1,24 @@
 import { collab } from 'prosemirror-collab';
 
 import { CollabManager } from '@bangle.dev/collab-server';
-import { EditorState, Plugin } from '@bangle.dev/pm';
-import { Emitter, uuid } from '@bangle.dev/utils';
+import { Command, EditorState, Plugin } from '@bangle.dev/pm';
+import { uuid } from '@bangle.dev/utils';
 
 import { collabClient } from './collab-client';
 import { collabPluginKey, collabSettingsKey } from './helpers';
 
-const LOG = true;
+const LOG = false;
 const LOG_VERBOSE = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
+
 let logVerbose = LOG_VERBOSE
   ? console.log.bind(console, 'collab/collab-extension')
   : () => {};
 
 export const plugins = pluginsFactory;
-export const commands = {};
+export const commands = {
+  pullChanges,
+};
 
 export const RECOVERY_BACK_OFF = 50;
 
@@ -33,13 +36,11 @@ function pluginsFactory({
   clientID = 'client-' + uuid(),
   docName,
   sendManagerRequest,
-  docChangeEmitter,
   retryWaitTime = 100,
 }: {
   clientID: string;
   docName: string;
   sendManagerRequest: CollabManager['handleRequest2'];
-  docChangeEmitter: Emitter;
   retryWaitTime?: number;
 }) {
   return () => {
@@ -89,7 +90,6 @@ function pluginsFactory({
 
       collabMachinePlugin({
         sendManagerRequest,
-        docChangeEmitter,
         retryWaitTime,
       }),
     ];
@@ -98,11 +98,9 @@ function pluginsFactory({
 
 function collabMachinePlugin({
   sendManagerRequest,
-  docChangeEmitter,
   retryWaitTime,
 }: {
   sendManagerRequest: CollabManager['handleRequest2'];
-  docChangeEmitter: Emitter;
   retryWaitTime: number;
 }) {
   let instance: ReturnType<typeof collabClient> | undefined;
@@ -122,14 +120,17 @@ function collabMachinePlugin({
             instance?.onLocalEdits();
           }, 0);
         }
+
+        if (tr.getMeta('bangle/collab-pull-changes')) {
+          setTimeout(() => {
+            instance?.onUpstreamChange();
+          }, 0);
+        }
+
         return pluginState;
       },
     },
     view(view) {
-      const onDocChanged = () => {
-        instance?.onUpstreamChange();
-      };
-
       if (!instance) {
         const collabSettings = getCollabSettings(view.state);
         instance = collabClient({
@@ -141,7 +142,6 @@ function collabMachinePlugin({
           retryWaitTime,
           view,
         });
-        docChangeEmitter.on('doc_changed', onDocChanged);
       }
 
       return {
@@ -149,9 +149,15 @@ function collabMachinePlugin({
         destroy() {
           instance?.destroy();
           instance = undefined;
-          docChangeEmitter.off('doc_changed', onDocChanged);
         },
       };
     },
   });
+}
+
+export function pullChanges(): Command {
+  return (state, dispatch) => {
+    dispatch?.(state.tr.setMeta('bangle/collab-pull-changes', true));
+    return true;
+  };
 }

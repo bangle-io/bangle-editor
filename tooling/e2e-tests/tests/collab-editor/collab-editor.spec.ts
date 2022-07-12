@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import path from 'path';
 
-import { ctrlKey, isDarwin, repeat, sleep } from '../../setup/helpers';
+import { ctrlKey, isDarwin, repeat, sleep, undo } from '../../setup/helpers';
 import {
   allEditorIds,
   baseTestConfig,
@@ -12,6 +12,7 @@ import {
   TestConfig,
 } from './common';
 
+const EXPECT_POLL_TIMEOUT = 5000;
 test.beforeEach(async ({ page, baseURL }, testInfo) => {
   const url = `${baseURL}/${path.basename(__dirname)}`;
   await page.goto(url, { waitUntil: 'networkidle' });
@@ -128,6 +129,8 @@ test.describe('Editors should sync', () => {
   });
 
   test('typing a lot of things', async ({ page }) => {
+    test.slow();
+
     await loadPage(page);
 
     await clearEditorText(page, EDITOR_1);
@@ -188,13 +191,7 @@ test.describe('Editors should sync', () => {
       ['EDITOR_2', '<p>a</p>'],
     ]);
 
-    if (isDarwin) {
-      await page.keyboard.press(`Meta+Z`);
-    } else {
-      await page.keyboard.down(`Control`);
-      await page.keyboard.press('z');
-      await page.keyboard.up(`Control`);
-    }
+    await undo(page);
     await page.keyboard.type('b');
 
     await sleep();
@@ -226,6 +223,105 @@ test.describe('Editors should sync', () => {
       ['EDITOR_1', '<p>AoZ</p>'],
       ['EDITOR_2', '<p>AoZ</p>'],
     ]);
+  });
+
+  test('slow broadcast', async ({ page }) => {
+    const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+    const LAG_TIME = 1000;
+    await loadPage(page, {
+      initialEditors: testEditors,
+      broadcastChangeWaitTime: LAG_TIME,
+    });
+    await clearEditorText(page, EDITOR_1);
+    await clickEditor(page, EDITOR_1);
+
+    await page.keyboard.type('testing content');
+
+    // editor 2 should be lagging
+    expect(await getEditorsInnerHTML(page, testEditors)).toEqual([
+      ['EDITOR_1', '<p>testing content</p>'],
+      ['EDITOR_2', '<p>hello world!</p>'],
+    ]);
+
+    await expect
+      .poll(() => getEditorsInnerHTML(page, testEditors), {
+        timeout: EXPECT_POLL_TIMEOUT,
+      })
+      .toEqual([
+        ['EDITOR_1', '<p>testing content</p>'],
+        ['EDITOR_2', '<p>testing content</p>'],
+      ]);
+  });
+
+  test('slow broadcast both clients edit simultaneously', async ({ page }) => {
+    const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+    const broadcastWait = 500;
+    const pushWaitTime = 500;
+    const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
+    const editor2Locator = page.locator(`#${EDITOR_2} .ProseMirror`);
+    await loadPage(page, {
+      initialEditors: testEditors,
+      broadcastChangeWaitTime: broadcastWait,
+      pushWaitTime: pushWaitTime,
+    });
+
+    await clearEditorText(page, EDITOR_1);
+
+    // wait for both editors to be in sync
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p><br class="ProseMirror-trailingBreak"></p>'],
+        ['EDITOR_2', '<p><br class="ProseMirror-trailingBreak"></p>'],
+      ]);
+
+    await editor1Locator.type('one');
+    await editor2Locator.type('two');
+
+    expect(await getEditorsInnerHTML(page, testEditors)).toEqual([
+      ['EDITOR_1', '<p>one</p>'],
+      ['EDITOR_2', '<p>two</p>'],
+    ]);
+
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>onetwo</p>'],
+        ['EDITOR_2', '<p>onetwo</p>'],
+      ]);
+
+    await clickEditor(page, EDITOR_1);
+
+    await undo(page);
+
+    // should undo editor 1's changes
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>two</p>'],
+        ['EDITOR_2', '<p>two</p>'],
+      ]);
   });
 
   // test.describe.skip('Erroring', () => {
