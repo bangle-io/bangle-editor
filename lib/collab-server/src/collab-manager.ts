@@ -15,6 +15,7 @@ import {
 } from './common';
 
 type ApplyEvents = (
+  docName: string,
   newCollabState: CollabState,
   oldCollabState: CollabState,
 ) => boolean;
@@ -172,6 +173,7 @@ class Instance {
     private readonly schema: Schema,
     private _collabState: CollabState,
     private _applyCollabState: ApplyEvents = (
+      docName,
       newCollabState,
       oldCollabState,
     ) => {
@@ -193,6 +195,7 @@ class Instance {
     version: rawVersion,
     steps,
     userId,
+    docName,
   }: PushEventsRequestParam): EitherType<CollabFail, PushEventsResponse> {
     this.lastActive = Date.now();
 
@@ -207,7 +210,7 @@ class Instance {
     return Either.flatMap(
       CollabState.addEvents(this._collabState, version, parsedSteps, clientID),
       (collabState) => {
-        if (this._applyCollabState(collabState, this._collabState)) {
+        if (this._applyCollabState(docName, collabState, this._collabState)) {
           this._collabState = collabState;
         } else {
           return Either.left(CollabFail.ApplyFailed);

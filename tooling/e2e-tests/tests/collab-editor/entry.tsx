@@ -82,7 +82,7 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
       async getDoc() {
         return specRegistry.schema.nodeFromJSON(rawDoc) as Node;
       },
-      applyCollabState(newCollab, oldCollab) {
+      applyCollabState(docName, newCollab, oldCollab) {
         queueMicrotask(() => {
           docChangeEmitter.emit('doc_changed', {});
         });

@@ -31,7 +31,7 @@
     "test": "yarn lint && yarn g:e2e && yarn unit-tests",
     "unit-tests": "yarn jest",
     "lint": "yarn node tooling/bangle-scripts/check-dependencies.cjs && yarn prettier --check . && EsLintCycle=yes yarn eslint .",
-    "release-packages": "yarn tsc-check && yarn g:build && yarn workspaces foreach -pt --all --no-private npm publish",
+    "release-packages": "yarn tsc-check && yarn g:build && yarn workspaces foreach -pt --all --no-private npm publish --otp $OTP",
     "release-packages-alpha": "yarn tsc-check && yarn g:build && yarn workspaces foreach -pt --all --no-private npm publish --tag alpha --otp $OTP",
     "update-ts-references": "yarn node tooling/bangle-scripts/ts-references.js",
     "tsc-check": "yarn tsc -b",
