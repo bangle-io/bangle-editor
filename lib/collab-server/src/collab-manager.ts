@@ -43,7 +43,7 @@ export class CollabManager {
     return this._instances.get(docName)?.collabState;
   }
 
-  async handleRequest2<T extends CollabRequestType>(
+  async handleRequest<T extends CollabRequestType>(
     request: Extract<ManagerRequest, { type: T }>,
   ): Promise<
     | { ok: false; body: CollabFail }

@@ -38,7 +38,7 @@ const setupClient = (
         docName: _docName,
         clientID: clientID,
         retryWaitTime: 0,
-        sendManagerRequest: manager.handleRequest2.bind(manager),
+        sendManagerRequest: manager.handleRequest.bind(manager),
       }),
     ],
   })(undefined);
@@ -114,20 +114,20 @@ const setupServer = ({
     },
   });
 
-  let handleRequest = manager.handleRequest2;
+  let handleRequest = manager.handleRequest;
 
   let requestProxy:
     | undefined
     | ((
-        request: Parameters<CollabManager['handleRequest2']>[0],
-      ) => Parameters<CollabManager['handleRequest2']>[0]);
+        request: Parameters<CollabManager['handleRequest']>[0],
+      ) => Parameters<CollabManager['handleRequest']>[0]);
 
   let responseProxy:
     | undefined
     | ((
-        request: Parameters<CollabManager['handleRequest2']>[0],
-        response: Awaited<ReturnType<CollabManager['handleRequest2']>>,
-      ) => Awaited<ReturnType<CollabManager['handleRequest2']>>);
+        request: Parameters<CollabManager['handleRequest']>[0],
+        response: Awaited<ReturnType<CollabManager['handleRequest']>>,
+      ) => Awaited<ReturnType<CollabManager['handleRequest']>>);
 
   const originalHandleRequest = async (payload: any) => {
     if (requestProxy) {
@@ -150,7 +150,7 @@ const setupServer = ({
   const getReturns = async (): Promise<
     Array<{
       userId: string;
-      result: Awaited<ReturnType<CollabManager['handleRequest2']>>;
+      result: Awaited<ReturnType<CollabManager['handleRequest']>>;
     }>
   > => {
     const results = mockedHandleRequest.mock.results;
@@ -171,7 +171,7 @@ const setupServer = ({
     );
   };
 
-  manager.handleRequest2 = mockedHandleRequest as any;
+  manager.handleRequest = mockedHandleRequest as any;
 
   return {
     docChangeEmitter,
@@ -487,7 +487,7 @@ describe('failures', () => {
 
     const { manager } = server;
     const fakeClientId = 'fakeClientId';
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: PUSH_EVENTS,
       payload: {
         clientID: fakeClientId,
@@ -647,7 +647,7 @@ describe('failures', () => {
     server.blockDocChangeEvent();
 
     const fakeClientId = 'fakeClientId';
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: PUSH_EVENTS,
       payload: {
         clientID: fakeClientId,

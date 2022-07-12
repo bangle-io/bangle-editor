@@ -40,7 +40,7 @@ function pluginsFactory({
 }: {
   clientID: string;
   docName: string;
-  sendManagerRequest: CollabManager['handleRequest2'];
+  sendManagerRequest: CollabManager['handleRequest'];
   retryWaitTime?: number;
 }) {
   return () => {
@@ -100,7 +100,7 @@ function collabMachinePlugin({
   sendManagerRequest,
   retryWaitTime,
 }: {
-  sendManagerRequest: CollabManager['handleRequest2'];
+  sendManagerRequest: CollabManager['handleRequest'];
   retryWaitTime: number;
 }) {
   let instance: ReturnType<typeof collabClient> | undefined;

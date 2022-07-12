@@ -301,7 +301,7 @@ function collabPlugin(
         console.log(clientID, 'waiting to push');
         await sleep(testConfig.pushWaitTime);
       }
-      return editorManager.handleRequest2(obj);
+      return editorManager.handleRequest(obj);
     },
   });
 }

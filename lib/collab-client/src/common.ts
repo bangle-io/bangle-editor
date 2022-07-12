@@ -145,7 +145,7 @@ export interface Context {
   readonly docName: string;
   readonly retryWaitTime: number;
   readonly schema: Schema;
-  readonly sendManagerRequest: CollabManager['handleRequest2'];
+  readonly sendManagerRequest: CollabManager['handleRequest'];
   readonly userId: string;
   readonly view: EditorView;
   pendingUpstreamChange: boolean;

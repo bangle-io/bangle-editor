@@ -37,7 +37,7 @@ describe('get_document', () => {
   test('works', async () => {
     const { manager } = setup();
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -64,7 +64,7 @@ describe('get_document', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -82,7 +82,7 @@ describe('get_document', () => {
 test('getCollabState', async () => {
   const { manager } = setup();
 
-  await manager.handleRequest2({
+  await manager.handleRequest({
     type: 'get_document',
     payload: {
       docName: 'test-doc-1',
@@ -102,7 +102,7 @@ describe('push events', () => {
   test('push events', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -110,7 +110,7 @@ describe('push events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'push_events',
       payload: {
         clientID: 'client-test-1',
@@ -168,7 +168,7 @@ describe('push events', () => {
   test('errors invalid manager id on push', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -176,7 +176,7 @@ describe('push events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'push_events',
       payload: {
         clientID: 'client-test-1',
@@ -197,7 +197,7 @@ describe('push events', () => {
   test('errors if invalid version', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -205,7 +205,7 @@ describe('push events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'push_events',
       payload: {
         clientID: 'client-test-1',
@@ -226,7 +226,7 @@ describe('push events', () => {
   test('invalid version on push', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -234,7 +234,7 @@ describe('push events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'push_events',
       payload: {
         clientID: 'client-test-1',
@@ -257,7 +257,7 @@ describe('pull events', () => {
   test('pull events', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -265,7 +265,7 @@ describe('pull events', () => {
       },
     });
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'push_events',
       payload: {
         clientID: 'client-test-1',
@@ -291,7 +291,7 @@ describe('pull events', () => {
       },
     });
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'push_events',
       payload: {
         clientID: 'client-test-2',
@@ -317,7 +317,7 @@ describe('pull events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'pull_events',
       payload: {
         docName: 'test-doc-1',
@@ -367,7 +367,7 @@ describe('pull events', () => {
   test('invalid manager id on pull', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -375,7 +375,7 @@ describe('pull events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'pull_events',
       payload: {
         docName: 'test-doc-1',
@@ -394,7 +394,7 @@ describe('pull events', () => {
   test('invalid version on pull', async () => {
     const { manager } = setup();
 
-    await manager.handleRequest2({
+    await manager.handleRequest({
       type: 'get_document',
       payload: {
         docName: 'test-doc-1',
@@ -402,7 +402,7 @@ describe('pull events', () => {
       },
     });
 
-    const resp = await manager.handleRequest2({
+    const resp = await manager.handleRequest({
       type: 'pull_events',
       payload: {
         docName: 'test-doc-1',
