@@ -135,6 +135,9 @@ export function renderTestEditor(
         editor?.destroy();
         (editor as any) = null;
       },
+      debugString: () => {
+        return editor?.view.state.doc.toString();
+      },
     };
   };
 }

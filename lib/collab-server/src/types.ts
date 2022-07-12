@@ -1,4 +1,7 @@
-export type PullEventsType = 'pull_events';
+import type { ValidErrorCodes } from './collab-error';
+
+export const PULL_EVENTS = 'pull_events';
+export type PullEventsType = typeof PULL_EVENTS;
 export type PullEventResponse = {
   steps?: Array<{ [key: string]: any }>;
   clientIDs?: string[];
@@ -10,7 +13,8 @@ export type PullEventsRequestParam = {
   managerId: string;
 };
 
-export type GetDocumentType = 'get_document';
+export const GET_DOCUMENT = 'get_document';
+export type GetDocumentType = typeof GET_DOCUMENT;
 export type GetDocumentRequestParam = {
   docName: string;
   userId: string;
@@ -22,7 +26,8 @@ export type GetDocumentResponse = {
   managerId: string;
 };
 
-export type PushEventsType = 'push_events';
+export const PUSH_EVENTS = 'push_events';
+export type PushEventsType = typeof PUSH_EVENTS;
 export type PushEventsResponse = {
   empty: null;
 };
@@ -60,7 +65,7 @@ export type CollabResponse =
   | GetDocumentResponse
   | PushEventsResponse;
 
-export type ServerRequest =
+export type ManagerRequest =
   | {
       type: GetDocumentType;
       payload: GetDocumentRequestParam;
@@ -73,3 +78,30 @@ export type ServerRequest =
       type: PushEventsType;
       payload: PushEventsRequestParam;
     };
+
+export type ManagerResponse =
+  | {
+      type: GetDocumentType;
+      payload: GetDocumentResponse;
+    }
+  | {
+      type: PullEventsType;
+      payload: PullEventResponse;
+    }
+  | {
+      type: PushEventsType;
+      payload: PushEventsResponse;
+    };
+
+export type HandleResponseOk = {
+  status: 'ok';
+  body: CollabResponse;
+};
+
+export type HandleResponseError = {
+  status: 'error';
+  body: {
+    message: string;
+    errorCode: ValidErrorCodes;
+  };
+};

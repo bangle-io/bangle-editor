@@ -87,6 +87,21 @@ export function uuid(len = 10) {
   return Math.random().toString(36).substring(2, 15).slice(0, len);
 }
 
+export function abortableSetTimeout(
+  callback: (args: void) => void,
+  signal: AbortSignal,
+  ms: number,
+): void {
+  const timer = setTimeout(callback, ms);
+  signal.addEventListener(
+    'abort',
+    () => {
+      clearTimeout(timer);
+    },
+    { once: true },
+  );
+}
+
 export function getIdleCallback(cb: Function) {
   if (typeof window !== 'undefined' && (window as any).requestIdleCallback) {
     return (window as any).requestIdleCallback(cb);

@@ -58,6 +58,7 @@ export class Either {
 
   static fold<L, R, V>(
     either: Left<L> | Right<R>,
+    // To keep things simple, we don't allow changing the type of left.
     leftFn: (left: L) => L,
     rightFn: (right: R) => V,
   ): Left<L> | Right<V> {

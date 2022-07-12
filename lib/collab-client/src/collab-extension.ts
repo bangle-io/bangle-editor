@@ -11,6 +11,7 @@ import {
   CollabError,
   GetDocument,
   getIdleCallback,
+  Manager2,
   PullEvents,
   PushEvents,
   sleep,
@@ -20,14 +21,14 @@ import {
   EditorState,
   EditorView,
   Plugin,
-  PluginKey,
   Selection,
   Step,
   TextSelection,
 } from '@bangle.dev/pm';
 import { Emitter, serialExecuteQueue } from '@bangle.dev/utils';
 
-import { replaceDocument } from './helpers';
+import { collabClient } from './collab-client';
+import { collabPluginKey, collabSettingsKey, replaceDocument } from './helpers';
 
 type CollabConnectionObj = {
   init: (oldSelection?: Selection) => void;
@@ -35,17 +36,25 @@ type CollabConnectionObj = {
   destroy: () => void;
 };
 
-const LOG = false;
+const LOG = true;
+const LOG_VERBOSE = false;
 let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
+let logVerbose = LOG_VERBOSE
+  ? console.log.bind(console, 'collab/collab-extension')
+  : () => {};
 
 export const plugins = pluginsFactory;
 export const commands = {};
 
 export const RECOVERY_BACK_OFF = 50;
-export const collabSettingsKey = new PluginKey('bangle/collabSettingsKey');
-export const collabPluginKey = new PluginKey('bangle/collabPluginKey');
 
-export const getCollabSettings = (state: EditorState) => {
+interface CollabSettings {
+  docName: string;
+  clientID: string;
+  userId: string;
+  ready: boolean;
+}
+export const getCollabSettings = (state: EditorState): CollabSettings => {
   return collabSettingsKey.getState(state);
 };
 
@@ -54,17 +63,15 @@ type OnFatalError = (error: CollabError) => boolean;
 function pluginsFactory({
   clientID = 'client-' + uuid(),
   docName,
-  getDocument,
-  pullEvents,
-  pushEvents,
-  onFatalError = () => true,
+  sendManagerRequest,
+  docChangeEmitter,
+  retryWaitTime = 100,
 }: {
   clientID: string;
   docName: string;
-  getDocument: GetDocument;
-  pullEvents: PullEvents;
-  pushEvents: PushEvents;
-  onFatalError: OnFatalError;
+  sendManagerRequest: Manager2['handleRequest2'];
+  docChangeEmitter: Emitter;
+  retryWaitTime?: number;
 }) {
   return () => {
     return [
@@ -111,14 +118,73 @@ function pluginsFactory({
         },
       }),
 
-      bangleCollabPlugin({
-        getDocument: getDocument,
-        pullEvents: pullEvents,
-        pushEvents: pushEvents,
-        onFatalError,
+      collabMachinePlugin({
+        sendManagerRequest,
+        docChangeEmitter,
+        retryWaitTime,
       }),
     ];
   };
+}
+
+function collabMachinePlugin({
+  sendManagerRequest,
+  docChangeEmitter,
+  retryWaitTime,
+}: {
+  sendManagerRequest: Manager2['handleRequest2'];
+  docChangeEmitter: Emitter;
+  retryWaitTime: number;
+}) {
+  let instance: ReturnType<typeof collabClient> | undefined;
+
+  return new Plugin({
+    key: collabPluginKey,
+    state: {
+      init() {
+        return null;
+      },
+      apply(tr, pluginState, _prevState, newState) {
+        if (
+          !tr.getMeta('bangle/isRemote') &&
+          collabSettingsKey.getState(newState).ready
+        ) {
+          setTimeout(() => {
+            instance?.onLocalEdits();
+          }, 0);
+        }
+        return pluginState;
+      },
+    },
+    view(view) {
+      const onDocChanged = () => {
+        instance?.onUpstreamChange();
+      };
+
+      if (!instance) {
+        const collabSettings = getCollabSettings(view.state);
+        instance = collabClient({
+          docName: collabSettings.docName,
+          clientID: collabSettings.clientID,
+          userId: collabSettings.userId,
+          schema: view.state.schema,
+          sendManagerRequest,
+          retryWaitTime,
+          view,
+        });
+        docChangeEmitter.on('doc_changed', onDocChanged);
+      }
+
+      return {
+        update() {},
+        destroy() {
+          instance?.destroy();
+          instance = undefined;
+          docChangeEmitter.off('doc_changed', onDocChanged);
+        },
+      };
+    },
+  });
 }
 
 function bangleCollabPlugin({
@@ -166,7 +232,7 @@ function bangleCollabPlugin({
           collabSettingsKey.getState(newState).ready
         ) {
           if (connection) {
-            connection.pushNewEvents();
+            connection?.pushNewEvents();
           }
         }
         return pluginState;
@@ -226,7 +292,7 @@ function connectionManager({
     const clientIDs = payload.clientIDs ? payload.clientIDs : [];
 
     if (steps.length === 0) {
-      log('no steps', payload);
+      logVerbose('no steps', payload);
       return false;
     }
 
@@ -245,6 +311,7 @@ function connectionManager({
       // Push any steps that might still be hanging around
       // this is a no-op if there are no sendable steps
       pushEmitter.emit('push');
+      // TODO remove this timeout
       getIdleCallback(() => {
         pullEmitter.emit('pull');
       });
@@ -386,7 +453,7 @@ function pullEventsEmitter(
 
     cProm.promise
       .then((data) => {
-        log('pull received', data);
+        logVerbose('pull received', data);
         emitter.emit('steps', data);
       })
       .catch((error) => {
@@ -418,7 +485,7 @@ function pushEventsEmitter(
     await queue.add(async () => {
       const steps = sendableSteps(view.state);
       if (!steps) {
-        log('no steps');
+        logVerbose('no steps');
         return;
       }
       const collabSettings = getCollabSettings(view.state);

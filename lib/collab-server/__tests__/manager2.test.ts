@@ -24,7 +24,6 @@ const rawDoc = {
 const setup = () => {
   const manager = new Manager2({
     schema: specRegistry.schema,
-    onDocChange: () => {},
     getDoc: async (docName: string): Promise<Node> => {
       return specRegistry.schema.nodeFromJSON(rawDoc);
     },
@@ -56,7 +55,6 @@ describe('get_document', () => {
   test('throws error when document is not found', async () => {
     const manager = new Manager2({
       schema: specRegistry.schema,
-      onDocChange: () => {},
       getDoc: async (docName) => {
         return undefined;
       },

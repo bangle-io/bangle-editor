@@ -24,13 +24,12 @@ export class CollabError extends Error {
 }
 
 export enum CollabFail {
-  InvalidVersion = 'InvalidVersion', // 400
-  OutdatedVersion = 'OutdatedVersion', // 409
   ApplyFailed = 'ApplyFailed', // ??
+  DocumentNotFound = 'DocumentNotFound', // 404
   HistoryNotAvailable = 'HistoryNotAvailable', // 410
   IncorrectManager = 'IncorrectManager', // 410
-
-  DocumentNotFound = 'DocumentNotFound', // 404
+  InvalidVersion = 'InvalidVersion', // 400
+  OutdatedVersion = 'OutdatedVersion', // 409
 }
 
 export const COLLAB_STATUS_FAIL = 'fail' as const;

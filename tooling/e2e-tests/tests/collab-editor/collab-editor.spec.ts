@@ -228,7 +228,7 @@ test.describe('Editors should sync', () => {
     ]);
   });
 
-  test.describe('Erroring', () => {
+  test.describe.skip('Erroring', () => {
     test('one editor errors 500', async ({ page }) => {
       await loadPage(page, { collabErrorCode: 500 });
       await clearEditorText(page, EDITOR_1);

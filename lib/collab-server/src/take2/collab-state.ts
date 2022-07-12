@@ -1,4 +1,4 @@
-import type { Node, Step, StepMap } from '@bangle.dev/pm';
+import type { Node, Step, StepMap, StepResult } from '@bangle.dev/pm';
 import { Either, EitherType } from '@bangle.dev/utils';
 
 import { CollabFail } from '../collab-error';
@@ -8,6 +8,10 @@ export interface StepBigger extends Step {
 }
 
 export const MAX_STEP_HISTORY = 1000;
+const LOG = true;
+let log = LOG
+  ? console.debug.bind(console, 'collab-server2:collab-state:')
+  : () => {};
 
 export class CollabState {
   static addEvents(
@@ -32,7 +36,15 @@ export class CollabState {
     const maps: StepMap[] = [];
 
     for (const step of biggerSteps) {
-      let result = step.apply(newDoc);
+      let result: StepResult | undefined;
+
+      try {
+        result = step.apply(newDoc);
+      } catch (error) {
+        console.error(error);
+        return Either.left(CollabFail.ApplyFailed);
+      }
+
       if (result.doc == null) {
         return Either.left(CollabFail.ApplyFailed);
       }
@@ -43,6 +55,7 @@ export class CollabState {
 
     const newVersion = collabState.version + biggerSteps.length;
     const newSteps = collabState.steps.concat(biggerSteps);
+    log(`${clientID}: addEvents version=${newVersion}`);
 
     return Either.right(new CollabState(newDoc, newSteps, newVersion));
   }

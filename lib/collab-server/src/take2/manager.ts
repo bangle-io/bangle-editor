@@ -1,55 +1,40 @@
 import { Node, Schema, Step } from '@bangle.dev/pm';
 import { Either, EitherType, uuid } from '@bangle.dev/utils';
 
-import {
-  CollabError,
-  CollabFail,
-  throwCollabError,
-  ValidErrorCodes as ValidCollabErrorCodes,
-} from '../collab-error';
+import { CollabError, CollabFail, throwCollabError } from '../collab-error';
 import { CollabState, StepBigger } from '../take2/collab-state';
 import {
   CollabRequestParam,
   CollabRequestType,
   CollabResponse,
+  HandleResponseError,
+  HandleResponseOk,
+  ManagerRequest,
+  ManagerResponse,
   PullEventResponse,
   PullEventsRequestParam,
   PushEventsRequestParam,
   PushEventsResponse,
-  ServerRequest,
 } from '../types';
-
-type HandleResponseOk = {
-  status: 'ok';
-  body: CollabResponse;
-};
-type HandleResponseError = {
-  status: 'error';
-  body: {
-    message: string;
-    errorCode: ValidCollabErrorCodes;
-  };
-};
 
 type ApplyEvents = (
   newCollabState: CollabState,
   oldCollabState: CollabState,
 ) => boolean;
+const LOG = true;
+
+let log = LOG ? console.debug.bind(console, 'collab-server2') : () => {};
 
 export class Manager2 {
   public readonly managerId = uuid();
+  counter = 0;
   private _instances: Map<string, Instance> = new Map();
 
   constructor(
     private _options: {
       schema: Schema;
-      onDocChange: (
-        docName: string,
-        collabState: CollabState,
-        prevCollabState: CollabState,
-      ) => void;
       getDoc: (docName: string) => Promise<Node | undefined>;
-      applyNewEvents?: ApplyEvents;
+      applyCollabState?: ApplyEvents;
     },
   ) {}
 
@@ -61,12 +46,43 @@ export class Manager2 {
     path: CollabRequestType,
     payload: CollabRequestParam,
   ): Promise<HandleResponseError | HandleResponseOk> {
-    if (!payload.docName) {
+    try {
+      const result = await this.handleRequest2({
+        type: path,
+        payload,
+      } as any);
+
+      if (result.ok) {
+        return { status: 'ok', body: result.body };
+      }
+      throwCollabError(result.body);
+    } catch (error) {
+      if (error instanceof CollabError) {
+        return {
+          status: 'error' as const,
+          body: {
+            errorCode: error.errorCode,
+            message: error.message,
+          },
+        };
+      }
+      throw error;
+    }
+  }
+
+  async handleRequest2<T extends CollabRequestType>(
+    request: Extract<ManagerRequest, { type: T }>,
+  ): Promise<
+    | { ok: false; body: CollabFail }
+    | { ok: true; body: Extract<ManagerResponse, { type: T }>['payload'] }
+  > {
+    if (!request.payload.docName) {
       throw new Error('docName is required');
     }
+    let uid = this.counter++;
 
     const handleReq = (
-      request: ServerRequest,
+      request: ManagerRequest,
       instance: Instance,
     ): EitherType<CollabFail, CollabResponse> => {
       const { type, payload } = request;
@@ -105,31 +121,22 @@ export class Manager2 {
     };
 
     const [failure, collabResponse] = Either.unwrap(
-      Either.flatMap(await this._getInstance(payload.docName), (instance) => {
-        // TODO fix any
-        return handleReq({ type: path, payload } as any, instance);
-      }),
+      Either.flatMap(
+        await this._getInstance(request.payload.docName),
+        (instance): EitherType<CollabFail, CollabResponse> => {
+          return handleReq(request, instance);
+        },
+      ),
     );
 
     if (failure) {
-      try {
-        throwCollabError(failure);
-      } catch (error) {
-        if (error instanceof CollabError) {
-          return {
-            status: 'error' as const,
-            body: {
-              errorCode: error.errorCode,
-              message: error.message,
-            },
-          };
-        }
-        throw error;
-      }
+      return { ok: false, body: failure };
     } else {
+      log({ uid, request, userId: request.payload.userId }, collabResponse);
       return {
-        status: 'ok' as const,
-        body: collabResponse,
+        ok: true,
+        // TODO fix any
+        body: collabResponse as any,
       };
     }
   }
@@ -157,7 +164,7 @@ export class Manager2 {
       docName,
       this._options.schema,
       initialCollabState,
-      this._options.applyNewEvents,
+      this._options.applyCollabState,
     );
     this._instances.set(docName, instance);
 
@@ -189,8 +196,12 @@ class Instance {
     public readonly docName: string,
     private readonly schema: Schema,
     private _collabState: CollabState,
-    private _applyNewEvents: ApplyEvents = (newCollabState, oldCollabState) =>
-      true,
+    private _applyCollabState: ApplyEvents = (
+      newCollabState,
+      oldCollabState,
+    ) => {
+      return true;
+    },
   ) {}
 
   get collabState() {
@@ -206,7 +217,10 @@ class Instance {
     clientID,
     version: rawVersion,
     steps,
+    userId,
   }: PushEventsRequestParam): EitherType<CollabFail, PushEventsResponse> {
+    this.lastActive = Date.now();
+
     let version = nonNegInteger(rawVersion);
 
     if (version === undefined) {
@@ -218,7 +232,7 @@ class Instance {
     return Either.map(
       CollabState.addEvents(this._collabState, version, parsedSteps, clientID),
       (collabState) => {
-        if (this._applyNewEvents(collabState, this._collabState)) {
+        if (this._applyCollabState(collabState, this._collabState)) {
           this._collabState = collabState;
         } else {
           // TODO should we throw an error?
