@@ -84,7 +84,10 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
       },
       applyCollabState(docName, newCollab, oldCollab) {
         queueMicrotask(() => {
-          docChangeEmitter.emit('doc_changed', {});
+          docChangeEmitter.emit('doc_changed', {
+            docName,
+            version: newCollab.version,
+          });
         });
         return true;
       },
@@ -143,15 +146,22 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
         newEditors[id].bangleEditor = editor;
         return newEditors;
       });
-      data.docChangeEmitter.on('doc_changed', async () => {
-        const view = editor.view;
-        if (view) {
-          if (testConfig.broadcastChangeWaitTime !== 0) {
-            await sleep(testConfig.broadcastChangeWaitTime);
+      data.docChangeEmitter.on(
+        'doc_changed',
+        async ({ docName, version }: { docName: string; version: number }) => {
+          const view = editor.view;
+          if (view) {
+            if (testConfig.broadcastChangeWaitTime !== 0) {
+              await sleep(testConfig.broadcastChangeWaitTime);
+            }
+
+            collabClient.commands.onUpstreamChanges(version)(
+              view.state,
+              view.dispatch,
+            );
           }
-          collabClient.pullChanges()(view.state, view.dispatch);
-        }
-      });
+        },
+      );
     },
     [data, testConfig],
   );

@@ -1,5 +1,15 @@
-import { CollabFail, CollabManager } from '@bangle.dev/collab-server';
-import { EditorView, Node, Schema, TextSelection } from '@bangle.dev/pm';
+import { CollabFail } from '@bangle.dev/collab-server';
+import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
+
+export const collabClientKey = new PluginKey<CollabPluginState>(
+  'bangle.dev/collab-client',
+);
+export interface CollabSettings {
+  serverVersion: undefined | number;
+}
+export const collabSettingsKey = new PluginKey<CollabSettings>(
+  'bangle/collabSettingsKey',
+);
 
 // Events
 export type ValidEvents =
@@ -63,6 +73,7 @@ export interface PushPullErrorEvent {
 export interface ReadyEvent {
   type: EventType.Ready;
 }
+
 export interface RestartEvent {
   type: EventType.Restart;
 }
@@ -78,7 +89,7 @@ export type ValidStates =
   | PushState
   | ReadyState;
 
-export enum StateName {
+export enum CollabStateName {
   FatalError = 'FATAL_ERROR_STATE',
   Init = 'INIT_STATE',
   InitDoc = 'INIT_DOC_STATE',
@@ -90,18 +101,18 @@ export enum StateName {
 }
 
 export interface FatalErrorState {
-  name: StateName.FatalError;
+  name: CollabStateName.FatalError;
   state: {
     message: string;
   };
 }
 
 export interface InitState {
-  name: StateName.Init;
+  name: CollabStateName.Init;
 }
 
 export interface InitDocState {
-  name: StateName.InitDoc;
+  name: CollabStateName.InitDoc;
   state: {
     initialDoc: Node;
     initialVersion: number;
@@ -111,44 +122,45 @@ export interface InitDocState {
 }
 
 export interface InitErrorState {
-  name: StateName.InitError;
+  name: CollabStateName.InitError;
   state: {
     failure: CollabFail;
   };
 }
 
 export interface ReadyState {
-  name: StateName.Ready;
+  name: CollabStateName.Ready;
   state: InitDocState['state'];
 }
 
 export interface PushState {
-  name: StateName.Push;
+  name: CollabStateName.Push;
   state: InitDocState['state'];
 }
 
 export interface PullState {
-  name: StateName.Pull;
+  name: CollabStateName.Pull;
   state: InitDocState['state'];
 }
 
 export interface PushPullErrorState {
-  name: StateName.PushPullError;
+  name: CollabStateName.PushPullError;
   state: {
     failure: CollabFail;
     initDocState: InitDocState['state'];
   };
 }
 
-export interface Context {
-  readonly clientID: string;
-  readonly docName: string;
-  readonly retryWaitTime: number;
-  readonly schema: Schema;
-  readonly sendManagerRequest: CollabManager['handleRequest'];
-  readonly userId: string;
-  readonly view: EditorView;
-  pendingUpstreamChange: boolean;
-  pendingPush: boolean;
-  restartCount: number;
+export interface CollabPluginContext {
+  readonly restartCount: number;
+  readonly debugInfo: string | undefined;
+}
+
+export interface CollabPluginState {
+  context: CollabPluginContext;
+  collabState: ValidStates;
+}
+export interface TrMeta {
+  context?: Partial<CollabPluginContext>;
+  collabEvent?: ValidEvents;
 }

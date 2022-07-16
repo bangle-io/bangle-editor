@@ -16,7 +16,8 @@ import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
 import { Emitter, uuid } from '@bangle.dev/utils';
 
-import { plugins, pullChanges } from '../src/collab-extension';
+import { plugins } from '../src/collab-extension';
+import { onUpstreamChanges } from '../src/commands';
 
 waitForExpect.defaults.timeout = 500;
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -52,8 +53,8 @@ const setupClient = (
     editor.view.dispatch(tr);
   };
 
-  docChangeEmitter.on('doc_changed', () => {
-    pullChanges()(editor.view.state, editor.view.dispatch);
+  docChangeEmitter.on('doc_changed', ({ version }: { version: number }) => {
+    onUpstreamChanges(version)(editor.view.state, editor.view.dispatch);
   });
 
   return {
@@ -63,9 +64,6 @@ const setupClient = (
     view: editor.view,
     debugString,
     typeText,
-    pullFromServer() {
-      docChangeEmitter.emit('doc_changed', {});
-    },
   };
 };
 
@@ -103,10 +101,13 @@ const setupServer = ({
 
       return undefined;
     },
-    applyCollabState: () => {
+    applyCollabState: (docName, newCollabState) => {
       queueMicrotask(() => {
         if (emitDocChangeEvent) {
-          docChangeEmitter.emit('doc_changed', {});
+          docChangeEmitter.emit('doc_changed', {
+            docName,
+            version: newCollabState.version,
+          });
         }
       });
       return true;
@@ -377,7 +378,6 @@ describe('multiplayer collab', () => {
       expect(client2.debugString()).toEqual(`doc(paragraph("hibyeA"))`);
     });
 
-    console.log('TYPING HELLO');
     client2.typeText('hello', 6);
     await sleep();
 
@@ -445,6 +445,7 @@ describe('failures', () => {
       },
     ]);
 
+    await sleep(500);
     await waitForExpect(async () => {
       expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
         'doc(paragraph("wow hello world!"))',
@@ -646,31 +647,35 @@ describe('failures', () => {
     server.blockDocChangeEvent();
 
     const fakeClientId = 'fakeClientId';
-    await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: fakeClientId,
-        version: manager.getCollabState(docName)?.version!,
-        managerId: manager.managerId,
-        steps: [
-          {
-            stepType: 'replace',
-            from: 1,
-            to: 1,
-            slice: {
-              content: [
-                {
-                  type: 'text',
-                  text: 'very ',
+    expect(
+      (
+        await manager.handleRequest({
+          type: CollabRequestType.PushEvents,
+          payload: {
+            clientID: fakeClientId,
+            version: manager.getCollabState(docName)?.version!,
+            managerId: manager.managerId,
+            steps: [
+              {
+                stepType: 'replace',
+                from: 1,
+                to: 1,
+                slice: {
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'very ',
+                    },
+                  ],
                 },
-              ],
-            },
+              },
+            ],
+            docName,
+            userId: 'test-' + fakeClientId,
           },
-        ],
-        docName,
-        userId: 'test-' + fakeClientId,
-      },
-    });
+        })
+      ).ok,
+    ).toBe(true);
 
     await waitForExpect(async () => {
       expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
@@ -680,7 +685,6 @@ describe('failures', () => {
 
     expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
     server.allowDocChangeEvent();
-
     client1.typeText('wow ');
     expect(client1.debugString()).toEqual(`doc(paragraph("wow hello world!"))`);
 
