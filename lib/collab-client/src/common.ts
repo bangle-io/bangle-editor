@@ -1,5 +1,7 @@
-import { CollabFail } from '@bangle.dev/collab-server';
+import { CollabFail, CollabManager } from '@bangle.dev/collab-server';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
+
+import type { ValidCollabStates2 } from './state';
 
 export const collabClientKey = new PluginKey<CollabPluginState>(
   'bangle.dev/collab-client',
@@ -78,17 +80,6 @@ export interface RestartEvent {
   type: EventType.Restart;
 }
 
-// States
-export type ValidStates =
-  | FatalErrorState
-  | InitDocState
-  | InitErrorState
-  | InitState
-  | PullState
-  | PushPullErrorState
-  | PushState
-  | ReadyState;
-
 export enum CollabStateName {
   FatalError = 'FATAL_ERROR_STATE',
   Init = 'INIT_STATE',
@@ -100,57 +91,6 @@ export enum CollabStateName {
   Ready = 'READY_STATE',
 }
 
-export interface FatalErrorState {
-  name: CollabStateName.FatalError;
-  state: {
-    message: string;
-  };
-}
-
-export interface InitState {
-  name: CollabStateName.Init;
-}
-
-export interface InitDocState {
-  name: CollabStateName.InitDoc;
-  state: {
-    initialDoc: Node;
-    initialVersion: number;
-    initialSelection?: TextSelection;
-    managerId: string;
-  };
-}
-
-export interface InitErrorState {
-  name: CollabStateName.InitError;
-  state: {
-    failure: CollabFail;
-  };
-}
-
-export interface ReadyState {
-  name: CollabStateName.Ready;
-  state: InitDocState['state'];
-}
-
-export interface PushState {
-  name: CollabStateName.Push;
-  state: InitDocState['state'];
-}
-
-export interface PullState {
-  name: CollabStateName.Pull;
-  state: InitDocState['state'];
-}
-
-export interface PushPullErrorState {
-  name: CollabStateName.PushPullError;
-  state: {
-    failure: CollabFail;
-    initDocState: InitDocState['state'];
-  };
-}
-
 export interface CollabPluginContext {
   readonly restartCount: number;
   readonly debugInfo: string | undefined;
@@ -158,9 +98,17 @@ export interface CollabPluginContext {
 
 export interface CollabPluginState {
   context: CollabPluginContext;
-  collabState: ValidStates;
+  collabState: ValidCollabStates2;
 }
 export interface TrMeta {
   context?: Partial<CollabPluginContext>;
   collabEvent?: ValidEvents;
+}
+
+export interface ClientInfo {
+  readonly clientID: string;
+  readonly docName: string;
+  readonly retryWaitTime: number;
+  readonly sendManagerRequest: CollabManager['handleRequest'];
+  readonly userId: string;
 }
