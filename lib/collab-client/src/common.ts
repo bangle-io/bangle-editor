@@ -14,7 +14,7 @@ export const collabMonitorKey = new PluginKey<CollabMonitor>(
 );
 
 export interface CollabMonitorTrMeta {
-  serverVersion: number;
+  serverVersion: number | undefined;
 }
 
 // Events

@@ -19,6 +19,7 @@ import { Emitter, uuid } from '@bangle.dev/utils';
 
 import { plugins } from '../src/collab-extension';
 import { onUpstreamChanges } from '../src/commands';
+import { collabMonitorKey } from '../src/common';
 
 waitForExpect.defaults.timeout = 500;
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -29,7 +30,13 @@ const setupClient = (
   clientID = uuid(),
   _docName = docName,
 ) => {
-  const { manager, docChangeEmitter } = server;
+  let ref: { manager?: CollabManager; docChangeEmitter?: Emitter } = {
+    manager: undefined,
+    docChangeEmitter: undefined,
+  };
+
+  ref.manager = server.manager;
+  ref.docChangeEmitter = server.docChangeEmitter;
 
   const { editor, debugString } = renderTestEditor({
     specRegistry: specRegistry,
@@ -39,7 +46,9 @@ const setupClient = (
         docName: _docName,
         clientID: clientID,
         retryWaitTime: 0,
-        sendManagerRequest: manager.handleRequest.bind(manager),
+        sendManagerRequest: (...args) => {
+          return ref.manager!.handleRequest(...args);
+        },
       }),
     ],
   })(undefined);
@@ -54,9 +63,11 @@ const setupClient = (
     editor.view.dispatch(tr);
   };
 
-  docChangeEmitter.on('doc_changed', ({ version }: { version: number }) => {
+  const cb = ({ version }: { version: number }) => {
     onUpstreamChanges(version)(editor.view.state, editor.view.dispatch);
-  });
+  };
+
+  ref.docChangeEmitter.on('doc_changed', cb);
 
   return {
     docName: _docName,
@@ -65,6 +76,12 @@ const setupClient = (
     view: editor.view,
     debugString,
     typeText,
+    changeServer(server: ReturnType<typeof setupServer>) {
+      ref.docChangeEmitter?.off('doc_changed', cb);
+      ref.docChangeEmitter = server.docChangeEmitter;
+      ref.manager = server.manager;
+      ref.docChangeEmitter.on('doc_changed', cb);
+    },
   };
 };
 
@@ -789,91 +806,224 @@ describe('failures', () => {
       },
     ]);
   });
-});
 
-test('local apply steps fails', async () => {
-  console.error = jest.fn();
-  const server = setupServer();
+  test('server restarts with different managerId and version', async () => {
+    console.error = jest.fn();
+    let server = setupServer();
 
-  const client1 = setupClient(server, 'client1');
-  const client2 = setupClient(server, 'client2');
+    const client1 = setupClient(server, 'client1');
 
-  await waitForExpect(async () => {
-    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
-  });
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
 
-  let done = false;
-  server.alterResponse((req, resp) => {
-    if (
-      req.type === CollabRequestType.PullEvents &&
-      !done &&
-      resp.ok &&
-      req.payload.userId.includes('client1')
-    ) {
-      done = true;
-      let body = resp.body as PullEventResponse;
-      return {
-        ...resp,
-        body: {
-          ...body,
-          steps: [
-            {
-              stepType: 'replace',
-              from: 1,
-              to: 10000,
-              slice: {
-                content: [
-                  {
-                    type: 'text',
-                    text: 'very ',
-                  },
-                ],
-              },
-            },
-          ],
+    client1.typeText('wow ');
+
+    await sleep(10);
+
+    expect(await server.getNotOkayRequests()).toEqual([]);
+
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        'doc(paragraph("wow hello world!"))',
+      );
+    });
+
+    server = setupServer();
+
+    client1.changeServer(server);
+
+    await sleep(10);
+
+    client1.typeText('bye ');
+
+    await sleep(10);
+
+    expect(await server.getNotOkayRequests()).toEqual([
+      {
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.IncorrectManager,
+          ok: false,
         },
-      };
-    }
-    return resp;
+      },
+    ]);
+
+    expect(
+      (await server.getCalls()).filter((r) =>
+        r.payload.userId.includes('client1'),
+      ),
+    ).toEqual([
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PushEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.GetDocument',
+      },
+    ]);
+
+    // TODO: Currently if it restarts, it ends up resetting everything
+    // this is not desirable.
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client1.typeText('new type ');
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(
+        `doc(paragraph("hello wonew type rld!"))`,
+      );
+    });
   });
 
-  client2.typeText('wow ');
+  test('local apply steps fails', async () => {
+    console.error = jest.fn();
+    const server = setupServer();
 
-  await sleep(10);
+    const client1 = setupClient(server, 'client1');
+    const client2 = setupClient(server, 'client2');
 
-  expect(await server.getNotOkayRequests()).toEqual([]);
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
 
-  await sleep(10);
+    let done = false;
+    server.alterResponse((req, resp) => {
+      if (
+        req.type === CollabRequestType.PullEvents &&
+        !done &&
+        resp.ok &&
+        req.payload.userId.includes('client1')
+      ) {
+        done = true;
+        let body = resp.body as PullEventResponse;
+        return {
+          ...resp,
+          body: {
+            ...body,
+            steps: [
+              {
+                stepType: 'replace',
+                from: 1,
+                to: 10000,
+                slice: {
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'very ',
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        };
+      }
+      return resp;
+    });
 
-  await waitForExpect(async () => {
-    expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
-      'doc(paragraph("wow hello world!"))',
+    client2.typeText('wow ');
+
+    await sleep(10);
+
+    expect(await server.getNotOkayRequests()).toEqual([]);
+
+    await sleep(10);
+
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        'doc(paragraph("wow hello world!"))',
+      );
+    });
+
+    expect(console.error).toBeCalledTimes(1);
+    expect(console.error).nthCalledWith(
+      1,
+      new RangeError('Position 10000 out of range'),
+    );
+
+    expect(
+      (await server.getCalls()).filter((r) =>
+        r.payload.userId.includes('client1'),
+      ),
+    ).toEqual([
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.GetDocument',
+      },
+      // two pulls because of the apply error
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PullEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PullEvents',
+      },
+    ]);
+
+    // after recovery client should be syncing correctly
+    client1.typeText('new type ');
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(
+        'doc(paragraph("wow new type hello world!"))',
+      );
+    });
+  });
+
+  test('resets collab-monitor on restart', async () => {
+    const server = setupServer();
+
+    const client1 = setupClient(server, 'client1');
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    server.alterRequest((req) => {
+      if (req.type === CollabRequestType.PushEvents) {
+        return {
+          ...req,
+          payload: {
+            ...req.payload,
+            version: 100,
+          },
+        };
+      }
+
+      return req;
+    });
+
+    client1.typeText('wow ');
+
+    expect(client1.debugString()).toEqual(`doc(paragraph("wow hello world!"))`);
+
+    onUpstreamChanges(783)(client1.view.state, client1.view.dispatch);
+    expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
+      783,
+    );
+
+    await sleep(10);
+
+    expect(await server.getNotOkayRequests()).toEqual([
+      {
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.InvalidVersion,
+          ok: false,
+        },
+      },
+    ]);
+
+    // Editor should reset
+    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    // server version should be reset upon restart
+    expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
+      undefined,
     );
   });
-
-  expect(console.error).toBeCalledTimes(1);
-  expect(console.error).nthCalledWith(
-    1,
-    new RangeError('Position 10000 out of range'),
-  );
-
-  expect(
-    (await server.getCalls()).filter((r) =>
-      r.payload.userId.includes('client1'),
-    ),
-  ).toEqual([
-    {
-      payload: expect.anything(),
-      type: 'CollabRequestType.GetDocument',
-    },
-    // two pulls because of the apply error
-    {
-      payload: expect.anything(),
-      type: 'CollabRequestType.PullEvents',
-    },
-    {
-      payload: expect.anything(),
-      type: 'CollabRequestType.PullEvents',
-    },
-  ]);
 });

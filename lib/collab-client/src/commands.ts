@@ -11,17 +11,18 @@ export function queryFatalError() {
     return collabState?.isFatalState() ? collabState.state : undefined;
   };
 }
-// Saves the server version of the document. Rest of the code
+
+// Saves the server version of the document. Rest of the extension
 // then uses this information to determine whether to pull from server or not.
-export function onUpstreamChanges(version: number): Command {
+export function onUpstreamChanges(serverVersion: number | undefined): Command {
   return (state, dispatch) => {
     const pluginState = collabMonitorKey.getState(state);
     if (!pluginState) {
       return false;
     }
 
-    if (pluginState.serverVersion !== version) {
-      const meta: CollabMonitorTrMeta = { serverVersion: version };
+    if (pluginState.serverVersion !== serverVersion) {
+      const meta: CollabMonitorTrMeta = { serverVersion: serverVersion };
       dispatch?.(state.tr.setMeta(collabMonitorKey, meta));
       return true;
     }
@@ -60,6 +61,10 @@ export function isOutdatedVersion() {
 export function onOutdatedVersion(): Command {
   return (state, dispatch) => {
     const collabState = getCollabState(state);
+    // only dispatch if in ready state, so as to trigger a state transition
+    // from ready-state -> whatever.
+    // If state is not in ready state, whenever it eventually transitions to
+    // ready state it's own action will dispatch these events automatically.
     if (collabState?.isReadyState()) {
       collabState.dispatch(
         state,

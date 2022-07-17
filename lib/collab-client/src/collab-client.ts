@@ -15,6 +15,7 @@ import {
   collabMonitorKey,
   CollabMonitorTrMeta,
   CollabPluginState,
+  CollabStateName,
 } from './common';
 import { getCollabState } from './helpers';
 import { CollabBaseState, InitState } from './state';
@@ -23,6 +24,10 @@ const LOG = true;
 let log = (isTestEnv ? false : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
+
+const collabMonitorInitialState = {
+  serverVersion: undefined,
+};
 
 export function collabClientPlugin(clientInfo: ClientInfo) {
   const logger =
@@ -48,9 +53,9 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
           return true;
         }
 
-        // prevent any other tr until state is in one of the no-edit state
+        // prevent any other tr while state is in one of the no-edit state
         if (tr.docChanged && getCollabState(state)?.editingAllowed === false) {
-          logger(state)('skipping transaction');
+          console.debug('@bangle.dev/collab-client blocking transaction');
           return false;
         }
 
@@ -67,39 +72,40 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
             | Parameters<CollabBaseState['dispatchCollabPluginEvent']>[0]
             | undefined = tr.getMeta(collabClientKey);
 
-          if (meta === undefined) {
+          if (meta === undefined || !meta.collabEvent) {
             return value;
           }
 
-          let result: CollabPluginState = {
-            ...value,
-          };
+          const newCollabState = value.collabState.transition(
+            meta.collabEvent,
+            meta.debugInfo,
+          );
 
-          if (meta.collabEvent) {
-            const newPluginState = value.collabState.transition(
-              meta.collabEvent,
-              meta.debugInfo,
+          if (!newCollabState) {
+            return value;
+          }
+
+          if (newCollabState.name !== value.collabState.name) {
+            logger(newState)(
+              'apply state, newStateName=',
+              newCollabState.name,
+              `debugInfo=${newCollabState.debugInfo}`,
+              'oldStateName=',
+              value.collabState.name,
             );
 
-            if (newPluginState.name !== value.collabState.name) {
-              result.collabState = newPluginState;
-            } else {
-              logger(newState)(
-                `applyState IGNORE EVENT ${meta.collabEvent.type}`,
-                `debugInfo=${result.collabState.debugInfo}`,
-              );
-            }
+            return {
+              ...value,
+              collabState: newCollabState,
+            };
           }
 
           logger(newState)(
-            'apply state, newStateName=',
-            result.collabState.name,
-            `debugInfo=${result.collabState.debugInfo}`,
-            'oldStateName=',
-            value.collabState.name,
+            `applyState IGNORE EVENT ${meta.collabEvent.type} due to self transition`,
+            `debugInfo=${meta.debugInfo}`,
           );
 
-          return result;
+          return value;
         },
       },
 
@@ -148,9 +154,7 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
       key: collabMonitorKey,
       state: {
         init: (_, _state): CollabMonitor => {
-          return {
-            serverVersion: undefined,
-          };
+          return collabMonitorInitialState;
         },
         apply: (tr, value, oldState, newState): CollabMonitor => {
           const meta: CollabMonitorTrMeta | undefined =
@@ -162,11 +166,25 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
               ...meta,
             };
           }
+
+          // Reset collab monitors state if collab state is restarted
+          if (getCollabState(newState)?.name === CollabStateName.Init) {
+            return collabMonitorInitialState;
+          }
+
           return value;
         },
       },
       view(view) {
         const check = (view: EditorView) => {
+          // There are two ways different ways this extension keeps a check on outdated version (needs to pull)
+          // and sendable steps (needs to push):
+          // 1. the ready state action which gets triggered when collabClientKey plugin transitions
+          //    to the ready state.
+          // 2. this plugin (collabMonitorKey) which runs `check` every time the view is updated and
+          //    checks if we need a push or pull.
+
+          // outdated version gets a priority over local changes
           if (isOutdatedVersion()(view.state)) {
             onOutdatedVersion()(view.state, view.dispatch);
           }

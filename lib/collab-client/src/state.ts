@@ -76,7 +76,7 @@ export abstract class CollabBaseState {
   abstract transition(
     event: ValidEvents,
     debugInfo?: string,
-  ): ValidCollabStates;
+  ): ValidCollabStates | undefined;
 }
 
 export class FatalErrorState extends CollabBaseState {
@@ -211,8 +211,11 @@ export class InitState extends CollabBaseState {
         debugInfo,
       );
     } else {
+      // This should not get called by any statically findable .transition() . However
+      // dynamic code can possibly call it and it should be safe to ignore.
       let val: never = type;
-      throw new Error('Invalid event');
+      console.debug('@bangle.dev/collab-client Ignoring event' + type);
+      return;
     }
   }
 }
@@ -287,7 +290,8 @@ export class InitDocState extends CollabBaseState {
       return new FatalErrorState({ message: event.payload.message }, debugInfo);
     } else {
       let val: never = type;
-      throw new Error('Invalid event');
+      console.debug('@bangle.dev/collab-client Ignoring event' + type);
+      return;
     }
   }
 }
@@ -328,7 +332,8 @@ export class InitErrorState extends CollabBaseState {
       return new FatalErrorState({ message: event.payload.message }, debugInfo);
     } else {
       let val: never = type;
-      throw new Error('Invalid event');
+      console.debug('@bangle.dev/collab-client Ignoring event' + type);
+      return;
     }
   }
 }
@@ -390,7 +395,8 @@ export class ReadyState extends CollabBaseState {
       return new PullState(this.state, debugInfo);
     } else {
       let val: never = type;
-      throw new Error('Invalid event');
+      console.debug('@bangle.dev/collab-client Ignoring event' + type);
+      return;
     }
   }
 }
@@ -499,7 +505,8 @@ export class PushState extends CollabBaseState {
       );
     } else {
       let val: never = type;
-      throw new Error('Invalid event');
+      console.debug('@bangle.dev/collab-client Ignoring event' + type);
+      return;
     }
   }
 }
@@ -640,7 +647,8 @@ export class PushPullErrorState extends CollabBaseState {
       return new FatalErrorState({ message: event.payload.message }, debugInfo);
     } else {
       let val: never = type;
-      throw new Error('Invalid event');
+      console.debug('@bangle.dev/collab-client Ignoring event' + type);
+      return;
     }
   }
 }
