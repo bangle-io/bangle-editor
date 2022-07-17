@@ -5,6 +5,12 @@ import { Command, EditorState } from '@bangle.dev/pm';
 import { collabMonitorKey, CollabMonitorTrMeta, EventType } from './common';
 import { getCollabState } from './helpers';
 
+export function queryFatalError() {
+  return (state: EditorState) => {
+    const collabState = getCollabState(state);
+    return collabState?.isFatalState() ? collabState.state : undefined;
+  };
+}
 // Saves the server version of the document. Rest of the code
 // then uses this information to determine whether to pull from server or not.
 export function onUpstreamChanges(version: number): Command {

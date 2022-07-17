@@ -4,7 +4,7 @@ import { CollabManager } from '@bangle.dev/collab-server';
 import { uuid } from '@bangle.dev/utils';
 
 import { collabClientPlugin } from './collab-client';
-import { onUpstreamChanges } from './commands';
+import { onUpstreamChanges, queryFatalError } from './commands';
 
 const LOG = false;
 const LOG_VERBOSE = false;
@@ -15,7 +15,7 @@ let logVerbose = LOG_VERBOSE
   : () => {};
 
 export const plugins = pluginsFactory;
-export const commands = { onUpstreamChanges };
+export const commands = { onUpstreamChanges, queryFatalError };
 
 export const RECOVERY_BACK_OFF = 50;
 

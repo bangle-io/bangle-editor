@@ -12,11 +12,13 @@ import {
 
 import { collabClientKey } from './common';
 
+// Applies steps from the server to the editor.
+// returns false if applying these steps failed
 export function applySteps(
   view: EditorView,
   payload: PullEventResponse,
   logger: (...args: any[]) => void,
-) {
+): boolean | void {
   if (view.isDestroyed) {
     return;
   }
@@ -29,19 +31,26 @@ export function applySteps(
 
   if (steps.length === 0) {
     logger('no steps', payload, 'version', getVersion(view.state));
-    return false;
+    return;
   }
 
   const tr = receiveTransaction(view.state, steps, clientIDs)
     .setMeta('addToHistory', false)
     .setMeta('bangle.dev/isRemote', true);
   const newState = view.state.apply(tr);
-  view.updateState(newState);
+  try {
+    view.updateState(newState);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 
   logger('after apply version', getVersion(view.state));
-  return;
+  return true;
 }
 
+// Replaces the current doc content with the provided one.
+// returns false if applying these steps failed.
 export function applyDoc(
   view: EditorView,
   doc: Node,
@@ -68,8 +77,14 @@ export function applyDoc(
   }
 
   const newState = view.state.apply(tr.setMeta('bangle.dev/isRemote', true));
+  try {
+    view.updateState(newState);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 
-  view.updateState(newState);
+  return true;
 }
 
 function replaceDocument(

@@ -11,6 +11,7 @@ import {
   CollabRequestType,
   ManagerRequest,
   MAX_STEP_HISTORY,
+  PullEventResponse,
 } from '@bangle.dev/collab-server';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
@@ -704,5 +705,59 @@ describe('failures', () => {
         },
       },
     ]);
+  });
+});
+
+test.only('local apply steps fails', async () => {
+  console.error = jest.fn();
+  const server = setupServer();
+
+  const client1 = setupClient(server, 'client1');
+
+  await waitForExpect(async () => {
+    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+  });
+
+  let done = false;
+  server.alterResponse((req, resp) => {
+    if (req.type === CollabRequestType.PullEvents && !done && resp.ok) {
+      done = true;
+      let body = resp.body as PullEventResponse;
+      return {
+        ...resp,
+        body: {
+          ...body,
+          steps: [
+            {
+              stepType: 'replace',
+              from: 1,
+              to: 10000,
+              slice: {
+                content: [
+                  {
+                    type: 'text',
+                    text: 'very ',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      };
+    }
+    return resp;
+  });
+
+  client1.typeText('wow ');
+
+  await sleep(10);
+
+  expect(await server.getNotOkayRequests()).toEqual([]);
+
+  await sleep(500);
+  await waitForExpect(async () => {
+    expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+      'doc(paragraph("wow hello world!"))',
+    );
   });
 });

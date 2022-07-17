@@ -61,6 +61,10 @@ export abstract class CollabBaseState {
     };
   }
 
+  public isFatalState(): this is FatalErrorState {
+    return this instanceof FatalErrorState;
+  }
+
   public isReadyState(): this is ReadyState {
     return this instanceof ReadyState;
   }
@@ -239,22 +243,39 @@ export class InitDocState extends CollabBaseState {
     const { initialDoc, initialVersion, initialSelection } = this.state;
 
     if (!signal.aborted) {
-      applyDoc(view, initialDoc, initialVersion, initialSelection);
-      this.dispatch(
-        view.state,
-        view.dispatch,
-        {
-          type: EventType.Ready,
-        },
-        `runAction:${this.name}`,
+      const success = applyDoc(
+        view,
+        initialDoc,
+        initialVersion,
+        initialSelection,
       );
+
+      if (success === false) {
+        this.dispatch(view.state, view.dispatch, {
+          type: EventType.FatalError,
+          payload: {
+            message: 'Failed to load initial doc',
+          },
+        });
+      } else {
+        this.dispatch(
+          view.state,
+          view.dispatch,
+          {
+            type: EventType.Ready,
+          },
+          `runAction:${this.name}`,
+        );
+      }
     }
   }
 
-  transition(event: ReadyEvent) {
+  transition(event: ReadyEvent | FatalErrorEvent) {
     const type = event.type;
     if (type === EventType.Ready) {
       return new ReadyState(this.state);
+    } else if (type === EventType.FatalError) {
+      return new FatalErrorState({ message: event.payload.message });
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -508,15 +529,27 @@ export class PullState extends CollabBaseState {
     const debugSource = `pullStateAction:`;
 
     if (response.ok) {
-      applySteps(view, response.body, logger);
-      this.dispatch(
-        view.state,
-        view.dispatch,
-        {
-          type: EventType.Ready,
-        },
-        debugSource,
-      );
+      const success = applySteps(view, response.body, logger);
+      if (success === false) {
+        this.dispatch(
+          view.state,
+          view.dispatch,
+          {
+            type: EventType.PushPullError,
+            payload: { failure: CollabFail.ApplyFailed },
+          },
+          debugSource + '(local-apply-failed)',
+        );
+      } else {
+        this.dispatch(
+          view.state,
+          view.dispatch,
+          {
+            type: EventType.Ready,
+          },
+          debugSource,
+        );
+      }
     } else {
       this.dispatch(
         view.state,
