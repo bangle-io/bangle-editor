@@ -1,13 +1,19 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
 import { CollabFail, CollabRequestType } from '@bangle.dev/collab-server';
-import { EditorView, Node, TextSelection } from '@bangle.dev/pm';
+import {
+  Command,
+  EditorState,
+  EditorView,
+  Node,
+  TextSelection,
+} from '@bangle.dev/pm';
 import { abortableSetTimeout } from '@bangle.dev/utils';
 
-import { dispatchCollabPluginEvent, isOutdatedVersion } from './commands';
+import { isOutdatedVersion } from './commands';
 import {
   ClientInfo,
-  CollabPluginContext,
+  collabClientKey,
   CollabStateName,
   EventType,
   FatalErrorEvent,
@@ -24,38 +30,72 @@ import { applyDoc, applySteps } from './helpers';
 
 interface ActionParam {
   clientInfo: ClientInfo;
-  context: CollabPluginContext;
   logger: (...args: any[]) => void;
   signal: AbortSignal;
   view: EditorView;
 }
 
-export type ValidCollabStates2 =
-  | FatalErrorState2
-  | InitDocState2
-  | InitErrorState2
-  | InitState2
-  | PullState2
-  | PushPullErrorState2
-  | PushState2
-  | ReadyState2;
+export type ValidCollabStates =
+  | FatalErrorState
+  | InitDocState
+  | InitErrorState
+  | InitState
+  | PullState
+  | PushPullErrorState
+  | PushState
+  | ReadyState;
 
-export abstract class BaseState {
+export abstract class CollabBaseState {
+  // If false, the document is frozen and no edits and _almost_ no transactions are allowed.
+  // Some collab tr's are allowed.
+  editingAllowed: boolean = true;
+  debugInfo?: string;
+
+  protected dispatchCollabPluginEvent(data: {
+    collabEvent?: ValidEvents;
+    debugInfo?: string;
+  }): Command {
+    return (state, dispatch) => {
+      dispatch?.(state.tr.setMeta(collabClientKey, data));
+      return true;
+    };
+  }
+
+  public isReadyState(): this is ReadyState {
+    return this instanceof ReadyState;
+  }
+
   abstract name: CollabStateName;
-  abstract runAction(param: ActionParam): Promise<void>;
 
+  abstract runAction(param: ActionParam): Promise<void>;
   // must be kept pure , sync and no side-effects
-  abstract transition(event: ValidEvents): ValidCollabStates2;
+  abstract transition(event: ValidEvents): ValidCollabStates;
 }
 
-export class FatalErrorState2 implements BaseState {
+export class FatalErrorState extends CollabBaseState {
   name = CollabStateName.FatalError;
+  editingAllowed = false;
 
   constructor(
     public state: {
       message: string;
     },
-  ) {}
+    public debugInfo?: string,
+  ) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: never,
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction({ signal, clientInfo, logger }: ActionParam) {
     if (signal.aborted) {
@@ -72,10 +112,25 @@ export class FatalErrorState2 implements BaseState {
   }
 }
 
-export class InitState2 implements BaseState {
+export class InitState extends CollabBaseState {
   name = CollabStateName.Init;
+  editingAllowed = false;
 
-  constructor(public state = null) {}
+  constructor(public state = {}, public debugInfo?: string) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: Parameters<InitState['transition']>[0],
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction({ clientInfo, signal, view }: ActionParam) {
     if (signal.aborted) {
@@ -97,20 +152,24 @@ export class InitState2 implements BaseState {
     }
 
     if (!result.ok) {
-      dispatchCollabPluginEvent({
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.InitError,
           payload: { failure: result.body },
         },
-        context: { debugInfo: debugSource },
-      })(view.state, view.dispatch);
+        debugSource,
+      );
       return;
     }
 
     const { doc, managerId, version } = result.body;
-    dispatchCollabPluginEvent({
-      context: { debugInfo: debugSource },
-      collabEvent: {
+
+    this.dispatch(
+      view.state,
+      view.dispatch,
+      {
         type: EventType.InitDoc,
         payload: {
           doc: view.state.schema.nodeFromJSON(doc),
@@ -119,8 +178,8 @@ export class InitState2 implements BaseState {
           selection: undefined,
         },
       },
-    })(view.state, view.dispatch);
-
+      debugSource,
+    );
     return;
   }
 
@@ -128,14 +187,14 @@ export class InitState2 implements BaseState {
     const type = event.type;
     if (type === EventType.InitDoc) {
       const { payload } = event;
-      return new InitDocState2({
+      return new InitDocState({
         initialDoc: payload.doc,
         initialSelection: payload.selection,
         initialVersion: payload.version,
         managerId: payload.managerId,
       });
     } else if (type === EventType.InitError) {
-      return new InitErrorState2({
+      return new InitErrorState({
         failure: event.payload.failure,
       });
     } else {
@@ -145,8 +204,9 @@ export class InitState2 implements BaseState {
   }
 }
 
-export class InitDocState2 implements BaseState {
+export class InitDocState extends CollabBaseState {
   name = CollabStateName.InitDoc;
+  editingAllowed = false;
 
   constructor(
     public state: {
@@ -155,7 +215,22 @@ export class InitDocState2 implements BaseState {
       initialSelection?: TextSelection;
       managerId: string;
     },
-  ) {}
+    public debugInfo?: string,
+  ) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: Parameters<InitDocState['transition']>[0],
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction({ signal, view }: ActionParam) {
     if (signal.aborted) {
@@ -165,21 +240,21 @@ export class InitDocState2 implements BaseState {
 
     if (!signal.aborted) {
       applyDoc(view, initialDoc, initialVersion, initialSelection);
-      dispatchCollabPluginEvent({
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.Ready,
         },
-        context: {
-          debugInfo: `runAction:${this.name}`,
-        },
-      })(view.state, view.dispatch);
+        `runAction:${this.name}`,
+      );
     }
   }
 
   transition(event: ReadyEvent) {
     const type = event.type;
     if (type === EventType.Ready) {
-      return new ReadyState2(this.state);
+      return new ReadyState(this.state);
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -187,14 +262,29 @@ export class InitDocState2 implements BaseState {
   }
 }
 
-export class InitErrorState2 implements BaseState {
+export class InitErrorState extends CollabBaseState {
   name = CollabStateName.InitError;
 
   constructor(
     public state: {
       failure: CollabFail;
     },
-  ) {}
+    public debugInfo?: string,
+  ) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: Parameters<InitErrorState['transition']>[0],
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction(param: ActionParam) {
     await handleErrorStateAction({ ...param, collabState: this });
@@ -203,9 +293,9 @@ export class InitErrorState2 implements BaseState {
   transition(event: RestartEvent | FatalErrorEvent) {
     const type = event.type;
     if (type === EventType.Restart) {
-      return new InitState2();
+      return new InitState();
     } else if (type === EventType.FatalError) {
-      return new FatalErrorState2({ message: event.payload.message });
+      return new FatalErrorState({ message: event.payload.message });
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -213,12 +303,26 @@ export class InitErrorState2 implements BaseState {
   }
 }
 
-export class ReadyState2 implements BaseState {
+export class ReadyState extends CollabBaseState {
   name = CollabStateName.Ready;
 
-  constructor(public state: InitDocState2['state']) {}
+  constructor(public state: InitDocState['state'], public debugInfo?: string) {
+    super();
+  }
 
-  async runAction({ context, signal, view }: ActionParam) {
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: PullEvent | PushEvent,
+    debugInfo?: string,
+  ): boolean {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
+
+  async runAction({ signal, view }: ActionParam) {
     if (signal.aborted) {
       return;
     }
@@ -226,36 +330,34 @@ export class ReadyState2 implements BaseState {
 
     if (!signal.aborted) {
       if (isOutdatedVersion()(view.state)) {
-        dispatchCollabPluginEvent({
-          context: {
-            ...context,
-            debugInfo: debugString + '(outdated-local-version)',
-          },
-          collabEvent: {
+        this.dispatch(
+          view.state,
+          view.dispatch,
+          {
             type: EventType.Pull,
           },
-        })(view.state, view.dispatch);
+          debugString + '(outdated-local-version)',
+        );
       } else if (sendableSteps(view.state)) {
-        dispatchCollabPluginEvent({
-          context: {
-            ...context,
-            debugInfo: debugString + '(sendable-steps)',
-          },
-          collabEvent: {
+        this.dispatch(
+          view.state,
+          view.dispatch,
+          {
             type: EventType.Push,
           },
-        })(view.state, view.dispatch);
+          debugString + '(sendable-steps)',
+        );
       }
     }
     return;
   }
 
-  transition(event: PullEvent | PushEvent) {
+  transition(event: Parameters<ReadyState['dispatch']>[2]) {
     const type = event.type;
     if (type === EventType.Push) {
-      return new PushState2(this.state);
+      return new PushState(this.state);
     } else if (type === EventType.Pull) {
-      return new PullState2(this.state);
+      return new PullState(this.state);
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -263,10 +365,24 @@ export class ReadyState2 implements BaseState {
   }
 }
 
-export class PushState2 implements BaseState {
+export class PushState extends CollabBaseState {
   name = CollabStateName.Push;
 
-  constructor(public state: InitDocState2['state']) {}
+  constructor(public state: InitDocState['state'], public debugInfo?: string) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: Parameters<PushState['transition']>[0],
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction({ clientInfo, signal, view }: ActionParam) {
     if (signal.aborted) {
@@ -278,12 +394,15 @@ export class PushState2 implements BaseState {
     const steps = sendableSteps(view.state);
 
     if (!steps) {
-      dispatchCollabPluginEvent({
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.Ready,
         },
-        context: { debugInfo: debugSource + '(no steps):' },
-      })(view.state, view.dispatch);
+        debugSource + '(no steps):',
+      );
+
       return;
     }
 
@@ -309,20 +428,24 @@ export class PushState2 implements BaseState {
     if (response.ok) {
       // Pull changes to confirm our steps and also
       // get any new steps from other clients
-      dispatchCollabPluginEvent({
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.Pull,
         },
-        context: { debugInfo: debugSource },
-      })(view.state, view.dispatch);
+        debugSource,
+      );
     } else {
-      dispatchCollabPluginEvent({
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.PushPullError,
           payload: { failure: response.body },
         },
-        context: { debugInfo: debugSource },
-      })(view.state, view.dispatch);
+        debugSource,
+      );
     }
     return;
   }
@@ -330,11 +453,11 @@ export class PushState2 implements BaseState {
   transition(event: ReadyEvent | PullEvent | PushPullErrorEvent) {
     const type = event.type;
     if (type === EventType.Ready) {
-      return new ReadyState2(this.state);
+      return new ReadyState(this.state);
     } else if (type === EventType.Pull) {
-      return new PullState2(this.state);
+      return new PullState(this.state);
     } else if (type === EventType.PushPullError) {
-      return new PushPullErrorState2({
+      return new PushPullErrorState({
         failure: event.payload.failure,
         initDocState: this.state,
       });
@@ -345,10 +468,24 @@ export class PushState2 implements BaseState {
   }
 }
 
-export class PullState2 implements BaseState {
+export class PullState extends CollabBaseState {
   name = CollabStateName.Pull;
 
-  constructor(public state: InitDocState2['state']) {}
+  constructor(public state: InitDocState['state'], public debugInfo?: string) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: Parameters<PullState['transition']>[0],
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction({ logger, clientInfo, signal, view }: ActionParam) {
     if (signal.aborted) {
@@ -372,20 +509,24 @@ export class PullState2 implements BaseState {
 
     if (response.ok) {
       applySteps(view, response.body, logger);
-      dispatchCollabPluginEvent({
-        context: { debugInfo: debugSource },
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.Ready,
         },
-      })(view.state, view.dispatch);
+        debugSource,
+      );
     } else {
-      dispatchCollabPluginEvent({
-        context: { debugInfo: debugSource },
-        collabEvent: {
+      this.dispatch(
+        view.state,
+        view.dispatch,
+        {
           type: EventType.PushPullError,
           payload: { failure: response.body },
         },
-      })(view.state, view.dispatch);
+        debugSource,
+      );
     }
     return;
   }
@@ -393,28 +534,43 @@ export class PullState2 implements BaseState {
   transition(event: ReadyEvent | PushPullErrorEvent) {
     const type = event.type;
     if (type === EventType.Ready) {
-      return new ReadyState2(this.state);
+      return new ReadyState(this.state);
     } else if (type === EventType.PushPullError) {
-      return new PushPullErrorState2({
+      return new PushPullErrorState({
         failure: event.payload.failure,
         initDocState: this.state,
       });
     } else {
       let val: never = type;
-      throw new Error('Invalid event');
+      throw new Error('Invalid event ' + type);
     }
   }
 }
 
-export class PushPullErrorState2 implements BaseState {
+export class PushPullErrorState extends CollabBaseState {
   name = CollabStateName.PushPullError;
 
   constructor(
     public state: {
       failure: CollabFail;
-      initDocState: InitDocState2['state'];
+      initDocState: InitDocState['state'];
     },
-  ) {}
+    public debugInfo?: string,
+  ) {
+    super();
+  }
+
+  dispatch(
+    state: EditorState,
+    dispatch: EditorView['dispatch'] | undefined,
+    event: Parameters<PushPullErrorState['transition']>[0],
+    debugInfo?: string,
+  ) {
+    return this.dispatchCollabPluginEvent({
+      collabEvent: event,
+      debugInfo,
+    })(state, dispatch);
+  }
 
   async runAction(param: ActionParam) {
     await handleErrorStateAction({ ...param, collabState: this });
@@ -423,11 +579,11 @@ export class PushPullErrorState2 implements BaseState {
   transition(event: RestartEvent | PullEvent | FatalErrorEvent) {
     const type = event.type;
     if (type === EventType.Restart) {
-      return new InitState2();
+      return new InitState();
     } else if (type === EventType.Pull) {
-      return new PullState2(this.state.initDocState);
+      return new PullState(this.state.initDocState);
     } else if (type === EventType.FatalError) {
-      return new FatalErrorState2({ message: event.payload.message });
+      return new FatalErrorState({ message: event.payload.message });
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -441,12 +597,13 @@ const handleErrorStateAction = async ({
   logger,
   signal,
   collabState,
-}: ActionParam & { collabState: InitErrorState2 | PushPullErrorState2 }) => {
+}: ActionParam & { collabState: InitErrorState | PushPullErrorState }) => {
   if (signal.aborted) {
     return;
   }
   const failure = collabState.state.failure;
-  logger('Recovering failure', failure);
+
+  logger('Handling failure=', failure, 'currentState=', collabState.name);
 
   const debugSource = `pushPullErrorStateAction:${failure}:`;
 
@@ -456,12 +613,14 @@ const handleErrorStateAction = async ({
       abortableSetTimeout(
         () => {
           if (!signal.aborted) {
-            dispatchCollabPluginEvent({
-              context: { debugInfo: debugSource },
-              collabEvent: {
+            collabState.dispatch(
+              view.state,
+              view.dispatch,
+              {
                 type: EventType.Restart,
               },
-            })(view.state, view.dispatch);
+              debugSource,
+            );
           }
         },
         signal,
@@ -470,63 +629,94 @@ const handleErrorStateAction = async ({
       return;
     }
     case CollabFail.HistoryNotAvailable: {
-      logger('History/Server not available');
-      if (!signal.aborted) {
-        dispatchCollabPluginEvent({
-          context: { debugInfo: debugSource },
-          collabEvent: {
-            type: EventType.FatalError,
-            payload: {
-              message: 'History/Server not available',
-            },
+      collabState.dispatch(
+        view.state,
+        view.dispatch,
+        {
+          type: EventType.FatalError,
+          payload: {
+            message: 'History/Server not available',
           },
-        })(view.state, view.dispatch);
-      }
+        },
+        debugSource,
+      );
       return;
     }
     case CollabFail.DocumentNotFound: {
       logger('Document not found');
-      if (!signal.aborted) {
-        dispatchCollabPluginEvent({
-          collabEvent: {
-            type: EventType.FatalError,
-            payload: {
-              message: 'Document not found',
-            },
+      collabState.dispatch(
+        view.state,
+        view.dispatch,
+        {
+          type: EventType.FatalError,
+          payload: {
+            message: 'Document not found',
           },
-          context: { debugInfo: debugSource },
-        })(view.state, view.dispatch);
-      }
+        },
+        debugSource,
+      );
       return;
     }
     // 409
     case CollabFail.OutdatedVersion: {
-      dispatchCollabPluginEvent({
-        collabEvent: {
-          type: EventType.Pull,
-        },
-        context: { debugInfo: debugSource },
-      })(view.state, view.dispatch);
+      if (collabState instanceof PushPullErrorState) {
+        collabState.dispatch(
+          view.state,
+          view.dispatch,
+          {
+            type: EventType.Pull,
+          },
+          debugSource,
+        );
+      } else {
+        collabState.dispatch(
+          view.state,
+          view.dispatch,
+          {
+            type: EventType.FatalError,
+            payload: {
+              message: `Cannot handle ${failure} in state=${collabState.name}`,
+            },
+          },
+          debugSource,
+        );
+      }
+
       return;
     }
 
     // 500
     case CollabFail.ApplyFailed: {
-      abortableSetTimeout(
-        () => {
-          if (!signal.aborted) {
-            dispatchCollabPluginEvent({
-              collabEvent: {
-                type: EventType.Pull,
-              },
-              context: { debugInfo: debugSource },
-            })(view.state, view.dispatch);
-          }
-        },
-        signal,
-        clientInfo.retryWaitTime,
-      );
-
+      if (collabState instanceof PushPullErrorState) {
+        abortableSetTimeout(
+          () => {
+            if (!signal.aborted) {
+              collabState.dispatch(
+                view.state,
+                view.dispatch,
+                {
+                  type: EventType.Pull,
+                },
+                debugSource,
+              );
+            }
+          },
+          signal,
+          clientInfo.retryWaitTime,
+        );
+      } else {
+        collabState.dispatch(
+          view.state,
+          view.dispatch,
+          {
+            type: EventType.FatalError,
+            payload: {
+              message: `Cannot handle ${failure} in state=${collabState.name}`,
+            },
+          },
+          debugSource,
+        );
+      }
       return;
     }
 

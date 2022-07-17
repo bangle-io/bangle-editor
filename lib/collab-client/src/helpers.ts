@@ -10,6 +10,8 @@ import {
   TextSelection,
 } from '@bangle.dev/pm';
 
+import { collabClientKey } from './common';
+
 export function applySteps(
   view: EditorView,
   payload: PullEventResponse,
@@ -102,4 +104,8 @@ function replaceDocument(
   }
 
   return tr;
+}
+
+export function getCollabState(state: EditorState) {
+  return collabClientKey.getState(state)?.collabState;
 }

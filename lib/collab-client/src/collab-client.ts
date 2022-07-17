@@ -1,25 +1,23 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
-import { EditorState, Plugin } from '@bangle.dev/pm';
+import { EditorState, EditorView, Plugin } from '@bangle.dev/pm';
 import { isTestEnv } from '@bangle.dev/utils';
 
 import {
-  dispatchCollabPluginEvent,
-  isCollabStateReady,
-  isNoEditState,
   isOutdatedVersion,
   onLocalChanges,
+  onOutdatedVersion,
 } from './commands';
 import {
   ClientInfo,
   collabClientKey,
+  CollabMonitor,
+  collabMonitorKey,
+  CollabMonitorTrMeta,
   CollabPluginState,
-  CollabSettings,
-  collabSettingsKey,
-  EventType,
-  TrMeta,
 } from './common';
-import { InitState2 } from './state';
+import { getCollabState } from './helpers';
+import { CollabBaseState, InitState } from './state';
 
 const LOG = true;
 let log = (isTestEnv ? false : LOG)
@@ -32,7 +30,7 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
     (...args: any[]) =>
       log(
         `${clientInfo.clientID}:version=${getVersion(state)}:${
-          collabClientKey.getState(state)?.context.debugInfo ?? ''
+          collabClientKey.getState(state)?.collabState.debugInfo ?? ''
         }`,
         ...args,
       );
@@ -44,14 +42,14 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
         // Do not block collab plugins' transactions
         if (
           tr.getMeta(collabClientKey) ||
-          tr.getMeta(collabSettingsKey) ||
+          tr.getMeta(collabMonitorKey) ||
           tr.getMeta('bangle.dev/isRemote')
         ) {
           return true;
         }
 
         // prevent any other tr until state is in one of the no-edit state
-        if (tr.docChanged && isNoEditState()(state)) {
+        if (tr.docChanged && getCollabState(state)?.editingAllowed === false) {
           logger(state)('skipping transaction');
           return false;
         }
@@ -61,26 +59,20 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
       state: {
         init(): CollabPluginState {
           return {
-            context: {
-              restartCount: 0,
-              debugInfo: undefined,
-            },
-            collabState: new InitState2(),
+            collabState: new InitState(),
           };
         },
         apply(tr, value, oldState, newState) {
-          const meta: TrMeta | undefined = tr.getMeta(collabClientKey);
+          const meta:
+            | Parameters<CollabBaseState['dispatchCollabPluginEvent']>[0]
+            | undefined = tr.getMeta(collabClientKey);
 
           if (meta === undefined) {
             return value;
           }
+
           let result: CollabPluginState = {
             ...value,
-            context: {
-              ...value.context,
-              // unset debugInfo everytime
-              debugInfo: undefined,
-            },
           };
 
           if (meta.collabEvent) {
@@ -92,21 +84,16 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
               result.collabState = newPluginState;
             } else {
               logger(newState)(
-                'applyState',
-                `debugInfo=${result.context.debugInfo}`,
-                `event ${meta.collabEvent.type} ignored`,
+                `applyState IGNORE EVENT ${meta.collabEvent.type}`,
+                `debugInfo=${result.collabState.debugInfo}`,
               );
             }
-          }
-
-          if (meta.context) {
-            result.context = { ...result.context, ...meta.context };
           }
 
           logger(newState)(
             'apply state, newStateName=',
             result.collabState.name,
-            `debugInfo=${result.context.debugInfo}`,
+            `debugInfo=${result.collabState.debugInfo}`,
             'oldStateName=',
             value.collabState.name,
           );
@@ -121,7 +108,6 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
         if (pluginState) {
           pluginState.collabState.runAction({
             clientInfo,
-            context: pluginState.context,
             view,
             signal: controller.signal,
             logger: logger(view.state),
@@ -148,7 +134,6 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
               controller = new AbortController();
               pluginState.collabState.runAction({
                 clientInfo,
-                context: pluginState.context,
                 view,
                 signal: controller.signal,
                 logger: logger(view.state),
@@ -159,17 +144,18 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
       },
     }),
     new Plugin({
-      key: collabSettingsKey,
+      key: collabMonitorKey,
       state: {
-        init: (_, _state): CollabSettings => {
+        init: (_, _state): CollabMonitor => {
           return {
             serverVersion: undefined,
           };
         },
-        apply: (tr, value, oldState, newState) => {
-          const meta = tr.getMeta(collabSettingsKey);
+        apply: (tr, value, oldState, newState): CollabMonitor => {
+          const meta: CollabMonitorTrMeta | undefined =
+            tr.getMeta(collabMonitorKey);
           if (meta) {
-            logger(newState)('collabSettingsKey received tr', meta);
+            logger(newState)('collabMonitorKey received tr', meta);
             return {
               ...value,
               ...meta,
@@ -179,30 +165,20 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
         },
       },
       view(view) {
-        // // If there are sendable steps to send to server
-        if (sendableSteps(view.state)) {
-          onLocalChanges()(view.state, view.dispatch);
-        }
+        const check = (view: EditorView) => {
+          if (isOutdatedVersion()(view.state)) {
+            onOutdatedVersion()(view.state, view.dispatch);
+          }
+          // If there are sendable steps to send to server
+          else if (sendableSteps(view.state)) {
+            onLocalChanges()(view.state, view.dispatch);
+          }
+        };
+
+        check(view);
         return {
           update(view) {
-            if (
-              isOutdatedVersion()(view.state) &&
-              isCollabStateReady()(view.state)
-            ) {
-              dispatchCollabPluginEvent({
-                context: {
-                  debugInfo: 'collabSettingsKey(outdated-local-version)',
-                },
-                collabEvent: {
-                  type: EventType.Pull,
-                },
-              })(view.state, view.dispatch);
-            }
-
-            // // If there are sendable steps to send to server
-            if (sendableSteps(view.state)) {
-              onLocalChanges()(view.state, view.dispatch);
-            }
+            check(view);
           },
         };
       },

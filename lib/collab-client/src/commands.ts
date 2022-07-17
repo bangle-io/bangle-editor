@@ -2,39 +2,22 @@ import { getVersion } from 'prosemirror-collab';
 
 import { Command, EditorState } from '@bangle.dev/pm';
 
-import {
-  collabClientKey,
-  collabSettingsKey,
-  CollabStateName,
-  EventType,
-  TrMeta,
-} from './common';
+import { collabMonitorKey, CollabMonitorTrMeta, EventType } from './common';
+import { getCollabState } from './helpers';
 
-// In the following states, the user is not allowed to edit the document.
-const NoEditStates = [
-  CollabStateName.Init,
-  CollabStateName.InitDoc,
-  CollabStateName.FatalError,
-];
-
-export function dispatchCollabPluginEvent(data: TrMeta): Command {
-  return (state, dispatch) => {
-    dispatch?.(state.tr.setMeta(collabClientKey, data));
-    return true;
-  };
-}
-
+// Saves the server version of the document. Rest of the code
+// then uses this information to determine whether to pull from server or not.
 export function onUpstreamChanges(version: number): Command {
   return (state, dispatch) => {
-    const pluginState = collabSettingsKey.getState(state);
+    const pluginState = collabMonitorKey.getState(state);
     if (!pluginState) {
       return false;
     }
 
     if (pluginState.serverVersion !== version) {
-      dispatch?.(
-        state.tr.setMeta(collabSettingsKey, { serverVersion: version }),
-      );
+      const meta: CollabMonitorTrMeta = { serverVersion: version };
+      dispatch?.(state.tr.setMeta(collabMonitorKey, meta));
+      return true;
     }
 
     return false;
@@ -43,49 +26,45 @@ export function onUpstreamChanges(version: number): Command {
 
 export function onLocalChanges(): Command {
   return (state, dispatch) => {
-    const pluginState = collabClientKey.getState(state);
-    if (!pluginState) {
-      return false;
-    }
-
-    if (isCollabStateReady()(state)) {
-      dispatchCollabPluginEvent({
-        context: {
-          debugInfo: 'onLocalChanges',
-        },
-        collabEvent: {
+    const collabState = getCollabState(state);
+    if (collabState?.isReadyState()) {
+      collabState?.dispatch(
+        state,
+        dispatch,
+        {
           type: EventType.Push,
         },
-      })(state, dispatch);
+        'onLocalChanges',
+      );
       return true;
     }
-
     return false;
   };
 }
 
 export function isOutdatedVersion() {
   return (state: EditorState): boolean => {
-    const serverVersion = collabSettingsKey.getState(state)?.serverVersion;
+    const serverVersion = collabMonitorKey.getState(state)?.serverVersion;
     return (
       typeof serverVersion === 'number' && getVersion(state) < serverVersion
     );
   };
 }
 
-export function isCollabStateReady() {
-  return (state: EditorState): boolean => {
-    return (
-      collabClientKey.getState(state)?.collabState.name ===
-      CollabStateName.Ready
-    );
-  };
-}
-
-// In these states the document is frozen and no edits and _almost_ no transactions are allowed
-export function isNoEditState() {
-  return (state: EditorState): boolean => {
-    const stateName = collabClientKey.getState(state)?.collabState.name;
-    return stateName ? NoEditStates.includes(stateName) : false;
+export function onOutdatedVersion(): Command {
+  return (state, dispatch) => {
+    const collabState = getCollabState(state);
+    if (collabState?.isReadyState()) {
+      collabState.dispatch(
+        state,
+        dispatch,
+        {
+          type: EventType.Pull,
+        },
+        'collabMonitorKey(outdated-local-version)',
+      );
+      return true;
+    }
+    return false;
   };
 }

@@ -1,17 +1,21 @@
 import { CollabFail, CollabManager } from '@bangle.dev/collab-server';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
 
-import type { ValidCollabStates2 } from './state';
+import type { ValidCollabStates } from './state';
 
 export const collabClientKey = new PluginKey<CollabPluginState>(
   'bangle.dev/collab-client',
 );
-export interface CollabSettings {
+export interface CollabMonitor {
   serverVersion: undefined | number;
 }
-export const collabSettingsKey = new PluginKey<CollabSettings>(
-  'bangle/collabSettingsKey',
+export const collabMonitorKey = new PluginKey<CollabMonitor>(
+  'bangle.dev/collabMonitorKey',
 );
+
+export interface CollabMonitorTrMeta {
+  serverVersion: number;
+}
 
 // Events
 export type ValidEvents =
@@ -91,18 +95,8 @@ export enum CollabStateName {
   Ready = 'READY_STATE',
 }
 
-export interface CollabPluginContext {
-  readonly restartCount: number;
-  readonly debugInfo: string | undefined;
-}
-
 export interface CollabPluginState {
-  context: CollabPluginContext;
-  collabState: ValidCollabStates2;
-}
-export interface TrMeta {
-  context?: Partial<CollabPluginContext>;
-  collabEvent?: ValidEvents;
+  collabState: ValidCollabStates;
 }
 
 export interface ClientInfo {
