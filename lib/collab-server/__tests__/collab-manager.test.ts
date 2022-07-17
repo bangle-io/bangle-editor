@@ -2,7 +2,7 @@ import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 
-import { CollabFail, CollabRequestType } from '../src';
+import { CollabFail, CollabRequestType, CollabState } from '../src';
 import { CollabManager } from '../src/collab-manager';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -25,8 +25,8 @@ const rawDoc = {
 const setup = () => {
   const manager = new CollabManager({
     schema: specRegistry.schema,
-    getDoc: async (docName: string): Promise<Node> => {
-      return specRegistry.schema.nodeFromJSON(rawDoc);
+    getInitialState: async (docName: string) => {
+      return new CollabState(specRegistry.schema.nodeFromJSON(rawDoc) as Node);
     },
   });
 
@@ -59,7 +59,7 @@ describe('get_document', () => {
   test('throws error when document is not found', async () => {
     const manager = new CollabManager({
       schema: specRegistry.schema,
-      getDoc: async (docName) => {
+      getInitialState: async (docName) => {
         return undefined;
       },
     });

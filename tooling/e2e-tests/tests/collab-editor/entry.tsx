@@ -6,7 +6,11 @@ import reactDOM from 'react-dom';
 
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
-import { CollabManager, CollabRequestType } from '@bangle.dev/collab-server';
+import {
+  CollabManager,
+  CollabRequestType,
+  CollabState,
+} from '@bangle.dev/collab-server';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
@@ -79,10 +83,12 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
 
     const editorManager = new CollabManager({
       schema: specRegistry.schema,
-      async getDoc() {
-        return specRegistry.schema.nodeFromJSON(rawDoc) as Node;
+      async getInitialState() {
+        return new CollabState(
+          specRegistry.schema.nodeFromJSON(rawDoc) as Node,
+        );
       },
-      applyCollabState(docName, newCollab, oldCollab) {
+      applyState(docName, newCollab, oldCollab) {
         queueMicrotask(() => {
           docChangeEmitter.emit('doc_changed', {
             docName,

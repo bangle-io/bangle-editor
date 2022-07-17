@@ -5,10 +5,26 @@ import { Command, EditorState } from '@bangle.dev/pm';
 import { collabMonitorKey, CollabMonitorTrMeta, EventType } from './common';
 import { getCollabState } from './helpers';
 
+// If in a fatal error (error which will not be recovered), it returns a fatal error message.
 export function queryFatalError() {
   return (state: EditorState) => {
     const collabState = getCollabState(state);
     return collabState?.isFatalState() ? collabState.state : undefined;
+  };
+}
+
+// Discards any editor changes that have not yet been sent to the server.
+// and sets the editor doc to the one provider by server.
+export function hardResetClient(): Command {
+  return (state, dispatch) => {
+    const collabState = getCollabState(state);
+    collabState?.dispatchCollabPluginEvent({
+      collabEvent: {
+        type: EventType.HardReset,
+      },
+      debugInfo: 'hard-reset',
+    })(state, dispatch);
+    return true;
   };
 }
 

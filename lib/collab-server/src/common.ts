@@ -10,6 +10,7 @@ export enum CollabFail {
   HistoryNotAvailable = 'CollabFail.HistoryNotAvailable',
   IncorrectManager = 'CollabFail.IncorrectManager',
   InvalidVersion = 'CollabFail.InvalidVersion',
+  ManagerDestroyed = 'CollabFail.ManagerDestroyed',
   OutdatedVersion = 'CollabFail.OutdatedVersion',
 }
 

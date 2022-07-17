@@ -1,7 +1,7 @@
 import { Node, Schema, Step } from '@bangle.dev/pm';
 import { Either, EitherType, isTestEnv, uuid } from '@bangle.dev/utils';
 
-import { CollabState, StepBigger } from './collab-state';
+import { CollabServerState, StepBigger } from './collab-state';
 import {
   CollabFail,
   CollabRequest,
@@ -14,32 +14,44 @@ import {
   PushEventsResponse,
 } from './common';
 
-type ApplyEvents = (
+type ApplyState = (
   docName: string,
-  newCollabState: CollabState,
-  oldCollabState: CollabState,
+  newCollabState: CollabServerState,
+  oldCollabState: CollabServerState,
 ) => boolean;
 
 const LOG = true;
 
-let log = (isTestEnv ? false : LOG)
+let log = (isTestEnv ? true : LOG)
   ? console.debug.bind(console, 'collab-server:')
   : () => {};
 
 export class CollabManager {
-  public readonly managerId = uuid();
+  public readonly managerId: string;
   counter = 0;
+  private _destroyed = false;
   private _instances: Map<string, Instance> = new Map();
 
   constructor(
     private _options: {
+      managerId?: string;
       schema: Schema;
-      getDoc: (docName: string) => Promise<Node | undefined>;
-      applyCollabState?: ApplyEvents;
+      // callback to provide the initial collaborate state
+      // example: (docName) => new CollabState(fetchDoc(docName))
+      getInitialState: (
+        docName: string,
+      ) => Promise<CollabServerState | undefined>;
+      applyState?: ApplyState;
     },
-  ) {}
+  ) {
+    this.managerId = _options.managerId || uuid();
+  }
 
-  getCollabState(docName: string): CollabState | undefined {
+  public destroy() {
+    this._destroyed = true;
+  }
+
+  getCollabState(docName: string): CollabServerState | undefined {
     return this._instances.get(docName)?.collabState;
   }
 
@@ -67,6 +79,11 @@ export class CollabManager {
       PullEventResponse | GetDocumentResponse | PushEventsResponse
     > => {
       const { type, payload } = request;
+
+      if (this._destroyed) {
+        return Either.left(CollabFail.ManagerDestroyed);
+      }
+
       switch (type) {
         case CollabRequestType.GetDocument: {
           return Either.right({
@@ -133,10 +150,14 @@ export class CollabManager {
     }
   }
 
+  public isDestroyed() {
+    return this._destroyed;
+  }
+
   private async _createInstance(
     docName: string,
   ): Promise<EitherType<CollabFail, Instance>> {
-    const doc = await this._options.getDoc(docName);
+    const initialCollabState = await this._options.getInitialState(docName);
 
     // this takes care of edge case where another instance is created
     // while we wait on `getDoc`.
@@ -146,17 +167,15 @@ export class CollabManager {
       return Either.right(instance);
     }
 
-    if (!doc) {
+    if (!initialCollabState) {
       return Either.left(CollabFail.DocumentNotFound);
     }
-
-    const initialCollabState = new CollabState(doc, [], 0);
 
     instance = new Instance(
       docName,
       this._options.schema,
       initialCollabState,
-      this._options.applyCollabState,
+      this._options.applyState,
     );
     this._instances.set(docName, instance);
 
@@ -187,8 +206,8 @@ class Instance {
   constructor(
     public readonly docName: string,
     private readonly schema: Schema,
-    private _collabState: CollabState,
-    private _applyCollabState: ApplyEvents = (
+    private _collabState: CollabServerState,
+    private _applyState: ApplyState = (
       docName,
       newCollabState,
       oldCollabState,
@@ -224,16 +243,18 @@ class Instance {
     const parsedSteps = steps.map((s) => Step.fromJSON(this.schema, s));
 
     return Either.flatMap(
-      CollabState.addEvents(this._collabState, version, parsedSteps, clientID),
+      CollabServerState.addEvents(
+        this._collabState,
+        version,
+        parsedSteps,
+        clientID,
+      ),
       (collabState) => {
-        if (this._applyCollabState(docName, collabState, this._collabState)) {
+        if (this._applyState(docName, collabState, this._collabState)) {
           this._collabState = collabState;
         } else {
           return Either.left(CollabFail.ApplyFailed);
         }
-
-        // Instance.sendUpdates(this.waiting);
-        // this._saveData();
 
         return Either.right({
           empty: null,
@@ -249,7 +270,7 @@ class Instance {
     managerId,
   }: PullEventsRequestParam): EitherType<CollabFail, PullEventResponse> {
     return Either.map(
-      CollabState.getEvents(this._collabState, version),
+      CollabServerState.getEvents(this._collabState, version),
       (events) => {
         return {
           version: events.version,

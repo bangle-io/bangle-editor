@@ -51,7 +51,7 @@ export abstract class CollabBaseState {
   editingAllowed: boolean = true;
   debugInfo?: string;
 
-  protected dispatchCollabPluginEvent(data: {
+  public dispatchCollabPluginEvent(data: {
     collabEvent?: ValidEvents;
     debugInfo?: string;
   }): Command {
@@ -586,7 +586,10 @@ export class PullState extends CollabBaseState {
     return;
   }
 
-  transition(event: ReadyEvent | PushPullErrorEvent, debugInfo?: string) {
+  transition(
+    event: ReadyEvent | PushPullErrorEvent,
+    debugInfo?: string,
+  ): ReadyState | PushPullErrorState | undefined {
     const type = event.type;
     if (type === EventType.Ready) {
       return new ReadyState(this.state, debugInfo);
@@ -600,7 +603,7 @@ export class PullState extends CollabBaseState {
       );
     } else {
       let val: never = type;
-      throw new Error('Invalid event ' + type);
+      return;
     }
   }
 }
@@ -667,7 +670,7 @@ const handleErrorStateAction = async ({
 
   logger('Handling failure=', failure, 'currentState=', collabState.name);
 
-  const debugSource = `pushPullErrorStateAction:${failure}:`;
+  const debugSource = `pushPullErrorStateAction(${failure}):`;
 
   switch (failure) {
     case CollabFail.InvalidVersion:
@@ -748,6 +751,38 @@ const handleErrorStateAction = async ({
     }
 
     // 500
+    case CollabFail.ManagerDestroyed: {
+      abortableSetTimeout(
+        () => {
+          if (!signal.aborted) {
+            if (collabState instanceof PushPullErrorState) {
+              collabState.dispatch(
+                view.state,
+                view.dispatch,
+                {
+                  type: EventType.Pull,
+                },
+                debugSource,
+              );
+            } else if (collabState instanceof InitErrorState) {
+              collabState.dispatch(
+                view.state,
+                view.dispatch,
+                {
+                  type: EventType.Restart,
+                },
+                debugSource,
+              );
+            } else {
+              let val: never = collabState;
+            }
+          }
+        },
+        signal,
+        clientInfo.retryWaitTime,
+      );
+      return;
+    }
     case CollabFail.ApplyFailed: {
       if (collabState instanceof PushPullErrorState) {
         abortableSetTimeout(

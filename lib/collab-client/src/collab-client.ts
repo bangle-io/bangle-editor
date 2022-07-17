@@ -16,12 +16,13 @@ import {
   CollabMonitorTrMeta,
   CollabPluginState,
   CollabStateName,
+  EventType,
 } from './common';
 import { getCollabState } from './helpers';
 import { CollabBaseState, InitState } from './state';
 
 const LOG = true;
-let log = (isTestEnv ? false : LOG)
+let log = (isTestEnv ? true : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
 
@@ -74,6 +75,18 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
 
           if (meta === undefined || !meta.collabEvent) {
             return value;
+          }
+
+          if (meta.collabEvent.type === EventType.HardReset) {
+            logger(newState)(
+              'apply state HARD RESET, newStateName=',
+              CollabStateName.Init,
+              'oldStateName=',
+              value.collabState.name,
+            );
+            return {
+              collabState: new InitState(undefined, '(HardReset)'),
+            };
           }
 
           const newCollabState = value.collabState.transition(

@@ -3,7 +3,11 @@ import { SpecRegistry } from '@bangle.dev/core';
 import { Node, ReplaceStep, Slice } from '@bangle.dev/pm';
 import { assertNotUndefined, Either } from '@bangle.dev/utils';
 
-import { CollabState, MAX_STEP_HISTORY, StepBigger } from '../src/collab-state';
+import {
+  CollabServerState,
+  MAX_STEP_HISTORY,
+  StepBigger,
+} from '../src/collab-state';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 
@@ -24,7 +28,7 @@ const rawDoc = {
 
 test('works', () => {
   const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-  const state = new CollabState(doc, [], 0);
+  const state = new CollabServerState(doc, [], 0);
 
   expect(state.doc).toEqual(doc);
 
@@ -42,7 +46,7 @@ test('works', () => {
   );
 
   const [fail, newCollab] = Either.unwrap(
-    CollabState.addEvents(state, 0, [step], 'clientID'),
+    CollabServerState.addEvents(state, 0, [step], 'clientID'),
   );
 
   expect(fail).toBeUndefined();
@@ -54,7 +58,7 @@ test('works', () => {
   expect(newCollab?.steps).toEqual([step]);
 
   const [getEventFail, events] = Either.unwrap(
-    CollabState.getEvents(newCollab!, 0),
+    CollabServerState.getEvents(newCollab!, 0),
   );
 
   expect(getEventFail).toBeUndefined();
@@ -66,29 +70,29 @@ test('works', () => {
 
 test('throws on invalid version', () => {
   const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-  const state = new CollabState(doc, [], 0);
+  const state = new CollabServerState(doc, [], 0);
 
   const step = new ReplaceStep(0, 0, Slice.empty);
 
-  const error = CollabState.addEvents(state, 1, [step], 'clientID').left;
+  const error = CollabServerState.addEvents(state, 1, [step], 'clientID').left;
 
   expect(error).toMatchInlineSnapshot(`"CollabFail.InvalidVersion"`);
 });
 
 test('throws outdated version', () => {
   const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-  const state = new CollabState(doc, [], 5);
+  const state = new CollabServerState(doc, [], 5);
 
   const step = new ReplaceStep(0, 0, Slice.empty);
 
-  const error = CollabState.addEvents(state, 3, [step], 'clientID').left;
+  const error = CollabServerState.addEvents(state, 3, [step], 'clientID').left;
 
   expect(error).toMatchInlineSnapshot(`"CollabFail.OutdatedVersion"`);
 });
 
 test('throws on unable to apply', () => {
   const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-  const state = new CollabState(doc, [], 0);
+  const state = new CollabServerState(doc, [], 0);
 
   const step = new ReplaceStep(
     0,
@@ -104,7 +108,7 @@ test('throws on unable to apply', () => {
   );
 
   const newCollab = Either.value(
-    CollabState.addEvents(state, 0, [step], 'clientID'),
+    CollabServerState.addEvents(state, 0, [step], 'clientID'),
   );
 
   expect(newCollab).toEqual('CollabFail.ApplyFailed');
@@ -113,24 +117,24 @@ test('throws on unable to apply', () => {
 describe('getEvents', () => {
   test('throws error history not available', () => {
     const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-    const state = new CollabState(doc, [], 50000);
+    const state = new CollabServerState(doc, [], 50000);
 
-    const events = Either.value(CollabState.getEvents(state, 0));
+    const events = Either.value(CollabServerState.getEvents(state, 0));
     expect(events).toBe('CollabFail.HistoryNotAvailable');
   });
 
   test('throws error if invalid version', () => {
     const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-    const state = new CollabState(doc, [], 1);
+    const state = new CollabServerState(doc, [], 1);
 
-    const events = Either.value(CollabState.getEvents(state, 10));
+    const events = Either.value(CollabServerState.getEvents(state, 10));
     expect(events).toBe('CollabFail.InvalidVersion');
   });
 });
 
 test('trims the step if exceeded', () => {
   const doc = specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-  const state = new CollabState(
+  const state = new CollabServerState(
     doc,
     Array.from({ length: MAX_STEP_HISTORY + 100 }, () => {
       const r: any = new ReplaceStep(0, 0, Slice.empty);

@@ -9,6 +9,7 @@ import {
   CollabFail,
   CollabManager,
   CollabRequestType,
+  CollabState,
   ManagerRequest,
   MAX_STEP_HISTORY,
   PullEventResponse,
@@ -18,7 +19,7 @@ import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
 import { Emitter, uuid } from '@bangle.dev/utils';
 
 import { plugins } from '../src/collab-extension';
-import { onUpstreamChanges } from '../src/commands';
+import { hardResetClient, onUpstreamChanges } from '../src/commands';
 import { collabMonitorKey } from '../src/common';
 
 waitForExpect.defaults.timeout = 500;
@@ -86,6 +87,7 @@ const setupClient = (
 };
 
 const setupServer = ({
+  managerId = 'test-manager-id',
   rawDoc = {
     type: 'doc',
     content: [
@@ -101,25 +103,30 @@ const setupServer = ({
     ],
   },
 }: {
+  managerId?: string;
   rawDoc?: {
     type: 'doc';
     content: Array<any>;
   };
 } = {}) => {
+  let ref: { rawDoc: any } = {
+    rawDoc,
+  };
+
   let emitDocChangeEvent = true;
 
   const docChangeEmitter = new Emitter();
 
   const manager = new CollabManager({
+    managerId,
     schema: specRegistry.schema,
-    getDoc: async (dName) => {
+    getInitialState: async (dName) => {
       if (dName === docName) {
-        return specRegistry.schema.nodeFromJSON(rawDoc);
+        return new CollabState(specRegistry.schema.nodeFromJSON(ref.rawDoc));
       }
-
       return undefined;
     },
-    applyCollabState: (docName, newCollabState) => {
+    applyState: (docName, newCollabState) => {
       queueMicrotask(() => {
         if (emitDocChangeEvent) {
           docChangeEmitter.emit('doc_changed', {
@@ -224,6 +231,9 @@ const setupServer = ({
     },
     allowDocChangeEvent() {
       emitDocChangeEvent = true;
+    },
+    changeRawDoc(rawDoc: any) {
+      ref.rawDoc = rawDoc;
     },
   };
 };
@@ -467,6 +477,65 @@ describe('multiplayer collab', () => {
     // should not produce any new not-ok requests
     expect(await server.getNotOkayRequests()).toHaveLength(1);
   });
+});
+
+test('hard reset', async () => {
+  let server = setupServer({ managerId: 'manager-test-1' });
+  const client1 = setupClient(server, 'client1');
+  await waitForExpect(async () => {
+    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+  });
+
+  client1.typeText('one');
+  client1.typeText('two');
+  client1.typeText('three');
+
+  await waitForExpect(async () => {
+    expect(server.manager.getCollabState(docName)?.version).toEqual(3);
+  });
+
+  server = setupServer({
+    managerId: 'manager-test-1',
+    rawDoc: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'reset bro!',
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  client1.changeServer(server);
+
+  hardResetClient()(client1.view.state, client1.view.dispatch);
+
+  // should be reset
+  await waitForExpect(async () => {
+    expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!"))`);
+  });
+
+  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
+    undefined,
+  );
+
+  // should continue to sync
+  client1.typeText('hi again');
+
+  await waitForExpect(async () => {
+    expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+      `doc(paragraph("reset bro!hi again"))`,
+    );
+  });
+  expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!hi again"))`);
+
+  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(1);
 });
 
 describe('failures', () => {
@@ -807,6 +876,106 @@ describe('failures', () => {
     ]);
   });
 
+  test('handles ManagerDestroyed', async () => {
+    let server = setupServer();
+    const client1 = setupClient(server, 'client1');
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client1.typeText('wow ');
+
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        'doc(paragraph("wow hello world!"))',
+      );
+    });
+
+    const { manager } = server;
+
+    manager.destroy();
+
+    client1.typeText('bow ');
+
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        'doc(paragraph("wow hello world!"))',
+      );
+    });
+
+    expect(await server.getNotOkayRequests()).toEqual([
+      {
+        userId: 'user-client1',
+        result: {
+          body: CollabFail.ManagerDestroyed,
+          ok: false,
+        },
+      },
+    ]);
+
+    expect(
+      (await server.getCalls()).filter((r) =>
+        r.payload.userId.includes('client1'),
+      ),
+    ).toEqual([
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.GetDocument',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PushEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PullEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PushEvents',
+      },
+    ]);
+
+    server = setupServer();
+
+    client1.changeServer(server);
+    client1.typeText('pow ');
+
+    await sleep(10);
+
+    // should get invalid version since server was changed
+    expect(await server.getNotOkayRequests()).toEqual([
+      {
+        result: {
+          body: 'CollabFail.InvalidVersion',
+          ok: false,
+        },
+        userId: 'user-client1',
+      },
+    ]);
+
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        'doc(paragraph("hello world!"))',
+      );
+    });
+
+    expect(
+      (await server.getCalls()).filter((r) =>
+        r.payload.userId.includes('client1'),
+      ),
+    ).toEqual([
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PullEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.GetDocument',
+      },
+    ]);
+  });
   test('server restarts with different managerId and version', async () => {
     console.error = jest.fn();
     let server = setupServer();
@@ -829,7 +998,7 @@ describe('failures', () => {
       );
     });
 
-    server = setupServer();
+    server = setupServer({ managerId: 'test-manager-new-id' });
 
     client1.changeServer(server);
 
@@ -984,6 +1153,7 @@ describe('failures', () => {
       expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
     });
 
+    // send an invalid version to trigger client to restart
     server.alterRequest((req) => {
       if (req.type === CollabRequestType.PushEvents) {
         return {

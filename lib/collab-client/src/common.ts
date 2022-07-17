@@ -1,7 +1,7 @@
 import { CollabFail, CollabManager } from '@bangle.dev/collab-server';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
 
-import type { ValidCollabStates } from './state';
+import type { CollabBaseState } from './state';
 
 export const collabClientKey = new PluginKey<CollabPluginState>(
   'bangle.dev/collab-client',
@@ -20,6 +20,7 @@ export interface CollabMonitorTrMeta {
 // Events
 export type ValidEvents =
   | FatalErrorEvent
+  | HardResetEvent
   | InitDocEvent
   | InitErrorEvent
   | PullEvent
@@ -30,6 +31,7 @@ export type ValidEvents =
 
 export enum EventType {
   FatalError = 'FATAL_ERROR_EVENT',
+  HardReset = 'HARD_RESET_EVENT',
   InitDoc = 'INIT_DOC_EVENT',
   InitError = 'INIT_ERROR_EVENT',
   Push = 'PUSH_EVENT',
@@ -84,6 +86,10 @@ export interface RestartEvent {
   type: EventType.Restart;
 }
 
+export interface HardResetEvent {
+  type: EventType.HardReset;
+}
+
 export enum CollabStateName {
   FatalError = 'FATAL_ERROR_STATE',
   Init = 'INIT_STATE',
@@ -96,7 +102,7 @@ export enum CollabStateName {
 }
 
 export interface CollabPluginState {
-  collabState: ValidCollabStates;
+  collabState: CollabBaseState;
 }
 
 export interface ClientInfo {
