@@ -708,11 +708,12 @@ describe('failures', () => {
   });
 });
 
-test.only('local apply steps fails', async () => {
+test('local apply steps fails', async () => {
   console.error = jest.fn();
   const server = setupServer();
 
   const client1 = setupClient(server, 'client1');
+  const client2 = setupClient(server, 'client2');
 
   await waitForExpect(async () => {
     expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
@@ -720,7 +721,12 @@ test.only('local apply steps fails', async () => {
 
   let done = false;
   server.alterResponse((req, resp) => {
-    if (req.type === CollabRequestType.PullEvents && !done && resp.ok) {
+    if (
+      req.type === CollabRequestType.PullEvents &&
+      !done &&
+      resp.ok &&
+      req.payload.userId.includes('client1')
+    ) {
       done = true;
       let body = resp.body as PullEventResponse;
       return {
@@ -748,7 +754,7 @@ test.only('local apply steps fails', async () => {
     return resp;
   });
 
-  client1.typeText('wow ');
+  client2.typeText('wow ');
 
   await sleep(10);
 

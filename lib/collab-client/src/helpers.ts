@@ -34,11 +34,11 @@ export function applySteps(
     return;
   }
 
-  const tr = receiveTransaction(view.state, steps, clientIDs)
-    .setMeta('addToHistory', false)
-    .setMeta('bangle.dev/isRemote', true);
-  const newState = view.state.apply(tr);
   try {
+    const tr = receiveTransaction(view.state, steps, clientIDs)
+      .setMeta('addToHistory', false)
+      .setMeta('bangle.dev/isRemote', true);
+    const newState = view.state.apply(tr);
     view.updateState(newState);
   } catch (error) {
     console.error(error);
@@ -76,8 +76,8 @@ export function applyDoc(
     }
   }
 
-  const newState = view.state.apply(tr.setMeta('bangle.dev/isRemote', true));
   try {
+    const newState = view.state.apply(tr.setMeta('bangle.dev/isRemote', true));
     view.updateState(newState);
   } catch (error) {
     console.error(error);
