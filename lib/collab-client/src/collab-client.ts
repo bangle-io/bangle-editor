@@ -29,8 +29,8 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
     (state: EditorState) =>
     (...args: any[]) =>
       log(
-        `${clientInfo.clientID}:version=${getVersion(state)}:${
-          collabClientKey.getState(state)?.collabState.debugInfo ?? ''
+        `${clientInfo.clientID}:version=${getVersion(state)}:debugInfo=${
+          collabClientKey.getState(state)?.collabState.debugInfo
         }`,
         ...args,
       );
@@ -78,6 +78,7 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
           if (meta.collabEvent) {
             const newPluginState = value.collabState.transition(
               meta.collabEvent,
+              meta.debugInfo,
             );
 
             if (newPluginState.name !== value.collabState.name) {

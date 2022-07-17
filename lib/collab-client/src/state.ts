@@ -73,7 +73,10 @@ export abstract class CollabBaseState {
 
   abstract runAction(param: ActionParam): Promise<void>;
   // must be kept pure , sync and no side-effects
-  abstract transition(event: ValidEvents): ValidCollabStates;
+  abstract transition(
+    event: ValidEvents,
+    debugInfo?: string,
+  ): ValidCollabStates;
 }
 
 export class FatalErrorState extends CollabBaseState {
@@ -111,7 +114,7 @@ export class FatalErrorState extends CollabBaseState {
     return;
   }
 
-  transition(event: any) {
+  transition(event: any, debugInfo?: string) {
     return this;
   }
 }
@@ -187,20 +190,26 @@ export class InitState extends CollabBaseState {
     return;
   }
 
-  transition(event: InitDocEvent | InitErrorEvent) {
+  transition(event: InitDocEvent | InitErrorEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.InitDoc) {
       const { payload } = event;
-      return new InitDocState({
-        initialDoc: payload.doc,
-        initialSelection: payload.selection,
-        initialVersion: payload.version,
-        managerId: payload.managerId,
-      });
+      return new InitDocState(
+        {
+          initialDoc: payload.doc,
+          initialSelection: payload.selection,
+          initialVersion: payload.version,
+          managerId: payload.managerId,
+        },
+        debugInfo,
+      );
     } else if (type === EventType.InitError) {
-      return new InitErrorState({
-        failure: event.payload.failure,
-      });
+      return new InitErrorState(
+        {
+          failure: event.payload.failure,
+        },
+        debugInfo,
+      );
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -270,12 +279,12 @@ export class InitDocState extends CollabBaseState {
     }
   }
 
-  transition(event: ReadyEvent | FatalErrorEvent) {
+  transition(event: ReadyEvent | FatalErrorEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Ready) {
-      return new ReadyState(this.state);
+      return new ReadyState(this.state, debugInfo);
     } else if (type === EventType.FatalError) {
-      return new FatalErrorState({ message: event.payload.message });
+      return new FatalErrorState({ message: event.payload.message }, debugInfo);
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -311,12 +320,12 @@ export class InitErrorState extends CollabBaseState {
     await handleErrorStateAction({ ...param, collabState: this });
   }
 
-  transition(event: RestartEvent | FatalErrorEvent) {
+  transition(event: RestartEvent | FatalErrorEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Restart) {
-      return new InitState();
+      return new InitState(undefined, debugInfo);
     } else if (type === EventType.FatalError) {
-      return new FatalErrorState({ message: event.payload.message });
+      return new FatalErrorState({ message: event.payload.message }, debugInfo);
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -373,12 +382,12 @@ export class ReadyState extends CollabBaseState {
     return;
   }
 
-  transition(event: Parameters<ReadyState['dispatch']>[2]) {
+  transition(event: Parameters<ReadyState['dispatch']>[2], debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Push) {
-      return new PushState(this.state);
+      return new PushState(this.state, debugInfo);
     } else if (type === EventType.Pull) {
-      return new PullState(this.state);
+      return new PullState(this.state, debugInfo);
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -471,17 +480,23 @@ export class PushState extends CollabBaseState {
     return;
   }
 
-  transition(event: ReadyEvent | PullEvent | PushPullErrorEvent) {
+  transition(
+    event: ReadyEvent | PullEvent | PushPullErrorEvent,
+    debugInfo?: string,
+  ) {
     const type = event.type;
     if (type === EventType.Ready) {
-      return new ReadyState(this.state);
+      return new ReadyState(this.state, debugInfo);
     } else if (type === EventType.Pull) {
-      return new PullState(this.state);
+      return new PullState(this.state, debugInfo);
     } else if (type === EventType.PushPullError) {
-      return new PushPullErrorState({
-        failure: event.payload.failure,
-        initDocState: this.state,
-      });
+      return new PushPullErrorState(
+        {
+          failure: event.payload.failure,
+          initDocState: this.state,
+        },
+        debugInfo,
+      );
     } else {
       let val: never = type;
       throw new Error('Invalid event');
@@ -564,15 +579,18 @@ export class PullState extends CollabBaseState {
     return;
   }
 
-  transition(event: ReadyEvent | PushPullErrorEvent) {
+  transition(event: ReadyEvent | PushPullErrorEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Ready) {
-      return new ReadyState(this.state);
+      return new ReadyState(this.state, debugInfo);
     } else if (type === EventType.PushPullError) {
-      return new PushPullErrorState({
-        failure: event.payload.failure,
-        initDocState: this.state,
-      });
+      return new PushPullErrorState(
+        {
+          failure: event.payload.failure,
+          initDocState: this.state,
+        },
+        debugInfo,
+      );
     } else {
       let val: never = type;
       throw new Error('Invalid event ' + type);
@@ -609,14 +627,17 @@ export class PushPullErrorState extends CollabBaseState {
     await handleErrorStateAction({ ...param, collabState: this });
   }
 
-  transition(event: RestartEvent | PullEvent | FatalErrorEvent) {
+  transition(
+    event: RestartEvent | PullEvent | FatalErrorEvent,
+    debugInfo?: string,
+  ) {
     const type = event.type;
     if (type === EventType.Restart) {
-      return new InitState();
+      return new InitState(undefined, debugInfo);
     } else if (type === EventType.Pull) {
-      return new PullState(this.state.initDocState);
+      return new PullState(this.state.initDocState, debugInfo);
     } else if (type === EventType.FatalError) {
-      return new FatalErrorState({ message: event.payload.message });
+      return new FatalErrorState({ message: event.payload.message }, debugInfo);
     } else {
       let val: never = type;
       throw new Error('Invalid event');

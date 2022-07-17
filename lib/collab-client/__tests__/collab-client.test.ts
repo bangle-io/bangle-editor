@@ -183,6 +183,15 @@ const setupServer = ({
       return returns.filter((r) => r.result.ok === false);
     },
 
+    async getReturns() {
+      const returns = await getReturns();
+
+      return returns;
+    },
+    async getCalls() {
+      return await getCalls();
+    },
+
     async getPushRequests() {
       const requests = await getCalls();
       return requests.filter((r) => r.type === CollabRequestType.PushEvents);
@@ -220,6 +229,15 @@ test('loads the document', async () => {
   expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
     `doc(paragraph("hello world!"))`,
   );
+
+  await sleep(10);
+
+  expect(await server.getCalls()).toEqual([
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.GetDocument',
+    },
+  ]);
 });
 
 test('can edit the document', async () => {
@@ -242,6 +260,21 @@ test('can edit the document', async () => {
       server.manager.getCollabState(client1.docName)?.doc.toString(),
     ).toEqual('doc(paragraph("bye world hello world!"))');
   });
+
+  expect(await server.getCalls()).toEqual([
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.GetDocument',
+    },
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.PushEvents',
+    },
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.PullEvents',
+    },
+  ]);
 });
 
 test('newer client get updated document', async () => {
@@ -271,6 +304,33 @@ test('newer client get updated document', async () => {
       `doc(paragraph("bye world hello world!"))`,
     );
   });
+
+  expect(await server.getCalls()).toEqual([
+    {
+      payload: expect.objectContaining({
+        userId: 'user-client1',
+      }),
+      type: 'CollabRequestType.GetDocument',
+    },
+    {
+      payload: expect.objectContaining({
+        userId: 'user-client1',
+      }),
+      type: 'CollabRequestType.PushEvents',
+    },
+    {
+      payload: expect.objectContaining({
+        userId: 'user-client1',
+      }),
+      type: 'CollabRequestType.PullEvents',
+    },
+    {
+      payload: expect.objectContaining({
+        userId: 'user-client2',
+      }),
+      type: 'CollabRequestType.GetDocument',
+    },
+  ]);
 });
 
 describe('multiplayer collab', () => {
@@ -452,6 +512,29 @@ describe('failures', () => {
         'doc(paragraph("wow hello world!"))',
       );
     });
+
+    expect(await server.getCalls()).toEqual([
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.GetDocument',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PushEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PullEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PushEvents',
+      },
+      {
+        payload: expect.anything(),
+        type: 'CollabRequestType.PullEvents',
+      },
+    ]);
   });
 
   test('handles DocumentNotFound', async () => {
@@ -760,10 +843,37 @@ test('local apply steps fails', async () => {
 
   expect(await server.getNotOkayRequests()).toEqual([]);
 
-  await sleep(500);
+  await sleep(10);
+
   await waitForExpect(async () => {
     expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
       'doc(paragraph("wow hello world!"))',
     );
   });
+
+  expect(console.error).toBeCalledTimes(1);
+  expect(console.error).nthCalledWith(
+    1,
+    new RangeError('Position 10000 out of range'),
+  );
+
+  expect(
+    (await server.getCalls()).filter((r) =>
+      r.payload.userId.includes('client1'),
+    ),
+  ).toEqual([
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.GetDocument',
+    },
+    // two pulls because of the apply error
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.PullEvents',
+    },
+    {
+      payload: expect.anything(),
+      type: 'CollabRequestType.PullEvents',
+    },
+  ]);
 });
