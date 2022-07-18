@@ -9,7 +9,7 @@ import { collabClient } from '@bangle.dev/collab-client';
 import {
   CollabManager,
   CollabRequestType,
-  CollabState,
+  CollabServerState,
 } from '@bangle.dev/collab-server';
 import {
   BangleEditor as CoreBangleEditor,
@@ -84,11 +84,11 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     const editorManager = new CollabManager({
       schema: specRegistry.schema,
       async getInitialState() {
-        return new CollabState(
+        return new CollabServerState(
           specRegistry.schema.nodeFromJSON(rawDoc) as Node,
         );
       },
-      applyState(docName, newCollab, oldCollab) {
+      applyState: (docName, newCollab, oldCollab) => {
         queueMicrotask(() => {
           docChangeEmitter.emit('doc_changed', {
             docName,

@@ -9,7 +9,7 @@ import {
   CollabFail,
   CollabManager,
   CollabRequestType,
-  CollabState,
+  CollabServerState,
   ManagerRequest,
   MAX_STEP_HISTORY,
   PullEventResponse,
@@ -122,7 +122,9 @@ const setupServer = ({
     schema: specRegistry.schema,
     getInitialState: async (dName) => {
       if (dName === docName) {
-        return new CollabState(specRegistry.schema.nodeFromJSON(ref.rawDoc));
+        return new CollabServerState(
+          specRegistry.schema.nodeFromJSON(ref.rawDoc),
+        );
       }
       return undefined;
     },

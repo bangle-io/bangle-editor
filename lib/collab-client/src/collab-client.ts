@@ -22,7 +22,7 @@ import { getCollabState } from './helpers';
 import { CollabBaseState, InitState } from './state';
 
 const LOG = true;
-let log = (isTestEnv ? true : LOG)
+let log = (isTestEnv ? false : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
 

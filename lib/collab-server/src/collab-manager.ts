@@ -1,4 +1,4 @@
-import { Node, Schema, Step } from '@bangle.dev/pm';
+import { Schema, Step } from '@bangle.dev/pm';
 import { Either, EitherType, isTestEnv, uuid } from '@bangle.dev/utils';
 
 import { CollabServerState, StepBigger } from './collab-state';
@@ -22,7 +22,7 @@ type ApplyState = (
 
 const LOG = true;
 
-let log = (isTestEnv ? true : LOG)
+let log = (isTestEnv ? false : LOG)
   ? console.debug.bind(console, 'collab-server:')
   : () => {};
 
@@ -49,6 +49,10 @@ export class CollabManager {
 
   public destroy() {
     this._destroyed = true;
+  }
+
+  getAllDocNames(): Set<string> {
+    return new Set(this._instances.keys());
   }
 
   getCollabState(docName: string): CollabServerState | undefined {
@@ -152,6 +156,11 @@ export class CollabManager {
 
   public isDestroyed() {
     return this._destroyed;
+  }
+
+  // removes collab state entry associated with docName
+  removeCollabState(docName: string): void {
+    this._instances.delete(docName);
   }
 
   private async _createInstance(

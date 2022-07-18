@@ -2,7 +2,7 @@ import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 
-import { CollabFail, CollabRequestType, CollabState } from '../src';
+import { CollabFail, CollabRequestType, CollabServerState } from '../src';
 import { CollabManager } from '../src/collab-manager';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -26,7 +26,9 @@ const setup = () => {
   const manager = new CollabManager({
     schema: specRegistry.schema,
     getInitialState: async (docName: string) => {
-      return new CollabState(specRegistry.schema.nodeFromJSON(rawDoc) as Node);
+      return new CollabServerState(
+        specRegistry.schema.nodeFromJSON(rawDoc) as Node,
+      );
     },
   });
 
