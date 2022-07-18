@@ -14,7 +14,7 @@ export enum CollabFail {
   OutdatedVersion = 'CollabFail.OutdatedVersion',
 }
 
-export type PullEventResponse = {
+export type PullEventsResponse = {
   steps?: Array<{ [key: string]: any }>;
   clientIDs?: string[];
 };
@@ -70,7 +70,7 @@ export type CollabResponse =
     }
   | {
       type: CollabRequestType.PullEvents;
-      payload: PullEventResponse;
+      payload: PullEventsResponse;
     }
   | {
       type: CollabRequestType.PushEvents;

@@ -8,8 +8,8 @@ import {
   CollabRequestType,
   CollabResponse,
   GetDocumentResponse,
-  PullEventResponse,
   PullEventsRequestParam,
+  PullEventsResponse,
   PushEventsRequestParam,
   PushEventsResponse,
 } from './common';
@@ -80,7 +80,7 @@ export class CollabManager {
       instance: Instance,
     ): EitherType<
       CollabFail,
-      PullEventResponse | GetDocumentResponse | PushEventsResponse
+      PullEventsResponse | GetDocumentResponse | PushEventsResponse
     > => {
       const { type, payload } = request;
 
@@ -277,7 +277,7 @@ class Instance {
     version,
     userId,
     managerId,
-  }: PullEventsRequestParam): EitherType<CollabFail, PullEventResponse> {
+  }: PullEventsRequestParam): EitherType<CollabFail, PullEventsResponse> {
     return Either.map(
       CollabServerState.getEvents(this._collabState, version),
       (events) => {

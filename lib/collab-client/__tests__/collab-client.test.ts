@@ -12,7 +12,7 @@ import {
   CollabServerState,
   ManagerRequest,
   MAX_STEP_HISTORY,
-  PullEventResponse,
+  PullEventsResponse,
 } from '@bangle.dev/collab-server';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
@@ -1070,7 +1070,7 @@ describe('failures', () => {
         req.payload.userId.includes('client1')
       ) {
         done = true;
-        let body = resp.body as PullEventResponse;
+        let body = resp.body as PullEventsResponse;
         return {
           ...resp,
           body: {
