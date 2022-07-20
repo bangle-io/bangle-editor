@@ -81,7 +81,7 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     const specRegistry = new SpecRegistry(defaultSpecs());
 
     const collabMessageBus = new CollabMessageBus({
-      debugSlowdown: testConfig.pushWaitTime,
+      debugSlowdown: testConfig.collabSlowdown,
     });
 
     const editorManager = new CollabManager({

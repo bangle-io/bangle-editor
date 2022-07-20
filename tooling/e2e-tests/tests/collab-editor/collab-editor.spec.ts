@@ -243,11 +243,26 @@ test.describe('Editors should sync', () => {
 
   test('slow broadcast', async ({ page }) => {
     const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
-    const LAG_TIME = 1000;
+    const LAG_TIME = 50;
     await loadPage(page, {
       initialEditors: testEditors,
-      broadcastChangeWaitTime: LAG_TIME,
+      collabSlowdown: LAG_TIME,
     });
+
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>hello world!</p>'],
+        ['EDITOR_2', '<p>hello world!</p>'],
+      ]);
+
     await clearEditorText(page, EDITOR_1);
     await clickEditor(page, EDITOR_1);
 
@@ -271,14 +286,12 @@ test.describe('Editors should sync', () => {
 
   test('slow broadcast both clients edit simultaneously', async ({ page }) => {
     const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
-    const broadcastWait = 500;
-    const pushWaitTime = 100;
+    const collabSlowdown = 100;
     const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
     const editor2Locator = page.locator(`#${EDITOR_2} .ProseMirror`);
     await loadPage(page, {
       initialEditors: testEditors,
-      broadcastChangeWaitTime: broadcastWait,
-      pushWaitTime: pushWaitTime,
+      collabSlowdown: collabSlowdown,
     });
 
     await expect

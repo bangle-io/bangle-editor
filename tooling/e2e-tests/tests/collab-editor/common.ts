@@ -34,12 +34,10 @@ export interface EditorInfos {
 
 export interface TestConfig {
   initialEditors: EditorId[];
-  broadcastChangeWaitTime: number;
-  pushWaitTime: number;
+  collabSlowdown: number;
 }
 
 export const baseTestConfig: TestConfig = {
   initialEditors: [EDITOR_1, EDITOR_2, EDITOR_3, EDITOR_4],
-  broadcastChangeWaitTime: 0,
-  pushWaitTime: 0,
+  collabSlowdown: 0,
 };
