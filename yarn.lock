@@ -1920,7 +1920,7 @@ __metadata:
     prosemirror-model: ^1.18.1
     prosemirror-state: ^1.4.1
     prosemirror-utils-bangle: 0.0.4
-    tsd: ^0.21.0
+    tsd: ^0.22.0
   peerDependencies:
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -2370,7 +2370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.22.2":
+"@playwright/test@npm:^1.23.4":
   version: 1.23.4
   resolution: "@playwright/test@npm:1.23.4"
   dependencies:
@@ -2512,7 +2512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsd/typescript@npm:~4.7.3":
+"@tsd/typescript@npm:~4.7.4":
   version: 4.7.4
   resolution: "@tsd/typescript@npm:4.7.4"
   bin:
@@ -3319,7 +3319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/core@npm:^4.0.0-rc.12, @yarnpkg/core@npm:^4.0.0-rc.9":
+"@yarnpkg/core@npm:^4.0.0-rc.12":
   version: 4.0.0-rc.12
   resolution: "@yarnpkg/core@npm:4.0.0-rc.12"
   dependencies:
@@ -3352,7 +3352,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/fslib@npm:^3.0.0-rc.12, @yarnpkg/fslib@npm:^3.0.0-rc.9":
+"@yarnpkg/fslib@npm:^3.0.0-rc.12":
   version: 3.0.0-rc.12
   resolution: "@yarnpkg/fslib@npm:3.0.0-rc.12"
   dependencies:
@@ -3372,7 +3372,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/nm@npm:^4.0.0-rc.9":
+"@yarnpkg/nm@npm:^4.0.0-rc.12":
   version: 4.0.0-rc.12
   resolution: "@yarnpkg/nm@npm:4.0.0-rc.12"
   dependencies:
@@ -3392,18 +3392,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/pnpify@npm:4.0.0-rc.9":
-  version: 4.0.0-rc.9
-  resolution: "@yarnpkg/pnpify@npm:4.0.0-rc.9"
+"@yarnpkg/pnpify@npm:4.0.0-rc.12":
+  version: 4.0.0-rc.12
+  resolution: "@yarnpkg/pnpify@npm:4.0.0-rc.12"
   dependencies:
-    "@yarnpkg/core": ^4.0.0-rc.9
-    "@yarnpkg/fslib": ^3.0.0-rc.9
-    "@yarnpkg/nm": ^4.0.0-rc.9
+    "@yarnpkg/core": ^4.0.0-rc.12
+    "@yarnpkg/fslib": ^3.0.0-rc.12
+    "@yarnpkg/nm": ^4.0.0-rc.12
     clipanion: ^3.2.0-rc.10
     tslib: ^1.13.0
   bin:
     pnpify: ./lib/cli.js
-  checksum: a5c4683c0feb27bd5daf94691d916e6da6d6d8c019df71e2296c4f95bec9e5563094eb7a89a58d09ed5444c0b991d8eb57f9f194509fd360f5fe1c838010ba27
+  checksum: 3c56b2329b03417ab672e43090d729b1e86598da7f24f4879f2b4d4ca68e8aec6ed8d5baf0995b54352f4cb327afb4424a3821f5abb0517047c63f0009de2fac
   languageName: node
   linkType: hard
 
@@ -4124,7 +4124,7 @@ __metadata:
     "@types/node": ^17.0.41
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
-    "@yarnpkg/pnpify": 4.0.0-rc.9
+    "@yarnpkg/pnpify": 4.0.0-rc.12
     babel-eslint: ^10.1.0
     babel-jest: ^27.5.1
     buildtool-bangle: 0.0.1
@@ -5406,7 +5406,7 @@ __metadata:
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@playwright/test": ^1.22.2
+    "@playwright/test": ^1.23.4
     "@testing-library/react": ^11.2.7
     "@types/jest": ^27.5.2
     "@types/prettier": ^2.6.3
@@ -5431,7 +5431,7 @@ __metadata:
     style-loader: ^2.0.0
     ts-loader: ^9.3.0
     typescript: ^4.7.4
-    vite: ^2.9.9
+    vite: ^2.9.14
     webpack: ^5.73.0
     webpack-cli: ^4.9.2
     xstate: ^4.32.1
@@ -11902,11 +11902,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsd@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "tsd@npm:0.21.0"
+"tsd@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "tsd@npm:0.22.0"
   dependencies:
-    "@tsd/typescript": ~4.7.3
+    "@tsd/typescript": ~4.7.4
     eslint-formatter-pretty: ^4.1.0
     globby: ^11.0.1
     meow: ^9.0.0
@@ -11914,7 +11914,7 @@ __metadata:
     read-pkg-up: ^7.0.0
   bin:
     tsd: dist/cli.js
-  checksum: e3afa5c944f9cf39885768a65b4d3909acd51b753993d960e392cf90cfe9d6eac5196aad7454d15659ecec89997f249c122ce7827a306f7f8cfa08b9331945b3
+  checksum: d6977e6cc8de13ae480cdb5599be5f42daec203b94e03d40016072203749d5468cc6a33cdc7bce20efbc00f52ff7071cc1d2b3cc42b361648503dfb55715f647
   languageName: node
   linkType: hard
 
@@ -12283,7 +12283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.9":
+"vite@npm:^2.9.14":
   version: 2.9.14
   resolution: "vite@npm:2.9.14"
   dependencies:

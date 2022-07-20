@@ -40,7 +40,7 @@
     "@bangle.dev/table": "workspace:*",
     "@bangle.dev/tooltip": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@playwright/test": "^1.22.2",
+    "@playwright/test": "^1.23.4",
     "@testing-library/react": "^11.2.7",
     "@types/jest": "^27.5.2",
     "@types/react": "^17.0.45",
@@ -70,6 +70,6 @@
     "esbuild-linux-64": "0.14.45",
     "ts-loader": "^9.3.0",
     "typescript": "^4.7.4",
-    "vite": "^2.9.9"
+    "vite": "^2.9.14"
   }
 }

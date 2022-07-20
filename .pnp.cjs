@@ -195,7 +195,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.45"],\
             ["@typescript-eslint/eslint-plugin", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.33.0"],\
             ["@typescript-eslint/parser", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.33.0"],\
-            ["@yarnpkg/pnpify", "npm:4.0.0-rc.9"],\
+            ["@yarnpkg/pnpify", "npm:4.0.0-rc.12"],\
             ["babel-eslint", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:10.1.0"],\
             ["babel-jest", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:27.5.1"],\
             ["buildtool-bangle", "npm:0.0.1"],\
@@ -3829,7 +3829,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.18.1"],\
             ["prosemirror-state", "npm:1.4.1"],\
             ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.0.4"],\
-            ["tsd", "npm:0.21.0"]\
+            ["tsd", "npm:0.22.0"]\
           ],\
           "packagePeers": [\
             "@bangle.dev/pm",\
@@ -3846,7 +3846,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prosemirror-model", "npm:1.18.1"],\
             ["prosemirror-state", "npm:1.4.1"],\
             ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.0.4"],\
-            ["tsd", "npm:0.21.0"]\
+            ["tsd", "npm:0.22.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -5630,10 +5630,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@yarnpkg/pnpify", [\
-        ["npm:4.0.0-rc.9", {\
-          "packageLocation": "./.yarn/cache/@yarnpkg-pnpify-npm-4.0.0-rc.9-2ead5265f8-a5c4683c0f.zip/node_modules/@yarnpkg/pnpify/",\
+        ["npm:4.0.0-rc.12", {\
+          "packageLocation": "./.yarn/cache/@yarnpkg-pnpify-npm-4.0.0-rc.12-9a93578202-3c56b2329b.zip/node_modules/@yarnpkg/pnpify/",\
           "packageDependencies": [\
-            ["@yarnpkg/pnpify", "npm:4.0.0-rc.9"],\
+            ["@yarnpkg/pnpify", "npm:4.0.0-rc.12"],\
             ["@yarnpkg/core", "npm:4.0.0-rc.12"],\
             ["@yarnpkg/fslib", "npm:3.0.0-rc.12"],\
             ["@yarnpkg/nm", "npm:4.0.0-rc.12"],\
@@ -6580,7 +6580,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:17.0.45"],\
             ["@typescript-eslint/eslint-plugin", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.33.0"],\
             ["@typescript-eslint/parser", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:4.33.0"],\
-            ["@yarnpkg/pnpify", "npm:4.0.0-rc.9"],\
+            ["@yarnpkg/pnpify", "npm:4.0.0-rc.12"],\
             ["babel-eslint", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:10.1.0"],\
             ["babel-jest", "virtual:f7f9df4719cc4784e30652b7144d5dff1534fb450af1a26069c56da5815db9932c06d71697a77a237152c2c809b3b58ee7f386ad79fd9218ab790df6b89c59dd#npm:27.5.1"],\
             ["buildtool-bangle", "npm:0.0.1"],\
@@ -15558,10 +15558,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["tsd", [\
-        ["npm:0.21.0", {\
-          "packageLocation": "./.yarn/cache/tsd-npm-0.21.0-3c27fd5064-e3afa5c944.zip/node_modules/tsd/",\
+        ["npm:0.22.0", {\
+          "packageLocation": "./.yarn/cache/tsd-npm-0.22.0-851e61e96c-d6977e6cc8.zip/node_modules/tsd/",\
           "packageDependencies": [\
-            ["tsd", "npm:0.21.0"],\
+            ["tsd", "npm:0.22.0"],\
             ["@tsd/typescript", "npm:4.7.4"],\
             ["eslint-formatter-pretty", "npm:4.1.0"],\
             ["globby", "npm:11.1.0"],\
