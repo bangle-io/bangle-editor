@@ -1,5 +1,5 @@
 import type { RawPlugins } from '@bangle.dev/core';
-import type { Command, Node } from '@bangle.dev/pm';
+import type { Command, EditorProps, Node } from '@bangle.dev/pm';
 import {
   Decoration,
   DecorationSet,
@@ -77,7 +77,7 @@ function pluginsFactory({
         decorations(state) {
           return key.getState(state)?.decos || null;
         },
-      },
+      } as EditorProps,
     });
 }
 

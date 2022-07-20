@@ -5,7 +5,6 @@
 import {
   BangleEditor,
   BangleEditorState,
-  RawPlugins,
   SpecRegistry,
 } from '@bangle.dev/core';
 import {
@@ -13,6 +12,7 @@ import {
   EditorView,
   Node,
   Schema,
+  Selection,
   TextSelection,
 } from '@bangle.dev/pm';
 
@@ -38,10 +38,7 @@ if (typeof afterEach === 'function') {
  * @param {*} testId
  */
 export function renderTestEditor(
-  {
-    specRegistry,
-    plugins,
-  }: { specRegistry: SpecRegistry; plugins: RawPlugins },
+  { specRegistry, plugins }: { specRegistry: SpecRegistry; plugins: any },
   testId = 'test-editor',
 ) {
   if (!specRegistry) {
@@ -124,11 +121,11 @@ export function renderTestEditor(
         return editor?.view;
       },
       container,
-      editorState: view.state,
+      editorState: view.state as EditorState,
       schema: view.state.schema,
       // TODO deprecate editorView
       editorView: view,
-      selection: view.state.selection,
+      selection: view.state.selection as Selection,
       posLabels,
       updateDoc,
       destroy: () => {

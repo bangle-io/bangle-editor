@@ -55,7 +55,7 @@ export function markPasteRule(
 
   return new Plugin({
     props: {
-      transformPasted: (slice) =>
+      transformPasted: (slice: Slice) =>
         new Slice(handler(slice.content), slice.openStart, slice.openEnd),
     },
   });

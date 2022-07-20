@@ -1,6 +1,7 @@
 import {
   Decoration,
   DOMOutputSpec,
+  EditorProps,
   EditorView,
   Node,
   Plugin,
@@ -199,7 +200,7 @@ export class NodeView extends BaseNodeView {
               renderHandlers,
             });
           },
-        },
+        } as EditorProps['nodeViews'],
       },
     });
   }
