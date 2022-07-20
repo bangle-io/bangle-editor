@@ -22,7 +22,7 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "prosemirror-markdown": "^1.9.1"
+    "prosemirror-markdown": "^1.9.3"
   },
   "publishConfig": {
     "access": "public",
