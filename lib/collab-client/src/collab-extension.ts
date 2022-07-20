@@ -1,6 +1,6 @@
 import { collab } from 'prosemirror-collab';
 
-import { CollabManager } from '@bangle.dev/collab-server';
+import { CollabMessageBus, MANAGER_ID } from '@bangle.dev/collab-server';
 import { uuid } from '@bangle.dev/utils';
 
 import { collabClientPlugin } from './collab-client';
@@ -10,40 +10,40 @@ import {
   queryFatalError,
 } from './commands';
 
-const LOG = false;
-const LOG_VERBOSE = false;
-let log = LOG ? console.log.bind(console, 'collab/collab-extension') : () => {};
-
-let logVerbose = LOG_VERBOSE
-  ? console.log.bind(console, 'collab/collab-extension')
-  : () => {};
-
 export const plugins = pluginsFactory;
 export const commands = { onUpstreamChanges, queryFatalError, hardResetClient };
 
-export const RECOVERY_BACK_OFF = 50;
+export interface CollabExtensionOptions {
+  requestTimeout?: number;
+  clientID: string;
+  collabMessageBus: CollabMessageBus;
+  docName: string;
+  managerId?: string;
+  cooldownTime?: number;
+}
 
 function pluginsFactory({
+  // time to wait for a response from server before rejecting the request
+  requestTimeout,
   clientID = 'client-' + uuid(),
+  collabMessageBus,
   docName,
-  sendManagerRequest,
-  retryWaitTime = 100,
-}: {
-  clientID: string;
-  docName: string;
-  sendManagerRequest: CollabManager['handleRequest'];
-  retryWaitTime?: number;
-}) {
+  managerId = MANAGER_ID,
+  // time to wait before retrying a failed request
+  cooldownTime = 100,
+}: CollabExtensionOptions) {
   const userId = 'user-' + clientID;
   return [
     collab({
       clientID,
     }),
     collabClientPlugin({
+      requestTimeout,
       clientID,
+      collabMessageBus,
       docName,
-      retryWaitTime,
-      sendManagerRequest,
+      managerId,
+      cooldownTime,
       userId,
     }),
   ];

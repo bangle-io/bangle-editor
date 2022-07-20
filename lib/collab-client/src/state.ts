@@ -1,6 +1,6 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
-import { CollabFail, CollabRequestType } from '@bangle.dev/collab-server';
+import { CollabFail } from '@bangle.dev/collab-server';
 import {
   Command,
   EditorState,
@@ -10,7 +10,7 @@ import {
 } from '@bangle.dev/pm';
 import { abortableSetTimeout } from '@bangle.dev/utils';
 
-import { isOutdatedVersion } from './commands';
+import { isOutdatedVersion, isStuckInErrorStates } from './commands';
 import {
   ClientInfo,
   collabClientKey,
@@ -50,7 +50,7 @@ export abstract class CollabBaseState {
   // Some collab tr's are allowed.
   editingAllowed: boolean = true;
   debugInfo?: string;
-
+  createdAt = Date.now();
   public dispatchCollabPluginEvent(data: {
     collabEvent?: ValidEvents;
     debugInfo?: string;
@@ -60,6 +60,8 @@ export abstract class CollabBaseState {
       return true;
     };
   }
+
+  abstract isErrorState: boolean;
 
   public isFatalState(): this is FatalErrorState {
     return this instanceof FatalErrorState;
@@ -80,8 +82,9 @@ export abstract class CollabBaseState {
 }
 
 export class FatalErrorState extends CollabBaseState {
-  name = CollabStateName.FatalError;
   editingAllowed = false;
+  isErrorState = true;
+  name = CollabStateName.FatalError;
 
   constructor(
     public state: {
@@ -120,8 +123,9 @@ export class FatalErrorState extends CollabBaseState {
 }
 
 export class InitState extends CollabBaseState {
-  name = CollabStateName.Init;
   editingAllowed = false;
+  isErrorState = false;
+  name = CollabStateName.Init;
 
   constructor(public state = {}, public debugInfo?: string) {
     super();
@@ -143,15 +147,12 @@ export class InitState extends CollabBaseState {
     if (signal.aborted) {
       return;
     }
-    const { docName, userId, sendManagerRequest } = clientInfo;
+    const { docName, userId, clientCom } = clientInfo;
     const debugSource = `initStateAction:`;
 
-    const result = await sendManagerRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: docName,
-        userId: userId,
-      },
+    const result = await clientCom.getDocument({
+      docName,
+      userId,
     });
 
     if (signal.aborted) {
@@ -190,7 +191,10 @@ export class InitState extends CollabBaseState {
     return;
   }
 
-  transition(event: InitDocEvent | InitErrorEvent, debugInfo?: string) {
+  transition(
+    event: InitDocEvent | InitErrorEvent,
+    debugInfo?: string,
+  ): InitDocState | InitErrorState | undefined {
     const type = event.type;
     if (type === EventType.InitDoc) {
       const { payload } = event;
@@ -221,8 +225,9 @@ export class InitState extends CollabBaseState {
 }
 
 export class InitDocState extends CollabBaseState {
-  name = CollabStateName.InitDoc;
   editingAllowed = false;
+  isErrorState = false;
+  name = CollabStateName.InitDoc;
 
   constructor(
     public state: {
@@ -282,7 +287,10 @@ export class InitDocState extends CollabBaseState {
     }
   }
 
-  transition(event: ReadyEvent | FatalErrorEvent, debugInfo?: string) {
+  transition(
+    event: ReadyEvent | FatalErrorEvent,
+    debugInfo?: string,
+  ): ReadyState | FatalErrorState | undefined {
     const type = event.type;
     if (type === EventType.Ready) {
       return new ReadyState(this.state, debugInfo);
@@ -297,6 +305,8 @@ export class InitDocState extends CollabBaseState {
 }
 
 export class InitErrorState extends CollabBaseState {
+  editingAllowed = false;
+  isErrorState = true;
   name = CollabStateName.InitError;
 
   constructor(
@@ -333,12 +343,14 @@ export class InitErrorState extends CollabBaseState {
     } else {
       let val: never = type;
       console.debug('@bangle.dev/collab-client Ignoring event' + type);
-      return;
+      return undefined;
     }
   }
 }
 
 export class ReadyState extends CollabBaseState {
+  editingAllowed = true;
+  isErrorState = false;
   name = CollabStateName.Ready;
 
   constructor(public state: InitDocState['state'], public debugInfo?: string) {
@@ -402,6 +414,8 @@ export class ReadyState extends CollabBaseState {
 }
 
 export class PushState extends CollabBaseState {
+  editingAllowed = true;
+  isErrorState = false;
   name = CollabStateName.Push;
 
   constructor(public state: InitDocState['state'], public debugInfo?: string) {
@@ -424,7 +438,7 @@ export class PushState extends CollabBaseState {
     if (signal.aborted) {
       return;
     }
-    const { docName, userId, sendManagerRequest } = clientInfo;
+    const { docName, userId, clientCom } = clientInfo;
     const debugSource = `pushStateAction:`;
 
     const steps = sendableSteps(view.state);
@@ -443,18 +457,14 @@ export class PushState extends CollabBaseState {
     }
 
     const { managerId } = this.state;
-
-    const response = await sendManagerRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        version: getVersion(view.state),
-        steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
-        // TODO  the default value numerical 0 before
-        clientID: (steps ? steps.clientID : 0) + '',
-        docName: docName,
-        userId: userId,
-        managerId: managerId,
-      },
+    const response = await clientCom.pushEvents({
+      version: getVersion(view.state),
+      steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
+      // TODO  the default value numerical 0 before
+      clientID: (steps ? steps.clientID : 0) + '',
+      docName: docName,
+      userId: userId,
+      managerId: managerId,
     });
 
     if (signal.aborted) {
@@ -512,6 +522,8 @@ export class PushState extends CollabBaseState {
 }
 
 export class PullState extends CollabBaseState {
+  editingAllowed = true;
+  isErrorState = false;
   name = CollabStateName.Pull;
 
   constructor(public state: InitDocState['state'], public debugInfo?: string) {
@@ -534,16 +546,13 @@ export class PullState extends CollabBaseState {
     if (signal.aborted) {
       return;
     }
-    const { docName, userId, sendManagerRequest } = clientInfo;
+    const { docName, userId, clientCom } = clientInfo;
     const { managerId } = this.state;
-    const response = await sendManagerRequest({
-      type: CollabRequestType.PullEvents,
-      payload: {
-        version: getVersion(view.state),
-        docName: docName,
-        userId: userId,
-        managerId: managerId,
-      },
+    const response = await clientCom.pullEvents({
+      version: getVersion(view.state),
+      docName: docName,
+      userId: userId,
+      managerId: managerId,
     });
     if (signal.aborted) {
       return;
@@ -586,10 +595,7 @@ export class PullState extends CollabBaseState {
     return;
   }
 
-  transition(
-    event: ReadyEvent | PushPullErrorEvent,
-    debugInfo?: string,
-  ): ReadyState | PushPullErrorState | undefined {
+  transition(event: ReadyEvent | PushPullErrorEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Ready) {
       return new ReadyState(this.state, debugInfo);
@@ -609,6 +615,8 @@ export class PullState extends CollabBaseState {
 }
 
 export class PushPullErrorState extends CollabBaseState {
+  editingAllowed = true;
+  isErrorState = true;
   name = CollabStateName.PushPullError;
 
   constructor(
@@ -672,9 +680,23 @@ const handleErrorStateAction = async ({
 
   const debugSource = `pushPullErrorStateAction(${failure}):`;
 
+  if (isStuckInErrorStates()(view.state)) {
+    collabState.dispatch(
+      view.state,
+      view.dispatch,
+      {
+        type: EventType.FatalError,
+        payload: {
+          message: 'Stuck in error loop, last failure: ' + failure,
+        },
+      },
+      debugSource,
+    );
+    return;
+  }
+
   switch (failure) {
-    case CollabFail.InvalidVersion:
-    case CollabFail.IncorrectManager: {
+    case CollabFail.InvalidVersion: {
       abortableSetTimeout(
         () => {
           if (!signal.aborted) {
@@ -689,7 +711,22 @@ const handleErrorStateAction = async ({
           }
         },
         signal,
-        clientInfo.retryWaitTime,
+        clientInfo.cooldownTime,
+      );
+      return;
+    }
+
+    case CollabFail.IncorrectManager: {
+      collabState.dispatch(
+        view.state,
+        view.dispatch,
+        {
+          type: EventType.FatalError,
+          payload: {
+            message: 'Incorrect manager',
+          },
+        },
+        debugSource,
       );
       return;
     }
@@ -779,7 +816,7 @@ const handleErrorStateAction = async ({
           }
         },
         signal,
-        clientInfo.retryWaitTime,
+        clientInfo.cooldownTime,
       );
       return;
     }
@@ -799,7 +836,7 @@ const handleErrorStateAction = async ({
             }
           },
           signal,
-          clientInfo.retryWaitTime,
+          clientInfo.cooldownTime,
         );
       } else {
         collabState.dispatch(
@@ -814,6 +851,39 @@ const handleErrorStateAction = async ({
           debugSource,
         );
       }
+      return;
+    }
+
+    case CollabFail.ManagerUnresponsive: {
+      abortableSetTimeout(
+        () => {
+          if (!signal.aborted) {
+            if (collabState instanceof PushPullErrorState) {
+              collabState.dispatch(
+                view.state,
+                view.dispatch,
+                {
+                  type: EventType.Pull,
+                },
+                debugSource,
+              );
+            } else if (collabState instanceof InitErrorState) {
+              collabState.dispatch(
+                view.state,
+                view.dispatch,
+                {
+                  type: EventType.Restart,
+                },
+                debugSource,
+              );
+            } else {
+              let val: never = collabState;
+            }
+          }
+        },
+        signal,
+        clientInfo.cooldownTime,
+      );
       return;
     }
 

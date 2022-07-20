@@ -26,6 +26,7 @@
         "node_modules/**"
       ],
       "runtimeArgs": [
+        "run",
         "--inspect-brk",
         "jest",
         "${fileBasenameNoExtension}",

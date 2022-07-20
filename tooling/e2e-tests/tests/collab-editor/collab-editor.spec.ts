@@ -120,12 +120,21 @@ test.describe('Editors should sync', () => {
     await page.keyboard.type('test content');
     await sleep();
 
-    expect(await getEditorsInnerHTML(page)).toEqual([
-      ['EDITOR_1', '<h1>Test testing</h1><p>test content</p>'],
-      ['EDITOR_2', '<h1>Test testing</h1><p>test content</p>'],
-      ['EDITOR_3', '<h1>Test testing</h1><p>test content</p>'],
-      ['EDITOR_4', '<h1>Test testing</h1><p>test content</p>'],
-    ]);
+    await expect
+      .poll(
+        () => {
+          return getEditorsInnerHTML(page);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<h1>Test testing</h1><p>test content</p>'],
+        ['EDITOR_2', '<h1>Test testing</h1><p>test content</p>'],
+        ['EDITOR_3', '<h1>Test testing</h1><p>test content</p>'],
+        ['EDITOR_4', '<h1>Test testing</h1><p>test content</p>'],
+      ]);
   });
 
   test('typing a lot of things', async ({ page }) => {
@@ -194,12 +203,19 @@ test.describe('Editors should sync', () => {
     await undo(page);
     await page.keyboard.type('b');
 
-    await sleep();
-
-    expect(await getEditorsInnerHTML(page, testEditors)).toEqual([
-      ['EDITOR_1', '<p>b</p>'],
-      ['EDITOR_2', '<p>b</p>'],
-    ]);
+    await expect
+      .poll(
+        () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>b</p>'],
+        ['EDITOR_2', '<p>b</p>'],
+      ]);
   });
 
   test('one editor typing at start other at end', async ({ page }) => {
@@ -256,7 +272,7 @@ test.describe('Editors should sync', () => {
   test('slow broadcast both clients edit simultaneously', async ({ page }) => {
     const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
     const broadcastWait = 500;
-    const pushWaitTime = 500;
+    const pushWaitTime = 100;
     const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
     const editor2Locator = page.locator(`#${EDITOR_2} .ProseMirror`);
     await loadPage(page, {
@@ -264,6 +280,20 @@ test.describe('Editors should sync', () => {
       broadcastChangeWaitTime: broadcastWait,
       pushWaitTime: pushWaitTime,
     });
+
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>hello world!</p>'],
+        ['EDITOR_2', '<p>hello world!</p>'],
+      ]);
 
     await clearEditorText(page, EDITOR_1);
 
@@ -289,7 +319,7 @@ test.describe('Editors should sync', () => {
       ['EDITOR_1', '<p>one</p>'],
       ['EDITOR_2', '<p>two</p>'],
     ]);
-
+    await page.pause();
     await expect
       .poll(
         async () => {

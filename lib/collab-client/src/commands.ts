@@ -2,7 +2,13 @@ import { getVersion } from 'prosemirror-collab';
 
 import { Command, EditorState } from '@bangle.dev/pm';
 
-import { collabMonitorKey, CollabMonitorTrMeta, EventType } from './common';
+import {
+  collabClientKey,
+  collabMonitorKey,
+  CollabMonitorTrMeta,
+  EventType,
+  STUCK_IN_ERROR_THRESHOLD,
+} from './common';
 import { getCollabState } from './helpers';
 
 // If in a fatal error (error which will not be recovered), it returns a fatal error message.
@@ -93,5 +99,20 @@ export function onOutdatedVersion(): Command {
       return true;
     }
     return false;
+  };
+}
+
+export function isStuckInErrorStates() {
+  return (state: EditorState) => {
+    const previousStates = collabClientKey.getState(state)?.previousStates;
+
+    if (!previousStates) {
+      return false;
+    }
+
+    return (
+      previousStates.filter((s) => s.isErrorState).length >
+      STUCK_IN_ERROR_THRESHOLD
+    );
   };
 }

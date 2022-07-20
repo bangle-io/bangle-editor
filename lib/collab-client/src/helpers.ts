@@ -22,8 +22,6 @@ export function applySteps(
   if (view.isDestroyed) {
     return;
   }
-  // TODO name these steps as rawSteps
-  // TODO make sure the data is always []
   const steps = (payload.steps ? payload.steps : []).map((j) =>
     Step.fromJSON(view.state.schema, j),
   );

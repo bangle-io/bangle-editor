@@ -4,6 +4,8 @@ export enum CollabRequestType {
   PushEvents = 'CollabRequestType.PushEvents',
 }
 
+export const MANAGER_ID = '@bangle.dev/collab-server/MANAGER';
+
 export enum CollabFail {
   ApplyFailed = 'CollabFail.ApplyFailed',
   DocumentNotFound = 'CollabFail.DocumentNotFound',
@@ -12,6 +14,15 @@ export enum CollabFail {
   InvalidVersion = 'CollabFail.InvalidVersion',
   ManagerDestroyed = 'CollabFail.ManagerDestroyed',
   OutdatedVersion = 'CollabFail.OutdatedVersion',
+  ManagerUnresponsive = 'CollabFail.ManagerUnresponsive',
+}
+
+export enum NetworkingError {
+  Timeout = 'NetworkingError.Timeout',
+}
+
+export enum CollabServerCalls {
+  VersionChanged = 'CollabServerCalls.VersionChanged',
 }
 
 export type PullEventsResponse = {
@@ -63,16 +74,59 @@ export type CollabRequest =
       payload: PushEventsRequestParam;
     };
 
-export type CollabResponse =
-  | {
-      type: CollabRequestType.GetDocument;
-      payload: GetDocumentResponse;
-    }
-  | {
-      type: CollabRequestType.PullEvents;
-      payload: PullEventsResponse;
-    }
-  | {
-      type: CollabRequestType.PushEvents;
-      payload: PushEventsResponse;
-    };
+export type CollabRequest2 =
+  | CollabRequestGetDocument
+  | CollabRequestPullEvents
+  | CollabRequestPushEvents;
+
+export interface ResponseBaseType {
+  type: string;
+  ok: boolean;
+  body: any;
+}
+
+export interface RequestOkResponse<T extends string, R>
+  extends ResponseBaseType {
+  type: T;
+  ok: true;
+  body: R;
+}
+
+export interface RequestNotOkResponse<T extends string, R>
+  extends ResponseBaseType {
+  type: T;
+  ok: false;
+  body: R;
+}
+
+export interface CollabRequestGetDocument {
+  type: CollabRequestType.GetDocument;
+  request: {
+    type: CollabRequestType.GetDocument;
+    body: GetDocumentRequestParam;
+  };
+  response:
+    | RequestOkResponse<CollabRequestType.GetDocument, GetDocumentResponse>
+    | RequestNotOkResponse<CollabRequestType.GetDocument, CollabFail>;
+}
+
+export interface CollabRequestPullEvents {
+  type: CollabRequestType.PullEvents;
+  request: {
+    type: CollabRequestType.PullEvents;
+    body: PullEventsRequestParam;
+  };
+  response:
+    | RequestOkResponse<CollabRequestType.PullEvents, PullEventsResponse>
+    | RequestNotOkResponse<CollabRequestType.PullEvents, CollabFail>;
+}
+export interface CollabRequestPushEvents {
+  type: CollabRequestType.PushEvents;
+  request: {
+    type: CollabRequestType.PushEvents;
+    body: PushEventsRequestParam;
+  };
+  response:
+    | RequestOkResponse<CollabRequestType.PushEvents, PushEventsResponse>
+    | RequestNotOkResponse<CollabRequestType.PushEvents, CollabFail>;
+}

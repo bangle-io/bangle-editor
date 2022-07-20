@@ -2,7 +2,14 @@ import { defaultSpecs } from '@bangle.dev/all-base-components';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 
-import { CollabFail, CollabRequestType, CollabServerState } from '../src';
+import {
+  ClientCommunication,
+  CollabFail,
+  CollabMessageBus,
+  CollabRequestType,
+  CollabServerState,
+  MANAGER_ID,
+} from '../src';
 import { CollabManager } from '../src/collab-manager';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -22,29 +29,64 @@ const rawDoc = {
   ],
 };
 
-const setup = () => {
-  const manager = new CollabManager({
-    schema: specRegistry.schema,
-    getInitialState: async (docName: string) => {
-      return new CollabServerState(
-        specRegistry.schema.nodeFromJSON(rawDoc) as Node,
-      );
+let controller = new AbortController();
+beforeEach(() => {
+  controller = new AbortController();
+});
+
+afterEach(() => {
+  controller.abort();
+});
+
+const setup = (
+  opts: Partial<ConstructorParameters<typeof CollabManager>[0]> = {},
+) => {
+  // we are creating two buses to simulate real world case of them running in different processes
+  const messageBus = new CollabMessageBus();
+  const clientBus = new CollabMessageBus();
+
+  const clientId = 'test-client-id';
+
+  let options = Object.assign(
+    {
+      schema: specRegistry.schema,
+      collabMessageBus: messageBus,
+      getInitialState: async (docName: string) => {
+        return new CollabServerState(
+          specRegistry.schema.nodeFromJSON(rawDoc) as Node,
+        );
+      },
     },
+    opts,
+  );
+  const manager = new CollabManager(options);
+
+  // wire up both the busses, this will flood both of the buses with
+  // each others messages, which should be fine since we use from, to, uid
+  // to receive the correct message.
+  messageBus.receiveMessages(clientId, (message) => {
+    clientBus.transmit(message);
+  });
+  clientBus.receiveMessages(manager.managerId, (message) => {
+    messageBus.transmit(message);
   });
 
-  return { manager };
+  const client = new ClientCommunication({
+    messageBus: clientBus,
+    clientId,
+    signal: controller.signal,
+  });
+
+  return { manager, client };
 };
 
-describe('get_document', () => {
+describe('getDocument', () => {
   test('works', async () => {
-    const { manager } = setup();
+    const { client } = setup();
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    const resp = await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
     expect(resp).toEqual({
@@ -52,44 +94,39 @@ describe('get_document', () => {
         doc: rawDoc,
         users: 1,
         version: expect.any(Number),
-        managerId: expect.any(String),
+        managerId: MANAGER_ID,
       },
       ok: true,
+      type: 'CollabRequestType.GetDocument',
     });
   });
 
   test('throws error when document is not found', async () => {
-    const manager = new CollabManager({
-      schema: specRegistry.schema,
+    const { manager, client } = setup({
       getInitialState: async (docName) => {
         return undefined;
       },
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    const resp = await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
     expect(resp).toEqual({
       body: CollabFail.DocumentNotFound,
       ok: false,
+      type: 'CollabRequestType.GetDocument',
     });
   });
 });
 
 test('getCollabState', async () => {
-  const { manager } = setup();
+  const { manager, client } = setup();
 
-  await manager.handleRequest({
-    type: CollabRequestType.GetDocument,
-    payload: {
-      docName: 'test-doc-1',
-      userId: 'test-user-1',
-    },
+  await client.getDocument({
+    docName: 'test-doc-1',
+    userId: 'test-user-1',
   });
 
   const { steps, version, doc } = manager.getCollabState('test-doc-1')!;
@@ -102,43 +139,38 @@ test('getCollabState', async () => {
 
 describe('push events', () => {
   test('push events', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: 'client-test-1',
-        version: manager.getCollabState('test-doc-1')?.version!,
-        managerId: manager.managerId,
-        steps: [
-          {
-            stepType: 'replace',
-            from: 1,
-            to: 1,
-            slice: {
-              content: [
-                {
-                  type: 'text',
-                  text: 'lovely ',
-                },
-              ],
-            },
+    const resp = await client.pushEvents({
+      clientID: 'client-test-1',
+      version: manager.getCollabState('test-doc-1')?.version!,
+      managerId: manager.managerId,
+      steps: [
+        {
+          stepType: 'replace',
+          from: 1,
+          to: 1,
+          slice: {
+            content: [
+              {
+                type: 'text',
+                text: 'lovely ',
+              },
+            ],
           },
-        ],
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+        },
+      ],
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PushEvents,
       body: {
         empty: null,
       },
@@ -168,87 +200,72 @@ describe('push events', () => {
   });
 
   test('errors invalid manager id on push', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: 'client-test-1',
-        version: manager.getCollabState('test-doc-1')?.version!,
-        managerId: 'wrong-manager-id',
-        steps: [],
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    const resp = await client.pushEvents({
+      clientID: 'client-test-1',
+      version: manager.getCollabState('test-doc-1')?.version!,
+      managerId: 'wrong-manager-id',
+      steps: [],
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PushEvents,
       body: CollabFail.IncorrectManager,
       ok: false,
     });
   });
 
   test('errors if invalid version', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: 'client-test-1',
-        version: -1,
-        managerId: manager.managerId,
-        steps: [],
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    const resp = await client.pushEvents({
+      clientID: 'client-test-1',
+      version: -1,
+      managerId: manager.managerId,
+      steps: [],
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PushEvents,
       body: CollabFail.InvalidVersion,
       ok: false,
     });
   });
 
   test('invalid version on push', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: 'client-test-1',
-        docName: 'test-doc-1',
-        userId: 'test-user-3',
-        version: 1,
-        steps: [],
-        managerId: manager.managerId,
-      },
+    const resp = await client.pushEvents({
+      clientID: 'client-test-1',
+      docName: 'test-doc-1',
+      userId: 'test-user-3',
+      version: 1,
+      steps: [],
+      managerId: manager.managerId,
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PushEvents,
       body: CollabFail.InvalidVersion,
       ok: false,
     });
@@ -257,79 +274,68 @@ describe('push events', () => {
 
 describe('pull events', () => {
   test('pull events', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: 'client-test-1',
-        version: manager.getCollabState('test-doc-1')?.version!,
-        managerId: manager.managerId,
-        steps: [
-          {
-            stepType: 'replace',
-            from: 1,
-            to: 1,
-            slice: {
-              content: [
-                {
-                  type: 'text',
-                  text: 'lovely ',
-                },
-              ],
-            },
+    await client.pushEvents({
+      clientID: 'client-test-1',
+      version: manager.getCollabState('test-doc-1')?.version!,
+      managerId: manager.managerId,
+      steps: [
+        {
+          stepType: 'replace',
+          from: 1,
+          to: 1,
+          slice: {
+            content: [
+              {
+                type: 'text',
+                text: 'lovely ',
+              },
+            ],
           },
-        ],
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+        },
+      ],
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    await manager.handleRequest({
-      type: CollabRequestType.PushEvents,
-      payload: {
-        clientID: 'client-test-2',
-        version: manager.getCollabState('test-doc-1')?.version!,
-        managerId: manager.managerId,
-        steps: [
-          {
-            stepType: 'replace',
-            from: 1,
-            to: 1,
-            slice: {
-              content: [
-                {
-                  type: 'text',
-                  text: 'very ',
-                },
-              ],
-            },
+    await client.pushEvents({
+      clientID: 'client-test-2',
+      version: manager.getCollabState('test-doc-1')?.version!,
+      managerId: manager.managerId,
+      steps: [
+        {
+          stepType: 'replace',
+          from: 1,
+          to: 1,
+          slice: {
+            content: [
+              {
+                type: 'text',
+                text: 'very ',
+              },
+            ],
           },
-        ],
-        docName: 'test-doc-1',
-        userId: 'test-user-2',
-      },
+        },
+      ],
+      docName: 'test-doc-1',
+      userId: 'test-user-2',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PullEvents,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-3',
-        version: 0,
-        managerId: manager.managerId,
-      },
+    const resp = await client.pullEvents({
+      docName: 'test-doc-1',
+      userId: 'test-user-3',
+      version: 0,
+      managerId: manager.managerId,
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PullEvents,
       body: {
         users: 1,
         version: 2,
@@ -367,54 +373,44 @@ describe('pull events', () => {
     });
   });
   test('invalid manager id on pull', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PullEvents,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-3',
-        version: 0,
-        managerId: 'wrong-manager-id',
-      },
+    const resp = await client.pullEvents({
+      docName: 'test-doc-1',
+      userId: 'test-user-3',
+      version: 0,
+      managerId: 'wrong-manager-id',
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PullEvents,
       body: CollabFail.IncorrectManager,
       ok: false,
     });
   });
 
   test('invalid version on pull', async () => {
-    const { manager } = setup();
+    const { manager, client } = setup();
 
-    await manager.handleRequest({
-      type: CollabRequestType.GetDocument,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-1',
-      },
+    await client.getDocument({
+      docName: 'test-doc-1',
+      userId: 'test-user-1',
     });
 
-    const resp = await manager.handleRequest({
-      type: CollabRequestType.PullEvents,
-      payload: {
-        docName: 'test-doc-1',
-        userId: 'test-user-3',
-        version: 1,
-        managerId: manager.managerId,
-      },
+    const resp = await client.pullEvents({
+      docName: 'test-doc-1',
+      userId: 'test-user-3',
+      version: 1,
+      managerId: manager.managerId,
     });
 
     expect(resp).toEqual({
+      type: CollabRequestType.PullEvents,
       body: CollabFail.InvalidVersion,
       ok: false,
     });

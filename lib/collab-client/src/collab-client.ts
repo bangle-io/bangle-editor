@@ -1,5 +1,9 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
+import {
+  ClientCommunication,
+  CollabMessageBus,
+} from '@bangle.dev/collab-server';
 import { EditorState, EditorView, Plugin } from '@bangle.dev/pm';
 import { isTestEnv } from '@bangle.dev/utils';
 
@@ -9,7 +13,6 @@ import {
   onOutdatedVersion,
 } from './commands';
 import {
-  ClientInfo,
   collabClientKey,
   CollabMonitor,
   collabMonitorKey,
@@ -17,12 +20,13 @@ import {
   CollabPluginState,
   CollabStateName,
   EventType,
+  MAX_STATES_TO_KEEP,
 } from './common';
 import { getCollabState } from './helpers';
 import { CollabBaseState, InitState } from './state';
 
 const LOG = true;
-let log = (isTestEnv ? false : LOG)
+let log = (isTestEnv ? true : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
 
@@ -30,12 +34,28 @@ const collabMonitorInitialState = {
   serverVersion: undefined,
 };
 
-export function collabClientPlugin(clientInfo: ClientInfo) {
+export function collabClientPlugin({
+  requestTimeout,
+  clientID,
+  collabMessageBus,
+  docName,
+  managerId,
+  cooldownTime,
+  userId,
+}: {
+  requestTimeout?: number;
+  clientID: string;
+  collabMessageBus: CollabMessageBus;
+  docName: string;
+  managerId: string;
+  cooldownTime: number;
+  userId: string;
+}) {
   const logger =
     (state: EditorState) =>
     (...args: any[]) =>
       log(
-        `${clientInfo.clientID}:version=${getVersion(state)}:debugInfo=${
+        `${clientID}:version=${getVersion(state)}:debugInfo=${
           collabClientKey.getState(state)?.collabState.debugInfo
         }`,
         ...args,
@@ -66,6 +86,7 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
         init(): CollabPluginState {
           return {
             collabState: new InitState(),
+            previousStates: [],
           };
         },
         apply(tr, value, oldState, newState) {
@@ -86,6 +107,7 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
             );
             return {
               collabState: new InitState(undefined, '(HardReset)'),
+              previousStates: [],
             };
           }
 
@@ -107,9 +129,22 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
               value.collabState.name,
             );
 
+            let previousStates = [value.collabState, ...value.previousStates];
+
+            if (previousStates.length > MAX_STATES_TO_KEEP) {
+              previousStates = previousStates.slice(0, MAX_STATES_TO_KEEP);
+            }
+
+            if (newCollabState.isFatalState()) {
+              console.error(
+                `@bangle.dev/collab-client: In FatalErrorState message=${newCollabState.state.message}`,
+              );
+            }
+
             return {
               ...value,
               collabState: newCollabState,
+              previousStates: previousStates,
             };
           }
 
@@ -123,20 +158,39 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
       },
 
       view(view) {
-        let controller = new AbortController();
+        let actionController = new AbortController();
+        let clientComController = new AbortController();
+        let clientCom = new ClientCommunication({
+          clientId: clientID,
+          managerId,
+          messageBus: collabMessageBus,
+          signal: clientComController.signal,
+          requestTimeout: requestTimeout,
+        });
+
         const pluginState = collabClientKey.getState(view.state);
+        const clientInfo = {
+          clientID,
+          docName,
+          cooldownTime,
+          clientCom,
+          managerId,
+          userId,
+        };
+
         if (pluginState) {
           pluginState.collabState.runAction({
             clientInfo,
             view,
-            signal: controller.signal,
+            signal: actionController.signal,
             logger: logger(view.state),
           });
         }
 
         return {
           destroy() {
-            controller.abort();
+            actionController.abort();
+            clientComController.abort();
           },
           update(view, prevState) {
             const pluginState = collabClientKey.getState(view.state);
@@ -150,12 +204,12 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
             }
 
             if (pluginState) {
-              controller.abort();
-              controller = new AbortController();
+              actionController.abort();
+              actionController = new AbortController();
               pluginState.collabState.runAction({
                 clientInfo,
                 view,
-                signal: controller.signal,
+                signal: actionController.signal,
                 logger: logger(view.state),
               });
             }
@@ -190,7 +244,7 @@ export function collabClientPlugin(clientInfo: ClientInfo) {
       },
       view(view) {
         const check = (view: EditorView) => {
-          // There are two ways different ways this extension keeps a check on outdated version (needs to pull)
+          // There are two ways different ways this extension keeps a check on outdated version (aka - needs to pull)
           // and sendable steps (needs to push):
           // 1. the ready state action which gets triggered when collabClientKey plugin transitions
           //    to the ready state.

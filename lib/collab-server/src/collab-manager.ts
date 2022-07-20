@@ -1,24 +1,33 @@
 import { Schema, Step } from '@bangle.dev/pm';
-import { Either, EitherType, isTestEnv, uuid } from '@bangle.dev/utils';
+import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
 
+import { CollabMessageBus } from './collab-event-emitter';
 import { CollabServerState, StepBigger } from './collab-state';
 import {
   CollabFail,
-  CollabRequest,
+  CollabRequest2,
+  CollabRequestGetDocument,
+  CollabRequestPullEvents,
+  CollabRequestPushEvents,
   CollabRequestType,
-  CollabResponse,
-  GetDocumentResponse,
+  MANAGER_ID,
   PullEventsRequestParam,
   PullEventsResponse,
   PushEventsRequestParam,
   PushEventsResponse,
 } from './common';
+import { ManagerCommunication } from './manager-communication';
 
 type ApplyState = (
   docName: string,
   newCollabState: CollabServerState,
   oldCollabState: CollabServerState,
 ) => boolean;
+
+export type HandleRequest = (
+  body: CollabRequest2['request'],
+  uid?: string,
+) => Promise<CollabRequest2['response']>;
 
 const LOG = true;
 
@@ -28,27 +37,65 @@ let log = (isTestEnv ? false : LOG)
 
 export class CollabManager {
   public readonly managerId: string;
-  counter = 0;
-  private _destroyed = false;
-  private _instances: Map<string, Instance> = new Map();
+  private readonly _abortController = new AbortController();
+  private _handleRequest: HandleRequest = async (request, id) => {
+    // TODO Add validation of request
+    // if (!request.body.docName) {
+    //   throw new Error('docName is required');
+    // }
+
+    log(
+      `id=${id} userId=${request.body.userId} received request=${request.type}, `,
+    );
+
+    switch (request.type) {
+      case CollabRequestType.GetDocument: {
+        return this._handleGetDocument(request, id);
+      }
+      case CollabRequestType.PullEvents: {
+        return this._handlePullEvents(request, id);
+      }
+      case CollabRequestType.PushEvents: {
+        return this._handlePushEvents(request, id);
+      }
+      default: {
+        let val: never = request;
+        throw new Error('Unknown request type');
+      }
+    }
+  };
+
+  private readonly _instances: Map<string, Instance> = new Map();
+  private readonly _serverCom?: ManagerCommunication;
 
   constructor(
     private _options: {
-      managerId?: string;
-      schema: Schema;
+      applyState?: ApplyState;
       // callback to provide the initial collaborate state
       // example: (docName) => new CollabState(fetchDoc(docName))
       getInitialState: (
         docName: string,
       ) => Promise<CollabServerState | undefined>;
-      applyState?: ApplyState;
+
+      collabMessageBus: CollabMessageBus;
+      managerId?: string;
+      schema: Schema;
     },
   ) {
-    this.managerId = _options.managerId || uuid();
+    this.managerId = _options.managerId || MANAGER_ID;
+
+    if (_options.collabMessageBus) {
+      this._serverCom = new ManagerCommunication(
+        this.managerId,
+        _options.collabMessageBus,
+        this._handleRequest,
+        this._abortController.signal,
+      );
+    }
   }
 
   public destroy() {
-    this._destroyed = true;
+    this._abortController.abort();
   }
 
   getAllDocNames(): Set<string> {
@@ -59,103 +106,8 @@ export class CollabManager {
     return this._instances.get(docName)?.collabState;
   }
 
-  async handleRequest<T extends CollabRequestType>(
-    request: Extract<CollabRequest, { type: T }>,
-  ): Promise<
-    | { ok: false; body: CollabFail }
-    | { ok: true; body: Extract<CollabResponse, { type: T }>['payload'] }
-  > {
-    if (!request.payload.docName) {
-      throw new Error('docName is required');
-    }
-
-    let uid = this.counter++;
-
-    log(
-      `uid=${uid} userId=${request.payload.userId} received request=${request.type}, `,
-    );
-
-    const handleReq = (
-      request: CollabRequest,
-      instance: Instance,
-    ): EitherType<
-      CollabFail,
-      PullEventsResponse | GetDocumentResponse | PushEventsResponse
-    > => {
-      const { type, payload } = request;
-
-      if (this._destroyed) {
-        return Either.left(CollabFail.ManagerDestroyed);
-      }
-
-      switch (type) {
-        case CollabRequestType.GetDocument: {
-          return Either.right({
-            doc: instance.collabState.doc.toJSON(),
-            users: instance.userCount,
-            version: instance.collabState.version,
-            managerId: this.managerId,
-          });
-        }
-
-        case CollabRequestType.PushEvents: {
-          log(
-            `uid=${uid} userId=${
-              request.payload.userId
-            } ${type} payload-steps=${JSON.stringify(payload.steps)}`,
-          );
-
-          if (this.managerId !== payload.managerId) {
-            return Either.left(CollabFail.IncorrectManager);
-          }
-
-          return instance.addEvents(payload);
-        }
-
-        case CollabRequestType.PullEvents: {
-          if (this.managerId !== payload.managerId) {
-            return Either.left(CollabFail.IncorrectManager);
-          }
-
-          return instance.getEvents(payload);
-        }
-
-        /* istanbul ignore next*/
-        default: {
-          let _type: never = type;
-          throw new Error('Unknown path: ' + _type);
-        }
-      }
-    };
-
-    const [failure, collabResponse] = Either.unwrap(
-      Either.flatMap(
-        await this._getInstance(request.payload.docName),
-        (instance) => {
-          return handleReq(request, instance);
-        },
-      ),
-    );
-
-    if (failure) {
-      log(`uid=${uid} userId=${request.payload.userId} response=${failure}`);
-      return { ok: false, body: failure };
-    } else {
-      log(
-        `uid=${uid} userId=${request.payload.userId} response=${JSON.stringify(
-          collabResponse,
-        )}`,
-      );
-      return {
-        ok: true,
-        // TODO fix any
-        body: collabResponse as any,
-      };
-    }
-  }
-
   public isDestroyed() {
-    return this._destroyed;
+    return this._abortController.signal.aborted;
   }
 
   // removes collab state entry associated with docName
@@ -169,7 +121,7 @@ export class CollabManager {
     const initialCollabState = await this._options.getInitialState(docName);
 
     // this takes care of edge case where another instance is created
-    // while we wait on `getDoc`.
+    // while we wait on `getInitialState`.
     let instance = this._instances.get(docName);
 
     if (instance) {
@@ -206,6 +158,95 @@ export class CollabManager {
     }
 
     return this._createInstance(docName);
+  }
+
+  private async _handleGetDocument(
+    request: CollabRequestGetDocument['request'],
+    uid?: string,
+  ): Promise<CollabRequestGetDocument['response']> {
+    const work = (instance: Instance) => {
+      return {
+        doc: instance.collabState.doc.toJSON(),
+        users: instance.userCount,
+        version: instance.collabState.version,
+        managerId: this.managerId,
+      };
+    };
+
+    return this._toResponse(
+      Either.map(await this._getInstance(request.body.docName), work),
+      request.type,
+    );
+  }
+
+  private async _handlePullEvents(
+    request: CollabRequestPullEvents['request'],
+    uid?: string,
+  ): Promise<CollabRequestPullEvents['response']> {
+    const work = (instance: Instance) => {
+      if (this.managerId !== request.body.managerId) {
+        return Either.left(CollabFail.IncorrectManager);
+      }
+
+      return instance.getEvents(request.body);
+    };
+
+    return this._toResponse(
+      Either.flatMap(await this._getInstance(request.body.docName), work),
+      request.type,
+    );
+  }
+
+  private async _handlePushEvents(
+    request: CollabRequestPushEvents['request'],
+    uid?: string,
+  ): Promise<CollabRequestPushEvents['response']> {
+    const work = (instance: Instance) => {
+      const { type, body } = request;
+
+      log(
+        `uid=${uid} userId=${
+          body.userId
+        } ${type} payload-steps=${JSON.stringify(body.steps)}`,
+      );
+
+      if (this.managerId !== body.managerId) {
+        return Either.left(CollabFail.IncorrectManager);
+      }
+
+      const result = instance.addEvents(body);
+
+      if (Either.isRight(result)) {
+        queueMicrotask(() => {
+          this._serverCom?.onNewCollabState(body.docName, instance.collabState);
+        });
+      }
+      return result;
+    };
+
+    return this._toResponse(
+      Either.flatMap(await this._getInstance(request.body.docName), work),
+      request.type,
+    );
+  }
+
+  private _toResponse<R, P extends CollabRequestType>(
+    val: EitherType<CollabFail, R>,
+    requestType: P,
+  ) {
+    if (Either.isLeft(val)) {
+      return {
+        ok: false as const,
+        body: val.left,
+        type: requestType,
+      };
+    } else {
+      return {
+        ok: true as const,
+        body: val.right,
+        type: requestType,
+      };
+    }
   }
 }
 

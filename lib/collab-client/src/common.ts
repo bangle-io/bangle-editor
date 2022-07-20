@@ -1,7 +1,13 @@
-import { CollabFail, CollabManager } from '@bangle.dev/collab-server';
+import { ClientCommunication, CollabFail } from '@bangle.dev/collab-server';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
 
 import type { CollabBaseState } from './state';
+
+export const MAX_STATES_TO_KEEP = 15;
+// If there are STUCK_IN_ERROR_THRESHOLD or more states in the history
+// the machine will transition to fatal (terminal) error state to prevent
+// infinite loops.
+export const STUCK_IN_ERROR_THRESHOLD = 5;
 
 export const collabClientKey = new PluginKey<CollabPluginState>(
   'bangle.dev/collab-client',
@@ -103,12 +109,14 @@ export enum CollabStateName {
 
 export interface CollabPluginState {
   collabState: CollabBaseState;
+  previousStates: CollabBaseState[];
 }
 
 export interface ClientInfo {
+  readonly clientCom: ClientCommunication;
   readonly clientID: string;
+  readonly cooldownTime: number;
   readonly docName: string;
-  readonly retryWaitTime: number;
-  readonly sendManagerRequest: CollabManager['handleRequest'];
+  readonly managerId: string;
   readonly userId: string;
 }

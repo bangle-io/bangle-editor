@@ -8,7 +8,7 @@ import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
 import {
   CollabManager,
-  CollabRequestType,
+  CollabMessageBus,
   CollabServerState,
 } from '@bangle.dev/collab-server';
 import {
@@ -81,8 +81,13 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     const specRegistry = new SpecRegistry(defaultSpecs());
     const docChangeEmitter = new Emitter();
 
+    const collabMessageBus = new CollabMessageBus({
+      debugSlowdown: testConfig.pushWaitTime,
+    });
+
     const editorManager = new CollabManager({
       schema: specRegistry.schema,
+      collabMessageBus: collabMessageBus,
       async getInitialState() {
         return new CollabServerState(
           specRegistry.schema.nodeFromJSON(rawDoc) as Node,
@@ -104,6 +109,7 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
       editorManager,
       specRegistry,
       docChangeEmitter,
+      collabMessageBus,
     };
   });
 
@@ -137,6 +143,7 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     win.collabEditors = editors;
     win.manager = data.editorManager;
     win.specRegistry = data.specRegistry;
+    win.collabMessageBus = data.collabMessageBus;
   }, [editors, data]);
 
   useEffect(() => {
@@ -199,7 +206,12 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
             editorInfo={obj}
             plugins={() => [
               ...defaultPlugins(),
-              collabPlugin(data.editorManager, obj.id, testConfig),
+              collabPlugin(
+                data.editorManager,
+                obj.id,
+                testConfig,
+                data.collabMessageBus,
+              ),
             ]}
           />
         ) : (
@@ -308,19 +320,12 @@ function collabPlugin(
   editorManager: CollabManager,
   clientID: keyof EditorInfos,
   testConfig: TestConfig,
+  collabMessageBus: CollabMessageBus,
 ) {
   return collabClient.plugins({
     docName: 'test-doc',
     clientID,
-    sendManagerRequest: async (obj) => {
-      if (
-        obj.type === CollabRequestType.PushEvents &&
-        testConfig.pushWaitTime > 0
-      ) {
-        console.log(clientID, 'waiting to push');
-        await sleep(testConfig.pushWaitTime);
-      }
-      return editorManager.handleRequest(obj);
-    },
+    collabMessageBus,
+    managerId: editorManager.managerId,
   });
 }

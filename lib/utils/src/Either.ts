@@ -28,9 +28,6 @@ export interface Right<T> {
 
 export type EitherType<L, R> = Left<L> | Right<R>;
 
-type InferLeft<T> = T extends Left<infer L> ? L : never;
-type InferRight<T> = T extends Right<infer R> ? R : never;
-
 export type NotEither<T> = T extends Left<any>
   ? never
   : T extends Right<any>
