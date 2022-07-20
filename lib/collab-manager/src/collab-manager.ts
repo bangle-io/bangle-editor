@@ -27,7 +27,7 @@ type ApplyState = (
 const LOG = true;
 
 let log = (isTestEnv ? false : LOG)
-  ? console.debug.bind(console, 'collab-server:')
+  ? console.debug.bind(console, 'collab-manager:')
   : () => {};
 
 export class CollabManager {

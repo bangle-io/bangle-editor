@@ -28,7 +28,7 @@
   "dependencies": {
     "@bangle.dev/all-base-components": "workspace:*",
     "@bangle.dev/collab-client": "workspace:*",
-    "@bangle.dev/collab-server": "workspace:*",
+    "@bangle.dev/collab-manager": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/markdown": "workspace:*",

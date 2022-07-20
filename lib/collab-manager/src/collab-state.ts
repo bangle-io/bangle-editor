@@ -11,7 +11,7 @@ export const MAX_STEP_HISTORY = 1000;
 const LOG = true;
 
 let log = (isTestEnv ? false : LOG)
-  ? console.debug.bind(console, 'collab-server/state:')
+  ? console.debug.bind(console, 'collab-manager/state:')
   : () => {};
 
 export class CollabServerState {

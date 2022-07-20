@@ -3,7 +3,7 @@ import { collab } from 'prosemirror-collab';
 import {
   CollabMessageBus,
   DEFAULT_MANAGER_ID,
-} from '@bangle.dev/collab-server';
+} from '@bangle.dev/collab-manager';
 import { Plugin } from '@bangle.dev/pm';
 import { uuid } from '@bangle.dev/utils';
 

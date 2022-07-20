@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@bangle.dev/collab-client": "workspace:*",
-    "@bangle.dev/collab-server": "workspace:*",
+    "@bangle.dev/collab-manager": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/emoji": "workspace:*",

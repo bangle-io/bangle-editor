@@ -19,7 +19,7 @@ import {
   CollabServerState,
   DEFAULT_MANAGER_ID,
   MAX_STEP_HISTORY,
-} from '@bangle.dev/collab-server';
+} from '@bangle.dev/collab-manager';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
 import { uuid } from '@bangle.dev/utils';
@@ -453,7 +453,7 @@ test('newer client get updated document', async () => {
 
   expect(await server.getBroadcasts()).toEqual([
     {
-      from: '@bangle.dev/collab-server/MANAGER',
+      from: '@bangle.dev/collab-manager/MANAGER',
       id: expect.any(String),
       messageBody: {
         body: {

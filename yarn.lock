@@ -1474,7 +1474,7 @@ __metadata:
   dependencies:
     "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/collab-comms": "workspace:*"
-    "@bangle.dev/collab-server": "workspace:*"
+    "@bangle.dev/collab-manager": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
@@ -1488,7 +1488,7 @@ __metadata:
     wait-for-expect: ^3.0.2
     xstate: ^4.32.1
   peerDependencies:
-    "@bangle.dev/collab-server": "*"
+    "@bangle.dev/collab-manager": "*"
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -1506,9 +1506,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:lib/collab-server":
+"@bangle.dev/collab-manager@workspace:*, @bangle.dev/collab-manager@workspace:lib/collab-manager":
   version: 0.0.0-use.local
-  resolution: "@bangle.dev/collab-server@workspace:lib/collab-server"
+  resolution: "@bangle.dev/collab-manager@workspace:lib/collab-manager"
   dependencies:
     "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/collab-comms": "workspace:*"
@@ -4083,7 +4083,7 @@ __metadata:
   resolution: "bangle-scripts@workspace:tooling/bangle-scripts"
   dependencies:
     "@bangle.dev/collab-client": "workspace:*"
-    "@bangle.dev/collab-server": "workspace:*"
+    "@bangle.dev/collab-manager": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/emoji": "workspace:*"
@@ -5411,7 +5411,7 @@ __metadata:
   dependencies:
     "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/collab-client": "workspace:*"
-    "@bangle.dev/collab-server": "workspace:*"
+    "@bangle.dev/collab-manager": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/markdown": "workspace:*"

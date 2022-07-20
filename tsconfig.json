@@ -93,8 +93,8 @@
       "@bangle.dev/collab-client": [
         "./lib/collab-client/src"
       ],
-      "@bangle.dev/collab-server": [
-        "./lib/collab-server/src"
+      "@bangle.dev/collab-manager": [
+        "./lib/collab-manager/src"
       ],
       "@bangle.dev/collab-comms": [
         "./lib/collab-comms/src"

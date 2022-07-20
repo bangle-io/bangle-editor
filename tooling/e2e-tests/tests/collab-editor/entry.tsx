@@ -10,7 +10,7 @@ import {
   CollabManager,
   CollabMessageBus,
   CollabServerState,
-} from '@bangle.dev/collab-server';
+} from '@bangle.dev/collab-manager';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
