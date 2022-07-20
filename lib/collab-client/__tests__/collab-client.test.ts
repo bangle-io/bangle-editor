@@ -6,9 +6,11 @@ import waitForExpect from 'wait-for-expect';
 
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import {
+  CollabClientRequest,
+  CollabClientRequestType,
   CollabFail,
-  CollabRequest,
-  CollabRequestType,
+  CollabManagerBroadCastType,
+  Message,
   MessageType,
 } from '@bangle.dev/collab-comms';
 import {
@@ -20,7 +22,7 @@ import {
 } from '@bangle.dev/collab-server';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
-import { Emitter, uuid } from '@bangle.dev/utils';
+import { uuid } from '@bangle.dev/utils';
 
 import { CollabExtensionOptions, plugins } from '../src/collab-extension';
 import {
@@ -65,10 +67,8 @@ const setupClient = (
 ) => {
   let ref: {
     manager?: CollabManager;
-    docChangeEmitter?: Emitter;
   } = {
     manager: undefined,
-    docChangeEmitter: undefined,
   };
 
   const collabMessageBus = new CollabMessageBus();
@@ -90,7 +90,6 @@ const setupClient = (
   );
 
   ref.manager = server.manager;
-  ref.docChangeEmitter = server.docChangeEmitter;
 
   const { editor, debugString } = renderTestEditor({
     specRegistry: specRegistry,
@@ -117,12 +116,6 @@ const setupClient = (
     editor.view.dispatch(tr);
   };
 
-  const cb = ({ version }: { version: number }) => {
-    onUpstreamChanges(version)(editor.view.state, editor.view.dispatch);
-  };
-
-  ref.docChangeEmitter.on('doc_changed', cb);
-
   return {
     docName: options.docName || docName,
     clientID,
@@ -139,10 +132,7 @@ const setupClient = (
         serverMessageBus: newServer.collabMessageBus,
       });
 
-      ref.docChangeEmitter?.off('doc_changed', cb);
-      ref.docChangeEmitter = newServer.docChangeEmitter;
       ref.manager = newServer.manager;
-      ref.docChangeEmitter.on('doc_changed', cb);
     },
   };
 };
@@ -175,64 +165,76 @@ const setupServer = ({
   };
 
   let emitDocChangeEvent = true;
-
-  const docChangeEmitter = new Emitter();
-  const collabMessageBus = new CollabMessageBus();
-
+  const broadcastQueue: Array<
+    Extract<Message<any>, { type: MessageType.BROADCAST }>
+  > = [];
   const queue: Array<{
     id: string;
-    request: CollabRequest['request'];
-    response: CollabRequest['response'] | undefined;
+    request: CollabClientRequest['request'];
+    response: CollabClientRequest['response'] | undefined;
   }> = [];
 
   let alterRequestRef: {
-    current?: (data: CollabRequest['request']) => CollabRequest['request'];
+    current?: (
+      data: CollabClientRequest['request'],
+    ) => CollabClientRequest['request'];
   } = {
     current: undefined,
   };
 
   let alterResponseRef: {
     current?: (
-      request: CollabRequest['request'],
-      response: CollabRequest['response'],
-    ) => CollabRequest['response'];
+      request: CollabClientRequest['request'],
+      response: CollabClientRequest['response'],
+    ) => CollabClientRequest['response'];
   } = {
     current: undefined,
   };
-
-  collabMessageBus.receiveMessages(CollabMessageBus.WILD_CARD, (message) => {
-    console.log(message);
-    if (message.type === MessageType.PING) {
-      let alterRequest = alterRequestRef.current;
-
-      if (alterRequest) {
-        // since this is the first listener.
-        // mutating message body in place will allow us to modify the request
-        // for subsequent listeners
-        message.messageBody = alterRequest(message.messageBody);
+  const collabMessageBus = new CollabMessageBus({
+    debugFilterMessage: (message) => {
+      if (message.type === MessageType.BROADCAST) {
+        broadcastQueue.push(message);
+        if (
+          message.messageBody.type === CollabManagerBroadCastType.NewVersion &&
+          !emitDocChangeEvent
+        ) {
+          return false;
+        }
       }
-      queue.push({
-        id: message.id,
-        request: message.messageBody,
-        response: undefined,
-      });
-    } else if (message.type === MessageType.PONG) {
-      const match = queue.find((item) => item.id === message.id);
-      if (!match) {
-        throw new Error(
-          'No matching ping found for ' + JSON.stringify(message),
-        );
+      if (message.type === MessageType.PING) {
+        let alterRequest = alterRequestRef.current;
+
+        if (alterRequest) {
+          // since this is the first listener.
+          // mutating message body in place will allow us to modify the request
+          // for subsequent listeners
+          message.messageBody = alterRequest(message.messageBody);
+        }
+        queue.push({
+          id: message.id,
+          request: message.messageBody,
+          response: undefined,
+        });
+      } else if (message.type === MessageType.PONG) {
+        const match = queue.find((item) => item.id === message.id);
+        if (!match) {
+          throw new Error(
+            'No matching ping found for ' + JSON.stringify(message),
+          );
+        }
+
+        let alterResp = alterResponseRef.current;
+        if (alterResp) {
+          // since this is the first listener.
+          // mutating message body in place will allow us to modify the request
+          // for subsequent listeners
+          message.messageBody = alterResp(match.request, message.messageBody);
+        }
+        match.response = message.messageBody;
       }
 
-      let alterResp = alterResponseRef.current;
-      if (alterResp) {
-        // since this is the first listener.
-        // mutating message body in place will allow us to modify the request
-        // for subsequent listeners
-        message.messageBody = alterResp(match.request, message.messageBody);
-      }
-      match.response = message.messageBody;
-    }
+      return true;
+    },
   });
 
   controller.signal.addEventListener(
@@ -255,17 +257,6 @@ const setupServer = ({
       }
       return undefined;
     },
-    applyState: (docName, newCollabState) => {
-      queueMicrotask(() => {
-        if (emitDocChangeEvent) {
-          docChangeEmitter.emit('doc_changed', {
-            docName,
-            version: newCollabState.version,
-          });
-        }
-      });
-      return true;
-    },
   });
 
   const getRequests = () => {
@@ -274,7 +265,7 @@ const setupServer = ({
   const getReturns = async (): Promise<
     Array<{
       userId: string;
-      result?: CollabRequest['response'];
+      result?: CollabClientRequest['response'];
     }>
   > => {
     return queue.map((r) => {
@@ -284,7 +275,6 @@ const setupServer = ({
 
   return {
     collabMessageBus,
-    docChangeEmitter,
     manager,
 
     async getNotOkayRequests() {
@@ -293,6 +283,10 @@ const setupServer = ({
       return returns.filter((r) => {
         return r.result?.ok === false;
       });
+    },
+
+    async getBroadcasts() {
+      return broadcastQueue;
     },
 
     async getReturns() {
@@ -307,7 +301,9 @@ const setupServer = ({
 
     async getPushRequests() {
       const requests = await getRequests();
-      return requests.filter((r) => r.type === CollabRequestType.PushEvents);
+      return requests.filter(
+        (r) => r.type === CollabClientRequestType.PushEvents,
+      );
     },
     alterRequest(cb: typeof alterRequestRef.current) {
       alterRequestRef.current = cb;
@@ -358,7 +354,7 @@ test('loads the document', async () => {
   expect(await server.getRequests()).toEqual([
     {
       body: expect.anything(),
-      type: 'CollabRequestType.GetDocument',
+      type: 'CollabClientRequestType.GetDocument',
     },
   ]);
 });
@@ -387,15 +383,15 @@ test('can edit the document', async () => {
   expect(await server.getRequests()).toEqual([
     {
       body: expect.anything(),
-      type: 'CollabRequestType.GetDocument',
+      type: 'CollabClientRequestType.GetDocument',
     },
     {
       body: expect.anything(),
-      type: 'CollabRequestType.PushEvents',
+      type: 'CollabClientRequestType.PushEvents',
     },
     {
       body: expect.anything(),
-      type: 'CollabRequestType.PullEvents',
+      type: 'CollabClientRequestType.PullEvents',
     },
   ]);
 });
@@ -433,25 +429,41 @@ test('newer client get updated document', async () => {
       body: expect.objectContaining({
         userId: 'user-client1',
       }),
-      type: 'CollabRequestType.GetDocument',
+      type: 'CollabClientRequestType.GetDocument',
     },
     {
       body: expect.objectContaining({
         userId: 'user-client1',
       }),
-      type: 'CollabRequestType.PushEvents',
+      type: 'CollabClientRequestType.PushEvents',
     },
     {
       body: expect.objectContaining({
         userId: 'user-client1',
       }),
-      type: 'CollabRequestType.PullEvents',
+      type: 'CollabClientRequestType.PullEvents',
     },
     {
       body: expect.objectContaining({
         userId: 'user-client2',
       }),
-      type: 'CollabRequestType.GetDocument',
+      type: 'CollabClientRequestType.GetDocument',
+    },
+  ]);
+
+  expect(await server.getBroadcasts()).toEqual([
+    {
+      from: '@bangle.dev/collab-server/MANAGER',
+      id: expect.any(String),
+      messageBody: {
+        body: {
+          docName: 'test-doc',
+          version: 1,
+        },
+        type: 'CollabManagerBroadCastType.NewVersion',
+      },
+      to: undefined,
+      type: 'BROADCAST',
     },
   ]);
 });
@@ -553,7 +565,7 @@ describe('multiplayer collab', () => {
         result: {
           body: CollabFail.OutdatedVersion,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
     ]);
@@ -647,7 +659,7 @@ describe('failures', () => {
 
     let done = false;
     server.alterRequest((req) => {
-      if (req.type === CollabRequestType.PushEvents && !done) {
+      if (req.type === CollabClientRequestType.PushEvents && !done) {
         done = true;
         return {
           ...req,
@@ -684,7 +696,7 @@ describe('failures', () => {
         result: {
           body: CollabFail.ApplyFailed,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
     ]);
@@ -699,28 +711,30 @@ describe('failures', () => {
     expect(await server.getRequests()).toEqual([
       {
         body: expect.anything(),
-        type: 'CollabRequestType.GetDocument',
+        type: 'CollabClientRequestType.GetDocument',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PushEvents',
+        type: 'CollabClientRequestType.PushEvents',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PullEvents',
+        type: 'CollabClientRequestType.PullEvents',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PushEvents',
+        type: 'CollabClientRequestType.PushEvents',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PullEvents',
+        type: 'CollabClientRequestType.PullEvents',
       },
     ]);
   });
 
   test('handles DocumentNotFound', async () => {
+    console.error = jest.fn();
+
     const server = setupServer();
     const client1 = setupClient(server, {
       clientID: 'client1',
@@ -741,13 +755,21 @@ describe('failures', () => {
         result: {
           body: CollabFail.DocumentNotFound,
           ok: false,
-          type: 'CollabRequestType.GetDocument',
+          type: 'CollabClientRequestType.GetDocument',
         },
       },
     ]);
+
+    expect(console.error).toBeCalledTimes(1);
+    expect(console.error).nthCalledWith(
+      1,
+      expect.stringContaining('In FatalErrorState message=Document not found'),
+    );
   });
 
   test('handles HistoryNotAvailable', async () => {
+    console.error = jest.fn();
+
     const server = setupServer();
     const client1 = setupClient(server, { clientID: 'client1' });
     await waitForExpect(async () => {
@@ -765,7 +787,7 @@ describe('failures', () => {
       to: manager.managerId,
       id: 'some-id-1234',
       messageBody: {
-        type: CollabRequestType.PushEvents,
+        type: CollabClientRequestType.PushEvents,
         body: {
           clientID: fakeClientId,
           version: manager.getCollabState(docName)?.version!,
@@ -818,7 +840,7 @@ describe('failures', () => {
         result: {
           body: CollabFail.OutdatedVersion,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
       {
@@ -826,20 +848,30 @@ describe('failures', () => {
         result: {
           body: CollabFail.HistoryNotAvailable,
           ok: false,
-          type: 'CollabRequestType.PullEvents',
+          type: 'CollabClientRequestType.PullEvents',
         },
       },
     ]);
+
+    expect(console.error).toBeCalledTimes(1);
+    expect(console.error).nthCalledWith(
+      1,
+      expect.stringContaining(
+        'In FatalErrorState message=History/Server not available',
+      ),
+    );
   });
 
   test('handles IncorrectManager', async () => {
+    console.error = jest.fn();
+
     const server = setupServer();
 
     server.alterResponse((req, resp) => {
-      if (resp.type === CollabRequestType.GetDocument && resp.ok) {
+      if (resp.type === CollabClientRequestType.GetDocument && resp.ok) {
         return {
           ok: true,
-          type: CollabRequestType.GetDocument,
+          type: CollabClientRequestType.GetDocument,
           body: {
             ...resp.body,
             managerId: 'wrong-id',
@@ -866,7 +898,7 @@ describe('failures', () => {
         result: {
           body: CollabFail.IncorrectManager,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
     ]);
@@ -875,6 +907,12 @@ describe('failures', () => {
     expect(queryFatalError()(client1.view.state)).toEqual({
       message: 'Incorrect manager',
     });
+
+    expect(console.error).toBeCalledTimes(1);
+    expect(console.error).nthCalledWith(
+      1,
+      expect.stringContaining('In FatalErrorState message=Incorrect manager'),
+    );
   });
 
   test('handles InvalidVersion', async () => {
@@ -887,7 +925,7 @@ describe('failures', () => {
     });
 
     server.alterRequest((req) => {
-      if (req.type === CollabRequestType.PushEvents) {
+      if (req.type === CollabClientRequestType.PushEvents) {
         return {
           ...req,
           body: {
@@ -910,7 +948,7 @@ describe('failures', () => {
         result: {
           body: CollabFail.InvalidVersion,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
     ]);
@@ -939,7 +977,7 @@ describe('failures', () => {
       to: manager.managerId,
       id: 'some-id-1231',
       messageBody: {
-        type: CollabRequestType.PushEvents,
+        type: CollabClientRequestType.PushEvents,
         body: {
           clientID: fakeClientId,
           version: manager.getCollabState(docName)?.version!,
@@ -989,7 +1027,7 @@ describe('failures', () => {
         result: {
           body: CollabFail.OutdatedVersion,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
     ]);
@@ -1031,14 +1069,14 @@ describe('failures', () => {
 
     // since there will be many pull events , only check first three calls
     expect(calls.slice(0, 3)).toEqual([
-      ['CollabRequestType.GetDocument', { ok: true }],
-      ['CollabRequestType.PushEvents', { ok: true }],
-      ['CollabRequestType.PullEvents', { ok: true }],
+      ['CollabClientRequestType.GetDocument', { ok: true }],
+      ['CollabClientRequestType.PushEvents', { ok: true }],
+      ['CollabClientRequestType.PullEvents', { ok: true }],
     ]);
 
     // it should multiple pull calls to server, to retry connection.
     expect(
-      calls.filter((r) => r[0] === 'CollabRequestType.PullEvents').length,
+      calls.filter((r) => r[0] === 'CollabClientRequestType.PullEvents').length,
     ).toBeGreaterThan(4);
 
     expect(queryFatalError()(client1.view.state)).toStrictEqual({
@@ -1087,15 +1125,15 @@ describe('failures', () => {
     expect(await server.getRequests()).toEqual([
       {
         body: expect.anything(),
-        type: 'CollabRequestType.GetDocument',
+        type: 'CollabClientRequestType.GetDocument',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PushEvents',
+        type: 'CollabClientRequestType.PushEvents',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PullEvents',
+        type: 'CollabClientRequestType.PullEvents',
       },
     ]);
   });
@@ -1159,7 +1197,7 @@ describe('failures', () => {
     let done = false;
     server.alterResponse((req, resp) => {
       if (
-        req.type === CollabRequestType.PullEvents &&
+        req.type === CollabClientRequestType.PullEvents &&
         !done &&
         resp.ok &&
         req.body.userId.includes('client1')
@@ -1168,7 +1206,7 @@ describe('failures', () => {
         let body = resp.body;
         return {
           ok: true,
-          type: CollabRequestType.PullEvents,
+          type: CollabClientRequestType.PullEvents,
           body: {
             ...body,
             steps: [
@@ -1219,16 +1257,16 @@ describe('failures', () => {
     ).toEqual([
       {
         body: expect.anything(),
-        type: 'CollabRequestType.GetDocument',
+        type: 'CollabClientRequestType.GetDocument',
       },
       // two pulls because of the apply error
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PullEvents',
+        type: 'CollabClientRequestType.PullEvents',
       },
       {
         body: expect.anything(),
-        type: 'CollabRequestType.PullEvents',
+        type: 'CollabClientRequestType.PullEvents',
       },
     ]);
 
@@ -1253,7 +1291,7 @@ describe('failures', () => {
 
     // send an invalid version to trigger client to restart
     server.alterRequest((req) => {
-      if (req.type === CollabRequestType.PushEvents) {
+      if (req.type === CollabClientRequestType.PushEvents) {
         return {
           ...req,
           body: {
@@ -1283,7 +1321,7 @@ describe('failures', () => {
         result: {
           body: CollabFail.InvalidVersion,
           ok: false,
-          type: 'CollabRequestType.PushEvents',
+          type: 'CollabClientRequestType.PushEvents',
         },
       },
     ]);

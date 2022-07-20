@@ -1,14 +1,19 @@
 import { CollabMessageBus, MessageType } from './collab-message-bus';
-import { CollabRequest, CollabRequestType } from './common';
+import {
+  CollabClientRequest,
+  CollabClientRequestType,
+  CollabManagerBroadCast,
+} from './common';
+import { generateUUID } from './wrap-request';
 
 export class ManagerCommunication {
   constructor(
-    managerId: string,
+    public readonly managerId: string,
     private readonly _collabMessageBus: CollabMessageBus,
     handleRequest: (
-      body: CollabRequest['request'],
+      body: CollabClientRequest['request'],
       uid?: string,
-    ) => Promise<CollabRequest['response']>,
+    ) => Promise<CollabClientRequest['response']>,
     signal: AbortSignal,
   ) {
     const removeListener = this._collabMessageBus.receiveMessages(
@@ -21,12 +26,12 @@ export class ManagerCommunication {
         }
 
         const { id, messageBody } = message;
-        let requestBody: CollabRequest['request'] = messageBody || {};
+        let requestBody: CollabClientRequest['request'] = messageBody || {};
 
         switch (requestBody.type) {
-          case CollabRequestType.GetDocument:
-          case CollabRequestType.PullEvents:
-          case CollabRequestType.PushEvents: {
+          case CollabClientRequestType.GetDocument:
+          case CollabClientRequestType.PullEvents:
+          case CollabClientRequestType.PushEvents: {
             // TODO handle error
             let response = await handleRequest(requestBody, id);
             this._collabMessageBus.transmit({
@@ -57,7 +62,13 @@ export class ManagerCommunication {
     );
   }
 
-  public onNewCollabState(docName: string): void {
-    // console.warn('not implemented onNewCollabState:', docName);
+  public broadcast(messageBody: CollabManagerBroadCast): void {
+    this._collabMessageBus.transmit({
+      from: this.managerId,
+      to: undefined,
+      type: MessageType.BROADCAST,
+      id: generateUUID(),
+      messageBody: messageBody,
+    });
   }
 }

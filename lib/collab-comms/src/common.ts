@@ -2,6 +2,20 @@ export enum NetworkingError {
   Timeout = 'NetworkingError.Timeout',
 }
 
+export enum CollabManagerBroadCastType {
+  NewVersion = 'CollabManagerBroadCastType.NewVersion',
+}
+
+export interface CollabManagerNewVersion {
+  type: CollabManagerBroadCastType.NewVersion;
+  body: {
+    version: number;
+    docName: string;
+  };
+}
+
+export type CollabManagerBroadCast = CollabManagerNewVersion;
+
 export enum CollabFail {
   ApplyFailed = 'CollabFail.ApplyFailed',
   DocumentNotFound = 'CollabFail.DocumentNotFound',
@@ -13,47 +27,57 @@ export enum CollabFail {
   ManagerUnresponsive = 'CollabFail.ManagerUnresponsive',
 }
 
-export type CollabRequest =
-  | CollabRequestGetDocument
-  | CollabRequestPullEvents
-  | CollabRequestPushEvents;
+// ============= Client stuff =============
+export type CollabClientRequest =
+  | CollabClientRequestGetDocument
+  | CollabClientRequestPullEvents
+  | CollabClientRequestPushEvents;
 
-export enum CollabRequestType {
-  GetDocument = 'CollabRequestType.GetDocument',
-  PullEvents = 'CollabRequestType.PullEvents',
-  PushEvents = 'CollabRequestType.PushEvents',
+export enum CollabClientRequestType {
+  GetDocument = 'CollabClientRequestType.GetDocument',
+  PullEvents = 'CollabClientRequestType.PullEvents',
+  PushEvents = 'CollabClientRequestType.PushEvents',
 }
 
-export interface CollabRequestGetDocument {
-  type: CollabRequestType.GetDocument;
+export interface CollabClientRequestGetDocument {
+  type: CollabClientRequestType.GetDocument;
   request: {
-    type: CollabRequestType.GetDocument;
+    type: CollabClientRequestType.GetDocument;
     body: GetDocumentRequestBody;
   };
   response:
-    | RequestOkResponse<CollabRequestType.GetDocument, GetDocumentResponseBody>
-    | RequestNotOkResponse<CollabRequestType.GetDocument, CollabFail>;
+    | RequestOkResponse<
+        CollabClientRequestType.GetDocument,
+        GetDocumentResponseBody
+      >
+    | RequestNotOkResponse<CollabClientRequestType.GetDocument, CollabFail>;
 }
 
-export interface CollabRequestPullEvents {
-  type: CollabRequestType.PullEvents;
+export interface CollabClientRequestPullEvents {
+  type: CollabClientRequestType.PullEvents;
   request: {
-    type: CollabRequestType.PullEvents;
+    type: CollabClientRequestType.PullEvents;
     body: PullEventsRequestBody;
   };
   response:
-    | RequestOkResponse<CollabRequestType.PullEvents, PullEventsResponseBody>
-    | RequestNotOkResponse<CollabRequestType.PullEvents, CollabFail>;
+    | RequestOkResponse<
+        CollabClientRequestType.PullEvents,
+        PullEventsResponseBody
+      >
+    | RequestNotOkResponse<CollabClientRequestType.PullEvents, CollabFail>;
 }
-export interface CollabRequestPushEvents {
-  type: CollabRequestType.PushEvents;
+export interface CollabClientRequestPushEvents {
+  type: CollabClientRequestType.PushEvents;
   request: {
-    type: CollabRequestType.PushEvents;
+    type: CollabClientRequestType.PushEvents;
     body: PushEventsRequestBody;
   };
   response:
-    | RequestOkResponse<CollabRequestType.PushEvents, PushEventsResponseBody>
-    | RequestNotOkResponse<CollabRequestType.PushEvents, CollabFail>;
+    | RequestOkResponse<
+        CollabClientRequestType.PushEvents,
+        PushEventsResponseBody
+      >
+    | RequestNotOkResponse<CollabClientRequestType.PushEvents, CollabFail>;
 }
 
 export interface RequestOkResponse<T extends string, R> {

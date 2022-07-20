@@ -42,6 +42,8 @@ export class CollabMessageBus {
       // Slows down message emitter to emulate slow network
       // Good for debugging purposes (non-production) only
       debugSlowdown?: number;
+      // return false to now allow transmitting the message
+      debugFilterMessage?: (message: Message<any>) => boolean;
     } = {},
   ) {}
 
@@ -83,6 +85,11 @@ export class CollabMessageBus {
     if (this._seenMessages.has(message)) {
       return;
     }
+
+    if (this._opts.debugFilterMessage?.(message) === false) {
+      return;
+    }
+
     this._seenMessages.add(message);
 
     if (message.type === MessageType.BROADCAST && message.to != null) {

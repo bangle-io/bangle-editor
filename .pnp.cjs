@@ -4376,7 +4376,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["@playwright/test", [\
         ["npm:1.23.4", {\
-          "packageLocation": "./.yarn/cache/@playwright-test-npm-1.23.4-43c2455801-7004308fde.zip/node_modules/@playwright/test/",\
+          "packageLocation": "./.yarn/unplugged/@playwright-test-npm-1.23.4-43c2455801/node_modules/@playwright/test/",\
           "packageDependencies": [\
             ["@playwright/test", "npm:1.23.4"],\
             ["@types/node", "npm:18.0.6"],\

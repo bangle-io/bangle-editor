@@ -8,14 +8,10 @@ import { Plugin } from '@bangle.dev/pm';
 import { uuid } from '@bangle.dev/utils';
 
 import { collabClientPlugin } from './collab-client';
-import {
-  hardResetClient,
-  onUpstreamChanges,
-  queryFatalError,
-} from './commands';
+import { hardResetClient, queryFatalError } from './commands';
 
 export const plugins = pluginsFactory;
-export const commands = { onUpstreamChanges, queryFatalError, hardResetClient };
+export const commands = { queryFatalError, hardResetClient };
 
 export interface CollabExtensionOptions {
   requestTimeout?: number;

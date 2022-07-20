@@ -104,5 +104,10 @@
   "packageManager": "yarn@3.2.1",
   "resolutions": {
     "orderedmap": "^1.1.8"
+  },
+  "dependenciesMeta": {
+    "@playwright/test@1.23.4": {
+      "unplugged": true
+    }
   }
 }

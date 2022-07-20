@@ -1,42 +1,45 @@
 import { CollabMessageBus, MessageType } from './collab-message-bus';
 import {
+  CollabClientRequest,
+  CollabClientRequestGetDocument,
+  CollabClientRequestPullEvents,
+  CollabClientRequestPushEvents,
+  CollabClientRequestType,
   CollabFail,
-  CollabRequest,
-  CollabRequestGetDocument,
-  CollabRequestPullEvents,
-  CollabRequestPushEvents,
-  CollabRequestType,
+  CollabManagerBroadCast,
+  CollabManagerBroadCastType,
+  CollabManagerNewVersion,
   NetworkingError,
 } from './common';
 import { wrapRequest } from './wrap-request';
 
-type MakeRequest<R extends CollabRequest> = (
+type MakeRequest<R extends CollabClientRequest> = (
   body: R['request']['body'],
 ) => Promise<R['response']>;
 
 export class ClientCommunication {
-  public getDocument: MakeRequest<CollabRequestGetDocument> = (body) => {
+  public getDocument: MakeRequest<CollabClientRequestGetDocument> = (body) => {
     let request = {
-      type: CollabRequestType.GetDocument as const,
+      type: CollabClientRequestType.GetDocument as const,
       body,
     };
-    return this._wrapRequest(CollabRequestType.GetDocument, request);
+    return this._wrapRequest(CollabClientRequestType.GetDocument, request);
   };
 
-  public pullEvents: MakeRequest<CollabRequestPullEvents> = (body) => {
-    const request: CollabRequestPullEvents['request'] = {
-      type: CollabRequestType.PullEvents,
+  public pullEvents: MakeRequest<CollabClientRequestPullEvents> = (body) => {
+    const request: CollabClientRequestPullEvents['request'] = {
+      type: CollabClientRequestType.PullEvents,
       body,
     };
-    return this._wrapRequest(CollabRequestType.PullEvents, request);
+    return this._wrapRequest(CollabClientRequestType.PullEvents, request);
   };
 
-  public pushEvents: MakeRequest<CollabRequestPushEvents> = (body) => {
-    const request: CollabRequestPushEvents['request'] = {
-      type: CollabRequestType.PushEvents,
+  public pushEvents: MakeRequest<CollabClientRequestPushEvents> = (body) => {
+    const request: CollabClientRequestPushEvents['request'] = {
+      type: CollabClientRequestType.PushEvents,
       body,
     };
-    return this._wrapRequest(CollabRequestType.PushEvents, request);
+    return this._wrapRequest(CollabClientRequestType.PushEvents, request);
   };
 
   public managerId: string;
@@ -48,6 +51,8 @@ export class ClientCommunication {
       messageBus: CollabMessageBus;
       signal: AbortSignal;
       requestTimeout?: number;
+      docName: string;
+      onNewVersion: (body: CollabManagerNewVersion['body']) => void;
     },
   ) {
     this.managerId = this._opts.managerId;
@@ -55,15 +60,29 @@ export class ClientCommunication {
     const removeListener = this._opts.messageBus?.receiveMessages(
       this._opts.clientId,
       (message) => {
-        switch (message.type) {
-          case MessageType.BROADCAST: {
+        if (
+          message.type !== MessageType.BROADCAST &&
+          message.from !== this.managerId
+        ) {
+          return;
+        }
+
+        const messageBody = message.messageBody as CollabManagerBroadCast;
+        const { type } = messageBody;
+
+        // ignore any message that is not for the current doc
+        if (messageBody.body.docName !== this._opts.docName) {
+          return;
+        }
+
+        switch (type) {
+          case CollabManagerBroadCastType.NewVersion: {
+            this._opts.onNewVersion(messageBody.body);
             return;
           }
-          case MessageType.PONG: {
-            return;
-          }
-          case MessageType.PING: {
-            return;
+          default: {
+            let val: never = type;
+            throw new Error(`Unknown message type: ${messageBody.type}`);
           }
         }
       },
@@ -78,11 +97,11 @@ export class ClientCommunication {
     );
   }
 
-  private async _wrapRequest<T extends CollabRequestType>(
+  private async _wrapRequest<T extends CollabClientRequestType>(
     type: T,
-    request: Extract<CollabRequest, { type: T }>['request'],
+    request: Extract<CollabClientRequest, { type: T }>['request'],
   ): Promise<
-    | Extract<CollabRequest, { type: T }>['response']
+    | Extract<CollabClientRequest, { type: T }>['response']
     | {
         body: CollabFail;
         type: T;

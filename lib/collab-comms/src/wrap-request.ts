@@ -47,7 +47,7 @@ export function wrapRequest(
   });
 }
 
-function generateUUID(): string {
+export function generateUUID(): string {
   return (
     Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16) +
     '-' +

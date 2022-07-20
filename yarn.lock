@@ -4160,6 +4160,9 @@ __metadata:
     lint-staged: ^10.5.3
     prettier: ^2.6.2
     typescript: ^4.7.4
+  dependenciesMeta:
+    "@playwright/test@1.23.4":
+      unplugged: true
   languageName: unknown
   linkType: soft
 

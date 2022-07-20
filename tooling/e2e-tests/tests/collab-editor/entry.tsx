@@ -18,7 +18,7 @@ import {
 } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
-import { Emitter, sleep } from '@bangle.dev/utils';
+import { Emitter } from '@bangle.dev/utils';
 
 import { win } from '../../setup/entry-helpers';
 import {
@@ -79,7 +79,6 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
   console.info('testConfig', testConfig);
   const [data] = useState(() => {
     const specRegistry = new SpecRegistry(defaultSpecs());
-    const docChangeEmitter = new Emitter();
 
     const collabMessageBus = new CollabMessageBus({
       debugSlowdown: testConfig.pushWaitTime,
@@ -94,12 +93,6 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
         );
       },
       applyState: (docName, newCollab, oldCollab) => {
-        queueMicrotask(() => {
-          docChangeEmitter.emit('doc_changed', {
-            docName,
-            version: newCollab.version,
-          });
-        });
         return true;
       },
     });
@@ -108,7 +101,6 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     return {
       editorManager,
       specRegistry,
-      docChangeEmitter,
       collabMessageBus,
     };
   });
@@ -159,24 +151,8 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
         newEditors[id].bangleEditor = editor;
         return newEditors;
       });
-      data.docChangeEmitter.on(
-        'doc_changed',
-        async ({ docName, version }: { docName: string; version: number }) => {
-          const view = editor.view;
-          if (view) {
-            if (testConfig.broadcastChangeWaitTime !== 0) {
-              await sleep(testConfig.broadcastChangeWaitTime);
-            }
-
-            collabClient.commands.onUpstreamChanges(version)(
-              view.state,
-              view.dispatch,
-            );
-          }
-        },
-      );
     },
-    [data, testConfig],
+    [],
   );
 
   return (

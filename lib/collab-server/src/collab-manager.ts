@@ -1,17 +1,16 @@
-import type {
-  CollabRequestGetDocument,
-  CollabRequestPullEvents,
-  CollabRequestPushEvents,
+import {
+  CollabClientRequestGetDocument,
+  CollabClientRequestPullEvents,
+  CollabClientRequestPushEvents,
+  CollabClientRequestType,
+  CollabFail,
+  CollabManagerBroadCastType,
+  CollabMessageBus,
+  ManagerCommunication,
   PullEventsRequestBody,
   PullEventsResponseBody,
   PushEventsRequestBody,
   PushEventsResponseBody,
-} from '@bangle.dev/collab-comms';
-import {
-  CollabFail,
-  CollabMessageBus,
-  CollabRequestType,
-  ManagerCommunication,
 } from '@bangle.dev/collab-comms';
 import { Schema, Step } from '@bangle.dev/pm';
 import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
@@ -47,13 +46,13 @@ export class CollabManager {
     );
 
     switch (request.type) {
-      case CollabRequestType.GetDocument: {
+      case CollabClientRequestType.GetDocument: {
         return this._handleGetDocument(request, id);
       }
-      case CollabRequestType.PullEvents: {
+      case CollabClientRequestType.PullEvents: {
         return this._handlePullEvents(request, id);
       }
-      case CollabRequestType.PushEvents: {
+      case CollabClientRequestType.PushEvents: {
         return this._handlePushEvents(request, id);
       }
       default: {
@@ -159,9 +158,9 @@ export class CollabManager {
   }
 
   private async _handleGetDocument(
-    request: CollabRequestGetDocument['request'],
+    request: CollabClientRequestGetDocument['request'],
     uid?: string,
-  ): Promise<CollabRequestGetDocument['response']> {
+  ): Promise<CollabClientRequestGetDocument['response']> {
     const work = (instance: Instance) => {
       return {
         doc: instance.collabState.doc.toJSON(),
@@ -178,9 +177,9 @@ export class CollabManager {
   }
 
   private async _handlePullEvents(
-    request: CollabRequestPullEvents['request'],
+    request: CollabClientRequestPullEvents['request'],
     uid?: string,
-  ): Promise<CollabRequestPullEvents['response']> {
+  ): Promise<CollabClientRequestPullEvents['response']> {
     const work = (instance: Instance) => {
       if (this.managerId !== request.body.managerId) {
         return Either.left(CollabFail.IncorrectManager);
@@ -196,9 +195,9 @@ export class CollabManager {
   }
 
   private async _handlePushEvents(
-    request: CollabRequestPushEvents['request'],
+    request: CollabClientRequestPushEvents['request'],
     uid?: string,
-  ): Promise<CollabRequestPushEvents['response']> {
+  ): Promise<CollabClientRequestPushEvents['response']> {
     const work = (instance: Instance) => {
       const { type, body } = request;
 
@@ -216,7 +215,13 @@ export class CollabManager {
 
       if (Either.isRight(result)) {
         queueMicrotask(() => {
-          // this._serverCom?.onNewCollabState(body.docName, instance.collabState);
+          this._serverCom?.broadcast({
+            type: CollabManagerBroadCastType.NewVersion,
+            body: {
+              docName: instance.docName,
+              version: instance.collabState.version,
+            },
+          });
         });
       }
       return result;
@@ -228,7 +233,7 @@ export class CollabManager {
     );
   }
 
-  private _toResponse<R, P extends CollabRequestType>(
+  private _toResponse<R, P extends CollabClientRequestType>(
     val: EitherType<CollabFail, R>,
     requestType: P,
   ) {

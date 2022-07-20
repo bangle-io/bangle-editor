@@ -9,6 +9,7 @@ import {
   isOutdatedVersion,
   onLocalChanges,
   onOutdatedVersion,
+  onUpstreamChanges,
 } from './commands';
 import {
   collabClientKey,
@@ -24,7 +25,7 @@ import { getCollabState } from './helpers';
 import { CollabBaseState, InitState } from './state';
 
 const LOG = true;
-let log = (isTestEnv ? true : LOG)
+let log = (isTestEnv ? false : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
 
@@ -161,9 +162,13 @@ export function collabClientPlugin({
         let clientCom = new ClientCommunication({
           clientId: clientID,
           managerId,
+          docName,
           messageBus: collabMessageBus,
           signal: clientComController.signal,
           requestTimeout: requestTimeout,
+          onNewVersion: ({ version }) => {
+            onUpstreamChanges(version)(view.state, view.dispatch);
+          },
         });
 
         const pluginState = collabClientKey.getState(view.state);
