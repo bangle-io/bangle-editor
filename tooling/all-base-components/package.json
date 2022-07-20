@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/all-base-components",
-  "version": "0.30.0-alpha.9",
+  "version": "0.30.0-alpha.10",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
