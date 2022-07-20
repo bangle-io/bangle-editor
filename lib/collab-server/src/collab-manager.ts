@@ -5,15 +5,15 @@ import { CollabMessageBus } from './collab-event-emitter';
 import { CollabServerState, StepBigger } from './collab-state';
 import {
   CollabFail,
-  CollabRequest2,
+  CollabRequest,
   CollabRequestGetDocument,
   CollabRequestPullEvents,
   CollabRequestPushEvents,
   CollabRequestType,
   MANAGER_ID,
-  PullEventsRequestParam,
+  PullEventsRequestBody,
   PullEventsResponse,
-  PushEventsRequestParam,
+  PushEventsRequestBody,
   PushEventsResponse,
 } from './common';
 import { ManagerCommunication } from './manager-communication';
@@ -25,9 +25,9 @@ type ApplyState = (
 ) => boolean;
 
 export type HandleRequest = (
-  body: CollabRequest2['request'],
+  body: CollabRequest['request'],
   uid?: string,
-) => Promise<CollabRequest2['response']>;
+) => Promise<CollabRequest['response']>;
 
 const LOG = true;
 
@@ -281,7 +281,7 @@ class Instance {
     steps,
     userId,
     docName,
-  }: PushEventsRequestParam): EitherType<CollabFail, PushEventsResponse> {
+  }: PushEventsRequestBody): EitherType<CollabFail, PushEventsResponse> {
     this.lastActive = Date.now();
 
     let version = nonNegInteger(rawVersion);
@@ -318,7 +318,7 @@ class Instance {
     version,
     userId,
     managerId,
-  }: PullEventsRequestParam): EitherType<CollabFail, PullEventsResponse> {
+  }: PullEventsRequestBody): EitherType<CollabFail, PullEventsResponse> {
     return Either.map(
       CollabServerState.getEvents(this._collabState, version),
       (events) => {

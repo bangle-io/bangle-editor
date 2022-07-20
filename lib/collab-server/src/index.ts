@@ -1,4 +1,4 @@
-import { CollabRequest, PullEventsResponse } from './common';
+import { PullEventsResponse } from './common';
 
 export type { CollabListener } from './collab-event-emitter';
 export {
@@ -8,11 +8,11 @@ export {
 } from './collab-event-emitter';
 export { CollabManager } from './collab-manager';
 export { CollabServerState, MAX_STEP_HISTORY } from './collab-state';
-export type { CollabRequest as ManagerRequest, PullEventsResponse };
+export type { PullEventsResponse };
 
 export { ClientCommunication } from './client-communication';
 export type {
-  CollabRequest2,
+  CollabRequest,
   CollabRequestGetDocument,
   CollabRequestPullEvents,
   CollabRequestPushEvents,

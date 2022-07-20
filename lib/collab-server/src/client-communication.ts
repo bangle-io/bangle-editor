@@ -5,7 +5,7 @@ import {
 } from './collab-event-emitter';
 import {
   CollabFail,
-  CollabRequest2,
+  CollabRequest,
   CollabRequestGetDocument,
   CollabRequestPullEvents,
   CollabRequestPushEvents,
@@ -14,7 +14,7 @@ import {
   NetworkingError,
 } from './common';
 
-type MakeRequest<R extends CollabRequest2> = (
+type MakeRequest<R extends CollabRequest> = (
   body: R['request']['body'],
 ) => Promise<R['response']>;
 
@@ -84,9 +84,9 @@ export class ClientCommunication {
 
   private async _wrapRequest<T extends CollabRequestType>(
     type: T,
-    request: Extract<CollabRequest2, { type: T }>['request'],
+    request: Extract<CollabRequest, { type: T }>['request'],
   ): Promise<
-    | Extract<CollabRequest2, { type: T }>['response']
+    | Extract<CollabRequest, { type: T }>['response']
     | {
         body: CollabFail;
         type: T;
@@ -100,9 +100,9 @@ export class ClientCommunication {
         emitter: this._opts.messageBus,
         requestTimeout: this._opts.requestTimeout,
       })) as any;
-    } catch (e) {
-      if (e instanceof Error) {
-        const message = e.message as NetworkingError;
+    } catch (error) {
+      if (error instanceof Error) {
+        const message = error.message as NetworkingError;
         switch (message) {
           case NetworkingError.Timeout: {
             return {
@@ -113,11 +113,11 @@ export class ClientCommunication {
           }
           default: {
             let val: never = message;
-            throw e;
+            throw error;
           }
         }
       }
-      throw e;
+      throw error;
     }
   }
 }

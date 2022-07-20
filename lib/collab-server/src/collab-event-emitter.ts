@@ -1,6 +1,6 @@
 import { NetworkingError } from './common';
 
-const TIMEOUT = 1000;
+const DEFAULT_TIMEOUT = 1000;
 
 export enum MessageType {
   PING = 'PING',
@@ -33,12 +33,14 @@ export type Message<T> =
       type: MessageType.BROADCAST;
     };
 
-type AnyMessage = typeof CollabMessageBus['ANY_MESSAGE'];
+type WildCard = typeof CollabMessageBus['WILD_CARD'];
+
+const seenMessages = new WeakSet<Message<any>>();
 
 export class CollabMessageBus {
-  static ANY_MESSAGE = Symbol('ANY_MESSAGE');
+  static WILD_CARD = Symbol('WILD_CARD');
 
-  private _listeners = new Map<string | AnyMessage, Set<CollabListener<any>>>();
+  private _listeners = new Map<string | WildCard, Set<CollabListener<any>>>();
 
   constructor(
     private _opts: {
@@ -48,7 +50,7 @@ export class CollabMessageBus {
     } = {},
   ) {}
 
-  off(name?: string | AnyMessage) {
+  off(name?: string | WildCard) {
     if (name == null) {
       this._listeners.clear();
     } else {
@@ -56,8 +58,8 @@ export class CollabMessageBus {
     }
   }
 
-  // receive messages that specify the give `name` in the `to` field.
-  receiveMessages(name: string | AnyMessage, callback: CollabListener<any>) {
+  // if name is WILD_CARD, then it will receive every message irrespective of the `to` field.
+  receiveMessages(name: string | WildCard, callback: CollabListener<any>) {
     let listeners = this._listeners.get(name);
 
     if (!listeners) {
@@ -76,7 +78,14 @@ export class CollabMessageBus {
     };
   }
 
+  // receive messages that specify the give `name` in the `to` field.
   transmit<T>(message: Message<T>) {
+    // ignore message if it has already been seen
+    if (seenMessages.has(message)) {
+      return;
+    }
+    seenMessages.add(message);
+
     if (message.type === MessageType.BROADCAST && message.to != null) {
       throw new Error('Broadcast message must not have a `to` field');
     }
@@ -87,44 +96,31 @@ export class CollabMessageBus {
       throw new Error('PING/PONG message must have a `to` field');
     }
 
-    let listeners = message.to
-      ? this._listeners.get(message.to) || new Set()
-      : // if there is no `to` field, then it is a broadcast to all.
-        // Using a set to prevent duplicates firing of broadcast if same listener is attached
-        // to multiple `to`s.
-        new Set([...this._listeners.values()].flatMap((r) => [...r]));
+    const _transmit = () => {
+      let targetListeners = message.to
+        ? this._listeners.get(message.to) || new Set()
+        : // if there is no `to` field, then it is a broadcast to all.
+          // Using a set to prevent duplicates firing of broadcast if same listener is attached
+          // to multiple `to`s.
+          new Set([...this._listeners.values()].flatMap((r) => [...r]));
 
-    // Add listeners which listen to any message
-    // this is useful in testing
-    let wildcardListeners =
-      this._listeners.get(CollabMessageBus.ANY_MESSAGE) || new Set();
+      // Add listeners which listen to any message
+      let wildcardListeners =
+        this._listeners.get(CollabMessageBus.WILD_CARD) || new Set();
 
-    [...wildcardListeners, ...listeners]?.forEach((listener) => {
-      if (this._opts.debugSlowdown == null) {
-        listener(message);
-        return;
-      }
-
-      setTimeout(() => {
-        // since time has elapsed, make sure listener is still
-        // alive.
-        if (this._hasListener(listener)) {
+      // Remove duplicate listeners - a listener should only receive a message once
+      new Set([...wildcardListeners, ...targetListeners])?.forEach(
+        (listener) => {
           listener(message);
-        }
-      }, this._opts.debugSlowdown);
-    });
-  }
+        },
+      );
+    };
 
-  // checks if the listener is still in the set or not
-  private _hasListener(target: CollabListener<any>): boolean {
-    for (const [, set] of this._listeners) {
-      for (const listener of set) {
-        if (listener === target) {
-          return true;
-        }
-      }
+    if (this._opts.debugSlowdown == null) {
+      _transmit();
+    } else {
+      setTimeout(_transmit, this._opts.debugSlowdown);
     }
-    return false;
   }
 }
 
@@ -136,7 +132,7 @@ export function wrapRequest(
     emitter,
     to,
     from,
-    requestTimeout = TIMEOUT,
+    requestTimeout = DEFAULT_TIMEOUT,
   }: {
     to: string;
     from: string;

@@ -9,7 +9,7 @@ import {
   CollabFail,
   CollabManager,
   CollabMessageBus,
-  CollabRequest2,
+  CollabRequest,
   CollabRequestType,
   CollabServerState,
   MANAGER_ID,
@@ -179,26 +179,26 @@ const setupServer = ({
 
   const queue: Array<{
     id: string;
-    request: CollabRequest2['request'];
-    response: CollabRequest2['response'] | undefined;
+    request: CollabRequest['request'];
+    response: CollabRequest['response'] | undefined;
   }> = [];
 
   let alterRequestRef: {
-    current?: (data: CollabRequest2['request']) => CollabRequest2['request'];
+    current?: (data: CollabRequest['request']) => CollabRequest['request'];
   } = {
     current: undefined,
   };
 
   let alterResponseRef: {
     current?: (
-      request: CollabRequest2['request'],
-      response: CollabRequest2['response'],
-    ) => CollabRequest2['response'];
+      request: CollabRequest['request'],
+      response: CollabRequest['response'],
+    ) => CollabRequest['response'];
   } = {
     current: undefined,
   };
 
-  collabMessageBus.receiveMessages(CollabMessageBus.ANY_MESSAGE, (message) => {
+  collabMessageBus.receiveMessages(CollabMessageBus.WILD_CARD, (message) => {
     console.log(message);
     if (message.type === MessageType.PING) {
       let alterRequest = alterRequestRef.current;
@@ -272,7 +272,7 @@ const setupServer = ({
   const getReturns = async (): Promise<
     Array<{
       userId: string;
-      result?: CollabRequest2['response'];
+      result?: CollabRequest['response'];
     }>
   > => {
     return queue.map((r) => {

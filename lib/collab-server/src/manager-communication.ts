@@ -1,7 +1,7 @@
 import { CollabMessageBus, MessageType } from './collab-event-emitter';
 import type { HandleRequest } from './collab-manager';
 import { CollabServerState } from './collab-state';
-import { CollabRequest2, CollabRequestType } from './common';
+import { CollabRequest, CollabRequestType } from './common';
 
 export class ManagerCommunication {
   constructor(
@@ -20,7 +20,7 @@ export class ManagerCommunication {
         }
 
         const { id, messageBody } = message;
-        let requestBody: CollabRequest2['request'] = messageBody || {};
+        let requestBody: CollabRequest['request'] = messageBody || {};
 
         switch (requestBody.type) {
           case CollabRequestType.GetDocument:
