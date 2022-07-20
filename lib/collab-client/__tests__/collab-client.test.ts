@@ -84,7 +84,7 @@ const setupClient = (
   controller.signal.addEventListener(
     'abort',
     () => {
-      collabMessageBus.off();
+      collabMessageBus.destroy();
     },
     { once: true },
   );
@@ -238,7 +238,7 @@ const setupServer = ({
   controller.signal.addEventListener(
     'abort',
     () => {
-      collabMessageBus.off();
+      collabMessageBus.destroy();
     },
     { once: true },
   );

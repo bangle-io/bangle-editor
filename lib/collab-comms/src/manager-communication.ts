@@ -1,4 +1,4 @@
-import { CollabMessageBus, MessageType } from './collab-event-emitter';
+import { CollabMessageBus, MessageType } from './collab-message-bus';
 import { CollabRequest, CollabRequestType } from './common';
 
 export class ManagerCommunication {

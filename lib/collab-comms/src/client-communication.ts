@@ -1,8 +1,4 @@
-import {
-  CollabMessageBus,
-  MessageType,
-  wrapRequest,
-} from './collab-event-emitter';
+import { CollabMessageBus, MessageType } from './collab-message-bus';
 import {
   CollabFail,
   CollabRequest,
@@ -12,6 +8,7 @@ import {
   CollabRequestType,
   NetworkingError,
 } from './common';
+import { wrapRequest } from './wrap-request';
 
 type MakeRequest<R extends CollabRequest> = (
   body: R['request']['body'],

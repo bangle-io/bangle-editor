@@ -1,7 +1,3 @@
-import { NetworkingError } from './common';
-
-const DEFAULT_TIMEOUT = 1000;
-
 export enum MessageType {
   PING = 'PING',
   PONG = 'PONG',
@@ -35,12 +31,11 @@ export type Message<T> =
 
 type WildCard = typeof CollabMessageBus['WILD_CARD'];
 
-const seenMessages = new WeakSet<Message<any>>();
-
 export class CollabMessageBus {
   static WILD_CARD = Symbol('WILD_CARD');
-
+  private _destroyed = false;
   private _listeners = new Map<string | WildCard, Set<CollabListener<any>>>();
+  private _seenMessages = new WeakSet<Message<any>>();
 
   constructor(
     private _opts: {
@@ -50,16 +45,20 @@ export class CollabMessageBus {
     } = {},
   ) {}
 
-  off(name?: string | WildCard) {
+  destroy(name?: string | WildCard) {
     if (name == null) {
       this._listeners.clear();
     } else {
       this._listeners.delete(name);
     }
+    this._destroyed = true;
   }
 
   // if name is WILD_CARD, then it will receive every message irrespective of the `to` field.
   receiveMessages(name: string | WildCard, callback: CollabListener<any>) {
+    if (this._destroyed) {
+      return () => {};
+    }
     let listeners = this._listeners.get(name);
 
     if (!listeners) {
@@ -81,10 +80,10 @@ export class CollabMessageBus {
   // receive messages that specify the give `name` in the `to` field.
   transmit<T>(message: Message<T>) {
     // ignore message if it has already been seen
-    if (seenMessages.has(message)) {
+    if (this._seenMessages.has(message)) {
       return;
     }
-    seenMessages.add(message);
+    this._seenMessages.add(message);
 
     if (message.type === MessageType.BROADCAST && message.to != null) {
       throw new Error('Broadcast message must not have a `to` field');
@@ -122,58 +121,4 @@ export class CollabMessageBus {
       setTimeout(_transmit, this._opts.debugSlowdown);
     }
   }
-}
-
-// wraps the message in a request form - ie sends the message and waits for a response
-// if it doesn't get any response within the `requestTimeout`, rejects with a  NetworkingError.Timeout
-export function wrapRequest(
-  payload: unknown,
-  {
-    emitter,
-    to,
-    from,
-    requestTimeout = DEFAULT_TIMEOUT,
-  }: {
-    to: string;
-    from: string;
-    requestTimeout?: number;
-    emitter: CollabMessageBus;
-  },
-): Promise<unknown> {
-  return new Promise((res, rej) => {
-    const id = generateUUID();
-    // NOTE: the field `id` of a PONG message will be the same as the PING message
-    const removeListener = emitter.receiveMessages(from, (message) => {
-      if (message.type !== MessageType.PONG || message.id !== id) {
-        return;
-      }
-
-      clearTimeout(timer);
-      removeListener();
-      return res(message.messageBody);
-    });
-
-    const timer = setTimeout(() => {
-      removeListener();
-      rej(new Error(NetworkingError.Timeout));
-    }, requestTimeout);
-
-    emitter.transmit({
-      to,
-      from,
-      id,
-      messageBody: payload,
-      type: MessageType.PING,
-    });
-  });
-}
-
-function generateUUID(): string {
-  return (
-    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16) +
-    '-' +
-    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16) +
-    '-' +
-    Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16)
-  );
 }

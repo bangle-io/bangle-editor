@@ -1,5 +1,5 @@
 export { ClientCommunication } from './client-communication';
-export { CollabMessageBus, MessageType } from './collab-event-emitter';
+export { CollabMessageBus, MessageType } from './collab-message-bus';
 export type {
   CollabRequest,
   CollabRequestGetDocument,
