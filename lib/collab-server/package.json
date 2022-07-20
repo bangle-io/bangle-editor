@@ -45,6 +45,7 @@
     "@bangle.dev/pm": "*"
   },
   "dependencies": {
+    "@bangle.dev/collab-comms": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^27.5.2",

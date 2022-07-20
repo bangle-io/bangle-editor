@@ -1,33 +1,29 @@
-import { Schema, Step } from '@bangle.dev/pm';
-import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
-
-import { CollabMessageBus } from './collab-event-emitter';
-import { CollabServerState, StepBigger } from './collab-state';
-import {
-  CollabFail,
-  CollabRequest,
+import type {
   CollabRequestGetDocument,
   CollabRequestPullEvents,
   CollabRequestPushEvents,
-  CollabRequestType,
-  MANAGER_ID,
   PullEventsRequestBody,
-  PullEventsResponse,
+  PullEventsResponseBody,
   PushEventsRequestBody,
-  PushEventsResponse,
-} from './common';
-import { ManagerCommunication } from './manager-communication';
+  PushEventsResponseBody,
+} from '@bangle.dev/collab-comms';
+import {
+  CollabFail,
+  CollabMessageBus,
+  CollabRequestType,
+  ManagerCommunication,
+} from '@bangle.dev/collab-comms';
+import { Schema, Step } from '@bangle.dev/pm';
+import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
+
+import { CollabServerState, StepBigger } from './collab-state';
+import { DEFAULT_MANAGER_ID } from './common';
 
 type ApplyState = (
   docName: string,
   newCollabState: CollabServerState,
   oldCollabState: CollabServerState,
 ) => boolean;
-
-export type HandleRequest = (
-  body: CollabRequest['request'],
-  uid?: string,
-) => Promise<CollabRequest['response']>;
 
 const LOG = true;
 
@@ -38,7 +34,9 @@ let log = (isTestEnv ? false : LOG)
 export class CollabManager {
   public readonly managerId: string;
   private readonly _abortController = new AbortController();
-  private _handleRequest: HandleRequest = async (request, id) => {
+  private _handleRequest: ConstructorParameters<
+    typeof ManagerCommunication
+  >[2] = async (request, id) => {
     // TODO Add validation of request
     // if (!request.body.docName) {
     //   throw new Error('docName is required');
@@ -82,7 +80,7 @@ export class CollabManager {
       schema: Schema;
     },
   ) {
-    this.managerId = _options.managerId || MANAGER_ID;
+    this.managerId = _options.managerId || DEFAULT_MANAGER_ID;
 
     if (_options.collabMessageBus) {
       this._serverCom = new ManagerCommunication(
@@ -218,7 +216,7 @@ export class CollabManager {
 
       if (Either.isRight(result)) {
         queueMicrotask(() => {
-          this._serverCom?.onNewCollabState(body.docName, instance.collabState);
+          // this._serverCom?.onNewCollabState(body.docName, instance.collabState);
         });
       }
       return result;
@@ -281,7 +279,7 @@ class Instance {
     steps,
     userId,
     docName,
-  }: PushEventsRequestBody): EitherType<CollabFail, PushEventsResponse> {
+  }: PushEventsRequestBody): EitherType<CollabFail, PushEventsResponseBody> {
     this.lastActive = Date.now();
 
     let version = nonNegInteger(rawVersion);
@@ -318,7 +316,7 @@ class Instance {
     version,
     userId,
     managerId,
-  }: PullEventsRequestBody): EitherType<CollabFail, PullEventsResponse> {
+  }: PullEventsRequestBody): EitherType<CollabFail, PullEventsResponseBody> {
     return Either.map(
       CollabServerState.getEvents(this._collabState, version),
       (events) => {

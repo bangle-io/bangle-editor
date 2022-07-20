@@ -1473,6 +1473,7 @@ __metadata:
   resolution: "@bangle.dev/collab-client@workspace:lib/collab-client"
   dependencies:
     "@bangle.dev/all-base-components": "workspace:*"
+    "@bangle.dev/collab-comms": "workspace:*"
     "@bangle.dev/collab-server": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
@@ -1493,11 +1494,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@bangle.dev/collab-comms@workspace:*, @bangle.dev/collab-comms@workspace:lib/collab-comms":
+  version: 0.0.0-use.local
+  resolution: "@bangle.dev/collab-comms@workspace:lib/collab-comms"
+  dependencies:
+    "@bangle.dev/test-helpers": "workspace:*"
+    "@bangle.dev/utils": "workspace:*"
+    "@types/jest": ^27.5.2
+    "@types/node": ^17.0.43
+    wait-for-expect: ^3.0.2
+  languageName: unknown
+  linkType: soft
+
 "@bangle.dev/collab-server@workspace:*, @bangle.dev/collab-server@workspace:lib/collab-server":
   version: 0.0.0-use.local
   resolution: "@bangle.dev/collab-server@workspace:lib/collab-server"
   dependencies:
     "@bangle.dev/all-base-components": "workspace:*"
+    "@bangle.dev/collab-comms": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": "workspace:*"

@@ -1,6 +1,6 @@
 import { getVersion, receiveTransaction } from 'prosemirror-collab';
 
-import { PullEventsResponse } from '@bangle.dev/collab-server';
+import { PullEventsResponseBody } from '@bangle.dev/collab-comms';
 import {
   EditorState,
   EditorView,
@@ -16,7 +16,7 @@ import { collabClientKey } from './common';
 // returns false if applying these steps failed
 export function applySteps(
   view: EditorView,
-  payload: PullEventsResponse,
+  payload: PullEventsResponseBody,
   logger: (...args: any[]) => void,
 ): boolean | void {
   if (view.isDestroyed) {

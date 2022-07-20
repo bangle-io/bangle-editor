@@ -1,7 +1,6 @@
+import { CollabFail } from '@bangle.dev/collab-comms';
 import type { Node, Step, StepMap, StepResult } from '@bangle.dev/pm';
 import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
-
-import { CollabFail } from './common';
 
 export interface StepBigger extends Step {
   clientID: string;

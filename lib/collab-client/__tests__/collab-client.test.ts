@@ -7,14 +7,16 @@ import waitForExpect from 'wait-for-expect';
 import { defaultSpecs } from '@bangle.dev/all-base-components';
 import {
   CollabFail,
-  CollabManager,
-  CollabMessageBus,
   CollabRequest,
   CollabRequestType,
-  CollabServerState,
-  MANAGER_ID,
-  MAX_STEP_HISTORY,
   MessageType,
+} from '@bangle.dev/collab-comms';
+import {
+  CollabManager,
+  CollabMessageBus,
+  CollabServerState,
+  DEFAULT_MANAGER_ID,
+  MAX_STEP_HISTORY,
 } from '@bangle.dev/collab-server';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
 import { renderTestEditor, sleep } from '@bangle.dev/test-helpers';
@@ -146,7 +148,7 @@ const setupClient = (
 };
 
 const setupServer = ({
-  managerId = MANAGER_ID,
+  managerId = DEFAULT_MANAGER_ID,
   rawDoc = {
     type: 'doc',
     content: [

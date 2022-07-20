@@ -1,6 +1,9 @@
 import { collab } from 'prosemirror-collab';
 
-import { CollabMessageBus, MANAGER_ID } from '@bangle.dev/collab-server';
+import {
+  CollabMessageBus,
+  DEFAULT_MANAGER_ID,
+} from '@bangle.dev/collab-server';
 import { Plugin } from '@bangle.dev/pm';
 import { uuid } from '@bangle.dev/utils';
 
@@ -29,7 +32,7 @@ function pluginsFactory({
   clientID = 'client-' + uuid(),
   collabMessageBus,
   docName,
-  managerId = MANAGER_ID,
+  managerId = DEFAULT_MANAGER_ID,
   // time to wait before retrying a failed request
   cooldownTime = 100,
 }: CollabExtensionOptions) {

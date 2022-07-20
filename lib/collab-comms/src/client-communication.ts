@@ -10,7 +10,6 @@ import {
   CollabRequestPullEvents,
   CollabRequestPushEvents,
   CollabRequestType,
-  MANAGER_ID,
   NetworkingError,
 } from './common';
 
@@ -48,13 +47,13 @@ export class ClientCommunication {
   constructor(
     private _opts: {
       clientId: string;
-      managerId?: string;
+      managerId: string;
       messageBus: CollabMessageBus;
       signal: AbortSignal;
       requestTimeout?: number;
     },
   ) {
-    this.managerId = this._opts.managerId || MANAGER_ID;
+    this.managerId = this._opts.managerId;
 
     const removeListener = this._opts.messageBus?.receiveMessages(
       this._opts.clientId,

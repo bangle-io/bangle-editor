@@ -1,13 +1,14 @@
 import { CollabMessageBus, MessageType } from './collab-event-emitter';
-import type { HandleRequest } from './collab-manager';
-import { CollabServerState } from './collab-state';
 import { CollabRequest, CollabRequestType } from './common';
 
 export class ManagerCommunication {
   constructor(
     managerId: string,
     private readonly _collabMessageBus: CollabMessageBus,
-    handleRequest: HandleRequest,
+    handleRequest: (
+      body: CollabRequest['request'],
+      uid?: string,
+    ) => Promise<CollabRequest['response']>,
     signal: AbortSignal,
   ) {
     const removeListener = this._collabMessageBus.receiveMessages(
@@ -56,10 +57,7 @@ export class ManagerCommunication {
     );
   }
 
-  public onNewCollabState(
-    docName: string,
-    collabState: CollabServerState,
-  ): void {
+  public onNewCollabState(docName: string): void {
     // console.warn('not implemented onNewCollabState:', docName);
   }
 }

@@ -1,4 +1,4 @@
-import { ClientCommunication, CollabFail } from '@bangle.dev/collab-server';
+import { ClientCommunication, CollabFail } from '@bangle.dev/collab-comms';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
 
 import type { CollabBaseState } from './state';

@@ -1,6 +1,6 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
-import { CollabFail } from '@bangle.dev/collab-server';
+import { CollabFail } from '@bangle.dev/collab-comms';
 import {
   Command,
   EditorState,

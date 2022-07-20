@@ -1,16 +1,24 @@
 import { defaultSpecs } from '@bangle.dev/all-base-components';
+import {
+  ClientCommunication,
+  CollabFail,
+  CollabRequestType,
+} from '@bangle.dev/collab-comms';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 
 import {
-  ClientCommunication,
-  CollabFail,
   CollabMessageBus,
-  CollabRequestType,
   CollabServerState,
-  MANAGER_ID,
+  DEFAULT_MANAGER_ID,
 } from '../src';
 import { CollabManager } from '../src/collab-manager';
+
+export {
+  ClientCommunication,
+  CollabFail,
+  CollabRequestType,
+} from '@bangle.dev/collab-comms';
 
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 
@@ -75,6 +83,7 @@ const setup = (
     messageBus: clientBus,
     clientId,
     signal: controller.signal,
+    managerId: DEFAULT_MANAGER_ID,
   });
 
   return { manager, client };
@@ -94,7 +103,7 @@ describe('getDocument', () => {
         doc: rawDoc,
         users: 1,
         version: expect.any(Number),
-        managerId: MANAGER_ID,
+        managerId: DEFAULT_MANAGER_ID,
       },
       ok: true,
       type: 'CollabRequestType.GetDocument',

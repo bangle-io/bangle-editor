@@ -96,6 +96,9 @@
       "@bangle.dev/collab-server": [
         "./lib/collab-server/src"
       ],
+      "@bangle.dev/collab-comms": [
+        "./lib/collab-comms/src"
+      ],
       "@bangle.dev/core": [
         "./lib/core/src"
       ],
