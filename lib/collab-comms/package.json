@@ -41,7 +41,6 @@
     "wait-for-expect": "^3.0.2"
   },
   "dependencies": {
-    "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^27.5.2"
   }
 }
