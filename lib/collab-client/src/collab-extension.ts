@@ -20,6 +20,7 @@ export interface CollabExtensionOptions {
   docName: string;
   managerId?: string;
   cooldownTime?: number;
+  warmupTime?: number;
 }
 
 /**
