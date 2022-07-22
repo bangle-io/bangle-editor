@@ -3,15 +3,13 @@ import {
   ClientCommunication,
   CollabClientRequestType,
   CollabFail,
+  CollabMessageBus,
+  DEFAULT_MANAGER_ID,
 } from '@bangle.dev/collab-comms';
 import { SpecRegistry } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 
-import {
-  CollabMessageBus,
-  CollabServerState,
-  DEFAULT_MANAGER_ID,
-} from '../src';
+import { CollabServerState } from '../src';
 import { CollabManager } from '../src/collab-manager';
 
 export {

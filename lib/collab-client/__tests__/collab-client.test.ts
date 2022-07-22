@@ -10,14 +10,14 @@ import {
   CollabClientRequestType,
   CollabFail,
   CollabManagerBroadCastType,
+  CollabMessageBus,
+  DEFAULT_MANAGER_ID,
   Message,
   MessageType,
 } from '@bangle.dev/collab-comms';
 import {
   CollabManager,
-  CollabMessageBus,
   CollabServerState,
-  DEFAULT_MANAGER_ID,
   MAX_STEP_HISTORY,
 } from '@bangle.dev/collab-manager';
 import { paragraph, SpecRegistry } from '@bangle.dev/core';
@@ -453,7 +453,7 @@ test('newer client get updated document', async () => {
 
   expect(await server.getBroadcasts()).toEqual([
     {
-      from: '@bangle.dev/collab-manager/MANAGER',
+      from: DEFAULT_MANAGER_ID,
       id: expect.any(String),
       messageBody: {
         body: {
@@ -479,28 +479,31 @@ describe('multiplayer collab', () => {
     client1.typeText('bye world ');
     // client 2 will not immediately get the update
     expect(client2.debugString()).toEqual(`doc(paragraph)`);
-
     await waitForExpect(async () => {
       expect(client2.debugString()).toEqual(
         `doc(paragraph("bye world hello world!"))`,
       );
     });
 
-    client2.typeText('one ');
+    client2.typeText('one ', 1);
+
+    await sleep(10);
+    expect(await server.getNotOkayRequests()).toEqual([]);
+
     expect(client2.debugString()).toEqual(
-      `doc(paragraph("bye world one hello world!"))`,
+      `doc(paragraph("one bye world hello world!"))`,
     );
 
     await waitForExpect(async () => {
       expect(server.manager.getCollabState(docName)?.version).toEqual(2);
       expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
-        'doc(paragraph("bye world one hello world!"))',
+        'doc(paragraph("one bye world hello world!"))',
       );
     });
 
     await waitForExpect(async () => {
       expect(client1.debugString()).toEqual(
-        `doc(paragraph("bye world one hello world!"))`,
+        `doc(paragraph("one bye world hello world!"))`,
       );
     });
   });
@@ -954,7 +957,9 @@ describe('failures', () => {
     ]);
 
     // Editor should reset
-    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
   });
 
   test('handles OutdatedVersion', async () => {

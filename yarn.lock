@@ -1488,7 +1488,6 @@ __metadata:
     wait-for-expect: ^3.0.2
     xstate: ^4.32.1
   peerDependencies:
-    "@bangle.dev/collab-manager": "*"
     "@bangle.dev/core": "*"
     "@bangle.dev/pm": "*"
   languageName: unknown
@@ -5411,6 +5410,7 @@ __metadata:
   dependencies:
     "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/collab-client": "workspace:*"
+    "@bangle.dev/collab-comms": "workspace:*"
     "@bangle.dev/collab-manager": "workspace:*"
     "@bangle.dev/core": "workspace:*"
     "@bangle.dev/disk": "workspace:*"

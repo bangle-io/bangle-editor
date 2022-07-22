@@ -16,6 +16,7 @@ export {
   CollabClientRequestType,
   CollabFail,
   CollabManagerBroadCastType,
+  DEFAULT_MANAGER_ID,
   NetworkingError,
 } from './common';
 export { ManagerCommunication } from './manager-communication';

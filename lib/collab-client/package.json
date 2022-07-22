@@ -35,7 +35,6 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "peerDependencies": {
-    "@bangle.dev/collab-manager": "*",
     "@bangle.dev/core": "*",
     "@bangle.dev/pm": "*"
   },

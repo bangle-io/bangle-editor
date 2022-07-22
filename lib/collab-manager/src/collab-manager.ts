@@ -6,6 +6,7 @@ import {
   CollabFail,
   CollabManagerBroadCastType,
   CollabMessageBus,
+  DEFAULT_MANAGER_ID,
   ManagerCommunication,
   PullEventsRequestBody,
   PullEventsResponseBody,
@@ -16,7 +17,6 @@ import { Schema, Step } from '@bangle.dev/pm';
 import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
 
 import { CollabServerState, StepBigger } from './collab-state';
-import { DEFAULT_MANAGER_ID } from './common';
 
 type ApplyState = (
   docName: string,

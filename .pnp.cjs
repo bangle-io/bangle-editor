@@ -2920,7 +2920,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/pm", "workspace:lib/pm"],\
             ["@bangle.dev/test-helpers", "workspace:tooling/test-helpers"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@types/bangle.dev__collab-manager", null],\
             ["@types/bangle.dev__core", null],\
             ["@types/bangle.dev__pm", null],\
             ["@types/jest", "npm:27.5.2"],\
@@ -2932,10 +2931,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["xstate", "npm:4.32.1"]\
           ],\
           "packagePeers": [\
-            "@bangle.dev/collab-manager",\
             "@bangle.dev/core",\
             "@bangle.dev/pm",\
-            "@types/bangle.dev__collab-manager",\
             "@types/bangle.dev__core",\
             "@types/bangle.dev__pm"\
           ],\
@@ -8091,6 +8088,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["e2e-tests", "workspace:tooling/e2e-tests"],\
             ["@bangle.dev/all-base-components", "workspace:tooling/all-base-components"],\
             ["@bangle.dev/collab-client", "virtual:0ec7a6ca33f188e28d76e20d71ed836ddb621337bd72f4d2df8c59e35f3f130b91aa7b0a53785783e134cab95791aa444a0d32e3f657db585fffac49c1066749#workspace:lib/collab-client"],\
+            ["@bangle.dev/collab-comms", "workspace:lib/collab-comms"],\
             ["@bangle.dev/collab-manager", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/collab-manager"],\
             ["@bangle.dev/core", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/core"],\
             ["@bangle.dev/disk", "virtual:a50ad896747f54d4ccb7dd7c6eea0ef55f7febd92032b22f9d7f18724c653c685af98e63996b34c9fcade6d9258f077905ca73469e52041944b7f2cfe9c07206#workspace:lib/disk"],\

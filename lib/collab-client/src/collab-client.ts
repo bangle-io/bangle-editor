@@ -1,7 +1,9 @@
 import { getVersion, sendableSteps } from 'prosemirror-collab';
 
-import { ClientCommunication } from '@bangle.dev/collab-comms';
-import { CollabMessageBus } from '@bangle.dev/collab-manager';
+import {
+  ClientCommunication,
+  CollabMessageBus,
+} from '@bangle.dev/collab-comms';
 import { EditorState, EditorView, Plugin } from '@bangle.dev/pm';
 import { isTestEnv } from '@bangle.dev/utils';
 

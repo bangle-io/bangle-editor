@@ -6,11 +6,8 @@ import reactDOM from 'react-dom';
 
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
-import {
-  CollabManager,
-  CollabMessageBus,
-  CollabServerState,
-} from '@bangle.dev/collab-manager';
+import { CollabMessageBus } from '@bangle.dev/collab-comms';
+import { CollabManager, CollabServerState } from '@bangle.dev/collab-manager';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
