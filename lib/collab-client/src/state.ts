@@ -8,7 +8,7 @@ import {
   Node,
   TextSelection,
 } from '@bangle.dev/pm';
-import { abortableSetTimeout } from '@bangle.dev/utils';
+import { abortableSetTimeout, sleep } from '@bangle.dev/utils';
 
 import { isOutdatedVersion, isStuckInErrorStates } from './commands';
 import {
@@ -149,6 +149,14 @@ export class InitState extends CollabBaseState {
     }
     const { docName, userId, clientCom } = clientInfo;
     const debugSource = `initStateAction:`;
+
+    // Wait for the editor state to settle in before make the getDocument request.
+    if (typeof clientInfo.warmupTime === 'number') {
+      await sleep(clientInfo.warmupTime);
+      if (signal.aborted) {
+        return;
+      }
+    }
 
     const result = await clientCom.getDocument({
       docName,

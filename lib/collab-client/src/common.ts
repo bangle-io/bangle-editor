@@ -119,4 +119,5 @@ export interface ClientInfo {
   readonly docName: string;
   readonly managerId: string;
   readonly userId: string;
+  readonly warmupTime?: number;
 }

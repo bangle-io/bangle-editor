@@ -12,6 +12,7 @@ import {
   onUpstreamChanges,
 } from './commands';
 import {
+  ClientInfo,
   collabClientKey,
   CollabMonitor,
   collabMonitorKey,
@@ -41,6 +42,7 @@ export function collabClientPlugin({
   managerId,
   cooldownTime,
   userId,
+  warmupTime,
 }: {
   requestTimeout?: number;
   clientID: string;
@@ -49,6 +51,7 @@ export function collabClientPlugin({
   managerId: string;
   cooldownTime: number;
   userId: string;
+  warmupTime?: number;
 }) {
   const logger =
     (state: EditorState) =>
@@ -172,13 +175,14 @@ export function collabClientPlugin({
         });
 
         const pluginState = collabClientKey.getState(view.state);
-        const clientInfo = {
+        const clientInfo: ClientInfo = {
           clientID,
           docName,
           cooldownTime,
           clientCom,
           managerId,
           userId,
+          warmupTime,
         };
 
         if (pluginState) {

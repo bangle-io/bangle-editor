@@ -22,15 +22,23 @@ export interface CollabExtensionOptions {
   cooldownTime?: number;
 }
 
+/**
+ *
+ * @param param0
+ * @param param0.requestTimeout - timeout for the requests to the server.
+ * @param param0.cooldownTime - time to wait before retrying after failure.
+ * @param param0.warmupTime - time to wait before starting the collab session. Use this to avoid a bunch
+ *                            of redundant getDocument request if you editor state
+ *                            is modified a bunch of time on startup.
+ */
 function pluginsFactory({
-  // time to wait for a response from server before rejecting the request
   requestTimeout,
   clientID = 'client-' + uuid(),
   collabMessageBus,
   docName,
   managerId = DEFAULT_MANAGER_ID,
-  // time to wait before retrying a failed request
   cooldownTime = 100,
+  warmupTime = 0,
 }: CollabExtensionOptions) {
   const userId = 'user-' + clientID;
   return [
@@ -45,6 +53,7 @@ function pluginsFactory({
       managerId,
       cooldownTime,
       userId,
+      warmupTime,
     }),
   ];
 }
