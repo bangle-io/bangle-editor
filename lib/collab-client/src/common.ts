@@ -40,8 +40,8 @@ export enum EventType {
   HardReset = 'HARD_RESET_EVENT',
   InitDoc = 'INIT_DOC_EVENT',
   InitError = 'INIT_ERROR_EVENT',
-  Push = 'PUSH_EVENT',
   Pull = 'PULL_EVENT',
+  Push = 'PUSH_EVENT',
   PushPullError = 'PUSH_PULL_ERROR_EVENT',
   Ready = 'READY_EVENT',
   Restart = 'RESTART_EVENT',
@@ -110,6 +110,7 @@ export enum CollabStateName {
 export interface CollabPluginState {
   collabState: CollabBaseState;
   previousStates: CollabBaseState[];
+  infiniteTransitionGuard: { counter: number; lastChecked: number };
 }
 
 export interface ClientInfo {

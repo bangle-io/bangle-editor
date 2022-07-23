@@ -25,6 +25,7 @@ export function hardResetClient(): Command {
   return (state, dispatch) => {
     const collabState = getCollabState(state);
     collabState?.dispatchCollabPluginEvent({
+      signal: new AbortController().signal,
       collabEvent: {
         type: EventType.HardReset,
       },
@@ -58,6 +59,7 @@ export function onLocalChanges(): Command {
     const collabState = getCollabState(state);
     if (collabState?.isReadyState()) {
       collabState?.dispatch(
+        new AbortController().signal,
         state,
         dispatch,
         {
@@ -89,6 +91,7 @@ export function onOutdatedVersion(): Command {
     // ready state it's own action will dispatch these events automatically.
     if (collabState?.isReadyState()) {
       collabState.dispatch(
+        new AbortController().signal,
         state,
         dispatch,
         {

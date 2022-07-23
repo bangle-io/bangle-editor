@@ -10,7 +10,11 @@ import {
 } from '@bangle.dev/pm';
 import { abortableSetTimeout, sleep } from '@bangle.dev/utils';
 
-import { isOutdatedVersion, isStuckInErrorStates } from './commands';
+import {
+  isOutdatedVersion,
+  isStuckInErrorStates,
+  onUpstreamChanges,
+} from './commands';
 import {
   ClientInfo,
   collabClientKey,
@@ -52,12 +56,16 @@ export abstract class CollabBaseState {
   debugInfo?: string;
   createdAt = Date.now();
   public dispatchCollabPluginEvent(data: {
+    signal: AbortSignal;
     collabEvent?: ValidEvents;
     debugInfo?: string;
   }): Command {
     return (state, dispatch) => {
-      dispatch?.(state.tr.setMeta(collabClientKey, data));
-      return true;
+      if (!data.signal.aborted) {
+        dispatch?.(state.tr.setMeta(collabClientKey, data));
+        return true;
+      }
+      return false;
     };
   }
 
@@ -96,12 +104,14 @@ export class FatalErrorState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: never,
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -132,12 +142,14 @@ export class InitState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: Parameters<InitState['transition']>[0],
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -169,6 +181,7 @@ export class InitState extends CollabBaseState {
 
     if (!result.ok) {
       this.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -183,6 +196,7 @@ export class InitState extends CollabBaseState {
     const { doc, managerId, version } = result.body;
 
     this.dispatch(
+      signal,
       view.state,
       view.dispatch,
       {
@@ -250,12 +264,14 @@ export class InitDocState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: Parameters<InitDocState['transition']>[0],
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -276,7 +292,7 @@ export class InitDocState extends CollabBaseState {
       );
 
       if (success === false) {
-        this.dispatch(view.state, view.dispatch, {
+        this.dispatch(signal, view.state, view.dispatch, {
           type: EventType.FatalError,
           payload: {
             message: 'Failed to load initial doc',
@@ -284,6 +300,7 @@ export class InitDocState extends CollabBaseState {
         });
       } else {
         this.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -327,12 +344,14 @@ export class InitErrorState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: Parameters<InitErrorState['transition']>[0],
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -366,12 +385,14 @@ export class ReadyState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: PullEvent | PushEvent,
     debugInfo?: string,
   ): boolean {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -386,6 +407,7 @@ export class ReadyState extends CollabBaseState {
     if (!signal.aborted) {
       if (isOutdatedVersion()(view.state)) {
         this.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -395,6 +417,7 @@ export class ReadyState extends CollabBaseState {
         );
       } else if (sendableSteps(view.state)) {
         this.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -407,7 +430,7 @@ export class ReadyState extends CollabBaseState {
     return;
   }
 
-  transition(event: Parameters<ReadyState['dispatch']>[2], debugInfo?: string) {
+  transition(event: Parameters<ReadyState['dispatch']>[3], debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Push) {
       return new PushState(this.state, debugInfo);
@@ -431,12 +454,14 @@ export class PushState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: Parameters<PushState['transition']>[0],
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -453,6 +478,7 @@ export class PushState extends CollabBaseState {
 
     if (!steps) {
       this.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -483,6 +509,7 @@ export class PushState extends CollabBaseState {
       // Pull changes to confirm our steps and also
       // get any new steps from other clients
       this.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -492,6 +519,7 @@ export class PushState extends CollabBaseState {
       );
     } else {
       this.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -539,12 +567,14 @@ export class PullState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: Parameters<PullState['transition']>[0],
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -571,6 +601,7 @@ export class PullState extends CollabBaseState {
       const success = applySteps(view, response.body, logger);
       if (success === false) {
         this.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -580,7 +611,10 @@ export class PullState extends CollabBaseState {
           debugSource + '(local-apply-failed)',
         );
       } else {
+        onUpstreamChanges(response.body.version)(view.state, view.dispatch);
+
         this.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -591,6 +625,7 @@ export class PullState extends CollabBaseState {
       }
     } else {
       this.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -638,12 +673,14 @@ export class PushPullErrorState extends CollabBaseState {
   }
 
   dispatch(
+    signal: AbortSignal,
     state: EditorState,
     dispatch: EditorView['dispatch'] | undefined,
     event: Parameters<PushPullErrorState['transition']>[0],
     debugInfo?: string,
   ) {
     return this.dispatchCollabPluginEvent({
+      signal,
       collabEvent: event,
       debugInfo,
     })(state, dispatch);
@@ -690,6 +727,7 @@ const handleErrorStateAction = async ({
 
   if (isStuckInErrorStates()(view.state)) {
     collabState.dispatch(
+      signal,
       view.state,
       view.dispatch,
       {
@@ -709,6 +747,7 @@ const handleErrorStateAction = async ({
         () => {
           if (!signal.aborted) {
             collabState.dispatch(
+              signal,
               view.state,
               view.dispatch,
               {
@@ -726,6 +765,7 @@ const handleErrorStateAction = async ({
 
     case CollabFail.IncorrectManager: {
       collabState.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -740,6 +780,7 @@ const handleErrorStateAction = async ({
     }
     case CollabFail.HistoryNotAvailable: {
       collabState.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -755,6 +796,7 @@ const handleErrorStateAction = async ({
     case CollabFail.DocumentNotFound: {
       logger('Document not found');
       collabState.dispatch(
+        signal,
         view.state,
         view.dispatch,
         {
@@ -771,6 +813,7 @@ const handleErrorStateAction = async ({
     case CollabFail.OutdatedVersion: {
       if (collabState instanceof PushPullErrorState) {
         collabState.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -780,6 +823,7 @@ const handleErrorStateAction = async ({
         );
       } else {
         collabState.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -802,6 +846,7 @@ const handleErrorStateAction = async ({
           if (!signal.aborted) {
             if (collabState instanceof PushPullErrorState) {
               collabState.dispatch(
+                signal,
                 view.state,
                 view.dispatch,
                 {
@@ -811,6 +856,7 @@ const handleErrorStateAction = async ({
               );
             } else if (collabState instanceof InitErrorState) {
               collabState.dispatch(
+                signal,
                 view.state,
                 view.dispatch,
                 {
@@ -834,6 +880,7 @@ const handleErrorStateAction = async ({
           () => {
             if (!signal.aborted) {
               collabState.dispatch(
+                signal,
                 view.state,
                 view.dispatch,
                 {
@@ -848,6 +895,7 @@ const handleErrorStateAction = async ({
         );
       } else {
         collabState.dispatch(
+          signal,
           view.state,
           view.dispatch,
           {
@@ -868,6 +916,7 @@ const handleErrorStateAction = async ({
           if (!signal.aborted) {
             if (collabState instanceof PushPullErrorState) {
               collabState.dispatch(
+                signal,
                 view.state,
                 view.dispatch,
                 {
@@ -877,6 +926,7 @@ const handleErrorStateAction = async ({
               );
             } else if (collabState instanceof InitErrorState) {
               collabState.dispatch(
+                signal,
                 view.state,
                 view.dispatch,
                 {

@@ -35,7 +35,6 @@ import { collabMonitorKey } from '../src/common';
 waitForExpect.defaults.timeout = 500;
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
 const docName = 'test-doc';
-jest.setTimeout(30000);
 
 const clientMessagingSetup = ({
   managerId,
@@ -588,65 +587,6 @@ describe('multiplayer collab', () => {
     // should not produce any new not-ok requests
     expect(await server.getNotOkayRequests()).toHaveLength(1);
   });
-});
-
-test('hard reset', async () => {
-  let server = setupServer({ managerId: 'manager-test-1' });
-  const client1 = setupClient(server, { clientID: 'client1' });
-  await waitForExpect(async () => {
-    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
-  });
-
-  client1.typeText('one');
-  client1.typeText('two');
-  client1.typeText('three');
-
-  await waitForExpect(async () => {
-    expect(server.manager.getCollabState(docName)?.version).toEqual(3);
-  });
-
-  server = setupServer({
-    managerId: 'manager-test-1',
-    rawDoc: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'reset bro!',
-            },
-          ],
-        },
-      ],
-    },
-  });
-
-  client1.changeServer(server);
-
-  hardResetClient()(client1.view.state, client1.view.dispatch);
-
-  // should be reset
-  await waitForExpect(async () => {
-    expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!"))`);
-  });
-
-  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
-    undefined,
-  );
-
-  // should continue to sync
-  client1.typeText('hi again');
-
-  await waitForExpect(async () => {
-    expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
-      `doc(paragraph("reset bro!hi again"))`,
-    );
-  });
-  expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!hi again"))`);
-
-  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(1);
 });
 
 describe('failures', () => {
@@ -1214,6 +1154,7 @@ describe('failures', () => {
           type: CollabClientRequestType.PullEvents,
           body: {
             ...body,
+            version: 0,
             steps: [
               {
                 stepType: 'replace',
@@ -1338,4 +1279,116 @@ describe('failures', () => {
       undefined,
     );
   });
+});
+
+test('hard reset', async () => {
+  let server = setupServer({ managerId: 'manager-test-1' });
+  const client1 = setupClient(server, { clientID: 'client1' });
+  await waitForExpect(async () => {
+    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+  });
+
+  client1.typeText('one');
+  client1.typeText('two');
+  client1.typeText('three');
+
+  await waitForExpect(async () => {
+    expect(server.manager.getCollabState(docName)?.version).toEqual(3);
+  });
+
+  server = setupServer({
+    managerId: 'manager-test-1',
+    rawDoc: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'reset bro!',
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  client1.changeServer(server);
+
+  hardResetClient()(client1.view.state, client1.view.dispatch);
+
+  // should be reset
+  await waitForExpect(async () => {
+    expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!"))`);
+  });
+
+  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
+    undefined,
+  );
+
+  // should continue to sync
+  client1.typeText('hi again');
+
+  await waitForExpect(async () => {
+    expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+      `doc(paragraph("reset bro!hi again"))`,
+    );
+  });
+  expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!hi again"))`);
+
+  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(1);
+});
+
+test('hard reset to trigger a content refresh', async () => {
+  let server = setupServer({
+    managerId: 'manager-test-1',
+    rawDoc: {
+      type: 'doc',
+      content: [
+        {
+          type: 'bulletList',
+          attrs: {
+            tight: true,
+          },
+          content: [
+            {
+              type: 'listItem',
+              attrs: {
+                todoChecked: null,
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Hello world',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  });
+  const client1 = setupClient(server, { clientID: 'client1' });
+  await waitForExpect(async () => {
+    expect(client1.debugString()).toEqual(
+      `doc(bulletList(listItem(paragraph("Hello world"))))`,
+    );
+  });
+
+  // should continue to sync
+  client1.typeText('X');
+
+  hardResetClient()(client1.view.state, client1.view.dispatch);
+  server.manager.removeCollabState(docName);
+  queueMicrotask(() => {
+    server.manager.removeCollabState(docName);
+  });
+
+  await sleep(5);
 });

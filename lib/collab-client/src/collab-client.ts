@@ -25,7 +25,7 @@ import {
   MAX_STATES_TO_KEEP,
 } from './common';
 import { getCollabState } from './helpers';
-import { CollabBaseState, InitState } from './state';
+import { CollabBaseState, FatalErrorState, InitState } from './state';
 
 const LOG = true;
 let log = (isTestEnv ? false : LOG)
@@ -35,6 +35,9 @@ let log = (isTestEnv ? false : LOG)
 const collabMonitorInitialState = {
   serverVersion: undefined,
 };
+
+const INFINITE_TRANSITION_SAMPLE = 500;
+const INFINITE_TRANSITION_THRESHOLD_TIME = 1000;
 
 export function collabClientPlugin({
   requestTimeout,
@@ -91,6 +94,7 @@ export function collabClientPlugin({
           return {
             collabState: new InitState(),
             previousStates: [],
+            infiniteTransitionGuard: { counter: 0, lastChecked: 0 },
           };
         },
         apply(tr, value, oldState, newState) {
@@ -112,7 +116,45 @@ export function collabClientPlugin({
             return {
               collabState: new InitState(undefined, '(HardReset)'),
               previousStates: [],
+              infiniteTransitionGuard: { counter: 0, lastChecked: 0 },
             };
+          }
+
+          value.infiniteTransitionGuard.counter++;
+
+          // A guard to prevent infinite transitions in case of a bug
+          if (
+            value.infiniteTransitionGuard.counter %
+              INFINITE_TRANSITION_SAMPLE ===
+            0
+          ) {
+            if (
+              Date.now() - value.infiniteTransitionGuard.lastChecked <=
+              INFINITE_TRANSITION_THRESHOLD_TIME
+            ) {
+              queueMicrotask(() => {
+                throw new Error(
+                  'Stuck in infinite transitions. Last few states: ' +
+                    value.previousStates
+                      .map(
+                        (s) => s.name + (s.debugInfo ? `:${s.debugInfo}` : ''),
+                      )
+                      .join(', ')
+                      .slice(0, 5),
+                );
+              });
+
+              return {
+                collabState: new FatalErrorState(
+                  { message: 'Infinite transitions' },
+                  '(stuck in infinite transitions)',
+                ),
+                previousStates: [value.collabState, ...value.previousStates],
+                infiniteTransitionGuard: { counter: 0, lastChecked: 0 },
+              };
+            }
+            value.infiniteTransitionGuard.lastChecked = Date.now();
+            value.infiniteTransitionGuard.counter = 0;
           }
 
           const newCollabState = value.collabState.transition(

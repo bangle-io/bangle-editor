@@ -123,6 +123,7 @@ export type PushEventsRequestBody = {
 export type PullEventsResponseBody = {
   steps?: Array<{ [key: string]: any }>;
   clientIDs?: string[];
+  version: number;
 };
 
 export type PullEventsRequestBody = {
