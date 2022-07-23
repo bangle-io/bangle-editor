@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-comms",
-  "version": "0.30.0-alpha.13",
+  "version": "0.30.0-alpha.14",
   "description": "A package for managing communication of collab clients with their manager",
   "homepage": "https://bangle.dev",
   "authors": [
