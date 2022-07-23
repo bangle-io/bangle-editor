@@ -37,7 +37,9 @@ export function hardResetClient(): Command {
 
 // Saves the server version of the document. Rest of the extension
 // then uses this information to determine whether to pull from server or not.
-export function onUpstreamChanges(serverVersion: number | undefined): Command {
+export function updateServerVersion(
+  serverVersion: number | undefined,
+): Command {
   return (state, dispatch) => {
     const pluginState = collabMonitorKey.getState(state);
     if (!pluginState) {

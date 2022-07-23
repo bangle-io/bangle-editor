@@ -11,7 +11,7 @@ import {
   isOutdatedVersion,
   onLocalChanges,
   onOutdatedVersion,
-  onUpstreamChanges,
+  updateServerVersion,
 } from './commands';
 import {
   ClientInfo,
@@ -214,7 +214,7 @@ export function collabClientPlugin({
           signal: clientComController.signal,
           requestTimeout: requestTimeout,
           onNewVersion: ({ version }) => {
-            onUpstreamChanges(version)(view.state, view.dispatch);
+            updateServerVersion(version)(view.state, view.dispatch);
           },
         });
 

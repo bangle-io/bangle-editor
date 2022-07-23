@@ -13,7 +13,7 @@ import { abortableSetTimeout, sleep } from '@bangle.dev/utils';
 import {
   isOutdatedVersion,
   isStuckInErrorStates,
-  onUpstreamChanges,
+  updateServerVersion,
 } from './commands';
 import {
   ClientInfo,
@@ -611,7 +611,8 @@ export class PullState extends CollabBaseState {
           debugSource + '(local-apply-failed)',
         );
       } else {
-        onUpstreamChanges(response.body.version)(view.state, view.dispatch);
+        // keep our local server version up to date with what server responded with
+        updateServerVersion(response.body.version)(view.state, view.dispatch);
 
         this.dispatch(
           signal,

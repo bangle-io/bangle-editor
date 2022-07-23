@@ -27,8 +27,8 @@ import { uuid } from '@bangle.dev/utils';
 import { CollabExtensionOptions, plugins } from '../src/collab-extension';
 import {
   hardResetClient,
-  onUpstreamChanges,
   queryFatalError,
+  updateServerVersion,
 } from '../src/commands';
 import { collabMonitorKey } from '../src/common';
 
@@ -1254,7 +1254,7 @@ describe('failures', () => {
 
     expect(client1.debugString()).toEqual(`doc(paragraph("wow hello world!"))`);
 
-    onUpstreamChanges(783)(client1.view.state, client1.view.dispatch);
+    updateServerVersion(783)(client1.view.state, client1.view.dispatch);
     expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
       783,
     );
