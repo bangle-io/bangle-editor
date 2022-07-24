@@ -8,6 +8,7 @@ import { EditorState, EditorView, Plugin } from '@bangle.dev/pm';
 import { isTestEnv } from '@bangle.dev/utils';
 
 import {
+  hardResetClient,
   isOutdatedVersion,
   onLocalChanges,
   onOutdatedVersion,
@@ -215,6 +216,9 @@ export function collabClientPlugin({
           requestTimeout: requestTimeout,
           onNewVersion: ({ version }) => {
             updateServerVersion(version)(view.state, view.dispatch);
+          },
+          onResetClient() {
+            hardResetClient()(view.state, view.dispatch);
           },
         });
 

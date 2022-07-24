@@ -80,6 +80,7 @@ const setup = (
   });
 
   const onNewVersion = jest.fn();
+  const onResetClient = jest.fn();
   const client = new ClientCommunication({
     docName: TEST_DOC_NAME,
     messageBus: clientBus,
@@ -87,6 +88,7 @@ const setup = (
     signal: controller.signal,
     managerId: DEFAULT_MANAGER_ID,
     onNewVersion,
+    onResetClient,
   });
 
   return { manager, client, onNewVersion };

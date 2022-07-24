@@ -9,6 +9,7 @@ import {
   CollabManagerBroadCast,
   CollabManagerBroadCastType,
   CollabManagerNewVersion,
+  CollabManagerResetClient,
   NetworkingError,
 } from './common';
 import { wrapRequest } from './wrap-request';
@@ -53,6 +54,7 @@ export class ClientCommunication {
       requestTimeout?: number;
       docName: string;
       onNewVersion: (body: CollabManagerNewVersion['body']) => void;
+      onResetClient: (body: CollabManagerResetClient['body']) => void;
     },
   ) {
     this.managerId = this._opts.managerId;
@@ -80,9 +82,13 @@ export class ClientCommunication {
             this._opts.onNewVersion(messageBody.body);
             return;
           }
+          case CollabManagerBroadCastType.ResetClient: {
+            this._opts.onResetClient(messageBody.body);
+            return;
+          }
           default: {
             let val: never = type;
-            throw new Error(`Unknown message type: ${messageBody.type}`);
+            throw new Error(`Unknown message type: ${type}`);
           }
         }
       },

@@ -7,6 +7,7 @@ export enum NetworkingError {
 
 export enum CollabManagerBroadCastType {
   NewVersion = 'CollabManagerBroadCastType.NewVersion',
+  ResetClient = 'CollabManagerBroadCastType.ResetClient',
 }
 
 export interface CollabManagerNewVersion {
@@ -17,7 +18,16 @@ export interface CollabManagerNewVersion {
   };
 }
 
-export type CollabManagerBroadCast = CollabManagerNewVersion;
+export interface CollabManagerResetClient {
+  type: CollabManagerBroadCastType.ResetClient;
+  body: {
+    docName: string;
+  };
+}
+
+export type CollabManagerBroadCast =
+  | CollabManagerNewVersion
+  | CollabManagerResetClient;
 
 export enum CollabFail {
   ApplyFailed = 'CollabFail.ApplyFailed',

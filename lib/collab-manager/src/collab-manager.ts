@@ -108,8 +108,17 @@ export class CollabManager {
   }
 
   // removes collab state entry associated with docName
-  removeCollabState(docName: string): void {
+  // and does a fresh fetch of the document.
+  // WARNING: this is a destructive operation and will result
+  // in loss of any un-pushed client data.
+  resetDoc(docName: string): void {
     this._instances.delete(docName);
+    this._serverCom?.broadcast({
+      type: CollabManagerBroadCastType.ResetClient,
+      body: {
+        docName: docName,
+      },
+    });
   }
 
   private async _createInstance(

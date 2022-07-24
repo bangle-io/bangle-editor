@@ -1281,114 +1281,155 @@ describe('failures', () => {
   });
 });
 
-test('hard reset', async () => {
-  let server = setupServer({ managerId: 'manager-test-1' });
-  const client1 = setupClient(server, { clientID: 'client1' });
-  await waitForExpect(async () => {
-    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
-  });
+describe('resets', () => {
+  test('hard reset', async () => {
+    let server = setupServer({ managerId: 'manager-test-1' });
+    const client1 = setupClient(server, { clientID: 'client1' });
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
 
-  client1.typeText('one');
-  client1.typeText('two');
-  client1.typeText('three');
+    client1.typeText('one');
+    client1.typeText('two');
+    client1.typeText('three');
 
-  await waitForExpect(async () => {
-    expect(server.manager.getCollabState(docName)?.version).toEqual(3);
-  });
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.version).toEqual(3);
+    });
 
-  server = setupServer({
-    managerId: 'manager-test-1',
-    rawDoc: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'reset bro!',
-            },
-          ],
-        },
-      ],
-    },
-  });
+    server = setupServer({
+      managerId: 'manager-test-1',
+      rawDoc: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'reset bro!',
+              },
+            ],
+          },
+        ],
+      },
+    });
 
-  client1.changeServer(server);
+    client1.changeServer(server);
 
-  hardResetClient()(client1.view.state, client1.view.dispatch);
+    hardResetClient()(client1.view.state, client1.view.dispatch);
 
-  // should be reset
-  await waitForExpect(async () => {
-    expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!"))`);
-  });
+    // should be reset
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!"))`);
+    });
 
-  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
-    undefined,
-  );
+    expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
+      undefined,
+    );
 
-  // should continue to sync
-  client1.typeText('hi again');
+    // should continue to sync
+    client1.typeText('hi again');
 
-  await waitForExpect(async () => {
-    expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        `doc(paragraph("reset bro!hi again"))`,
+      );
+    });
+    expect(client1.debugString()).toEqual(
       `doc(paragraph("reset bro!hi again"))`,
     );
-  });
-  expect(client1.debugString()).toEqual(`doc(paragraph("reset bro!hi again"))`);
 
-  expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(1);
-});
-
-test('hard reset to trigger a content refresh', async () => {
-  let server = setupServer({
-    managerId: 'manager-test-1',
-    rawDoc: {
-      type: 'doc',
-      content: [
-        {
-          type: 'bulletList',
-          attrs: {
-            tight: true,
-          },
-          content: [
-            {
-              type: 'listItem',
-              attrs: {
-                todoChecked: null,
-              },
-              content: [
-                {
-                  type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'Hello world',
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  });
-  const client1 = setupClient(server, { clientID: 'client1' });
-  await waitForExpect(async () => {
-    expect(client1.debugString()).toEqual(
-      `doc(bulletList(listItem(paragraph("Hello world"))))`,
+    expect(collabMonitorKey.getState(client1.view.state)?.serverVersion).toBe(
+      1,
     );
   });
 
-  // should continue to sync
-  client1.typeText('X');
+  test('server sends a client reset to trigger a content refresh', async () => {
+    let server = setupServer({
+      managerId: 'manager-test-1',
+      rawDoc: {
+        type: 'doc',
+        content: [
+          {
+            type: 'bulletList',
+            attrs: {
+              tight: true,
+            },
+            content: [
+              {
+                type: 'listItem',
+                attrs: {
+                  todoChecked: null,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'Hello world',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    });
+    const client1 = setupClient(server, { clientID: 'client1' });
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(
+        `doc(bulletList(listItem(paragraph("Hello world"))))`,
+      );
+    });
 
-  hardResetClient()(client1.view.state, client1.view.dispatch);
-  server.manager.removeCollabState(docName);
-  queueMicrotask(() => {
-    server.manager.removeCollabState(docName);
+    client1.typeText('X');
+
+    expect(client1.debugString()).toEqual(
+      `doc(bulletList(listItem(paragraph("XHello world"))))`,
+    );
+
+    // testing for a now fixed bug where running reset twice would cause
+    // infinite loop
+    server.manager.resetDoc(docName);
+    queueMicrotask(() => {
+      server.manager.resetDoc(docName);
+    });
+
+    // should reset the document to initial state
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(
+        `doc(bulletList(listItem(paragraph("Hello world"))))`,
+      );
+    });
+
+    // should be able to sync after this
+    client1.typeText('happy typing ', 3);
+
+    await waitForExpect(async () => {
+      expect(server.manager.getCollabState(docName)?.doc.toString()).toEqual(
+        `doc(bulletList(listItem(paragraph("happy typing Hello world"))))`,
+      );
+    });
   });
 
-  await sleep(5);
+  test('server reset doc on unaltered doc', async () => {
+    let server = setupServer({
+      managerId: 'manager-test-1',
+    });
+
+    const client1 = setupClient(server, { clientID: 'client1' });
+
+    server.manager.resetDoc(docName);
+
+    await sleep(5);
+    expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+
+    client1.typeText('X');
+
+    expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+  });
 });

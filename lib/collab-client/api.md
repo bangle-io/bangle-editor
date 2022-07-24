@@ -32,7 +32,7 @@ stateDiagram-v2
     PushState --> ReadyState: ReadyEvent
     PushState --> PullState: PullEvent
     PushState --> PushPullErrorState: PushPullErrorEvent
-    PullState --> ReadyState: ReadyAfterPull
+    PullState --> ReadyState: ReadyEvent
     PullState --> PushPullErrorState: PushPullErrorEvent
     PushPullErrorState --> InitState: RestartEvent
     PushPullErrorState --> PullState: PullEvent

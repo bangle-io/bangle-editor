@@ -10,6 +10,7 @@ import { ManagerCommunication } from '../src/manager-communication';
 
 test('broadcasting new version', () => {
   const onNewVersion = jest.fn();
+  const onResetClient = jest.fn();
   const bus = new CollabMessageBus();
 
   new ClientCommunication({
@@ -19,6 +20,7 @@ test('broadcasting new version', () => {
     signal: new AbortController().signal,
     managerId: 'test-manager',
     onNewVersion,
+    onResetClient,
   });
 
   const manager = new ManagerCommunication(
