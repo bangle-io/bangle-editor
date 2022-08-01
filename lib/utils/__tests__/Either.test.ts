@@ -1,3 +1,5 @@
+// Not sure why eslint is not able to figure this one out
+// eslint-disable-next-line import/no-unresolved
 import { expectType } from 'tsd';
 
 import { Either, Left, Right } from '../src/Either';
