@@ -15,6 +15,16 @@ function frmt(doc: any) {
   });
 }
 
+export async function undo(page: Page) {
+  if (isDarwin) {
+    await page.keyboard.press(`Meta+Z`);
+  } else {
+    await page.keyboard.down(`Control`);
+    await page.keyboard.press('z');
+    await page.keyboard.up(`Control`);
+  }
+}
+
 export async function mountEditor(page: Page) {
   await page.locator(pmRoot).waitFor();
   await page.locator('.ProseMirror').waitFor();

@@ -4,6 +4,7 @@ import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   DOMOutputSpec,
+  EditorProps,
   EditorState,
   InputRule,
   Mark,
@@ -131,7 +132,7 @@ function pluginsFactory(): RawPlugins {
               }
               return false;
             },
-          },
+          } as EditorProps,
         }),
     ];
   };
@@ -210,7 +211,7 @@ function pasteLink(regexp: RegExp) {
         }
         return createLink(text)(state, dispatch);
       },
-    },
+    } as EditorProps,
   });
 }
 
@@ -239,7 +240,7 @@ function markPasteRule(
           });
         });
       },
-    },
+    } as EditorProps,
   });
 }
 

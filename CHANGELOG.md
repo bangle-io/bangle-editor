@@ -15,9 +15,9 @@
 
 ## 0.28.9
 
-**@bangle.dev/collab-server**
+**@bangle.dev/collab-manager**
 
-- enhancement: export CollabRequestType
+- enhancement: export CollabClientRequestType
 
 
 ## 0.28.8

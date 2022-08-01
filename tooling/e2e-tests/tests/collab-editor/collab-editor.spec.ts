@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import path from 'path';
 
-import { ctrlKey, isDarwin, repeat, sleep } from '../../setup/helpers';
+import { ctrlKey, isDarwin, repeat, sleep, undo } from '../../setup/helpers';
 import {
   allEditorIds,
   baseTestConfig,
@@ -12,6 +12,7 @@ import {
   TestConfig,
 } from './common';
 
+const EXPECT_POLL_TIMEOUT = 5000;
 test.beforeEach(async ({ page, baseURL }, testInfo) => {
   const url = `${baseURL}/${path.basename(__dirname)}`;
   await page.goto(url, { waitUntil: 'networkidle' });
@@ -119,15 +120,26 @@ test.describe('Editors should sync', () => {
     await page.keyboard.type('test content');
     await sleep();
 
-    expect(await getEditorsInnerHTML(page)).toEqual([
-      ['EDITOR_1', '<h1>Test testing</h1><p>test content</p>'],
-      ['EDITOR_2', '<h1>Test testing</h1><p>test content</p>'],
-      ['EDITOR_3', '<h1>Test testing</h1><p>test content</p>'],
-      ['EDITOR_4', '<h1>Test testing</h1><p>test content</p>'],
-    ]);
+    await expect
+      .poll(
+        () => {
+          return getEditorsInnerHTML(page);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<h1>Test testing</h1><p>test content</p>'],
+        ['EDITOR_2', '<h1>Test testing</h1><p>test content</p>'],
+        ['EDITOR_3', '<h1>Test testing</h1><p>test content</p>'],
+        ['EDITOR_4', '<h1>Test testing</h1><p>test content</p>'],
+      ]);
   });
 
   test('typing a lot of things', async ({ page }) => {
+    test.slow();
+
     await loadPage(page);
 
     await clearEditorText(page, EDITOR_1);
@@ -188,21 +200,22 @@ test.describe('Editors should sync', () => {
       ['EDITOR_2', '<p>a</p>'],
     ]);
 
-    if (isDarwin) {
-      await page.keyboard.press(`Meta+Z`);
-    } else {
-      await page.keyboard.down(`Control`);
-      await page.keyboard.press('z');
-      await page.keyboard.up(`Control`);
-    }
+    await undo(page);
     await page.keyboard.type('b');
 
-    await sleep();
-
-    expect(await getEditorsInnerHTML(page, testEditors)).toEqual([
-      ['EDITOR_1', '<p>b</p>'],
-      ['EDITOR_2', '<p>b</p>'],
-    ]);
+    await expect
+      .poll(
+        () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>b</p>'],
+        ['EDITOR_2', '<p>b</p>'],
+      ]);
   });
 
   test('one editor typing at start other at end', async ({ page }) => {
@@ -228,129 +241,255 @@ test.describe('Editors should sync', () => {
     ]);
   });
 
-  test.describe('Erroring', () => {
-    test('one editor errors 500', async ({ page }) => {
-      await loadPage(page, { collabErrorCode: 500 });
-      await clearEditorText(page, EDITOR_1);
-      await clickEditor(page, EDITOR_1);
-
-      await page.keyboard.type('test');
-      await sleep();
-
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test'],
-        ['EDITOR_2', 'test'],
-        ['EDITOR_3', 'test'],
-        ['EDITOR_4', 'test'],
-      ]);
-
-      // start failing editor 2 requests
-      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
-
-      await clickEditor(page, EDITOR_2);
-
-      await page.keyboard.type('(broken)');
-
-      // wait enough that the get request from editor 2 is resent
-      // and meets an error
-      await sleep(1000);
-
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test'],
-        ['EDITOR_2', 'test(broken)'],
-        ['EDITOR_3', 'test'],
-        ['EDITOR_4', 'test'],
-      ]);
-
-      await clickEditor(page, EDITOR_3);
-
-      await page.keyboard.type('123');
-      await sleep();
-
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test123'],
-        ['EDITOR_2', 'test(broken)'],
-        ['EDITOR_3', 'test123'],
-        ['EDITOR_4', 'test123'],
-      ]);
-
-      // resolve the error
-      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
-      await clickEditor(page, EDITOR_2);
-      // typing on the editor should sync all editors
-      await page.keyboard.type('4');
-      await sleep();
-
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test123(broken)4'],
-        ['EDITOR_2', 'test123(broken)4'],
-        ['EDITOR_3', 'test123(broken)4'],
-        ['EDITOR_4', 'test123(broken)4'],
-      ]);
+  test('slow broadcast', async ({ page }) => {
+    const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+    const LAG_TIME = 100;
+    await loadPage(page, {
+      initialEditors: testEditors,
+      collabSlowdown: LAG_TIME,
     });
 
-    test('editor errors 410', async ({ page }) => {
-      await loadPage(page, { collabErrorCode: 410 });
-      await clearEditorText(page, EDITOR_1);
-      await clickEditor(page, EDITOR_1);
-
-      await page.keyboard.type('test');
-      await sleep();
-
-      await page.pause();
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test'],
-        ['EDITOR_2', 'test'],
-        ['EDITOR_3', 'test'],
-        ['EDITOR_4', 'test'],
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>hello world!</p>'],
+        ['EDITOR_2', '<p>hello world!</p>'],
       ]);
 
-      // start failing editor 2 requests
-      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+    await clearEditorText(page, EDITOR_1);
+    await clickEditor(page, EDITOR_1);
 
-      await clickEditor(page, EDITOR_2);
-      await sleep(1000);
-      await page.keyboard.type('(broken)');
+    await page.keyboard.type('testing content');
 
-      // wait enough that the get request from editor 2 is re-sent
-      // and meets an error
-      await sleep(1000);
+    // editor 2 should be lagging
+    expect(await getEditorsInnerHTML(page, testEditors)).toEqual([
+      ['EDITOR_1', '<p>testing content</p>'],
+      ['EDITOR_2', '<p>hello world!</p>'],
+    ]);
 
-      // for 410 error typing should not work
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test'],
-        ['EDITOR_2', 'test'],
-        ['EDITOR_3', 'test'],
-        ['EDITOR_4', 'test'],
+    await expect
+      .poll(() => getEditorsInnerHTML(page, testEditors), {
+        timeout: EXPECT_POLL_TIMEOUT,
+      })
+      .toEqual([
+        ['EDITOR_1', '<p>testing content</p>'],
+        ['EDITOR_2', '<p>testing content</p>'],
       ]);
-
-      await clickEditor(page, EDITOR_3);
-
-      await page.keyboard.type('123');
-      await sleep();
-
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test123'],
-        ['EDITOR_2', 'test'],
-        ['EDITOR_3', 'test123'],
-        ['EDITOR_4', 'test123'],
-      ]);
-
-      // resolve the error
-      await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
-      await clickEditor(page, EDITOR_2);
-      await sleep();
-
-      // typing on the editor should sync all editors
-      await page.keyboard.type('4');
-      await sleep();
-
-      expect(await getEditorsInnerText(page)).toEqual([
-        ['EDITOR_1', 'test1234'],
-        ['EDITOR_2', 'test1234'],
-        ['EDITOR_3', 'test1234'],
-        ['EDITOR_4', 'test1234'],
-      ]);
-    });
   });
+
+  test('slow broadcast both clients edit simultaneously', async ({ page }) => {
+    const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+    const collabSlowdown = 100;
+    const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
+    const editor2Locator = page.locator(`#${EDITOR_2} .ProseMirror`);
+    await loadPage(page, {
+      initialEditors: testEditors,
+      collabSlowdown: collabSlowdown,
+    });
+
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>hello world!</p>'],
+        ['EDITOR_2', '<p>hello world!</p>'],
+      ]);
+
+    await clearEditorText(page, EDITOR_1);
+
+    // wait for both editors to be in sync
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p><br class="ProseMirror-trailingBreak"></p>'],
+        ['EDITOR_2', '<p><br class="ProseMirror-trailingBreak"></p>'],
+      ]);
+
+    await editor1Locator.type('one');
+    await editor2Locator.type('two');
+
+    expect(await getEditorsInnerHTML(page, testEditors)).toEqual([
+      ['EDITOR_1', '<p>one</p>'],
+      ['EDITOR_2', '<p>two</p>'],
+    ]);
+    await page.pause();
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>onetwo</p>'],
+        ['EDITOR_2', '<p>onetwo</p>'],
+      ]);
+
+    await clickEditor(page, EDITOR_1);
+
+    await undo(page);
+
+    // should undo editor 1's changes
+    await expect
+      .poll(
+        async () => {
+          return getEditorsInnerHTML(page, testEditors);
+        },
+        {
+          timeout: EXPECT_POLL_TIMEOUT,
+        },
+      )
+      .toEqual([
+        ['EDITOR_1', '<p>two</p>'],
+        ['EDITOR_2', '<p>two</p>'],
+      ]);
+  });
+
+  // test.describe.skip('Erroring', () => {
+  //   test('one editor errors 500', async ({ page }) => {
+  //     await loadPage(page, { collabErrorCode: 500 });
+  //     await clearEditorText(page, EDITOR_1);
+  //     await clickEditor(page, EDITOR_1);
+
+  //     await page.keyboard.type('test');
+  //     await sleep();
+
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test'],
+  //       ['EDITOR_2', 'test'],
+  //       ['EDITOR_3', 'test'],
+  //       ['EDITOR_4', 'test'],
+  //     ]);
+
+  //     // start failing editor 2 requests
+  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+
+  //     await clickEditor(page, EDITOR_2);
+
+  //     await page.keyboard.type('(broken)');
+
+  //     // wait enough that the get request from editor 2 is resent
+  //     // and meets an error
+  //     await sleep(1000);
+
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test'],
+  //       ['EDITOR_2', 'test(broken)'],
+  //       ['EDITOR_3', 'test'],
+  //       ['EDITOR_4', 'test'],
+  //     ]);
+
+  //     await clickEditor(page, EDITOR_3);
+
+  //     await page.keyboard.type('123');
+  //     await sleep();
+
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test123'],
+  //       ['EDITOR_2', 'test(broken)'],
+  //       ['EDITOR_3', 'test123'],
+  //       ['EDITOR_4', 'test123'],
+  //     ]);
+
+  //     // resolve the error
+  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+  //     await clickEditor(page, EDITOR_2);
+  //     // typing on the editor should sync all editors
+  //     await page.keyboard.type('4');
+  //     await sleep();
+
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test123(broken)4'],
+  //       ['EDITOR_2', 'test123(broken)4'],
+  //       ['EDITOR_3', 'test123(broken)4'],
+  //       ['EDITOR_4', 'test123(broken)4'],
+  //     ]);
+  //   });
+
+  //   test('editor errors 410', async ({ page }) => {
+  //     await loadPage(page, { collabErrorCode: 410 });
+  //     await clearEditorText(page, EDITOR_1);
+  //     await clickEditor(page, EDITOR_1);
+
+  //     await page.keyboard.type('test');
+  //     await sleep();
+
+  //     await page.pause();
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test'],
+  //       ['EDITOR_2', 'test'],
+  //       ['EDITOR_3', 'test'],
+  //       ['EDITOR_4', 'test'],
+  //     ]);
+
+  //     // start failing editor 2 requests
+  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+
+  //     await clickEditor(page, EDITOR_2);
+  //     await sleep(1000);
+  //     await page.keyboard.type('(broken)');
+
+  //     // wait enough that the get request from editor 2 is re-sent
+  //     // and meets an error
+  //     await sleep(1000);
+
+  //     // for 410 error typing should not work
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test'],
+  //       ['EDITOR_2', 'test'],
+  //       ['EDITOR_3', 'test'],
+  //       ['EDITOR_4', 'test'],
+  //     ]);
+
+  //     await clickEditor(page, EDITOR_3);
+
+  //     await page.keyboard.type('123');
+  //     await sleep();
+
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test123'],
+  //       ['EDITOR_2', 'test'],
+  //       ['EDITOR_3', 'test123'],
+  //       ['EDITOR_4', 'test123'],
+  //     ]);
+
+  //     // resolve the error
+  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+  //     await clickEditor(page, EDITOR_2);
+  //     await sleep();
+
+  //     // typing on the editor should sync all editors
+  //     await page.keyboard.type('4');
+  //     await sleep();
+
+  //     expect(await getEditorsInnerText(page)).toEqual([
+  //       ['EDITOR_1', 'test1234'],
+  //       ['EDITOR_2', 'test1234'],
+  //       ['EDITOR_3', 'test1234'],
+  //       ['EDITOR_4', 'test1234'],
+  //     ]);
+  //   });
+  // });
 });

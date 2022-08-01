@@ -7,6 +7,7 @@
   "include": [
     "**/src/**/*",
     "**/__tests__/**/*.tsx",
+    "**/__tests__/**/*.ts",
     "**/__tests_ts",
     "**/e2e-tests/**/*"
   ],
@@ -45,94 +46,97 @@
     "useDefineForClassFields": true,
     "paths": {
       "@bangle.dev/base-components": [
-        "./components/base-components/src/index"
+        "./components/base-components/src"
       ],
       "@bangle.dev/emoji": [
-        "./components/emoji/src/index"
+        "./components/emoji/src"
       ],
       "@bangle.dev/markdown-front-matter": [
-        "./components/markdown-front-matter/src/index"
+        "./components/markdown-front-matter/src"
       ],
       "@bangle.dev/react-emoji-suggest": [
-        "./components/react-emoji-suggest/src/index"
+        "./components/react-emoji-suggest/src"
       ],
       "@bangle.dev/react-menu": [
-        "./components/react-menu/src/index"
+        "./components/react-menu/src"
       ],
       "@bangle.dev/react-sticker": [
-        "./components/react-sticker/src/index"
+        "./components/react-sticker/src"
       ],
       "@bangle.dev/react-stopwatch": [
-        "./components/react-stopwatch/src/index"
+        "./components/react-stopwatch/src"
       ],
       "@bangle.dev/search": [
-        "./components/search/src/index"
+        "./components/search/src"
       ],
       "@bangle.dev/table": [
-        "./components/table/src/index"
+        "./components/table/src"
       ],
       "@bangle.dev/text-formatting": [
-        "./components/text-formatting/src/index"
+        "./components/text-formatting/src"
       ],
       "@bangle.dev/timestamp": [
-        "./components/timestamp/src/index"
+        "./components/timestamp/src"
       ],
       "@bangle.dev/tooltip": [
-        "./components/tooltip/src/index"
+        "./components/tooltip/src"
       ],
       "@bangle.dev/trailing-node": [
-        "./components/trailing-node/src/index"
+        "./components/trailing-node/src"
       ],
       "@bangle.dev/wiki-link": [
-        "./components/wiki-link/src/index"
+        "./components/wiki-link/src"
       ],
       "broader-unit-tests": [
-        "./lib/broader-unit-tests/src/index"
+        "./lib/broader-unit-tests/src"
       ],
       "@bangle.dev/collab-client": [
-        "./lib/collab-client/src/index"
+        "./lib/collab-client/src"
       ],
-      "@bangle.dev/collab-server": [
-        "./lib/collab-server/src/index"
+      "@bangle.dev/collab-manager": [
+        "./lib/collab-manager/src"
+      ],
+      "@bangle.dev/collab-comms": [
+        "./lib/collab-comms/src"
       ],
       "@bangle.dev/core": [
-        "./lib/core/src/index"
+        "./lib/core/src"
       ],
       "@bangle.dev/disk": [
-        "./lib/disk/src/index"
+        "./lib/disk/src"
       ],
       "@bangle.dev/markdown": [
-        "./lib/markdown/src/index"
+        "./lib/markdown/src"
       ],
       "@bangle.dev/pm": [
-        "./lib/pm/src/index"
+        "./lib/pm/src"
       ],
       "@bangle.dev/pm-commands": [
-        "./lib/pm-commands/src/index"
+        "./lib/pm-commands/src"
       ],
       "@bangle.dev/shared-types": [
-        "./lib/shared-types/src/index"
+        "./lib/shared-types/src"
       ],
       "@bangle.dev/react": [
-        "./lib/react/src/index"
+        "./lib/react/src"
       ],
       "@bangle.dev/utils": [
-        "./lib/utils/src/index"
+        "./lib/utils/src"
       ],
       "@bangle.dev/all-base-components": [
-        "./tooling/all-base-components/src/index"
+        "./tooling/all-base-components/src"
       ],
       "bangle-scripts": [
-        "./tooling/bangle-scripts/src/index"
+        "./tooling/bangle-scripts/src"
       ],
       "e2e-tests": [
-        "./tooling/e2e-tests/tests/index"
+        "./tooling/e2e-tests/tests"
       ],
       "@bangle.dev/jest-utils": [
-        "./tooling/jest-utils/src/index"
+        "./tooling/jest-utils/src"
       ],
       "@bangle.dev/test-helpers": [
-        "./tooling/test-helpers/src/index"
+        "./tooling/test-helpers/src"
       ]
     }
   }

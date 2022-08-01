@@ -1,10 +1,9 @@
 import { isProdEnv, isTestEnv } from './environment';
 
-// Throws an abort error if a signal is already aborted.
-export function assertNotUndefined(
-  value: unknown,
+export function assertNotUndefined<T>(
+  value: T | undefined,
   message: string,
-): asserts value {
+): asserts value is T {
   if (value === undefined) {
     throw new Error(`assertion failed: ${message}`);
   }
@@ -86,6 +85,21 @@ export function matchAllPlus(regexp: RegExp, str: string): MatchType[] {
 
 export function uuid(len = 10) {
   return Math.random().toString(36).substring(2, 15).slice(0, len);
+}
+
+export function abortableSetTimeout(
+  callback: (args: void) => void,
+  signal: AbortSignal,
+  ms: number,
+): void {
+  const timer = setTimeout(callback, ms);
+  signal.addEventListener(
+    'abort',
+    () => {
+      clearTimeout(timer);
+    },
+    { once: true },
+  );
 }
 
 export function getIdleCallback(cb: Function) {

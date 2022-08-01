@@ -2,6 +2,7 @@ export * from './browser';
 export type { DebouncedFunction } from './debounce-fn';
 export { debounceFn } from './debounce-fn';
 export * from './dom-helpers';
+export * from './Either';
 export * from './Emitter';
 export * from './environment';
 export * from './js-utils';

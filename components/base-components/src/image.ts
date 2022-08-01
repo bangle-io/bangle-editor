@@ -4,6 +4,7 @@ import type { RawPlugins, RawSpecs } from '@bangle.dev/core';
 import {
   Command,
   DirectEditorProps,
+  EditorProps,
   EditorView,
   InputRule,
   Node,
@@ -160,7 +161,7 @@ function pluginsFactory({
               },
             } as DirectEditorProps['handleDOMEvents'],
 
-            handlePaste: (view, rawEvent) => {
+            handlePaste: (view: EditorView, rawEvent: any) => {
               const event = rawEvent;
               if (!event.clipboardData) {
                 return false;

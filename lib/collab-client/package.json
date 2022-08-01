@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/collab-client",
-  "version": "0.30.0-alpha.1",
+  "version": "0.30.0-alpha.15",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -35,24 +35,26 @@
     "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
   },
   "peerDependencies": {
-    "@bangle.dev/collab-server": "*",
     "@bangle.dev/core": "*",
     "@bangle.dev/pm": "*"
   },
   "devDependencies": {
     "@bangle.dev/all-base-components": "workspace:*",
-    "@bangle.dev/collab-server": "workspace:*",
+    "@bangle.dev/collab-manager": "workspace:*",
     "@bangle.dev/core": "workspace:*",
     "@bangle.dev/disk": "workspace:*",
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/node": "^17.0.43",
     "localforage": "^1.9.0",
-    "strict-event-emitter-types": "^2.0.0"
+    "strict-event-emitter-types": "^2.0.0",
+    "wait-for-expect": "^3.0.2"
   },
   "dependencies": {
+    "@bangle.dev/collab-comms": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^27.5.2",
-    "prosemirror-collab": "^1.3.0"
+    "prosemirror-collab": "^1.3.0",
+    "xstate": "^4.32.1"
   }
 }

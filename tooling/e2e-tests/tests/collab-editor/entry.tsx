@@ -1,16 +1,13 @@
 import './style.css';
 
+import { inspect } from '@xstate/inspect';
 import React, { useCallback, useEffect, useState } from 'react';
 import reactDOM from 'react-dom';
 
 import { defaultPlugins, defaultSpecs } from '@bangle.dev/all-base-components';
 import { collabClient } from '@bangle.dev/collab-client';
-import type { CollabRequestType } from '@bangle.dev/collab-server';
-import {
-  CollabError,
-  Manager,
-  parseCollabResponse,
-} from '@bangle.dev/collab-server';
+import { CollabMessageBus } from '@bangle.dev/collab-comms';
+import { CollabManager, CollabServerState } from '@bangle.dev/collab-manager';
 import {
   BangleEditor as CoreBangleEditor,
   RawPlugins,
@@ -18,6 +15,7 @@ import {
 } from '@bangle.dev/core';
 import { Node } from '@bangle.dev/pm';
 import { BangleEditor, useEditorState } from '@bangle.dev/react';
+import { Emitter } from '@bangle.dev/utils';
 
 import { win } from '../../setup/entry-helpers';
 import {
@@ -46,19 +44,11 @@ const rawDoc = {
   ],
 };
 
-class SimpleDisk {
-  constructor(public specRegistry: SpecRegistry) {}
-
-  async flush(_key: string, _doc: Node, version: number) {}
-  async load(_key: string): Promise<Node> {
-    return this.specRegistry.schema.nodeFromJSON(rawDoc) as Node;
-  }
-
-  async update(
-    _key: string,
-    _getLatestDoc: () => { doc: Node; version: number },
-  ) {}
-}
+inspect({
+  // options
+  // url: 'https://stately.ai/viz?inspect', // (default)
+  iframe: false, // open in new window
+});
 
 export default function setup() {
   document.body.className = 'collab-editor-body';
@@ -76,23 +66,39 @@ export default function setup() {
       reactDOM.unmountComponentAtNode(wrapper);
     };
   };
+
+  // setTimeout(() => {
+  //   win.loadCollabComponent();
+  // }, 20);
 }
 
 function Main({ testConfig }: { testConfig: TestConfig }) {
   console.info('testConfig', testConfig);
   const [data] = useState(() => {
     const specRegistry = new SpecRegistry(defaultSpecs());
-    const disk = new SimpleDisk(specRegistry);
 
-    const editorManager = new Manager(specRegistry.schema, {
-      disk,
-      collectUsersTimeout: 400,
-      userWaitTimeout: 400,
-      instanceCleanupTimeout: 700,
+    const collabMessageBus = new CollabMessageBus({
+      debugSlowdown: testConfig.collabSlowdown,
     });
+
+    const editorManager = new CollabManager({
+      schema: specRegistry.schema,
+      collabMessageBus: collabMessageBus,
+      async getInitialState() {
+        return new CollabServerState(
+          specRegistry.schema.nodeFromJSON(rawDoc) as Node,
+        );
+      },
+      applyState: (docName, newCollab, oldCollab) => {
+        return true;
+      },
+    });
+
+    (window as any).editorManager = editorManager;
     return {
       editorManager,
       specRegistry,
+      collabMessageBus,
     };
   });
 
@@ -126,11 +132,12 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     win.collabEditors = editors;
     win.manager = data.editorManager;
     win.specRegistry = data.specRegistry;
+    win.collabMessageBus = data.collabMessageBus;
   }, [editors, data]);
 
   useEffect(() => {
     return () => {
-      data.editorManager.destroy();
+      // data.editorManager
     };
   }, [data]);
 
@@ -172,7 +179,12 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
             editorInfo={obj}
             plugins={() => [
               ...defaultPlugins(),
-              collabPlugin(data.editorManager, obj.id, obj, testConfig),
+              collabPlugin(
+                data.editorManager,
+                obj.id,
+                testConfig,
+                data.collabMessageBus,
+              ),
             ]}
           />
         ) : (
@@ -278,64 +290,15 @@ function EditorWrapper({
 }
 
 function collabPlugin(
-  editorManager: Manager,
+  editorManager: CollabManager,
   clientID: keyof EditorInfos,
-  editorInfo: EditorInfo,
   testConfig: TestConfig,
+  collabMessageBus: CollabMessageBus,
 ) {
-  // TODO fix types of collab plugin
-  const sendRequest = (type: CollabRequestType, payload: any): any => {
-    console.log(clientID, editorInfo.rejectRequests);
-    if (editorInfo.rejectRequests) {
-      return Promise.reject(
-        new CollabError(testConfig.collabErrorCode, 'Unknown error'),
-      );
-    }
-    return editorManager.handleRequest(type, payload).then((obj) => {
-      return parseCollabResponse(obj);
-    });
-  };
-
   return collabClient.plugins({
     docName: 'test-doc',
     clientID,
-    async getDocument({ docName, userId }) {
-      return sendRequest('get_document', {
-        docName,
-        userId,
-      });
-    },
-
-    async pullEvents({ version, docName, userId, managerId }) {
-      return sendRequest('pull_events', {
-        docName,
-        version,
-        userId,
-        managerId,
-      });
-    },
-
-    async pushEvents({ version, steps, clientID, docName, userId, managerId }) {
-      return sendRequest('push_events', {
-        clientID,
-        version,
-        steps,
-        docName,
-        userId,
-        managerId,
-      });
-    },
-    onFatalError(error) {
-      if (error.errorCode >= 500) {
-        console.log(
-          'editor received fatal error not restarting',
-          error.message,
-        );
-
-        return false;
-      }
-
-      return true;
-    },
+    collabMessageBus,
+    managerId: editorManager.managerId,
   });
 }

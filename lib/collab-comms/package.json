@@ -1,0 +1,46 @@
+{
+  "name": "@bangle.dev/collab-comms",
+  "version": "0.30.0-alpha.15",
+  "description": "A package for managing communication of collab clients with their manager",
+  "homepage": "https://bangle.dev",
+  "authors": [
+    {
+      "name": "Kushan Joshi",
+      "email": "0o3ko0@gmail.com",
+      "web": "http://github.com/kepta"
+    }
+  ],
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bangle-io/bangle.dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bangle-io/bangle.dev/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "compile-ts": "yarn g:tsc --build $INIT_CWD",
+    "watch-ts": "yarn g:tsc -p $INIT_CWD -w"
+  },
+  "devDependencies": {
+    "@bangle.dev/test-helpers": "workspace:*",
+    "@types/node": "^17.0.43",
+    "wait-for-expect": "^3.0.2"
+  },
+  "dependencies": {
+    "@types/jest": "^27.5.2"
+  }
+}

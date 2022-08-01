@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/shared-types",
-  "version": "0.30.0-alpha.1",
+  "version": "0.30.0-alpha.15",
   "homepage": "https://bangle.dev",
   "authors": [
     {
@@ -22,7 +22,7 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "prosemirror-markdown": "^1.9.1"
+    "prosemirror-markdown": "^1.9.3"
   },
   "publishConfig": {
     "access": "public",
