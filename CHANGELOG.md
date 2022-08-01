@@ -1,5 +1,12 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.31.0
+
+- Breaking: `@bangle.dev/collab-client` has been rewritten. Docs are still WIP.
+- New package: `@bangle.dev/collab-comms` for communicating between collab-manager and collab-client. Docs are still WIP.
+- New package: `@bangle.dev/collab-manager` for managing collab-client. Docs are still WIP.
+- Archived: `@bangle.dev/disk` and `@bangle.dev/collab-server` have been archived.
+
 ## 0.30.0
 
 - Breaking: `@bangle.dev/collab` no longer exports `spec`. 
