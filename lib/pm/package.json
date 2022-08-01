@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/pm",
-  "version": "0.31.0",
+  "version": "0.31.1",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",

@@ -211,12 +211,6 @@ export class CollabManager {
     const work = (instance: Instance) => {
       const { type, body } = request;
 
-      log(
-        `uid=${uid} userId=${
-          body.userId
-        } ${type} payload-steps=${JSON.stringify(body.steps)}`,
-      );
-
       if (this.managerId !== body.managerId) {
         return Either.left(CollabFail.IncorrectManager);
       }

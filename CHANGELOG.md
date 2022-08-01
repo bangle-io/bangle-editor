@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.31.1
+
+- enhancement: `@bangle.dev/collab-manager` reduce logging.
+
 ## 0.31.0
 
 - Breaking: `@bangle.dev/collab-client` has been rewritten. Docs are still WIP.
