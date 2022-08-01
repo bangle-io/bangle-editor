@@ -107,8 +107,9 @@ export class CollabManager {
     return this._abortController.signal.aborted;
   }
 
-  // removes collab state entry associated with docName
-  // and does a fresh fetch of the document.
+  // removes collab state entry associated with docName.
+  // And broadcast to any client with the docName (if any exists)
+  // to reset its content and do a fresh fetch of the document.
   // WARNING: this is a destructive operation and will result
   // in loss of any un-pushed client data.
   resetDoc(docName: string): void {
