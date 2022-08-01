@@ -243,7 +243,7 @@ test.describe('Editors should sync', () => {
 
   test('slow broadcast', async ({ page }) => {
     const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
-    const LAG_TIME = 50;
+    const LAG_TIME = 100;
     await loadPage(page, {
       initialEditors: testEditors,
       collabSlowdown: LAG_TIME,
