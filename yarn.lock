@@ -1498,7 +1498,6 @@ __metadata:
   resolution: "@bangle.dev/collab-comms@workspace:lib/collab-comms"
   dependencies:
     "@bangle.dev/test-helpers": "workspace:*"
-    "@bangle.dev/utils": "workspace:*"
     "@types/jest": ^27.5.2
     "@types/node": ^17.0.43
     wait-for-expect: ^3.0.2
@@ -1512,7 +1511,6 @@ __metadata:
     "@bangle.dev/all-base-components": "workspace:*"
     "@bangle.dev/collab-comms": "workspace:*"
     "@bangle.dev/core": "workspace:*"
-    "@bangle.dev/disk": "workspace:*"
     "@bangle.dev/pm": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
     "@types/jest": ^27.5.2
@@ -12071,7 +12069,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
   version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
