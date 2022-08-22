@@ -833,6 +833,9 @@ describe('failures', () => {
     client1.typeText('wow ');
     expect(client1.debugString()).toEqual(`doc(paragraph("wow hello world!"))`);
 
+    expect(document.querySelectorAll('.bangle-collab-frozen').length).toBe(0);
+    expect(document.querySelectorAll('.bangle-collab-active').length).toBe(1);
+
     await sleep(10);
 
     expect(await server.getNotOkayRequests()).toEqual([
@@ -850,6 +853,9 @@ describe('failures', () => {
     expect(queryFatalError()(client1.view.state)).toEqual({
       message: 'Incorrect manager',
     });
+
+    expect(document.querySelectorAll('.bangle-collab-frozen').length).toBe(1);
+    expect(document.querySelectorAll('.bangle-collab-active').length).toBe(0);
 
     expect(console.error).toBeCalledTimes(1);
     expect(console.error).nthCalledWith(

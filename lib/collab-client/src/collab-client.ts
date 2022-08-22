@@ -274,6 +274,16 @@ export function collabClientPlugin({
     }),
     new Plugin({
       key: collabMonitorKey,
+      props: {
+        attributes: (state: any) => {
+          const editingAllowed = getCollabState(state)?.editingAllowed;
+          return {
+            class: editingAllowed
+              ? 'bangle-collab-active'
+              : 'bangle-collab-frozen',
+          };
+        },
+      },
       state: {
         init: (_, _state): CollabMonitor => {
           return collabMonitorInitialState;
