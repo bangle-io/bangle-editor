@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.31.2
+
+- enhancement: `@bangle.dev/collab-manager` added two classes `bangle-collab-active` and `bangle-collab-frozen` on editor to indicate whether the editor is active or frozen to reflect the collaboration state.
+
 ## 0.31.1
 
 - enhancement: `@bangle.dev/collab-manager` reduce logging.
