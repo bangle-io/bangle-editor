@@ -1,6 +1,5 @@
 import './style.css';
 
-import { inspect } from '@xstate/inspect';
 import React, { useCallback, useEffect, useState } from 'react';
 import reactDOM from 'react-dom';
 
@@ -43,12 +42,6 @@ const rawDoc = {
     },
   ],
 };
-
-inspect({
-  // options
-  // url: 'https://stately.ai/viz?inspect', // (default)
-  iframe: false, // open in new window
-});
 
 export default function setup() {
   document.body.className = 'collab-editor-body';
