@@ -123,7 +123,7 @@ export function isStuckInErrorStates() {
     }
 
     return (
-      previousStates.filter((s) => s.isErrorState).length >
+      previousStates.filter((s) => s.isTaggedError).length >
       STUCK_IN_ERROR_THRESHOLD
     );
   };

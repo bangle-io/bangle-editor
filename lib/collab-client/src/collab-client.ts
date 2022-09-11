@@ -83,7 +83,7 @@ export function collabClientPlugin({
         }
 
         // prevent any other tr while state is in one of the no-edit state
-        if (tr.docChanged && getCollabState(state)?.editingAllowed === false) {
+        if (tr.docChanged && getCollabState(state)?.isEditingBlocked === true) {
           console.debug('@bangle.dev/collab-client blocking transaction');
           return false;
         }
@@ -276,11 +276,11 @@ export function collabClientPlugin({
       key: collabMonitorKey,
       props: {
         attributes: (state: any) => {
-          const editingAllowed = getCollabState(state)?.editingAllowed;
+          const editingBlocked = getCollabState(state)?.isEditingBlocked;
           return {
-            class: editingAllowed
-              ? 'bangle-collab-active'
-              : 'bangle-collab-frozen',
+            class: editingBlocked
+              ? 'bangle-collab-frozen'
+              : 'bangle-collab-active',
           };
         },
       },
