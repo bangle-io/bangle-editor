@@ -24,9 +24,9 @@ stateDiagram-v2
     InitState --> InitDocState: InitDocEvent
     InitState --> InitErrorState: InitErrorEvent
     InitDocState --> ReadyState: ReadyEvent
-    InitDocState --> FatalErrorState: FatalErrorEvent
+    InitDocState --> FatalState: FatalEvent
     InitErrorState --> InitState: RestartEvent
-    InitErrorState --> FatalErrorState: FatalErrorEvent
+    InitErrorState --> FatalState: FatalEvent
     ReadyState --> PushState: PushEvent
     ReadyState --> PullState: PullEvent
     PushState --> ReadyState: ReadyEvent
@@ -36,6 +36,6 @@ stateDiagram-v2
     PullState --> PushPullErrorState: PushPullErrorEvent
     PushPullErrorState --> InitState: RestartEvent
     PushPullErrorState --> PullState: PullEvent
-    PushPullErrorState --> FatalErrorState: FatalErrorEvent
-    FatalErrorState --> [*]
+    PushPullErrorState --> FatalState: FatalEvent
+    FatalState --> [*]
 ```

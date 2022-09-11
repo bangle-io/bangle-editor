@@ -706,7 +706,7 @@ describe('failures', () => {
     expect(console.error).toBeCalledTimes(1);
     expect(console.error).nthCalledWith(
       1,
-      expect.stringContaining('In FatalErrorState message=Document not found'),
+      expect.stringContaining('In FatalState message=Document not found'),
     );
   });
 
@@ -800,7 +800,7 @@ describe('failures', () => {
     expect(console.error).nthCalledWith(
       1,
       expect.stringContaining(
-        'In FatalErrorState message=History/Server not available',
+        'In FatalState message=History/Server not available',
       ),
     );
   });
@@ -851,6 +851,7 @@ describe('failures', () => {
 
     // Editor should enter fatal error
     expect(queryFatalError()(client1.view.state)).toEqual({
+      isError: true,
       message: 'Incorrect manager',
     });
 
@@ -860,7 +861,7 @@ describe('failures', () => {
     expect(console.error).toBeCalledTimes(1);
     expect(console.error).nthCalledWith(
       1,
-      expect.stringContaining('In FatalErrorState message=Incorrect manager'),
+      expect.stringContaining('In FatalState message=Incorrect manager'),
     );
   });
 
@@ -1031,6 +1032,7 @@ describe('failures', () => {
     ).toBeGreaterThan(4);
 
     expect(queryFatalError()(client1.view.state)).toStrictEqual({
+      isError: true,
       message:
         'Stuck in error loop, last failure: CollabFail.ManagerUnresponsive',
     });
@@ -1040,7 +1042,7 @@ describe('failures', () => {
       [MockFunction] {
         "calls": Array [
           Array [
-            "@bangle.dev/collab-client: In FatalErrorState message=Stuck in error loop, last failure: CollabFail.ManagerUnresponsive",
+            "@bangle.dev/collab-client: In FatalState message=Stuck in error loop, last failure: CollabFail.ManagerUnresponsive",
           ],
         ],
         "results": Array [

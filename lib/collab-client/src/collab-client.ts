@@ -26,7 +26,7 @@ import {
   MAX_STATES_TO_KEEP,
 } from './common';
 import { getCollabState } from './helpers';
-import { CollabBaseState, FatalErrorState, InitState } from './state';
+import { CollabBaseState, FatalState, InitState } from './state';
 
 const LOG = true;
 let log = (isTestEnv ? false : LOG)
@@ -107,6 +107,7 @@ export function collabClientPlugin({
             return value;
           }
 
+          // By pass any logic, if we receive this event and set the state to Init
           if (meta.collabEvent.type === EventType.HardReset) {
             logger(newState)(
               'apply state HARD RESET, newStateName=',
@@ -146,8 +147,8 @@ export function collabClientPlugin({
               });
 
               return {
-                collabState: new FatalErrorState(
-                  { message: 'Infinite transitions' },
+                collabState: new FatalState(
+                  { message: 'Infinite transitions', isError: true },
                   '(stuck in infinite transitions)',
                 ),
                 previousStates: [value.collabState, ...value.previousStates],
@@ -184,7 +185,7 @@ export function collabClientPlugin({
 
             if (newCollabState.isFatalState()) {
               console.error(
-                `@bangle.dev/collab-client: In FatalErrorState message=${newCollabState.state.message}`,
+                `@bangle.dev/collab-client: In FatalState message=${newCollabState.state.message}`,
               );
             }
 

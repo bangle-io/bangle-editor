@@ -25,7 +25,7 @@ export interface CollabMonitorTrMeta {
 
 // Events
 export type ValidEvents =
-  | FatalErrorEvent
+  | FatalEvent
   | HardResetEvent
   | InitDocEvent
   | InitErrorEvent
@@ -36,7 +36,7 @@ export type ValidEvents =
   | RestartEvent;
 
 export enum EventType {
-  FatalError = 'FATAL_ERROR_EVENT',
+  Fatal = 'FATAL_EVENT',
   HardReset = 'HARD_RESET_EVENT',
   InitDoc = 'INIT_DOC_EVENT',
   InitError = 'INIT_ERROR_EVENT',
@@ -47,10 +47,11 @@ export enum EventType {
   Restart = 'RESTART_EVENT',
 }
 
-export interface FatalErrorEvent {
-  type: EventType.FatalError;
+export interface FatalEvent {
+  type: EventType.Fatal;
   payload: {
     message: string;
+    isError: boolean;
   };
 }
 
@@ -97,7 +98,7 @@ export interface HardResetEvent {
 }
 
 export enum CollabStateName {
-  FatalError = 'FATAL_ERROR_STATE',
+  Fatal = 'FATAL_STATE',
   Init = 'INIT_STATE',
   InitDoc = 'INIT_DOC_STATE',
   InitError = 'INIT_ERROR_STATE',
