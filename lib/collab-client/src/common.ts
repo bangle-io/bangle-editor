@@ -1,7 +1,7 @@
 import { ClientCommunication, CollabFail } from '@bangle.dev/collab-comms';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
 
-import type { CollabBaseState } from './state';
+import type { ValidCollabState } from './state';
 
 export const MAX_STATES_TO_KEEP = 15;
 // If there are STUCK_IN_ERROR_THRESHOLD or more states in the history
@@ -108,8 +108,8 @@ export enum CollabStateName {
 }
 
 export interface CollabPluginState {
-  collabState: CollabBaseState;
-  previousStates: CollabBaseState[];
+  collabState: ValidCollabState;
+  previousStates: ValidCollabState[];
   infiniteTransitionGuard: { counter: number; lastChecked: number };
 }
 

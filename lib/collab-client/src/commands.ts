@@ -19,6 +19,13 @@ export function queryFatalError() {
   };
 }
 
+export function queryCollabState() {
+  return (state: EditorState) => {
+    const collabState = getCollabState(state);
+    return collabState;
+  };
+}
+
 // Discards any editor changes that have not yet been sent to the server.
 // and sets the editor doc to the one provider by server.
 export function hardResetClient(): Command {

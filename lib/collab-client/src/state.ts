@@ -39,7 +39,7 @@ interface ActionParam {
   view: EditorView;
 }
 
-export type ValidCollabStates =
+export type ValidCollabState =
   | FatalErrorState
   | InitDocState
   | InitErrorState
@@ -55,6 +55,8 @@ export abstract class CollabBaseState {
   editingAllowed: boolean = true;
   debugInfo?: string;
   createdAt = Date.now();
+
+  // A helper function to dispatch events in correct shape
   public dispatchCollabPluginEvent(data: {
     signal: AbortSignal;
     collabEvent?: ValidEvents;
@@ -86,7 +88,7 @@ export abstract class CollabBaseState {
   abstract transition(
     event: ValidEvents,
     debugInfo?: string,
-  ): ValidCollabStates | undefined;
+  ): ValidCollabState | undefined;
 }
 
 export class FatalErrorState extends CollabBaseState {
