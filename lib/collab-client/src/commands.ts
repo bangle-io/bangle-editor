@@ -11,11 +11,24 @@ import {
 } from './common';
 import { getCollabState } from './helpers';
 
-// If in a fatal error (error which will not be recovered), it returns a fatal error message.
+/**
+ * If in fatal state (a terminal state) and  returns the error information.
+ * @returns
+ */
 export function queryFatalError() {
   return (state: EditorState) => {
     const collabState = getCollabState(state);
-    return collabState?.isFatalState() ? collabState.state : undefined;
+    if (collabState?.isFatalState()) {
+      return collabState.state;
+    }
+    return undefined;
+  };
+}
+
+export function queryCollabState() {
+  return (state: EditorState) => {
+    const collabState = getCollabState(state);
+    return collabState;
   };
 }
 
@@ -116,7 +129,7 @@ export function isStuckInErrorStates() {
     }
 
     return (
-      previousStates.filter((s) => s.isErrorState).length >
+      previousStates.filter((s) => s.isTaggedError).length >
       STUCK_IN_ERROR_THRESHOLD
     );
   };

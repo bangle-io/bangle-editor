@@ -27,10 +27,15 @@ import { uuid } from '@bangle.dev/utils';
 import { CollabExtensionOptions, plugins } from '../src/collab-extension';
 import {
   hardResetClient,
+  queryCollabState,
   queryFatalError,
   updateServerVersion,
 } from '../src/commands';
-import { collabMonitorKey } from '../src/common';
+import {
+  collabMonitorKey,
+  CollabStateName,
+  FatalErrorCode,
+} from '../src/common';
 
 waitForExpect.defaults.timeout = 500;
 const specRegistry = new SpecRegistry([...defaultSpecs()]);
@@ -137,6 +142,7 @@ const setupClient = (
 };
 
 const setupServer = ({
+  instanceDeleteGuardOpts,
   managerId = DEFAULT_MANAGER_ID,
   rawDoc = {
     type: 'doc',
@@ -153,6 +159,9 @@ const setupServer = ({
     ],
   },
 }: {
+  instanceDeleteGuardOpts?: ConstructorParameters<
+    typeof CollabManager
+  >[0]['instanceDeleteGuardOpts'];
   managerId?: string;
   rawDoc?: {
     type: 'doc';
@@ -256,6 +265,7 @@ const setupServer = ({
       }
       return undefined;
     },
+    instanceDeleteGuardOpts,
   });
 
   const getRequests = () => {
@@ -703,10 +713,8 @@ describe('failures', () => {
       },
     ]);
 
-    expect(console.error).toBeCalledTimes(1);
-    expect(console.error).nthCalledWith(
-      1,
-      expect.stringContaining('In FatalErrorState message=Document not found'),
+    expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+      FatalErrorCode.DocumentNotFound,
     );
   });
 
@@ -796,12 +804,8 @@ describe('failures', () => {
       },
     ]);
 
-    expect(console.error).toBeCalledTimes(1);
-    expect(console.error).nthCalledWith(
-      1,
-      expect.stringContaining(
-        'In FatalErrorState message=History/Server not available',
-      ),
+    expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+      FatalErrorCode.HistoryNotAvailable,
     );
   });
 
@@ -851,17 +855,12 @@ describe('failures', () => {
 
     // Editor should enter fatal error
     expect(queryFatalError()(client1.view.state)).toEqual({
+      errorCode: FatalErrorCode.IncorrectManager,
       message: 'Incorrect manager',
     });
 
     expect(document.querySelectorAll('.bangle-collab-frozen').length).toBe(1);
     expect(document.querySelectorAll('.bangle-collab-active').length).toBe(0);
-
-    expect(console.error).toBeCalledTimes(1);
-    expect(console.error).nthCalledWith(
-      1,
-      expect.stringContaining('In FatalErrorState message=Incorrect manager'),
-    );
   });
 
   test('handles InvalidVersion', async () => {
@@ -1031,26 +1030,10 @@ describe('failures', () => {
     ).toBeGreaterThan(4);
 
     expect(queryFatalError()(client1.view.state)).toStrictEqual({
+      errorCode: FatalErrorCode.StuckInInfiniteLoop,
       message:
         'Stuck in error loop, last failure: CollabFail.ManagerUnresponsive',
     });
-
-    expect(console.error).toBeCalledTimes(1);
-    expect(console.error).toMatchInlineSnapshot(`
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            "@bangle.dev/collab-client: In FatalErrorState message=Stuck in error loop, last failure: CollabFail.ManagerUnresponsive",
-          ],
-        ],
-        "results": Array [
-          Object {
-            "type": "return",
-            "value": undefined,
-          },
-        ],
-      }
-    `);
 
     server = setupServer();
 
@@ -1437,5 +1420,209 @@ describe('resets', () => {
     client1.typeText('X');
 
     expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+  });
+});
+
+describe('deleting instance', () => {
+  let server: ReturnType<typeof setupServer>;
+
+  beforeEach(() => {
+    server = setupServer({
+      managerId: 'manager-test-1',
+      instanceDeleteGuardOpts: {
+        deleteWaitTime: 30,
+        maxDurationToKeepRecord: 150,
+      },
+    });
+  });
+
+  test('when an instance is deleted client gets history not available error', async () => {
+    const client1 = setupClient(server, { clientID: 'client1' });
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client1.typeText('X');
+
+    await waitForExpect(() => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+    });
+
+    server.manager.requestDeleteInstance(docName);
+
+    client1.typeText('Y');
+
+    await waitForExpect(() => {
+      expect(queryCollabState()(client1.view.state)?.name).toBe(
+        CollabStateName.Fatal,
+      );
+    });
+
+    expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+      FatalErrorCode.HistoryNotAvailable,
+    );
+  });
+
+  test('resetting a client should work', async () => {
+    const client1 = setupClient(server, { clientID: 'client1' });
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client1.typeText('X');
+
+    await waitForExpect(() => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+    });
+
+    server.manager.requestDeleteInstance(docName);
+
+    client1.typeText('Y');
+
+    await waitForExpect(() => {
+      expect(queryCollabState()(client1.view.state)?.name).toBe(
+        CollabStateName.Fatal,
+      );
+    });
+
+    expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+      FatalErrorCode.HistoryNotAvailable,
+    );
+
+    await sleep(8);
+
+    const sentTimes = Array.from(
+      new Set((await server.getRequests()).map((r) => r.body.clientCreatedAt)),
+    );
+    // should just send one time
+    expect(sentTimes.length).toBe(1);
+
+    hardResetClient()(client1.view.state, client1.view.dispatch);
+
+    await waitForExpect(() => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+    });
+
+    const sentTimes2 = Array.from(
+      new Set((await server.getRequests()).map((r) => r.body.clientCreatedAt)),
+    );
+
+    // after resetting should be sending new create time
+    expect(sentTimes2.length).toBe(2);
+
+    await sleep(5);
+    client1.typeText('Z', 1);
+
+    await sleep(5);
+
+    expect(queryCollabState()(client1.view.state)?.name).toBe(
+      CollabStateName.Ready,
+    );
+
+    await waitForExpect(() => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("ZXhello world!"))`);
+    });
+
+    // wait a long time to make instance is not deleted
+    await sleep(100);
+    expect(server.manager.getAllDocNames().size).toBe(1);
+
+    // now deleting after resetting the instance should still work
+    server.manager.requestDeleteInstance(docName);
+
+    client1.typeText('C');
+
+    await waitForExpect(() => {
+      expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+        FatalErrorCode.HistoryNotAvailable,
+      );
+    });
+  });
+
+  test('after deletion if a newer client connects, server responds ok', async () => {
+    const client1 = setupClient(server, { clientID: 'client1' });
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client1.typeText('X');
+
+    await waitForExpect(() => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+    });
+
+    server.manager.requestDeleteInstance(docName);
+
+    client1.typeText('Y');
+
+    await waitForExpect(() => {
+      expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+        FatalErrorCode.HistoryNotAvailable,
+      );
+    });
+
+    // assert that it is deleted
+    await waitForExpect(() => {
+      expect(server.manager.getAllDocNames().size).toBe(0);
+    });
+
+    const client2 = setupClient(server, { clientID: 'client2' });
+
+    await waitForExpect(async () => {
+      expect(client2.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client2.typeText('Z');
+
+    await waitForExpect(() => {
+      expect(client2.debugString()).toEqual(`doc(paragraph("Zhello world!"))`);
+    });
+  });
+
+  test('a newer client cancels any previous deletion', async () => {
+    const client1 = setupClient(server, { clientID: 'client1' });
+
+    await waitForExpect(async () => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("hello world!"))`);
+    });
+
+    client1.typeText('X');
+
+    await waitForExpect(() => {
+      expect(client1.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+    });
+
+    server.manager.requestDeleteInstance(docName);
+
+    await sleep(4);
+    // setup a new client right before the deletion is executed
+    const client2 = setupClient(server, { clientID: 'client2' });
+
+    // type in the old client and get the error
+    client1.typeText('Y');
+    await waitForExpect(() => {
+      expect(queryFatalError()(client1.view.state)?.errorCode).toBe(
+        FatalErrorCode.HistoryNotAvailable,
+      );
+    });
+
+    await waitForExpect(async () => {
+      expect(client2.debugString()).toEqual(`doc(paragraph("Xhello world!"))`);
+    });
+
+    client2.typeText('Z');
+
+    // wait plenty of time to make assert instance is not deleted
+    await sleep(100);
+
+    expect(server.manager.getAllDocNames().size).toBe(1);
+
+    // should have 'ZX' to signal instance wasn't deleted
+    await waitForExpect(async () => {
+      expect(client2.debugString()).toEqual(`doc(paragraph("ZXhello world!"))`);
+    });
   });
 });

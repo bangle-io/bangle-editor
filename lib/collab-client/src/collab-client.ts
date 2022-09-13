@@ -23,17 +23,18 @@ import {
   CollabPluginState,
   CollabStateName,
   EventType,
+  FatalErrorCode,
   MAX_STATES_TO_KEEP,
 } from './common';
 import { getCollabState } from './helpers';
-import { CollabBaseState, FatalErrorState, InitState } from './state';
+import { CollabBaseState, FatalState, InitState } from './state';
 
 const LOG = true;
 let log = (isTestEnv ? false : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
 
-const collabMonitorInitialState = {
+const collabMonitorInitialState: CollabMonitor = {
   serverVersion: undefined,
 };
 
@@ -83,7 +84,7 @@ export function collabClientPlugin({
         }
 
         // prevent any other tr while state is in one of the no-edit state
-        if (tr.docChanged && getCollabState(state)?.editingAllowed === false) {
+        if (tr.docChanged && getCollabState(state)?.isEditingBlocked === true) {
           console.debug('@bangle.dev/collab-client blocking transaction');
           return false;
         }
@@ -107,6 +108,7 @@ export function collabClientPlugin({
             return value;
           }
 
+          // By pass any logic, if we receive this event and set the state to Init
           if (meta.collabEvent.type === EventType.HardReset) {
             logger(newState)(
               'apply state HARD RESET, newStateName=',
@@ -114,6 +116,7 @@ export function collabClientPlugin({
               'oldStateName=',
               value.collabState.name,
             );
+
             return {
               collabState: new InitState(undefined, '(HardReset)'),
               previousStates: [],
@@ -146,8 +149,11 @@ export function collabClientPlugin({
               });
 
               return {
-                collabState: new FatalErrorState(
-                  { message: 'Infinite transitions' },
+                collabState: new FatalState(
+                  {
+                    message: 'Infinite transitions',
+                    errorCode: FatalErrorCode.StuckInInfiniteLoop,
+                  },
                   '(stuck in infinite transitions)',
                 ),
                 previousStates: [value.collabState, ...value.previousStates],
@@ -182,12 +188,6 @@ export function collabClientPlugin({
               previousStates = previousStates.slice(0, MAX_STATES_TO_KEEP);
             }
 
-            if (newCollabState.isFatalState()) {
-              console.error(
-                `@bangle.dev/collab-client: In FatalErrorState message=${newCollabState.state.message}`,
-              );
-            }
-
             return {
               ...value,
               collabState: newCollabState,
@@ -207,6 +207,7 @@ export function collabClientPlugin({
       view(view) {
         let actionController = new AbortController();
         let clientComController = new AbortController();
+
         let clientCom = new ClientCommunication({
           clientId: clientID,
           managerId,
@@ -276,11 +277,11 @@ export function collabClientPlugin({
       key: collabMonitorKey,
       props: {
         attributes: (state: any) => {
-          const editingAllowed = getCollabState(state)?.editingAllowed;
+          const editingBlocked = getCollabState(state)?.isEditingBlocked;
           return {
-            class: editingAllowed
-              ? 'bangle-collab-active'
-              : 'bangle-collab-frozen',
+            class: editingBlocked
+              ? 'bangle-collab-frozen'
+              : 'bangle-collab-active',
           };
         },
       },

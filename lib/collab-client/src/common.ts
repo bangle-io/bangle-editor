@@ -1,7 +1,7 @@
 import { ClientCommunication, CollabFail } from '@bangle.dev/collab-comms';
 import { Node, PluginKey, TextSelection } from '@bangle.dev/pm';
 
-import type { CollabBaseState } from './state';
+import type { ValidCollabState } from './state';
 
 export const MAX_STATES_TO_KEEP = 15;
 // If there are STUCK_IN_ERROR_THRESHOLD or more states in the history
@@ -25,7 +25,7 @@ export interface CollabMonitorTrMeta {
 
 // Events
 export type ValidEvents =
-  | FatalErrorEvent
+  | FatalEvent
   | HardResetEvent
   | InitDocEvent
   | InitErrorEvent
@@ -36,7 +36,7 @@ export type ValidEvents =
   | RestartEvent;
 
 export enum EventType {
-  FatalError = 'FATAL_ERROR_EVENT',
+  Fatal = 'FATAL_EVENT',
   HardReset = 'HARD_RESET_EVENT',
   InitDoc = 'INIT_DOC_EVENT',
   InitError = 'INIT_ERROR_EVENT',
@@ -47,10 +47,20 @@ export enum EventType {
   Restart = 'RESTART_EVENT',
 }
 
-export interface FatalErrorEvent {
-  type: EventType.FatalError;
+export enum FatalErrorCode {
+  InitialDocLoadFailed = 'INITIAL_DOC_LOAD_FAILED',
+  StuckInInfiniteLoop = 'STUCK_IN_INFINITE_LOOP',
+  IncorrectManager = 'INCORRECT_MANAGER',
+  HistoryNotAvailable = 'HISTORY_NOT_AVAILABLE',
+  DocumentNotFound = 'DOCUMENT_NOT_FOUND',
+  UnexpectedState = 'UNEXPECTED_STATE',
+}
+
+export interface FatalEvent {
+  type: EventType.Fatal;
   payload: {
     message: string;
+    errorCode: FatalErrorCode;
   };
 }
 
@@ -97,7 +107,7 @@ export interface HardResetEvent {
 }
 
 export enum CollabStateName {
-  FatalError = 'FATAL_ERROR_STATE',
+  Fatal = 'FATAL_STATE',
   Init = 'INIT_STATE',
   InitDoc = 'INIT_DOC_STATE',
   InitError = 'INIT_ERROR_STATE',
@@ -108,8 +118,8 @@ export enum CollabStateName {
 }
 
 export interface CollabPluginState {
-  collabState: CollabBaseState;
-  previousStates: CollabBaseState[];
+  collabState: ValidCollabState;
+  previousStates: ValidCollabState[];
   infiniteTransitionGuard: { counter: number; lastChecked: number };
 }
 

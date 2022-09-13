@@ -17,6 +17,7 @@ import { Schema, Step } from '@bangle.dev/pm';
 import { Either, EitherType, isTestEnv } from '@bangle.dev/utils';
 
 import { CollabServerState, StepBigger } from './collab-state';
+import { InstanceDeleteGuard } from './instance-delete-guard';
 
 type ApplyState = (
   docName: string,
@@ -33,13 +34,22 @@ let log = (isTestEnv ? false : LOG)
 export class CollabManager {
   public readonly managerId: string;
   private readonly _abortController = new AbortController();
+
   private _handleRequest: ConstructorParameters<
     typeof ManagerCommunication
   >[2] = async (request, id) => {
-    // TODO Add validation of request
-    // if (!request.body.docName) {
-    //   throw new Error('docName is required');
-    // }
+    if (
+      !this._instanceDeleteGuard.checkAccess(
+        request.body.docName,
+        request.body.clientCreatedAt,
+      )
+    ) {
+      return {
+        ok: false as const,
+        body: CollabFail.HistoryNotAvailable,
+        type: request.type,
+      };
+    }
 
     log(
       `id=${id} userId=${request.body.userId} received request=${request.type}, `,
@@ -62,8 +72,9 @@ export class CollabManager {
     }
   };
 
+  private readonly _instanceDeleteGuard: InstanceDeleteGuard;
   private readonly _instances: Map<string, Instance> = new Map();
-  private readonly _serverCom?: ManagerCommunication;
+  private readonly _serverCom: ManagerCommunication;
 
   constructor(
     private _options: {
@@ -77,22 +88,31 @@ export class CollabManager {
       collabMessageBus: CollabMessageBus;
       managerId?: string;
       schema: Schema;
+      instanceDeleteGuardOpts?: ConstructorParameters<
+        typeof InstanceDeleteGuard
+      >[0];
     },
   ) {
     this.managerId = _options.managerId || DEFAULT_MANAGER_ID;
 
-    if (_options.collabMessageBus) {
-      this._serverCom = new ManagerCommunication(
-        this.managerId,
-        _options.collabMessageBus,
-        this._handleRequest,
-        this._abortController.signal,
-      );
-    }
+    this._serverCom = new ManagerCommunication(
+      this.managerId,
+      _options.collabMessageBus,
+      this._handleRequest,
+      this._abortController.signal,
+    );
+
+    this._instanceDeleteGuard = new InstanceDeleteGuard(
+      this._options.instanceDeleteGuardOpts || {
+        deleteWaitTime: 500,
+        maxDurationToKeepRecord: 1000 * 60,
+      },
+    );
   }
 
   public destroy() {
     this._abortController.abort();
+    this._instanceDeleteGuard.destroy();
   }
 
   getAllDocNames(): Set<string> {
@@ -107,6 +127,20 @@ export class CollabManager {
     return this._abortController.signal.aborted;
   }
 
+  // Requests deletion of instance after a delay if no new clients
+  // attempt to connect to the given `docName`. Tweak opts.instanceDeleteGuardOpts
+  requestDeleteInstance(docName: string) {
+    if (this.isDestroyed()) {
+      return;
+    }
+
+    // delete the instance after broadcasting
+    // since some clients will take a while to terminate
+    this._instanceDeleteGuard.addPendingDelete(docName, () => {
+      this._instances.delete(docName);
+    });
+  }
+
   // removes collab state entry associated with docName.
   // And broadcast to any client with the docName (if any exists)
   // to reset its content and do a fresh fetch of the document.
@@ -114,7 +148,7 @@ export class CollabManager {
   // in loss of any un-pushed client data.
   resetDoc(docName: string): void {
     this._instances.delete(docName);
-    this._serverCom?.broadcast({
+    this._serverCom.broadcast({
       type: CollabManagerBroadCastType.ResetClient,
       body: {
         docName: docName,
@@ -219,7 +253,7 @@ export class CollabManager {
 
       if (Either.isRight(result)) {
         queueMicrotask(() => {
-          this._serverCom?.broadcast({
+          this._serverCom.broadcast({
             type: CollabManagerBroadCastType.NewVersion,
             body: {
               docName: instance.docName,

@@ -1,5 +1,9 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## HEAD
+
+- enhancement: `@bangle.dev/collab-manager` allows you to manually request (use `collabManager.requestDeleteInstance(...)`) deletion of an instance to save memory.
+
 ## 0.31.2
 
 - enhancement: `@bangle.dev/collab-manager` added two classes `bangle-collab-active` and `bangle-collab-frozen` on editor to indicate whether the editor is active or frozen to reflect the collaboration state.

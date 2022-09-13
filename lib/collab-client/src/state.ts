@@ -20,7 +20,8 @@ import {
   collabClientKey,
   CollabStateName,
   EventType,
-  FatalErrorEvent,
+  FatalErrorCode,
+  FatalEvent,
   InitDocEvent,
   InitErrorEvent,
   PullEvent,
@@ -39,8 +40,8 @@ interface ActionParam {
   view: EditorView;
 }
 
-export type ValidCollabStates =
-  | FatalErrorState
+export type ValidCollabState =
+  | FatalState
   | InitDocState
   | InitErrorState
   | InitState
@@ -52,9 +53,13 @@ export type ValidCollabStates =
 export abstract class CollabBaseState {
   // If false, the document is frozen and no edits and _almost_ no transactions are allowed.
   // Some collab tr's are allowed.
-  editingAllowed: boolean = true;
+  isEditingBlocked: boolean = false;
+  isTaggedError: boolean = false;
+
   debugInfo?: string;
   createdAt = Date.now();
+
+  // A helper function to dispatch events in correct shape
   public dispatchCollabPluginEvent(data: {
     signal: AbortSignal;
     collabEvent?: ValidEvents;
@@ -69,10 +74,8 @@ export abstract class CollabBaseState {
     };
   }
 
-  abstract isErrorState: boolean;
-
-  public isFatalState(): this is FatalErrorState {
-    return this instanceof FatalErrorState;
+  public isFatalState(): this is FatalState {
+    return this instanceof FatalState;
   }
 
   public isReadyState(): this is ReadyState {
@@ -86,17 +89,18 @@ export abstract class CollabBaseState {
   abstract transition(
     event: ValidEvents,
     debugInfo?: string,
-  ): ValidCollabStates | undefined;
+  ): ValidCollabState | undefined;
 }
 
-export class FatalErrorState extends CollabBaseState {
-  editingAllowed = false;
-  isErrorState = true;
-  name = CollabStateName.FatalError;
+export class FatalState extends CollabBaseState {
+  isEditingBlocked = true;
+  isTaggedError = true;
 
+  name = CollabStateName.Fatal;
   constructor(
     public state: {
       message: string;
+      errorCode: FatalErrorCode | undefined;
     },
     public debugInfo?: string,
   ) {
@@ -122,7 +126,7 @@ export class FatalErrorState extends CollabBaseState {
       return;
     }
     logger(
-      `Freezing document(${clientInfo.docName}) to prevent further edits due to FatalError`,
+      `Freezing document(${clientInfo.docName}) to prevent further edits due to FatalState`,
     );
     return;
   }
@@ -133,9 +137,13 @@ export class FatalErrorState extends CollabBaseState {
 }
 
 export class InitState extends CollabBaseState {
-  editingAllowed = false;
-  isErrorState = false;
+  isEditingBlocked = true;
   name = CollabStateName.Init;
+
+  // clientCreatedAt should just be created once at the start of the client
+  // and not at any state where the value might change during the course of the clients life.
+  // this field setup order is instrumental to connect with the server.
+  clientCreatedAt = Date.now();
 
   constructor(public state = {}, public debugInfo?: string) {
     super();
@@ -171,6 +179,7 @@ export class InitState extends CollabBaseState {
     }
 
     const result = await clientCom.getDocument({
+      clientCreatedAt: this.clientCreatedAt,
       docName,
       userId,
     });
@@ -226,6 +235,7 @@ export class InitState extends CollabBaseState {
           initialSelection: payload.selection,
           initialVersion: payload.version,
           managerId: payload.managerId,
+          clientCreatedAt: this.clientCreatedAt,
         },
         debugInfo,
       );
@@ -247,8 +257,7 @@ export class InitState extends CollabBaseState {
 }
 
 export class InitDocState extends CollabBaseState {
-  editingAllowed = false;
-  isErrorState = false;
+  isEditingBlocked = true;
   name = CollabStateName.InitDoc;
 
   constructor(
@@ -257,6 +266,7 @@ export class InitDocState extends CollabBaseState {
       initialVersion: number;
       initialSelection?: TextSelection;
       managerId: string;
+      clientCreatedAt: number;
     },
     public debugInfo?: string,
   ) {
@@ -293,9 +303,10 @@ export class InitDocState extends CollabBaseState {
 
       if (success === false) {
         this.dispatch(signal, view.state, view.dispatch, {
-          type: EventType.FatalError,
+          type: EventType.Fatal,
           payload: {
             message: 'Failed to load initial doc',
+            errorCode: FatalErrorCode.InitialDocLoadFailed,
           },
         });
       } else {
@@ -313,14 +324,17 @@ export class InitDocState extends CollabBaseState {
   }
 
   transition(
-    event: ReadyEvent | FatalErrorEvent,
+    event: ReadyEvent | FatalEvent,
     debugInfo?: string,
-  ): ReadyState | FatalErrorState | undefined {
+  ): ReadyState | FatalState | undefined {
     const type = event.type;
     if (type === EventType.Ready) {
       return new ReadyState(this.state, debugInfo);
-    } else if (type === EventType.FatalError) {
-      return new FatalErrorState({ message: event.payload.message }, debugInfo);
+    } else if (type === EventType.Fatal) {
+      return new FatalState(
+        { message: event.payload.message, errorCode: event.payload.errorCode },
+        debugInfo,
+      );
     } else {
       let val: never = type;
       console.debug('@bangle.dev/collab-client Ignoring event' + type);
@@ -330,8 +344,8 @@ export class InitDocState extends CollabBaseState {
 }
 
 export class InitErrorState extends CollabBaseState {
-  editingAllowed = false;
-  isErrorState = true;
+  isEditingBlocked = true;
+  isTaggedError = true;
   name = CollabStateName.InitError;
 
   constructor(
@@ -361,12 +375,15 @@ export class InitErrorState extends CollabBaseState {
     await handleErrorStateAction({ ...param, collabState: this });
   }
 
-  transition(event: RestartEvent | FatalErrorEvent, debugInfo?: string) {
+  transition(event: RestartEvent | FatalEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Restart) {
       return new InitState(undefined, debugInfo);
-    } else if (type === EventType.FatalError) {
-      return new FatalErrorState({ message: event.payload.message }, debugInfo);
+    } else if (type === EventType.Fatal) {
+      return new FatalState(
+        { message: event.payload.message, errorCode: event.payload.errorCode },
+        debugInfo,
+      );
     } else {
       let val: never = type;
       console.debug('@bangle.dev/collab-client Ignoring event' + type);
@@ -376,8 +393,6 @@ export class InitErrorState extends CollabBaseState {
 }
 
 export class ReadyState extends CollabBaseState {
-  editingAllowed = true;
-  isErrorState = false;
   name = CollabStateName.Ready;
 
   constructor(public state: InitDocState['state'], public debugInfo?: string) {
@@ -445,8 +460,6 @@ export class ReadyState extends CollabBaseState {
 }
 
 export class PushState extends CollabBaseState {
-  editingAllowed = true;
-  isErrorState = false;
   name = CollabStateName.Push;
 
   constructor(public state: InitDocState['state'], public debugInfo?: string) {
@@ -492,6 +505,7 @@ export class PushState extends CollabBaseState {
 
     const { managerId } = this.state;
     const response = await clientCom.pushEvents({
+      clientCreatedAt: this.state.clientCreatedAt,
       version: getVersion(view.state),
       steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
       // TODO  the default value numerical 0 before
@@ -558,8 +572,6 @@ export class PushState extends CollabBaseState {
 }
 
 export class PullState extends CollabBaseState {
-  editingAllowed = true;
-  isErrorState = false;
   name = CollabStateName.Pull;
 
   constructor(public state: InitDocState['state'], public debugInfo?: string) {
@@ -580,13 +592,14 @@ export class PullState extends CollabBaseState {
     })(state, dispatch);
   }
 
-  async runAction({ logger, clientInfo, signal, view }: ActionParam) {
+  async runAction({ clientInfo, logger, signal, view }: ActionParam) {
     if (signal.aborted) {
       return;
     }
     const { docName, userId, clientCom } = clientInfo;
     const { managerId } = this.state;
     const response = await clientCom.pullEvents({
+      clientCreatedAt: this.state.clientCreatedAt,
       version: getVersion(view.state),
       docName: docName,
       userId: userId,
@@ -659,8 +672,8 @@ export class PullState extends CollabBaseState {
 }
 
 export class PushPullErrorState extends CollabBaseState {
-  editingAllowed = true;
-  isErrorState = true;
+  isTaggedError = true;
+
   name = CollabStateName.PushPullError;
 
   constructor(
@@ -691,17 +704,17 @@ export class PushPullErrorState extends CollabBaseState {
     await handleErrorStateAction({ ...param, collabState: this });
   }
 
-  transition(
-    event: RestartEvent | PullEvent | FatalErrorEvent,
-    debugInfo?: string,
-  ) {
+  transition(event: RestartEvent | PullEvent | FatalEvent, debugInfo?: string) {
     const type = event.type;
     if (type === EventType.Restart) {
       return new InitState(undefined, debugInfo);
     } else if (type === EventType.Pull) {
       return new PullState(this.state.initDocState, debugInfo);
-    } else if (type === EventType.FatalError) {
-      return new FatalErrorState({ message: event.payload.message }, debugInfo);
+    } else if (type === EventType.Fatal) {
+      return new FatalState(
+        { message: event.payload.message, errorCode: event.payload.errorCode },
+        debugInfo,
+      );
     } else {
       let val: never = type;
       console.debug('@bangle.dev/collab-client Ignoring event' + type);
@@ -732,9 +745,10 @@ const handleErrorStateAction = async ({
       view.state,
       view.dispatch,
       {
-        type: EventType.FatalError,
+        type: EventType.Fatal,
         payload: {
           message: 'Stuck in error loop, last failure: ' + failure,
+          errorCode: FatalErrorCode.StuckInInfiniteLoop,
         },
       },
       debugSource,
@@ -770,9 +784,10 @@ const handleErrorStateAction = async ({
         view.state,
         view.dispatch,
         {
-          type: EventType.FatalError,
+          type: EventType.Fatal,
           payload: {
             message: 'Incorrect manager',
+            errorCode: FatalErrorCode.IncorrectManager,
           },
         },
         debugSource,
@@ -785,9 +800,10 @@ const handleErrorStateAction = async ({
         view.state,
         view.dispatch,
         {
-          type: EventType.FatalError,
+          type: EventType.Fatal,
           payload: {
             message: 'History/Server not available',
+            errorCode: FatalErrorCode.HistoryNotAvailable,
           },
         },
         debugSource,
@@ -801,9 +817,10 @@ const handleErrorStateAction = async ({
         view.state,
         view.dispatch,
         {
-          type: EventType.FatalError,
+          type: EventType.Fatal,
           payload: {
             message: 'Document not found',
+            errorCode: FatalErrorCode.DocumentNotFound,
           },
         },
         debugSource,
@@ -828,9 +845,11 @@ const handleErrorStateAction = async ({
           view.state,
           view.dispatch,
           {
-            type: EventType.FatalError,
+            type: EventType.Fatal,
             payload: {
               message: `Cannot handle ${failure} in state=${collabState.name}`,
+              // TODO: is this the right error code?
+              errorCode: FatalErrorCode.UnexpectedState,
             },
           },
           debugSource,
@@ -900,9 +919,10 @@ const handleErrorStateAction = async ({
           view.state,
           view.dispatch,
           {
-            type: EventType.FatalError,
+            type: EventType.Fatal,
             payload: {
               message: `Cannot handle ${failure} in state=${collabState.name}`,
+              errorCode: FatalErrorCode.UnexpectedState,
             },
           },
           debugSource,

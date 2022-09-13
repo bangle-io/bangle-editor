@@ -367,129 +367,138 @@ test.describe('Editors should sync', () => {
       ]);
   });
 
-  // test.describe.skip('Erroring', () => {
-  //   test('one editor errors 500', async ({ page }) => {
-  //     await loadPage(page, { collabErrorCode: 500 });
-  //     await clearEditorText(page, EDITOR_1);
-  //     await clickEditor(page, EDITOR_1);
+  test.describe('Deleting instance', () => {
+    test('deleting an instance works', async ({ page }) => {
+      const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+      await loadPage(page, { initialEditors: testEditors });
 
-  //     await page.keyboard.type('test');
-  //     await sleep();
+      const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
 
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test'],
-  //       ['EDITOR_2', 'test'],
-  //       ['EDITOR_3', 'test'],
-  //       ['EDITOR_4', 'test'],
-  //     ]);
+      await loadPage(page, {
+        initialEditors: testEditors,
+      });
 
-  //     // start failing editor 2 requests
-  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+      await page.evaluate(() => {
+        (window as any).manager.requestDeleteInstance('test-doc');
+      });
 
-  //     await clickEditor(page, EDITOR_2);
+      await editor1Locator.type('X');
 
-  //     await page.keyboard.type('(broken)');
+      // editor 1 should be frozen
+      await expect(
+        page.locator('#EDITOR_1 .bangle-collab-frozen'),
+      ).toBeVisible();
 
-  //     // wait enough that the get request from editor 2 is resent
-  //     // and meets an error
-  //     await sleep(1000);
+      expect(
+        await page.evaluate(
+          ([EDITOR_1]) => {
+            return (window as any).queryCollabClientFatalErrorCode(EDITOR_1);
+          },
+          [EDITOR_1],
+        ),
+      ).toEqual('HISTORY_NOT_AVAILABLE');
+    });
 
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test'],
-  //       ['EDITOR_2', 'test(broken)'],
-  //       ['EDITOR_3', 'test'],
-  //       ['EDITOR_4', 'test'],
-  //     ]);
+    test('resetting after deleting an instance works', async ({ page }) => {
+      const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+      await loadPage(page, { initialEditors: testEditors });
 
-  //     await clickEditor(page, EDITOR_3);
+      const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
 
-  //     await page.keyboard.type('123');
-  //     await sleep();
+      await loadPage(page, {
+        initialEditors: testEditors,
+      });
 
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test123'],
-  //       ['EDITOR_2', 'test(broken)'],
-  //       ['EDITOR_3', 'test123'],
-  //       ['EDITOR_4', 'test123'],
-  //     ]);
+      await page.evaluate(() => {
+        (window as any).manager.requestDeleteInstance('test-doc');
+      });
 
-  //     // resolve the error
-  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
-  //     await clickEditor(page, EDITOR_2);
-  //     // typing on the editor should sync all editors
-  //     await page.keyboard.type('4');
-  //     await sleep();
+      await editor1Locator.type('X');
 
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test123(broken)4'],
-  //       ['EDITOR_2', 'test123(broken)4'],
-  //       ['EDITOR_3', 'test123(broken)4'],
-  //       ['EDITOR_4', 'test123(broken)4'],
-  //     ]);
-  //   });
+      // editor 1 should be frozen
+      await expect(
+        page.locator('#EDITOR_1 .bangle-collab-frozen'),
+      ).toBeVisible();
 
-  //   test('editor errors 410', async ({ page }) => {
-  //     await loadPage(page, { collabErrorCode: 410 });
-  //     await clearEditorText(page, EDITOR_1);
-  //     await clickEditor(page, EDITOR_1);
+      await page.evaluate(() => {
+        (window as any).manager.resetDoc('test-doc');
+      });
 
-  //     await page.keyboard.type('test');
-  //     await sleep();
+      await editor1Locator.type('Y');
 
-  //     await page.pause();
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test'],
-  //       ['EDITOR_2', 'test'],
-  //       ['EDITOR_3', 'test'],
-  //       ['EDITOR_4', 'test'],
-  //     ]);
+      // editor 1 should be reset
+      await expect(
+        page.locator('#EDITOR_1 .bangle-collab-active'),
+      ).toBeVisible();
 
-  //     // start failing editor 2 requests
-  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
+      // things should start syncing
+      await expect
+        .poll(
+          async () => {
+            return getEditorsInnerHTML(page, testEditors);
+          },
+          {
+            timeout: EXPECT_POLL_TIMEOUT,
+          },
+        )
+        .toEqual([
+          ['EDITOR_1', '<p>hYello world!</p>'],
+          ['EDITOR_2', '<p>hYello world!</p>'],
+        ]);
+    });
 
-  //     await clickEditor(page, EDITOR_2);
-  //     await sleep(1000);
-  //     await page.keyboard.type('(broken)');
+    test('opening a new instance should work after deletion', async ({
+      page,
+    }) => {
+      const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
+      await loadPage(page, { initialEditors: testEditors });
 
-  //     // wait enough that the get request from editor 2 is re-sent
-  //     // and meets an error
-  //     await sleep(1000);
+      const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
 
-  //     // for 410 error typing should not work
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test'],
-  //       ['EDITOR_2', 'test'],
-  //       ['EDITOR_3', 'test'],
-  //       ['EDITOR_4', 'test'],
-  //     ]);
+      await loadPage(page, {
+        initialEditors: testEditors,
+      });
 
-  //     await clickEditor(page, EDITOR_3);
+      await page.evaluate(() => {
+        (window as any).manager.requestDeleteInstance('test-doc');
+      });
 
-  //     await page.keyboard.type('123');
-  //     await sleep();
+      await editor1Locator.type('X');
 
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test123'],
-  //       ['EDITOR_2', 'test'],
-  //       ['EDITOR_3', 'test123'],
-  //       ['EDITOR_4', 'test123'],
-  //     ]);
+      // editor 1 should be frozen
+      await expect(
+        page.locator('#EDITOR_1 .bangle-collab-frozen'),
+      ).toBeVisible();
 
-  //     // resolve the error
-  //     await page.click(`[aria-label="reject requests ${EDITOR_2}"]`);
-  //     await clickEditor(page, EDITOR_2);
-  //     await sleep();
+      await mountEditor(page, EDITOR_3);
 
-  //     // typing on the editor should sync all editors
-  //     await page.keyboard.type('4');
-  //     await sleep();
+      const editor3Locator = page.locator(`#${EDITOR_3} .ProseMirror`);
 
-  //     expect(await getEditorsInnerText(page)).toEqual([
-  //       ['EDITOR_1', 'test1234'],
-  //       ['EDITOR_2', 'test1234'],
-  //       ['EDITOR_3', 'test1234'],
-  //       ['EDITOR_4', 'test1234'],
-  //     ]);
-  //   });
-  // });
+      await expect(
+        page.locator('#EDITOR_3 .bangle-collab-active'),
+      ).toBeVisible();
+
+      await editor3Locator.type('3');
+
+      await expect
+        .poll(
+          async () => {
+            return getEditorsInnerHTML(page, [EDITOR_1, EDITOR_2, EDITOR_3]);
+          },
+          {
+            timeout: EXPECT_POLL_TIMEOUT,
+          },
+        )
+        .toEqual([
+          // there is X but since it was typed after delete, it sticks with client 1
+          // but did not make it to manager, which is why editor 2 has default content.
+          ['EDITOR_1', '<p>Xhello world!</p>'],
+          // editor 2 should stop syncing with manager, as manager has deleted the instance for
+          // old clients (1 & 2).
+          ['EDITOR_2', '<p>hello world!</p>'],
+          // since editor 3 is new (created after delete request), it should be able to sync with manager
+          ['EDITOR_3', '<p>3hello world!</p>'],
+        ]);
+    });
+  });
 });

@@ -7,7 +7,8 @@ import {
   DEFAULT_MANAGER_ID,
 } from '@bangle.dev/collab-comms';
 import { SpecRegistry } from '@bangle.dev/core';
-import { Node } from '@bangle.dev/pm';
+import { Node, selectParentNode } from '@bangle.dev/pm';
+import { sleep } from '@bangle.dev/utils';
 
 import { CollabServerState } from '../src';
 import { CollabManager } from '../src/collab-manager';
@@ -99,6 +100,7 @@ describe('getDocument', () => {
     const { client } = setup();
 
     const resp = await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
@@ -123,6 +125,7 @@ describe('getDocument', () => {
     });
 
     const resp = await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
@@ -139,6 +142,7 @@ test('getCollabState', async () => {
   const { manager, client } = setup();
 
   await client.getDocument({
+    clientCreatedAt: Date.now(),
     docName: TEST_DOC_NAME,
     userId: 'test-user-1',
   });
@@ -156,11 +160,13 @@ describe('push events', () => {
     const { manager, client, onNewVersion } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     const resp = await client.pushEvents({
+      clientCreatedAt: Date.now(),
       clientID: 'client-test-1',
       version: manager.getCollabState(TEST_DOC_NAME)?.version!,
       managerId: manager.managerId,
@@ -223,11 +229,13 @@ describe('push events', () => {
     const { manager, client, onNewVersion } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     const resp = await client.pushEvents({
+      clientCreatedAt: Date.now(),
       clientID: 'client-test-1',
       version: manager.getCollabState(TEST_DOC_NAME)?.version!,
       managerId: 'wrong-manager-id',
@@ -249,11 +257,13 @@ describe('push events', () => {
     const { manager, client, onNewVersion } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     const resp = await client.pushEvents({
+      clientCreatedAt: Date.now(),
       clientID: 'client-test-1',
       version: -1,
       managerId: manager.managerId,
@@ -274,11 +284,13 @@ describe('push events', () => {
     const { manager, client, onNewVersion } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     const resp = await client.pushEvents({
+      clientCreatedAt: Date.now(),
       clientID: 'client-test-1',
       docName: TEST_DOC_NAME,
       userId: 'test-user-3',
@@ -302,11 +314,13 @@ describe('pull events', () => {
     const { manager, client, onNewVersion } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     await client.pushEvents({
+      clientCreatedAt: Date.now(),
       clientID: 'client-test-1',
       version: manager.getCollabState(TEST_DOC_NAME)?.version!,
       managerId: manager.managerId,
@@ -336,6 +350,7 @@ describe('pull events', () => {
       docName: TEST_DOC_NAME,
     });
     await client.pushEvents({
+      clientCreatedAt: Date.now(),
       clientID: 'client-test-2',
       version: manager.getCollabState(TEST_DOC_NAME)?.version!,
       managerId: manager.managerId,
@@ -366,6 +381,7 @@ describe('pull events', () => {
     });
 
     const resp = await client.pullEvents({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-3',
       version: 0,
@@ -415,11 +431,13 @@ describe('pull events', () => {
     const { manager, client } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     const resp = await client.pullEvents({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-3',
       version: 0,
@@ -437,11 +455,13 @@ describe('pull events', () => {
     const { manager, client } = setup();
 
     await client.getDocument({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-1',
     });
 
     const resp = await client.pullEvents({
+      clientCreatedAt: Date.now(),
       docName: TEST_DOC_NAME,
       userId: 'test-user-3',
       version: 1,
@@ -451,6 +471,88 @@ describe('pull events', () => {
     expect(resp).toEqual({
       type: CollabClientRequestType.PullEvents,
       body: CollabFail.InvalidVersion,
+      ok: false,
+    });
+  });
+});
+
+describe('instance deletion', () => {
+  test('deletes instance', async () => {
+    const { manager, client } = setup({
+      instanceDeleteGuardOpts: {
+        deleteWaitTime: 5,
+        maxDurationToKeepRecord: 20,
+      },
+    });
+
+    let resp = await client.getDocument({
+      clientCreatedAt: Date.now(),
+      docName: TEST_DOC_NAME,
+      userId: 'test-user-1',
+    });
+
+    expect(resp).toEqual({
+      body: {
+        doc: rawDoc,
+        users: 1,
+        version: expect.any(Number),
+        managerId: DEFAULT_MANAGER_ID,
+      },
+      ok: true,
+      type: 'CollabClientRequestType.GetDocument',
+    });
+
+    const date0 = Date.now();
+
+    manager.requestDeleteInstance(TEST_DOC_NAME);
+    // does not immediately delete
+    expect(manager.getCollabState(TEST_DOC_NAME)).toBeDefined();
+    await sleep(20);
+    expect(manager.getCollabState(TEST_DOC_NAME)).toBeUndefined();
+    expect(manager.getAllDocNames().size).toBe(0);
+
+    // an old client tries to get the document
+    resp = await client.getDocument({
+      clientCreatedAt: date0,
+      docName: TEST_DOC_NAME,
+      userId: 'test-user-1',
+    });
+
+    expect(resp).toEqual({
+      type: CollabClientRequestType.GetDocument,
+      body: CollabFail.HistoryNotAvailable,
+      ok: false,
+    });
+
+    const date1 = Date.now();
+
+    // when a newer client tries to get the document, it creates a new instance
+    resp = await client.getDocument({
+      clientCreatedAt: date1,
+      docName: TEST_DOC_NAME,
+      userId: 'test-user-1',
+    });
+
+    expect(resp.ok).toBe(true);
+    expect(manager.getCollabState(TEST_DOC_NAME)).toBeDefined();
+
+    // wait extra long to make sure the instance is not deleted
+    await sleep(100);
+    expect(manager.getCollabState(TEST_DOC_NAME)).toBeDefined();
+
+    // now try deleting the instance
+    manager.requestDeleteInstance(TEST_DOC_NAME);
+    await sleep(20);
+
+    // an old client tries to get the document
+    resp = await client.getDocument({
+      clientCreatedAt: date1,
+      docName: TEST_DOC_NAME,
+      userId: 'test-user-1',
+    });
+    expect(resp).toEqual({
+      type: CollabClientRequestType.GetDocument,
+      body: CollabFail.HistoryNotAvailable,
       ok: false,
     });
   });
