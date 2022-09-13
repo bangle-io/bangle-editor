@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## HEAD
+## 0.31.3
 
 - enhancement: `@bangle.dev/collab-manager` allows you to manually request (use `collabManager.requestDeleteInstance(...)`) deletion of an instance to save memory.
 
