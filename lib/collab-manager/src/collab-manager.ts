@@ -127,6 +127,8 @@ export class CollabManager {
     return this._abortController.signal.aborted;
   }
 
+  // Requests deletion of instance after a delay if no new clients
+  // attempt to connect to the given `docName`. Tweak opts.instanceDeleteGuardOpts
   requestDeleteInstance(docName: string) {
     if (this.isDestroyed()) {
       return;

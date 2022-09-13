@@ -1,5 +1,17 @@
 const maxNoOfPendingRecords = 100;
 
+/**
+ * A class for managing the instance deletion respecting the following conditions:
+ * - If no new client connects to the instance, the instance is deleted after a delay.
+ * - If a new client connects to the instance, the deletion is aborted.
+ *    - Even if deletion was aborted, older clients will continue to see `checkAccess` return `false`.
+ * - Older clients will start seeing `checkAccess` return `false`, right after the request to delete is called.
+ * - Newer clients will see `checkAccess` return `true`.
+ * - If instance was never requested to be deleted, all `checkAccess` calls will return `true`.
+ *
+ * New client: Any client that was created after the request to delete was called.
+ * Old client: Any client that was created before the request to delete was called.
+ */
 export class InstanceDeleteGuard {
   pendingDeleteRecord = new Map<
     string,
