@@ -23,6 +23,7 @@ import {
   EDITOR_2,
   EDITOR_3,
   EDITOR_4,
+  EditorId,
   EditorInfo,
   EditorInfos,
   TestConfig,
@@ -126,6 +127,15 @@ function Main({ testConfig }: { testConfig: TestConfig }) {
     win.manager = data.editorManager;
     win.specRegistry = data.specRegistry;
     win.collabMessageBus = data.collabMessageBus;
+
+    win.queryCollabClientFatalErrorCode = (editorId: EditorId) => {
+      const state = editors[editorId]?.bangleEditor?.view.state;
+      if (state) {
+        return collabClient.commands.queryFatalError()(state)?.errorCode;
+      }
+
+      return undefined;
+    };
   }, [editors, data]);
 
   useEffect(() => {

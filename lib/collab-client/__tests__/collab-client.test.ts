@@ -1430,8 +1430,8 @@ describe('deleting instance', () => {
     server = setupServer({
       managerId: 'manager-test-1',
       instanceDeleteGuardOpts: {
-        deleteWaitTime: 10,
-        maxDurationToKeepRecord: 50,
+        deleteWaitTime: 30,
+        maxDurationToKeepRecord: 150,
       },
     });
   });
@@ -1491,7 +1491,7 @@ describe('deleting instance', () => {
       FatalErrorCode.HistoryNotAvailable,
     );
 
-    await sleep(5);
+    await sleep(8);
 
     const sentTimes = Array.from(
       new Set((await server.getRequests()).map((r) => r.body.clientCreatedAt)),
@@ -1597,7 +1597,7 @@ describe('deleting instance', () => {
 
     server.manager.requestDeleteInstance(docName);
 
-    await sleep(1);
+    await sleep(4);
     // setup a new client right before the deletion is executed
     const client2 = setupClient(server, { clientID: 'client2' });
 
