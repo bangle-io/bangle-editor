@@ -11,15 +11,14 @@ import {
 } from './common';
 import { getCollabState } from './helpers';
 
-// If in a fatal error (error which will not be recovered), it returns a fatal error message.
 /**
- * If in fatal state (a terminal state) and reached to this state due to an error, returns the error.
+ * If in fatal state (a terminal state) and  returns the error information.
  * @returns
  */
 export function queryFatalError() {
   return (state: EditorState) => {
     const collabState = getCollabState(state);
-    if (collabState?.isFatalState() && collabState.state.isError) {
+    if (collabState?.isFatalState()) {
       return collabState.state;
     }
     return undefined;

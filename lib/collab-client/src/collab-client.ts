@@ -23,6 +23,7 @@ import {
   CollabPluginState,
   CollabStateName,
   EventType,
+  FatalErrorCode,
   MAX_STATES_TO_KEEP,
 } from './common';
 import { getCollabState } from './helpers';
@@ -33,7 +34,7 @@ let log = (isTestEnv ? false : LOG)
   ? console.debug.bind(console, `collab-client:`)
   : () => {};
 
-const collabMonitorInitialState = {
+const collabMonitorInitialState: CollabMonitor = {
   serverVersion: undefined,
 };
 
@@ -115,6 +116,7 @@ export function collabClientPlugin({
               'oldStateName=',
               value.collabState.name,
             );
+
             return {
               collabState: new InitState(undefined, '(HardReset)'),
               previousStates: [],
@@ -148,7 +150,10 @@ export function collabClientPlugin({
 
               return {
                 collabState: new FatalState(
-                  { message: 'Infinite transitions', isError: true },
+                  {
+                    message: 'Infinite transitions',
+                    errorCode: FatalErrorCode.StuckInInfiniteLoop,
+                  },
                   '(stuck in infinite transitions)',
                 ),
                 previousStates: [value.collabState, ...value.previousStates],
@@ -183,12 +188,6 @@ export function collabClientPlugin({
               previousStates = previousStates.slice(0, MAX_STATES_TO_KEEP);
             }
 
-            if (newCollabState.isFatalState()) {
-              console.error(
-                `@bangle.dev/collab-client: In FatalState message=${newCollabState.state.message}`,
-              );
-            }
-
             return {
               ...value,
               collabState: newCollabState,
@@ -208,6 +207,7 @@ export function collabClientPlugin({
       view(view) {
         let actionController = new AbortController();
         let clientComController = new AbortController();
+
         let clientCom = new ClientCommunication({
           clientId: clientID,
           managerId,

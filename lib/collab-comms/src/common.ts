@@ -106,6 +106,7 @@ export interface RequestNotOkResponse<T extends string, R> {
 }
 
 export type GetDocumentRequestBody = {
+  clientCreatedAt: number;
   docName: string;
   userId: string;
 };
@@ -122,12 +123,13 @@ export type PushEventsResponseBody = {
 };
 
 export type PushEventsRequestBody = {
-  version: number;
-  steps: Array<{ [key: string]: any }>;
+  clientCreatedAt: number;
   clientID: string;
   docName: string;
-  userId: string;
   managerId: string;
+  steps: Array<{ [key: string]: any }>;
+  userId: string;
+  version: number;
 };
 
 export type PullEventsResponseBody = {
@@ -137,8 +139,9 @@ export type PullEventsResponseBody = {
 };
 
 export type PullEventsRequestBody = {
+  clientCreatedAt: number;
   docName: string;
-  version: number;
-  userId: string;
   managerId: string;
+  userId: string;
+  version: number;
 };

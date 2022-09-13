@@ -20,6 +20,7 @@ import {
   collabClientKey,
   CollabStateName,
   EventType,
+  FatalErrorCode,
   FatalEvent,
   InitDocEvent,
   InitErrorEvent,
@@ -93,19 +94,17 @@ export abstract class CollabBaseState {
 
 export class FatalState extends CollabBaseState {
   isEditingBlocked = true;
-  isTaggedError: boolean;
+  isTaggedError = true;
 
   name = CollabStateName.Fatal;
   constructor(
     public state: {
       message: string;
-      isError: boolean;
+      errorCode: FatalErrorCode | undefined;
     },
     public debugInfo?: string,
   ) {
     super();
-
-    this.isTaggedError = state.isError || true;
   }
 
   dispatch(
@@ -141,6 +140,11 @@ export class InitState extends CollabBaseState {
   isEditingBlocked = true;
   name = CollabStateName.Init;
 
+  // clientCreatedAt should just be created once at the start of the client
+  // and not at any state where the value might change during the course of the clients life.
+  // this field setup order is instrumental to connect with the server.
+  clientCreatedAt = Date.now();
+
   constructor(public state = {}, public debugInfo?: string) {
     super();
   }
@@ -175,6 +179,7 @@ export class InitState extends CollabBaseState {
     }
 
     const result = await clientCom.getDocument({
+      clientCreatedAt: this.clientCreatedAt,
       docName,
       userId,
     });
@@ -230,6 +235,7 @@ export class InitState extends CollabBaseState {
           initialSelection: payload.selection,
           initialVersion: payload.version,
           managerId: payload.managerId,
+          clientCreatedAt: this.clientCreatedAt,
         },
         debugInfo,
       );
@@ -260,6 +266,7 @@ export class InitDocState extends CollabBaseState {
       initialVersion: number;
       initialSelection?: TextSelection;
       managerId: string;
+      clientCreatedAt: number;
     },
     public debugInfo?: string,
   ) {
@@ -299,7 +306,7 @@ export class InitDocState extends CollabBaseState {
           type: EventType.Fatal,
           payload: {
             message: 'Failed to load initial doc',
-            isError: true,
+            errorCode: FatalErrorCode.InitialDocLoadFailed,
           },
         });
       } else {
@@ -325,7 +332,7 @@ export class InitDocState extends CollabBaseState {
       return new ReadyState(this.state, debugInfo);
     } else if (type === EventType.Fatal) {
       return new FatalState(
-        { message: event.payload.message, isError: event.payload.isError },
+        { message: event.payload.message, errorCode: event.payload.errorCode },
         debugInfo,
       );
     } else {
@@ -374,7 +381,7 @@ export class InitErrorState extends CollabBaseState {
       return new InitState(undefined, debugInfo);
     } else if (type === EventType.Fatal) {
       return new FatalState(
-        { message: event.payload.message, isError: event.payload.isError },
+        { message: event.payload.message, errorCode: event.payload.errorCode },
         debugInfo,
       );
     } else {
@@ -498,6 +505,7 @@ export class PushState extends CollabBaseState {
 
     const { managerId } = this.state;
     const response = await clientCom.pushEvents({
+      clientCreatedAt: this.state.clientCreatedAt,
       version: getVersion(view.state),
       steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
       // TODO  the default value numerical 0 before
@@ -584,13 +592,14 @@ export class PullState extends CollabBaseState {
     })(state, dispatch);
   }
 
-  async runAction({ logger, clientInfo, signal, view }: ActionParam) {
+  async runAction({ clientInfo, logger, signal, view }: ActionParam) {
     if (signal.aborted) {
       return;
     }
     const { docName, userId, clientCom } = clientInfo;
     const { managerId } = this.state;
     const response = await clientCom.pullEvents({
+      clientCreatedAt: this.state.clientCreatedAt,
       version: getVersion(view.state),
       docName: docName,
       userId: userId,
@@ -703,7 +712,7 @@ export class PushPullErrorState extends CollabBaseState {
       return new PullState(this.state.initDocState, debugInfo);
     } else if (type === EventType.Fatal) {
       return new FatalState(
-        { message: event.payload.message, isError: event.payload.isError },
+        { message: event.payload.message, errorCode: event.payload.errorCode },
         debugInfo,
       );
     } else {
@@ -739,7 +748,7 @@ const handleErrorStateAction = async ({
         type: EventType.Fatal,
         payload: {
           message: 'Stuck in error loop, last failure: ' + failure,
-          isError: true,
+          errorCode: FatalErrorCode.StuckInInfiniteLoop,
         },
       },
       debugSource,
@@ -778,7 +787,7 @@ const handleErrorStateAction = async ({
           type: EventType.Fatal,
           payload: {
             message: 'Incorrect manager',
-            isError: true,
+            errorCode: FatalErrorCode.IncorrectManager,
           },
         },
         debugSource,
@@ -794,7 +803,7 @@ const handleErrorStateAction = async ({
           type: EventType.Fatal,
           payload: {
             message: 'History/Server not available',
-            isError: true,
+            errorCode: FatalErrorCode.HistoryNotAvailable,
           },
         },
         debugSource,
@@ -811,7 +820,7 @@ const handleErrorStateAction = async ({
           type: EventType.Fatal,
           payload: {
             message: 'Document not found',
-            isError: true,
+            errorCode: FatalErrorCode.DocumentNotFound,
           },
         },
         debugSource,
@@ -839,7 +848,8 @@ const handleErrorStateAction = async ({
             type: EventType.Fatal,
             payload: {
               message: `Cannot handle ${failure} in state=${collabState.name}`,
-              isError: true,
+              // TODO: is this the right error code?
+              errorCode: FatalErrorCode.UnexpectedState,
             },
           },
           debugSource,
@@ -912,7 +922,7 @@ const handleErrorStateAction = async ({
             type: EventType.Fatal,
             payload: {
               message: `Cannot handle ${failure} in state=${collabState.name}`,
-              isError: true,
+              errorCode: FatalErrorCode.UnexpectedState,
             },
           },
           debugSource,

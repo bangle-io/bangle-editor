@@ -1,6 +1,6 @@
 import * as collabClient from './collab-extension';
 
-export type { CollabStateName } from './common';
+export type { CollabStateName, FatalErrorCode } from './common';
 
 export { collabClient };
 

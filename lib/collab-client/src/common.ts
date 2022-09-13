@@ -47,11 +47,20 @@ export enum EventType {
   Restart = 'RESTART_EVENT',
 }
 
+export enum FatalErrorCode {
+  InitialDocLoadFailed = 'INITIAL_DOC_LOAD_FAILED',
+  StuckInInfiniteLoop = 'STUCK_IN_INFINITE_LOOP',
+  IncorrectManager = 'INCORRECT_MANAGER',
+  HistoryNotAvailable = 'HISTORY_NOT_AVAILABLE',
+  DocumentNotFound = 'DOCUMENT_NOT_FOUND',
+  UnexpectedState = 'UNEXPECTED_STATE',
+}
+
 export interface FatalEvent {
   type: EventType.Fatal;
   payload: {
     message: string;
-    isError: boolean;
+    errorCode: FatalErrorCode;
   };
 }
 
