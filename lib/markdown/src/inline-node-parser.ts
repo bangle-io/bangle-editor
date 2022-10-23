@@ -111,27 +111,27 @@ function splitTextToken(
 
       // Add new tokens to pending list
       if (offset > last_pos) {
-        if (whiteSpaceBefore) {
-          let wToken = new Token('text', '', 0);
-          wToken.content = ' ';
-          nodes.push(wToken);
-        }
-
         token = new Token('text', '', 0);
         token.content = text.slice(last_pos, offset);
         nodes.push(token);
+      }
 
-        if (whiteSpaceAfter) {
-          let wToken = new Token('text', '', 0);
-          wToken.content = ' ';
-          nodes.push(wToken);
-        }
+      if (whiteSpaceBefore) {
+        let wToken = new Token('text', '', 0);
+        wToken.content = ' ';
+        nodes.push(wToken);
       }
 
       token = new Token(tokenName, '', 0);
       token.markup = markup;
       token.payload = payload;
       nodes.push(token);
+
+      if (whiteSpaceAfter) {
+        let wToken = new Token('text', '', 0);
+        wToken.content = ' ';
+        nodes.push(wToken);
+      }
 
       last_pos = offset + match.length;
 
