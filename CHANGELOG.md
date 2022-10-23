@@ -1,6 +1,6 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## 0.31.5
+## 0.31.6
 - enhancement: `@bangle.dev/markdown` updated the `inlineNodeParser`'s parameter `getTokenDetails` to provide extra information in the callback and you can return in the callback whether a white space needs to be added before or after.
 
 ```js

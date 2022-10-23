@@ -1,6 +1,6 @@
 {
   "name": "broader-unit-tests",
-  "version": "0.31.5",
+  "version": "0.31.6",
   "private": true,
   "description": "Tests which could not fit anywhere due to dependency cycle issues",
   "dependencies": {
