@@ -19,7 +19,7 @@ export function inlineNodeParser(
   {
     tokenName,
     regex,
-    getTokenDetails = (match: string) => {
+    getTokenDetails = (match) => {
       return { payload: match.slice(1, -1), markup: '' };
     },
   }: {

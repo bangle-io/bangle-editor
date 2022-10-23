@@ -1,5 +1,19 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
+## 0.31.4
+- enhancement: `@bangle.dev/markdown` updated the `inlineNodeParser`'s parameter `getTokenDetails` to provide extra information in the callback. 
+
+```js
+inlineNodeParser(md, {
+    tokenName: 'note_tag',
+    regex: MARKDOWN_REGEX,
+    // new parameters `offset` and `srcText`
+    getTokenDetails: (match, offset, srcText) => {
+       // use extra information to return the token details
+    }
+});
+```
+
 ## 0.31.3
 
 - enhancement: `@bangle.dev/collab-manager` allows you to manually request (use `collabManager.requestDeleteInstance(...)`) deletion of an instance to save memory.
