@@ -6,7 +6,16 @@ export type GetTokenDetails = (
   offset: number,
   // the original text
   srcText: string,
-) => { payload: string; markup: string };
+) => {
+  // TODO document what markup and payload is. `markup` is used by markdown-it and `payload` seems
+  // to be a bangle thing consumed by bangle only. Are they the same thing? If yes, we should dedupe.
+  payload: string;
+  markup: string;
+  // Tell whether to insert a space before this token
+  whiteSpaceBefore?: boolean;
+  // Tell whether to insert a space after this token
+  whiteSpaceAfter?: boolean;
+};
 
 /**
  * A generic markdown parser for inline nodes which can be
@@ -97,13 +106,26 @@ function splitTextToken(
       // where p1 p2 .. pN, represent the matches due to capturing groups
       // since we donot care about them we extract the second last arg.
       const offset = args[args.length - 2];
-      let { payload, markup } = getTokenDetails(match, offset, text);
+      let { payload, markup, whiteSpaceAfter, whiteSpaceBefore } =
+        getTokenDetails(match, offset, text);
 
       // Add new tokens to pending list
       if (offset > last_pos) {
+        if (whiteSpaceBefore) {
+          let wToken = new Token('text', '', 0);
+          wToken.content = ' ';
+          nodes.push(wToken);
+        }
+
         token = new Token('text', '', 0);
         token.content = text.slice(last_pos, offset);
         nodes.push(token);
+
+        if (whiteSpaceAfter) {
+          let wToken = new Token('text', '', 0);
+          wToken.content = ' ';
+          nodes.push(wToken);
+        }
       }
 
       token = new Token(tokenName, '', 0);
