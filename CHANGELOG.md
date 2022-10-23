@@ -1,7 +1,7 @@
 **NOTE: until we hit v1, expect breaking changes the minor versions (0.x).**
 
-## 0.31.4
-- enhancement: `@bangle.dev/markdown` updated the `inlineNodeParser`'s parameter `getTokenDetails` to provide extra information in the callback. 
+## 0.31.5
+- enhancement: `@bangle.dev/markdown` updated the `inlineNodeParser`'s parameter `getTokenDetails` to provide extra information in the callback and you can return in the callback whether a white space needs to be added before or after.
 
 ```js
 inlineNodeParser(md, {
@@ -10,6 +10,14 @@ inlineNodeParser(md, {
     // new parameters `offset` and `srcText`
     getTokenDetails: (match, offset, srcText) => {
        // use extra information to return the token details
+       return {
+            payload: string;
+            markup: string;
+            // Tell whether to insert a space before this token
+            whiteSpaceBefore?: boolean;
+            // Tell whether to insert a space after this token
+            whiteSpaceAfter?: boolean;
+       }
     }
 });
 ```
