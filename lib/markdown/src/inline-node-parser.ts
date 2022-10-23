@@ -1,6 +1,12 @@
 import StateCore from 'markdown-it/lib/rules_core/state_core';
 
-type GetTokenDetails = (match: string) => { payload: string; markup: string };
+export type GetTokenDetails = (
+  match: string,
+  // the offset of match in the text
+  offset: number,
+  // the original text
+  srcText: string,
+) => { payload: string; markup: string };
 
 /**
  * A generic markdown parser for inline nodes which can be
@@ -91,7 +97,7 @@ function splitTextToken(
       // where p1 p2 .. pN, represent the matches due to capturing groups
       // since we donot care about them we extract the second last arg.
       const offset = args[args.length - 2];
-      let { payload, markup } = getTokenDetails(match);
+      let { payload, markup } = getTokenDetails(match, offset, text);
 
       // Add new tokens to pending list
       if (offset > last_pos) {
