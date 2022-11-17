@@ -10073,7 +10073,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/tapable", "npm:1.0.8"],\
             ["@types/webpack", "npm:4.41.32"],\
             ["html-minifier-terser", "npm:5.1.1"],\
-            ["loader-utils", "npm:1.4.0"],\
+            ["loader-utils", "npm:1.4.2"],\
             ["lodash", "npm:4.17.21"],\
             ["pretty-error", "npm:2.1.2"],\
             ["tapable", "npm:1.1.3"],\
@@ -11782,10 +11782,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["loader-utils", [\
-        ["npm:1.4.0", {\
-          "packageLocation": "./.yarn/cache/loader-utils-npm-1.4.0-a56254a277-d150b15e7a.zip/node_modules/loader-utils/",\
+        ["npm:1.4.2", {\
+          "packageLocation": "./.yarn/cache/loader-utils-npm-1.4.2-b4537b2f88-eb6fb622ef.zip/node_modules/loader-utils/",\
           "packageDependencies": [\
-            ["loader-utils", "npm:1.4.0"],\
+            ["loader-utils", "npm:1.4.2"],\
             ["big.js", "npm:5.2.2"],\
             ["emojis-list", "npm:3.0.0"],\
             ["json5", "npm:1.0.1"]\
