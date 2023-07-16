@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`matchAllPlus works when direct match 2`] = `
-Array [
-  Object {
+[
+  {
     "_sourceString": "foozball",
     "end": 8,
     "match": true,
@@ -12,14 +12,14 @@ Array [
 `;
 
 exports[`matchAllPlus works when match 2`] = `
-Array [
-  Object {
+[
+  {
     "_sourceString": "baseball  foozball",
     "end": 10,
     "match": false,
     "start": 0,
   },
-  Object {
+  {
     "_sourceString": "baseball  foozball",
     "end": 18,
     "match": true,
@@ -29,8 +29,8 @@ Array [
 `;
 
 exports[`matchAllPlus works when no match 2`] = `
-Array [
-  Object {
+[
+  {
     "_sourceString": "baseball  boozball",
     "end": 18,
     "match": false,

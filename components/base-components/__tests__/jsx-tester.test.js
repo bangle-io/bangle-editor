@@ -490,7 +490,7 @@ test('Selection range paragraph', async () => {
     </doc>,
   );
   expect(selection).toMatchInlineSnapshot(`
-    Object {
+    {
       "anchor": 1,
       "head": 4,
       "type": "text",
@@ -510,7 +510,7 @@ test('Selection range paragraph 2', async () => {
     </doc>,
   );
   expect(selection).toMatchInlineSnapshot(`
-    Object {
+    {
       "anchor": 1,
       "head": 3,
       "type": "text",
@@ -531,7 +531,7 @@ test('Selection range spanning multiple paragraphs', async () => {
     </doc>,
   );
   expect(selection).toMatchInlineSnapshot(`
-    Object {
+    {
       "anchor": 1,
       "head": 12,
       "type": "text",
@@ -548,7 +548,7 @@ test('Selection range spanning multiple paragraphs 2', async () => {
     </doc>,
   );
   expect(selection).toMatchInlineSnapshot(`
-    Object {
+    {
       "anchor": 1,
       "head": 17,
       "type": "text",

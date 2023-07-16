@@ -90,7 +90,7 @@ describe('Keyboard shortcut', () => {
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('cut');
     expect(view.state.selection).toMatchInlineSnapshot(`
-      Object {
+      {
         "anchor": 13,
         "type": "node",
       }
@@ -123,7 +123,7 @@ describe('Keyboard shortcut', () => {
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('copy');
     expect(view.state.selection).toMatchInlineSnapshot(`
-      Object {
+      {
         "anchor": 21,
         "head": 21,
         "type": "text",

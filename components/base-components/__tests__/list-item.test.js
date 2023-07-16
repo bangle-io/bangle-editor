@@ -3063,11 +3063,11 @@ describe('Mod-x on empty selections', () => {
     );
     sendKeyToPm(editorView, keybindings.emptyCut);
     expect(editorView.state.selection).toMatchInlineSnapshot(`
-          Object {
-            "anchor": 10,
-            "type": "node",
-          }
-        `);
+      {
+        "anchor": 10,
+        "type": "node",
+      }
+    `);
     // The data is the same  because we just set the selection
     // and expect the browser to do the actual cutting.
     expect(editorView.state.doc).toEqualDocument(

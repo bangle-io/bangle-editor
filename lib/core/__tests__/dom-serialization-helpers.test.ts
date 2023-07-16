@@ -21,14 +21,14 @@ describe('domSerializationHelpers parseDOM', () => {
     expect(result.parseDOM).toHaveLength(1);
     const parseDOM = result.parseDOM[0];
     expect(parseDOM?.tag).toMatchInlineSnapshot(
-      `"span[data-bangle-name=\\"dummy\\"]"`,
+      `"span[data-bangle-name="dummy"]"`,
     );
 
     const dom = document.createElement('span');
     dom.setAttribute('data-bangle-attrs', JSON.stringify({ has: 'value' }));
     const attrs = parseDOM?.getAttrs(dom);
     expect(attrs).toMatchInlineSnapshot(`
-      Object {
+      {
         "has": "value",
       }
     `);
@@ -64,10 +64,10 @@ describe('domSerializationHelpers parseDOM', () => {
     const paraNode = specRegistry.schema.nodes['codeBlock']!.create({});
 
     expect(toDOM(paraNode)).toMatchInlineSnapshot(`
-      Array [
+      [
         "code",
-        Object {
-          "data-bangle-attrs": "{\\"language\\":\\"javascript\\",\\"magic\\":\\"1\\"}",
+        {
+          "data-bangle-attrs": "{"language":"javascript","magic":"1"}",
           "data-bangle-name": "codeSpec",
         },
       ]

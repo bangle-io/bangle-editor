@@ -53,19 +53,19 @@ test('Rendering works', async () => {
   );
   expect(getEmoji).toMatchInlineSnapshot(`
     [MockFunction] {
-      "calls": Array [
-        Array [
+      "calls": [
+        [
           "horse",
-          Object {
-            "attrs": Object {
+          {
+            "attrs": {
               "emojiAlias": "horse",
             },
             "type": "emoji",
           },
         ],
       ],
-      "results": Array [
-        Object {
+      "results": [
+        {
           "type": "return",
           "value": "horse",
         },

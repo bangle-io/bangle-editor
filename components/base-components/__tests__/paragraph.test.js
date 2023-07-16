@@ -18,22 +18,22 @@ describe('Basics', () => {
   test('Snapshot schema', () => {
     expect(paragraph.spec().schema.toDOM()).toEqual(['p', 0]);
     expect(paragraph.spec()).toMatchInlineSnapshot(`
-      Object {
-        "markdown": Object {
-          "parseMarkdown": Object {
-            "paragraph": Object {
+      {
+        "markdown": {
+          "parseMarkdown": {
+            "paragraph": {
               "block": "paragraph",
             },
           },
           "toMarkdown": [Function],
         },
         "name": "paragraph",
-        "schema": Object {
+        "schema": {
           "content": "inline*",
           "draggable": false,
           "group": "block",
-          "parseDOM": Array [
-            Object {
+          "parseDOM": [
+            {
               "tag": "p",
             },
           ],
@@ -735,7 +735,7 @@ describe('Commands', () => {
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('cut');
     expect(view.state.selection).toMatchInlineSnapshot(`
-      Object {
+      {
         "anchor": 13,
         "type": "node",
       }
@@ -764,7 +764,7 @@ describe('Commands', () => {
     expect(document.execCommand).toBeCalledTimes(1);
     expect(document.execCommand).toBeCalledWith('copy');
     expect(view.state.selection).toMatchInlineSnapshot(`
-      Object {
+      {
         "anchor": 20,
         "head": 20,
         "type": "text",

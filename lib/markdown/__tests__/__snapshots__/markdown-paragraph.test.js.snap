@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`paragraphs Case 0 misc char \` 1`] = `"hello world\\\\\`s"`;
+exports[`paragraphs Case 0 misc char \` 1`] = `"hello world\\\`s"`;
 
-exports[`paragraphs Case 1 misc char \\ 1`] = `"hello world\\\\\\\\s"`;
+exports[`paragraphs Case 1 misc char \\ 1`] = `"hello world\\\\s"`;
 
 exports[`paragraphs Case 2 misc char ' 1`] = `"hello world's"`;
 
-exports[`paragraphs Case 3 misc char " 1`] = `"hello world\\"s"`;
+exports[`paragraphs Case 3 misc char " 1`] = `"hello world"s"`;
 
-exports[`paragraphs Case 4 misc char ~ 1`] = `"hello world\\\\~s"`;
+exports[`paragraphs Case 4 misc char ~ 1`] = `"hello world\\~s"`;
 
 exports[`paragraphs Case 5 misc char ! 1`] = `"hello world!s"`;
 
@@ -24,7 +24,7 @@ exports[`paragraphs Case 10 misc char ^ 1`] = `"hello world^s"`;
 
 exports[`paragraphs Case 11 misc char & 1`] = `"hello world&s"`;
 
-exports[`paragraphs Case 12 misc char * 1`] = `"hello world\\\\*s"`;
+exports[`paragraphs Case 12 misc char * 1`] = `"hello world\\*s"`;
 
 exports[`paragraphs Case 13 misc char ( 1`] = `"hello world(s"`;
 

@@ -229,7 +229,7 @@ describe('rendering node views', () => {
       );
     };
     expect(() => render(<Comp />)).toThrowErrorMatchingInlineSnapshot(
-      `"renderNodeView must handle rendering for node of type \\"banana\\""`,
+      `"renderNodeView must handle rendering for node of type "banana""`,
     );
   });
 

@@ -150,7 +150,7 @@ describe('parsing', () => {
     // since text [[ will trip our JSX selection syntax
     // as we use [abcd] to tell test runner to select `abcd`.
     expect((await parse(md)).toString()).toMatchInlineSnapshot(
-      `"doc(paragraph(\\"This is [[not a valid wiki link]\\"))"`,
+      `"doc(paragraph("This is [[not a valid wiki link]"))"`,
     );
   });
   test('case 3 chinese char', async () => {
@@ -184,7 +184,7 @@ describe('parsing', () => {
     // since text [[ will trip our JSX selection syntax
     // as we use [abcd] to tell test runner to select `abcd`.
     expect((await parse(md)).toString()).toMatchInlineSnapshot(
-      `"doc(paragraph(\\"Nested [[weird [ wiki link]]\\"))"`,
+      `"doc(paragraph("Nested [[weird [ wiki link]]"))"`,
     );
   });
   test('weird case 2', async () => {
@@ -193,7 +193,7 @@ describe('parsing', () => {
     // since text [[ will trip our JSX selection syntax
     // as we use [abcd] to tell test runner to select `abcd`.
     expect((await parse(md)).toString()).toMatchInlineSnapshot(
-      `"doc(paragraph(\\"Nested [[weird \\", wikiLink))"`,
+      `"doc(paragraph("Nested [[weird ", wikiLink))"`,
     );
   });
 });

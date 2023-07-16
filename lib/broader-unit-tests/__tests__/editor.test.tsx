@@ -48,11 +48,11 @@ describe('BangleEditorState', () => {
 
     expect(state.specRegistry).toBe(specRegistry);
     expect(state.pmState.doc.toJSON()).toMatchInlineSnapshot(`
-      Object {
-        "content": Array [
-          Object {
-            "content": Array [
-              Object {
+      {
+        "content": [
+          {
+            "content": [
+              {
                 "text": "Hi",
                 "type": "text",
               },
@@ -72,11 +72,11 @@ describe('BangleEditorState', () => {
 
     expect(state.specRegistry).toBeInstanceOf(SpecRegistry);
     expect(state.pmState.doc.toJSON()).toMatchInlineSnapshot(`
-      Object {
-        "content": Array [
-          Object {
-            "content": Array [
-              Object {
+      {
+        "content": [
+          {
+            "content": [
+              {
                 "text": "Hi",
                 "type": "text",
               },

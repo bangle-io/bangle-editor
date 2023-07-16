@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Markdown todo parsing empty list 2`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "first",
                   "type": "text",
                 },
@@ -25,12 +25,12 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
+          "content": [
+            {
               "type": "paragraph",
             },
           ],
@@ -45,19 +45,19 @@ Object {
 `;
 
 exports[`Markdown todo parsing todo1.md: an incorrectly indented doc results in empty list 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "tight": false,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
+          "content": [
+            {
               "type": "paragraph",
             },
           ],
@@ -72,59 +72,59 @@ Object {
 `;
 
 exports[`Markdown todo parsing todo2.md: correct indentation of todo1 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "tight": false,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "top",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": false,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "parent",
                           "type": "text",
                         },
                       ],
                       "type": "paragraph",
                     },
-                    Object {
-                      "attrs": Object {
+                    {
+                      "attrs": {
                         "tight": false,
                       },
-                      "content": Array [
-                        Object {
-                          "attrs": Object {
+                      "content": [
+                        {
+                          "attrs": {
                             "todoChecked": false,
                           },
-                          "content": Array [
-                            Object {
-                              "content": Array [
-                                Object {
+                          "content": [
+                            {
+                              "content": [
+                                {
                                   "text": "top",
                                   "type": "text",
                                 },
@@ -134,33 +134,33 @@ Object {
                           ],
                           "type": "listItem",
                         },
-                        Object {
-                          "attrs": Object {
+                        {
+                          "attrs": {
                             "todoChecked": false,
                           },
-                          "content": Array [
-                            Object {
-                              "content": Array [
-                                Object {
+                          "content": [
+                            {
+                              "content": [
+                                {
                                   "text": "parent",
                                   "type": "text",
                                 },
                               ],
                               "type": "paragraph",
                             },
-                            Object {
-                              "attrs": Object {
+                            {
+                              "attrs": {
                                 "tight": false,
                               },
-                              "content": Array [
-                                Object {
-                                  "attrs": Object {
+                              "content": [
+                                {
+                                  "attrs": {
                                     "todoChecked": null,
                                   },
-                                  "content": Array [
-                                    Object {
-                                      "content": Array [
-                                        Object {
+                                  "content": [
+                                    {
+                                      "content": [
+                                        {
                                           "text": "first",
                                           "type": "text",
                                         },
@@ -170,14 +170,14 @@ Object {
                                   ],
                                   "type": "listItem",
                                 },
-                                Object {
-                                  "attrs": Object {
+                                {
+                                  "attrs": {
                                     "todoChecked": null,
                                   },
-                                  "content": Array [
-                                    Object {
-                                      "content": Array [
-                                        Object {
+                                  "content": [
+                                    {
+                                      "content": [
+                                        {
                                           "text": "second",
                                           "type": "text",
                                         },
@@ -199,14 +199,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "bottom",
                           "type": "text",
                         },
@@ -232,30 +232,30 @@ Object {
 
 exports[`Markdown todo parsing todo3.md: malformed with multiple confused square braces 1`] = `
 "- [ ] unchecked todo item 1
-- \\\\[ \\\\]
-- \\\\[  \\\\] not a todo item 2
-- \\\\[ x\\\\] not a todo item 3
-- \\\\[x \\\\] not a todo item 4
-- \\\\[ x \\\\] not a todo item 5
+- \\[ \\]
+- \\[  \\] not a todo item 2
+- \\[ x\\] not a todo item 3
+- \\[x \\] not a todo item 4
+- \\[ x \\] not a todo item 5
 - [x] todo item 6"
 `;
 
 exports[`Markdown todo parsing todo3.md: malformed with multiple confused square braces 2`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "unchecked todo item 1",
                   "type": "text",
                 },
@@ -265,14 +265,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "[ ]",
                   "type": "text",
                 },
@@ -282,14 +282,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "[  ] not a todo item 2",
                   "type": "text",
                 },
@@ -299,14 +299,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "[ x] not a todo item 3",
                   "type": "text",
                 },
@@ -316,14 +316,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "[x ] not a todo item 4",
                   "type": "text",
                 },
@@ -333,14 +333,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "[ x ] not a todo item 5",
                   "type": "text",
                 },
@@ -350,14 +350,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": true,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "todo item 6",
                   "type": "text",
                 },
@@ -388,40 +388,40 @@ exports[`Markdown todo parsing todo4.md multiple nesting 1`] = `
 `;
 
 exports[`Markdown todo parsing todo4.md multiple nesting 2`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "top",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "Zono",
                           "type": "text",
                         },
@@ -431,14 +431,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "Banshe",
                           "type": "text",
                         },
@@ -448,33 +448,33 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "parent",
                           "type": "text",
                         },
                       ],
                       "type": "paragraph",
                     },
-                    Object {
-                      "attrs": Object {
+                    {
+                      "attrs": {
                         "tight": true,
                       },
-                      "content": Array [
-                        Object {
-                          "attrs": Object {
+                      "content": [
+                        {
+                          "attrs": {
                             "todoChecked": false,
                           },
-                          "content": Array [
-                            Object {
-                              "content": Array [
-                                Object {
+                          "content": [
+                            {
+                              "content": [
+                                {
                                   "text": "top",
                                   "type": "text",
                                 },
@@ -484,33 +484,33 @@ Object {
                           ],
                           "type": "listItem",
                         },
-                        Object {
-                          "attrs": Object {
+                        {
+                          "attrs": {
                             "todoChecked": false,
                           },
-                          "content": Array [
-                            Object {
-                              "content": Array [
-                                Object {
+                          "content": [
+                            {
+                              "content": [
+                                {
                                   "text": "parent",
                                   "type": "text",
                                 },
                               ],
                               "type": "paragraph",
                             },
-                            Object {
-                              "attrs": Object {
+                            {
+                              "attrs": {
                                 "tight": true,
                               },
-                              "content": Array [
-                                Object {
-                                  "attrs": Object {
+                              "content": [
+                                {
+                                  "attrs": {
                                     "todoChecked": null,
                                   },
-                                  "content": Array [
-                                    Object {
-                                      "content": Array [
-                                        Object {
+                                  "content": [
+                                    {
+                                      "content": [
+                                        {
                                           "text": "first",
                                           "type": "text",
                                         },
@@ -520,14 +520,14 @@ Object {
                                   ],
                                   "type": "listItem",
                                 },
-                                Object {
-                                  "attrs": Object {
+                                {
+                                  "attrs": {
                                     "todoChecked": null,
                                   },
-                                  "content": Array [
-                                    Object {
-                                      "content": Array [
-                                        Object {
+                                  "content": [
+                                    {
+                                      "content": [
+                                        {
                                           "text": "second",
                                           "type": "text",
                                         },
@@ -549,14 +549,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "bottom",
                           "type": "text",
                         },
@@ -588,21 +588,21 @@ exports[`Markdown todo parsing todo5.md no nesting 1`] = `
 `;
 
 exports[`Markdown todo parsing todo5.md no nesting 2`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "unchecked item 1",
                   "type": "text",
                 },
@@ -612,14 +612,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "unchecked item 2",
                   "type": "text",
                 },
@@ -629,14 +629,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": true,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "checked item 3",
                   "type": "text",
                 },
@@ -646,14 +646,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "unchecked item 4",
                   "type": "text",
                 },
@@ -692,54 +692,54 @@ exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 2`
 `;
 
 exports[`Markdown todo parsing todo6.md todo a child of ordered and unordered 3`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 1",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "order": 1,
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -749,14 +749,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 2",
                           "type": "text",
                         },
@@ -766,14 +766,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 3",
                           "type": "text",
                         },
@@ -783,14 +783,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -806,14 +806,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "bar",
                   "type": "text",
                 },
@@ -823,14 +823,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "spam",
                   "type": "text",
                 },
@@ -843,51 +843,51 @@ Object {
       ],
       "type": "orderedList",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 2",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": null,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -897,14 +897,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 2",
                           "type": "text",
                         },
@@ -914,14 +914,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 3",
                           "type": "text",
                         },
@@ -931,14 +931,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -963,53 +963,53 @@ Object {
 `;
 
 exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 1",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -1019,14 +1019,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 2",
                           "type": "text",
                         },
@@ -1036,14 +1036,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 3",
                           "type": "text",
                         },
@@ -1053,14 +1053,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -1076,14 +1076,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "bar",
                   "type": "text",
                 },
@@ -1093,14 +1093,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "spam",
                   "type": "text",
                 },
@@ -1113,51 +1113,51 @@ Object {
       ],
       "type": "bulletList",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 2",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -1167,14 +1167,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 2",
                           "type": "text",
                         },
@@ -1184,14 +1184,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 3",
                           "type": "text",
                         },
@@ -1201,14 +1201,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -1227,51 +1227,51 @@ Object {
       ],
       "type": "bulletList",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 3",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -1281,14 +1281,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 2",
                           "type": "text",
                         },
@@ -1298,14 +1298,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 3",
                           "type": "text",
                         },
@@ -1315,14 +1315,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -1338,14 +1338,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "bar",
                   "type": "text",
                 },
@@ -1355,33 +1355,33 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "spam",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "regular list 1",
                           "type": "text",
                         },
@@ -1391,14 +1391,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "regular list 2",
                           "type": "text",
                         },
@@ -1408,33 +1408,33 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "regular list 3",
                           "type": "text",
                         },
                       ],
                       "type": "paragraph",
                     },
-                    Object {
-                      "attrs": Object {
+                    {
+                      "attrs": {
                         "tight": true,
                       },
-                      "content": Array [
-                        Object {
-                          "attrs": Object {
+                      "content": [
+                        {
+                          "attrs": {
                             "todoChecked": null,
                           },
-                          "content": Array [
-                            Object {
-                              "content": Array [
-                                Object {
+                          "content": [
+                            {
+                              "content": [
+                                {
                                   "text": "a child of list 3",
                                   "type": "text",
                                 },
@@ -1499,53 +1499,53 @@ exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 2`
 `;
 
 exports[`Markdown todo parsing todo7.md todo a child of ordered and unordered 3`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
+{
+  "content": [
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 1",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -1555,14 +1555,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 2",
                           "type": "text",
                         },
@@ -1572,14 +1572,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 3",
                           "type": "text",
                         },
@@ -1589,14 +1589,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -1612,14 +1612,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "bar",
                   "type": "text",
                 },
@@ -1629,14 +1629,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "spam",
                   "type": "text",
                 },
@@ -1649,51 +1649,51 @@ Object {
       ],
       "type": "bulletList",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 2",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -1703,14 +1703,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 2",
                           "type": "text",
                         },
@@ -1720,14 +1720,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 3",
                           "type": "text",
                         },
@@ -1737,14 +1737,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -1763,51 +1763,51 @@ Object {
       ],
       "type": "bulletList",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "collapseContent": null,
         "level": 1,
       },
-      "content": Array [
-        Object {
+      "content": [
+        {
           "text": "Test 3",
           "type": "text",
         },
       ],
       "type": "heading",
     },
-    Object {
-      "attrs": Object {
+    {
+      "attrs": {
         "tight": true,
       },
-      "content": Array [
-        Object {
-          "attrs": Object {
+      "content": [
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "foo",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": false,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested unchecked item 1",
                           "type": "text",
                         },
@@ -1817,14 +1817,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 2",
                           "type": "text",
                         },
@@ -1834,14 +1834,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "not a todo item 3",
                           "type": "text",
                         },
@@ -1851,14 +1851,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": true,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "nested checked item 4",
                           "type": "text",
                         },
@@ -1874,14 +1874,14 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "bar",
                   "type": "text",
                 },
@@ -1891,33 +1891,33 @@ Object {
           ],
           "type": "listItem",
         },
-        Object {
-          "attrs": Object {
+        {
+          "attrs": {
             "todoChecked": false,
           },
-          "content": Array [
-            Object {
-              "content": Array [
-                Object {
+          "content": [
+            {
+              "content": [
+                {
                   "text": "spam",
                   "type": "text",
                 },
               ],
               "type": "paragraph",
             },
-            Object {
-              "attrs": Object {
+            {
+              "attrs": {
                 "tight": true,
               },
-              "content": Array [
-                Object {
-                  "attrs": Object {
+              "content": [
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "regular list 1",
                           "type": "text",
                         },
@@ -1927,14 +1927,14 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "regular list 2",
                           "type": "text",
                         },
@@ -1944,33 +1944,33 @@ Object {
                   ],
                   "type": "listItem",
                 },
-                Object {
-                  "attrs": Object {
+                {
+                  "attrs": {
                     "todoChecked": null,
                   },
-                  "content": Array [
-                    Object {
-                      "content": Array [
-                        Object {
+                  "content": [
+                    {
+                      "content": [
+                        {
                           "text": "regular list 3",
                           "type": "text",
                         },
                       ],
                       "type": "paragraph",
                     },
-                    Object {
-                      "attrs": Object {
+                    {
+                      "attrs": {
                         "tight": true,
                       },
-                      "content": Array [
-                        Object {
-                          "attrs": Object {
+                      "content": [
+                        {
+                          "attrs": {
                             "todoChecked": null,
                           },
-                          "content": Array [
-                            Object {
-                              "content": Array [
-                                Object {
+                          "content": [
+                            {
+                              "content": [
+                                {
                                   "text": "a child of list 3",
                                   "type": "text",
                                 },

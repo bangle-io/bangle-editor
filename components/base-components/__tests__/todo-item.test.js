@@ -1957,13 +1957,13 @@ describe('siblingsAndNodesBetween', () => {
     });
 
     expect(nodes).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "listItem",
           "firstalpha",
           1,
         ],
-        Array [
+        [
           "listItem",
           "distant",
           21,

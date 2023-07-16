@@ -43,10 +43,10 @@ exports[`Markdown table parsing table4.md 1`] = `
 exports[`Markdown table parsing table5.md 1`] = `
 "# Table 5
 
-| f\\\\|oo    |
+| f\\|oo    |
 |---------|
-| b \`\\\\|\` az |
-| b **\\\\|** im  |
+| b \`\\|\` az |
+| b **\\|** im  |
 "
 `;
 
