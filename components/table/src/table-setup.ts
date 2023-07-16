@@ -42,7 +42,7 @@ const nodes = tableNodes({
       default: null,
       setDOMAttr(value, attrs) {
         if (value != null) {
-          attrs.style = (attrs.style || '') + `text-align: ${value};`;
+          attrs['style'] = (attrs['style'] || '') + `text-align: ${value};`;
         }
       },
     },
@@ -53,7 +53,8 @@ const nodes = tableNodes({
       },
       setDOMAttr(value, attrs) {
         if (value) {
-          attrs.style = (attrs.style || '') + `background-color: ${value};`;
+          attrs['style'] =
+            (attrs['style'] || '') + `background-color: ${value};`;
         }
       },
     },

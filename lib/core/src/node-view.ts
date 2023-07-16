@@ -17,7 +17,7 @@ const LOG = false;
 let log = LOG ? console.log.bind(console, 'node-view') : () => {};
 const renderHandlersCache: WeakMap<HTMLElement, RenderHandlers> = new WeakMap();
 
-type GetPosFunction = () => number;
+type GetPosFunction = () => number | undefined;
 
 export type UpdateAttrsFunction = (attrs: Node['attrs']) => void;
 
@@ -48,7 +48,7 @@ abstract class BaseNodeView {
   renderHandlers: RenderHandlers;
   opts: { selectionSensitive: boolean };
   _decorations: readonly Decoration[];
-  _getPos: () => number;
+  _getPos: GetPosFunction;
   _node: Node;
   _selected: boolean;
   _view: EditorView;
@@ -69,7 +69,7 @@ abstract class BaseNodeView {
     }: {
       node: Node;
       view: EditorView;
-      getPos: () => number;
+      getPos: GetPosFunction;
       decorations: readonly Decoration[];
       contentDOM?: HTMLElement;
       containerDOM?: HTMLElement;
@@ -189,7 +189,6 @@ export class NodeView extends BaseNodeView {
             }
 
             // getPos for custom marks is boolean
-            getPos = getPos as GetPosFunction;
             return new NodeView({
               node,
               view,
@@ -316,11 +315,14 @@ export function getRenderHandlers(view: EditorView) {
 }
 
 function updateAttrs(
-  pos: number,
+  pos: number | undefined,
   node: Node,
   newAttrs: Node['attrs'],
   tr: Transaction,
 ) {
+  if (pos === undefined) {
+    return tr;
+  }
   return tr.setNodeMarkup(pos, undefined, {
     ...node.attrs,
     ...newAttrs,
