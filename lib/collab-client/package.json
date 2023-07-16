@@ -54,6 +54,6 @@
     "@bangle.dev/collab-comms": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^29.5.3",
-    "prosemirror-collab": "^1.3.0"
+    "prosemirror-collab": "^1.3.1"
   }
 }

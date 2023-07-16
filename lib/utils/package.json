@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@types/jest": "^29.5.3",
-    "prosemirror-model": "^1.18.1",
-    "prosemirror-state": "^1.4.1",
+    "prosemirror-model": "^1.19.3",
+    "prosemirror-state": "^1.4.3",
     "prosemirror-utils-bangle": "0.0.4",
     "tsd": "^0.22.0"
   },
