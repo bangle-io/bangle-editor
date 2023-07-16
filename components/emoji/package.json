@@ -28,7 +28,7 @@
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
     "@types/jest": "^29.5.3",
-    "markdown-it-emoji": "^2.0.0"
+    "markdown-it-emoji": "^2.0.2"
   },
   "peerDependencies": {
     "@bangle.dev/core": "*",
@@ -43,7 +43,7 @@
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/markdown-it": "^12.2.3",
     "@types/markdown-it-emoji": "^2.0.2",
-    "prosemirror-markdown": "^1.9.3"
+    "prosemirror-markdown": "^1.11.1"
   },
   "publishConfig": {
     "access": "public",

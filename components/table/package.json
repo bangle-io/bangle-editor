@@ -33,7 +33,7 @@
     "@bangle.dev/pm": "workspace:*",
     "@types/markdown-it": "^12.2.3",
     "markdown-it": "^10.0.0",
-    "prosemirror-markdown": "^1.9.3"
+    "prosemirror-markdown": "^1.11.1"
   },
   "publishConfig": {
     "access": "public",

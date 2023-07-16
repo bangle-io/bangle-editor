@@ -46,7 +46,7 @@
     "@bangle.dev/pm": "workspace:*",
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/node": "^17.0.43",
-    "localforage": "^1.9.0",
+    "localforage": "^1.10.0",
     "strict-event-emitter-types": "^2.0.0",
     "wait-for-expect": "^3.0.2"
   },
