@@ -2534,15 +2534,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.23.4":
-  version: 1.23.4
-  resolution: "@playwright/test@npm:1.23.4"
+"@playwright/test@npm:^1.36.1":
+  version: 1.36.1
+  resolution: "@playwright/test@npm:1.36.1"
   dependencies:
     "@types/node": "*"
-    playwright-core: 1.23.4
+    fsevents: 2.3.2
+    playwright-core: 1.36.1
+  dependenciesMeta:
+    fsevents:
+      optional: true
   bin:
     playwright: cli.js
-  checksum: 7004308fde2c3ff1062b50115f9db9eb74d3e0c6cdee42d723a3a4ccbf811c3cf2be934c75d706c464c17a8839ae9237c2abbf90ec46bd3ddec8d34c24dc9c4b
+  checksum: a0127e0dccc458e7feb1b5742c90f79db0b895288b135310d056be5e3c6bb2c47c4503d5b7a584db2b1ef518f87020dafa0016c198c98fd3df719d66cd2ab7b7
   languageName: node
   linkType: hard
 
@@ -4287,9 +4291,6 @@ __metadata:
     lint-staged: ^10.5.3
     prettier: ^2.6.2
     typescript: ^5.1.6
-  dependenciesMeta:
-    "@playwright/test@1.23.4":
-      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -5551,7 +5552,7 @@ __metadata:
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
-    "@playwright/test": ^1.23.4
+    "@playwright/test": ^1.36.1
     "@testing-library/react": ^11.2.7
     "@types/jest": ^27.5.2
     "@types/prettier": ^2.6.3
@@ -5560,7 +5561,7 @@ __metadata:
     babel-loader: ^8.2.5
     clean-webpack-plugin: ^3.0.0
     css-loader: ^5.2.7
-    esbuild-linux-64: 0.14.49
+    esbuild: ^0.18.10
     file-loader: ^6.2.0
     html-webpack-plugin: ^4.5.2
     prettier: ^2.6.2
@@ -5778,14 +5779,6 @@ __metadata:
     is-date-object: ^1.0.1
     is-symbol: ^1.0.2
   checksum: 4ead6671a2c1402619bdd77f3503991232ca15e17e46222b0a41a5d81aebc8740a77822f5b3c965008e631153e9ef0580540007744521e72de8e33599fca2eed
-  languageName: node
-  linkType: hard
-
-"esbuild-linux-64@npm:0.14.49":
-  version: 0.14.49
-  resolution: "esbuild-linux-64@npm:0.14.49"
-  checksum: fede7a8231ba792b97ea2caffe473b1c5bb947b9301da7b63a21eda34ca68d12f3d2aab5f436f465bdc915743896352fff60ff35ed13eef10909a99694632a75
-  conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
@@ -6634,7 +6627,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2":
+"fsevents@npm:2.3.2, fsevents@npm:^2.3.2, fsevents@npm:~2.3.2":
   version: 2.3.2
   resolution: "fsevents@npm:2.3.2"
   dependencies:
@@ -6644,7 +6637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
+"fsevents@patch:fsevents@2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
   resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
@@ -9843,12 +9836,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.23.4":
-  version: 1.23.4
-  resolution: "playwright-core@npm:1.23.4"
+"playwright-core@npm:1.36.1":
+  version: 1.36.1
+  resolution: "playwright-core@npm:1.36.1"
   bin:
-    playwright: cli.js
-  checksum: 347a40f2fbcc9ee896c5cf8d8211ffa7a200e22f154e879d9e829ee6bd365acc1c69c8b11a64a96a9d2fae9c85e859c995680be1a15b5e74c367ffa53425c9c9
+    playwright-core: cli.js
+  checksum: bbde807294053b50f0dbbc81f0dacc43fe525830ce1526e6ca74012582dd1645eae2391719cfb020051abea90704057cfabcbfe45ca530b37becc491e9459790
   languageName: node
   linkType: hard
 

@@ -4560,12 +4560,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@playwright/test", [\
-        ["npm:1.23.4", {\
-          "packageLocation": "./.yarn/unplugged/@playwright-test-npm-1.23.4-43c2455801/node_modules/@playwright/test/",\
+        ["npm:1.36.1", {\
+          "packageLocation": "./.yarn/cache/@playwright-test-npm-1.36.1-3b802b3b3c-a0127e0dcc.zip/node_modules/@playwright/test/",\
           "packageDependencies": [\
-            ["@playwright/test", "npm:1.23.4"],\
+            ["@playwright/test", "npm:1.36.1"],\
             ["@types/node", "npm:18.0.6"],\
-            ["playwright-core", "npm:1.23.4"]\
+            ["fsevents", "patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"],\
+            ["playwright-core", "npm:1.36.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8255,7 +8256,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@bangle.dev/table", "virtual:29b21ae4778b34d031208e8799101ee75c12f13308660c6f2655c79ab6f34759814fc3c185abe63207fe6c9e1997238589cf5c391f9229513ed8d892078db278#workspace:components/table"],\
             ["@bangle.dev/tooltip", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#workspace:components/tooltip"],\
             ["@bangle.dev/utils", "virtual:2f63e5ea96fce2218ac42d91f0930b6fe626538e24c31cb2f75de194ec48e2fb4e04af5d463fd0f3c0b602fa5ca7cdb1c1b9a426870d8c66d14fc88de674c55b#workspace:lib/utils"],\
-            ["@playwright/test", "npm:1.23.4"],\
+            ["@playwright/test", "npm:1.36.1"],\
             ["@testing-library/react", "virtual:a49898460a5146301f8e51910eb9554509b93b0fad8f8419daaa697bbd515d1539c67d1891c2127bbaac881dc289ac5b7efffb8cd38127403c513e5c12e5920c#npm:11.2.7"],\
             ["@types/jest", "npm:27.5.2"],\
             ["@types/prettier", "npm:2.6.3"],\
@@ -8264,7 +8265,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:8.2.5"],\
             ["clean-webpack-plugin", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:3.0.0"],\
             ["css-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:5.2.7"],\
-            ["esbuild-linux-64", "npm:0.14.49"],\
+            ["esbuild", "npm:0.18.13"],\
             ["file-loader", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:6.2.0"],\
             ["html-webpack-plugin", "virtual:7142eff93ab0ef9bc439e638ca7aa1618071d53f03c06e6c1dc1d4628a97462dfc8091d1e6276f94d30ce74aece20d907638fa6921f60f311e87f693acd3c3b5#npm:4.5.2"],\
             ["prettier", "npm:2.7.1"],\
@@ -8540,15 +8541,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@esbuild/win32-arm64", "npm:0.18.13"],\
             ["@esbuild/win32-ia32", "npm:0.18.13"],\
             ["@esbuild/win32-x64", "npm:0.18.13"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["esbuild-linux-64", [\
-        ["npm:0.14.49", {\
-          "packageLocation": "./.yarn/unplugged/esbuild-linux-64-npm-0.14.49-96241737d6/node_modules/esbuild-linux-64/",\
-          "packageDependencies": [\
-            ["esbuild-linux-64", "npm:0.14.49"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13154,10 +13146,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["playwright-core", [\
-        ["npm:1.23.4", {\
-          "packageLocation": "./.yarn/unplugged/playwright-core-npm-1.23.4-842163d56f/node_modules/playwright-core/",\
+        ["npm:1.36.1", {\
+          "packageLocation": "./.yarn/unplugged/playwright-core-npm-1.36.1-914472d17b/node_modules/playwright-core/",\
           "packageDependencies": [\
-            ["playwright-core", "npm:1.23.4"]\
+            ["playwright-core", "npm:1.36.1"]\
           ],\
           "linkType": "HARD"\
         }]\
