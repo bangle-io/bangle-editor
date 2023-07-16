@@ -29,7 +29,7 @@ export type Message<T> =
       type: MessageType.BROADCAST;
     };
 
-type WildCard = typeof CollabMessageBus['WILD_CARD'];
+type WildCard = (typeof CollabMessageBus)['WILD_CARD'];
 
 export class CollabMessageBus {
   static WILD_CARD = Symbol('WILD_CARD');

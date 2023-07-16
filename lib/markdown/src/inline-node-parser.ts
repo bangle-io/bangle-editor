@@ -43,8 +43,8 @@ export function inlineNodeParser(
     var i: number,
       j: number,
       l: number,
-      tokens: typeof blockTokens[0]['children'],
-      token: NonNullable<typeof blockTokens[0]['children']>[0] | undefined,
+      tokens: (typeof blockTokens)[0]['children'],
+      token: NonNullable<(typeof blockTokens)[0]['children']>[0] | undefined,
       blockTokens = state.tokens,
       autolinkLevel = 0;
 

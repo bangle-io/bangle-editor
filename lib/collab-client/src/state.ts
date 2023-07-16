@@ -145,7 +145,10 @@ export class InitState extends CollabBaseState {
   // this field setup order is instrumental to connect with the server.
   clientCreatedAt = Date.now();
 
-  constructor(public state = {}, public debugInfo?: string) {
+  constructor(
+    public state = {},
+    public debugInfo?: string,
+  ) {
     super();
   }
 
@@ -395,7 +398,10 @@ export class InitErrorState extends CollabBaseState {
 export class ReadyState extends CollabBaseState {
   name = CollabStateName.Ready;
 
-  constructor(public state: InitDocState['state'], public debugInfo?: string) {
+  constructor(
+    public state: InitDocState['state'],
+    public debugInfo?: string,
+  ) {
     super();
   }
 
@@ -462,7 +468,10 @@ export class ReadyState extends CollabBaseState {
 export class PushState extends CollabBaseState {
   name = CollabStateName.Push;
 
-  constructor(public state: InitDocState['state'], public debugInfo?: string) {
+  constructor(
+    public state: InitDocState['state'],
+    public debugInfo?: string,
+  ) {
     super();
   }
 
@@ -574,7 +583,10 @@ export class PushState extends CollabBaseState {
 export class PullState extends CollabBaseState {
   name = CollabStateName.Pull;
 
-  constructor(public state: InitDocState['state'], public debugInfo?: string) {
+  constructor(
+    public state: InitDocState['state'],
+    public debugInfo?: string,
+  ) {
     super();
   }
 
