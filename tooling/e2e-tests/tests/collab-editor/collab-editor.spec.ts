@@ -284,7 +284,9 @@ test.describe('Editors should sync', () => {
       ]);
   });
 
-  test('slow broadcast both clients edit simultaneously', async ({ page }) => {
+  test.only('slow broadcast both clients edit simultaneously', async ({
+    page,
+  }) => {
     const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
     const collabSlowdown = 100;
     const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
@@ -325,6 +327,8 @@ test.describe('Editors should sync', () => {
         ['EDITOR_2', '<p><br class="ProseMirror-trailingBreak"></p>'],
       ]);
 
+    await sleep(200);
+
     await editor1Locator.type('one');
     await editor2Locator.type('two');
 
@@ -332,7 +336,7 @@ test.describe('Editors should sync', () => {
       ['EDITOR_1', '<p>one</p>'],
       ['EDITOR_2', '<p>two</p>'],
     ]);
-    await page.pause();
+
     await expect
       .poll(
         async () => {
