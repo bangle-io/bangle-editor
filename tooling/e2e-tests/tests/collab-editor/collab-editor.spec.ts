@@ -284,9 +284,7 @@ test.describe('Editors should sync', () => {
       ]);
   });
 
-  test.only('slow broadcast both clients edit simultaneously', async ({
-    page,
-  }) => {
+  test('slow broadcast both clients edit simultaneously', async ({ page }) => {
     const testEditors: EditorId[] = [EDITOR_1, EDITOR_2];
     const collabSlowdown = 100;
     const editor1Locator = page.locator(`#${EDITOR_1} .ProseMirror`);
