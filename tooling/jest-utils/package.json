@@ -1,6 +1,6 @@
 {
   "name": "@bangle.dev/jest-utils",
-  "version": "0.31.6",
+  "version": "0.32.0",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
