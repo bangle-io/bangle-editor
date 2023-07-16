@@ -64,9 +64,9 @@ export function collabClientPlugin({
     (state: EditorState) =>
     (...args: any[]) =>
       log(
-        `${clientID}:version=${getVersion(
-          state,
-        )}:debugInfo=${collabClientKey.getState(state)?.collabState.debugInfo}`,
+        `${clientID}:version=${getVersion(state)}:debugInfo=${
+          collabClientKey.getState(state)?.collabState.debugInfo
+        }`,
         ...args,
       );
 
