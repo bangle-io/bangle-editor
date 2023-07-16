@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^27.5.2"
+    "@types/jest": "^29.5.3"
   },
   "style": "style.css"
 }

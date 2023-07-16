@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@bangle.dev/pm": "workspace:*",
-    "@types/jest": "^27.5.2",
+    "@types/jest": "^29.5.3",
     "@types/markdown-it": "^12.2.3",
     "markdown-it": "^10.0.0",
     "prettier": "^2.6.2"
