@@ -31,9 +31,11 @@ For templating we use [handlebars](https://handlebarsjs.com) and a configuration
 
 - Run `yarn update-versions`.
 
-- Export your npm token as an environment variable `NPM_AUTH_TOKEN` in your project.
+- Make sure you are authenticated by doing `yarn npm login`.
 
 - Update the changelog.
+
+- Make sure you have exported the OTP `export OTP=597808` before running next command
 
 - Run `release-packages` for a regular release or `release-packages-alpha` for a pre-release.
 
