@@ -62,9 +62,7 @@ exports[`Markdown table parsing table6.md 1`] = `
 exports[`Markdown table parsing table7 missing column cell 1`] = `
 "# Table 7
 
-| abc | def |
-| --- |
-| bar |"
+| abc | def | | --- | | bar |"
 `;
 
 exports[`Markdown table parsing table8 no row 1`] = `
