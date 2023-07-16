@@ -29,7 +29,7 @@ export type Message<T> =
       type: MessageType.BROADCAST;
     };
 
-type WildCard = typeof CollabMessageBus['WILD_CARD'];
+type WildCard = (typeof CollabMessageBus)['WILD_CARD'];
 
 export class CollabMessageBus {
   static WILD_CARD = Symbol('WILD_CARD');
@@ -95,8 +95,10 @@ export class CollabMessageBus {
     if (message.type === MessageType.BROADCAST && message.to != null) {
       throw new Error('Broadcast message must not have a `to` field');
     }
+
     if (
       typeof message.to !== 'string' &&
+      // @ts-expect-error
       (message.type === MessageType.PING || message.type === MessageType.PONG)
     ) {
       throw new Error('PING/PONG message must have a `to` field');

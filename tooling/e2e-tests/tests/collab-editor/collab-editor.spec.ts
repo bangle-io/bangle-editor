@@ -325,6 +325,8 @@ test.describe('Editors should sync', () => {
         ['EDITOR_2', '<p><br class="ProseMirror-trailingBreak"></p>'],
       ]);
 
+    await sleep(200);
+
     await editor1Locator.type('one');
     await editor2Locator.type('two');
 
@@ -332,7 +334,7 @@ test.describe('Editors should sync', () => {
       ['EDITOR_1', '<p>one</p>'],
       ['EDITOR_2', '<p>two</p>'],
     ]);
-    await page.pause();
+
     await expect
       .poll(
         async () => {

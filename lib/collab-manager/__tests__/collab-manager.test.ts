@@ -151,7 +151,7 @@ test('getCollabState', async () => {
   expect(steps).toEqual([]);
   expect(version).toEqual(0);
   expect(doc.toString()).toMatchInlineSnapshot(
-    `"doc(paragraph(\\"hello world!\\"))"`,
+    `"doc(paragraph("hello world!"))"`,
   );
 });
 
@@ -215,7 +215,7 @@ describe('push events', () => {
     ]);
     expect(version).toEqual(1);
     expect(doc.toString()).toMatchInlineSnapshot(
-      `"doc(paragraph(\\"lovely hello world!\\"))"`,
+      `"doc(paragraph("lovely hello world!"))"`,
     );
 
     expect(onNewVersion).toBeCalledTimes(1);

@@ -33,7 +33,7 @@
   "dependencies": {
     "@bangle.dev/pm-commands": "workspace:*",
     "@bangle.dev/utils": "workspace:*",
-    "@types/jest": "^27.5.2"
+    "@types/jest": "^29.5.3"
   },
   "devDependencies": {
     "@bangle.dev/core": "workspace:*",
@@ -41,8 +41,8 @@
     "@bangle.dev/test-helpers": "workspace:*",
     "@types/markdown-it": "^12.2.3",
     "markdown-it": "^10.0.0",
-    "prettier": "^2.6.2",
-    "prosemirror-markdown": "^1.9.3"
+    "prettier": "^2.8.8",
+    "prosemirror-markdown": "^1.11.1"
   },
   "publishConfig": {
     "access": "public",

@@ -141,7 +141,7 @@ describe('markdown', () => {
     await expect(
       async () => await serialize(doc),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"Invalid content for node doc"`,
+      `"Invalid content for node doc: <paragraph("hello world"), markdownFrontMatter>"`,
     );
   });
 });

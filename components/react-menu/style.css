@@ -161,8 +161,12 @@ button[aria-label][data-bangle-balloon-pos] {
 [aria-label][data-bangle-balloon-pos]:hover:after,
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-visible]:before,
 [aria-label][data-bangle-balloon-pos][data-bangle-balloon-visible]:after,
-[aria-label][data-bangle-balloon-pos]:not([data-bangle-balloon-nofocus]):focus:before,
-[aria-label][data-bangle-balloon-pos]:not([data-bangle-balloon-nofocus]):focus:after {
+[aria-label][data-bangle-balloon-pos]:not(
+    [data-bangle-balloon-nofocus]
+  ):focus:before,
+[aria-label][data-bangle-balloon-pos]:not(
+    [data-bangle-balloon-nofocus]
+  ):focus:after {
   opacity: 1;
   pointer-events: none;
 }

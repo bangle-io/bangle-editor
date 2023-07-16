@@ -1,61 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`plugin view passed options correctly 2`] = `
-Array [
-  Object {
+[
+  {
     "enabled": true,
     "fn": [Function],
     "name": "offset",
     "phase": "main",
-    "requires": Array [
+    "requires": [
       "popperOffsets",
     ],
   },
-  Object {
+  {
     "enabled": true,
     "fn": [Function],
     "name": "preventOverflow",
     "phase": "main",
-    "requiresIfExists": Array [
+    "requiresIfExists": [
       "offset",
     ],
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "_skip": false,
     },
     "enabled": true,
     "fn": [Function],
     "name": "flip",
     "phase": "main",
-    "requiresIfExists": Array [
+    "requiresIfExists": [
       "offset",
     ],
   },
-  Object {
+  {
     "name": "offset",
-    "options": Object {
+    "options": {
       "offset": [Function],
     },
   },
-  Object {
+  {
     "name": "flip",
-    "options": Object {
-      "fallbackPlacements": Array [
+    "options": {
+      "fallbackPlacements": [
         "pos-a",
         "pos-b",
       ],
       "padding": 10,
     },
   },
-  Object {
+  {
     "name": "preventOverflow",
-    "options": Object {
+    "options": {
       "boundary": <div />,
     },
   },
-  Object {
-    "data": Object {},
+  {
+    "data": {},
     "enabled": true,
     "fn": [Function],
     "name": "popperOffsets",

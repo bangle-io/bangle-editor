@@ -2,7 +2,7 @@
 
 exports[`Rendering works 2`] = `
 <span
-  data-bangle-attrs="{\\"emojiAlias\\":\\"horse\\"}"
+  data-bangle-attrs="{"emojiAlias":"horse"}"
   data-bangle-name="emoji"
   draggable="true"
 >

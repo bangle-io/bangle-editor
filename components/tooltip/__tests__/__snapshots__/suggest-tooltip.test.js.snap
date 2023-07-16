@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`suggest basic show and hide Case 0 different parent block 1`] = `"doc(paragraph(suggest_slash(\\"/check\\")))"`;
+exports[`suggest basic show and hide Case 0 different parent block 1`] = `"doc(paragraph(suggest_slash("/check")))"`;
 
-exports[`suggest basic show and hide Case 1 different parent block 1`] = `"doc(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))"`;
+exports[`suggest basic show and hide Case 1 different parent block 1`] = `"doc(paragraph("hello ", suggest_slash("/check")))"`;
 
-exports[`suggest basic show and hide Case 2 different parent block 1`] = `"doc(paragraph(\\"hello\\"), paragraph(\\"hello\\"), paragraph(\\"hello \\", suggest_slash(\\"/check\\")))"`;
+exports[`suggest basic show and hide Case 2 different parent block 1`] = `"doc(paragraph("hello"), paragraph("hello"), paragraph("hello ", suggest_slash("/check")))"`;
 
-exports[`suggest basic show and hide Case 3 different parent block 1`] = `"doc(bulletList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 3 different parent block 1`] = `"doc(bulletList(listItem(paragraph("hello ", suggest_slash("/check")))))"`;
 
-exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(bulletList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 4 different parent block 1`] = `"doc(bulletList(listItem(paragraph("hello ", suggest_slash("/check")))))"`;
 
-exports[`suggest basic show and hide Case 5 different parent block 1`] = `"doc(orderedList(listItem(paragraph(\\"hello \\", suggest_slash(\\"/check\\")))))"`;
+exports[`suggest basic show and hide Case 5 different parent block 1`] = `"doc(orderedList(listItem(paragraph("hello ", suggest_slash("/check")))))"`;
 
-exports[`suggest basic show and hide Case 6 different parent block 1`] = `"doc(blockquote(heading(\\"hello \\", suggest_slash(\\"/check\\"))))"`;
+exports[`suggest basic show and hide Case 6 different parent block 1`] = `"doc(blockquote(heading("hello ", suggest_slash("/check"))))"`;
 
-exports[`suggest basic show and hide Case 7 different parent block 1`] = `"doc(blockquote(heading(\\"hello\\")), paragraph(suggest_slash(\\"/check\\")))"`;
+exports[`suggest basic show and hide Case 7 different parent block 1`] = `"doc(blockquote(heading("hello")), paragraph(suggest_slash("/check")))"`;
 
 exports[`suggest basic show and hide types a trigger 1`] = `
 <div

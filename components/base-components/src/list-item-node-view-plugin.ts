@@ -7,7 +7,13 @@ const LOG = false;
 let log = LOG ? console.log.bind(console, 'list-item-node-view') : () => {};
 
 export function listItemNodeViewPlugin(name: string) {
-  const checkParentBulletList = (state: EditorState, pos: number) => {
+  const checkParentBulletList = (
+    state: EditorState,
+    pos: number | undefined,
+  ) => {
+    if (pos === undefined) {
+      return false;
+    }
     return state.doc.resolve(pos).parent.type.name === 'bulletList';
   };
 
