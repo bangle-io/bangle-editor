@@ -2085,6 +2085,7 @@ __metadata:
 "@esbuild/linux-x64@npm:0.18.13":
   version: 0.18.13
   resolution: "@esbuild/linux-x64@npm:0.18.13"
+  checksum: 33f0356926fcfd5e32ee2c2d0f917515ce6150641b9e95331d1a926f817f53df03ed72e51dd23b9fe88f46685c0c1140bcbeacc1867734ce097d7aaa7a93d23d
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
@@ -5673,6 +5674,7 @@ __metadata:
     "@bangle.dev/table": "workspace:*"
     "@bangle.dev/tooltip": "workspace:*"
     "@bangle.dev/utils": "workspace:*"
+    "@esbuild/linux-x64": 0.18.13
     "@playwright/test": ^1.36.1
     "@testing-library/react": ^11.2.7
     "@types/jest": ^29.5.3

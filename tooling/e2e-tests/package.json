@@ -64,6 +64,7 @@
     "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
+    "@esbuild/linux-x64": "0.18.13",
     "@playwright/test": "^1.36.1",
     "@types/prettier": "^2.6.3",
     "esbuild": "^0.18.10",
