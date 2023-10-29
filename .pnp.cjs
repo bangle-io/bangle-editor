@@ -3861,7 +3861,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:29.5.3"],\
             ["prosemirror-model", "npm:1.19.3"],\
             ["prosemirror-state", "npm:1.4.3"],\
-            ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.0.4"],\
+            ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.1.0"],\
             ["tsd", "npm:0.22.0"]\
           ],\
           "packagePeers": [\
@@ -3878,7 +3878,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:29.5.3"],\
             ["prosemirror-model", "npm:1.19.3"],\
             ["prosemirror-state", "npm:1.4.3"],\
-            ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.0.4"],\
+            ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.1.0"],\
             ["tsd", "npm:0.22.0"]\
           ],\
           "linkType": "SOFT"\
@@ -13773,17 +13773,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prosemirror-utils-bangle", [\
-        ["npm:0.0.4", {\
-          "packageLocation": "./.yarn/cache/prosemirror-utils-bangle-npm-0.0.4-afcf52a725-cabfda58eb.zip/node_modules/prosemirror-utils-bangle/",\
+        ["npm:0.1.0", {\
+          "packageLocation": "./.yarn/cache/prosemirror-utils-bangle-npm-0.1.0-d966a06c22-1fc501df9a.zip/node_modules/prosemirror-utils-bangle/",\
           "packageDependencies": [\
-            ["prosemirror-utils-bangle", "npm:0.0.4"]\
+            ["prosemirror-utils-bangle", "npm:0.1.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.0.4", {\
-          "packageLocation": "./.yarn/__virtual__/prosemirror-utils-bangle-virtual-958cd56a0f/0/cache/prosemirror-utils-bangle-npm-0.0.4-afcf52a725-cabfda58eb.zip/node_modules/prosemirror-utils-bangle/",\
+        ["virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.1.0", {\
+          "packageLocation": "./.yarn/__virtual__/prosemirror-utils-bangle-virtual-3ff249c885/0/cache/prosemirror-utils-bangle-npm-0.1.0-d966a06c22-1fc501df9a.zip/node_modules/prosemirror-utils-bangle/",\
           "packageDependencies": [\
-            ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.0.4"],\
+            ["prosemirror-utils-bangle", "virtual:94d14cb62b80d27566c7e76ed09abbfe6c7b5f229a50761af7fdaf0b63b345f04296b04456bee8857b807bc43c1070f996983a1198fd45b3e25972d227478045#npm:0.1.0"],\
             ["@types/prosemirror-model", null],\
             ["@types/prosemirror-state", null],\
             ["prosemirror-model", "npm:1.19.3"],\
