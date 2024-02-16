@@ -297,7 +297,10 @@ export function saveRenderHandlers(
   editorContainer: HTMLElement,
   handlers: RenderHandlers,
 ) {
-  if (renderHandlersCache.has(editorContainer)) {
+  if (
+    renderHandlersCache.has(editorContainer) &&
+    renderHandlersCache.get(editorContainer) !== handlers
+  ) {
     throw new Error(
       'It looks like renderHandlers were already set by someone else.',
     );
